@@ -52,7 +52,7 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
-import { ConfirmationModal, ContentLoader, Hint, Message, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, Hint, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, {
     FunctionComponent,
@@ -564,7 +564,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     )
                                                 }
                                                 { isDefault && !isBrandingEnabled && (
-                                                    <Alert severity="info">
+                                                    <Alert severity="info" className="mb-2">
                                                         <Trans
                                                             i18nKey="consents:policyConsents.brandingRequired"
                                                         >
@@ -579,16 +579,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     </Alert>
                                                 ) }
                                                 <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
-                                                    { isCreateMode && isDefault && defaultName && (
-                                                        <Box>
-                                                            <InputLabel>
-                                                                { t("consents:policyConsents.form.name.label") }
-                                                            </InputLabel>
-                                                            <Typography variant="body1">
-                                                                { defaultName }
-                                                            </Typography>
-                                                        </Box>
-                                                    ) }
                                                     { isCreateMode && !isDefault && (
                                                         <Box>
                                                             <FinalFormField
@@ -717,30 +707,26 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     />
                                                     <Box>
                                                         { !isCreateMode && consent?.promptOnLogin === "true" && (
-                                                            <Message
-                                                                type="info"
-                                                                content={ t("consents:policyConsents.form.promptOnLogin.activeHint") }
-                                                            />
+                                                            <Alert severity="info" className="mb-2">
+                                                                { t("consents:policyConsents.form.promptOnLogin.activeHint") }
+                                                            </Alert>
                                                         ) }
                                                         { !isCreateMode && (
-                                                            <Message
-                                                                type="info"
-                                                                content={ (
-                                                                    <Trans
-                                                                        i18nKey=
-                                                                            "consents:policyConsents.form.mandatory.linkHint"
+                                                            <Alert severity="info">
+                                                                <Trans
+                                                                    i18nKey=
+                                                                        "consents:policyConsents.form.mandatory.linkHint"
+                                                                >
+                                                                    <Link
+                                                                        onClick={
+                                                                            handleRegFlowBuilderClick
+                                                                        }
+                                                                        sx={ { cursor: "pointer" } }
                                                                     >
-                                                                        <Link
-                                                                            onClick={
-                                                                                handleRegFlowBuilderClick
-                                                                            }
-                                                                            sx={ { cursor: "pointer" } }
-                                                                        >
-                                                                            this link
-                                                                        </Link>
-                                                                    </Trans>
-                                                                ) }
-                                                            />
+                                                                        this link
+                                                                    </Link>
+                                                                </Trans>
+                                                            </Alert>
                                                         ) }
                                                     </Box>
                                                 </Box>
