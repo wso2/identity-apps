@@ -246,6 +246,7 @@ export interface ConsentsNS {
                         insertPolicyLinkNoPolicyUrl: string;
                         insertPolicyLinkNoSelection: string;
                         labelRoleHint: string;
+                        removePolicyLink: string;
                     };
                 };
                 preview: {
@@ -282,6 +283,8 @@ export interface ConsentsNS {
     };
     tabs: {
         content: { label: string };
+        general: { label: string };
         preview: { label: string };
+        promptScope: { label: string };
     };
 }

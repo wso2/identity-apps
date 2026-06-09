@@ -13,6 +13,7 @@
         "@lexical/utils": "^0.21.0",
         "@oxygen-ui/react": "^2.4.6",
         "@oxygen-ui/react-icons": "^2.4.6",
+        "@wso2is/admin.applications.v1": "workspace:^",
         "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.claims.v1": "workspace:^",
         "@wso2is/admin.core.v1": "workspace:^",

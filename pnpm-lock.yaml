@@ -3433,6 +3433,9 @@ importers:
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
+      '@wso2is/admin.applications.v1':
+        specifier: workspace:^
+        version: link:../admin.applications.v1
       '@wso2is/admin.branding.v1':
         specifier: workspace:^
         version: link:../admin.branding.v1

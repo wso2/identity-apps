@@ -365,7 +365,8 @@ export const consents: ConsentsNS = {
                         insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
                         insertPolicyLinkShort: "Policy Link",
                         insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                        labelRoleHint: "The checkbox label shown to users. Leave empty to use the default. Highlight text and click \"Policy Link\" to add the hyperlink."
+                        labelRoleHint: "The checkbox label shown to users. Leave empty to use the default. Highlight text and click \"Policy Link\" to add the hyperlink.",
+                        removePolicyLink: "Remove the policy link from the selected text."
                     }
                 },
                 preview: {
@@ -402,6 +403,8 @@ export const consents: ConsentsNS = {
     },
     tabs: {
         content: { label: "Content" },
-        preview: { label: "Preview" }
+        general: { label: "General" },
+        preview: { label: "Preview" },
+        promptScope: { label: "Prompt Scope" }
     }
 };
