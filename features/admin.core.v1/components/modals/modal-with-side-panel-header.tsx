@@ -18,10 +18,7 @@
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-interface ComponentsPropsInterface {
-    className?: string;
-}
-
+import { ComponentsPropsInterface } from "./modal-with-side-panel-types";
 /**
  * The header of a panel.
  *
@@ -32,8 +29,6 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return (
-        <>
-            <div className={ `modal-header ${ props?.className ?? "" }` }>{ props?.children }</div>
-        </>
+    	<div className={ `modal-header ${ props?.className ?? "" }` }>{ props?.children }</div>
     );
 };

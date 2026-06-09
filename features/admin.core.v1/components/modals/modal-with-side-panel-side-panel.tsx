@@ -20,9 +20,7 @@ import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { getHelpPanelActionIcons } from "../../configs/ui";
 
-interface ComponentsPropsInterface {
-    className?: string;
-}
+import { ComponentsPropsInterface } from "./modal-with-side-panel-types";
 
 /**
  * The side panel of the modal.
@@ -33,7 +31,7 @@ interface ComponentsPropsInterface {
 export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    const [ sidePanelOpen, setSidePanelOpen ] = useState(true);
+    const [ sidePanelOpen, setSidePanelOpen ] = useState<boolean>(true);
 
     return (
         <div className={ `side-panel ${ props?.className ?? "" } ${ !sidePanelOpen ? "closed" : "" }` }>

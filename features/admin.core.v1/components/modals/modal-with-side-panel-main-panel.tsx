@@ -18,9 +18,7 @@
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-interface ComponentsPropsInterface {
-    className?: string;
-}
+import { ComponentsPropsInterface } from "./modal-with-side-panel-types";
 
 /**
  * The main panel of the modal.

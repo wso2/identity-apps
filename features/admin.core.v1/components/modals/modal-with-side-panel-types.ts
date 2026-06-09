@@ -16,21 +16,9 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-
-import { ComponentsPropsInterface } from "./modal-with-side-panel-types";
-
-
 /**
- * The actions of a panel.
- *
- * @param {PropsWithChildren<ComponentsPropsInterface>} props - Props to be injected into the component.
- * @return {ReactElement} The actions section.
+ * Shared props interface for ModalWithSidePanel sub-components.
  */
-export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
-    props: PropsWithChildren<ComponentsPropsInterface>
-): ReactElement => {
-    return (
-    	<div className={ `modal-actions ${ props?.className ?? "" }` }>{ props?.children }</div>
-    );
-};
+export interface ComponentsPropsInterface {
+    className?: string;
+}

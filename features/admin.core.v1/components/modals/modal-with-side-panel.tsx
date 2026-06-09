@@ -24,9 +24,7 @@ import { ModalWithSidePanelHeader } from "./modal-with-side-panel-header";
 import { ModalWithSidePanelMainPanel } from "./modal-with-side-panel-main-panel";
 import { ModalWithSidePanelSidePanel } from "./modal-with-side-panel-side-panel";
 
-interface ComponentsPropsInterface {
-    className?: string;
-}
+import { ComponentsPropsInterface } from "./modal-with-side-panel-types";
 
 interface ModalWithSidePanelSubComponentsInterface {
     MainPanel: typeof ModalWithSidePanelMainPanel;
