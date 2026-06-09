@@ -41,6 +41,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+import { PolicyConsentApplications } from "../components/policy-consent-applications";
 import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
@@ -203,7 +204,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 <>
                     <Tabs value={ activeTab } onChange={ handleTabChange }>
                         <Tab label={ t("consents:tabs.general.label") } />
-                        <Tab label={ t("consents:tabs.promptScope.label") } />
+                        { !isDefaultPolicy && (
+                            <Tab label={ t("consents:tabs.applications.label") } />
+                        ) }
                     </Tabs>
                     <TabPanel value={ activeTab } index={ 0 }>
                         <EditPolicyConsent
@@ -225,9 +228,14 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                             </DangerZoneGroup>
                         ) }
                     </TabPanel>
-                    <TabPanel value={ activeTab } index={ 1 }>
-                        { /* Prompt Scope tab content goes here */ }
-                    </TabPanel>
+                    { !isDefaultPolicy && (
+                        <TabPanel value={ activeTab } index={ 1 }>
+                            <PolicyConsentApplications
+                                purposeId={ consent?.id }
+                                data-componentid={ `${componentId}-prompt-scope` }
+                            />
+                        </TabPanel>
+                    ) }
                     <ConfirmationModal
                         onClose={ () => setShowDeleteConfirmation(false) }
                         type="negative"

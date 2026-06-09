@@ -321,6 +321,20 @@ export const consents: ConsentsNS = {
                 title: "Create Policy"
             }
         },
+        promptScope: {
+            assignButton: "Assign Application",
+            assignModal: {
+                header: "Assign Applications",
+                noApps: "All applications are already assigned.",
+                subHeading: "Assign applications to this consent policy."
+            },
+            header: "Assign Applications",
+            noApplications: "No applications assigned.",
+            noApplicationsSubtitle: "Assign applications to prompt users to review and accept this consent policy.",
+            searchPlaceholder: "Search by application name",
+            selectAll: "Select All Applications",
+            subHeading: "Select which applications will prompt users to review and accept this consent policy."
+        },
         wizard: {
             create: {
                 form: {
@@ -402,9 +416,9 @@ export const consents: ConsentsNS = {
         termsOfService: "Terms of Service"
     },
     tabs: {
+        applications: { label: "Applications" },
         content: { label: "Content" },
         general: { label: "General" },
-        preview: { label: "Preview" },
-        promptScope: { label: "Prompt Scope" }
+        preview: { label: "Preview" }
     }
 };

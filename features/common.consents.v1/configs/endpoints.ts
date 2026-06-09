@@ -27,8 +27,15 @@ import { ConsentMgtResourceEndpointsInterface } from "../models/endpoints";
 export const getConsentMgtResourceEndpoints = (serverHost: string): ConsentMgtResourceEndpointsInterface => {
     const normalizedHost: string = serverHost?.replace(/\/+$/, "") ?? "";
 
+    // config-mgt does not support the sub-org path (/o or /o/<uuid>).
+    // Strip it so requests always go to the tenant-level endpoint.
+    const tenantHost: string = normalizedHost.replace(/\/o(\/.*)?$/, "");
+
     return {
         consentMgtElements: `${ normalizedHost }/api/identity/consent-mgt/v2.0/elements`,
-        consentMgtPurposes: `${ normalizedHost }/api/identity/consent-mgt/v2.0/purposes`
+        consentMgtPurposes: `${ normalizedHost }/api/identity/consent-mgt/v2.0/purposes`,
+        consentPolicyApps: `${ tenantHost }/api/identity/config-mgt/v1.0/resource/consent-policy-apps`,
+        consentPolicyAppsResourceType:
+            `${ tenantHost }/api/identity/config-mgt/v1.0/resource-type/consent-policy-apps`
     };
 };

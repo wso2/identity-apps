@@ -213,6 +213,20 @@ export interface ConsentsNS {
                 title: string;
             };
         };
+        promptScope: {
+            assignButton: string;
+            assignModal: {
+                header: string;
+                noApps: string;
+                subHeading: string;
+            };
+            header: string;
+            noApplications: string;
+            noApplicationsSubtitle: string;
+            searchPlaceholder: string;
+            selectAll: string;
+            subHeading: string;
+        };
         wizard: {
             create: {
                 form: {
@@ -282,9 +296,9 @@ export interface ConsentsNS {
         termsOfService: string;
     };
     tabs: {
+        applications: { label: string };
         content: { label: string };
         general: { label: string };
         preview: { label: string };
-        promptScope: { label: string };
     };
 }
