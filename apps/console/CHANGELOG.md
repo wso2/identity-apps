@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.10.4
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+- Updated dependencies [[`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60)]:
+  - @wso2is/admin.applications.v1@2.43.2
+  - @wso2is/admin.core.v1@2.57.17
+  - @wso2is/admin.extensions.v1@2.43.9
+  - @wso2is/admin.home.v1@1.7.196
+  - @wso2is/admin.onboarding.v1@1.0.86
+  - @wso2is/admin.tenants.v1@2.29.31
+
 ## 4.10.3
 
 ### Patch Changes
