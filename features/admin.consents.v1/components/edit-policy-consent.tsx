@@ -839,6 +839,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                             }
                             sx={ { mr: 0 } }
                         />
+                        <Hint>
+                            { isCreateMode
+                                ? t("consents:policyConsents.form.createModal.hint")
+                                : t("consents:policyConsents.form.versionModal.hint")
+                            }
+                        </Hint>
                     </Box>
                 </ConfirmationModal.Content>
             </ConfirmationModal>

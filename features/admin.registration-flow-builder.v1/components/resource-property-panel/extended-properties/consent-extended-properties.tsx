@@ -68,7 +68,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
 }: ConsentExtendedPropertiesInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const currentTenantDomain: string | undefined = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const purposes: PurposeInterface[] = useMemo(
         (): PurposeInterface[] => resource.config?.purposes ?? [],
@@ -158,7 +158,8 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
                     <Box display="flex" flexWrap="wrap" gap={ 0.5 }>
                         { value.map((option: ConsentListItemInterface, index: number): ReactElement => {
                             const isShared: boolean =
-                                !!option.tenantDomain && option.tenantDomain !== currentTenantDomain;
+                                !!option.tenantDomain && !!currentTenantDomain
+                                && option.tenantDomain !== currentTenantDomain;
 
                             return (
                                 <Chip
@@ -183,7 +184,8 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
                     _state: AutocompleteRenderOptionState
                 ): ReactElement => {
                     const isShared: boolean =
-                        !!option.tenantDomain && option.tenantDomain !== currentTenantDomain;
+                        !!option.tenantDomain && !!currentTenantDomain
+                        && option.tenantDomain !== currentTenantDomain;
 
                     return (
                         <li { ...optionProps } key={ option.id }>

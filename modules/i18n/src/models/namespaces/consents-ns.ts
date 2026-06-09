@@ -158,11 +158,13 @@ export interface ConsentsNS {
             };
             createModal: {
                 header: string;
+                hint: string;
                 promptAtLogin: string;
                 promptDescription: string;
             };
             versionModal: {
                 createNewVersion: string;
+                hint: string;
                 promptAtLogin: string;
                 promptDescription: string;
             };
@@ -236,6 +238,7 @@ export interface ConsentsNS {
                             translationText: string;
                             updateTitle: string;
                         };
+                        insertCustomLinkShort: string;
                         insertPolicyLink: string;
                         insertPolicyLinkInvalidUrl: string;
                         insertPolicyLinkShort: string;

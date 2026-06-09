@@ -25,7 +25,7 @@ export const consents: ConsentsNS = {
                 label: "Description",
                 labelRoleHint: "Leave empty to use the default description."
             },
-            linkHint: "To include this preference in a registration flow, go to the <0>Registration Flow Builder</0>.",
+            linkHint: "To collect consent at sign-up, add this preference to the <0>registration flow</0>.",
             name: {
                 error: {
                     duplicateName: "A preference with this name already exists. Please use a different name."
@@ -165,9 +165,9 @@ export const consents: ConsentsNS = {
                 label: "Description"
             },
             mandatory: {
-                hint: "When enabled, users must accept this policy to proceed. This setting cannot be changed after creation.",
+                hint: "Users must accept this policy to proceed.",
                 label: "Mandatory",
-                linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>."
+                linkHint: "To collect consent at sign-up, add this policy to the <0>registration flow</0>."
             },
             name: {
                 error: {
@@ -192,13 +192,15 @@ export const consents: ConsentsNS = {
             },
             createModal: {
                 header: "Create Policy",
-                promptAtLogin: "Prompt users to accept at next login",
-                promptDescription: "Choose whether existing users should be prompted to review and accept this new policy at their next login. This setting cannot be changed later."
+                hint: "Users with pending consent from a previous version will always be prompted, regardless of this setting.",
+                promptAtLogin: "Prompt at next login",
+                promptDescription: "Should existing users be asked to accept this policy at their next login?"
             },
             versionModal: {
                 createNewVersion: "Save as New Version",
-                promptAtLogin: "Prompt users to accept at next login",
-                promptDescription: "Choose whether users should be prompted to review and accept this updated policy at their next login. Note: users who have not yet accepted a previously prompted version will still be prompted, regardless of this setting."
+                hint: "Users with pending consent from a previous version will always be prompted, regardless of this setting.",
+                promptAtLogin: "Prompt at next login",
+                promptDescription: "Should existing users be asked to accept this new version at their next login?"
             }
         },
         list: {
@@ -295,7 +297,7 @@ export const consents: ConsentsNS = {
                 secondaryAction: "Cancel"
             },
             edit: {
-                backButton: "Back to Policies",
+                backButton: "Back to Policy Management",
                 dangerZone: {
                     actionTitle: "Delete Policy",
                     header: "Delete Policy",
@@ -315,7 +317,7 @@ export const consents: ConsentsNS = {
                 title: "Policy Management"
             },
             new: {
-                backButton: "Back to Policies",
+                backButton: "Back to Policy Management",
                 title: "Create Policy"
             }
         },
@@ -356,13 +358,14 @@ export const consents: ConsentsNS = {
                             translationText: "Translation Text",
                             updateTitle: "Update Translation"
                         },
+                        insertCustomLinkShort: "Link",
                         insertPolicyLink: "Wrap selected text with the policy URL as a link",
                         insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
                         insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
                         insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
                         insertPolicyLinkShort: "Policy Link",
                         insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                        labelRoleHint: "Leave empty to use the default description. Select text and click \"Policy Link\" to hyperlink it to the policy URL."
+                        labelRoleHint: "The checkbox label shown to users. Leave empty to use the default. Highlight text and click \"Policy Link\" to add the hyperlink."
                     }
                 },
                 preview: {
