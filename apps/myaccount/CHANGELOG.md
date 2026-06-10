@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.3.4
+
+### Patch Changes
+
+- [#10383](https://github.com/wso2/identity-apps/pull/10383) [`17a0486041eef1a4d34df0361fca7a862954fc2d`](https://github.com/wso2/identity-apps/commit/17a0486041eef1a4d34df0361fca7a862954fc2d) Thanks [@savindi7](https://github.com/savindi7)! - Update Header styles.
+
 ## 4.3.3
 
 ### Patch Changes
