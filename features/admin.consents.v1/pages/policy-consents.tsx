@@ -117,13 +117,16 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         return pageHistory.length > 0 || !!consentResponse?.links?.find(l => l.rel === "previous");
     }, [ consentResponse, pageHistory ]);
 
-    const activePage: number = useMemo((): number => {
+    /*const activePage: number = useMemo((): number => {
         return pageHistory.length + 1;
     }, [ pageHistory ]);
 
     const virtualTotalPages: number = useMemo((): number => {
         return activePage + (hasNextPage ? 1 : 0);
-    }, [ activePage, hasNextPage ]);
+    }, [ activePage, hasNextPage ]); */
+
+    const activePage: number = pageHistory.length + 1;
+    const virtualTotalPages: number = activePage + (hasNextPage ? 1 : 0);
 
     /**
      * Handles the search filter.
