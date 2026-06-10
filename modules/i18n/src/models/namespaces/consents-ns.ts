@@ -272,6 +272,14 @@ export interface ConsentsNS {
         selectPreference: string;
         selectPolicies: string;
     };
+    sidePanel: {
+        consentEdit: string;
+        consentNew: string;
+        preferenceManagementEdit: string;
+        preferenceManagementNew: string;
+        privacyPolicy: string;
+        termsOfService: string;
+    };
     tabs: {
         content: { label: string };
         preview: { label: string };

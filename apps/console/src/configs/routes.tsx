@@ -576,7 +576,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-new")),
                     exact: true,
                     id: "consents-new",
-                    name: "Consent New",
+                    name: "consents:sidePanel.consentNew",
                     path: AppConstants.getPaths().get("POLICY_CONSENTS_NEW"),
                     protected: true,
                     showOnSidePanel: false
@@ -585,7 +585,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
                     exact: true,
                     id: "consents-edit",
-                    name: "Consent Edit",
+                    name: "consents:sidePanel.consentEdit",
                     path: AppConstants.getPaths().get("POLICY_CONSENTS_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -594,7 +594,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
                     exact: true,
                     id: "consents-edit-privacy",
-                    name: "Privacy Policy",
+                    name: "consents:sidePanel.privacyPolicy",
                     path: AppConstants.getPaths().get("PRIVACY_POLICY"),
                     protected: true,
                     showOnSidePanel: false
@@ -603,17 +603,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
                     exact: true,
                     id: "consents-edit-terms",
-                    name: "Terms of Service",
+                    name: "consents:sidePanel.termsOfService",
                     path: AppConstants.getPaths().get("TERMS_OF_SERVICE"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
-                    exact: true,
-                    id: "consents-edit-cookie",
-                    name: "Cookie Policy",
-                    path: AppConstants.getPaths().get("COOKIE_POLICY"),
                     protected: true,
                     showOnSidePanel: false
                 },
@@ -631,7 +622,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         import("@wso2is/admin.consents.v1/pages/preference-management-new")),
                     exact: true,
                     id: "preference-management-new",
-                    name: "Preference Management New",
+                    name: "consents:sidePanel.preferenceManagementNew",
                     path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"),
                     protected: true,
                     showOnSidePanel: false
@@ -641,7 +632,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
                     exact: true,
                     id: "preference-management-edit",
-                    name: "Preference Management Edit",
+                    name: "consents:sidePanel.preferenceManagementEdit",
                     path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT"),
                     protected: true,
                     showOnSidePanel: false

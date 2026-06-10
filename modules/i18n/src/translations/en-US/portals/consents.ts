@@ -392,6 +392,14 @@ export const consents: ConsentsNS = {
         selectPreference: "Select Preferences:",
         selectPolicies: "Select Policies:"
     },
+    sidePanel: {
+        consentEdit: "Consent Edit",
+        consentNew: "Consent New",
+        preferenceManagementEdit: "Preference Management Edit",
+        preferenceManagementNew: "Preference Management New",
+        privacyPolicy: "Privacy Policy",
+        termsOfService: "Terms of Service"
+    },
     tabs: {
         content: { label: "Content" },
         preview: { label: "Preview" }
