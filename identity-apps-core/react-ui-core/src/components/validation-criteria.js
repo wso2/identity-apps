@@ -19,6 +19,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 
+import { useTranslations } from "../hooks/use-translations";
+import { resolveElementText } from "../utils/i18n-utils";
+
 /**
  * A helper that looks up a condition in `rule.conditions` by key,
  * then tries to interpret the string value:
@@ -54,7 +57,7 @@ const getConditionValue = (rule, key) => {
     return rawValue;
 };
 
-export const getRuleLabel = (rule) => {
+export const getRuleLabel = (rule, translations) => {
     // If the rule has a custom label, return it directly.
     if (rule.label) {
         return rule.label;
@@ -71,73 +74,116 @@ export const getRuleLabel = (rule) => {
     switch (rule.name) {
         case "LengthValidator":
             if (minLen && maxLen) {
-                return `Must be between ${minLen} and ${maxLen} characters long.`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.lengthValidator.minMax}}",
+                    { maxLen, minLen }
+                ) ?? `Must defaultbe between ${minLen} and ${maxLen} characters long.`;
             } else if (minLen) {
-                return `Must be at least ${minLen} characters long.`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.lengthValidator.min}}",
+                    { minLen }
+                ) ?? `Must be at least ${minLen} characters long.`;
             } else if (maxLen) {
-                return `Must be at most ${maxLen} characters long.`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.lengthValidator.max}}",
+                    { maxLen }
+                ) ?? `Must be at most ${maxLen} characters long.`;
             }
 
-            return "Must be within the required length.";
+            return resolveElementText(translations, "{{validation.criteria.lengthValidator.default}}")
+                ?? "Must be within the required length.";
 
         case "NumeralValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} number(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.numeralValidator.min}}",
+                    { minLen }
+                ) ?? `Must contain at least ${minLen} number(s).`;
             }
 
-            return "Must contain the required number(s).";
+            return resolveElementText(translations, "{{validation.criteria.numeralValidator.default}}")
+                ?? "Must contain the required number(s).";
 
         case "UpperCaseValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} uppercase letter(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.upperCaseValidator.min}}",
+                    { minLen }
+                ) ?? `Must contain at least ${minLen} uppercase letter(s).`;
             }
 
-            return "Must contain uppercase letter(s).";
+            return resolveElementText(translations, "{{validation.criteria.upperCaseValidator.default}}")
+                ?? "Must contain uppercase letter(s).";
 
         case "LowerCaseValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} lowercase letter(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.lowerCaseValidator.min}}",
+                    { minLen }
+                ) ?? `Must contain at least ${minLen} lowercase letter(s).`;
             }
 
-            return "Must contain lowercase letter(s).";
+            return resolveElementText(translations, "{{validation.criteria.lowerCaseValidator.default}}")
+                ?? "Must contain lowercase letter(s).";
 
         case "SpecialCharacterValidator":
             if (minLen && minLen > 0) {
-                return `Must contain at least ${minLen} special character(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.specialCharacterValidator.min}}",
+                    { minLen }
+                ) ?? `Must contain at least ${minLen} special character(s).`;
             }
 
             break;
         case "ConfirmPasswordValidator":
             if (confirmPassword) {
-                return "Must match with the password.";
+                return resolveElementText(translations, "{{validation.criteria.confirmPasswordValidator.match}}")
+                    ?? "Must match with the password.";
             }
 
             return null;
 
         case "EmailFormatValidator":
             if (isValidatorEnabled) {
-                return "Must use a valid email address.";
+                return resolveElementText(translations, "{{validation.criteria.emailFormatValidator.valid}}")
+                    ?? "Must use a valid email address.";
             }
 
             return null;
 
         case "AlphanumericValidator":
             if (isValidatorEnabled) {
-                return "Must contain only alphanumeric characters.";
+                return resolveElementText(translations, "{{validation.criteria.alphanumericValidator.only}}")
+                    ?? "Must contain only alphanumeric characters.";
             }
 
             return null;
 
         case "UniqueCharacterValidator":
             if (minUniqueChars) {
-                return `Must contain at least ${minUniqueChars} unique character(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.uniqueCharacterValidator.min}}",
+                    { minUniqueChars }
+                ) ?? `Must contain at least ${minUniqueChars} unique character(s).`;
             }
 
             return null;
 
         case "RepeatedCharacterValidator":
             if (maxRepeatedChars) {
-                return `Must not contain more than ${maxRepeatedChars} repeated character(s).`;
+                return resolveElementText(
+                    translations,
+                    "{{validation.criteria.repeatedCharacterValidator.max}}",
+                    { maxRepeatedChars }
+                ) ?? `Must not contain more than ${maxRepeatedChars} repeated character(s).`;
             }
 
             return null;
@@ -161,17 +207,19 @@ const PolicyValidationStatus = ({ value, isValid }) => {
 };
 
 const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
+    const { translations } = useTranslations();
+
     return (
         <div className="validation-criteria mt-1">
             { Array.isArray(validationConfig) && validationConfig.length > 0 && (
                 validationConfig.map((rule, ruleIndex) => {
-                    const label = getRuleLabel(rule);
+                    const label = getRuleLabel(rule, translations);
 
                     if (!label) {
                         return null;
                     }
 
-                    const hasError = errors.some((err) => err.includes(label));
+                    const hasError = errors.some((err) => err === rule.name || err.includes(label));
 
                     return (
                         <div key={ ruleIndex } className="mt-1">
