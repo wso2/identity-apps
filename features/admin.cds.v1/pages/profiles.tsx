@@ -188,9 +188,11 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
      * Cursor pagination has no total pages.
      * Keep ListLayout pagination working by exposing a "virtual" totalPages.
      */
-    const virtualTotalPages: number = useMemo(() => {
+    /*const virtualTotalPages: number = useMemo(() => {
         return activePage + (hasNext ? 1 : 0);
-    }, [ activePage, hasNext ]);
+    }, [ activePage, hasNext ]); */
+
+    const virtualTotalPages: number = activePage + (hasNext ? 1 : 0);
 
     return (
         <PageLayout
