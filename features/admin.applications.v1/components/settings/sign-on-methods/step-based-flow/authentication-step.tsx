@@ -33,7 +33,7 @@ import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organiza
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models/application";
@@ -187,15 +187,17 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);
     }, [ JSON.stringify(step.options) ]);
 
-    const isSubjectIdentifierChecked: boolean = useMemo(
+    /*const isSubjectIdentifierChecked: boolean = useMemo(
         () => (subjectStepId === (stepIndex + 1)),
         [ subjectStepId, stepIndex ]
-    );
+    );*/
+    const isSubjectIdentifierChecked: boolean = (subjectStepId === (stepIndex + 1));
 
-    const isAttributeIdentifierChecked: boolean = useMemo(
+    /*const isAttributeIdentifierChecked: boolean = useMemo(
         () => (attributeStepId === (stepIndex + 1)),
         [ attributeStepId, stepIndex ]
-    );
+    );*/
+    const isAttributeIdentifierChecked: boolean = (attributeStepId === (stepIndex + 1));    
 
     /**
      * Check whether the backup codes is enabled for the step
