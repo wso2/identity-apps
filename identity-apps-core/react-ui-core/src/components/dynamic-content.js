@@ -25,12 +25,42 @@ import Form from "./form";
 import { useTranslations } from "../hooks/use-translations";
 import { resolveElementText } from "../utils/i18n-utils";
 
-const DynamicContent = ({ contentData, state, handleFlowRequest, error }) => {
+/**
+ * Maps a flow message type to the corresponding Semantic UI <Message> variant prop.
+ * Only "ERROR" is emitted by the backend today; "INFO"/"WARNING" are reserved for future use.
+ *
+ * @param {string} type - The message type (e.g. "ERROR", "INFO", "WARNING").
+ * @returns {object} Props to spread onto the <Message> component.
+ */
+const getMessageVariantProps = (type) => {
+    switch (type) {
+        case "INFO":
+            return { info: true };
+        case "WARNING":
+            return { warning: true };
+        case "ERROR":
+        default:
+            return { negative: true };
+    }
+};
+
+const DynamicContent = ({ contentData, state, handleFlowRequest, error, messages }) => {
     const recaptchaRef = useRef(null);
     const { translations } = useTranslations();
 
     const captchaNode = useMemo(() => contentData.components.find(el => el.type === "CAPTCHA"),
         [ contentData.components ]);
+
+    // Resolves a message's display text: i18nKey first (when it resolves to a non-empty
+    // translation), then the plain `message` string as fallback.
+    const resolveMessageText = (msg) => {
+        if (!msg?.i18nKey) {
+            return msg?.message ?? "";
+        }
+        const token = msg.i18nKey.startsWith("{{") ? msg.i18nKey : `{{${msg.i18nKey}}}`;
+
+        return resolveElementText(translations, token) || msg.message || "";
+    };
 
     const isCaptchaEnabled = !!(
         contentData.additionalData &&
@@ -60,10 +90,18 @@ const DynamicContent = ({ contentData, state, handleFlowRequest, error }) => {
         if (form.components && form.components.length > 0) {
             return (
                 <>
-                    { error && (
-                        <Message negative>
-                            <p>{ resolveElementText(translations, error) }</p>
-                        </Message>
+                    { Array.isArray(messages) && messages.length > 0 ? (
+                        messages.map((msg, index) => (
+                            <Message key={ index } { ...getMessageVariantProps(msg.type) }>
+                                <p>{ resolveMessageText(msg) }</p>
+                            </Message>
+                        ))
+                    ) : (
+                        error && (
+                            <Message negative>
+                                <p>{ resolveElementText(translations, error) }</p>
+                            </Message>
+                        )
                     ) }
                     <Form
                         key={ form.id }
@@ -133,6 +171,7 @@ DynamicContent.propTypes = {
     contentData: PropTypes.object.isRequired,
     error: PropTypes.string,
     handleFlowRequest: PropTypes.func.isRequired,
+    messages: PropTypes.array,
     state: PropTypes.object.isRequired
 };
 

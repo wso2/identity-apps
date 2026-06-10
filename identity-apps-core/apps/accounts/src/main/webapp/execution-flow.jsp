@@ -199,6 +199,7 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
+                const [ flowMessages, setFlowMessages ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
@@ -323,12 +324,16 @@
                         window.location.href = errorPageURL;
                     }
 
+                    setFlowMessages(flowData && flowData.data && flowData.data.messages);
+
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
                         return;
                     }
                     setFlowError(undefined);
-                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType,
+                    flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error,
+                    flowData && flowData.data && flowData.data.messages ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};
@@ -506,7 +511,8 @@
                                     inputs: formValues
                                 });
                             },
-                            error: flowError
+                            error: flowError,
+                            messages: flowMessages
                         }
                     )
                 );
