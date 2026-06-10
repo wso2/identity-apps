@@ -329,7 +329,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             brandingPreference.configs.isBrandingEnabled) && (
                             <Alert severity="info">
                                 <Trans i18nKey="extensions:develop.branding.tabs.advance.policyManagementBanner">
-                                    Policy URLs are managed from{ " " }
+                                    Policy URLs are managed from
                                     <OxygenLink
                                         onClick={ (): void => {
                                             history.push(AppConstants.getPaths().get("POLICY_CONSENTS"));
@@ -338,7 +338,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                         data-componentid="branding-advanced-policy-management-link"
                                     >
                                         Policy Management
-                                    </OxygenLink>.
+                                    </OxygenLink>
                                 </Trans>
                             </Alert>
                         )
