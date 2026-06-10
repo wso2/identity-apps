@@ -11129,7 +11129,7 @@ importers:
         specifier: ^2.28.4
         version: link:../features/common.branding.v1
       '@wso2is/theme':
-        specifier: ^2.10.5
+        specifier: ^2.10.6
         version: link:../modules/theme
       dompurify:
         specifier: ^3.0.9

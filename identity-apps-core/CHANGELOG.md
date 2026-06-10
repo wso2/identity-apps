@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 5.2.1
+
+### Patch Changes
+
+- [#10388](https://github.com/wso2/identity-apps/pull/10388) [`6170f90d894fdea6cce8aa345cb4d4c71fa3a28f`](https://github.com/wso2/identity-apps/commit/6170f90d894fdea6cce8aa345cb4d4c71fa3a28f) Thanks [@savindi7](https://github.com/savindi7)! - Update logo styles.
+
+- Updated dependencies [[`6170f90d894fdea6cce8aa345cb4d4c71fa3a28f`](https://github.com/wso2/identity-apps/commit/6170f90d894fdea6cce8aa345cb4d4c71fa3a28f)]:
+  - @wso2is/theme@2.10.6
+
 ## 5.2.0
 
 ### Minor Changes
