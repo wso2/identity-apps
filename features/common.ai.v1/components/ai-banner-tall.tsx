@@ -75,6 +75,7 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
     };
 
     return (
+	<LazyMotion features={ domAnimation }>
         <m.div
             className="ai-banner-motion-container"
             style={ {
@@ -133,6 +134,7 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
                 </Box>
             </Accordion>
         </m.div>
+	</LazyMotion>
     );
 };
 

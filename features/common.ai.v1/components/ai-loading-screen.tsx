@@ -75,7 +75,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
 
     return (
         <LazyMotion features={ domAnimation }>
-        <m.div animate="botAnimation">
+        <div>
             <Box
                 className="ai-loading-screen-container"
                 data-componentid={ `${dataComponentId}-container` }
@@ -138,7 +138,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                     </Box>
                 </Box>
             </Box>
-        </m.div>
+        </div>
         </LazyMotion>
     );
 };
