@@ -71,10 +71,11 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         isValidating: isRoleDetailsRequestValidatingV3
     } = useGetRoleByIdV3(userRolesV3FeatureEnabled ? roleId : null);
 
-    const roleObject: any = useMemo(
+    /*const roleObject: any = useMemo(
         () => userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2,
         [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]
-    );
+    );*/
+    const roleObject: any = userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2;
 
     /**
      * Get Role data from URL id
