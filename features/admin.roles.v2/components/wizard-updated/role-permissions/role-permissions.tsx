@@ -133,7 +133,14 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             isLoading: iscurrentAPIResourcesListLoading,
             error: currentAPIResourcesFetchRequestError,
             mutate: mutatecurrentAPIResourcesList
-        } = useAPIResources(apiCallNextAfterValue, null, null, roleAudience === RoleAudienceTypes.ORGANIZATION);
+        } = useAPIResources(
+            apiCallNextAfterValue,
+            undefined,
+            "type ne CONSOLE_FEATURE and type ne CONSOLE_ORG_FEATURE",
+            roleAudience === RoleAudienceTypes.ORGANIZATION,
+            undefined,
+            150
+        );
 
         const {
             data: selectedAPIResource,

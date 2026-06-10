@@ -99,7 +99,8 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
     before?: string,
     filter?: string,
     shouldFetch: boolean = true,
-    attributes?: string
+    attributes?: string,
+    limit?: number
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -112,7 +113,8 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
             after,
             attributes,
             before,
-            filter
+            filter,
+            limit
         },
         url: `${store.getState().config.endpoints.apiResources}`
     };
