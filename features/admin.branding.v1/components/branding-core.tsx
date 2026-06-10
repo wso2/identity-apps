@@ -196,7 +196,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         featureConfig?.branding?.scopes?.update
     );
 
-    const isReadOnly: boolean = useMemo(() => !hasBrandingScopesUpdatePermissions, [ featureConfig, allowedScopes ]);
+    //const isReadOnly: boolean = useMemo(() => !hasBrandingScopesUpdatePermissions, [ featureConfig, allowedScopes ]);
+
+    const isReadOnly: boolean = !hasBrandingScopesUpdatePermissions;
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>
