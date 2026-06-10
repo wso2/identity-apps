@@ -39,7 +39,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, PrimaryButton, Button as SemanticButton } from "@wso2is/react-components";
 import classNames from "classnames";
 import DOMPurify from "dompurify";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
@@ -362,8 +362,9 @@ export const FeatureCarousel = () => {
                 width: "100%"
             } }
         >
+            <LazyMotion features={ domAnimation }>
             <AnimatePresence initial={ false } mode="sync">
-                <motion.div
+                <m.div
                     key={ currentIndex }
                     variants={ variants }
                     initial="enter"
@@ -404,8 +405,9 @@ export const FeatureCarousel = () => {
                             featureConfig={ features[currentIndex]?.featureConfig }
                         />
                     ) }
-                </motion.div>
+                </m.div>
             </AnimatePresence>
+</LazyMotion>
 
             { showAgentFeatureAnnouncementModal && (
                 <Modal

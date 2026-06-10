@@ -35,7 +35,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { AlertLevels, FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, LayoutGroup, Variants, domAnimation, m } from "framer-motion";
 import React, {
     FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useEffect, useState
 } from "react";
@@ -342,8 +342,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             title={ (
                 <div className="title-container">
                     <div className="title-container-heading">
-                        <AnimatePresence >
-                            <motion.div
+                        <LazyMotion features={ domAnimation }>
+                        <AnimatePresence>
+                            <m.div
                                 className="content"
                                 key={ resolveBrandingTitle() }
                                 initial="enter"
@@ -370,15 +371,16 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                         )
                                     }
                                 </h1>
-                            </motion.div>
+                            </m.div>
                         </AnimatePresence>
+</LazyMotion>
                     </div>
                     {
                         !brandingDisabledFeatures.includes(
                             BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && !appIdFromQueryParam && (
                             <div className="branding-mode-container">
                                 <LayoutGroup>
-                                    <motion.div
+                                    <m.div
                                         initial="enter"
                                         animate="in"
                                         exit="exit"
@@ -429,11 +431,11 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </Paper>
-                                    </motion.div>
+                                    </m.div>
                                     {
                                         brandingMode === BrandingModes.APPLICATION &&
                                     !appIdFromQueryParam && (
-                                            <motion.div
+                                            <m.div
                                                 initial="enter"
                                                 animate="in"
                                                 exit="exit"
@@ -496,7 +498,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                         />
                                                     ) }
                                                 />
-                                            </motion.div>
+                                            </m.div>
                                         ) }
                                 </LayoutGroup>
                             </div>
@@ -506,8 +508,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             ) }
             description={ (
                 <div className="with-label">
-                    <AnimatePresence >
-                        <motion.div
+                    <LazyMotion features={ domAnimation }>
+                        <AnimatePresence>
+                        <m.div
                             className="content"
                             key={ resolveBrandingTitle() }
                             initial="enter"
@@ -525,8 +528,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </motion.div>
+                        </m.div>
                     </AnimatePresence>
+</LazyMotion>
                 </div>
             ) }
             data-componentid={ `${ componentId }-layout` }
