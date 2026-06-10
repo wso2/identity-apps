@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.11.0
+
+### Minor Changes
+
+- [#10332](https://github.com/wso2/identity-apps/pull/10332) [`48d4a528de3cf610eadd8230c4cc46fe9e872bfb`](https://github.com/wso2/identity-apps/commit/48d4a528de3cf610eadd8230c4cc46fe9e872bfb) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add user enumeration controls and account status to password recovery flow
+
+### Patch Changes
+
+- Updated dependencies [[`48d4a528de3cf610eadd8230c4cc46fe9e872bfb`](https://github.com/wso2/identity-apps/commit/48d4a528de3cf610eadd8230c4cc46fe9e872bfb)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.0
+
 ## 4.10.4
 
 ### Patch Changes
