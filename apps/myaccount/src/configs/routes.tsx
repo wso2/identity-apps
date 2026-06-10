@@ -183,7 +183,7 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
             name: "Index",
             path: "/",
             protected: true,
-            redirectTo: AppConstants.getPaths().get("OVERVIEW"),
+            redirectTo: `${ AppConstants.getMainViewBasePath() }${ AppConstants.getAppHomePath() }`,
             showOnSidePanel: false
         }
     ];
