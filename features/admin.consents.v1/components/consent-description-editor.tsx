@@ -485,7 +485,7 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                     className={ isLink ? "active" : undefined }
                     disabled={ disabled || (!hasSelection && !isLink) }
                     onClick={ handleLinkButtonClick }
-                    aria-label="Insert link"
+                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
                 >
                     <OxygenLinkIcon />
                     { t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
@@ -508,7 +508,7 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                                     type="button"
                                     disabled={ disabled || !hasSelection || !isValidPolicyUrl }
                                     onClick={ handleInsertPolicyLink }
-                                    aria-label="Insert policy link"
+                                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertPolicyLink") }
                                 >
                                     <OxygenLinkIcon />
                                     { t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkShort") }

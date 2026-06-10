@@ -329,7 +329,13 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         };
 
         updateBrandingPreference(true, tenantDomain, updatedPreference, BrandingPreferenceTypes.ORG)
-            .catch(() => { /* best-effort */ });
+            .catch((error: unknown) => {
+                // eslint-disable-next-line no-console
+                console.error(
+                    `[syncUrlToBranding] Failed to sync ${urlKey}="${policyUrl}" for tenant "${tenantDomain}":`,
+                    error
+                );
+            });
     };
 
     /**

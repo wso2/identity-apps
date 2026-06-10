@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
@@ -96,7 +97,11 @@ const FloatingLinkContent: typeof Box = styled(Box)(({ theme }: { theme: Theme }
     position: "relative"
 }));
 
-export const ConsentFloatingLinkEditor = (): ReactElement => {
+type ConsentFloatingLinkEditorProps = IdentifiableComponentInterface;
+
+export const ConsentFloatingLinkEditor = ({
+    "data-componentid": componentId = "consent-floating-link-editor"
+}: ConsentFloatingLinkEditorProps): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
     const { t } = useTranslation();
     const editorRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -130,7 +135,7 @@ export const ConsentFloatingLinkEditor = (): ReactElement => {
             }
         }
 
-        const nativeSelection: Selection = window.getSelection();
+        const nativeSelection: Selection | null = window.getSelection();
         const activeElement: Element = document.activeElement;
 
         if (!editorElem) return;
@@ -254,6 +259,7 @@ export const ConsentFloatingLinkEditor = (): ReactElement => {
         <FloatingLinkEditorRoot
             ref={ editorRef }
             className="consent-floating-link-editor"
+            data-componentid={ componentId }
         >
             <FloatingLinkContent className={ isEditMode ? "edit-mode" : undefined }>
                 { isEditMode ? (
@@ -261,13 +267,14 @@ export const ConsentFloatingLinkEditor = (): ReactElement => {
                         <TextField
                             inputRef={ inputRef }
                             fullWidth
+                            value={ linkUrl }
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setLinkUrl(e.target.value) }
                             onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => {
                                 if (e.key === "Enter") { e.preventDefault(); handleSave(); }
                                 else if (e.key === "Escape") { setIsEditMode(false); }
                             } }
                             placeholder="https://"
-                            aria-label="URL"
+                            aria-label={ t("consents:policyConsents.wizard.create.form.policyUrl.label") }
                         />
                         <Button
                             size="small"
@@ -283,7 +290,7 @@ export const ConsentFloatingLinkEditor = (): ReactElement => {
                         <a href={ linkUrl } target="_blank" rel="noopener noreferrer">
                             { linkUrl }
                         </a>
-                        <IconButton size="small" onClick={ () => setIsEditMode(true) }>
+                        <IconButton size="small" aria-label={ t("common:edit") } onClick={ () => setIsEditMode(true) }>
                             <PenToSquareIcon size={ 14 } />
                         </IconButton>
                     </>
