@@ -32,7 +32,7 @@ export interface PushDeviceMgtConfigInterface {
 }
 
 /**
- * A single property entry in a ConfigPreferenceResp.
+ * A single property entry in a ConfigPreferenceResponse.
  * Values are always returned as strings by the preferences API.
  */
 export interface ConfigPreferencePropertyInterface {
@@ -43,17 +43,17 @@ export interface ConfigPreferencePropertyInterface {
 /**
  * One resource block in the POST /configs/preferences response.
  */
-export interface ConfigPreferenceRespInterface {
+export interface ConfigPreferenceResponseInterface {
     resourceType: string;
     resourceName: string;
-    properties: ConfigPreferencePropertyInterface[];
+    attributeNames: ConfigPreferencePropertyInterface[];
 }
 
 /**
  * One item in the POST /configs/preferences request body.
  */
-export interface ConfigPreferenceSearchAttributeInterface {
+export interface ConfigPreferenceRequestInterface {
     resourceType: string;
     resourceName: string;
-    properties: string[];
+    attributeNames: string[];
 }

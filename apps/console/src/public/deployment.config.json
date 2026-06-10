@@ -2208,7 +2208,7 @@
         "productVersionConfig": {
             "productVersion": "7.2.0"
         },
-        "pushAuthenticator": {
+        "pushDeviceManagement": {
             "maxDeviceLimitUpperBound": 10
         },
         "routes": {

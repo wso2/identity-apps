@@ -460,10 +460,10 @@ interface ActionsUIConfigInterface {
 /**
  * Interface for Push Authenticator UI level configurations.
  */
-export interface PushAuthenticatorUIConfigInterface {
+export interface PushDeviceManagementUIConfigInterface {
     /**
      * Server-level upper bound for the maximum device limit configurable by an organization admin.
-     * Sourced from `push_authenticator.device_management.max_device_limit_upper_bound` in the
+     * Sourced from `push_device_management.max_device_limit_upper_bound` in the
      * server `deployment.toml`/`default.json` via the console `deployment.config.json`.
      */
     maxDeviceLimitUpperBound?: number;
@@ -636,9 +636,9 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
-     * Push Authenticator related configurations.
+     * Push device management related configurations.
      */
-    pushAuthenticator?: PushAuthenticatorUIConfigInterface;
+    pushDeviceManagement?: PushDeviceManagementUIConfigInterface;
     /**
      * Configurations related to routing.
      */

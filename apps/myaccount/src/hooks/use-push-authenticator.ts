@@ -30,7 +30,7 @@ import { AlertLevels } from "../models/alert";
 import { HttpResponse } from "../models/api";
 import { PushAuthenticatorConstants } from "../constants/mfa-constants";
 import {
-    ConfigPreferenceRespInterface,
+    ConfigPreferenceResponseInterface,
     PushDeviceMgtConfigInterface
 } from "../models/push-authenticator";
 import { addAlert } from "../store/actions/global";
@@ -72,7 +72,7 @@ const usePushAuthenticator = () => {
 
         getConfigPreferences([
             {
-                properties: [
+                attributeNames: [
                     PushAuthenticatorConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT,
                     PushAuthenticatorConstants.PROPERTY_MAXIMUM_DEVICE_LIMIT
                 ],
@@ -80,16 +80,16 @@ const usePushAuthenticator = () => {
                 resourceType: PushAuthenticatorConstants.RESOURCE_TYPE
             }
         ])
-            .then((response: ConfigPreferenceRespInterface[]) => {
-                const resource: ConfigPreferenceRespInterface | undefined = response?.find(
-                    (item: ConfigPreferenceRespInterface) =>
+            .then((response: ConfigPreferenceResponseInterface[]) => {
+                const resource: ConfigPreferenceResponseInterface | undefined = response?.find(
+                    (item: ConfigPreferenceResponseInterface) =>
                         item.resourceType === PushAuthenticatorConstants.RESOURCE_TYPE &&
                         item.resourceName === PushAuthenticatorConstants.DEVICE_MGT_RESOURCE_NAME
                 );
 
                 if (resource) {
                     const getValue = (name: string): string | undefined =>
-                        resource.properties.find((p) => p.name === name)?.value;
+                        resource.attributeNames.find((p) => p.name === name)?.value;
 
                     setPushDeviceMgtConfig({
                         enableMultipleDeviceEnrollment:

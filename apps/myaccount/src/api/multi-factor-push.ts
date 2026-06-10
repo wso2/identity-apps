@@ -21,8 +21,8 @@ import { AxiosError, AxiosResponse } from "axios";
 import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import { HttpMethods } from "../models";
 import {
-    ConfigPreferenceRespInterface,
-    ConfigPreferenceSearchAttributeInterface
+    ConfigPreferenceResponseInterface,
+    ConfigPreferenceRequestInterface
 } from "../models/push-authenticator";
 import { store } from "../store";
 
@@ -86,8 +86,8 @@ const getPushEnabledDevices = () => {
  * @returns Promise resolving to the config preference response.
  */
 export const getConfigPreferences = (
-    data: ConfigPreferenceSearchAttributeInterface[]
-): Promise<ConfigPreferenceRespInterface[]> => {
+    data: ConfigPreferenceRequestInterface[]
+): Promise<ConfigPreferenceResponseInterface[]> => {
     const requestConfig: HttpRequestConfig = {
         data,
         headers: {
@@ -106,7 +106,7 @@ export const getConfigPreferences = (
                 );
             }
 
-            return Promise.resolve(response?.data as ConfigPreferenceRespInterface[]);
+            return Promise.resolve(response?.data as ConfigPreferenceResponseInterface[]);
         })
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);

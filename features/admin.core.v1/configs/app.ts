@@ -524,9 +524,9 @@ export class Config {
             privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
-            pushAuthenticator: {
+            pushDeviceManagement: {
                 maxDeviceLimitUpperBound:
-                    window[ "AppUtils" ]?.getConfig()?.ui?.pushAuthenticator?.maxDeviceLimitUpperBound
+                    window[ "AppUtils" ]?.getConfig()?.ui?.pushDeviceManagement?.maxDeviceLimitUpperBound
             },
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES

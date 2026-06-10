@@ -45,6 +45,7 @@ import {
     CommonAuthenticatorFormPropertyInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
+    DeviceRegistrationNotificationChannel,
     PushDeviceMgtConfigInterface
 } from "../../../models";
 import "./push-authenticator-form.scss";
@@ -121,6 +122,14 @@ interface PushAuthenticatorFormInitialValuesInterface {
      * Enable progressive enrollment for multiple devices.
      */
     PUSH_EnableMultipleDeviceProgressiveEnrollment: boolean;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: boolean;
+    /**
+     * Channel used for device registration notifications. Either `email` or `push`.
+     */
+    PUSH_DeviceRegistrationNotificationType: string;
 }
 
 /**
@@ -155,6 +164,14 @@ interface PushAuthenticatorFormFieldsInterface {
      * Enable progressive enrollment for multiple devices.
      */
     PUSH_EnableMultipleDeviceProgressiveEnrollment: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Channel used for device registration notifications.
+     */
+    PUSH_DeviceRegistrationNotificationType: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -189,9 +206,23 @@ interface PushAuthenticatorFormErrorValidationsInterface {
      * Enable progressive enrollment for multiple devices.
      */
     PUSH_EnableMultipleDeviceProgressiveEnrollment: string;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: string;
+    /**
+     * Channel used for device registration notifications.
+     */
+    PUSH_DeviceRegistrationNotificationType: string;
 }
 
 const FORM_ID: string = "push-authenticator-form";
+
+/**
+ * Channels available for device registration notifications.
+ */
+const EMAIL_NOTIFICATION_TYPE: string = "email";
+const PUSH_NOTIFICATION_TYPE: string = "push";
 
 /**
  * Push Authenticator Form.
@@ -217,6 +248,9 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     const [isMultipleDeviceProgressiveEnrollmentEnabled, setIsMultipleDeviceProgressiveEnrollmentEnabled] = useState<
         boolean
     >(false);
+    const [isDeviceRegistrationNotificationEnabled, setIsDeviceRegistrationNotificationEnabled] = useState<boolean>(
+        false
+    );
     const [
         showMultipleDeviceProgressiveEnrollmentConfirmation,
         setShowMultipleDeviceProgressiveEnrollmentConfirmation
@@ -234,9 +268,9 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     } = useGetPushDeviceMgtConfig(!isSubOrganization());
 
     // Server-level upper bound sourced from the console deployment config
-    // (`ui.pushAuthenticator.maxDeviceLimitUpperBound`).
+    // (`ui.pushDeviceManagement.maxDeviceLimitUpperBound`).
     const configuredMaxDeviceLimitUpperBound: number = useSelector(
-        (state: AppState) => state?.config?.ui?.pushAuthenticator?.maxDeviceLimitUpperBound
+        (state: AppState) => state?.config?.ui?.pushDeviceManagement?.maxDeviceLimitUpperBound
     );
     const maxDeviceLimitUpperBound: number =
         configuredMaxDeviceLimitUpperBound ??
@@ -258,6 +292,9 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         setIsMultipleDeviceEnrollmentEnabled(pushDeviceMgtConfig?.enableMultipleDeviceEnrollment ?? false);
         setIsMultipleDeviceProgressiveEnrollmentEnabled(
             resolvedInitialValues?.PUSH_EnableMultipleDeviceProgressiveEnrollment ?? false
+        );
+        setIsDeviceRegistrationNotificationEnabled(
+            resolvedInitialValues?.PUSH_EnableDeviceRegistrationNotification ?? false
         );
     }, [originalInitialValues, pushDeviceMgtConfig, isPushDeviceMgtConfigLoading]);
 
@@ -306,8 +343,28 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
         // Merge push device management config values fetched from the dedicated endpoint.
         if (pushDeviceMgtConfig) {
+            const configuredChannels: DeviceRegistrationNotificationChannel[] =
+                pushDeviceMgtConfig.deviceRegistrationNotificationChannels ?? [];
+            const isRegistrationNotificationEnabled: boolean =
+                Boolean(pushDeviceMgtConfig.enableDeviceRegistrationNotifications);
+            // Email takes precedence as the default channel when both / none are set,
+            // since the form exposes only a single-choice radio.
+            const registrationNotificationType: string =
+                configuredChannels.includes(DeviceRegistrationNotificationChannel.PUSH_NOTIFICATION) &&
+                !configuredChannels.includes(DeviceRegistrationNotificationChannel.EMAIL)
+                    ? PUSH_NOTIFICATION_TYPE
+                    : EMAIL_NOTIFICATION_TYPE;
+
             resolvedFormFields = {
                 ...resolvedFormFields,
+                PUSH_DeviceRegistrationNotificationType: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: registrationNotificationType
+                },
+                PUSH_EnableDeviceRegistrationNotification: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: isRegistrationNotificationEnabled.toString()
+                },
                 PUSH_EnableMultipleDeviceEnrollment: {
                     meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
                     value: pushDeviceMgtConfig.enableMultipleDeviceEnrollment.toString()
@@ -319,6 +376,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             };
             resolvedInitialValues = {
                 ...resolvedInitialValues,
+                PUSH_DeviceRegistrationNotificationType: registrationNotificationType,
+                PUSH_EnableDeviceRegistrationNotification: isRegistrationNotificationEnabled,
                 PUSH_EnableMultipleDeviceEnrollment: pushDeviceMgtConfig.enableMultipleDeviceEnrollment,
                 PUSH_MaximumDeviceLimit: pushDeviceMgtConfig.maximumDeviceLimit
             };
@@ -344,6 +403,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         const deviceMgtPropertyKeys: Set<string> = new Set([
+            "PUSH_DeviceRegistrationNotificationType",
+            "PUSH_EnableDeviceRegistrationNotification",
             "PUSH_EnableMultipleDeviceEnrollment",
             "PUSH_MaximumDeviceLimit"
         ]);
@@ -387,7 +448,14 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     const getUpdatedPushDeviceMgtConfig = (
         values: PushAuthenticatorFormInitialValuesInterface
     ): PushDeviceMgtConfigInterface => {
+        const selectedChannel: DeviceRegistrationNotificationChannel =
+            values.PUSH_DeviceRegistrationNotificationType === PUSH_NOTIFICATION_TYPE
+                ? DeviceRegistrationNotificationChannel.PUSH_NOTIFICATION
+                : DeviceRegistrationNotificationChannel.EMAIL;
+
         return {
+            deviceRegistrationNotificationChannels: [ selectedChannel ],
+            enableDeviceRegistrationNotifications: Boolean(values.PUSH_EnableDeviceRegistrationNotification),
             enableMultipleDeviceEnrollment: values.PUSH_EnableMultipleDeviceEnrollment,
             maximumDeviceLimit: values.PUSH_EnableMultipleDeviceEnrollment ? Number(values.PUSH_MaximumDeviceLimit) : 1
         };
@@ -460,7 +528,9 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             PUSH_ResendNotificationTime: undefined,
             PUSH_EnableMultipleDeviceEnrollment: undefined,
             PUSH_EnableMultipleDeviceProgressiveEnrollment: undefined,
-            PUSH_MaximumDeviceLimit: undefined
+            PUSH_MaximumDeviceLimit: undefined,
+            PUSH_EnableDeviceRegistrationNotification: undefined,
+            PUSH_DeviceRegistrationNotificationType: undefined
         };
 
         if (!values.PUSH_ResendNotificationMaxAttempts) {
@@ -677,6 +747,64 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             <Heading as="h4">
                 {t("authenticationProvider:forms.authenticatorSettings" + ".push.deviceManagementSettings.label")}
             </Heading>
+
+
+            <Field.Checkbox
+                ariaLabel="Enable device registration notifications"
+                name="PUSH_EnableDeviceRegistrationNotification"
+                label={t(
+                    "authenticationProvider:forms.authenticatorSettings" +
+                        ".push.enableDeviceRegistrationNotification.label"
+                )}
+                hint={
+                    <Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableDeviceRegistrationNotification.hint"
+                        }
+                    >
+                        When enabled, users will be notified when a new device is registered for push authentication.
+                    </Trans>
+                }
+                readOnly={isReadOnly}
+                width={16}
+                listen={(value: boolean) => {
+                    setIsDeviceRegistrationNotificationEnabled(value);
+                    // Email is the default notification channel when the option is enabled.
+                    if (value) {
+                        formChangeRef.current?.("PUSH_DeviceRegistrationNotificationType", EMAIL_NOTIFICATION_TYPE);
+                    }
+                }}
+                data-testid={`${testId}-push-enable-device-registration-notification-checkbox`}
+            />
+            {isDeviceRegistrationNotificationEnabled && (
+                <Field.Radio
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Send device registration notifications via email"
+                    name="PUSH_DeviceRegistrationNotificationType"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.deviceRegistrationNotificationType.options.email"
+                    )}
+                    value={EMAIL_NOTIFICATION_TYPE}
+                    readOnly={isReadOnly}
+                    data-testid={`${testId}-push-device-registration-email-notification-radio`}
+                />
+            )}
+            {isDeviceRegistrationNotificationEnabled && (
+                <Field.Radio
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Send device registration notifications via push notification"
+                    name="PUSH_DeviceRegistrationNotificationType"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.deviceRegistrationNotificationType.options.push"
+                    )}
+                    value={PUSH_NOTIFICATION_TYPE}
+                    readOnly={isReadOnly}
+                    data-testid={`${testId}-push-device-registration-push-notification-radio`}
+                />
+            )}
 
             <Field.Checkbox
                 ariaLabel="Enable progressive enrollment"

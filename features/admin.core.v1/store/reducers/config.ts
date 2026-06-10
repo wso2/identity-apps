@@ -337,7 +337,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
-            pushAuthenticator: {
+            pushDeviceManagement: {
                 maxDeviceLimitUpperBound: undefined
             },
             routes: {

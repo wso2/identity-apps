@@ -420,6 +420,16 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                enableDeviceRegistrationNotification: {
+                    hint: string;
+                    label: string;
+                };
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: string;
+                        push: string;
+                    };
+                };
                 enableMultipleDeviceEnrollment: {
                     hint: string;
                     label: string;

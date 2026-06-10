@@ -939,16 +939,27 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Enablin push notification device progressive enrollment is required."
                     }
                 },
+                enableDeviceRegistrationNotification: {
+                    hint: "When enabled, users will be notified when a new device is registered " +
+                        "for push authentication.",
+                    label: "Enable device registration notifications"
+                },
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: "Notify via email",
+                        push: "Notify via push notification"
+                    }
+                },
                 enableMultipleDeviceEnrollment: {
                     hint: "When enabled, users can enroll multiple devices for push authentication.",
-                    label: "Enable multiple device enrollment",
+                    label: "Allow users to register multiple devices",
                     validations: {
                         required: "Enable multiple device enrollment is a required field."
                     }
                 },
                 maximumDeviceLimit: {
                     hint: "The maximum device limit for users when multiple device enrollment is enabled.",
-                    label: "Maximum device limit",
+                    label: "Maximum number of devices",
                     placeholder: "Enter maximum device limit.",
                     validations: {
                         required: "Maximum device limit is a required field.",
@@ -960,7 +971,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 enableMultipleDeviceProgressiveEnrollment: {
                     hint: "When enabled, users may progressively enroll additional devices for push authentication " +
                         "when multiple device enrollment is enabled.",
-                    label: "Enable progressive enrollment for multiple devices",
+                    label: "Allow progressive enrollment for multiple devices",
                     securityWarning: "Progressive enrollment for multiple devices is enabled. A session that is " +
                         "only partially authenticated can silently register additional push devices, which an " +
                         "attacker could exploit to gain persistent access to the account. Enable this only if your " +
