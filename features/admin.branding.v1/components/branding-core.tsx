@@ -47,7 +47,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect,useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -92,13 +92,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         (state: AppState) => state?.organization?.organization
     );
 
-    const tenantName: string = useMemo(() => {
-        if (orgType === OrganizationType.SUBORGANIZATION) {
-            return currentOrganization?.name;
-        }
-
-        return tenantDomain;
-    }, [ tenantDomain, currentOrganization ]);
+    const tenantName: string = orgType === OrganizationType.SUBORGANIZATION ? currentOrganization?.name : tenantDomain;
 
     const { t } = useTranslation();
 
@@ -148,14 +142,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         setPredefinedLayouts
     ] = useState<BrandingPreferenceLayoutInterface>(BrandingPreferencesConstants.DEFAULT_PREFERENCE.layout);
 
-    const DEFAULT_PREFERENCE: BrandingPreferenceInterface = useMemo(
-        () =>
-            BrandingPreferenceUtils.getDefaultBrandingPreference({
-                layout: predefinedLayouts,
-                theme: predefinedThemes
-            }),
-        [ predefinedThemes, predefinedLayouts ]
-    );
+    const DEFAULT_PREFERENCE: BrandingPreferenceInterface = BrandingPreferenceUtils.getDefaultBrandingPreference({
+        layout: predefinedLayouts,
+        theme: predefinedThemes
+    });
 
     const [
         brandingPreference,
