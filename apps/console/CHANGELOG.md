@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.11.2
+
+### Patch Changes
+
+- [#10389](https://github.com/wso2/identity-apps/pull/10389) [`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve API Resources loading for authrization and role permissions
+
+- Updated dependencies [[`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1)]:
+  - @wso2is/admin.api-resources.v2@2.26.12
+  - @wso2is/admin.applications.v1@2.43.3
+  - @wso2is/admin.roles.v2@2.27.385
+
 ## 4.11.1
 
 ### Patch Changes
