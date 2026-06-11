@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.11.3
+
+### Patch Changes
+
+- [#10395](https://github.com/wso2/identity-apps/pull/10395) [`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Bind the Moesif Insights canvas to the console page scroller by sizing the iframe from CANVAS_RESIZE auto-height reports, and improve the dashboard template names and panel layout.
+
+* [#10396](https://github.com/wso2/identity-apps/pull/10396) [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4) Thanks [@savindi7](https://github.com/savindi7)! - Update banner title.
+
+* Updated dependencies [[`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259), [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4)]:
+  - @wso2is/admin.analytics.v1@0.0.8
+  - @wso2is/admin.home.v1@1.7.197
+  - @wso2is/admin.onboarding.v1@1.0.87
+
 ## 4.11.2
 
 ### Patch Changes

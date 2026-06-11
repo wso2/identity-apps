@@ -1,5 +1,14 @@
 # @wso2is/admin.home.v1
 
+## 1.7.197
+
+### Patch Changes
+
+- [#10396](https://github.com/wso2/identity-apps/pull/10396) [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4) Thanks [@savindi7](https://github.com/savindi7)! - Update banner title.
+
+- Updated dependencies []:
+  - @wso2is/admin.onboarding.v1@1.0.87
+
 ## 1.7.196
 
 ### Patch Changes
