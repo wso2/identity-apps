@@ -163,7 +163,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         isLoading: isAllAPIResourcesListLoading,
         error: allAPIResourcesFetchRequestError,
         mutate: mutateAllAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue, null, null, !readOnly);
+    } = useAPIResources(
+        apiCallNextAfterValue,
+        undefined,
+        "type ne CONSOLE_FEATURE and type ne CONSOLE_ORG_FEATURE",
+        !readOnly,
+        undefined,
+        150
+    );
 
     const {
         data: subscribedAPIResourcesListData,
