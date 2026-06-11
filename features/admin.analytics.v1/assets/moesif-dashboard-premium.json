@@ -2,7 +2,7 @@
   "dashboards": [
     {
       "_id": "6a0d5b2842390139f7ac4a23",
-      "name": "Login",
+      "name": "Authentication",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -16,15 +16,18 @@
         ],
         [
           "6a0da5db04a4ee1e28287918",
-          "6a0db97704a4ee1e282884a8",
+          "6a0db97704a4ee1e282884a8"
+        ],
+        [
           "6a1e9ec27f7e1a2185865c51"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 1
     },
     {
       "_id": "6a0d5b3042390139f7ac4a26",
-      "name": "Registration",
+      "name": "Registrations",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -39,11 +42,12 @@
           "6a1e90519ab5707f95230d63"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 2
     },
     {
       "_id": "6a1ea1475bc7c56efa5ea476",
-      "name": "Token",
+      "name": "Token Issuance",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -59,7 +63,8 @@
           "6a1ea530353c7116a6e54c1e"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 3
     },
     {
       "_id": "6a0d5af342390139f7ac4a07",
@@ -71,20 +76,19 @@
       ],
       "workspace_ids": [
         [
-          "6a1fac5668f9b5457fabcabb",
-          "6a1fac9168f9b5457fabcabc",
-          "6a1face868f9b5457fabcac4",
-          "6a1faccf8507014e56ac4629",
-          "6a1facb78507014e56ac4628"
+          "6a0db96342390139f7ac83e7",
+          "6a1ea2257f7e1a2185865daf",
+          "6a1ea3e67f7e1a2185865dbb",
+          "6a1e8f049ab5707f95230c0a",
+          "6a1e90c39ab5707f95230d67"
         ],
         [
-          "6a1fad0868f9b5457fabcac5",
-          "6a1fad328507014e56ac462e"
-        ],
-        []
+          "6a0db9f004a4ee1e28288627",
+          "6a1e8fa55bc7c56efa5e9e89"
+        ]
       ],
       "parent": null,
-      "sort_order": 2
+      "sort_order": 0
     }
   ],
   "workspaces": [
@@ -184,7 +188,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -281,7 +285,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -373,7 +377,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -457,7 +461,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -515,7 +519,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -1005,7 +1009,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2211,7 +2215,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2294,7 +2298,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2660,7 +2664,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2751,7 +2755,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
