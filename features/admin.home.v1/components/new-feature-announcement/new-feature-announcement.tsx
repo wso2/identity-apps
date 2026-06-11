@@ -289,7 +289,7 @@ export const FeatureCarousel = () => {
                 setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
                 setShowPreviewFeaturesModal(true);
             },
-            title: "Customer Data Services for Asgardeo"
+            title: "Customer Data Services for WSO2 Identity Platform"
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
