@@ -36,7 +36,7 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -109,21 +109,13 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         }
     };
 
-    const hasNextPage: boolean = useMemo((): boolean => {
-        return !!consentResponse?.links?.find(l => l.rel === "next");
-    }, [ consentResponse ]);
+    const hasNextPage: boolean = !!consentResponse?.links?.find(
+        (l: { rel: string; href: string }) => l.rel === "next"
+    );
 
-    const hasPreviousPage: boolean = useMemo((): boolean => {
-        return pageHistory.length > 0 || !!consentResponse?.links?.find(l => l.rel === "previous");
-    }, [ consentResponse, pageHistory ]);
-
-    /*const activePage: number = useMemo((): number => {
-        return pageHistory.length + 1;
-    }, [ pageHistory ]);
-
-    const virtualTotalPages: number = useMemo((): number => {
-        return activePage + (hasNextPage ? 1 : 0);
-    }, [ activePage, hasNextPage ]); */
+    const hasPreviousPage: boolean =
+        pageHistory.length > 0 ||
+        !!consentResponse?.links?.find((l: { rel: string; href: string }) => l.rel === "previous");
 
     const activePage: number = pageHistory.length + 1;
     const virtualTotalPages: number = activePage + (hasNextPage ? 1 : 0);

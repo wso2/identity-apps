@@ -47,7 +47,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -196,17 +196,12 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         featureConfig?.branding?.scopes?.update
     );
 
-    //const isReadOnly: boolean = useMemo(() => !hasBrandingScopesUpdatePermissions, [ featureConfig, allowedScopes ]);
-
     const isReadOnly: boolean = !hasBrandingScopesUpdatePermissions;
 
-    const isBrandingPageLoading: boolean = useMemo(
-        () =>
-            !tenantDomain ||
-            isBrandingPreferenceFetchRequestLoading === undefined ||
-                isBrandingPreferenceFetchRequestLoading === true,
-        [ tenantDomain, isBrandingPreferenceFetchRequestLoading ]
-    );
+    const isBrandingPageLoading: boolean =
+        !tenantDomain ||
+        isBrandingPreferenceFetchRequestLoading === undefined ||
+        isBrandingPreferenceFetchRequestLoading === true;
 
     const isBrandingConfiguredFromAPI: boolean =
         brandingPreferenceErrors?.response?.data?.code !==
