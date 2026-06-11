@@ -189,6 +189,8 @@ export const FeatureCarousel = () => {
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
 
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
 
@@ -289,7 +291,7 @@ export const FeatureCarousel = () => {
                 setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
                 setShowPreviewFeaturesModal(true);
             },
-            title: "Customer Data Services for WSO2 Identity Platform"
+            title: `Customer Data Services for ${ productName }`
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
@@ -323,6 +325,7 @@ export const FeatureCarousel = () => {
         customerDataServiceFeatureConfig,
         isRebrandingBannerEnabled,
         isUserSurveyBannerEnabled,
+        productName,
         supportEmail,
         setSelectedPreviewFeatureToShow,
         setShowPreviewFeaturesModal,
