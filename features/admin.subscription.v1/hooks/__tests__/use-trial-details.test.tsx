@@ -40,11 +40,13 @@ describe("useTrialDetails", () => {
             .spyOn(console, "error")
             .mockImplementation(() => undefined);
 
-        expect(() => render(<Probe />)).toThrow(
-            "useTrialDetails must be used within a TrialProvider"
-        );
-
-        consoleError.mockRestore();
+        try {
+            expect(() => render(<Probe />)).toThrow(
+                "useTrialDetails must be used within a TrialProvider"
+            );
+        } finally {
+            consoleError.mockRestore();
+        }
     });
 
     it("returns the trial state provided via TrialContext", () => {

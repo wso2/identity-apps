@@ -39,8 +39,8 @@ export interface TrialContextPropsInterface {
 /**
  * Context object for managing the Trial context.
  */
-const TrialContext: Context<TrialContextPropsInterface> =
-    createContext<null | TrialContextPropsInterface>(null);
+const TrialContext: Context<TrialContextPropsInterface | null> =
+    createContext<TrialContextPropsInterface | null>(null);
 
 /**
  * Display name for the TrialContext.

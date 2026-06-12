@@ -31,7 +31,7 @@ type UseTrialDetailsReturn = TrialContextPropsInterface;
  * @returns Trial state and days remaining.
  */
 export const useTrialDetails = (): UseTrialDetailsReturn => {
-    const context: TrialContextPropsInterface = useContext(TrialContext);
+    const context: TrialContextPropsInterface | null = useContext(TrialContext);
 
     if (context === null) {
         throw new Error("useTrialDetails must be used within a TrialProvider");
