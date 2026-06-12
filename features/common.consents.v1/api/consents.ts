@@ -111,6 +111,7 @@ export const mapPurposeSummaryToListItem = (purpose: PurposeSummaryDTOInterface)
     description: purpose.description,
     id: purpose.id,
     name: purpose.name,
+    tenantDomain: purpose.tenantDomain,
     type: purpose.type
 });
 
@@ -141,6 +142,7 @@ export const mapPurposeDTOToConsent = (purpose: PurposeDTOInterface): ConsentInt
                     element.name.startsWith(`${ POLICY_URL_ELEMENT_PREFIX }:`)
             )?.displayName,
         promptOnLogin: purpose.properties?.promptOnLogin ?? "false",
+        tenantDomain: purpose.tenantDomain,
         type: purpose.type,
         version: purpose.latestVersion?.version,
         versionId: purpose.latestVersion?.id

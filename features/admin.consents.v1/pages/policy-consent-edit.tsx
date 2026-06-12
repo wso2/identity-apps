@@ -31,12 +31,14 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
+import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -59,27 +61,39 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     const id: string = match?.params?.id;
 
-    const { data: consent, isLoading: isConsentRequestLoading } = useGetPurpose(id);
-
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
-    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
-    const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
+    // Check if the route param is a known default policy slug (not a UUID).
+    const defaultPolicyName: string | null = DEFAULT_POLICY_PATH_MAP[id] ?? null;
+    const isDefaultPolicy: boolean = defaultPolicyName !== null;
+
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+
+    // Only fetch from the API when the id is a real UUID, not a default-policy slug.
+    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(isDefaultPolicy ? "" : id);
+
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const handleBackButtonClick = (): void => {
         window.history.back();
     };
 
     const handleDeleteConsent = (): void => {
+        if (!consent?.id) {
+            return;
+        }
+
         setIsDeleting(true);
 
-        deletePurpose(id)
+        deletePurpose(consent.id)
             .then((): void => {
                 dispatch(addAlert({
                     description: t("consents:policyConsents.notifications.delete.success.description"),
@@ -106,7 +120,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:policyConsents.notifications.delete.error.serverError.description");
+                            description = t(
+                                "consents:policyConsents.notifications.delete.error.serverError.description"
+                            );
                             message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
                             description = t("consents:policyConsents.notifications.delete.error.description");
@@ -126,15 +142,37 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             });
     };
 
+    const pageTitle: string = isDefaultPolicy
+        ? defaultPolicyName
+        : (consent?.displayName || "");
+
+    const descriptionLabel: ReactElement | undefined = (() => {
+        if (isCrossTenant) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.sharedPolicy") }
+                </Label>
+            );
+        }
+        if (isDefaultPolicy) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.defaultPolicy") }
+                </Label>
+            );
+        }
+
+        return undefined;
+    })();
 
     return (
         <PageLayout
             pageTitle={ t("consents:policyConsents.pages.edit.title") }
-            title={ consent?.displayName || "" }
-            description={ undefined }
+            title={ pageTitle }
+            description={ descriptionLabel }
             image={ (
                 <AnimatedAvatar
-                    name={ consent?.displayName }
+                    name={ pageTitle }
                     size="tiny"
                     floated="left"
                 />
@@ -146,17 +184,22 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
-            isLoading={ isConsentRequestLoading }
+            isLoading={ isConsentLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("consents:policyConsents.pages.edit.backButton")
             } }
         >
-            { consent && (
+            { (isDefaultPolicy || consent) && (
                 <>
-                    <EditPolicyConsent purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPolicyConsent
+                        purposeId={ isDefaultPolicy ? undefined : consent?.id }
+                        readOnly={ isCrossTenant }
+                        isDefault={ isDefaultPolicy }
+                        defaultName={ isDefaultPolicy ? defaultPolicyName : undefined }
+                    />
+                    { hasDeletePermission && !isCrossTenant && !isDefaultPolicy && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >
