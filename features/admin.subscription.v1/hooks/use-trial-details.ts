@@ -16,72 +16,26 @@
  * under the License.
  */
 
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import { useGetTrialDetails } from "../api/get-trial-details";
+import { useContext } from "react";
+import TrialContext, { TrialContextPropsInterface } from "../contexts/trial-context";
 
 /**
  * Return type for the useTrialDetails hook.
  */
-interface UseTrialDetailsReturn {
-    tenantHasTrial: boolean;
-    daysRemaining: number;
-    isLoading: boolean;
-}
+export type UseTrialDetailsReturn = TrialContextPropsInterface;
 
 /**
- * Hook that fetches trial details from the tenant trial endpoint
- * and derives whether the tenant has an active trial and how many days remain.
+ * Hook that returns the trial state resolved by {@link TrialProvider}:
+ * whether the tenant has an active trial and how many days remain.
  *
  * @returns Trial state and days remaining.
  */
 export const useTrialDetails = (): UseTrialDetailsReturn => {
-    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
-    const isFirstLevelOrg: boolean = isFirstLevelOrganization();
+    const context: TrialContextPropsInterface = useContext(TrialContext);
 
-    const isTrialFeatureEnabled: boolean = useSelector(
-        (state: AppState) =>
-            (state.config.deployment.extensions as Record<string, Record<string, unknown>>)
-                ?.trial?.enabled === true
-    );
+    if (context === null) {
+        throw new Error("useTrialDetails must be used within a TrialProvider");
+    }
 
-    const shouldFetch: boolean =
-        saasFeatureStatus !== FeatureStatus.DISABLED &&
-        isTrialFeatureEnabled &&
-        isFirstLevelOrg;
-
-    const {
-        data: trialData,
-        isLoading: isTrialLoading,
-        error
-    } = useGetTrialDetails(shouldFetch);
-
-    const tenantHasTrial: boolean = useMemo((): boolean => {
-        if (!shouldFetch || isTrialLoading) {
-            return false;
-        }
-
-        if (error) {
-            return false;
-        }
-
-        return trialData?.daysRemaining !== undefined && trialData?.daysRemaining !== null;
-    }, [ shouldFetch, isTrialLoading, error, trialData ]);
-
-    const daysRemaining: number = useMemo((): number => {
-        return trialData?.daysRemaining ?? 0;
-    }, [ trialData ]);
-
-    const isLoading: boolean = shouldFetch && isTrialLoading;
-
-    return {
-        daysRemaining,
-        isLoading,
-        tenantHasTrial
-    };
+    return context;
 };
