@@ -22,7 +22,7 @@ import TrialContext, { TrialContextPropsInterface } from "../contexts/trial-cont
 /**
  * Return type for the useTrialDetails hook.
  */
-export type UseTrialDetailsReturn = TrialContextPropsInterface;
+type UseTrialDetailsReturn = TrialContextPropsInterface;
 
 /**
  * Hook that returns the trial state resolved by {@link TrialProvider}:
