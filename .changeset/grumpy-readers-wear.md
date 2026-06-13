@@ -1,7 +1,7 @@
 ---
 "@wso2is/admin.agents.v1": patch
 "@wso2is/admin.applications.v1": patch
-"@wso2is/admin.branding.ai.v1": patch
+"@wso2is/admin.branding.v1": patch
 "@wso2is/admin.console-settings.v1": patch
 "@wso2is/admin.home.v1": patch
 "@wso2is/admin.users.v1": patch
