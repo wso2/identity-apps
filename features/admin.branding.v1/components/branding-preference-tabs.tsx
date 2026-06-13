@@ -177,6 +177,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         (state: AppState) => state.config.ui.features?.branding);
     const brandingFeatureFlags: FeatureFlagsInterface[] = useSelector(
         () => brandingFeatureConfig?.featureFlags);
+    const isConsentFeatureEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui.features?.consents?.enabled);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
@@ -325,6 +327,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     ref={ formRef }
                     onSubmit={ onSubmit }
                     banner={
+                        isConsentFeatureEnabled &&
                         !(brandingMode === BrandingModes.APPLICATION &&
                             brandingPreference.configs.isBrandingEnabled) && (
                             <Alert severity="info">
