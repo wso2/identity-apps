@@ -113,6 +113,8 @@ const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<ValidationErr
             data-componentid={ componentId }
             onMouseOver={ () => hasNotification && disableErrorBoundaryOnHover && setActive(true) }
             onMouseOut={ () => hasNotification && disableErrorBoundaryOnHover && setActive(false) }
+            onFocus={ () => hasNotification && disableErrorBoundaryOnHover && setActive(true) }
+            onBlur={ () => hasNotification && disableErrorBoundaryOnHover && setActive(false) }
         >
             { hasNotification && !(active && disableErrorBoundaryOnHover) && (
                 <ExclamationIcon size={ 24 } />
