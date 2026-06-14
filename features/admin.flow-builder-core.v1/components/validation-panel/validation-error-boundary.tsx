@@ -111,6 +111,7 @@ const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<ValidationErr
                 }
             ) }
             data-componentid={ componentId }
+            tabIndex={ hasNotification ? 0 : undefined }
             onMouseOver={ () => hasNotification && disableErrorBoundaryOnHover && setActive(true) }
             onMouseOut={ () => hasNotification && disableErrorBoundaryOnHover && setActive(false) }
             onFocus={ () => hasNotification && disableErrorBoundaryOnHover && setActive(true) }
