@@ -178,8 +178,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const brandingFeatureFlags: FeatureFlagsInterface[] = useSelector(
         () => brandingFeatureConfig?.featureFlags);
     const isConsentFeatureEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.features?.consents?.enabled);
-
+        (state: AppState): boolean => state.config.ui.features?.consents?.enabled ?? false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
         brandingPreferenceForPreview,
