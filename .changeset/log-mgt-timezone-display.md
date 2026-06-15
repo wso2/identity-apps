@@ -1,4 +1,5 @@
 ---
+"@wso2is/console": patch
 "@wso2is/admin.logs.v1": patch
 ---
 
