@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.4
+
+### Patch Changes
+
+- [#10401](https://github.com/wso2/identity-apps/pull/10401) [`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Increase app name length limit
+
+- Updated dependencies [[`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d)]:
+  - @wso2is/admin.branding.v1@2.32.170
+
 ## 2.43.3
 
 ### Patch Changes
