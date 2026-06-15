@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.3.6
+
+### Patch Changes
+
+- [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
 ## 4.3.5
 
 ### Patch Changes
