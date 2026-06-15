@@ -84,6 +84,9 @@ export interface ConsentsNS {
                 subtitle: string;
                 title: string;
             };
+            labels: {
+                sharedPreference: string;
+            };
         };
         notifications: ConsentNotificationsNS;
         pages: {
@@ -121,6 +124,7 @@ export interface ConsentsNS {
         };
     };
     policyConsents: {
+        brandingRequired: string;
         form: {
             createNewVersion: string;
             description: {
@@ -152,8 +156,15 @@ export interface ConsentsNS {
                 trigger: string;
                 currentVersionLabel: string;
             };
+            createModal: {
+                header: string;
+                hint: string;
+                promptAtLogin: string;
+                promptDescription: string;
+            };
             versionModal: {
                 createNewVersion: string;
+                hint: string;
                 promptAtLogin: string;
                 promptDescription: string;
             };
@@ -167,6 +178,11 @@ export interface ConsentsNS {
                 action: string;
                 subtitle: string;
                 title: string;
+            };
+            labels: {
+                defaultPolicy: string;
+                notConfigured: string;
+                sharedPolicy: string;
             };
         };
         notifications: ConsentNotificationsNS;
@@ -204,6 +220,7 @@ export interface ConsentsNS {
                         configureTranslation: string;
                         i18nCard: {
                             brandingRequired: string;
+                            brandingRequiredShort: string;
                             createTitle: string;
                             deleteError: { description: string; message: string };
                             deleteSuccess: { description: string; message: string };
@@ -221,6 +238,7 @@ export interface ConsentsNS {
                             translationText: string;
                             updateTitle: string;
                         };
+                        insertCustomLinkShort: string;
                         insertPolicyLink: string;
                         insertPolicyLinkInvalidUrl: string;
                         insertPolicyLinkShort: string;
@@ -253,6 +271,14 @@ export interface ConsentsNS {
         purposeName: string;
         selectPreference: string;
         selectPolicies: string;
+    };
+    sidePanel: {
+        consentEdit: string;
+        consentNew: string;
+        preferenceManagementEdit: string;
+        preferenceManagementNew: string;
+        privacyPolicy: string;
+        termsOfService: string;
     };
     tabs: {
         content: { label: string };

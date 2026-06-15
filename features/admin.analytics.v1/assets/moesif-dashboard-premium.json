@@ -2,7 +2,7 @@
   "dashboards": [
     {
       "_id": "6a0d5b2842390139f7ac4a23",
-      "name": "Login",
+      "name": "Authentication",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -16,15 +16,18 @@
         ],
         [
           "6a0da5db04a4ee1e28287918",
-          "6a0db97704a4ee1e282884a8",
+          "6a0db97704a4ee1e282884a8"
+        ],
+        [
           "6a1e9ec27f7e1a2185865c51"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 1
     },
     {
       "_id": "6a0d5b3042390139f7ac4a26",
-      "name": "Registration",
+      "name": "Registrations",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -39,11 +42,12 @@
           "6a1e90519ab5707f95230d63"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 2
     },
     {
       "_id": "6a1ea1475bc7c56efa5ea476",
-      "name": "Token",
+      "name": "Token Issuance",
       "dashboard_ids": [],
       "workspace_ids": [
         [
@@ -59,7 +63,8 @@
           "6a1ea530353c7116a6e54c1e"
         ]
       ],
-      "parent": "6a0d5af342390139f7ac4a07"
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 3
     },
     {
       "_id": "6a0d5af342390139f7ac4a07",
@@ -71,27 +76,26 @@
       ],
       "workspace_ids": [
         [
-          "6a1fac5668f9b5457fabcabb",
-          "6a1fac9168f9b5457fabcabc",
-          "6a1face868f9b5457fabcac4",
-          "6a1faccf8507014e56ac4629",
-          "6a1facb78507014e56ac4628"
+          "6a0db96342390139f7ac83e7",
+          "6a1ea2257f7e1a2185865daf",
+          "6a1ea3e67f7e1a2185865dbb",
+          "6a1e8f049ab5707f95230c0a",
+          "6a1e90c39ab5707f95230d67"
         ],
         [
-          "6a1fad0868f9b5457fabcac5",
-          "6a1fad328507014e56ac462e"
-        ],
-        []
+          "6a0db9f004a4ee1e28288627",
+          "6a1e8fa55bc7c56efa5e9e89"
+        ]
       ],
       "parent": null,
-      "sort_order": 2
+      "sort_order": 0
     }
   ],
   "workspaces": [
     {
       "_id": "6a1fac5668f9b5457fabcabb",
       "type": "events",
-      "name": "Active User Count",
+      "name": "Active Users",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -184,7 +188,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -197,7 +201,7 @@
     {
       "_id": "6a1fac9168f9b5457fabcabc",
       "type": "events",
-      "name": "M2M Token Count",
+      "name": "M2M Tokens",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -281,7 +285,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -294,7 +298,7 @@
     {
       "_id": "6a1face868f9b5457fabcac4",
       "type": "events",
-      "name": "Total Token Count",
+      "name": "Total Tokens",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -373,7 +377,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -386,7 +390,7 @@
     {
       "_id": "6a1faccf8507014e56ac4629",
       "type": "events",
-      "name": "Self Sign-Up Users",
+      "name": "Self Sign-Ups",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -457,7 +461,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -515,7 +519,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -528,7 +532,7 @@
     {
       "_id": "6a1fad0868f9b5457fabcac5",
       "type": "events",
-      "name": "Login Success vs Failures Over Time",
+      "name": "Login Success vs Failure Over Time",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -913,7 +917,7 @@
     {
       "_id": "6a0db96342390139f7ac83e7",
       "type": "events",
-      "name": "Active User Count",
+      "name": "Active Users",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -1005,7 +1009,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -1018,7 +1022,7 @@
     {
       "_id": "6a0db9e042390139f7ac84f6",
       "type": "events",
-      "name": "Login Success vs Failures",
+      "name": "Login Success vs Failure",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -1259,7 +1263,7 @@
     {
       "_id": "6a1e9f9e7f7e1a2185865c52",
       "type": "events",
-      "name": "MFA Distribution",
+      "name": "MFA Usage",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -1407,7 +1411,7 @@
     {
       "_id": "6a0db9f004a4ee1e28288627",
       "type": "events",
-      "name": "Login Success vs Failures Over Time",
+      "name": "Login Success vs Failure Over Time",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -1801,7 +1805,7 @@
     {
       "_id": "6a0da5db04a4ee1e28287918",
       "type": "events",
-      "name": "Logins By Device",
+      "name": "Logins by Device",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -1937,7 +1941,7 @@
     {
       "_id": "6a0db97704a4ee1e282884a8",
       "type": "events",
-      "name": "Login By Application",
+      "name": "Logins by Application",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2063,7 +2067,7 @@
     {
       "_id": "6a1e9ec27f7e1a2185865c51",
       "type": "events",
-      "name": "Geo Map",
+      "name": "Logins by Location",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2211,7 +2215,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2224,7 +2228,7 @@
     {
       "_id": "6a1e8f049ab5707f95230c0a",
       "type": "events",
-      "name": "Self Sign-Up Users",
+      "name": "Self Sign-Ups",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2294,7 +2298,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2307,7 +2311,7 @@
     {
       "_id": "6a1e8e8f9ab5707f95230c08",
       "type": "events",
-      "name": "User Onboarding Method",
+      "name": "Onboarding Methods",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2472,7 +2476,7 @@
     {
       "_id": "6a1e90519ab5707f95230d63",
       "type": "events",
-      "name": "Registrations By Application",
+      "name": "Registrations by Application",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2577,7 +2581,7 @@
     {
       "_id": "6a1ea2257f7e1a2185865daf",
       "type": "events",
-      "name": "M2M Token Count",
+      "name": "M2M Tokens",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2660,7 +2664,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2673,7 +2677,7 @@
     {
       "_id": "6a1ea3e67f7e1a2185865dbb",
       "type": "events",
-      "name": "Total Token Count",
+      "name": "Total Tokens",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2751,7 +2755,7 @@
         "hideLegend": true,
         "singleValueSettings": true,
         "trendInidcator": {
-            "isIncreasementGreen": "true"
+          "isIncreasementGreen": "true"
         },
         "metrics": [
           {
@@ -2764,7 +2768,7 @@
     {
       "_id": "6a1ea464353c7116a6e54aff",
       "type": "events",
-      "name": "Token Distribution By User Type",
+      "name": "Tokens by User Type",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2876,7 +2880,7 @@
     {
       "_id": "6a1ea347353c7116a6e54afd",
       "type": "events",
-      "name": "Token Distribution By Application",
+      "name": "Tokens by Application",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -2988,7 +2992,7 @@
     {
       "_id": "6a1ea4bb7f7e1a2185865e3e",
       "type": "events",
-      "name": "Token Distribution By Grant Type",
+      "name": "Tokens by Grant Type",
       "args": "",
       "es_query": {
         "post_filter": {
@@ -3099,7 +3103,7 @@
     {
       "_id": "6a1ea530353c7116a6e54c1e",
       "type": "events",
-      "name": "Token Distribution Over Time",
+      "name": "Tokens Issued Over Time",
       "args": "",
       "es_query": {
         "post_filter": {

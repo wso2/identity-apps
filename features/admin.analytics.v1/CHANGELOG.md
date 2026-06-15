@@ -1,5 +1,11 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.8
+
+### Patch Changes
+
+- [#10395](https://github.com/wso2/identity-apps/pull/10395) [`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Bind the Moesif Insights canvas to the console page scroller by sizing the iframe from CANVAS_RESIZE auto-height reports, and improve the dashboard template names and panel layout.
+
 ## 0.0.7
 
 ### Patch Changes

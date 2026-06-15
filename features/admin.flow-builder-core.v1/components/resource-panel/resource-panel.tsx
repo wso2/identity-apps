@@ -162,7 +162,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
             return false;
         }
 
-        if (element.type === ElementTypes.Policy
+        if ((element.type === ElementTypes.Policy || element.type === ElementTypes.Preference)
             && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
             return false;
         }

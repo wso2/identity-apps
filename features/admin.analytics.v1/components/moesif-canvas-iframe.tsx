@@ -42,6 +42,7 @@ import { MoesifDashboardInfoInterface } from "../models/moesif-analytics";
 const EMBEDDED_POST_MESSAGE_TYPES: {
     CANVAS_INIT: string;
     CANVAS_READY: string;
+    CANVAS_RESIZE: string;
     ORG_LOAD_FINISHED: string;
     REFRESH_TOKEN: string;
     SCHEMA_GEN_FINISHED: string;
@@ -49,6 +50,7 @@ const EMBEDDED_POST_MESSAGE_TYPES: {
 } = {
     CANVAS_INIT: "CANVAS_INIT",
     CANVAS_READY: "CANVAS_READY",
+    CANVAS_RESIZE: "CANVAS_RESIZE",
     ORG_LOAD_FINISHED: "ORG_LOAD_FINISHED",
     REFRESH_TOKEN: "REFRESH_TOKEN",
     SCHEMA_GEN_FINISHED: "SCHEMA_GEN_FINISHED",
@@ -93,11 +95,9 @@ const ErrorContainer: typeof Box = styled(Box)(() => ({
 const CanvasContainer: typeof Box = styled(Box)(() => ({
     "& iframe": {
         border: "none",
-        height: "100%",
-        minHeight: CANVAS_MIN_HEIGHT,
+        display: "block",
         width: "100%"
     },
-    height: "100%",
     minHeight: CANVAS_MIN_HEIGHT,
     position: "relative",
     width: "100%"
@@ -159,6 +159,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     const [ isIframeDomLoaded, setIsIframeDomLoaded ] = useState<boolean>(false);
     const [ hasAuthCompleted, setHasAuthCompleted ] = useState<boolean>(false);
     const [ isChildReady, setIsChildReady ] = useState<boolean>(false);
+    const [ iframeHeight, setIframeHeight ] = useState<number | null>(null);
 
     const iframeRef: React.MutableRefObject<HTMLIFrameElement | null> = useRef<HTMLIFrameElement | null>(null);
     const isMounted: React.MutableRefObject<boolean> = useRef<boolean>(true);
@@ -223,6 +224,9 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
                 {
                     template,
                     theme: {
+                        // Makes the canvas report its content height via
+                        // CANVAS_RESIZE, which drives the iframe height below.
+                        autoHeight: true,
                         brandColor: theme.palette.primary.main,
                         brandTextColor: theme.palette.primary.main,
                         chartColors: CHART_COLORS,
@@ -290,6 +294,18 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
                     setIsLoading(false);
 
                     break;
+                case EMBEDDED_POST_MESSAGE_TYPES.CANVAS_RESIZE:
+                    // Canvas reports its content height on render and tab changes.
+                    // Size the iframe to it so the page scrolls (no inner scrollbar),
+                    // matching how the rest of the console pages scroll.
+                    if (typeof event.data?.height === "number" && event.data.height > 0) {
+                        // Round up so a fractional reported height can never leave
+                        // the iframe a sub-pixel short of its content (which would
+                        // clip the bottom edge, since inner scrolling is disabled).
+                        setIframeHeight(Math.ceil(event.data.height));
+                    }
+
+                    break;
                 case EMBEDDED_POST_MESSAGE_TYPES.REFRESH_TOKEN:
                     // Iframe requested a token refresh.
                     fetchDashboardInfo();
@@ -337,6 +353,14 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
                     data-componentid={ `${ componentId }-frame` }
                     src={ iframeSrc }
                     title={ t("extensions:develop.moesifAnalytics.dashboard.iframeTitle") }
+                    // The canvas reports its content height via CANVAS_RESIZE and the
+                    // iframe is sized to it, rendering the full content. The iframe
+                    // never scrolls itself — the console page scroller is the only
+                    // scroller, same as the rest of the console pages.
+                    scrolling="no"
+                    style={ {
+                        height: iframeHeight !== null ? `${ iframeHeight }px` : CANVAS_MIN_HEIGHT
+                    } }
                     onLoad={ () => {
                         setIsIframeDomLoaded(true);
                     } }

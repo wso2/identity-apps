@@ -36,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
+import { Label } from "semantic-ui-react";
 import { EditPreferenceManagement } from "../components/edit-preference-management";
 
 /**
@@ -68,7 +69,10 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
     const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
+
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
@@ -141,7 +145,14 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
         <PageLayout
             pageTitle={ t("consents:preferenceManagement.pages.edit.title") }
             title={ consent?.displayName || "" }
-            description={ undefined }
+            description={ isCrossTenant
+                ? (
+                    <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                        { t("consents:preferenceManagement.list.labels.sharedPreference") }
+                    </Label>
+                )
+                : undefined
+            }
             image={ (
                 <AnimatedAvatar
                     name={ consent?.displayName }
@@ -165,8 +176,8 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
         >
             { consent && (
                 <>
-                    <EditPreferenceManagement purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPreferenceManagement purposeId={ consent.id } readOnly={ isCrossTenant } />
+                    { hasDeletePermission && !isCrossTenant && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

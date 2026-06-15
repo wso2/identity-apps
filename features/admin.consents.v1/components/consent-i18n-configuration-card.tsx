@@ -39,7 +39,6 @@ import useGetCustomTextPreferenceMeta from
     "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-resolve";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,7 +52,6 @@ import React, {
     ReactElement,
     RefObject,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useMemo,
     useRef,
@@ -162,6 +160,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     const { t } = useTranslation();
 
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
@@ -178,13 +177,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isScrolled, setIsScrolled ] = useState<boolean>(false);
 
-    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain);
     const { data: customTextMeta, isLoading: metaLoading } = useGetCustomTextPreferenceMeta();
-
-    const isBrandingEnabled: boolean = useMemo(
-        () => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
-        [ brandingPreference ]
-    );
 
     const supportedLocales: SupportedLanguagesMeta = useMemo(() => {
         if (!supportedI18nLanguages || !customTextMeta?.locales?.length) {
@@ -224,12 +217,9 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         return merge({}, fallbackTextData?.preference?.text ?? {}, userTextData?.preference?.text ?? {});
     }, [ fallbackTextData, userTextData ]);
 
-    const isAlreadyConfigured: boolean = useMemo(
-        () => Object.keys(userTextData?.preference?.text ?? {}).length > 0,
-        [ userTextData ]
-    );
+    const isAlreadyConfigured: boolean = Object.keys(userTextData?.preference?.text ?? {}).length > 0;
 
-    const availableKeys: string[] = useMemo(() => Object.keys(i18nText), [ i18nText ]);
+    const availableKeys: string[] = Object.keys(i18nText);
 
     const i18nTextRef: MutableRefObject<Record<string, string>> = useRef<Record<string, string>>(i18nText);
 
@@ -241,7 +231,6 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         } else {
             setLanguageText("");
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ i18nKeyInput ]);
 
     useEffect(() => {
@@ -300,7 +289,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         }
     }, [ open, isCustomizeView ]);
 
-    const handleSave: () => Promise<void> = useCallback(async (): Promise<void> => {
+    const handleSave: () => Promise<void> = async (): Promise<void> => {
         if (!i18nKeyInput || !selectedLanguage) return;
 
         setIsSubmitting(true);
@@ -323,7 +312,9 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
             );
 
             dispatch(addAlert({
-                description: t("consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.description"),
+                description: t(
+                    "consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.description"
+                ),
                 level: AlertLevels.SUCCESS,
                 message: t("consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.message")
             }));
@@ -340,7 +331,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         } finally {
             setIsSubmitting(false);
         }
-    }, [ i18nKeyInput, selectedLanguage, languageText, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
+    };
 
     const handleBack: () => void = (): void => {
         isCreationMode.current = false;
@@ -490,7 +481,10 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             multiline
                             rows={ 4 }
                             placeholder={
-                                t("consents:policyConsents.wizard.create.form.description.i18nCard.translationPlaceholder")
+                                t(
+                                    // eslint-disable-next-line max-len
+                                    "consents:policyConsents.wizard.create.form.description.i18nCard.translationPlaceholder"
+                                )
                             }
                             value={ languageText }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => setLanguageText(e.target.value) }
@@ -539,57 +533,45 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                     { !isCustomizeView ? (
                         <>
                             { selectedI18nKey && (
-                                <>
-                                    <Tooltip
-                                        title={ !isBrandingEnabled
-                                            ? t("consents:policyConsents.wizard.create.form.description.i18nCard.brandingRequired")
-                                            : t("consents:policyConsents.wizard.create.form.description.i18nCard.editTooltip")
-                                        }
-                                        placement="top"
+                                <Tooltip
+                                    title={ t("consents:policyConsents.wizard.create.form" +
+                                        ".description.i18nCard.editTooltip") }
+                                    placement="top"
+                                >
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        color="secondary"
+                                        startIcon={ <PenToSquareIcon /> }
+                                        onClick={ () => {
+                                            isCreationMode.current = false;
+                                            setLanguageText(i18nTextRef.current[selectedI18nKey] ?? "");
+                                            setI18nKeyInput(selectedI18nKey);
+                                            setIsCustomizeView(true);
+                                        } }
                                     >
-                                        <span>
-                                            <Button
-                                                variant="contained"
-                                                size="small"
-                                                color="secondary"
-                                                disabled={ !isBrandingEnabled }
-                                                startIcon={ <PenToSquareIcon /> }
-                                                onClick={ () => {
-                                                    isCreationMode.current = false;
-                                                    setLanguageText(i18nTextRef.current[selectedI18nKey] ?? "");
-                                                    setI18nKeyInput(selectedI18nKey);
-                                                    setIsCustomizeView(true);
-                                                } }
-                                            >
-                                                { t("common:edit") }
-                                            </Button>
-                                        </span>
-                                    </Tooltip>
-                                </>
+                                        { t("common:edit") }
+                                    </Button>
+                                </Tooltip>
                             ) }
                             { !selectedI18nKey && (
                                 <Tooltip
-                                    title={ !isBrandingEnabled
-                                        ? t("consents:policyConsents.wizard.create.form.description.i18nCard.brandingRequired")
-                                        : t("consents:policyConsents.wizard.create.form.description.i18nCard.newTooltip")
-                                    }
+                                    title={ t("consents:policyConsents.wizard.create.form" +
+                                        ".description.i18nCard.newTooltip") }
                                     placement="top"
                                 >
-                                    <span>
-                                        <Button
-                                            variant="contained"
-                                            size="small"
-                                            disabled={ !isBrandingEnabled }
-                                            startIcon={ <PlusIcon /> }
-                                            onClick={ () => {
-                                                isCreationMode.current = true;
-                                                setI18nKeyInput("");
-                                                setIsCustomizeView(true);
-                                            } }
-                                        >
-                                            { t("common:new") }
-                                        </Button>
-                                    </span>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        startIcon={ <PlusIcon /> }
+                                        onClick={ () => {
+                                            isCreationMode.current = true;
+                                            setI18nKeyInput("");
+                                            setIsCustomizeView(true);
+                                        } }
+                                    >
+                                        { t("common:new") }
+                                    </Button>
                                 </Tooltip>
                             ) }
                         </>

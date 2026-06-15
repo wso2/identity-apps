@@ -62,6 +62,7 @@ import { PreferenceManagementPreview } from "./preference-management-preview";
 
 interface EditPreferenceManagementProps extends IdentifiableComponentInterface {
     purposeId?: string;
+    readOnly?: boolean;
 }
 
 interface PreferenceFormValuesInterface {
@@ -100,7 +101,7 @@ const generateNextVersionLabel = (currentLabel: string): string => {
 export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagementProps> = (
     props: EditPreferenceManagementProps
 ): ReactElement => {
-    const { purposeId } = props;
+    const { purposeId, readOnly = false } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -437,6 +438,7 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                                 type="text"
                                                                 component={ TextFieldAdapter }
                                                                 validate={ validateName }
+                                                                disabled={ readOnly }
                                                             />
                                                         </Box>
                                                     ) }
@@ -478,6 +480,7 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                                             }
                                                                         }
                                                                         variant="preference"
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 );
                                                             } }
@@ -551,6 +554,7 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                                                 }
                                                                             }
                                                                             renderInput={ renderInput }
+                                                                            disabled={ readOnly }
                                                                         />
                                                                     </>
                                                                 );
@@ -592,20 +596,18 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }
                                                 />
                                             </Grid>
-                                            <Grid xs={ 12 } padding={ 2 }>
-                                                { (isCreateMode ? hasCreatePermission : hasUpdatePermission) && (
+                                            { (isCreateMode ? hasCreatePermission : hasUpdatePermission)
+                                                && !readOnly && (
+                                                <Grid xs={ 12 } padding={ 2 }>
                                                     <PrimaryButton
                                                         type="submit"
                                                         loading={ isSubmitting }
                                                         disabled={ isUnchanged }
                                                     >
-                                                        { isCreateMode
-                                                            ? t("common:create")
-                                                            : t("common:update")
-                                                        }
+                                                        { isCreateMode ? t("common:create") : t("common:update") }
                                                     </PrimaryButton>
-                                                ) }
-                                            </Grid>
+                                                </Grid>
+                                            ) }
                                         </Grid>
                                     </form>
                                 );

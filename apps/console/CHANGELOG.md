@@ -1,5 +1,58 @@
 # @wso2is/console
 
+## 4.11.5
+
+### Patch Changes
+
+- [#10401](https://github.com/wso2/identity-apps/pull/10401) [`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Increase app name length limit
+
+* [#10400](https://github.com/wso2/identity-apps/pull/10400) [`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d) Thanks [@hwupathum](https://github.com/hwupathum)! - Hide consent banner from branding UI
+
+* Updated dependencies [[`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a), [`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d)]:
+  - @wso2is/admin.applications.v1@2.43.4
+  - @wso2is/admin.branding.v1@2.32.170
+
+## 4.11.4
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+* [#10398](https://github.com/wso2/identity-apps/pull/10398) [`4a30838fd51a4a6d9a18bafbe408ceb39d5f921e`](https://github.com/wso2/identity-apps/commit/4a30838fd51a4a6d9a18bafbe408ceb39d5f921e) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Improve trial activation and retrieval flow
+
+* Updated dependencies [[`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5), [`4a30838fd51a4a6d9a18bafbe408ceb39d5f921e`](https://github.com/wso2/identity-apps/commit/4a30838fd51a4a6d9a18bafbe408ceb39d5f921e)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.216
+  - @wso2is/admin.branding.v1@2.32.169
+  - @wso2is/admin.consents.v1@1.0.3
+  - @wso2is/admin.core.v1@2.57.18
+  - @wso2is/admin.registration-flow-builder.v1@0.10.176
+  - @wso2is/i18n@2.43.3
+  - @wso2is/admin.subscription.v1@1.5.226
+
+## 4.11.3
+
+### Patch Changes
+
+- [#10395](https://github.com/wso2/identity-apps/pull/10395) [`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Bind the Moesif Insights canvas to the console page scroller by sizing the iframe from CANVAS_RESIZE auto-height reports, and improve the dashboard template names and panel layout.
+
+* [#10396](https://github.com/wso2/identity-apps/pull/10396) [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4) Thanks [@savindi7](https://github.com/savindi7)! - Update banner title.
+
+* Updated dependencies [[`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259), [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4)]:
+  - @wso2is/admin.analytics.v1@0.0.8
+  - @wso2is/admin.home.v1@1.7.197
+  - @wso2is/admin.onboarding.v1@1.0.87
+
+## 4.11.2
+
+### Patch Changes
+
+- [#10389](https://github.com/wso2/identity-apps/pull/10389) [`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve API Resources loading for authrization and role permissions
+
+- Updated dependencies [[`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1)]:
+  - @wso2is/admin.api-resources.v2@2.26.12
+  - @wso2is/admin.applications.v1@2.43.3
+  - @wso2is/admin.roles.v2@2.27.385
+
 ## 4.11.1
 
 ### Patch Changes
