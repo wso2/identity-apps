@@ -169,6 +169,7 @@ export interface CommonNS {
     completed: string;
     configure: string;
     confirm: string;
+    consents: string;
     contains: string;
     continue: string;
     copied: string;

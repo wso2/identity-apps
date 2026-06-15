@@ -19,7 +19,7 @@
 import { URLComponentsInterface } from "../../models/url-components";
 import { URLUtils } from "../url-utils";
 
-jest.mock("tldts", (): {
+vi.mock("tldts", (): {
     getDomain: jest.Mock<
         "localhost"| "example.com" | "example.co.uk" | "example.gov.us" | "simple.host" | undefined,
         [url: string],
@@ -135,7 +135,7 @@ describe("URLUtils", (): void => {
         it("should handle sanitization check", (): void => {
             const mockSanitizeUrl: jest.Mock<string, []> = jest.fn().mockReturnValue("about:blank");
 
-            jest.mock("@braintree/sanitize-url", (): {
+            vi.doMock("@braintree/sanitize-url", (): {
                 sanitizeUrl: jest.Mock<string, []>;
             } => ({
                 sanitizeUrl: mockSanitizeUrl

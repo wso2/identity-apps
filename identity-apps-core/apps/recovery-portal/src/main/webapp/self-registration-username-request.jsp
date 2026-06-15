@@ -848,7 +848,8 @@
                                 <input
                                     type="email"
                                     id="usernameUserInput"
-                                    value="<%=discoveredUsername != null ? Encode.forHtmlAttribute(discoveredUsername) : ""%>"
+                                    value="<%=discoveredUsername != null ? Encode.forHtmlAttribute(discoveredUsername)
+                                            : (StringUtils.isNotEmpty(emailValue) ? Encode.forHtmlAttribute(emailValue) : "")%>"
                                     name="http://wso2.org/claims/emailaddress"
                                     tabindex="1"
                                     placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.email")%>"
@@ -980,8 +981,8 @@
                                             </label>
                                             <input id="firstNameUserInput" type="text" name="http://wso2.org/claims/givenname" class="form-control"
                                                 <% if (firstNamePII.getRequired()) {%> required <%}%>
-                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %>
-                                                value="<%= Encode.forHtmlAttribute(firstNameValue)%>" disabled <% } %>
+                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %> disabled <% } %>
+                                                <% if (StringUtils.isNotEmpty(firstNameValue)) { %> value="<%= Encode.forHtmlAttribute(firstNameValue)%>"<% } %>
                                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>"/>
                                                 <div class="mt-1" id="firstname-error-msg" hidden="hidden">
                                                     <div class="ui grid">
@@ -1007,8 +1008,8 @@
                                             </label>
                                             <input id="lastNameUserInput" type="text" name="http://wso2.org/claims/lastname" class="form-control"
                                                 <% if (lastNamePII.getRequired()) {%> required <%}%>
-                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %>
-                                                value="<%= Encode.forHtmlAttribute(lastNameValue)%>" disabled <% } %>
+                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %> disabled <% } %>
+                                                <% if (StringUtils.isNotEmpty(lastNameValue)) { %> value="<%= Encode.forHtmlAttribute(lastNameValue)%>"<% } %>
                                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>"
                                             />
                                             <div class="mt-1" id="lastname-error-msg" hidden="hidden">
@@ -1112,8 +1113,8 @@
                                                 <% if (claim.getRequired()) { %>
                                                     required
                                                 <% }%>
-                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
-                                                    value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled<%}%>
+                                                <% if(StringUtils.isNotEmpty(claimValue)) {%> value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                             />
                                             <i class="dropdown icon"></i>
                                             <div class="default text">
@@ -1136,8 +1137,8 @@
                                                 <% if (claim.getRequired()) { %>
                                                     required
                                                 <% }%>
-                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
-                                                    value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled<%}%>
+                                                <% if(StringUtils.isNotEmpty(claimValue)) {%> value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                             />
                                             <i class="dropdown icon"></i>
                                             <div class="default text">
@@ -1169,8 +1170,8 @@
                                                             required
                                                         <% } %>
                                                         placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.birth.date")%>"
-                                                    <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
-                                                        value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                                    <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled<%}%>
+                                                    <% if(StringUtils.isNotEmpty(claimValue)) {%> value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                                 />
                                             </div>
                                         </div>
@@ -1189,8 +1190,8 @@
                                                     id="mobileNumber"
                                             <% }%>
                                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter")%> <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>"
-                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
-                                                value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled<%}%>
+                                                <% if(StringUtils.isNotEmpty(claimValue)) {%> value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                             />
                                     <% } %>
                                     <div class="mt-1" id="<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimErrorMsg)%>" hidden="hidden">

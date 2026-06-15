@@ -1,5 +1,40 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.88
+
+### Patch Changes
+
+- Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14), [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e)]:
+  - @wso2is/admin.analytics.v1@0.0.9
+  - @wso2is/admin.core.v1@2.57.19
+
+## 1.0.87
+
+### Patch Changes
+
+- Updated dependencies [[`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259)]:
+  - @wso2is/admin.analytics.v1@0.0.8
+
+## 1.0.86
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+- Updated dependencies [[`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60)]:
+  - @wso2is/admin.applications.v1@2.43.2
+  - @wso2is/admin.core.v1@2.57.17
+  - @wso2is/admin.extensions.v1@2.43.9
+
+## 1.0.85
+
+### Patch Changes
+
+- Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/admin.server-configurations.v1@2.38.54
+  - @wso2is/admin.analytics.v1@0.0.7
+
 ## 1.0.84
 
 ### Patch Changes

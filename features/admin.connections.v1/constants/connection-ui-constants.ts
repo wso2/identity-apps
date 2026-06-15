@@ -449,6 +449,16 @@ export class ConnectionUIConstants {
             key: EndpointAuthenticationType.API_KEY,
             text: "actions:fields.authentication.types.apiKey.name",
             value: EndpointAuthenticationType.API_KEY
+        },
+        {
+            key: EndpointAuthenticationType.CLIENT_CREDENTIAL,
+            text: "actions:fields.authentication.types.clientCredential.name",
+            value: EndpointAuthenticationType.CLIENT_CREDENTIAL
+        },
+        {
+            key: EndpointAuthenticationType.PASSWORD_CREDENTIAL,
+            text: "actions:fields.authentication.types.passwordCredential.name",
+            value: EndpointAuthenticationType.PASSWORD_CREDENTIAL
         }
     ];
 

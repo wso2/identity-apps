@@ -20,12 +20,11 @@ import { CollisionPriority } from "@dnd-kit/abstract";
 import Badge from "@mui/material/Badge";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import { Element, ElementCategories, ElementTypes } from "../../../../models/elements";
+import { Element, ElementCategories } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
@@ -49,11 +48,7 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource,
     stepId
 }: FormAdapterPropsInterface): ReactElement => {
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    const visibleComponents: Element[] = (resource?.components ?? []).filter(
-        (component: Element) => !(component.type === ElementTypes.Policy && isSubOrganization())
-    );
+    const visibleComponents: Element[] = resource?.components ?? [];
 
     const shouldShowFormFieldsPlaceholder: boolean = !visibleComponents.some(
         (element: Element) => element.category === ElementCategories.Field

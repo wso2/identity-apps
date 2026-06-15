@@ -33,7 +33,7 @@ export class ApplicationManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
-    /* eslint-disable @typescript-eslint/no-empty-function */
+     
     private constructor() { }
 
     public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT_HEADER: string = "var onLoginRequest = function(context) {";
@@ -374,7 +374,7 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: number;
         APP_NAME_PATTERN: RegExp;
     } = {
-            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_MAX_LENGTH: 255,
             APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
         };
 

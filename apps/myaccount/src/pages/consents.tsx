@@ -17,15 +17,18 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteProps } from "react-router";
 import { Dispatch } from "redux";
-import { Consents, PolicyConsent } from "../components";
-import { AlertInterface } from "../models";
+import { Consents, PreferenceManagement, PolicyConsent } from "../components";
+import { AppConstants } from "../constants";
+import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 import { addAlert } from "../store/actions";
 
 interface ConsentsPagePropsInterface extends IdentifiableComponentInterface, RouteProps {}
@@ -35,7 +38,10 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactEle
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const handleAlerts: (alert: AlertInterface) => void = useCallback(
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
+    const handleAlerts: (_alert: AlertInterface) => void = useCallback(
         (alert: AlertInterface): void => {
             dispatch(addAlert(alert));
         },
@@ -49,8 +55,16 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactEle
             description={ t("myAccount:pages.consents.subTitle") }
         >
             <Box display="flex" flexDirection="column" gap={ 2 }>
-                <Consents onAlertFired={ handleAlerts } />
+                { hasRequiredScopes(
+                    accessConfig?.security,
+                    accessConfig?.security?.scopes?.read,
+                    allowedScopes
+                ) && isFeatureEnabled(
+                    accessConfig?.security,
+                    AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
+                ) && <Consents onAlertFired={ handleAlerts } /> }
                 <PolicyConsent onAlertFired={ handleAlerts } />
+                <PreferenceManagement onAlertFired={ handleAlerts } />
             </Box>
         </PageLayout>
     );

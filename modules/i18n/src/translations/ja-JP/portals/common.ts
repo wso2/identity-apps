@@ -176,6 +176,7 @@ export const common: CommonNS = {
     "completed": "完了しました",
     "configure": "構成、設定",
     "confirm": "確認する",
+    "consents": "同意",
     "contains": "含む",
     "continue": "続く",
     "copied": "コピーしました",

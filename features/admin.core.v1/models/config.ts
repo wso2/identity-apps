@@ -492,6 +492,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     googleOneTapEnabledTenants?: string[];
     /**
+     * API resource management UI configurations.
+     */
+    apiResourceManagement?: APIResourceManagementUIConfigInterface;
+    /**
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
@@ -751,6 +755,17 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         url: string;
     };
     /**
+     * Rebranding announcement banner configurations.
+     */
+    rebrandingBanner: {
+        announcementUrl: string;
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        subDescription: string;
+        title: string;
+    };
+    /**
      * Flow execution configurations.
      */
     flowExecution: {
@@ -775,6 +790,32 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check whether the password reset enforcement scope configuration is enabled.
      */
     isPasswordResetEnforcementScopeEnabled?: boolean;
+}
+
+/**
+ * API resource management UI configurations.
+ */
+interface APIResourceManagementUIConfigInterface {
+    /**
+     * Per-resource block entries. A resource is blocked for a tenant if it is listed here
+     * and the tenant is not in the entry's `allowed_tenants` list.
+     */
+    blockedAPIResources?: APIResourceBlockEntryInterface[];
+}
+
+/**
+ * Single blocked API resource entry.
+ */
+export interface APIResourceBlockEntryInterface {
+    /**
+     * Tenant domains for which the block does not apply. When empty or omitted, the block applies
+     * to all tenants.
+     */
+    allowed_tenants?: string[];
+    /**
+     * API resource ID (UUID) of the resource to block.
+     */
+    api_id?: string;
 }
 
 /**

@@ -287,7 +287,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled;
     const shouldCheckOrgGovernance: boolean =
         isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
-    const { isAdaptiveAuthAllowed } = useEvaluateAdaptiveAuthCapability(shouldCheckOrgGovernance);
+    const { isAdaptiveAuthAllowed, isCheckError } = useEvaluateAdaptiveAuthCapability(shouldCheckOrgGovernance);
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
         if (!isAdaptiveAuthenticationAvailable) {
@@ -296,6 +296,11 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         if (isInSubOrgWithoutSharedApp) {
             if (!shouldCheckOrgGovernance) {
+                return false;
+            }
+
+            // Fail closed if the capability check errored — we cannot confirm access.
+            if (isCheckError) {
                 return false;
             }
 
@@ -310,7 +315,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         isAdaptiveAuthenticationAvailable,
         isInSubOrgWithoutSharedApp,
         shouldCheckOrgGovernance,
-        isAdaptiveAuthAllowed
+        isAdaptiveAuthAllowed,
+        isCheckError
     ]);
 
     const isVisualEditorEnabled: boolean = useMemo(() => {

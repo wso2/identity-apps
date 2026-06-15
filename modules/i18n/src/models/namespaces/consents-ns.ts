@@ -16,228 +16,272 @@
  * under the License.
  */
 
+interface ConsentNotificationsNS {
+    create: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+    delete: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+    update: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+}
+
+interface ConsentDeleteConfirmationNS {
+    assertionHint: string;
+    content: string;
+    header: string;
+    message: string;
+    primaryAction: string;
+    secondaryAction: string;
+}
+
 export interface ConsentsNS {
-    form: {
-        createNewVersion: string;
-        description: {
-            label: string;
-        };
-        mandatory: {
-            label: string;
-            hint: string;
+    preferenceManagement: {
+        form: {
+            description: {
+                label: string;
+                labelRoleHint: string;
+            };
             linkHint: string;
-        };
-        name: {
-            label: string;
-            placeholder: string;
-            error: {
-                duplicateName: string;
+            name: {
+                label: string;
+                placeholder: string;
+                error: {
+                    duplicateName: string;
+                };
             };
         };
-        policyUrl: {
-            label: string;
-            hint: string;
-            versionHint: string;
+        list: {
+            emptyPlaceholder: {
+                addConsent: string;
+                subtitle: string;
+            };
+            emptySearchPlaceholder: {
+                action: string;
+                subtitle: string;
+                title: string;
+            };
+            labels: {
+                sharedPreference: string;
+            };
         };
-        promptOnLogin: {
-            label: string;
-            hint: string;
-            activeHint: string;
+        notifications: ConsentNotificationsNS;
+        pages: {
+            deleteConfirmation: ConsentDeleteConfirmationNS;
+            edit: {
+                backButton: string;
+                dangerZone: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+                title: string;
+            };
+            list: {
+                actions: {
+                    addConsent: string;
+                };
+                description: string;
+                heading: string;
+                search: {
+                    placeholder: string;
+                };
+                title: string;
+            };
+            new: {
+                backButton: string;
+                title: string;
+            };
         };
-        versionDropdown: {
-            trigger: string;
-            currentVersionLabel: string;
-        };
-        versionModal: {
-            createNewVersion: string;
-            promptAtLogin: string;
-            promptDescription: string;
+        preview: {
+            consentHeader: string;
+            emptyDescription: string;
+            exampleDescription: string;
+            pageTitle: string;
         };
     };
-    list: {
-        emptyPlaceholder: {
-            addPolicy: string;
-            subtitle: string;
+    policyConsents: {
+        brandingRequired: string;
+        form: {
+            createNewVersion: string;
+            description: {
+                label: string;
+            };
+            mandatory: {
+                label: string;
+                hint: string;
+                linkHint: string;
+            };
+            name: {
+                label: string;
+                placeholder: string;
+                error: {
+                    duplicateName: string;
+                };
+            };
+            policyUrl: {
+                label: string;
+                hint: string;
+                versionHint: string;
+            };
+            promptOnLogin: {
+                label: string;
+                hint: string;
+                activeHint: string;
+            };
+            versionDropdown: {
+                trigger: string;
+                currentVersionLabel: string;
+            };
+            createModal: {
+                header: string;
+                hint: string;
+                promptAtLogin: string;
+                promptDescription: string;
+            };
+            versionModal: {
+                createNewVersion: string;
+                hint: string;
+                promptAtLogin: string;
+                promptDescription: string;
+            };
         };
-        emptySearchPlaceholder: {
-            action: string;
-            subtitle: string;
-            title: string;
+        list: {
+            emptyPlaceholder: {
+                addPolicy: string;
+                subtitle: string;
+            };
+            emptySearchPlaceholder: {
+                action: string;
+                subtitle: string;
+                title: string;
+            };
+            labels: {
+                defaultPolicy: string;
+                notConfigured: string;
+                sharedPolicy: string;
+            };
+        };
+        notifications: ConsentNotificationsNS;
+        pages: {
+            deleteConfirmation: ConsentDeleteConfirmationNS;
+            edit: {
+                backButton: string;
+                dangerZone: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+                title: string;
+            };
+            list: {
+                actions: {
+                    addPolicy: string;
+                };
+                description: string;
+                heading: string;
+                search: {
+                    placeholder: string;
+                };
+                title: string;
+            };
+            new: {
+                backButton: string;
+                title: string;
+            };
+        };
+        wizard: {
+            create: {
+                form: {
+                    description: {
+                        configureTranslation: string;
+                        i18nCard: {
+                            brandingRequired: string;
+                            brandingRequiredShort: string;
+                            createTitle: string;
+                            deleteError: { description: string; message: string };
+                            deleteSuccess: { description: string; message: string };
+                            deleteTooltip: string;
+                            editTooltip: string;
+                            i18nKey: string;
+                            keyPlaceholder: string;
+                            language: string;
+                            newTooltip: string;
+                            saveError: { description: string; message: string };
+                            saveSuccess: { description: string; message: string };
+                            selectKey: string;
+                            title: string;
+                            translationPlaceholder: string;
+                            translationText: string;
+                            updateTitle: string;
+                        };
+                        insertCustomLinkShort: string;
+                        insertPolicyLink: string;
+                        insertPolicyLinkInvalidUrl: string;
+                        insertPolicyLinkShort: string;
+                        insertPolicyLinkTooltip: string;
+                        insertPolicyLinkNoPolicyUrl: string;
+                        insertPolicyLinkNoSelection: string;
+                        labelRoleHint: string;
+                    };
+                };
+                preview: {
+                    consentHeader: string;
+                    emptyDescription: string;
+                    exampleDescription: string;
+                    pageTitle: string;
+                    updatedPolicies: string;
+                };
+            };
         };
     };
     registrationFlow: {
+        addAttribute: string;
+        addPurpose: string;
+        attributeDisplayName: string;
+        attributeName: string;
+        attributes: string;
+        noPreference: string;
         noPolicies: string;
+        purposeDescription: string;
+        purposeLabel: string;
+        purposeName: string;
+        selectPreference: string;
         selectPolicies: string;
     };
-    notifications: {
-        create: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        delete: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        updatePolicy: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-    };
-    pages: {
-        edit: {
-            backButton: string;
-            dangerZone: {
-                actionTitle: string;
-                header: string;
-                subheader: string;
-            };
-            deleteConfirmation: {
-                assertionHint: string;
-                content: string;
-                header: string;
-                message: string;
-                primaryAction: string;
-                secondaryAction: string;
-            };
-            title: string;
-        };
-        list: {
-            actions: {
-                addPolicy: string;
-            };
-            deleteConfirmation: {
-                assertionHint: string;
-                header: string;
-                message: string;
-                content: string;
-                primaryAction: string;
-                secondaryAction: string;
-            };
-            backButton: string;
-            description: string;
-            heading: string;
-            search: {
-                placeholder: string;
-            };
-            title: string;
-        };
-        new: {
-            backButton: string;
-            title: string;
-        };
+    sidePanel: {
+        consentEdit: string;
+        consentNew: string;
+        preferenceManagementEdit: string;
+        preferenceManagementNew: string;
+        privacyPolicy: string;
+        termsOfService: string;
     };
     tabs: {
         content: { label: string };
         preview: { label: string };
-    };
-    wizard: {
-        create: {
-            form: {
-                description: {
-                    configureTranslation: string;
-                    i18nCard: {
-                        brandingRequired: string;
-                        createTitle: string;
-                        deleteError: {
-                            description: string;
-                            message: string;
-                        };
-                        deleteSuccess: {
-                            description: string;
-                            message: string;
-                        };
-                        deleteTooltip: string;
-                        editTooltip: string;
-                        i18nKey: string;
-                        keyPlaceholder: string;
-                        language: string;
-                        newTooltip: string;
-                        saveError: {
-                            description: string;
-                            message: string;
-                        };
-                        saveSuccess: {
-                            description: string;
-                            message: string;
-                        };
-                        selectKey: string;
-                        title: string;
-                        translationPlaceholder: string;
-                        translationText: string;
-                        updateTitle: string;
-                    };
-                    insertPolicyLink: string;
-                    insertPolicyLinkInvalidUrl: string;
-                    insertPolicyLinkShort: string;
-                    insertPolicyLinkTooltip: string;
-                    insertPolicyLinkNoPolicyUrl: string;
-                    insertPolicyLinkNoSelection: string;
-                    labelRoleHint: string;
-                };
-            };
-            preview: {
-                allowButton: string;
-                appLoginMessage: string;
-                consentHeader: string;
-                denyButton: string;
-                emptyDescription: string;
-                exampleDescription: string;
-                pageTitle: string;
-            };
-        };
     };
 }

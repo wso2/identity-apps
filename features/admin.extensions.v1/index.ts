@@ -16,6 +16,6 @@
  * under the License.
  */
 
+export * from "./configs";
 export * from "./extensions-manager";
 export * from "./models";
-export * from "./configs";

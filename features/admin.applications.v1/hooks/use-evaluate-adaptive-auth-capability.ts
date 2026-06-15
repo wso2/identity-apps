@@ -32,6 +32,11 @@ interface UseEvaluateAdaptiveAuthCapabilityInterface {
      */
     isAdaptiveAuthAllowed: boolean | null;
     isCheckLoading: boolean;
+    /**
+     * Whether the capability check failed. Callers should fail closed
+     * (treat adaptive auth as unavailable) when this is true.
+     */
+    isCheckError: boolean;
 }
 
 /**
@@ -61,12 +66,13 @@ const useEvaluateAdaptiveAuthCapability = (
         url: store.getState().config.endpoints.orgGovernanceEvaluate
     };
 
-    const { data, isLoading } = useRequest<OrgGovernanceEvaluateResponseInterface, RequestErrorInterface>(
+    const { data, error, isLoading } = useRequest<OrgGovernanceEvaluateResponseInterface, RequestErrorInterface>(
         shouldCheck ? requestConfig : null
     );
 
     return {
         isAdaptiveAuthAllowed: data?.allowed ?? null,
+        isCheckError: !!error,
         isCheckLoading: !!isLoading
     };
 };

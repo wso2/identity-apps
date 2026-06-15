@@ -1,5 +1,61 @@
 # @wso2is/i18n
 
+## 2.43.3
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+## 2.43.2
+
+### Patch Changes
+
+- [#10345](https://github.com/wso2/identity-apps/pull/10345) [`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5) Thanks [@KethniiImasha](https://github.com/KethniiImasha)! - Fix: show audience-specific message in API resource dropdown no options text
+
+* [#10369](https://github.com/wso2/identity-apps/pull/10369) [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve application v3 update message readability
+
+## 2.43.1
+
+### Patch Changes
+
+- [#10353](https://github.com/wso2/identity-apps/pull/10353) [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add moesif dashboards and settings pages
+
+## 2.43.0
+
+### Minor Changes
+
+- [#10356](https://github.com/wso2/identity-apps/pull/10356) [`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24) Thanks [@Thumimku](https://github.com/Thumimku)! - Add graceful refresh token rotation support.
+
+## 2.42.4
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+## 2.42.3
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+## 2.42.2
+
+### Patch Changes
+
+- [#10331](https://github.com/wso2/identity-apps/pull/10331) [`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce in flow extension configuration support to registration flow builder
+
+## 2.42.1
+
+### Patch Changes
+
+- [#10325](https://github.com/wso2/identity-apps/pull/10325) [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add missing QSG files for connections
+
+## 2.42.0
+
+### Minor Changes
+
+- [#10304](https://github.com/wso2/identity-apps/pull/10304) [`6ef23019c6c3d04ebcb9bbe5379075bce65ca30f`](https://github.com/wso2/identity-apps/commit/6ef23019c6c3d04ebcb9bbe5379075bce65ca30f) Thanks [@Shazaanashraff](https://github.com/Shazaanashraff)! - Add Dutch (nl-NL) language translations for the authentication portal, recovery portal, accounts portal, x509 certificate authentication portal, console and myaccount
+
 ## 2.41.3
 
 ### Patch Changes

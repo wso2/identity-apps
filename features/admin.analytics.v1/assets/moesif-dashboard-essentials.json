@@ -1,0 +1,3266 @@
+{
+  "dashboards": [
+    {
+      "_id": "6a0d5b2842390139f7ac4a23",
+      "name": "Authentication",
+      "dashboard_ids": [],
+      "workspace_ids": [
+        [
+          "6a0db96342390139f7ac83e7",
+          "6a0db9e042390139f7ac84f6",
+          "6a1e9f9e7f7e1a2185865c52"
+        ],
+        [
+          "6a0db9f004a4ee1e28288627",
+          "6a0d9acf04a4ee1e282870a3"
+        ],
+        [
+          "6a0da5db04a4ee1e28287918",
+          "6a0db97704a4ee1e282884a8"
+        ],
+        [
+          "6a1e9ec27f7e1a2185865c51"
+        ]
+      ],
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 1
+    },
+    {
+      "_id": "6a0d5b3042390139f7ac4a26",
+      "name": "Registrations",
+      "dashboard_ids": [],
+      "workspace_ids": [
+        [
+          "6a1e90c39ab5707f95230d67",
+          "6a1e8f049ab5707f95230c0a"
+        ],
+        [
+          "6a1e8e8f9ab5707f95230c08",
+          "6a1e8fa55bc7c56efa5e9e89"
+        ],
+        [
+          "6a1e90519ab5707f95230d63"
+        ]
+      ],
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 2
+    },
+    {
+      "_id": "6a1ea1475bc7c56efa5ea476",
+      "name": "Token Issuance",
+      "dashboard_ids": [],
+      "workspace_ids": [
+        [
+          "6a1ea2257f7e1a2185865daf",
+          "6a1ea3e67f7e1a2185865dbb"
+        ],
+        [
+          "6a1ea464353c7116a6e54aff",
+          "6a1ea347353c7116a6e54afd",
+          "6a1ea4bb7f7e1a2185865e3e"
+        ],
+        [
+          "6a1ea530353c7116a6e54c1e"
+        ]
+      ],
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 3
+    },
+    {
+      "_id": "6a0d5af342390139f7ac4a07",
+      "name": "Overview",
+      "dashboard_ids": [
+        "6a0d5b2842390139f7ac4a23",
+        "6a0d5b3042390139f7ac4a26",
+        "6a1ea1475bc7c56efa5ea476"
+      ],
+      "workspace_ids": [
+        [
+          "6a0db96342390139f7ac83e7",
+          "6a1ea2257f7e1a2185865daf",
+          "6a1ea3e67f7e1a2185865dbb",
+          "6a1e8f049ab5707f95230c0a",
+          "6a1e90c39ab5707f95230d67"
+        ],
+        [
+          "6a0db9f004a4ee1e28288627",
+          "6a1e8fa55bc7c56efa5e9e89"
+        ]
+      ],
+      "parent": null,
+      "sort_order": 0
+    }
+  ],
+  "workspaces": [
+    {
+      "_id": "6a1fac5668f9b5457fabcabb",
+      "type": "events",
+      "name": "Active Users",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.serviceProvider.raw": [
+                        "Console"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.serviceProvider.raw": [
+                            "Console"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1fac9168f9b5457fabcabc",
+      "type": "events",
+      "name": "M2M Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userType.raw": [
+                    "APPLICATION"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.existingTokenUsed": [
+                    "false"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userType.raw": [
+                        "APPLICATION"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.existingTokenUsed": [
+                        "false"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1face868f9b5457fabcac4",
+      "type": "events",
+      "name": "Total Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=b3c2d767&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1faccf8507014e56ac4629",
+      "type": "events",
+      "name": "Self Sign-Ups",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userOnboardedMethod.raw": [
+                    "SELF_SIGNUP"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userOnboardedMethod.raw": [
+                        "SELF_SIGNUP"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=17e73a23&evtcf[filtersGroups][0][filters][1][field]=metadata.userOnboardedMethod.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=SELF_SIGNUP&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1facb78507014e56ac4628",
+      "type": "events",
+      "name": "New Users",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "terms": {
+            "action_name.raw": [
+              "User-Registration"
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "terms": {
+                "action_name.raw": [
+                  "User-Registration"
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1fad0868f9b5457fabcac5",
+      "type": "events",
+      "name": "Login Success vs Failure Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "overall"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.serviceProvider.raw": [
+                              "Console"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "step"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.authStepSuccess": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.serviceProvider.raw": [
+                              "Console"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "overall"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.serviceProvider.raw": [
+                                  "Console"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "step"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.authStepSuccess": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.serviceProvider.raw": [
+                                  "Console"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Login Success": {
+                "filter": {
+                  "terms": {
+                    "metadata.eventType.raw": [
+                      "overall"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "24h",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "segment__Login Failure": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "metadata.eventType.raw": [
+                            "step"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.authStepSuccess": [
+                            "false"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "24h",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "interval": "24h",
+        "segments": [
+          {
+            "name": "Login Success",
+            "filterGroups": [
+              {
+                "id": "bf054cca",
+                "filters": [
+                  {
+                    "id": "2e2dc3c1",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "overall"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Login Failure",
+            "filterGroups": [
+              {
+                "id": "bb97e258",
+                "filters": [
+                  {
+                    "id": "52cd10d0",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "step"
+                    ]
+                  },
+                  {
+                    "id": "ab18b766",
+                    "field": "metadata.authStepSuccess",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1fad328507014e56ac462e",
+      "type": "events",
+      "name": "Registrations Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "terms": {
+            "action_name.raw": [
+              "User-Registration"
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "terms": {
+                "action_name.raw": [
+                  "User-Registration"
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.userOnboardedMethod.raw": {
+                "terms": {
+                  "field": "metadata.userOnboardedMethod.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  },
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "interval": "1d",
+        "groups": [
+          {
+            "field": "metadata.userOnboardedMethod.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a0db96342390139f7ac83e7",
+      "type": "events",
+      "name": "Active Users",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.serviceProvider.raw": [
+                        "Console"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.serviceProvider.raw": [
+                            "Console"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a0db9e042390139f7ac84f6",
+      "type": "events",
+      "name": "Login Success vs Failure",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "overall"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "step"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.authStepSuccess": [
+                          "false"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "overall"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "step"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.authStepSuccess": [
+                              "false"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Login Success": {
+                "filter": {
+                  "terms": {
+                    "metadata.eventType.raw": [
+                      "overall"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "segment__Login Failure": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "metadata.eventType.raw": [
+                            "step"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.authStepSuccess": [
+                            "false"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][1][filters][0][id]=f44a8a2b&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=a1e663e3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=096cebdf&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20&seg[segments][0][name]=Login%20Success&seg[segments][0][filterGroups][0][id]=b73479b1&seg[segments][0][filterGroups][0][filters][0][id]=7939db5c&seg[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=overall&seg[segments][1][name]=Login%20Failure&seg[segments][1][filterGroups][0][id]=f45279f3&seg[segments][1][filterGroups][0][filters][0][id]=377b153b&seg[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=step&seg[segments][1][filterGroups][0][filters][1][id]=13c4b817&seg[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[chartType]=pie",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ],
+        "segments": [
+          {
+            "name": "Login Success",
+            "filterGroups": [
+              {
+                "id": "b73479b1",
+                "filters": [
+                  {
+                    "id": "7939db5c",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "overall"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Login Failure",
+            "filterGroups": [
+              {
+                "id": "f45279f3",
+                "filters": [
+                  {
+                    "id": "377b153b",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "step"
+                    ]
+                  },
+                  {
+                    "id": "13c4b817",
+                    "field": "metadata.authStepSuccess",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "chartType": "pie"
+      }
+    },
+    {
+      "_id": "6a1e9f9e7f7e1a2185865c52",
+      "type": "events",
+      "name": "MFA Usage",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.authenticators.raw": [
+                        "NOT_AVAILABLE"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.serviceProvider.raw": [
+                        "Console"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.authenticators.raw": [
+                            "NOT_AVAILABLE"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.serviceProvider.raw": [
+                            "Console"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.authenticators.raw": {
+                "terms": {
+                  "field": "metadata.authenticators.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=4b9d6fd9&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=3c6d0e27&evtcf[filtersGroups][0][filters][2][field]=metadata.authenticators.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=NOT_AVAILABLE&evtcf[filtersGroups][0][filters][3][id]=bf4b88a7&evtcf[filtersGroups][0][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=Console&seg[groups][0][field]=metadata.authenticators.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.authenticators.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "chartType": "pie"
+      }
+    },
+    {
+      "_id": "6a0db9f004a4ee1e28288627",
+      "type": "events",
+      "name": "Login Success vs Failure Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "overall"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.serviceProvider.raw": [
+                              "Console"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "step"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.authStepSuccess": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.serviceProvider.raw": [
+                              "Console"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "overall"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.serviceProvider.raw": [
+                                  "Console"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "step"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.authStepSuccess": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.serviceProvider.raw": [
+                                  "Console"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Login Success": {
+                "filter": {
+                  "terms": {
+                    "metadata.eventType.raw": [
+                      "overall"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "24h",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "segment__Login Failure": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "metadata.eventType.raw": [
+                            "step"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.authStepSuccess": [
+                            "false"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "24h",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "interval": "24h",
+        "segments": [
+          {
+            "name": "Login Success",
+            "filterGroups": [
+              {
+                "id": "bf054cca",
+                "filters": [
+                  {
+                    "id": "2e2dc3c1",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "overall"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Login Failure",
+            "filterGroups": [
+              {
+                "id": "bb97e258",
+                "filters": [
+                  {
+                    "id": "52cd10d0",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "step"
+                    ]
+                  },
+                  {
+                    "id": "ab18b766",
+                    "field": "metadata.authStepSuccess",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a0d9acf04a4ee1e282870a3",
+      "type": "events",
+      "name": "Successful Logins Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "request.time": {
+                "date_histogram": {
+                  "field": "request.time",
+                  "interval": "24h",
+                  "time_zone": "Asia/Colombo"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  },
+                  "user_id|cardinality": {
+                    "cardinality": {
+                      "field": "user_id.raw"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=%20Total%20Succesfull%20Login&evt_ts[metrics][1][i]=641d37f2&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Total%20Unique%20Users&evt_ts[interval]=24h",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " Total Succesfull Login"
+          },
+          {
+            "i": "641d37f2",
+            "metricName": "count(distinct(user_id))",
+            "customName": "Total Unique Users"
+          }
+        ],
+        "interval": "24h"
+      }
+    },
+    {
+      "_id": "6a0da5db04a4ee1e28287918",
+      "type": "events",
+      "name": "Logins by Device",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "should": [
+                    {
+                      "exists": {
+                        "field": "request.user_agent.device.raw"
+                      }
+                    },
+                    {
+                      "exists": {
+                        "field": "request.user_agent.device"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "exists": {
+                            "field": "request.user_agent.device.raw"
+                          }
+                        },
+                        {
+                          "exists": {
+                            "field": "request.user_agent.device"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "request.user_agent.device.raw": {
+                "terms": {
+                  "field": "request.user_agent.device.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=564bd5af&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=106390bd&evtcf[filtersGroups][0][filters][2][field]=request.user_agent.device.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Logins%20By%20Device&seg[groups][0][field]=request.user_agent.device.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": "Logins By Device"
+          }
+        ],
+        "groups": [
+          {
+            "field": "request.user_agent.device.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a0db97704a4ee1e282884a8",
+      "type": "events",
+      "name": "Logins by Application",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.serviceProvider.raw": [
+                        "Console"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.serviceProvider.raw": [
+                            "Console"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.serviceProvider.raw": {
+                "terms": {
+                  "field": "metadata.serviceProvider.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=228de34f&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Login%20By%20Application&seg[groups][0][field]=metadata.serviceProvider.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": "Login By Application"
+          }
+        ],
+        "groups": [
+          {
+            "field": "metadata.serviceProvider.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1e9ec27f7e1a2185865c51",
+      "type": "events",
+      "name": "Logins by Location",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "query": {
+          "bool": {
+            "must": {
+              "geo_bounding_box": {
+                "request.geo_ip.location": {
+                  "top_left": {
+                    "lat": 69.54987728327795,
+                    "lon": -96.37207031250001
+                  },
+                  "bottom_right": {
+                    "lat": 53.14677033085084,
+                    "lon": -38.49609375000001
+                  }
+                }
+              }
+            }
+          }
+        },
+        "aggs": {
+          "geo": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "areas": {
+                "geohash_grid": {
+                  "field": "request.geo_ip.location",
+                  "precision": 5
+                },
+                "aggs": {
+                  "cell": {
+                    "geo_bounds": {
+                      "field": "request.geo_ip.location"
+                    }
+                  },
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "bounds": {
+                "geo_bounds": {
+                  "field": "request.geo_ip.location"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "map",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=cc5e6918&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&mp[metrics][0][metricName]=sum%28events%29&mp[area][top_left][lat]=69.54987728327795&mp[area][top_left][lon]=-96.37207031250001&mp[area][bottom_right][lat]=53.14677033085084&mp[area][bottom_right][lon]=-38.49609375000001&mp[viewport][center][0]=62.44834907791381&mp[viewport][center][1]=-67.45056152343751&mp[viewport][zoom]=5"
+    },
+    {
+      "_id": "6a1e90c39ab5707f95230d67",
+      "type": "events",
+      "name": "New Users",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "terms": {
+            "action_name.raw": [
+              "User-Registration"
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "terms": {
+                "action_name.raw": [
+                  "User-Registration"
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1e8f049ab5707f95230c0a",
+      "type": "events",
+      "name": "Self Sign-Ups",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userOnboardedMethod.raw": [
+                    "SELF_SIGNUP"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userOnboardedMethod.raw": [
+                        "SELF_SIGNUP"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=17e73a23&evtcf[filtersGroups][0][filters][1][field]=metadata.userOnboardedMethod.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=SELF_SIGNUP&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1e8e8f9ab5707f95230c08",
+      "type": "events",
+      "name": "Onboarding Methods",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "terms": {
+            "action_name.raw": [
+              "User-Registration"
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "terms": {
+                "action_name.raw": [
+                  "User-Registration"
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.userOnboardedMethod.raw": {
+                "terms": {
+                  "field": "metadata.userOnboardedMethod.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[groups][0][field]=metadata.userOnboardedMethod.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.userOnboardedMethod.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "chartType": "pie"
+      }
+    },
+    {
+      "_id": "6a1e8fa55bc7c56efa5e9e89",
+      "type": "events",
+      "name": "Registrations Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "terms": {
+            "action_name.raw": [
+              "User-Registration"
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "terms": {
+                "action_name.raw": [
+                  "User-Registration"
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.userOnboardedMethod.raw": {
+                "terms": {
+                  "field": "metadata.userOnboardedMethod.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  },
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "interval": "1d",
+        "groups": [
+          {
+            "field": "metadata.userOnboardedMethod.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1e90519ab5707f95230d63",
+      "type": "events",
+      "name": "Registrations by Application",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration-Flow"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.currentNodeId.raw": [
+                    "END"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration-Flow"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.currentNodeId.raw": [
+                        "END"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.applicationId.raw": {
+                "terms": {
+                  "field": "metadata.applicationId.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration-Flow&evtcf[filtersGroups][0][filters][1][id]=0480937e&evtcf[filtersGroups][0][filters][1][field]=metadata.currentNodeId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=END&seg[groups][0][field]=metadata.applicationId.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Registrations%20By%20Application&seg[chartType]=bar",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.applicationId.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": "Registrations By Application"
+          }
+        ],
+        "chartType": "bar"
+      }
+    },
+    {
+      "_id": "6a1ea2257f7e1a2185865daf",
+      "type": "events",
+      "name": "M2M Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userType.raw": [
+                    "APPLICATION"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.existingTokenUsed": [
+                    "false"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userType.raw": [
+                        "APPLICATION"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.existingTokenUsed": [
+                        "false"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1ea3e67f7e1a2185865dbb",
+      "type": "events",
+      "name": "Total Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=b3c2d767&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "hideLegend": true,
+        "singleValueSettings": true,
+        "trendInidcator": {
+          "isIncreasementGreen": "true"
+        },
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": " "
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1ea464353c7116a6e54aff",
+      "type": "events",
+      "name": "Tokens by User Type",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.userType.raw": {
+                "terms": {
+                  "field": "metadata.userType.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=a57da558&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&seg[groups][0][field]=metadata.userType.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.userType.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "chartType": "pie"
+      }
+    },
+    {
+      "_id": "6a1ea347353c7116a6e54afd",
+      "type": "events",
+      "name": "Tokens by Application",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.clientId.raw": {
+                "terms": {
+                  "field": "metadata.clientId.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-4w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=bc852580&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&seg[groups][0][field]=metadata.clientId.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.clientId.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "chartType": "pie"
+      }
+    },
+    {
+      "_id": "6a1ea4bb7f7e1a2185865e3e",
+      "type": "events",
+      "name": "Tokens by Grant Type",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.grantType.raw": {
+                "terms": {
+                  "field": "metadata.grantType.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "weight|sum": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "weight|sum": {
+                    "sum": {
+                      "field": "weight",
+                      "missing": 1
+                    }
+                  }
+                }
+              },
+              "weight|sum": {
+                "sum": {
+                  "field": "weight",
+                  "missing": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=7d23fdc6&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&evtcf[filtersGroups][0][filters][2][id]=bc8c992b&seg[groups][0][field]=metadata.grantType.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.grantType.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a1ea530353c7116a6e54c1e",
+      "type": "events",
+      "name": "Tokens Issued Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.clientId.raw": [
+                        "CONSOLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.clientId.raw": [
+                            "CONSOLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Total Token": {
+                "filter": {
+                  "match_all": {}
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "segment__M2M Token": {
+                "filter": {
+                  "terms": {
+                    "metadata.userType.raw": [
+                      "APPLICATION"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=d8b6d197&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[segments][0][name]=Total%20Token&evt_ts[segments][0][filterGroups][0][id]=68047282&evt_ts[segments][0][filterGroups][0][filters][0][id]=ad613f0d&evt_ts[segments][1][name]=M2M%20Token&evt_ts[segments][1][filterGroups][0][id]=81727c3a&evt_ts[segments][1][filterGroups][0][filters][0][id]=2467eff9&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.userType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=APPLICATION",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)"
+          }
+        ],
+        "interval": "1d",
+        "segments": [
+          {
+            "name": "Total Token",
+            "filterGroups": [
+              {
+                "id": "68047282",
+                "filters": [
+                  {
+                    "id": "ad613f0d"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M2M Token",
+            "filterGroups": [
+              {
+                "id": "81727c3a",
+                "filters": [
+                  {
+                    "id": "2467eff9",
+                    "field": "metadata.userType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "APPLICATION"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

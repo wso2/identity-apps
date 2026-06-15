@@ -204,6 +204,9 @@
                 {% endif %}
             }
         },
+        "apiResourceManagement": {
+            "blocked_api_resources": {{ blocked_api_resources | default([], true) | tojson }}
+        },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",
         "appName": "{{ console.ui.app_name }}",
@@ -673,6 +676,10 @@
                 "enabled": {% if console.applications.enabled is defined %} {{ console.applications.enabled }},
                 {% else %} true,
                 {% endif %}
+                "properties": {
+                    "maxGracefulRefreshTokenReuseLimit": {% if oauth.graceful_refresh_token_rotation.maximum_reuse_limit is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_reuse_limit }}{% else %}5{% endif %},
+                    "maxGracefulRefreshTokenRotationValidityPeriod": {% if oauth.graceful_refresh_token_rotation.maximum_validity_period is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_validity_period }}{% else %}60{% endif %}
+                },
                 "featureFlags": [
                     {% if console.applications.feature_flags is defined %}
                     {% for flag in console.applications.feature_flags %}
@@ -1038,7 +1045,7 @@
                     {% endif %}
                 ],
                 "enabled": {% if console.consents.enabled is defined %} {{ console.consents.enabled }},
-                {% else %} true,
+                {% else %} false,
                 {% endif %}
                 "scopes": {
                     {% if console.consents.scopes is defined %}

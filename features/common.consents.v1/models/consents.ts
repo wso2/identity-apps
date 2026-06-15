@@ -63,6 +63,7 @@ export interface PurposeSummaryDTOInterface {
         version: string;
     } | null;
     name: string;
+    tenantDomain?: string;
     type: string;
 }
 
@@ -117,6 +118,7 @@ export interface PurposeDTOInterface {
         policyUrl?: string;
         promptOnLogin?: string;
     };
+    tenantDomain?: string;
     type: string;
 }
 
@@ -151,6 +153,7 @@ export interface CreateElementRequestInterface {
  * Inline element to create and bind in a single request.
  */
 export interface NewElementBindingInterface {
+    description?: string;
     displayName?: string;
     mandatory?: boolean;
     name: string;
@@ -200,11 +203,13 @@ export interface SetLatestVersionRequestInterface {
 export interface ConsentInterface {
     description: string;
     displayName: string;
+    elements: PurposeElementDTOInterface[];
     id: string;
     mandatory?: boolean;
     name: string;
     policyUrl?: string;
     promptOnLogin?: string;
+    tenantDomain?: string;
     type: string;
     /**
      * Version label, e.g. "v1".
@@ -223,6 +228,7 @@ export interface ConsentListItemInterface {
     description: string;
     id: string;
     name: string;
+    tenantDomain?: string;
     type: string;
 }
 

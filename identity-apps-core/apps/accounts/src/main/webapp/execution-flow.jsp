@@ -37,6 +37,7 @@
     screenNames.add ("password-recovery");
     screenNames.add("password-reset");
     screenNames.add("password-reset-success");
+    screenNames.add("flow-extension");
 %>
 
 <%-- Branding Preferences --%>
@@ -198,6 +199,7 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
+                const [ flowMessages, setFlowMessages ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
@@ -303,7 +305,7 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
+                        const errorDetails = getI18nKeyForError(error.code, flowType, error.message, error.description);
                         let portal_url = accountsPortalUrl + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = accountsPortalUrl + "/recovery";
@@ -322,12 +324,16 @@
                         window.location.href = errorPageURL;
                     }
 
+                    setFlowMessages(flowData && flowData.data && flowData.data.messages);
+
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
                         return;
                     }
                     setFlowError(undefined);
-                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType,
+                    flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error,
+                    flowData && flowData.data && flowData.data.messages ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};
@@ -427,18 +433,6 @@
                     }
                 };
 
-                if (flowData && flowData.type === "WEBAUTHN") {
-                    return createElement(
-                        "div",
-                        { className: "registration-content-container loaded" },
-                        createElement(
-                            PasskeyEnrollment, {
-                                passkeyError: flowError
-                            }
-                        )
-                    );
-                }
-
                 const AutoLoginForm = (data) => {
                     const formRef = React.useRef();
                     const handleSubmit = () => {
@@ -467,10 +461,25 @@
                     );
                 }
 
+                // An auto-login assertion means the flow has completed. Submit the auto-login form
+                // regardless of the previous step type, so a passkey (WEBAUTHN) step that completes
+                // the flow does not get re-rendered and stall the auto-login.
                 if (userAssertion) {
                     return createElement(
                         AutoLoginForm,
                         { userAssertion: userAssertion }
+                    );
+                }
+
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
                     );
                 }
 
@@ -502,7 +511,8 @@
                                     inputs: formValues
                                 });
                             },
-                            error: flowError
+                            error: flowError,
+                            messages: flowMessages
                         }
                     )
                 );

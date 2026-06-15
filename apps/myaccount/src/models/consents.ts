@@ -251,8 +251,10 @@ export interface ConsentedPurposeInterface {
         policyUrl?: string;
         promptOnLogin?: string;
     };
-    purposeVersionId: string;
+    purposeVersionId?: string;
+    type?: string;
     version: string | null;
+    versionId?: string;
 }
 
 /**
@@ -282,5 +284,18 @@ export interface PolicyConsentItemInterface {
     state: string;
     timestamp: number;
     version: string | null;
+}
+
+export interface PreferenceManagementElementInterface {
+    displayName: string;
+    id: string;
+    name: string;
+}
+
+export interface PreferenceManagementItemInterface extends PolicyConsentItemInterface {
+    elements: PreferenceManagementElementInterface[];
+    language: string;
+    purposeDescription?: string;
+    serviceId: string;
 }
 

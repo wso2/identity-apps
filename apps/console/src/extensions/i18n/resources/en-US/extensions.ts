@@ -392,7 +392,7 @@ export const extensions: Extensions = {
         applications: {
             asgardeoTryIt: {
                 description:
-                    "You can try out different login flows of Asgardeo with our Try It app."
+                    "You can try out different login flows of WSO2 Identity Platform with our Try It app."
             },
             edit: {
                 sections: {
@@ -1583,7 +1583,8 @@ export const extensions: Extensions = {
             },
             tabs: {
                 advance: {
-                    label: "Advanced"
+                    label: "Advanced",
+                    policyManagementBanner: "Policy URLs are managed from <1>Policy Management</1>."
                 },
                 design: {
                     label: "Design",
@@ -2008,12 +2009,12 @@ export const extensions: Extensions = {
                             heading: "Customize the flow"
                         },
                         selectApplication: {
-                            content: "Choose the <1>application</1> for which you want to set up Github login.",
+                            content: "Choose the <1>application</1> for which you want to set up GitHub login.",
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Github connection.",
-                            heading: "Add a <1>Github</1> connection"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a GitHub connection.",
+                            heading: "Add a <1>GitHub</1> connection"
                         }
                     }
                 }
@@ -2497,6 +2498,94 @@ export const extensions: Extensions = {
             eventPublishing: "Events",
             emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
+        },
+        moesifAnalytics: {
+            collectorKeySettings: {
+                cancelButton: "Cancel",
+                description: "Configure the Moesif collector API key used to publish analytics events.",
+                keyField: {
+                    label: "Collector API Key",
+                    placeholder: "Enter the Moesif collector API key"
+                },
+                notifications: {
+                    updateError: {
+                        description: "An error occurred while updating the analytics configuration.",
+                        message: "Update failed"
+                    },
+                    updateSuccess: {
+                        description: "Analytics configuration updated successfully.",
+                        message: "Update successful"
+                    }
+                },
+                saveButton: "Save",
+                settingsIconTooltip: "Configure Analytics",
+                title: "Analytics Settings"
+            },
+            dashboard: {
+                errors: {
+                    loadFailure: "Failed to load the analytics dashboard. Please try again later.",
+                    portalUrlNotConfigured: "Moesif Embedded Portal URL is not configured."
+                },
+                iframeTitle: "Moesif Analytics Dashboard"
+            },
+            settingsPage: {
+                apiKeySection: {
+                    description: "Enter your Moesif collector API key to enable analytics event publishing.",
+                    existingKeyHint: "Leave blank to keep the existing key",
+                    heading: "Collector API Key"
+                },
+                description: "Configure analytics event publishing for this deployment.",
+                disableButton: "Disable",
+                pageTitle: "Analytics",
+                publishers: {
+                    authentication: "Authentication",
+                    flow: "Flow",
+                    orgSwitch: "Organization Switch",
+                    registration: "Registration",
+                    session: "Session",
+                    token: "Token"
+                },
+                publishersSection: {
+                    description: "Select which events should be published to Moesif.",
+                    heading: "Event Publishers"
+                },
+                title: "Analytics",
+                toggle: {
+                    description: "Enable analytics event publishing for this deployment.",
+                    label: "Analytic Events Publishing"
+                }
+            },
+            publisherSettings: {
+                createTitle: "Configure Analytics",
+                dangerZone: {
+                    confirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "Removing the configuration will stop all analytics event publishing and " +
+                            "delete the stored collector API key. You will need to configure it again to " +
+                            "resume publishing.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently remove the analytics " +
+                            "configuration."
+                    },
+                    deleteButton: "Remove Configuration",
+                    description: "Removing the configuration will stop all analytics event publishing. " +
+                        "This action cannot be undone.",
+                    heading: "Remove Analytics Configuration",
+                    sectionHeader: "Danger Zone"
+                },
+                enableButton: "Enable",
+                notifications: {
+                    deleteError: {
+                        description: "Failed to remove the analytics configuration.",
+                        message: "Delete failed"
+                    },
+                    deleteSuccess: {
+                        description: "Analytics configuration has been removed successfully.",
+                        message: "Configuration removed"
+                    }
+                },
+                updateTitle: "Analytics Configuration"
+            }
         },
         eventPublishing: {
             eventsConfiguration: {

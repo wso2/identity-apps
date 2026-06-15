@@ -391,7 +391,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 </div>
                                 <Text muted>
                                     Use the hosted sample application to try basic and
-                                    customized login flows of Asgardeo.
+                                    customized login flows of WSO2 Identity Platform.
                                 </Text>
                             </div>
                             <div className="try-it-card-actions">
