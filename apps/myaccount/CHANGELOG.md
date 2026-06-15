@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 4.3.6
+
+### Patch Changes
+
+- [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
+## 4.3.5
+
+### Patch Changes
+
+- [#10393](https://github.com/wso2/identity-apps/pull/10393) [`097524fc6fdeb7e7a1f521920bee48c6de11f2f5`](https://github.com/wso2/identity-apps/commit/097524fc6fdeb7e7a1f521920bee48c6de11f2f5) Thanks [@savindi7](https://github.com/savindi7)! - Bump all app versions.
+
+* [#10387](https://github.com/wso2/identity-apps/pull/10387) [`828551c05cf9df33e51508fc5402f494881c714d`](https://github.com/wso2/identity-apps/commit/828551c05cf9df33e51508fc5402f494881c714d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use defined home route path in the root route in myaccount
+
 ## 4.3.4
 
 ### Patch Changes

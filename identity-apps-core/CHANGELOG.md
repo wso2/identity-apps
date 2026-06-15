@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 5.2.3
+
+### Patch Changes
+
+- [#10381](https://github.com/wso2/identity-apps/pull/10381) [`c987aa00379225439c09b1182be7a1c2a27db56e`](https://github.com/wso2/identity-apps/commit/c987aa00379225439c09b1182be7a1c2a27db56e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix self-registration form fields being cleared on duplicate-username validation error
+
+## 5.2.2
+
+### Patch Changes
+
+- [#10393](https://github.com/wso2/identity-apps/pull/10393) [`097524fc6fdeb7e7a1f521920bee48c6de11f2f5`](https://github.com/wso2/identity-apps/commit/097524fc6fdeb7e7a1f521920bee48c6de11f2f5) Thanks [@savindi7](https://github.com/savindi7)! - Bump all app versions.
+
 ## 5.2.1
 
 ### Patch Changes

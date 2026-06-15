@@ -311,6 +311,8 @@ export class AppConstants {
             [ "POLICY_CONSENTS", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents` ],
             [ "POLICY_CONSENTS_NEW", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/new` ],
             [ "POLICY_CONSENTS_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/:id` ],
+            [ "PRIVACY_POLICY", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/privacy-policy` ],
+            [ "TERMS_OF_SERVICE", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/terms-of-service` ],
             [ "PREFERENCE_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/preference-management` ],
             [ "PREFERENCE_MANAGEMENT_NEW", `${ AppConstants.getDeveloperViewBasePath() }/preference-management/new` ],
             [ "PREFERENCE_MANAGEMENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/preference-management/:id` ],

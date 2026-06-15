@@ -1498,6 +1498,7 @@ export interface Extensions {
             tabs: {
                 advance: {
                     label: string;
+                    policyManagementBanner: string;
                 };
                 design: {
                     label: string;

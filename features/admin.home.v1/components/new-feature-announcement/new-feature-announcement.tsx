@@ -31,7 +31,7 @@ import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-f
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import { isFreeTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -189,6 +189,8 @@ export const FeatureCarousel = () => {
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
 
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
 
@@ -289,7 +291,7 @@ export const FeatureCarousel = () => {
                 setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
                 setShowPreviewFeaturesModal(true);
             },
-            title: "Customer Data Services for Asgardeo"
+            title: `Customer Data Services for ${ productName }`
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
@@ -306,7 +308,7 @@ export const FeatureCarousel = () => {
                 if (isAgentManagementFeatureEnabledForOrganization) {
                     setShowAgentFeatureAnnouncementModal(true);
                 } else {
-                    const url: string = tierName === TenantTier.FREE
+                    const url: string = isFreeTier(tierName)
                         ? `mailto:${supportEmail}`
                         : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL;
 
@@ -323,6 +325,7 @@ export const FeatureCarousel = () => {
         customerDataServiceFeatureConfig,
         isRebrandingBannerEnabled,
         isUserSurveyBannerEnabled,
+        productName,
         supportEmail,
         setSelectedPreviewFeatureToShow,
         setShowPreviewFeaturesModal,

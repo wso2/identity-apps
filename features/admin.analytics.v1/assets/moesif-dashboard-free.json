@@ -17,14 +17,14 @@
                 ]
             ],
             "parent": null,
-            "sort_order": 2
+            "sort_order": 0
         }
     ],
     "workspaces": [
         {
             "_id": "6a1fac5668f9b5457fabcabb",
             "type": "events",
-            "name": "Active User Count",
+            "name": "Active Users",
             "args": "",
             "es_query": {
                 "post_filter": {
@@ -130,7 +130,7 @@
         {
             "_id": "6a1fac9168f9b5457fabcabc",
             "type": "events",
-            "name": "M2M Token Count",
+            "name": "M2M Tokens",
             "args": "",
             "es_query": {
                 "post_filter": {
@@ -227,7 +227,7 @@
         {
             "_id": "6a1fad0868f9b5457fabcac5",
             "type": "events",
-            "name": "Login Success vs Failures Over Time",
+            "name": "Login Success vs Failure Over Time",
             "args": "",
             "es_query": {
                 "post_filter": {

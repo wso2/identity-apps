@@ -17,7 +17,7 @@
  */
 
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
-import { AutoLinkNode, LinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
+import { $isLinkNode, AutoLinkNode, LinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { InitialConfigType, LexicalComposer } from "@lexical/react/LexicalComposer";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
@@ -49,6 +49,7 @@ import {
     EditorState,
     EditorThemeClasses,
     FORMAT_TEXT_COMMAND,
+    LexicalNode,
     ParagraphNode,
     REDO_COMMAND,
     SELECTION_CHANGE_COMMAND,
@@ -69,6 +70,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import ConsentI18nConfigurationCard, { LanguageTextFieldPropsInterface } from "./consent-i18n-configuration-card";
+import { ConsentFloatingLinkEditor } from "./consent-floating-link-editor";
 
 const TEXT_ALIGN_TYPES: string[] = [ "left", "right", "center", "justify" ];
 const EMPTY_CONTENT: string = "<p class=\"rich-text-paragraph\"><br></p>";
@@ -356,6 +358,7 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
     const [ isBold, setIsBold ] = useState<boolean>(false);
     const [ isItalic, setIsItalic ] = useState<boolean>(false);
     const [ hasSelection, setHasSelection ] = useState<boolean>(false);
+    const [ isLink, setIsLink ] = useState<boolean>(false);
 
     const updateToolbar: () => void = useCallback(() => {
         const selection: BaseSelection = $getSelection();
@@ -364,6 +367,11 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
             setIsBold(selection.hasFormat("bold"));
             setIsItalic(selection.hasFormat("italic"));
             setHasSelection(!selection.isCollapsed());
+
+            const node: LexicalNode = selection.anchor.getNode();
+            const parent: LexicalNode | null = node.getParent();
+
+            setIsLink($isLinkNode(parent) || $isLinkNode(node));
         }
     }, []);
 
@@ -395,6 +403,14 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
     const handleInsertPolicyLink: () => void = (): void => {
         if (isValidPolicyUrl) {
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, policyUrl);
+        }
+    };
+
+    const handleLinkButtonClick: () => void = (): void => {
+        if (isLink) {
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+        } else if (hasSelection) {
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
         }
     };
 
@@ -462,6 +478,18 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                 >
                     <ItalicIcon />
                 </ToolbarIconButton>
+                <ToolbarDivider component="span" />
+                <ToolbarPolicyLinkButton
+                    component="button"
+                    type="button"
+                    className={ isLink ? "active" : undefined }
+                    disabled={ disabled || (!hasSelection && !isLink) }
+                    onClick={ handleLinkButtonClick }
+                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
+                >
+                    <OxygenLinkIcon />
+                    { t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
+                </ToolbarPolicyLinkButton>
                 { policyUrl !== undefined && (
                     <>
                         <ToolbarDivider component="span" />
@@ -522,6 +550,7 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
                 />
                 <HistoryPlugin />
                 <LinkPlugin />
+                <ConsentFloatingLinkEditor />
                 <HtmlSyncPlugin
                     initialHtml={ value }
                     onChange={ handleChange }
@@ -649,6 +678,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     />
                     <HistoryPlugin />
                     <LinkPlugin />
+                    <ConsentFloatingLinkEditor />
                     <HtmlSyncPlugin
                         initialHtml={ value }
                         onChange={ onChange }

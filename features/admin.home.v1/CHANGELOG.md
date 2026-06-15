@@ -1,5 +1,25 @@
 # @wso2is/admin.home.v1
 
+## 1.7.198
+
+### Patch Changes
+
+- [#10412](https://github.com/wso2/identity-apps/pull/10412) [`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for the new `FreeV2`, `PYG` and `PYG-Trial` tenant tiers. All existing `Free` tier behaviors now also apply to `FreeV2`, while `PYG` and `PYG-Trial` are treated as paid tiers.
+
+- Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14), [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e)]:
+  - @wso2is/admin.subscription.v1@1.5.227
+  - @wso2is/admin.core.v1@2.57.19
+  - @wso2is/admin.onboarding.v1@1.0.88
+
+## 1.7.197
+
+### Patch Changes
+
+- [#10396](https://github.com/wso2/identity-apps/pull/10396) [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4) Thanks [@savindi7](https://github.com/savindi7)! - Update banner title.
+
+- Updated dependencies []:
+  - @wso2is/admin.onboarding.v1@1.0.87
+
 ## 1.7.196
 
 ### Patch Changes

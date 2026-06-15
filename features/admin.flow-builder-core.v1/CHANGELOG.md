@@ -1,5 +1,17 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.219
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+- Updated dependencies [[`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5)]:
+  - @wso2is/admin.branding.v1@2.32.169
+  - @wso2is/admin.core.v1@2.57.18
+  - @wso2is/admin.registration-flow-builder.v1@0.10.176
+  - @wso2is/common.consents.v1@1.0.3
+
 ## 0.10.218
 
 ### Patch Changes

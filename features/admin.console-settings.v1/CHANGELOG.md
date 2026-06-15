@@ -1,5 +1,15 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.46
+
+### Patch Changes
+
+- [#10412](https://github.com/wso2/identity-apps/pull/10412) [`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for the new `FreeV2`, `PYG` and `PYG-Trial` tenant tiers. All existing `Free` tier behaviors now also apply to `FreeV2`, while `PYG` and `PYG-Trial` are treated as paid tiers.
+
+- Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14), [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e)]:
+  - @wso2is/admin.subscription.v1@1.5.227
+  - @wso2is/admin.core.v1@2.57.19
+
 ## 2.26.45
 
 ### Patch Changes

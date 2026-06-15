@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/identity-apps-core",
-    "version": "5.2.1",
+    "version": "5.2.3",
     "private": true,
     "description": "WSO2 Identity Server Authentication Portal",
     "author": "WSO2",
