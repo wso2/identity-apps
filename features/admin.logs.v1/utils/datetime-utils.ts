@@ -22,12 +22,12 @@ import dayjs from "dayjs";
  * Returns a date-time string in human readable format
  *
  * @param dateString - (string)
- * @returns formatted date time string i.e., "16 Sep, 2022 | 15:19:16"
+ * @returns formatted date time string i.e., "16 Sep, 2022 | 15:19:16 GMT+05:30"
  */
 const formatTimestampToDateTime = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return dayjs(dateString).format("DD MMM, YYYY | HH:mm:ss");
+    return dayjs(dateString).format("DD MMM, YYYY | HH:mm:ss [GMT]Z");
 };
 
 /**
@@ -46,12 +46,12 @@ const getDateFromTimestamp = (dateString: string): string => {
  * Returns a time string in human readable format
  *
  * @param dateString - (string)
- * @returns formatted date time string i.e., "15:19:16"
+ * @returns formatted date time string i.e., "15:19:16 GMT+05:30"
  */
 const getTimeFromTimestamp = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return dayjs(dateString).format("HH:mm:ss");
+    return dayjs(dateString).format("HH:mm:ss [GMT]Z");
 };
 
 
