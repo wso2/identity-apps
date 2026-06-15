@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Image from "@oxygen-ui/react/Image";
 import { PredefinedThemes } from "@wso2is/common.branding.v1/models";
@@ -29,6 +30,21 @@ import { ReactComponent as Pulse } from "./pulse.svg";
 import { useGetBrandingPreference } from "../../../api";
 import { AppConstants } from "../../../constants";
 import { commonConfig } from "../../../extensions";
+
+const PulseLoader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    "& svg": {
+        animation: "app-pre-loader-pulse 2s ease-in-out infinite",
+        height: theme.spacing(10),
+        width: theme.spacing(10)
+    },
+    "@keyframes app-pre-loader-pulse": {
+        "0%, 100%": { opacity: 1 },
+        "50%": { opacity: 0.5 }
+    },
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center"
+}));
 
 /**
  * Pre loader component props interface.
@@ -80,25 +96,9 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
         <div className="pre-loader-wrapper" data-testid={ `${ componentId }-wrapper` }>
             {
                 AppConstants.getTenant() === AppConstants.getSuperTenant() && !commonConfig?.enableDefaultPreLoader ? (
-                    <Box
-                        data-testid={ componentId }
-                        sx={ {
-                            "& svg": {
-                                animation: "app-pre-loader-pulse 2s ease-in-out infinite",
-                                height: 80,
-                                width: 80
-                            },
-                            "@keyframes app-pre-loader-pulse": {
-                                "0%, 100%": { opacity: 1 },
-                                "50%": { opacity: 0.5 }
-                            },
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "center"
-                        } }
-                    >
+                    <PulseLoader data-testid={ componentId }>
                         <Pulse data-testid={ `${ componentId }-svg` } />
-                    </Box>
+                    </PulseLoader>
                 ) : (
                     <>
                         {

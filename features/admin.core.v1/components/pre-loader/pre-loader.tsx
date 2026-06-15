@@ -16,12 +16,28 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ReactComponent as Pulse } from "./pulse.svg";
+
+const PulseLoader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    "& svg": {
+        animation: "app-pre-loader-pulse 2s ease-in-out infinite",
+        height: theme.spacing(10),
+        width: theme.spacing(10)
+    },
+    "@keyframes app-pre-loader-pulse": {
+        "0%, 100%": { opacity: 1 },
+        "50%": { opacity: 0.5 }
+    },
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center"
+}));
 
 /**
  * Pre loader component props interface.
@@ -48,25 +64,9 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
             { commonConfig?.enableDefaultPreLoader ? (
                 <ContentLoader data-componentid={ componentId } />
             ) : (
-                <Box
-                    data-componentid={ componentId }
-                    sx={ {
-                        "& svg": {
-                            animation: "app-pre-loader-pulse 2s ease-in-out infinite",
-                            height: 80,
-                            width: 80
-                        },
-                        "@keyframes app-pre-loader-pulse": {
-                            "0%, 100%": { opacity: 1 },
-                            "50%": { opacity: 0.5 }
-                        },
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "center"
-                    } }
-                >
+                <PulseLoader data-componentid={ componentId }>
                     <Pulse data-componentid={ `${componentId}-svg` } />
-                </Box>
+                </PulseLoader>
             ) }
         </div>
     );
