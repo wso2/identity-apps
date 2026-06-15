@@ -36,6 +36,30 @@ export const devices: DevicesNS = {
         placeholder: "Search by device name"
     },
     assurancePolicies: {
+        advancedSearch: {
+            placeholder: "Search by policy name",
+            emptyResults: {
+                clearButton: "Clear search query",
+                subtitles: {
+                    0: "We could not find any results for \"{{query}}\"",
+                    1: "Please try a different search term."
+                },
+                title: "No results found"
+            },
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        placeholder: "E.g. Policy name etc."
+                    },
+                    filterCondition: {
+                        placeholder: "E.g. Starts with etc."
+                    },
+                    filterValue: {
+                        placeholder: "Enter value to search"
+                    }
+                }
+            }
+        },
         wizard: {
             heading: "Create Device Assurance Policy",
             subHeading: "Create a new device assurance policy for your organization.",
@@ -160,6 +184,7 @@ export const devices: DevicesNS = {
                 }
             }
         },
+        backButton: "Go back to Login and Registration",
         placeholders: {
             empty: {
                 subtitles: {
@@ -210,12 +235,12 @@ export const devices: DevicesNS = {
         },
         title: "Device Assurance Policies"
     },
-    description: "View and manage devices registered by users in your organization.",
+    description: "View and manage devices enrolled by users in your organization.",
     list: {
         columns: {
             actions: "Actions",
             deviceName: "Device",
-            registeredAt: "Registered At",
+            registeredAt: "Enrolled At",
             status: "Status",
             user: "User"
         },
@@ -224,7 +249,7 @@ export const devices: DevicesNS = {
                 assertionHint: "Please confirm your action.",
                 content: "This action is irreversible. The device will be permanently removed.",
                 header: "Are you sure?",
-                message: "If you delete this device, the user will need to re-register it."
+                message: "If you delete this device, the user will need to re-enroll it."
             }
         }
     },
@@ -249,7 +274,7 @@ export const devices: DevicesNS = {
     placeholders: {
         empty: {
             subtitles: {
-                0: "There are no registered devices in your organization yet."
+                0: "There are no enrolled devices in your organization yet."
             },
             title: "No Devices"
         },
@@ -262,9 +287,9 @@ export const devices: DevicesNS = {
             title: "No results found"
         }
     },
-    title: "Registered Devices",
+    title: "Enrolled Devices",
     detail: {
-        backButton: "Go back to Registered Devices",
+        backButton: "Go back to Enrolled Devices",
         notifications: {
             fetch: {
                 genericError: {
@@ -278,7 +303,7 @@ export const devices: DevicesNS = {
                 fields: {
                     deviceModel: "Model",
                     deviceName: "Device Name",
-                    registeredAt: "Registered At",
+                    registeredAt: "Enrolled At",
                     status: "Status"
                 },
                 heading: "Device Information"
@@ -297,7 +322,7 @@ export const devices: DevicesNS = {
                     email: "Email",
                     username: "Username"
                 },
-                heading: "Registered User",
+                heading: "Enrolled User",
                 notFound: "User details could not be loaded."
             }
         }

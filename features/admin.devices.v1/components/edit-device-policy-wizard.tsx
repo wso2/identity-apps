@@ -63,21 +63,22 @@ import {
 } from "semantic-ui-react";
 import { ReactComponent as DeviceOutlineIcon } from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon } from "../assets/icons/settings-outline.svg";
-import { updateDevicePolicyMulti } from "../api/device-policies";
+import { updateDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
     DevicePlatformType,
     DevicePolicyExpressionInterface,
     DevicePolicyFieldDefinitionInterface,
-    DevicePolicyPlatformRuleResponseInterface,
     PolicyExpressionInterface,
+    PolicyResourceRequestInterface,
+    PolicyResourceResponseInterface,
     PolicyRuleInterface
 } from "../models/devices";
 
 interface EditDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
     policyId: string;
     initialName: string;
-    initialRules: DevicePolicyPlatformRuleResponseInterface[];
+    initialRules: PolicyResourceResponseInterface[];
     onClose: () => void;
     onSuccess: () => void;
 }
@@ -183,7 +184,7 @@ const mapToConditionsMeta = (
         );
 
 const convertApiRuleToRuleFormat = (
-    platformRule: DevicePolicyPlatformRuleResponseInterface
+    platformRule: PolicyResourceResponseInterface
 ): RuleWithoutIdInterface | null => {
     const groups: { expressions: DevicePolicyExpressionInterface[] }[] =
         platformRule.rule?.rules ?? [];
@@ -293,7 +294,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
 
     const selectedPlatforms: DevicePlatformType[] = useMemo(
         (): DevicePlatformType[] => initialRules.map(
-            (r: DevicePolicyPlatformRuleResponseInterface): DevicePlatformType => r.platform
+            (r: PolicyResourceResponseInterface): DevicePlatformType => r.target as DevicePlatformType
         ),
         [ initialRules ]
     );
@@ -303,10 +304,10 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             initialRules.reduce(
                 (
                     acc: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>,
-                    r: DevicePolicyPlatformRuleResponseInterface
+                    r: PolicyResourceResponseInterface
                 ) => ({
                     ...acc,
-                    [r.platform]: convertApiRuleToRuleFormat(r)
+                    [r.target]: convertApiRuleToRuleFormat(r)
                 }),
                 {}
             ),
@@ -318,10 +319,10 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             initialRules.reduce(
                 (
                     acc: Partial<Record<DevicePlatformType, boolean>>,
-                    r: DevicePolicyPlatformRuleResponseInterface
+                    r: PolicyResourceResponseInterface
                 ) => ({
                     ...acc,
-                    [r.platform]: (r.rule?.rules?.length ?? 0) > 0
+                    [r.target]: (r.rule?.rules?.length ?? 0) > 0
                 }),
                 {}
             ),
@@ -440,15 +441,16 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                 getRuleInstanceValue() as RuleWithoutIdInterface | null;
         }
 
-        const rules: { platform: DevicePlatformType; rule: PolicyRuleInterface }[] =
+        const resources: PolicyResourceRequestInterface[] =
             selectedPlatforms.map(
-                (p: DevicePlatformType) => ({
-                    platform: p,
-                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null)
+                (p: DevicePlatformType): PolicyResourceRequestInterface => ({
+                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null),
+                    resourceType: "RULE",
+                    target: p
                 })
             );
 
-        updateDevicePolicyMulti(policyId, { name: policyName.trim(), rules })
+        updateDevicePolicy(policyId, { name: policyName.trim(), resources })
             .then((): void => {
                 dispatch(addAlert({
                     description: t(

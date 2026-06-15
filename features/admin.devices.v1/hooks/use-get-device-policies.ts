@@ -23,25 +23,34 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { DevicePolicyResponseInterface } from "../models/devices";
+import { PolicyListResponseInterface } from "../models/devices";
 
 /**
- * Hook to fetch all device policies for the tenant.
+ * Hook to fetch a paginated list of device policies for the tenant.
  *
- * @returns `RequestResultInterface<DevicePolicyResponseInterface[], RequestErrorInterface>`
+ * @param limit  - Maximum number of records to return.
+ * @param offset - Number of records to skip.
+ * @param filter - Name filter string (case-insensitive contains).
+ * @returns `RequestResultInterface<PolicyListResponseInterface, RequestErrorInterface>`
  */
-export const useGetDevicePolicies = (): RequestResultInterface<
-    DevicePolicyResponseInterface[],
-    RequestErrorInterface
-> => {
+export const useGetDevicePolicies = (
+    limit?: number,
+    offset?: number,
+    filter?: string
+): RequestResultInterface<PolicyListResponseInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
+        params: {
+            filter: filter || undefined,
+            limit,
+            offset
+        },
         url: store.getState().config.endpoints.devicePolicies
     };
 
     const { data, error, isLoading, isValidating, mutate } =
-        useRequest<DevicePolicyResponseInterface[], RequestErrorInterface>(requestConfig);
+        useRequest<PolicyListResponseInterface, RequestErrorInterface>(requestConfig);
 
     return { data, error, isLoading, isValidating, mutate };
 };

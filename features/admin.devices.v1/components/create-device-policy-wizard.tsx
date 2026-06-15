@@ -65,12 +65,13 @@ import {
 } from "semantic-ui-react";
 import { ReactComponent as DeviceOutlineIcon } from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon } from "../assets/icons/settings-outline.svg";
-import { createDevicePolicyMulti } from "../api/device-policies";
+import { createDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
     DevicePlatformType,
     DevicePolicyFieldDefinitionInterface,
     PolicyExpressionInterface,
+    PolicyResourceRequestInterface,
     PolicyRuleInterface
 } from "../models/devices";
 
@@ -502,15 +503,16 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
                 getRuleInstanceValue() as RuleWithoutIdInterface | null;
         }
 
-        const rules: { platform: DevicePlatformType; rule: PolicyRuleInterface }[] =
+        const resources: PolicyResourceRequestInterface[] =
             selectedPlatforms.map(
-                (p: DevicePlatformType) => ({
-                    platform: p,
-                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null)
+                (p: DevicePlatformType): PolicyResourceRequestInterface => ({
+                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null),
+                    resourceType: "RULE",
+                    target: p
                 })
             );
 
-        createDevicePolicyMulti({ name: policyName.trim(), rules })
+        createDevicePolicy({ name: policyName.trim(), resources })
             .then((): void => {
                 dispatch(addAlert({
                     description: t(

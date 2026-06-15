@@ -71,6 +71,30 @@ export interface DevicesNS {
         };
     };
     assurancePolicies: {
+        advancedSearch: {
+            placeholder: string;
+            emptyResults: {
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+                clearButton: string;
+            };
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        placeholder: string;
+                    };
+                    filterCondition: {
+                        placeholder: string;
+                    };
+                    filterValue: {
+                        placeholder: string;
+                    };
+                };
+            };
+        };
         wizard: {
             heading: string;
             subHeading: string;
@@ -196,6 +220,7 @@ export interface DevicesNS {
                 };
             };
         };
+        backButton: string;
         placeholders: {
             empty: {
                 title: string;

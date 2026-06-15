@@ -34,7 +34,7 @@ export interface DevicePatchRequestInterface {
 export interface PolicyExpressionInterface {
     field: string;
     operator: string;
-    value: string | number | boolean;
+    value: string;
 }
 
 export interface PolicyRuleInterface {
@@ -42,19 +42,15 @@ export interface PolicyRuleInterface {
     expressions: PolicyExpressionInterface[];
 }
 
-export interface DevicePolicyRequestInterface {
-    name: string;
+export interface PolicyResourceRequestInterface {
+    target: string;
+    resourceType?: "RULE" | "ACTION";
     rule: PolicyRuleInterface;
 }
 
-export interface DevicePlatformRuleInterface {
-    platform: DevicePlatformType;
-    rule: PolicyRuleInterface;
-}
-
-export interface DevicePolicyCreateRequestInterface {
+export interface PolicyRequestInterface {
     name: string;
-    rules: DevicePlatformRuleInterface[];
+    resources: PolicyResourceRequestInterface[];
 }
 
 export interface DevicePolicyExpressionValueInterface {
@@ -77,24 +73,37 @@ export interface DevicePolicyFullRuleInterface {
     rules: DevicePolicyRuleGroupInterface[];
 }
 
-export interface DevicePolicyPlatformRuleResponseInterface {
+export interface PolicyResourceResponseInterface {
     id: string;
-    ruleId: string;
-    platform: DevicePlatformType;
-    rule: DevicePolicyFullRuleInterface;
+    target: string;
+    resourceType: "RULE" | "ACTION";
+    resourceId: string;
+    rule?: DevicePolicyFullRuleInterface;
 }
 
 export interface DevicePolicyResponseInterface {
     id: string;
     name: string;
-    ruleId?: string;
-    rule?: DevicePolicyFullRuleInterface;
-    rules?: DevicePolicyPlatformRuleResponseInterface[];
+    resources?: PolicyResourceResponseInterface[];
 }
 
-export interface DevicePolicyMultiUpdateRequestInterface {
+export interface PolicyListItemInterface {
+    id: string;
     name: string;
-    rules: DevicePlatformRuleInterface[];
+    self?: string;
+}
+
+export interface PolicyListLinkInterface {
+    href: string;
+    rel: string;
+}
+
+export interface PolicyListResponseInterface {
+    totalResults: number;
+    startIndex: number;
+    count: number;
+    policies: PolicyListItemInterface[];
+    links?: PolicyListLinkInterface[];
 }
 
 export type DevicePlatformType = "android" | "ios" | "macos" | "windows";

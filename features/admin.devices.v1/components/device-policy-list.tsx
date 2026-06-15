@@ -27,6 +27,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    LinkButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -35,12 +36,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { deleteDevicePolicy } from "../api/device-policies";
-import { DevicePolicyResponseInterface } from "../models/devices";
+import { PolicyListItemInterface } from "../models/devices";
 
 interface DevicePolicyListPropsInterface extends IdentifiableComponentInterface {
     isLoading: boolean;
-    list: DevicePolicyResponseInterface[];
+    list: PolicyListItemInterface[];
     onPolicyDelete: () => void;
+    onSearchQueryClear?: () => void;
+    searchQuery?: string;
 }
 
 const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
@@ -50,16 +53,18 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
         "data-componentid": componentId = "device-policy-list",
         isLoading,
         list,
-        onPolicyDelete
+        onPolicyDelete,
+        onSearchQueryClear,
+        searchQuery
     } = props;
 
     const dispatch: ReturnType<typeof useDispatch> = useDispatch();
     const { t } = useTranslation();
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
-    const [ deletingPolicy, setDeletingPolicy ] = useState<DevicePolicyResponseInterface | null>(null);
+    const [ deletingPolicy, setDeletingPolicy ] = useState<PolicyListItemInterface | null>(null);
 
-    const handleRowClick = (_e: SyntheticEvent, policy: DevicePolicyResponseInterface): void => {
+    const handleRowClick = (_e: SyntheticEvent, policy: PolicyListItemInterface): void => {
         history.push(AppConstants.getPaths().get("DEVICE_POLICY_EDIT").replace(":id", policy.id));
     };
 
@@ -92,7 +97,7 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
             dataIndex: "name",
             id: "name",
             key: "name",
-            render: (policy: DevicePolicyResponseInterface): ReactNode => (
+            render: (policy: PolicyListItemInterface): ReactNode => (
                 <Header
                     image
                     as="h6"
@@ -113,9 +118,6 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
                     />
                     <Header.Content>
                         { policy.name }
-                        { policy.ruleId && (
-                            <Header.Subheader>{ policy.ruleId }</Header.Subheader>
-                        ) }
                     </Header.Content>
                 </Header>
             ),
@@ -136,7 +138,7 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
             "data-componentid": `${ componentId }-item-delete-button`,
             hidden: (): boolean => false,
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (_e: SyntheticEvent, policy: DevicePolicyResponseInterface): void => {
+            onClick: (_e: SyntheticEvent, policy: PolicyListItemInterface): void => {
                 setDeletingPolicy(policy);
                 setShowDeleteConfirmation(true);
             },
@@ -145,20 +147,44 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
         }
     ];
 
-    const renderPlaceholder = (): ReactElement => (
-        <EmptyPlaceholder
-            className="list-placeholder mr-0"
-            image={ getEmptyPlaceholderIllustrations().newList }
-            imageSize="tiny"
-            subtitle={ [ t("devices:assurancePolicies.placeholders.empty.subtitles.0") ] }
-            title={ t("devices:assurancePolicies.placeholders.empty.title") }
-            data-componentid={ `${ componentId }-empty-placeholder` }
-        />
-    );
+    const renderPlaceholder = (): ReactElement => {
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("devices:assurancePolicies.advancedSearch.emptyResults.clearButton") }
+                        </LinkButton>
+                    ) }
+                    className="list-placeholder mr-0"
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    subtitle={ [
+                        t("devices:assurancePolicies.advancedSearch.emptyResults.subtitles.0",
+                            { query: searchQuery }),
+                        t("devices:assurancePolicies.advancedSearch.emptyResults.subtitles.1")
+                    ] }
+                    title={ t("devices:assurancePolicies.advancedSearch.emptyResults.title") }
+                    data-componentid={ `${ componentId }-empty-search-placeholder` }
+                />
+            );
+        }
+
+        return (
+            <EmptyPlaceholder
+                className="list-placeholder mr-0"
+                image={ getEmptyPlaceholderIllustrations().newList }
+                imageSize="tiny"
+                subtitle={ [ t("devices:assurancePolicies.placeholders.empty.subtitles.0") ] }
+                title={ t("devices:assurancePolicies.placeholders.empty.title") }
+                data-componentid={ `${ componentId }-empty-placeholder` }
+            />
+        );
+    };
 
     return (
         <>
-            <DataTable<DevicePolicyResponseInterface>
+            <DataTable<PolicyListItemInterface>
                 className="device-policies-table"
                 isLoading={ isLoading }
                 actions={ resolveTableActions() }

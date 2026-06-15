@@ -467,8 +467,10 @@ export class AppConstants {
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
             [ "DEVICES", `${ AppConstants.getAdminViewBasePath() }/devices` ],
-            [ "DEVICE_ASSURANCE_POLICIES", `${ AppConstants.getAdminViewBasePath() }/devices/assurance-policies` ],
-            [ "DEVICE_POLICY_EDIT", `${ AppConstants.getAdminViewBasePath() }/devices/assurance-policies/:id` ],
+            [ "DEVICE_ASSURANCE_POLICIES",
+                `${ AppConstants.getAdminViewBasePath() }/login-and-registration/device-assurance-policies` ],
+            [ "DEVICE_POLICY_EDIT",
+                `${ AppConstants.getAdminViewBasePath() }/login-and-registration/device-assurance-policies/:id` ],
             [ "DEVICE_DETAIL", `${ AppConstants.getAdminViewBasePath() }/devices/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
             [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]

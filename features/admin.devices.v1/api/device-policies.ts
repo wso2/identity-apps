@@ -22,11 +22,9 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import {
-    DevicePolicyCreateRequestInterface,
     DevicePolicyFieldDefinitionInterface,
-    DevicePolicyMultiUpdateRequestInterface,
-    DevicePolicyRequestInterface,
-    DevicePolicyResponseInterface
+    DevicePolicyResponseInterface,
+    PolicyRequestInterface
 } from "../models/devices";
 
 const httpClient: HttpClientInstance =
@@ -74,28 +72,7 @@ export const getDevicePolicyById = (policyId: string): Promise<DevicePolicyRespo
  * @returns The created device policy.
  */
 export const createDevicePolicy = (
-    payload: DevicePolicyRequestInterface
-): Promise<DevicePolicyResponseInterface> => {
-    const requestConfig: RequestConfigInterface = {
-        data: payload,
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.POST,
-        url: store.getState().config.endpoints.devicePolicies
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<DevicePolicyResponseInterface>) => Promise.resolve(response.data))
-        .catch((error: unknown) => Promise.reject(error));
-};
-
-/**
- * Creates a new device policy using the multi-platform rule format.
- *
- * @param payload - Multi-platform policy request body.
- * @returns The created device policy.
- */
-export const createDevicePolicyMulti = (
-    payload: DevicePolicyCreateRequestInterface
+    payload: PolicyRequestInterface
 ): Promise<DevicePolicyResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
@@ -118,30 +95,7 @@ export const createDevicePolicyMulti = (
  */
 export const updateDevicePolicy = (
     policyId: string,
-    payload: DevicePolicyRequestInterface
-): Promise<DevicePolicyResponseInterface> => {
-    const requestConfig: RequestConfigInterface = {
-        data: payload,
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.PUT,
-        url: `${ store.getState().config.endpoints.devicePolicies }/${ policyId }`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<DevicePolicyResponseInterface>) => Promise.resolve(response.data))
-        .catch((error: unknown) => Promise.reject(error));
-};
-
-/**
- * Updates an existing device policy using the multi-platform rule format.
- *
- * @param policyId - ID of the device policy.
- * @param payload - Multi-platform policy request body.
- * @returns The updated device policy.
- */
-export const updateDevicePolicyMulti = (
-    policyId: string,
-    payload: DevicePolicyMultiUpdateRequestInterface
+    payload: PolicyRequestInterface
 ): Promise<DevicePolicyResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
