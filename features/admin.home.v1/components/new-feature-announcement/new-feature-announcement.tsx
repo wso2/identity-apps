@@ -31,7 +31,7 @@ import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-f
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import { isFreeTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -308,7 +308,7 @@ export const FeatureCarousel = () => {
                 if (isAgentManagementFeatureEnabledForOrganization) {
                     setShowAgentFeatureAnnouncementModal(true);
                 } else {
-                    const url: string = tierName === TenantTier.FREE
+                    const url: string = isFreeTier(tierName)
                         ? `mailto:${supportEmail}`
                         : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL;
 

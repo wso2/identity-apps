@@ -51,7 +51,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { useTrialDetails } from "@wso2is/admin.subscription.v1/hooks/use-trial-details";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import { isFreeTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
@@ -487,7 +487,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
-        (tierName === TenantTier.FREE || tenantHasTrial) &&
+        (isFreeTier(tierName) || tenantHasTrial) &&
             billingPortalURL &&
             !isPrivilegedUser &&
             window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
