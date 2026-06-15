@@ -16,34 +16,37 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
 import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import { DevicePolicyResponseInterface } from "../models/devices";
+import { HttpMethods } from "@wso2is/core/models";
+import { DevicePolicyFieldDefinitionInterface, DevicePlatformType } from "../models/device-policy";
 
 /**
- * Hook to fetch a single device policy by ID.
+ * Hook to fetch device policy field metadata for a given platform.
  *
- * @param policyId - The policy ID to fetch.
+ * @param platform - Platform to filter metadata by.
  * @param shouldFetch - Whether to trigger the request.
- * @returns SWR result with the device policy.
+ * @returns SWR result with field definitions.
  */
-const useGetDevicePolicyById = (
-    policyId: string,
+const useGetDevicePolicyMetadata = (
+    platform: DevicePlatformType | null,
     shouldFetch: boolean = true
-): RequestResultInterface<DevicePolicyResponseInterface, RequestErrorInterface> => {
+): RequestResultInterface<DevicePolicyFieldDefinitionInterface[], RequestErrorInterface> => {
+    const baseUrl: string = store.getState().config.endpoints.devicePolicyMetadata;
+    const url: string = platform ? `${ baseUrl }?platform=${ platform }` : baseUrl;
+
     const requestConfig: { url: string; method: string; headers: Record<string, string> } = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.devicePolicies }/${ policyId }`
+        url
     };
 
     const { data, isLoading, isValidating, error, mutate } = useRequest<
-        DevicePolicyResponseInterface,
+        DevicePolicyFieldDefinitionInterface[],
         RequestErrorInterface
-    >(shouldFetch ? requestConfig : null);
+    >(shouldFetch && platform ? requestConfig : null);
 
     return { data, error, isLoading, isValidating, mutate };
 };
 
-export default useGetDevicePolicyById;
+export default useGetDevicePolicyMetadata;

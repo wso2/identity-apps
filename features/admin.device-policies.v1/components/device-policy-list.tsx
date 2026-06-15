@@ -36,7 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { deleteDevicePolicy } from "../api/device-policies";
-import { PolicyListItemInterface } from "../models/devices";
+import { PolicyListItemInterface } from "../models/device-policy";
 
 interface DevicePolicyListPropsInterface extends IdentifiableComponentInterface {
     isLoading: boolean;

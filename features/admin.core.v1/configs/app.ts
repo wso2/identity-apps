@@ -19,6 +19,7 @@
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
+import { getDevicePoliciesResourceEndpoints } from "@wso2is/admin.device-policies.v1/configs/endpoints";
 import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
@@ -382,6 +383,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getDevicesResourceEndpoints(this.resolveServerHost()),
+            ...getDevicePoliciesResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),

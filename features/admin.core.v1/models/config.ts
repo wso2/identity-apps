@@ -28,6 +28,7 @@ import {
     WorkflowAssociationsResourceEndpointsInterface,
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
+import { DevicePoliciesResourceEndpointsInterface } from "@wso2is/admin.device-policies.v1/models/endpoints";
 import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
@@ -860,7 +861,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface,
-    DevicesResourceEndpointsInterface {
+    DevicesResourceEndpointsInterface,
+    DevicePoliciesResourceEndpointsInterface {
 
     CORSOrigins: string;
     copilot: string;

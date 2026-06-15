@@ -39,7 +39,7 @@ import {
     DevicePlatformType,
     DevicePolicyExpressionInterface,
     PolicyResourceResponseInterface
-} from "../models/devices";
+} from "../models/device-policy";
 
 type DevicePolicyEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 

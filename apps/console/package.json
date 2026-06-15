@@ -49,6 +49,7 @@
         "@wso2is/admin.actions.v1": "^1.15.8",
         "@wso2is/admin.administrators.v1": "^2.29.210",
         "@wso2is/admin.agents.v1": "workspace:^",
+        "@wso2is/admin.device-policies.v1": "workspace:^",
         "@wso2is/admin.devices.v1": "workspace:^",
         "@wso2is/admin.alternative-login-identifier.v1": "^1.5.207",
         "@wso2is/admin.analytics.v1": "workspace:^",

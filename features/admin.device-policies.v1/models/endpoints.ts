@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface DevicesResourceEndpointsInterface {
-    devices: string;
-    userDevices: string;
+export interface DevicePoliciesResourceEndpointsInterface {
+    devicePolicies: string;
+    devicePolicyMetadata: string;
 }

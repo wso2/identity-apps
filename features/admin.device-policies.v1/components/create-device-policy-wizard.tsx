@@ -31,11 +31,7 @@ import {
     ConditionExpressionMetaInterface,
     ConditionExpressionsMetaDataInterface
 } from "@wso2is/admin.rules.v1/models/meta";
-import {
-    ConditionExpressionWithoutIdInterface,
-    RuleConditionWithoutIdInterface,
-    RuleWithoutIdInterface
-} from "@wso2is/admin.rules.v1/models/rules";
+import { RuleConditionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,10 +39,12 @@ import {
     Heading,
     LinkButton,
     PrimaryButton,
+    SelectionCard,
     Steps
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
+    ChangeEvent,
     FunctionComponent,
     ReactElement,
     SVGProps,
@@ -57,46 +55,48 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import {
+    Card,
+    Form,
     Grid,
     Icon,
+    Input,
+    InputOnChangeData,
     Modal
 } from "semantic-ui-react";
 import { ReactComponent as DeviceOutlineIcon } from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon } from "../assets/icons/settings-outline.svg";
-import { updateDevicePolicy } from "../api/device-policies";
+import { createDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
     DevicePlatformType,
-    DevicePolicyExpressionInterface,
     DevicePolicyFieldDefinitionInterface,
     PolicyExpressionInterface,
     PolicyResourceRequestInterface,
-    PolicyResourceResponseInterface,
     PolicyRuleInterface
-} from "../models/devices";
+} from "../models/device-policy";
 
-interface EditDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
-    policyId: string;
-    initialName: string;
-    initialRules: PolicyResourceResponseInterface[];
+interface CreateDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
     onClose: () => void;
     onSuccess: () => void;
 }
 
 enum WizardStep {
-    EXECUTION_RULES = 0,
-    REVIEW = 1
+    BASIC_DETAILS = 0,
+    EXECUTION_RULES = 1,
+    REVIEW = 2
 }
 
 interface PlatformDefinitionInterface {
     key: DevicePlatformType;
     label: string;
+    description: string;
     logo: FunctionComponent | string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Styled components                                                   */
 /* ------------------------------------------------------------------ */
+
 
 const StyledPlatformTabBar = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -183,34 +183,6 @@ const mapToConditionsMeta = (
             })
         );
 
-const convertApiRuleToRuleFormat = (
-    platformRule: PolicyResourceResponseInterface
-): RuleWithoutIdInterface | null => {
-    const groups: { expressions: DevicePolicyExpressionInterface[] }[] =
-        platformRule.rule?.rules ?? [];
-
-    if (groups.length === 0) {
-        return null;
-    }
-
-    const rules: RuleConditionWithoutIdInterface[] = groups.map(
-        (group: { expressions: DevicePolicyExpressionInterface[] }): RuleConditionWithoutIdInterface => {
-            const expressions: ConditionExpressionWithoutIdInterface[] =
-                (group.expressions ?? []).map(
-                    (expr: DevicePolicyExpressionInterface): ConditionExpressionWithoutIdInterface => ({
-                        field: expr.field,
-                        operator: expr.operator,
-                        value: expr.value?.value ?? ""
-                    })
-                );
-
-            return { condition: "AND", expressions } as RuleConditionWithoutIdInterface;
-        }
-    );
-
-    return { condition: "OR", rules } as unknown as RuleWithoutIdInterface;
-};
-
 const buildFlatRule = (rule: RuleWithoutIdInterface | null): PolicyRuleInterface => {
     const expressions: PolicyExpressionInterface[] = (rule?.rules ?? []).flatMap(
         (group: RuleConditionWithoutIdInterface) =>
@@ -249,14 +221,11 @@ const renderPlatformLogo = (
 /*  Component                                                           */
 /* ------------------------------------------------------------------ */
 
-const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInterface> = (
-    props: EditDevicePolicyWizardPropsInterface
+const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsInterface> = (
+    props: CreateDevicePolicyWizardPropsInterface
 ): ReactElement => {
     const {
-        "data-componentid": componentId = "edit-device-policy-wizard",
-        policyId,
-        initialName,
-        initialRules,
+        "data-componentid": componentId = "create-device-policy-wizard",
         onClose,
         onSuccess
     } = props;
@@ -266,24 +235,28 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
 
     const technologyLogos: ReturnType<typeof getTechnologyLogos> = getTechnologyLogos();
 
-    const allPlatformDefs: PlatformDefinitionInterface[] = useMemo(
+    const platforms: PlatformDefinitionInterface[] = useMemo(
         (): PlatformDefinitionInterface[] => [
             {
+                description: t("devices:assurancePolicies.wizard.platformDescriptions.android"),
                 key: "android",
                 label: t("devices:assurancePolicies.wizard.platforms.android"),
                 logo: technologyLogos.android as FunctionComponent
             },
             {
+                description: t("devices:assurancePolicies.wizard.platformDescriptions.ios"),
                 key: "ios",
                 label: t("devices:assurancePolicies.wizard.platforms.ios"),
                 logo: technologyLogos.ios as FunctionComponent
             },
             {
+                description: t("devices:assurancePolicies.wizard.platformDescriptions.macos"),
                 key: "macos",
                 label: t("devices:assurancePolicies.wizard.platforms.macos"),
                 logo: technologyLogos.macos
             },
             {
+                description: t("devices:assurancePolicies.wizard.platformDescriptions.windows"),
                 key: "windows",
                 label: t("devices:assurancePolicies.wizard.platforms.windows"),
                 logo: technologyLogos.windows as FunctionComponent
@@ -292,76 +265,42 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
         [ t, technologyLogos ]
     );
 
-    const selectedPlatforms: DevicePlatformType[] = useMemo(
-        (): DevicePlatformType[] => initialRules.map(
-            (r: PolicyResourceResponseInterface): DevicePlatformType => r.target as DevicePlatformType
-        ),
-        [ initialRules ]
-    );
-
-    const initialPlatformRules: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = useMemo(
-        (): Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> =>
-            initialRules.reduce(
-                (
-                    acc: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>,
-                    r: PolicyResourceResponseInterface
-                ) => ({
-                    ...acc,
-                    [r.target]: convertApiRuleToRuleFormat(r)
-                }),
-                {}
-            ),
-        [ initialRules ]
-    );
-
-    const initialPlatformConfigured: Partial<Record<DevicePlatformType, boolean>> = useMemo(
-        (): Partial<Record<DevicePlatformType, boolean>> =>
-            initialRules.reduce(
-                (
-                    acc: Partial<Record<DevicePlatformType, boolean>>,
-                    r: PolicyResourceResponseInterface
-                ) => ({
-                    ...acc,
-                    [r.target]: (r.rule?.rules?.length ?? 0) > 0
-                }),
-                {}
-            ),
-        [ initialRules ]
-    );
-
     /* -- State --------------------------------------------------------- */
 
-    const [ currentStep, setCurrentStep ] = useState<WizardStep>(WizardStep.EXECUTION_RULES);
-    const [ policyName ] = useState<string>(initialName);
+    const [ currentStep, setCurrentStep ] = useState<WizardStep>(WizardStep.BASIC_DETAILS);
+    const [ policyName, setPolicyName ] = useState<string>("");
+    const [ nameError, setNameError ] = useState<string>("");
+    const [ selectedPlatforms, setSelectedPlatforms ] = useState<DevicePlatformType[]>([]);
+    const [ platformsError, setPlatformsError ] = useState<string>("");
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ platformRules, setPlatformRules ] =
-        useState<Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>>(initialPlatformRules);
+        useState<Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>>({});
     const [ platformConfigured, setPlatformConfigured ] =
-        useState<Partial<Record<DevicePlatformType, boolean>>>(initialPlatformConfigured);
+        useState<Partial<Record<DevicePlatformType, boolean>>>({});
+    const [ rulesValidationError, setRulesValidationError ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const activePlatform: DevicePlatformType | null = selectedPlatforms[activeTabIndex] ?? null;
 
-    /* -- Metadata ------------------------------------------------------ */
+    /* -- Metadata (one hook per platform, SWR caches by URL) ----------- */
+    const onRulesStep: boolean = currentStep === WizardStep.EXECUTION_RULES;
 
     const { data: androidMeta, isLoading: isAndroidLoading } =
-        useGetDevicePolicyMetadata("android", selectedPlatforms.includes("android"));
+        useGetDevicePolicyMetadata("android", onRulesStep && selectedPlatforms.includes("android"));
     const { data: iosMeta, isLoading: isIosLoading } =
-        useGetDevicePolicyMetadata("ios", selectedPlatforms.includes("ios"));
+        useGetDevicePolicyMetadata("ios", onRulesStep && selectedPlatforms.includes("ios"));
     const { data: macosMeta, isLoading: isMacosLoading } =
-        useGetDevicePolicyMetadata("macos", selectedPlatforms.includes("macos"));
+        useGetDevicePolicyMetadata("macos", onRulesStep && selectedPlatforms.includes("macos"));
     const { data: windowsMeta, isLoading: isWindowsLoading } =
-        useGetDevicePolicyMetadata("windows", selectedPlatforms.includes("windows"));
+        useGetDevicePolicyMetadata("windows", onRulesStep && selectedPlatforms.includes("windows"));
 
-    const allRawMeta: Record<DevicePlatformType, DevicePolicyFieldDefinitionInterface[] | undefined> = useMemo(
-        () => ({
+    const allRawMeta: Record<DevicePlatformType, DevicePolicyFieldDefinitionInterface[] | undefined> =
+        useMemo(() => ({
             android: androidMeta,
             ios: iosMeta,
             macos: macosMeta,
             windows: windowsMeta
-        }),
-        [ androidMeta, iosMeta, macosMeta, windowsMeta ]
-    );
+        }), [ androidMeta, iosMeta, macosMeta, windowsMeta ]);
 
     const metaLoading: Record<DevicePlatformType, boolean> = {
         android: isAndroidLoading,
@@ -372,7 +311,9 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
 
     const activeConditionsMeta: ConditionExpressionsMetaDataInterface = useMemo(
         (): ConditionExpressionsMetaDataInterface => {
-            if (!activePlatform) return [];
+            if (!activePlatform) {
+                return [];
+            }
 
             return mapToConditionsMeta(allRawMeta[activePlatform] ?? []);
         },
@@ -380,6 +321,42 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     );
 
     /* -- Handlers ------------------------------------------------------ */
+
+    const handlePlatformToggle = (platform: DevicePlatformType): void => {
+        setSelectedPlatforms((prev: DevicePlatformType[]): DevicePlatformType[] => {
+            if (prev.includes(platform)) {
+                const next: DevicePlatformType[] = prev.filter(
+                    (p: DevicePlatformType): boolean => p !== platform
+                );
+
+                setPlatformRules(
+                    (r: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>) => {
+                        const copy: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = {
+                            ...r
+                        };
+
+                        delete copy[platform];
+
+                        return copy;
+                    }
+                );
+                setPlatformConfigured(
+                    (c: Partial<Record<DevicePlatformType, boolean>>) => {
+                        const copy: Partial<Record<DevicePlatformType, boolean>> = { ...c };
+
+                        delete copy[platform];
+
+                        return copy;
+                    }
+                );
+
+                return next;
+            }
+
+            return [ ...prev, platform ];
+        });
+        setPlatformsError("");
+    };
 
     const saveActivePlatformRule = (): void => {
         if (activePlatform !== null && platformConfigured[activePlatform]) {
@@ -424,12 +401,97 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
         );
     };
 
+    const handleRemovePlatformFromStep2 = (platform: DevicePlatformType): void => {
+        if (platform === activePlatform && platformConfigured[platform]) {
+            saveActivePlatformRule();
+        }
+
+        const newPlatforms: DevicePlatformType[] = selectedPlatforms.filter(
+            (p: DevicePlatformType): boolean => p !== platform
+        );
+
+        if (newPlatforms.length === 0) {
+            setCurrentStep(WizardStep.BASIC_DETAILS);
+
+            return;
+        }
+
+        setSelectedPlatforms(newPlatforms);
+        setPlatformRules(
+            (prev: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>) => {
+                const copy: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = { ...prev };
+
+                delete copy[platform];
+
+                return copy;
+            }
+        );
+        setPlatformConfigured(
+            (prev: Partial<Record<DevicePlatformType, boolean>>) => {
+                const copy: Partial<Record<DevicePlatformType, boolean>> = { ...prev };
+
+                delete copy[platform];
+
+                return copy;
+            }
+        );
+        setActiveTabIndex((prev: number): number => Math.min(prev, newPlatforms.length - 1));
+        setRulesValidationError("");
+    };
+
+    const validateStep1 = (): boolean => {
+        let valid: boolean = true;
+        const trimmed: string = policyName.trim();
+
+        if (trimmed.length === 0) {
+            setNameError(t("devices:assurancePolicies.wizard.notifications.create.genericError.description"));
+            valid = false;
+        } else if (trimmed.length < 3) {
+            setNameError("Use at least 3 characters.");
+            valid = false;
+        } else {
+            setNameError("");
+        }
+
+        if (selectedPlatforms.length === 0) {
+            setPlatformsError("Select at least one platform.");
+            valid = false;
+        } else {
+            setPlatformsError("");
+        }
+
+        return valid;
+    };
+
+    const handleNextToRules = (): void => {
+        if (!validateStep1()) {
+            return;
+        }
+
+        setActiveTabIndex(0);
+        setCurrentStep(WizardStep.EXECUTION_RULES);
+    };
+
     const handleNextToReview = (): void => {
         saveActivePlatformRule();
+
+        const anyConfigured: boolean = selectedPlatforms.some(
+            (p: DevicePlatformType): boolean => platformConfigured[p] === true
+        );
+
+        if (!anyConfigured) {
+            setRulesValidationError(
+                "Configure an execution rule for at least one platform before proceeding."
+            );
+
+            return;
+        }
+
+        setRulesValidationError("");
         setCurrentStep(WizardStep.REVIEW);
     };
 
-    const handleSave = (): void => {
+    const handleCreate = (): void => {
         setIsSubmitting(true);
 
         const saved: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = {
@@ -450,15 +512,15 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                 })
             );
 
-        updateDevicePolicy(policyId, { name: policyName.trim(), resources })
+        createDevicePolicy({ name: policyName.trim(), resources })
             .then((): void => {
                 dispatch(addAlert({
                     description: t(
-                        "devices:assurancePolicies.edit.notifications.update.success.description"
+                        "devices:assurancePolicies.wizard.notifications.create.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "devices:assurancePolicies.edit.notifications.update.success.message"
+                        "devices:assurancePolicies.wizard.notifications.create.success.message"
                     )
                 }));
                 onSuccess();
@@ -468,11 +530,11 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     description:
                         error?.response?.data?.description
                         ?? t(
-                            "devices:assurancePolicies.edit.notifications.update.genericError.description"
+                            "devices:assurancePolicies.wizard.notifications.create.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "devices:assurancePolicies.edit.notifications.update.genericError.message"
+                        "devices:assurancePolicies.wizard.notifications.create.genericError.message"
                     )
                 }));
             })
@@ -481,15 +543,19 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             });
     };
 
-    /* -- Wizard steps -------------------------------------------------- */
+    /* -- Wizard steps config ------------------------------------------- */
 
     const WIZARD_STEPS: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string }[] = [
+        {
+            icon: DeviceOutlineIcon,
+            title: t("devices:assurancePolicies.wizard.steps.platform.title")
+        },
         {
             icon: SettingsOutlineIcon,
             title: t("devices:assurancePolicies.wizard.steps.executionRules.title")
         },
         {
-            icon: DeviceOutlineIcon,
+            icon: SettingsOutlineIcon,
             title: t("devices:assurancePolicies.wizard.steps.review.title")
         }
     ];
@@ -498,9 +564,87 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     /*  Step renderers                                                      */
     /* ------------------------------------------------------------------ */
 
+    const renderBasicDetailsStep = (): ReactElement => (
+        <Box>
+            <Form>
+                <Form.Field required>
+                    <label>
+                        { t("devices:assurancePolicies.wizard.steps.ruleBuilder.policyNameLabel") }
+                    </label>
+                    <Input
+                        fluid
+                        value={ policyName }
+                        placeholder={ t(
+                            "devices:assurancePolicies.wizard.steps.ruleBuilder.policyNamePlaceholder"
+                        ) }
+                        error={ nameError.length > 0 }
+                        onChange={ (
+                            _e: ChangeEvent<HTMLInputElement>,
+                            data: InputOnChangeData
+                        ): void => {
+                            setPolicyName(data.value);
+                            if (nameError) {
+                                setNameError("");
+                            }
+                        } }
+                        data-componentid={ `${ componentId }-policy-name` }
+                    />
+                    { nameError && (
+                        <Typography
+                            variant="caption"
+                            sx={ { color: "error.main", mt: 0.5, display: "block" } }
+                        >
+                            { nameError }
+                        </Typography>
+                    ) }
+                    <Typography variant="caption" sx={ { color: "text.secondary", mt: 0.5, display: "block" } }>
+                        A short, recognizable label. 3–80 characters.
+                    </Typography>
+                </Form.Field>
+            </Form>
+
+            <Box sx={ { mt: 3 } }>
+                <Form.Field required>
+                    <label>
+                        { t("devices:assurancePolicies.wizard.steps.platform.heading") }
+                    </label>
+                </Form.Field>
+                <Typography variant="caption" sx={ { color: "text.secondary", mb: 1.5, display: "block" } }>
+                    { t("devices:assurancePolicies.wizard.steps.platform.description") }
+                </Typography>
+                <Card.Group itemsPerRow={ 4 } className="platform-selection-cards">
+                    { platforms.map((platform: PlatformDefinitionInterface) => (
+                        <SelectionCard
+                            key={ platform.key }
+                            image={ platform.logo }
+                            size="default"
+                            header={ platform.label }
+                            selected={ selectedPlatforms.includes(platform.key) }
+                            onClick={ (): void => handlePlatformToggle(platform.key) }
+                            imageSize="tiny"
+                            imageOptions={ {
+                                relaxed: true,
+                                square: false,
+                                width: "auto"
+                            } }
+                            contentTopBorder={ false }
+                            renderDisabledItemsAsGrayscale={ false }
+                            data-componentid={ `${ componentId }-${ platform.key }-card` }
+                        />
+                    )) }
+                </Card.Group>
+                { platformsError && (
+                    <Typography variant="caption" sx={ { color: "error.main", mt: 1, display: "block" } }>
+                        { platformsError }
+                    </Typography>
+                ) }
+            </Box>
+        </Box>
+    );
+
     const renderRuleEmptyState = (): ReactElement => {
         const pname: string =
-            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === activePlatform)?.label
+            platforms.find((p: PlatformDefinitionInterface) => p.key === activePlatform)?.label
             ?? (activePlatform ?? "");
 
         return (
@@ -509,7 +653,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                 icon={ false }
                 data-componentid={ `${ componentId }-no-rule-info-box` }
             >
-                <AlertTitle>
+                <AlertTitle data-componentid={ `${ componentId }-rule-info-box-title` }>
                     { t("devices:assurancePolicies.wizard.steps.executionRules.emptyState.heading") }
                 </AlertTitle>
                 { t(
@@ -565,14 +709,15 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
 
     const renderExecutionRulesStep = (): ReactElement => {
         const activePlatformDef: PlatformDefinitionInterface | undefined =
-            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === activePlatform);
+            platforms.find((p: PlatformDefinitionInterface) => p.key === activePlatform);
 
         return (
             <Box>
+                { /* Platform tab bar with per-tab remove */ }
                 <StyledPlatformTabBar>
                     { selectedPlatforms.map((platform: DevicePlatformType, index: number) => {
                         const pDef: PlatformDefinitionInterface | undefined =
-                            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === platform);
+                            platforms.find((p: PlatformDefinitionInterface) => p.key === platform);
                         const isActive: boolean = activeTabIndex === index;
                         const condCount: number = platformRules[platform]
                             ? countConditions(platformRules[platform])
@@ -600,11 +745,38 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                                         ·
                                     </StyledTabBadge>
                                 ) }
+                                { /* Remove platform × */ }
+                                <Box
+                                    component="span"
+                                    onClick={ (e: React.MouseEvent): void => {
+                                        e.stopPropagation();
+                                        handleRemovePlatformFromStep2(platform);
+                                    } }
+                                    aria-label={ `Remove ${ pDef?.label ?? platform }` }
+                                    sx={ {
+                                        alignItems: "center",
+                                        borderRadius: "50%",
+                                        color: "inherit",
+                                        display: "inline-flex",
+                                        fontSize: 16,
+                                        fontWeight: 400,
+                                        height: 18,
+                                        justifyContent: "center",
+                                        lineHeight: 1,
+                                        ml: 0.75,
+                                        opacity: 0.6,
+                                        width: 18,
+                                        "&:hover": { opacity: 1 }
+                                    } }
+                                >
+                                    ×
+                                </Box>
                             </StyledPlatformTab>
                         );
                     }) }
                 </StyledPlatformTabBar>
 
+                { /* Rule section heading with "Clear Rule" when configured */ }
                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={ { mb: 1.5 } }>
                     <Heading as="h5">
                         { t("devices:assurancePolicies.wizard.steps.executionRules.sectionLabel") }
@@ -631,6 +803,17 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     ) }
                 </Stack>
 
+                { /* Validation error */ }
+                { rulesValidationError && (
+                    <Typography
+                        variant="caption"
+                        sx={ { color: "error.main", display: "block", mb: 1.5 } }
+                    >
+                        { rulesValidationError }
+                    </Typography>
+                ) }
+
+                { /* Content: empty state or rule builder */ }
                 { !platformConfigured[activePlatform]
                     ? renderRuleEmptyState()
                     : renderRuleBuilder()
@@ -640,12 +823,13 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     };
 
     const renderReviewStep = (): ReactElement => {
-        const selectedPlatformDefs: PlatformDefinitionInterface[] = allPlatformDefs.filter(
+        const selectedPlatformDefs: PlatformDefinitionInterface[] = platforms.filter(
             (p: PlatformDefinitionInterface) => selectedPlatforms.includes(p.key)
         );
 
         return (
             <Box>
+                { /* Policy section */ }
                 <Stack
                     direction="row"
                     alignItems="baseline"
@@ -658,6 +842,14 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     >
                         { t("devices:assurancePolicies.wizard.steps.review.sectionPolicy") }
                     </Typography>
+                    <Button
+                        variant="text"
+                        color="primary"
+                        size="small"
+                        onClick={ (): void => setCurrentStep(WizardStep.BASIC_DETAILS) }
+                    >
+                        { t("devices:assurancePolicies.wizard.steps.review.edit") }
+                    </Button>
                 </Stack>
                 <Box
                     sx={ {
@@ -668,13 +860,13 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     } }
                 >
                     <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
-                        { t("devices:assurancePolicies.wizard.steps.review.policyName") }
+                        Name
                     </Typography>
                     <Typography variant="body1" sx={ { fontWeight: 600 } }>
-                        { policyName }
+                        { policyName || <span style={ { color: "var(--text-disabled)" } }>(not set)</span> }
                     </Typography>
                     <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
-                        { t("devices:assurancePolicies.wizard.steps.review.platforms") }
+                        Platforms
                     </Typography>
                     <Stack direction="row" spacing={ 1 } flexWrap="wrap" useFlexGap>
                         { selectedPlatformDefs.map((p: PlatformDefinitionInterface) => (
@@ -689,6 +881,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     </Stack>
                 </Box>
 
+                { /* Execution rules section */ }
                 <Stack
                     direction="row"
                     alignItems="baseline"
@@ -733,11 +926,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                                 />
                                 <Typography variant="caption" sx={ { color: "text.secondary" } }>
                                     { !isConfigured
-                                        ? (
-                                            <span>
-                                                Applies to <strong>all { p.label } devices</strong>
-                                            </span>
-                                        )
+                                        ? <span>Applies to <strong>all { p.label } devices</strong></span>
                                         : `${ condCount } condition(s) across ${ groupCount } group(s)`
                                     }
                                 </Typography>
@@ -779,9 +968,9 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                                                                         component="span"
                                                                         sx={ {
                                                                             color: "text.secondary",
+                                                                            fontWeight: 700,
                                                                             fontFamily: "inherit",
-                                                                            fontSize: "inherit",
-                                                                            fontWeight: 700
+                                                                            fontSize: "inherit"
                                                                         } }
                                                                     >
                                                                         { " AND " }
@@ -790,9 +979,9 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                                                                 <Typography
                                                                     component="span"
                                                                     sx={ {
+                                                                        fontWeight: 600,
                                                                         fontFamily: "inherit",
-                                                                        fontSize: "inherit",
-                                                                        fontWeight: 600
+                                                                        fontSize: "inherit"
                                                                     } }
                                                                 >
                                                                     { expr.field }
@@ -811,9 +1000,9 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                                                                     component="span"
                                                                     sx={ {
                                                                         color: "primary.main",
+                                                                        fontWeight: 600,
                                                                         fontFamily: "inherit",
-                                                                        fontSize: "inherit",
-                                                                        fontWeight: 600
+                                                                        fontSize: "inherit"
                                                                     } }
                                                                 >
                                                                     &ldquo;{ expr.value || "?" }&rdquo;
@@ -831,12 +1020,34 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                         </StyledReviewPlatformCard>
                     );
                 }) }
+
+                <Alert severity="info" sx={ { mt: 3 } } data-componentid={ `${ componentId }-assign-hint` }>
+                    <AlertTitle>
+                        { t("devices:assurancePolicies.wizard.steps.review.assignHint.title") }
+                    </AlertTitle>
+                    <ul style={ { margin: "4px 0 0", paddingLeft: 20 } }>
+                        <li
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={ {
+                                __html: t("devices:assurancePolicies.wizard.steps.review.assignHint.loginFlow")
+                            } }
+                        />
+                        <li
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={ {
+                                __html: t("devices:assurancePolicies.wizard.steps.review.assignHint.otherFlows")
+                            } }
+                        />
+                    </ul>
+                </Alert>
             </Box>
         );
     };
 
     const resolveStepContent = (): ReactElement => {
         switch (currentStep) {
+            case WizardStep.BASIC_DETAILS:
+                return renderBasicDetailsStep();
             case WizardStep.EXECUTION_RULES:
                 return renderExecutionRulesStep();
             case WizardStep.REVIEW:
@@ -859,15 +1070,27 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     </LinkButton>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                    { currentStep === WizardStep.REVIEW && (
+                    { currentStep > WizardStep.BASIC_DETAILS && (
                         <LinkButton
                             floated="right"
-                            onClick={ (): void => setCurrentStep(WizardStep.EXECUTION_RULES) }
+                            onClick={ (): void => setCurrentStep(
+                                (prev: WizardStep): WizardStep => prev - 1
+                            ) }
                             data-componentid={ `${ componentId }-back-button` }
                         >
                             <Icon name="arrow left" />
                             { t("devices:assurancePolicies.wizard.buttons.back") }
                         </LinkButton>
+                    ) }
+                    { currentStep === WizardStep.BASIC_DETAILS && (
+                        <PrimaryButton
+                            floated="right"
+                            onClick={ handleNextToRules }
+                            data-componentid={ `${ componentId }-next-button` }
+                        >
+                            { t("devices:assurancePolicies.wizard.buttons.next") }
+                            <Icon name="arrow right" />
+                        </PrimaryButton>
                     ) }
                     { currentStep === WizardStep.EXECUTION_RULES && (
                         <PrimaryButton
@@ -884,10 +1107,10 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                             floated="right"
                             disabled={ isSubmitting }
                             loading={ isSubmitting }
-                            onClick={ handleSave }
-                            data-componentid={ `${ componentId }-save-button` }
+                            onClick={ handleCreate }
+                            data-componentid={ `${ componentId }-create-button` }
                         >
-                            { t("devices:assurancePolicies.wizard.buttons.save") }
+                            { t("devices:assurancePolicies.wizard.buttons.create") }
                         </PrimaryButton>
                     ) }
                 </Grid.Column>
@@ -902,7 +1125,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     return (
         <Modal
             open
-            className="wizard edit-device-policy-wizard"
+            className="wizard create-device-policy-wizard"
             dimmer="blurring"
             size="small"
             onClose={ onClose }
@@ -911,23 +1134,25 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             data-componentid={ componentId }
         >
             <Modal.Header className="wizard-header">
-                { t("devices:assurancePolicies.edit.wizard.heading") }
+                { t("devices:assurancePolicies.wizard.heading") }
                 <Heading as="h6">
-                    { t("devices:assurancePolicies.edit.wizard.subHeading") }
+                    { t("devices:assurancePolicies.wizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group current={ currentStep }>
-                    { WIZARD_STEPS.map((
-                        step: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string },
-                        index: number
-                    ) => (
-                        <Steps.Step
-                            key={ index }
-                            icon={ step.icon }
-                            title={ step.title }
-                        />
-                    )) }
+                    { WIZARD_STEPS.map(
+                        (
+                            step: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string },
+                            index: number
+                        ) => (
+                            <Steps.Step
+                                key={ index }
+                                icon={ step.icon }
+                                title={ step.title }
+                            />
+                        )
+                    ) }
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
@@ -940,4 +1165,4 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     );
 };
 
-export default EditDevicePolicyWizard;
+export default CreateDevicePolicyWizard;

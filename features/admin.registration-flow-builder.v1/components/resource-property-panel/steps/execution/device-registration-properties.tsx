@@ -25,8 +25,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import { useGetDevicePolicies } from "@wso2is/admin.devices.v1/hooks/use-get-device-policies";
-import { DevicePolicyResponseInterface } from "@wso2is/admin.devices.v1/models/devices";
+import { useGetDevicePolicies } from "@wso2is/admin.device-policies.v1/hooks/use-get-device-policies";
+import { DevicePolicyResponseInterface } from "@wso2is/admin.device-policies.v1/models/device-policy";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 

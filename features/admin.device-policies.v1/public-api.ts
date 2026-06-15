@@ -16,7 +16,12 @@
  * under the License.
  */
 
-export interface DevicesResourceEndpointsInterface {
-    devices: string;
-    userDevices: string;
-}
+export * from "./api/device-policies";
+export * from "./configs/endpoints";
+export * from "./hooks/use-get-device-policies";
+export * from "./hooks/use-get-device-policy-by-id";
+export * from "./hooks/use-get-device-policy-metadata";
+export * from "./models/device-policy";
+export * from "./models/endpoints";
+export * from "./pages/device-assurance-policies";
+export * from "./pages/device-policy-edit";

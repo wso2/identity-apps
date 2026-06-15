@@ -16,7 +16,19 @@
  * under the License.
  */
 
-export interface DevicesResourceEndpointsInterface {
-    devices: string;
-    userDevices: string;
-}
+import { DevicePoliciesResourceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Returns the device assurance policy resource endpoints.
+ *
+ * @param serverHost - The server host URL.
+ * @returns The device policy resource endpoints.
+ */
+export const getDevicePoliciesResourceEndpoints = (
+    serverHost: string
+): DevicePoliciesResourceEndpointsInterface => {
+    return {
+        devicePolicies: `${ serverHost }/api/server/v1/policies`,
+        devicePolicyMetadata: `${ serverHost }/api/server/v1/policies/metadata`
+    };
+};

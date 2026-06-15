@@ -425,7 +425,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.devices.v1/pages/device-assurance-policies")
+                        import("@wso2is/admin.device-policies.v1/pages/device-assurance-policies")
                     ),
                     exact: true,
                     id: "deviceAssurancePolicies",
@@ -435,7 +435,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.devices.v1/pages/device-policy-edit")
+                        import("@wso2is/admin.device-policies.v1/pages/device-policy-edit")
                     ),
                     exact: true,
                     id: "devicePolicyEdit",

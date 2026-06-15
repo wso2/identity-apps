@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { PolicyListResponseInterface } from "../models/devices";
+import { PolicyListResponseInterface } from "../models/device-policy";
 
 /**
  * Hook to fetch a paginated list of device policies for the tenant.

@@ -25,7 +25,7 @@ import {
     DevicePolicyFieldDefinitionInterface,
     DevicePolicyResponseInterface,
     PolicyRequestInterface
-} from "../models/devices";
+} from "../models/device-policy";
 
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
