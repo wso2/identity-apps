@@ -22,7 +22,7 @@ import Tabs from "@oxygen-ui/react/Tabs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import { isFreeTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -171,7 +171,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleSharedAccess isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.SHARED_ACCESS
                 },
-                !(isSubOrganization() || isEnterpriseLoginDisabled || tierName === TenantTier.FREE) && {
+                !(isSubOrganization() || isEnterpriseLoginDisabled || isFreeTier(tierName)) && {
                     className: "console-enterprise-login",
                     "data-componentid": `${componentId}-tab-enterprise-login`,
                     "data-tabid": ConsoleSettingsModes.ENTERPRISE_LOGIN,
