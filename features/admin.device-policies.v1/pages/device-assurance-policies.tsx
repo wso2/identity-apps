@@ -22,11 +22,18 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    useCallback,
     useEffect,
     useState
 } from "react";
@@ -46,6 +53,7 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
     const { "data-componentid": componentId = "device-assurance-policies-page" } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -73,7 +81,7 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
         }));
     }, [ policyListFetchError ]);
 
-    const handlePolicyFilter = (query: string): void => {
+    const handlePolicyFilter: (query: string) => void = useCallback((query: string): void => {
         if (!query) {
             setSearchQuery("");
             setListOffset(0);
@@ -81,37 +89,55 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
             return;
         }
 
+        // `AdvancedSearchWithBasicFilters` emits a SCIM-style expression (e.g. `name co "value"`).
+        // The policies endpoint expects the bare search term, so extract the quoted value.
         const match: RegExpMatchArray | null = query.match(/"([^"]*)"/);
         const filterValue: string = match ? match[1] : query;
 
         setSearchQuery(filterValue);
         setListOffset(0);
-    };
+    }, []);
 
-    const handleSearchQueryClear = (): void => {
+    const handleSearchQueryClear: () => void = useCallback((): void => {
         setSearchQuery("");
-        setTriggerClearQuery(!triggerClearQuery);
+        setTriggerClearQuery((prev: boolean): boolean => !prev);
         setListOffset(0);
-    };
+    }, []);
 
-    const handlePaginationChange = (_event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset(((data.activePage as number) - 1) * listItemLimit);
-    };
+    const handlePaginationChange: (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps) => void =
+        useCallback((_event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+            setListOffset(((data.activePage as number) - 1) * listItemLimit);
+        }, [ listItemLimit ]);
 
-    const handleItemsPerPageDropdownChange = (
-        _event: MouseEvent<HTMLAnchorElement>,
-        data: DropdownProps
-    ): void => {
-        setListItemLimit(data.value as number);
-        setListOffset(0);
-    };
+    const handleItemsPerPageDropdownChange: (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps) => void =
+        useCallback((_event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+            setListItemLimit(data.value as number);
+            setListOffset(0);
+        }, []);
 
     const totalResults: number = policyListResponse?.totalResults ?? 0;
 
     return (
         <PageLayout
+            pageTitle={ t("devices:assurancePolicies.title") }
             title={ t("devices:assurancePolicies.title") }
-            description={ t("devices:assurancePolicies.description") }
+            description={ (
+                <>
+                    { t("devices:assurancePolicies.description") }
+                    <DocumentationLink link={ getLink("manage.deviceAssurancePolicies.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
+            action={ (
+                <PrimaryButton
+                    onClick={ (): void => setShowWizard(true) }
+                    data-componentid={ `${ componentId }-add-button` }
+                >
+                    <Icon name="add" />
+                    { t("devices:assurancePolicies.wizard.heading") }
+                </PrimaryButton>
+            ) }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
                 onClick: (): void => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")),
@@ -160,15 +186,6 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
                 showTopActionPanel={ true }
                 totalPages={ Math.ceil(totalResults / listItemLimit) || 1 }
                 totalListSize={ totalResults }
-                rightActionPanel={ (
-                    <PrimaryButton
-                        onClick={ (): void => setShowWizard(true) }
-                        data-componentid={ `${ componentId }-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("devices:assurancePolicies.wizard.heading") }
-                    </PrimaryButton>
-                ) }
                 data-componentid={ `${ componentId }-list-layout` }
             >
                 <DevicePolicyList

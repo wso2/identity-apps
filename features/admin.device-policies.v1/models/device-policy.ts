@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { FunctionComponent } from "react";
+
 export interface PolicyExpressionInterface {
     field: string;
     operator: string;
@@ -92,6 +94,13 @@ export interface PolicyListResponseInterface {
 }
 
 export type DevicePlatformType = "android" | "ios" | "macos" | "windows";
+
+export interface PlatformDefinitionInterface {
+    key: DevicePlatformType;
+    label: string;
+    logo: FunctionComponent | string;
+    description?: string;
+}
 
 export interface DevicePolicyMetadataValueOptionInterface {
     name: string;

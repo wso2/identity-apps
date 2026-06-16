@@ -22,48 +22,12 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import {
-    DevicePolicyFieldDefinitionInterface,
     DevicePolicyResponseInterface,
     PolicyRequestInterface
 } from "../models/device-policy";
 
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Fetches all device policies for the tenant.
- *
- * @returns List of device policies.
- */
-export const getDevicePolicies = (): Promise<DevicePolicyResponseInterface[]> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.devicePolicies
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<DevicePolicyResponseInterface[]>) => Promise.resolve(response.data))
-        .catch((error: unknown) => Promise.reject(error));
-};
-
-/**
- * Fetches a single device policy by ID.
- *
- * @param policyId - ID of the device policy.
- * @returns The device policy.
- */
-export const getDevicePolicyById = (policyId: string): Promise<DevicePolicyResponseInterface> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.devicePolicies }/${ policyId }`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<DevicePolicyResponseInterface>) => Promise.resolve(response.data))
-        .catch((error: unknown) => Promise.reject(error));
-};
 
 /**
  * Creates a new device policy.
@@ -123,27 +87,5 @@ export const deleteDevicePolicy = (policyId: string): Promise<void> => {
 
     return httpClient(requestConfig)
         .then(() => Promise.resolve())
-        .catch((error: unknown) => Promise.reject(error));
-};
-
-/**
- * Fetches device policy field metadata, optionally filtered by platform.
- *
- * @param platform - Optional platform filter (android | ios | macos | windows).
- * @returns List of field definitions for the rule builder.
- */
-export const getDevicePolicyMetadata = (
-    platform?: "android" | "ios" | "macos" | "windows"
-): Promise<DevicePolicyFieldDefinitionInterface[]> => {
-    const url: string = new URL(store.getState().config.endpoints.devicePolicyMetadata).toString();
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        params: platform ? { platform } : undefined,
-        url
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<DevicePolicyFieldDefinitionInterface[]>) => Promise.resolve(response.data))
         .catch((error: unknown) => Promise.reject(error));
 };

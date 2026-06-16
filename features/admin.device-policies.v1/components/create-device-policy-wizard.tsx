@@ -16,22 +16,11 @@
  * under the License.
  */
 
-import { alpha, styled, Theme } from "@mui/material/styles";
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
-import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { TrashIcon } from "@oxygen-ui/react-icons";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
-import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import {
-    ConditionExpressionMetaInterface,
-    ConditionExpressionsMetaDataInterface
-} from "@wso2is/admin.rules.v1/models/meta";
-import { RuleConditionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { ConditionExpressionsMetaDataInterface } from "@wso2is/admin.rules.v1/models/meta";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -63,6 +52,8 @@ import {
     InputOnChangeData,
     Modal
 } from "semantic-ui-react";
+import PolicyReviewStep from "./steps/policy-review-step";
+import PolicyRulesStep from "./steps/policy-rules-step";
 import { ReactComponent as DeviceOutlineIcon } from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon } from "../assets/icons/settings-outline.svg";
 import { createDevicePolicy } from "../api/device-policies";
@@ -70,10 +61,10 @@ import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata"
 import {
     DevicePlatformType,
     DevicePolicyFieldDefinitionInterface,
-    PolicyExpressionInterface,
-    PolicyResourceRequestInterface,
-    PolicyRuleInterface
+    PlatformDefinitionInterface,
+    PolicyResourceRequestInterface
 } from "../models/device-policy";
+import { buildFlatRule, mapToConditionsMeta } from "../utils/device-policy-rule-utils";
 
 interface CreateDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
     onClose: () => void;
@@ -85,141 +76,6 @@ enum WizardStep {
     EXECUTION_RULES = 1,
     REVIEW = 2
 }
-
-interface PlatformDefinitionInterface {
-    key: DevicePlatformType;
-    label: string;
-    description: string;
-    logo: FunctionComponent | string;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Styled components                                                   */
-/* ------------------------------------------------------------------ */
-
-
-const StyledPlatformTabBar = styled(Box)(({ theme }: { theme: Theme }) => ({
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    display: "flex",
-    gap: 4,
-    margin: `0 -36px ${theme.spacing(3)}`,
-    overflowX: "auto",
-    padding: "0 36px"
-}));
-
-const StyledPlatformTab = styled("button", {
-    shouldForwardProp: (prop: string): boolean => prop !== "isActive"
-})<{ isActive?: boolean }>(
-    ({ theme, isActive }: { theme: Theme; isActive?: boolean }) => ({
-        alignItems: "center",
-        background: "transparent",
-        border: "none",
-        borderBottom: `2.5px solid ${isActive ? theme.palette.primary.main : "transparent"}`,
-        color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
-        cursor: "pointer",
-        display: "inline-flex",
-        fontFamily: "inherit",
-        fontSize: 14,
-        fontWeight: 600,
-        gap: 8,
-        marginBottom: -1,
-        padding: "14px 16px",
-        transition: "color 140ms ease, border-color 140ms ease",
-        whiteSpace: "nowrap",
-        "&:hover": {
-            color: isActive ? theme.palette.primary.main : theme.palette.text.primary
-        }
-    })
-);
-
-const StyledTabBadge = styled(Box, {
-    shouldForwardProp: (prop: string): boolean => prop !== "isActive"
-})<{ isActive?: boolean }>(
-    ({ theme, isActive }: { theme: Theme; isActive?: boolean }) => ({
-        background: isActive ? alpha(theme.palette.primary.light, 0.2) : theme.palette.action.hover,
-        borderRadius: 999,
-        color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
-        fontSize: 11,
-        fontWeight: 700,
-        lineHeight: "1",
-        padding: "2px 7px"
-    })
-);
-
-const StyledRuleSummaryCode = styled(Box)(({ theme }: { theme: Theme }) => ({
-    background: theme.palette.action.hover,
-    borderRadius: theme.shape.borderRadius,
-    fontFamily: "ui-monospace, \"SFMono-Regular\", Menlo, monospace",
-    fontSize: 13,
-    lineHeight: 1.8,
-    padding: theme.spacing(1.5, 1.75)
-}));
-
-const StyledReviewPlatformCard = styled(Box)(({ theme }: { theme: Theme }) => ({
-    background: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(2, 2.25)
-}));
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                             */
-/* ------------------------------------------------------------------ */
-
-const mapToConditionsMeta = (
-    fields: DevicePolicyFieldDefinitionInterface[]
-): ConditionExpressionsMetaDataInterface =>
-    fields
-        .filter((f: DevicePolicyFieldDefinitionInterface): boolean => f.field.name !== "platform")
-        .map(
-            (f: DevicePolicyFieldDefinitionInterface): ConditionExpressionMetaInterface => ({
-                field: f.field,
-                operators: f.operators,
-                value: {
-                    ...f.value,
-                    inputType: f.value.inputType.toLowerCase() as "input" | "options"
-                }
-            })
-        );
-
-const buildFlatRule = (rule: RuleWithoutIdInterface | null): PolicyRuleInterface => {
-    const expressions: PolicyExpressionInterface[] = (rule?.rules ?? []).flatMap(
-        (group: RuleConditionWithoutIdInterface) =>
-            (group.expressions ?? []).map(
-                (e: { field: string; operator: string; value: string }): PolicyExpressionInterface => ({
-                    field: e.field,
-                    operator: e.operator,
-                    value: e.value
-                })
-            )
-    );
-
-    return { condition: "AND", expressions };
-};
-
-const countConditions = (rule: RuleWithoutIdInterface | null): number =>
-    (rule?.rules ?? []).reduce(
-        (acc: number, g: RuleConditionWithoutIdInterface) => acc + (g.expressions?.length ?? 0),
-        0
-    );
-
-const renderPlatformLogo = (
-    logo: FunctionComponent | string,
-    size: number
-): ReactElement => {
-    if (typeof logo === "string") {
-        return <img src={ logo } alt="" style={ { height: size, objectFit: "contain", width: size } } />;
-    }
-
-    const LogoComponent: FunctionComponent<SVGProps<SVGSVGElement>> = logo as FunctionComponent<SVGProps<SVGSVGElement>>;
-
-    return <LogoComponent width={ size } height={ size } />;
-};
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                           */
-/* ------------------------------------------------------------------ */
 
 const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsInterface> = (
     props: CreateDevicePolicyWizardPropsInterface
@@ -560,9 +416,7 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         }
     ];
 
-    /* ------------------------------------------------------------------ */
-    /*  Step renderers                                                      */
-    /* ------------------------------------------------------------------ */
+    /* -- Step renderers ------------------------------------------------ */
 
     const renderBasicDetailsStep = (): ReactElement => (
         <Box>
@@ -642,416 +496,42 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         </Box>
     );
 
-    const renderRuleEmptyState = (): ReactElement => {
-        const pname: string =
-            platforms.find((p: PlatformDefinitionInterface) => p.key === activePlatform)?.label
-            ?? (activePlatform ?? "");
-
-        return (
-            <Alert
-                sx={ { backgroundColor: "var(--oxygen-palette-grey-100)" } }
-                icon={ false }
-                data-componentid={ `${ componentId }-no-rule-info-box` }
-            >
-                <AlertTitle data-componentid={ `${ componentId }-rule-info-box-title` }>
-                    { t("devices:assurancePolicies.wizard.steps.executionRules.emptyState.heading") }
-                </AlertTitle>
-                { t(
-                    "devices:assurancePolicies.wizard.steps.executionRules.emptyState.description",
-                    { platform: pname }
-                ) }
-                <Box sx={ { mt: 1.5 } }>
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={ handleConfigureRule }
-                        data-componentid={ `${ componentId }-configure-rule-btn` }
-                    >
-                        { t("devices:assurancePolicies.wizard.steps.executionRules.configureRule") }
-                    </Button>
-                </Box>
-            </Alert>
-        );
-    };
-
-    const renderRuleBuilder = (): ReactElement => {
-        const isLoading: boolean = activePlatform ? metaLoading[activePlatform] : false;
-
-        if (isLoading) {
-            return (
-                <Box sx={ { pt: 3, color: "text.secondary" } }>
-                    <Typography variant="body2">
-                        { t("devices:assurancePolicies.wizard.steps.executionRules.loadingMetadata") }
-                    </Typography>
-                </Box>
-            );
-        }
-
-        if (activeConditionsMeta.length === 0) {
-            return (
-                <Box sx={ { pt: 3, color: "text.secondary" } }>
-                    <Typography variant="body2">
-                        { t("devices:assurancePolicies.wizard.steps.executionRules.noMetadata") }
-                    </Typography>
-                </Box>
-            );
-        }
-
-        return (
-            <RulesComponent
-                key={ `rules-${ activePlatform }` }
-                conditionExpressionsMetaData={ activeConditionsMeta }
-                initialData={ platformRules[activePlatform] ?? null }
-                data-componentid={ `${ componentId }-${ activePlatform }-rules` }
-            />
-        );
-    };
-
-    const renderExecutionRulesStep = (): ReactElement => {
-        const activePlatformDef: PlatformDefinitionInterface | undefined =
-            platforms.find((p: PlatformDefinitionInterface) => p.key === activePlatform);
-
-        return (
-            <Box>
-                { /* Platform tab bar with per-tab remove */ }
-                <StyledPlatformTabBar>
-                    { selectedPlatforms.map((platform: DevicePlatformType, index: number) => {
-                        const pDef: PlatformDefinitionInterface | undefined =
-                            platforms.find((p: PlatformDefinitionInterface) => p.key === platform);
-                        const isActive: boolean = activeTabIndex === index;
-                        const condCount: number = platformRules[platform]
-                            ? countConditions(platformRules[platform])
-                            : 0;
-                        const isConfigured: boolean = platformConfigured[platform] === true;
-
-                        return (
-                            <StyledPlatformTab
-                                key={ platform }
-                                type="button"
-                                isActive={ isActive }
-                                onClick={ (): void => handleTabChange(index) }
-                                data-componentid={ `${ componentId }-${ platform }-tab` }
-                            >
-                                { pDef?.logo ? renderPlatformLogo(pDef.logo, 18) : null }
-                                { pDef?.label ?? platform }
-                                { isConfigured ? (
-                                    <StyledTabBadge isActive={ isActive }>
-                                        { condCount }
-                                    </StyledTabBadge>
-                                ) : (
-                                    <StyledTabBadge isActive={ isActive }
-                                        sx={ { fontSize: 14, lineHeight: 1, px: "5px", py: 0 } }
-                                    >
-                                        ·
-                                    </StyledTabBadge>
-                                ) }
-                                { /* Remove platform × */ }
-                                <Box
-                                    component="span"
-                                    onClick={ (e: React.MouseEvent): void => {
-                                        e.stopPropagation();
-                                        handleRemovePlatformFromStep2(platform);
-                                    } }
-                                    aria-label={ `Remove ${ pDef?.label ?? platform }` }
-                                    sx={ {
-                                        alignItems: "center",
-                                        borderRadius: "50%",
-                                        color: "inherit",
-                                        display: "inline-flex",
-                                        fontSize: 16,
-                                        fontWeight: 400,
-                                        height: 18,
-                                        justifyContent: "center",
-                                        lineHeight: 1,
-                                        ml: 0.75,
-                                        opacity: 0.6,
-                                        width: 18,
-                                        "&:hover": { opacity: 1 }
-                                    } }
-                                >
-                                    ×
-                                </Box>
-                            </StyledPlatformTab>
-                        );
-                    }) }
-                </StyledPlatformTabBar>
-
-                { /* Rule section heading with "Clear Rule" when configured */ }
-                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={ { mb: 1.5 } }>
-                    <Heading as="h5">
-                        { t("devices:assurancePolicies.wizard.steps.executionRules.sectionLabel") }
-                        { " " }
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            sx={ { color: "text.secondary", fontWeight: 400 } }
-                        >
-                            — { activePlatformDef?.label }
-                        </Typography>
-                    </Heading>
-                    { platformConfigured[activePlatform] && (
-                        <Button
-                            variant="text"
-                            color="error"
-                            size="small"
-                            startIcon={ <TrashIcon /> }
-                            onClick={ handleClearRule }
-                            data-componentid={ `${ componentId }-clear-rule-btn` }
-                        >
-                            { t("devices:assurancePolicies.wizard.steps.executionRules.clearRule") }
-                        </Button>
-                    ) }
-                </Stack>
-
-                { /* Validation error */ }
-                { rulesValidationError && (
-                    <Typography
-                        variant="caption"
-                        sx={ { color: "error.main", display: "block", mb: 1.5 } }
-                    >
-                        { rulesValidationError }
-                    </Typography>
-                ) }
-
-                { /* Content: empty state or rule builder */ }
-                { !platformConfigured[activePlatform]
-                    ? renderRuleEmptyState()
-                    : renderRuleBuilder()
-                }
-            </Box>
-        );
-    };
-
-    const renderReviewStep = (): ReactElement => {
-        const selectedPlatformDefs: PlatformDefinitionInterface[] = platforms.filter(
-            (p: PlatformDefinitionInterface) => selectedPlatforms.includes(p.key)
-        );
-
-        return (
-            <Box>
-                { /* Policy section */ }
-                <Stack
-                    direction="row"
-                    alignItems="baseline"
-                    justifyContent="space-between"
-                    sx={ { mb: 1.5 } }
-                >
-                    <Typography
-                        variant="overline"
-                        sx={ { fontWeight: 700, letterSpacing: "0.06em", color: "text.secondary" } }
-                    >
-                        { t("devices:assurancePolicies.wizard.steps.review.sectionPolicy") }
-                    </Typography>
-                    <Button
-                        variant="text"
-                        color="primary"
-                        size="small"
-                        onClick={ (): void => setCurrentStep(WizardStep.BASIC_DETAILS) }
-                    >
-                        { t("devices:assurancePolicies.wizard.steps.review.edit") }
-                    </Button>
-                </Stack>
-                <Box
-                    sx={ {
-                        display: "grid",
-                        gridTemplateColumns: "160px 1fr",
-                        gap: "14px 20px",
-                        mb: 3.5
-                    } }
-                >
-                    <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
-                        Name
-                    </Typography>
-                    <Typography variant="body1" sx={ { fontWeight: 600 } }>
-                        { policyName || <span style={ { color: "var(--text-disabled)" } }>(not set)</span> }
-                    </Typography>
-                    <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
-                        Platforms
-                    </Typography>
-                    <Stack direction="row" spacing={ 1 } flexWrap="wrap" useFlexGap>
-                        { selectedPlatformDefs.map((p: PlatformDefinitionInterface) => (
-                            <Chip
-                                key={ p.key }
-                                label={ p.label }
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                            />
-                        )) }
-                    </Stack>
-                </Box>
-
-                { /* Execution rules section */ }
-                <Stack
-                    direction="row"
-                    alignItems="baseline"
-                    justifyContent="space-between"
-                    sx={ { mb: 1.5 } }
-                >
-                    <Typography
-                        variant="overline"
-                        sx={ { fontWeight: 700, letterSpacing: "0.06em", color: "text.secondary" } }
-                    >
-                        { t("devices:assurancePolicies.wizard.steps.review.sectionRules") }
-                    </Typography>
-                    <Button
-                        variant="text"
-                        color="primary"
-                        size="small"
-                        onClick={ (): void => setCurrentStep(WizardStep.EXECUTION_RULES) }
-                    >
-                        { t("devices:assurancePolicies.wizard.steps.review.edit") }
-                    </Button>
-                </Stack>
-
-                { selectedPlatformDefs.map((p: PlatformDefinitionInterface) => {
-                    const rule: RuleWithoutIdInterface | null | undefined = platformRules[p.key];
-                    const isConfigured: boolean = platformConfigured[p.key] === true;
-                    const condCount: number = isConfigured && rule ? countConditions(rule) : 0;
-                    const groupCount: number = isConfigured && rule ? (rule.rules?.length ?? 0) : 0;
-
-                    return (
-                        <StyledReviewPlatformCard key={ p.key }>
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="space-between"
-                                sx={ { mb: 1.25 } }
-                            >
-                                <Chip
-                                    label={ p.label }
-                                    size="small"
-                                    variant="outlined"
-                                    sx={ { color: "text.secondary", borderColor: "divider" } }
-                                />
-                                <Typography variant="caption" sx={ { color: "text.secondary" } }>
-                                    { !isConfigured
-                                        ? <span>Applies to <strong>all { p.label } devices</strong></span>
-                                        : `${ condCount } condition(s) across ${ groupCount } group(s)`
-                                    }
-                                </Typography>
-                            </Stack>
-                            { isConfigured && rule && (
-                                <StyledRuleSummaryCode>
-                                    { (rule.rules ?? []).map(
-                                        (
-                                            group: RuleConditionWithoutIdInterface,
-                                            gi: number
-                                        ): ReactElement => (
-                                            <React.Fragment key={ gi }>
-                                                { gi > 0 && (
-                                                    <Box
-                                                        component="div"
-                                                        sx={ {
-                                                            color: "primary.main",
-                                                            fontWeight: 700,
-                                                            my: 0.75
-                                                        } }
-                                                    >
-                                                        OR
-                                                    </Box>
-                                                ) }
-                                                <div>
-                                                    (
-                                                    { (group.expressions ?? []).map(
-                                                        (
-                                                            expr: {
-                                                                field: string;
-                                                                operator: string;
-                                                                value: string;
-                                                            },
-                                                            ei: number
-                                                        ): ReactElement => (
-                                                            <span key={ ei }>
-                                                                { ei > 0 && (
-                                                                    <Typography
-                                                                        component="span"
-                                                                        sx={ {
-                                                                            color: "text.secondary",
-                                                                            fontWeight: 700,
-                                                                            fontFamily: "inherit",
-                                                                            fontSize: "inherit"
-                                                                        } }
-                                                                    >
-                                                                        { " AND " }
-                                                                    </Typography>
-                                                                ) }
-                                                                <Typography
-                                                                    component="span"
-                                                                    sx={ {
-                                                                        fontWeight: 600,
-                                                                        fontFamily: "inherit",
-                                                                        fontSize: "inherit"
-                                                                    } }
-                                                                >
-                                                                    { expr.field }
-                                                                </Typography>
-                                                                <Typography
-                                                                    component="span"
-                                                                    sx={ {
-                                                                        color: "text.secondary",
-                                                                        fontFamily: "inherit",
-                                                                        fontSize: "inherit"
-                                                                    } }
-                                                                >
-                                                                    { " " }{ expr.operator }{ " " }
-                                                                </Typography>
-                                                                <Typography
-                                                                    component="span"
-                                                                    sx={ {
-                                                                        color: "primary.main",
-                                                                        fontWeight: 600,
-                                                                        fontFamily: "inherit",
-                                                                        fontSize: "inherit"
-                                                                    } }
-                                                                >
-                                                                    &ldquo;{ expr.value || "?" }&rdquo;
-                                                                </Typography>
-                                                            </span>
-                                                        )
-                                                    ) }
-                                                    )
-                                                </div>
-                                            </React.Fragment>
-                                        )
-                                    ) }
-                                </StyledRuleSummaryCode>
-                            ) }
-                        </StyledReviewPlatformCard>
-                    );
-                }) }
-
-                <Alert severity="info" sx={ { mt: 3 } } data-componentid={ `${ componentId }-assign-hint` }>
-                    <AlertTitle>
-                        { t("devices:assurancePolicies.wizard.steps.review.assignHint.title") }
-                    </AlertTitle>
-                    <ul style={ { margin: "4px 0 0", paddingLeft: 20 } }>
-                        <li
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={ {
-                                __html: t("devices:assurancePolicies.wizard.steps.review.assignHint.loginFlow")
-                            } }
-                        />
-                        <li
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={ {
-                                __html: t("devices:assurancePolicies.wizard.steps.review.assignHint.otherFlows")
-                            } }
-                        />
-                    </ul>
-                </Alert>
-            </Box>
-        );
-    };
-
     const resolveStepContent = (): ReactElement => {
         switch (currentStep) {
             case WizardStep.BASIC_DETAILS:
                 return renderBasicDetailsStep();
             case WizardStep.EXECUTION_RULES:
-                return renderExecutionRulesStep();
+                return (
+                    <PolicyRulesStep
+                        platforms={ platforms }
+                        selectedPlatforms={ selectedPlatforms }
+                        activeTabIndex={ activeTabIndex }
+                        platformRules={ platformRules }
+                        platformConfigured={ platformConfigured }
+                        activeConditionsMeta={ activeConditionsMeta }
+                        isMetadataLoading={ activePlatform ? metaLoading[activePlatform] : false }
+                        rulesValidationError={ rulesValidationError }
+                        onTabChange={ handleTabChange }
+                        onConfigureRule={ handleConfigureRule }
+                        onClearRule={ handleClearRule }
+                        onRemovePlatform={ handleRemovePlatformFromStep2 }
+                        data-componentid={ `${ componentId }-rules-step` }
+                    />
+                );
             case WizardStep.REVIEW:
-                return renderReviewStep();
+                return (
+                    <PolicyReviewStep
+                        platforms={ platforms }
+                        selectedPlatforms={ selectedPlatforms }
+                        policyName={ policyName }
+                        platformRules={ platformRules }
+                        platformConfigured={ platformConfigured }
+                        onEditPolicy={ (): void => setCurrentStep(WizardStep.BASIC_DETAILS) }
+                        onEditRules={ (): void => setCurrentStep(WizardStep.EXECUTION_RULES) }
+                        showAssignHint={ true }
+                        data-componentid={ `${ componentId }-review-step` }
+                    />
+                );
             default:
                 return null;
         }
@@ -1117,10 +597,6 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
             </Grid.Row>
         </Grid>
     );
-
-    /* ------------------------------------------------------------------ */
-    /*  Render                                                              */
-    /* ------------------------------------------------------------------ */
 
     return (
         <Modal
