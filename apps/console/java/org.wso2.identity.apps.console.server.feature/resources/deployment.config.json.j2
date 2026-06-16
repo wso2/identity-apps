@@ -150,6 +150,17 @@
         {% endif %}
         {% endfor %}
         {% endif %}
+        {% if analytics.moesif.enabled is defined %}
+        ,"analytics": {
+            "collectorKey": {
+                "settingsEnabled": {{ analytics.moesif.enabled }}
+            },
+            "moesif": {
+                "dashboardEnabled": false,
+                "embeddedPortalUrl": ""
+            }
+        }
+        {% endif %}
     },
     "session": {
         {% if console.session.params is defined %}
