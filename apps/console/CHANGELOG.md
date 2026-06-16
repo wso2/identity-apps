@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.11.7
+
+### Patch Changes
+
+- [#10415](https://github.com/wso2/identity-apps/pull/10415) [`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Show the time zone alongside the time in the log management UI (e.g. `15:19:16 GMT+05:30`) so timestamps are unambiguous.
+
+* [#10364](https://github.com/wso2/identity-apps/pull/10364) [`3c842342e4ea92a790e1d90474b267a1bd6b7acd`](https://github.com/wso2/identity-apps/commit/3c842342e4ea92a790e1d90474b267a1bd6b7acd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add configs to enable moesif settings in console
+
+* Updated dependencies [[`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9)]:
+  - @wso2is/admin.logs.v1@1.6.9
+
 ## 4.11.6
 
 ### Patch Changes
