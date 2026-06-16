@@ -1,0 +1,209 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// EXPOSE moved from orange to green; orange is now reserved for the brand
+// (selected-row highlight). MODIFY stays blue.
+$expose-color: #2E7D32;
+$expose-faint: #E8F5E9;
+$modify-color: #1565C0;
+$modify-faint: #E3F2FD;
+$danger-color: #C0392B;
+
+$row-selected-bg: #FFF4EC;
+$row-selected-border: #FFB066;
+$container-bg: #F4F4F4;
+
+$gray-05: #F5F5F5;
+$gray-10: #EBEBEB;
+$gray-20: #D0D0D0;
+$gray-35: #A0A0A0;
+$gray-50: #787878;
+$gray-70: #4A4A4A;
+$gray-90: #2C2C2C;
+
+$indent: 22px;
+$row-min-height: 36px;
+$chip-height: 19px;
+
+// ── Global: prevent Semantic UI blurring dimmer from blurring MUI Dialogs ──
+.blurring.dimmed.dimmable > :not(.dimmer).MuiDialog-root {
+    filter: none !important;
+    z-index: 2000 !important;
+}
+
+.flow-context-tree {
+    --tree-expose: #{$expose-color};
+    --tree-expose-faint: #{$expose-faint};
+    --tree-modify: #{$modify-color};
+    --tree-modify-faint: #{$modify-faint};
+    --tree-gray-20: #{$gray-20};
+    --tree-row-selected: #{$row-selected-bg};
+    --tree-container-bg: #{$container-bg};
+
+    .tree-node-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 4px;
+        min-height: $row-min-height;
+        padding-top: 4px;
+        padding-right: 10px;
+        padding-bottom: 4px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        position: relative;
+        transition: background 0.1s;
+        cursor: pointer;
+
+        // Light-gray hover — only applies to leaf rows (containers opt out below).
+        &:hover {
+            background-color: #F4F4F4;
+        }
+
+        // Selected row uses the brand orange tint, no border.
+        &.selected {
+            background-color: $row-selected-bg;
+        }
+
+        // Container rows (OBJECT/MAP/COMPLEX_MAP) get a gray banded background that
+        // starts at the row's name column and extends to (just before) the right
+        // edge of the tree column. The band itself provides the visual emphasis —
+        // hover + selected backgrounds are suppressed so they don't compete.
+        &.tree-node-row--container {
+            &:hover {
+                background-color: transparent;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: var(--container-band-left, 0);
+                right: 6px;
+                top: 4px;
+                bottom: 4px;
+                background-color: $container-bg;
+                border-radius: 6px;
+                z-index: 0;
+                pointer-events: none;
+            }
+        }
+
+        // Lift row content above the container band.
+        > * {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .add-entry-chip {
+        margin-left: 6px;
+    }
+
+    // ── Operation chip styles ──
+    .expose-chip,
+    .modify-chip {
+        flex-shrink: 0;
+        font-size: 9.5px;
+        font-weight: 600;
+        height: $chip-height;
+        letter-spacing: 0.05em;
+        border-radius: 20px;
+        transition: all 0.12s ease;
+    }
+
+    .expose-chip-active {
+        background-color: $expose-faint;
+        border: 1px solid $expose-color;
+        color: $expose-color;
+        font-weight: 700;
+    }
+
+    .expose-chip:not(.expose-chip-active) {
+        background-color: transparent;
+        border: 1px solid $gray-10;
+        color: $gray-50;
+
+        &:hover {
+            background-color: $expose-faint;
+            border-color: $expose-color;
+            color: $expose-color;
+        }
+    }
+
+    .modify-chip-active {
+        background-color: $modify-faint;
+        border: 1px solid $modify-color;
+        color: $modify-color;
+        font-weight: 700;
+    }
+
+    .modify-chip:not(.modify-chip-active) {
+        background-color: transparent;
+        border: 1px solid $gray-10;
+        color: $gray-50;
+
+        &:hover {
+            background-color: $modify-faint;
+            border-color: $modify-color;
+            color: $modify-color;
+        }
+    }
+
+    // ── Tree connector lines ──
+    .tree-connector-vertical {
+        position: absolute;
+        width: 1.5px;
+        top: 0;
+        bottom: 0;
+        background-color: $gray-10;
+        pointer-events: none;
+    }
+    .tree-connector-horizontal {
+        position: absolute;
+        height: 1.5px;
+        top: 50%;
+        width: 11px;
+        background-color: $gray-10;
+        pointer-events: none;
+    }
+}
+
+// ── Field configuration panel ──
+// Fixed min-height so switching between fields with different op shapes does
+// not change the panel size.
+.field-config-panel {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+// ── Access config Monaco wrapper ──
+// Internal flex grow so the editor fills the RHS column when the tree is tall;
+// min-height keeps it readable when the tree is short.
+.access-config-monaco {
+    min-height: 280px;
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .access-config-monaco__editor {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}

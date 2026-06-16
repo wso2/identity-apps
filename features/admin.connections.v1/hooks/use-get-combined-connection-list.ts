@@ -16,7 +16,12 @@
  * under the License.
  */
 
+import useGetFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-extension";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import {
     useGetIdentityVerificationProviderList
@@ -26,6 +31,7 @@ import {
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
+import { useSelector } from "react-redux";
 import { useGetAuthenticators } from "../api/authenticators";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
@@ -72,6 +78,14 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     shouldHideLocalSMSOTPAuthenticator: boolean = false
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.actions);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const flowExtensionFeatureKey: string = isSubOrganization()
+        ? "actions.types.org.list.flowExtension"
+        : "actions.types.list.flowExtension";
+    const isFlowExtensionEnabled: boolean = isFeatureEnabled(actionsFeatureConfig, flowExtensionFeatureKey);
+
     const {
         data: fetchedAuthenticatorsList,
         isLoading: isAuthenticatorsFetchRequestLoading,
@@ -105,9 +119,18 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
+    const {
+        data: fetchedFlowExtension,
+        isLoading: isFlowExtensionFetchRequestLoading,
+        isValidating: isFlowExtensionFetchRequestValidating,
+        error: flowExtensionFetchRequestError,
+        mutate: mutateFlowExtensionFetchRequest
+    } = useGetFlowExtension(isFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
+
     const combinedData: ConnectionInterface[] = [];
 
-    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
+    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading
+        && !isFlowExtensionFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
@@ -167,19 +190,37 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                 } as ConnectionInterface);
             }
         }
+
+        // Add Flow Extension to the list.
+        if (fetchedFlowExtension?.length) {
+            for (const extension of fetchedFlowExtension) {
+                combinedData.push({
+                    description: extension.description,
+                    id: extension.id,
+                    image: extension.iconUrl || AuthenticatorMeta.getFlowExtensionIcon(),
+                    name: extension.name,
+                    tags: [ "Custom" ],
+                    type: "FLOW_EXTENSION" as ConnectionTypes
+                } as ConnectionInterface);
+            }
+        }
     }
 
     return {
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
-            || idVPListFetchRequestError as AxiosError<Error>,
+            || idVPListFetchRequestError as AxiosError<Error>
+            || flowExtensionFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
-            || isIdVPListFetchRequestLoading,
+            || isIdVPListFetchRequestLoading
+            || isFlowExtensionFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
-            || isIdVPListFetchRequestValidating,
+            || isIdVPListFetchRequestValidating
+            || isFlowExtensionFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
             mutateIdVPListFetchRequest();
+            mutateFlowExtensionFetchRequest();
         }
     };
 };

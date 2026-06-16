@@ -1,0 +1,259 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { useRequiredScopes } from "@wso2is/access-control";
+import useGetFlowExtensionById from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-extension-by-id";
+import { FlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureAccessConfigInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    ContentLoader,
+    EmphasizedSegment,
+    ResourceTab,
+    ResourceTabPaneInterface,
+    TabPageLayout
+} from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
+import { FlowExtensionAccessConfigSettings } from
+    "../components/edit/settings/flow-extension-access-config-settings";
+import { FlowExtensionCustomErrors } from
+    "../components/edit/settings/flow-extension-custom-errors";
+import { FlowExtensionEndpointSettings } from "../components/edit/settings/flow-extension-endpoint-settings";
+import { FlowExtensionGeneralSettings } from "../components/edit/settings/flow-extension-general-settings";
+import { AuthenticatorMeta } from "../meta/authenticator-meta";
+
+type FlowExtensionEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+
+const FlowExtensionEditPage: FunctionComponent<FlowExtensionEditPagePropsInterface> = ({
+    location,
+    ["data-componentid"]: componentId = "flow-extension-edit-page"
+}: FlowExtensionEditPagePropsInterface): ReactElement => {
+
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.actions);
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
+    const isCustomErrorsEnabled: boolean = isFeatureEnabled(
+        actionsFeatureConfig, "actions.types.list.flowExtension.customErrors");
+
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
+
+    const getActionId = (pathname: string): string => {
+        const parts: string[] = pathname.split("/");
+
+        return parts[parts.length - 1];
+    };
+
+    const actionId: string = getActionId(location.pathname);
+
+    const {
+        data: action,
+        error: actionFetchError,
+        isLoading: isActionLoading,
+        mutate: mutateAction
+    } = useGetFlowExtensionById<FlowExtensionResponseInterface>(actionId);
+
+    useEffect(() => {
+        if (actionFetchError) {
+            dispatch(addAlert({
+                description: actionFetchError?.response?.data?.description
+                    ?? t("flowExtension:notifications.fetchError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flowExtension:notifications.fetchError.message")
+            }));
+        }
+    }, [ actionFetchError ]);
+
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("IDP"));
+    };
+
+    const handleDelete = (): void => {
+        history.push(AppConstants.getPaths().get("IDP"));
+    };
+
+    const handleUpdate = (): void => {
+        mutateAction();
+    };
+
+    const Loader = (): ReactElement => (
+        <EmphasizedSegment padded>
+            <ContentLoader inline="centered" active />
+        </EmphasizedSegment>
+    );
+
+    const resolveImage = (): ReactElement => {
+        if (action?.name) {
+            return (
+                <AppAvatar
+                    hoverable={ false }
+                    name={ action.name }
+                    image={ action.iconUrl || AuthenticatorMeta.getFlowExtensionIcon() }
+                    size="tiny"
+                />
+            );
+        }
+
+        return (
+            <AnimatedAvatar
+                hoverable={ false }
+                name={ action?.name ?? "" }
+                size="tiny"
+                floated="left"
+            />
+        );
+    };
+
+    const GeneralSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <FlowExtensionGeneralSettings
+                action={ action }
+                isLoading={ isActionLoading }
+                isReadOnly={ isReadOnly }
+                onDelete={ handleDelete }
+                onUpdate={ handleUpdate }
+                loader={ Loader }
+                data-componentid={ `${componentId}-general-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const EndpointSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <FlowExtensionEndpointSettings
+                action={ action }
+                isLoading={ isActionLoading }
+                isReadOnly={ isReadOnly }
+                onUpdate={ handleUpdate }
+                loader={ Loader }
+                data-componentid={ `${componentId}-endpoint-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const AccessConfigTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <FlowExtensionAccessConfigSettings
+                action={ action }
+                isLoading={ isActionLoading }
+                isReadOnly={ isReadOnly }
+                onUpdate={ handleUpdate }
+                loader={ Loader }
+                data-componentid={ `${componentId}-access-config-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const CustomErrorsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <FlowExtensionCustomErrors
+                action={ action }
+                isLoading={ isActionLoading }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+                data-componentid={ `${componentId}-custom-errors` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const getPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
+
+        panes.push({
+            "data-tabid": "general",
+            menuItem: "General",
+            render: GeneralSettingsTabPane
+        });
+
+        panes.push({
+            "data-tabid": "settings",
+            menuItem: "Settings",
+            render: EndpointSettingsTabPane
+        });
+
+        panes.push({
+            "data-tabid": "access-configuration",
+            menuItem: "Access Configuration",
+            render: AccessConfigTabPane
+        });
+
+        if (isCustomErrorsEnabled) {
+            panes.push({
+                "data-tabid": "custom-errors",
+                menuItem: "Custom Errors",
+                render: CustomErrorsTabPane
+            });
+        }
+
+        return panes;
+    };
+
+    return (
+        <TabPageLayout
+            pageTitle="Edit Flow Extension"
+            isLoading={ isActionLoading }
+            loadingStateOptions={ {
+                count: 5,
+                imageType: "square"
+            } }
+            title={ action?.name ?? "" }
+            contentTopMargin={ true }
+            description={ action?.description ?? "" }
+            image={ resolveImage() }
+            backButton={ {
+                "data-componentid": `${componentId}-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            data-componentid={ `${componentId}-layout` }
+        >
+            <ResourceTab
+                controlTabRedirectionInternally
+                isLoading={ isActionLoading }
+                data-componentid={ `${componentId}-resource-tabs` }
+                panes={ getPanes() }
+                defaultActiveIndex={ defaultActiveIndex }
+                onTabChange={ (
+                    _e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+                    data: TabProps
+                ) => {
+                    setDefaultActiveIndex(data.activeIndex as number);
+                } }
+            />
+        </TabPageLayout>
+    );
+};
+
+export default FlowExtensionEditPage;

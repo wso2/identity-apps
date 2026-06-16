@@ -75,7 +75,8 @@
                 "config": []
             },
             "ignoreDependencies": [
-                "buffer"
+                "buffer",
+                "autoprefixer"
             ]
         },
         "apps/myaccount": {
@@ -91,7 +92,8 @@
             },
             "ignoreDependencies": [
                 "@wso2is/theme",
-                "buffer"
+                "buffer",
+                "autoprefixer"
             ]
         },
         "features": {

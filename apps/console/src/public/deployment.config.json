@@ -405,7 +405,9 @@
                     "actions.types.list.preUpdatePassword.headersAndParameters",
                     "actions.types.list.preUpdateProfile.headersAndParameters",
                     "actions.types.org.list.preIssueAccessToken",
-                    "actions.types.org.list.preRegistration"
+                    "actions.types.org.list.preRegistration",
+                    "actions.types.list.flowExtension.customErrors",
+                    "actions.types.list.flowExtension.flowLevelOverrides"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1253,7 +1255,12 @@
                     "identityProviders.saml.attributeConsumingServiceIndex"
                 ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "console.connections.templates.flowExtension",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_idp_create"

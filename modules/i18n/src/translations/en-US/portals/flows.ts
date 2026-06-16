@@ -113,6 +113,7 @@ export const flows: flowsNS = {
                 flowExtension: "Flow Extension",
                 github: "GitHub",
                 google: "Google",
+                flowExtension: "Flow Extension",
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
