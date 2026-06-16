@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    AuthenticationType as ActionAuthenticationType,
+    AuthenticationTypeDropdownOption as ActionAuthenticationTypeDropdownOption
+} from "@wso2is/admin.actions.v1/models/actions";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
@@ -459,6 +463,40 @@ export class ConnectionUIConstants {
             key: EndpointAuthenticationType.PASSWORD_CREDENTIAL,
             text: "actions:fields.authentication.types.passwordCredential.name",
             value: EndpointAuthenticationType.PASSWORD_CREDENTIAL
+        }
+    ];
+
+    /**
+     * Authentication types exposed in the Flow Extension endpoint configuration.
+     * Typed with the admin.actions.v1 authentication types since the shared
+     * `ActionEndpointConfigForm` consumes this list. Excludes Password Credential,
+     * which is not supported for flow extensions.
+     */
+    public static readonly FLOW_EXTENSION_AUTH_TYPES: ActionAuthenticationTypeDropdownOption[] = [
+        {
+            key: ActionAuthenticationType.NONE,
+            text: "actions:fields.authentication.types.none.name",
+            value: ActionAuthenticationType.NONE
+        },
+        {
+            key: ActionAuthenticationType.BASIC,
+            text: "actions:fields.authentication.types.basic.name",
+            value: ActionAuthenticationType.BASIC
+        },
+        {
+            key: ActionAuthenticationType.BEARER,
+            text: "actions:fields.authentication.types.bearer.name",
+            value: ActionAuthenticationType.BEARER
+        },
+        {
+            key: ActionAuthenticationType.API_KEY,
+            text: "actions:fields.authentication.types.apiKey.name",
+            value: ActionAuthenticationType.API_KEY
+        },
+        {
+            key: ActionAuthenticationType.CLIENT_CREDENTIAL,
+            text: "actions:fields.authentication.types.clientCredential.name",
+            value: ActionAuthenticationType.CLIENT_CREDENTIAL
         }
     ];
 

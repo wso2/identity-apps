@@ -27,10 +27,12 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import { useGetAuthenticators } from "../api/authenticators";
+import useGetFlowExtension from "../api/use-get-flow-extension";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorTypes } from "../models/authenticators";
 import { ConnectionInterface, ConnectionTypes } from "../models/connection";
+import { FlowExtensionBasicResponseInterface } from "../models/flow-extension";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
@@ -69,7 +71,8 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     shouldFetchAuthenticators: boolean = true,
     shouldFetchIdVPs: boolean = true,
     shouldHideLocalEmailOTPAuthenticator: boolean = false,
-    shouldHideLocalSMSOTPAuthenticator: boolean = false
+    shouldHideLocalSMSOTPAuthenticator: boolean = false,
+    shouldFetchFlowExtensions: boolean = true
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
     const {
@@ -105,9 +108,20 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
+    const {
+        data: fetchedFlowExtensionList,
+        isLoading: isFlowExtensionListFetchRequestLoading,
+        isValidating: isFlowExtensionListFetchRequestValidating,
+        error: flowExtensionListFetchRequestError,
+        mutate: mutateFlowExtensionListFetchRequest
+    } = useGetFlowExtension<FlowExtensionBasicResponseInterface[], RequestErrorInterface>(
+        shouldFetchFlowExtensions && offset === 0
+    );
+
     const combinedData: ConnectionInterface[] = [];
 
-    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
+    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading
+        && !isFlowExtensionListFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
@@ -167,19 +181,36 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                 } as ConnectionInterface);
             }
         }
+
+        // Add Flow Extensions to the list.
+        if (Array.isArray(fetchedFlowExtensionList)) {
+            for (const flowExtension of fetchedFlowExtensionList) {
+                combinedData.push({
+                    description: flowExtension.description,
+                    id: flowExtension.id,
+                    image: flowExtension.iconUrl,
+                    name: flowExtension.name,
+                    type: ConnectionTypes.FLOW_EXTENSION
+                } as ConnectionInterface);
+            }
+        }
     }
 
     return {
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
-            || idVPListFetchRequestError as AxiosError<Error>,
+            || idVPListFetchRequestError as AxiosError<Error>
+            || flowExtensionListFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
-            || isIdVPListFetchRequestLoading,
+            || isIdVPListFetchRequestLoading
+            || isFlowExtensionListFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
-            || isIdVPListFetchRequestValidating,
+            || isIdVPListFetchRequestValidating
+            || isFlowExtensionListFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
             mutateIdVPListFetchRequest();
+            mutateFlowExtensionListFetchRequest();
         }
     };
 };

@@ -33,6 +33,8 @@ export const getConnectionResourceEndpoints = (serverHost: string): ConnectionRe
         customAuthenticators: `${ serverHost }/api/server/v1/authenticators/custom`,
         extensions: `${ serverHost }/api/server/v1/extensions`,
         fidoConfigs: `${ serverHost }/api/identity/config-mgt/v1.0/resource/fido-config`,
+        flowExtension: `${ serverHost }/api/server/v1/flow/extension`,
+        flowExtensionContextTree: `${ serverHost }/api/server/v1/flow/extension/meta`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${

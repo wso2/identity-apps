@@ -17,6 +17,44 @@
  */
 
 export interface flowExtensionNS {
+    createWizard: {
+        steps: {
+            generalSettings: {
+                title: string;
+                name: {
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    validations: {
+                        invalid: string;
+                    };
+                };
+                description: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        maxLength: string;
+                    };
+                };
+            };
+            endpointConfig: {
+                title: string;
+            };
+        };
+    };
+    notifications: {
+        createSuccess: {
+            message: string;
+            description: string;
+        };
+        createError: {
+            message: string;
+        };
+        createGenericError: {
+            message: string;
+            description: string;
+        };
+    };
     properties: {
         description: string;
         connectionLabel: string;

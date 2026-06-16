@@ -616,3 +616,20 @@ export interface ActionTypeCardInterface {
      */
     disabled?: boolean
 }
+
+/**
+ * Expose/modify entry in access config.
+ * Same structure is used for both expose and modify entries: a path plus an optional encryption flag.
+ */
+export interface ContextPathInterface {
+    path: string;
+    encrypted: boolean;
+}
+
+/**
+ * Access config for Flow Extension actions.
+ */
+export interface AccessConfigInterface {
+    expose: ContextPathInterface[];
+    modify: ContextPathInterface[];
+}

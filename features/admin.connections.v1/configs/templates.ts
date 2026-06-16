@@ -21,6 +21,7 @@ import values from "lodash-es/values";
 import DefaultConnectionTemplateCategory from "../meta/templates-meta/categories/default.json";
 import CustomAuthenticatorTemplateGroup from "../meta/templates-meta/groups/custom-authenticator.json";
 import EnterpriseConnetionTemplateGroup from "../meta/templates-meta/groups/enterprise.json";
+import FlowExtensionTemplateGroup from "../meta/templates-meta/groups/flow-extension.json";
 import { ConnectionTemplatesConfigInterface } from "../models/connection";
 
 export const getConnectionTemplatesConfig = (): ConnectionTemplatesConfigInterface => {
@@ -50,6 +51,11 @@ export const getConnectionTemplatesConfig = (): ConnectionTemplatesConfigInterfa
                         enabled: CustomAuthenticatorTemplateGroup.enabled,
                         id: CustomAuthenticatorTemplateGroup.id,
                         resource: CustomAuthenticatorTemplateGroup
+                    },
+                    {
+                        enabled: FlowExtensionTemplateGroup.enabled,
+                        id: FlowExtensionTemplateGroup.id,
+                        resource: FlowExtensionTemplateGroup
                     }
                 ],
                 "id"
