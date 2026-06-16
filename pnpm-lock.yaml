@@ -404,7 +404,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.issuer-usage-scope.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.8
+        specifier: ^1.6.9
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.26.3
