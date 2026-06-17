@@ -6,4 +6,4 @@
 "@wso2is/i18n": patch
 ---
 
-Add application assignemnt UI for policies
+Add application assignment UI for policies

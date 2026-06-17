@@ -66,7 +66,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Header, Icon, Modal, PaginationProps } from "semantic-ui-react";
 
-interface PolicyConsentApplicationsProps extends IdentifiableComponentInterface {
+interface PolicyConsentApplicationsPropsInterface extends IdentifiableComponentInterface {
     purposeId?: string;
 }
 
@@ -77,8 +77,8 @@ interface PolicyConsentApplicationsProps extends IdentifiableComponentInterface 
  * @param props - Props injected to the component.
  * @returns Policy Consent Applications component.
  */
-export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicationsProps> = (
-    props: PolicyConsentApplicationsProps
+export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicationsPropsInterface> = (
+    props: PolicyConsentApplicationsPropsInterface
 ): ReactElement => {
     const {
         ["data-componentid"]: componentId = "policy-consent-applications"
@@ -189,43 +189,41 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
         setPaginatedAssigned(filteredAssigned.slice(listOffset, listOffset + listItemLimit));
     }, [ filteredAssigned, listOffset, listItemLimit ]);
 
-    const persistAssignments = (nextIds: Set<string>): void => {
+    const persistAssignments = async (nextIds: Set<string>): Promise<void> => {
         if (!props.purposeId) {
             return;
         }
 
-        if (nextIds.size === 0) {
-            deleteConsentPolicyApps(props.purposeId).catch((): void => {
-                dispatch(addAlert({
-                    description: t("consents:policyConsents.notifications.update.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("consents:policyConsents.notifications.update.error.message")
-                }));
-            });
-
-            return;
-        }
-
-        saveConsentPolicyApps(props.purposeId, Array.from(nextIds)).catch((): void => {
+        try {
+            if (nextIds.size === 0) {
+                await deleteConsentPolicyApps(props.purposeId);
+            } else {
+                await saveConsentPolicyApps(props.purposeId, Array.from(nextIds));
+            }
+        } catch (error: unknown) {
             dispatch(addAlert({
                 description: t("consents:policyConsents.notifications.update.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("consents:policyConsents.notifications.update.error.message")
             }));
-        });
+            throw error;
+        }
     };
 
-    const handleRemoveApplication: (_app: ApplicationListItemInterface) => void = useCallback(
-        (_app: ApplicationListItemInterface): void => {
-            setAssignedIds((prev: Set<string>): Set<string> => {
-                const next: Set<string> = new Set<string>(prev);
+    const handleRemoveApplication: (_app: ApplicationListItemInterface) => Promise<void> = useCallback(
+        async (_app: ApplicationListItemInterface): Promise<void> => {
+            const prev: Set<string> = new Set<string>(assignedIds);
+            const next: Set<string> = new Set<string>(prev);
 
-                next.delete(_app.id);
-                persistAssignments(next);
+            next.delete(_app.id);
+            setAssignedIds(next);
 
-                return next;
-            });
-        }, [ allApplications, props.purposeId ]);
+            try {
+                await persistAssignments(next);
+            } catch {
+                setAssignedIds(prev);
+            }
+        }, [ assignedIds, props.purposeId ]);
 
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
@@ -275,20 +273,23 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
         setIsSelectAll((prev: boolean): boolean => !prev);
     };
 
-    const handleAssignConfirm = (): void => {
+    const handleAssignConfirm: () => Promise<void> = async (): Promise<void> => {
         setIsSaving(true);
 
-        setAssignedIds((prev: Set<string>): Set<string> => {
-            const next: Set<string> = new Set<string>(prev);
+        const prev: Set<string> = new Set<string>(assignedIds);
+        const next: Set<string> = new Set<string>(prev);
 
-            modalSelectedIds.forEach((id: string): void => { next.add(id); });
-            persistAssignments(next);
-
-            return next;
-        });
-
+        modalSelectedIds.forEach((id: string): void => { next.add(id); });
+        setAssignedIds(next);
         setShowAssignModal(false);
-        setIsSaving(false);
+
+        try {
+            await persistAssignments(next);
+        } catch {
+            setAssignedIds(prev);
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const resolveTableColumns = (): TableColumnInterface[] => [

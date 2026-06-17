@@ -25,7 +25,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 const getPurposeAppsUrl = (purposeId: string): string =>
-    `${store.getState().config.endpoints.serverConfigurations}/consent/purposes/${purposeId}/applications`;
+    `${store.getState().config.endpoints.consentPolicyApps}/${purposeId}/applications`;
 
 const getPurposeAppUrl = (purposeId: string, applicationId: string): string =>
     `${getPurposeAppsUrl(purposeId)}/${applicationId}`;
@@ -57,7 +57,7 @@ export const getConsentPolicyApps = (purposeId: string): Promise<string[]> => {
             (response.data as ApplicationObject[]).map((app: ApplicationObject): string => app.id)
         )
         .catch((error: AxiosError): string[] => {
-            if (error?.response?.status === 404 || error?.response?.status === 500) {
+            if (error?.response?.status === 404) {
                 return [];
             }
             throw error;

@@ -117,7 +117,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             consentMgtElements: "",
             consentMgtPurposes: "",
             consentPolicyApps: "",
-            consentPolicyAppsResourceType: "",
             copilot: "",
             createSecret: "",
             createSecretType: "",

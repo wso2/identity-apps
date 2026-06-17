@@ -34,7 +34,7 @@ import {
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -85,6 +85,12 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     const handleTabChange = (_: SyntheticEvent, newValue: number): void => {
         setActiveTab(newValue);
     };
+
+    useEffect((): void => {
+        if (isDefaultPolicy) {
+            setActiveTab(0);
+        }
+    }, [ isDefaultPolicy ]);
 
     // Only fetch from the API when the id is a real UUID, not a default-policy slug.
     const { data: consent, isLoading: isConsentLoading } = useGetPurpose(isDefaultPolicy ? "" : id);

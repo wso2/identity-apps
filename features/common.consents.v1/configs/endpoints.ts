@@ -34,8 +34,6 @@ export const getConsentMgtResourceEndpoints = (serverHost: string): ConsentMgtRe
     return {
         consentMgtElements: `${ normalizedHost }/api/identity/consent-mgt/v2.0/elements`,
         consentMgtPurposes: `${ normalizedHost }/api/identity/consent-mgt/v2.0/purposes`,
-        consentPolicyApps: `${ tenantHost }/api/identity/config-mgt/v1.0/resource/consent-policy-apps`,
-        consentPolicyAppsResourceType:
-            `${ tenantHost }/api/identity/config-mgt/v1.0/resource-type/consent-policy-apps`
+        consentPolicyApps: `${ tenantHost }/api/server/v1/configs/consent/purposes`
     };
 };
