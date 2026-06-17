@@ -67,6 +67,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const [ hasMoreApplications, setHasMoreApplications ] = useState(true);
     const [ appListOffset, setAppListOffset ] = useState<number>(0);
     const [ shouldFetchApplications, setShouldFetchApplications ] = useState<boolean>(true);
+    const [ isApplicationDropdownOpen, setIsApplicationDropdownOpen ] = useState<boolean>(false);
 
     const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
 
@@ -187,6 +188,55 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             setHasMoreApplications(false);
         }
     }, [ applicationList ]);
+
+    /**
+     * Proactively loads the next page while the dropdown content does not overflow its
+     * scrollable container. `InfiniteScroll` only fires its `next` callback on a scroll
+     * event, which never happens when the post-filter (non-M2M) options are too few to
+     * overflow the container. Rather than estimating from a fixed item count/height, we
+     * measure the actual container overflow and keep fetching until it can scroll (or no
+     * more pages remain).
+     */
+    useEffect(() => {
+        if (
+            !isApplicationDropdownOpen ||
+            !hasMoreApplications ||
+            shouldFetchApplications ||
+            isApplicationListFetchRequestValidating ||
+            brandingMode !== BrandingModes.APPLICATION
+        ) {
+            return;
+        }
+
+        let frameId: number;
+        let attempts: number = 0;
+
+        // The Autocomplete popup mounts asynchronously, so retry until the scroll
+        // container is available, then measure it. If the content does not overflow, no
+        // scroll event can fire to trigger the next page — load it proactively.
+        const measureAndMaybeFetch = (): void => {
+            const scrollContainer: HTMLElement | null =
+                document.getElementById("autocomplete-scroll-container");
+
+            if (!scrollContainer) {
+                if (attempts++ < 10) {
+                    frameId = requestAnimationFrame(measureAndMaybeFetch);
+                }
+
+                return;
+            }
+
+            if (scrollContainer.scrollHeight <= scrollContainer.clientHeight) {
+                setAppListOffset((prevOffset: number) => prevOffset + 10);
+                setShouldFetchApplications(true);
+            }
+        };
+
+        frameId = requestAnimationFrame(measureAndMaybeFetch);
+
+        return () => cancelAnimationFrame(frameId);
+    }, [ applications, hasMoreApplications, shouldFetchApplications,
+        isApplicationListFetchRequestValidating, brandingMode, isApplicationDropdownOpen ]);
 
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
@@ -450,6 +500,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     sx={ { width: 190 } }
                                                     readOnly={ isBrandingAppsRedirect }
                                                     clearIcon={ null }
+                                                    onOpen={ () => setIsApplicationDropdownOpen(true) }
+                                                    onClose={ () => setIsApplicationDropdownOpen(false) }
                                                     options={ applications ?? [] }
                                                     value={ applications?.find(
                                                         (app: ApplicationListItemInterface) =>
