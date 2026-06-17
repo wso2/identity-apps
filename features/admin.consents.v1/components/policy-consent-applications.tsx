@@ -64,7 +64,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Header, Icon, Modal, PaginationProps } from "semantic-ui-react";
+import { Divider, Header, Icon, Modal, PaginationProps, SemanticICONS } from "semantic-ui-react";
 
 interface PolicyConsentApplicationsPropsInterface extends IdentifiableComponentInterface {
     purposeId?: string;
@@ -318,7 +318,8 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
                         ) }
                     </Header.Content>
                 </Header>
-            )
+            ),
+            title: ""
         },
         {
             allowToggleVisibility: false,
@@ -338,7 +339,7 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
         return [
             {
                 "data-componentid": `${componentId}-item-remove-button`,
-                icon: (): string => "trash alternate",
+                icon: (): SemanticICONS => "trash",
                 onClick: (_: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleRemoveApplication(app);
                 },

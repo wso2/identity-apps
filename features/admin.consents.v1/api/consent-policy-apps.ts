@@ -35,7 +35,7 @@ const JSON_HEADERS: Record<string, string> = {
     "Content-Type": "application/json"
 };
 
-export interface ApplicationObject {
+interface ApplicationObject {
     id: string;
 }
 
