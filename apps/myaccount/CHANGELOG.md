@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.3.7
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
 ## 4.3.6
 
 ### Patch Changes
