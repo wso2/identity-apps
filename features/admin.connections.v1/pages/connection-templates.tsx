@@ -29,11 +29,13 @@ import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     useGetIdVPTemplateList
 } from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-template-list";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
     EmptyPlaceholder,
@@ -96,6 +98,17 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const isIdVPFeatureEnabled: boolean = idVPFeatureConfig?.enabled;
     const hasIdVPCreatePermissions: boolean = useRequiredScopes(idVPFeatureConfig?.scopes?.create);
 
+    const connectionFeatureConfig: FeatureAccessConfigInterface = UIConfig?.features?.identityProviders;
+    const hasConnectionCreatePermissions: boolean = useRequiredScopes(connectionFeatureConfig?.scopes?.create);
+
+    const flowExtensionFeatureConfig: FeatureAccessConfigInterface = UIConfig?.features?.flowExtensions;
+    const hasFlowExtensionCreatePermissions: boolean = useRequiredScopes(flowExtensionFeatureConfig?.scopes?.create);
+    // The Flow Extension create option requires both the capability to be enabled and the create scope.
+    const isFlowExtensionCreatable: boolean = Boolean(
+        flowExtensionFeatureConfig?.enabled
+        && isFeatureEnabled(flowExtensionFeatureConfig, "flowExtensions.list")
+        && hasFlowExtensionCreatePermissions);
+
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -132,8 +145,25 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return [];
         }
 
-        return [ ...fetchedConnectionTemplates, ...(fetchedIdVPTemplates ?? []) ];
-    }, [ isTemplatesLoading, isTemplatesValidating, templatesFetchError ]);
+        let connectionTemplates: ConnectionTemplateInterface[] = [ ...fetchedConnectionTemplates ];
+
+        // Flow Extension shows only when its capability is enabled; all other templates require connection create permission.
+        connectionTemplates = connectionTemplates.filter((template: ConnectionTemplateInterface) =>
+            template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
+                ? isFlowExtensionCreatable
+                : hasConnectionCreatePermissions);
+
+        return [
+            ...connectionTemplates,
+            ...(fetchedIdVPTemplates ?? [])
+        ];
+    }, [
+        isTemplatesLoading,
+        isTemplatesValidating,
+        templatesFetchError,
+        isFlowExtensionCreatable,
+        hasConnectionCreatePermissions
+    ]);
 
     /**
      * Set the filtered connection templates to the component state
@@ -413,6 +443,16 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                             let isTemplateDisabled: boolean = template.disabled;
                             let disabledHint: ReactNode = undefined;
 
+                            const featureFlagKey: string =
+                                template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
+                                    ? "flowExtensions"
+                                    : `connections.templates.${ template.id }`;
+
+                            const featureStatusFlag: string = flowExtensionFeatureConfig?.featureFlags?.find(
+                                (featureFlag: FeatureFlagsInterface) =>
+                                    featureFlag.feature === featureFlagKey
+                            )?.flag;
+
                             // Disable the Apple template in localhost as it's not supported.
                             if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
@@ -433,6 +473,17 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                     disabled={ isTemplateDisabled }
                                     disabledHint={ disabledHint }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
+                                    featureStatus={
+                                        featureStatusFlag
+                                            ? (
+                                                <FeatureFlagLabel
+                                                    featureFlags={ flowExtensionFeatureConfig?.featureFlags }
+                                                    featureKey={ featureFlagKey }
+                                                    type="ribbon"
+                                                />
+                                            )
+                                            : undefined
+                                    }
                                     resourceDescription={
                                         template?.description
                                             ?.replaceAll("{{productName}}", productName)

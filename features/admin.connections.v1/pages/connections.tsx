@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -90,8 +90,22 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
             ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
+    const hasConnectionCreatePermissions: boolean = useRequiredScopes(
+        identityProvidersFeatureConfig?.scopes?.create);
+    const hasFlowExtensionCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.create);
     const hasIdVPReadPermissions: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.read);
+    const hasFlowExtensionReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.read);
+    // The Flow Extension create option requires both the capability to be enabled and the create scope.
+    const isFlowExtensionCreatable: boolean = Boolean(
+        featureConfig?.flowExtensions?.enabled
+        && isFeatureEnabled(featureConfig?.flowExtensions, "flowExtensions.list")
+        && hasFlowExtensionCreatePermissions);
+    // Show the "New Connection" button when the user can create a connection or a flow extension.
+    const canCreateConnectionOrFlowExtension: boolean =
+        hasConnectionCreatePermissions || isFlowExtensionCreatable;
 
     const [ searchInputs, setSearchInputs ] = useState<SearchInputsInterface>({
         filterTags: [],
@@ -122,7 +136,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         true,
         isIdVPFeatureEnabled && hasIdVPReadPermissions,
         !isLocalEmailOTPAuthenticatorEnabled,
-        !isLocalSMSOTPAuthenticatorEnabled
+        !isLocalSMSOTPAuthenticatorEnabled,
+        hasFlowExtensionReadPermissions
     );
 
     /**
@@ -224,7 +239,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 (!isCombinedConnectionListFetchRequestLoading) &&
                 !(!searchInputs?.searchQuery && combinedConnectionList?.length <= 0)) &&
                 (
-                    <Show when={ featureConfig?.identityProviders?.scopes?.create }>
+                    canCreateConnectionOrFlowExtension && (
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("connections-click-new-connection-button");
@@ -235,7 +250,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                             <Icon name="add" />
                             { t("authenticationProvider:buttons.addIDP") }
                         </PrimaryButton>
-                    </Show>
+                    )
                 )
             }
             title={ t("console:develop.pages.authenticationProvider.title") }

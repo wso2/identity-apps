@@ -80,7 +80,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
-import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
+import { getCompatibilitySettingsResourceEndpoints, getFlowExtensionResourceEndpoints } from "./endpoints";
 import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
@@ -384,6 +384,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
+            ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
