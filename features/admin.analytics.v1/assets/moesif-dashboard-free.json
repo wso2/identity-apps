@@ -123,8 +123,7 @@
                 },
                 "metrics": [
                     {
-                        "metricName": "sum(events)",
-                        "customName": " "
+                        "metricName": "sum(events)"
                     }
                 ]
             }
@@ -222,8 +221,7 @@
                 },
                 "metrics": [
                     {
-                        "metricName": "count(event_id)",
-                        "customName": " "
+                        "metricName": "count(event_id)"
                     }
                 ]
             }
