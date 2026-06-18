@@ -114,10 +114,12 @@
             "analyticType": "seg",
             "chartType": "bar",
             "settings": {
-                "hideLegend": true,
-                "singleValueSettings": true,
-                "trendInidcator": {
-                    "isIncreasementGreen": "true"
+                "singleValueSettings": {
+                    "chartHeight": "80",
+                    "hideLabel": "true",
+                    "trendIndicator": {
+                        "isIncreasementGreen": "true"
+                    }
                 },
                 "metrics": [
                     {
@@ -211,10 +213,12 @@
             "analyticType": "seg",
             "chartType": "bar",
             "settings": {
-                "hideLegend": true,
-                "singleValueSettings": true,
-                "trendInidcator": {
-                    "isIncreasementGreen": "true"
+                "singleValueSettings": {
+                    "chartHeight": "80",
+                    "hideLabel": "true",
+                    "trendIndicator": {
+                        "isIncreasementGreen": "true"
+                    }
                 },
                 "metrics": [
                     {
