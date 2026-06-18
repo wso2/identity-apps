@@ -591,6 +591,7 @@ export interface ApplicationsNS {
                                         plusIcon: string;
                                     };
                                 };
+                                subOrgInfoBanner: string;
                             };
                             stepBased: {
                                 actions: {
@@ -1872,6 +1873,32 @@ export interface ApplicationsNS {
                             label: string;
                             validations: {
                                 empty: string;
+                            };
+                        };
+                        gracefulRefreshTokenRotation: {
+                            hint: string;
+                            label: string;
+                        };
+                        gracefulRefreshTokenRotationValidityPeriod: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                maxExceeded: string;
+                                belowMin: string;
+                            };
+                        };
+                        gracefulRefreshTokenReuseLimit: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                maxExceeded: string;
+                                belowMin: string;
                             };
                         };
                     };

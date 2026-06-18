@@ -44,6 +44,18 @@ coverage:
         target: auto
         flags:
           - '@wso2is/i18n'
+      access-control:
+        target: auto
+        flags:
+          - '@wso2is/access-control'
+      validation:
+        target: auto
+        flags:
+          - '@wso2is/validation'
+      theme:
+        target: auto
+        flags:
+          - '@wso2is/theme'
     patch:
       default:
         target: 80%
@@ -70,5 +82,19 @@ flags:
   '@wso2is/i18n':
     paths:
       - modules/i18n/src/**/*.ts
+    carryforward: false
+  '@wso2is/access-control':
+    paths:
+      - modules/access-control/src/**/*.ts
+      - modules/access-control/src/**/*.tsx
+    carryforward: false
+  '@wso2is/validation':
+    paths:
+      - modules/validation/src/**/*.ts
+    carryforward: false
+  '@wso2is/theme':
+    paths:
+      - modules/theme/src/**/*.ts
+      - modules/theme/src/**/*.tsx
     carryforward: false
 

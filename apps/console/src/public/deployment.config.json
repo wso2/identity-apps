@@ -30,8 +30,12 @@
     "docSiteUrl": "https://is.docs.wso2.com/en/latest",
     "extensions": {
         "analytics": {
+            "collectorKey": {
+                "settingsEnabled": false
+            },
             "moesif": {
-                "applicationId": ""
+                "dashboardEnabled": false,
+                "embeddedPortalUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -324,6 +328,9 @@
         },
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
+        "apiResourceManagement": {
+            "blocked_api_resources": []
+        },
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "appLogoPath": "/assets/images/branding/logo.svg",
@@ -571,9 +578,14 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth"
+                    "applications.sharedApp.adaptiveAuth",
+                    "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
+                "properties": {
+                    "maxGracefulRefreshTokenReuseLimit": 5,
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                },
                 "featureFlags": [
                     {
                         "feature": "applications",
@@ -856,6 +868,30 @@
                     ],
                     "update": [
                         "internal_keystore_update"
+                    ]
+                }
+            },
+            "consents": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_consent_mgt_element_create",
+                        "internal_consent_mgt_purpose_create"
+                    ],
+                    "delete": [
+                        "internal_consent_mgt_element_delete",
+                        "internal_consent_mgt_purpose_delete"
+                    ],
+                    "feature": [
+                        "console:consents"
+                    ],
+                    "read": [
+                        "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_view"
+                    ],
+                    "update": [
+                        "internal_consent_mgt_purpose_update"
                     ]
                 }
             },
@@ -2223,6 +2259,7 @@
                 "attributeDialects": "v0.0.0",
                 "attributeUpdateVerificationSettings": "v1.0.0",
                 "branding": "v0.0.0",
+                "consents": "v0.0.0",
                 "consoleSettings": "v0.0.0",
                 "emailTemplates": "v0.0.0",
                 "flows": "v1.0.0",

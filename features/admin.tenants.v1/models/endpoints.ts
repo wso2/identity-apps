@@ -23,6 +23,7 @@ export interface TenantResourceEndpointsInterface {
     deploymentUnits: string;
     tenantAssociationApi: string;
     tenantManagementApi: string;
+    tenantMoesifDashboardInfo: string;
     tenantSubscriptionApi: string;
     tenants: string;
 }

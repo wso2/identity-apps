@@ -746,6 +746,21 @@ export const governanceConnectors: governanceConnectorsNS = {
                 }
             }
         },
+        consentManagement: {
+            categoryTitle: "Policy & Preference Management",
+            connectors: {
+                preferenceManagement: {
+                    description: "Manage communication preferences for your organization.",
+                    friendlyName: "Preference Management",
+                    header: "Preference Management"
+                },
+                policyConsents: {
+                    description: "Manage policies for your organization.",
+                    friendlyName: "Policy Management",
+                    header: "Policy Management"
+                }
+            }
+        },
         sessionManagement: {
             description: "Manage settings related to the session of your users."
         },

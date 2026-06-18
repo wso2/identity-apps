@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,6 +71,7 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-st
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getVCTemplateEndpoints } from "@wso2is/admin.verifiable-credentials.v1/configs/endpoints";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
+import { getConsentMgtResourceEndpoints } from "@wso2is/common.consents.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
 import {
     I18nModuleConstants,
@@ -305,7 +306,9 @@ export class Config {
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
-                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE
+                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
+                I18nConstants.CONSENTS_NAMESPACE,
+                I18nConstants.FLOW_EXTENSION_NAMESPACE
             ],
             preload: []
         };
@@ -342,6 +345,7 @@ export class Config {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
+            ...getConsentMgtResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.resolveServerHostFromConfig(), this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
@@ -419,6 +423,10 @@ export class Config {
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
+            apiResourceManagement: {
+                blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
+                    ?.blocked_api_resources ?? []
+            },
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
@@ -528,6 +536,7 @@ export class Config {
                 maxDeviceLimitUpperBound:
                     window[ "AppUtils" ]?.getConfig()?.ui?.pushDeviceManagement?.maxDeviceLimitUpperBound
             },
+            rebrandingBanner: window[ "AppUtils" ]?.getConfig()?.ui?.rebrandingBanner,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
             },

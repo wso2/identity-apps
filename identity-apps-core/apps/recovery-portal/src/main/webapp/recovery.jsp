@@ -115,7 +115,8 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
-    String spId = request.getParameter("spId");
+    String sp = Encode.forJava(request.getParameter("sp"));
+    String spId = Encode.forJava(request.getParameter("spId"));
     String userTenantHint = request.getParameter("t");
     String applicationAccessUrl = "";
 
@@ -132,9 +133,11 @@
     String recoveryOption = request.getParameter("recoveryOption");
 
     try {
-        String sp = Encode.forJava(request.getParameter("sp"));
         if (StringUtils.isNotBlank(sp)) {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            if (StringUtils.isBlank(spId) || StringUtils.equalsIgnoreCase(spId, "null")) {
+                spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            }
             applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
@@ -291,12 +294,21 @@
             }
             
             request.setAttribute("recoveryChannelType", recoveryChannelType);
- 
+
             // Sending the notification if we only found a user.
             if (isUserFound){
                 RecoveryRequest recoveryRequest = new RecoveryRequest();
                 recoveryRequest.setRecoveryCode(recoveryCode);
                 recoveryRequest.setChannelId(recoveryChannelId);
+
+                if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
+                    List<Property> properties = new ArrayList<>();
+                    Property spIdProperty = new Property();
+                    spIdProperty.setKey("spId");
+                    spIdProperty.setValue(spId);
+                    properties.add(spIdProperty);
+                    recoveryRequest.setProperties(properties);
+                }
 
                 Map<String, String> requestHeaders = new HashedMap();
                 if (request.getParameter("g-recaptcha-response") != null) {

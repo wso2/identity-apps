@@ -1,10 +1,6 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
-WSO2 Identity Server Web Applications - a monorepo containing React-based admin consoles and user portals for WSO2 Identity Server. Uses Nx for monorepo management and pnpm for package management.
+This is a monorepo containing a React-based admin console, user portal and features as individual NPM packages for the WSO2 Identity Server. It uses Nx for monorepo build management, pnpm for package management, and changeset for version management.
 
 ## Essential Commands
 
@@ -30,7 +26,7 @@ pnpm test                         # Run all unit tests
 pnpm test:watch                   # Watch mode
 
 # Single test file (from features directory)
-npx jest features/admin.applications.v1/__tests__/applications-page.test.tsx
+npx vitest run features/admin.applications.v1/__tests__/applications-page.test.tsx
 
 # Single module tests
 cd modules/core && pnpm test
@@ -58,7 +54,7 @@ pnpm clean                        # Clean all build artifacts
 - **apps/myaccount** - User self-service portal (port 9000)
 - **modules/** - Shared libraries (core, react-components, theme, i18n, forms, validation, etc.)
 - **features/** - Feature modules (70+ admin.*.v1 packages for console features)
-- **identity-apps-core/** - JSP portals (auth portal, recovery portal) - Maven build
+- **identity-apps-core/** - JSP portals (auth portal, recovery portal)
 
 ### Key Modules
 
@@ -71,17 +67,15 @@ pnpm clean                        # Clean all build artifacts
 ### Technology Stack
 
 - React 18, TypeScript 5.1, Redux
-- Webpack 5, Nx 17, pnpm 8
-- Jest + React Testing Library
+- Vite, Nx 21, pnpm 10
+- Vitest + React Testing Library
 - Semantic UI React + MUI + Oxygen UI (WSO2 design system)
-- Asgardeo Auth for SSO/OIDC
 
 ## Code Conventions
 
 ### Naming Conventions
 
 - **Interfaces**: Must use `Interface` suffix (e.g., `ApplicationListInterface`, `FeatureConfigInterface`)
-- **Enums**: Do NOT use `Interface` suffix (e.g., `ApplicationAccessTypes`, `OnboardingStep`)
 - **Component props**: Define prop interfaces in the component file, extend `IdentifiableComponentInterface`. Only move to `models/` if shared across multiple components
 - **Component IDs**: Use hierarchical naming: `${parentId}-${childName}` (e.g., `wizard-color-picker`)
 
@@ -90,6 +84,7 @@ pnpm clean                        # Clean all build artifacts
 This codebase uses **explicit type annotations everywhere** — do not rely on type inference. Never use `any`; use proper types or `unknown` with type guards.
 
 **Variables** — always annotate, even when the type is obvious:
+
 ```typescript
 const isLoading: boolean = true;
 const name: string = config.appName;

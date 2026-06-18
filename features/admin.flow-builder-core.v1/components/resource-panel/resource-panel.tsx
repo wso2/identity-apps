@@ -26,6 +26,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
@@ -35,7 +36,7 @@ import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
 import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
-import { Step } from "../../models/steps";
+import { Step, StepTypes, ViewStepVariants } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
@@ -150,14 +151,41 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     } = resources;
 
     const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
-
-    const elements: Element[] = unfilteredElements.filter(
-        (element: Element) => element.display?.showOnResourcePanel !== false
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: any) => state?.config?.ui?.features?.consents
     );
+
+    const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
+
+    const elements: Element[] = unfilteredElements.filter((element: Element) => {
+        if (element.display?.showOnResourcePanel === false) {
+            return false;
+        }
+
+        if ((element.type === ElementTypes.Policy || element.type === ElementTypes.Preference)
+            && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
+            return false;
+        }
+
+        return true;
+    });
     const widgets: Widget[] = unfilteredWidgets.filter(
         (widget: Widget) => widget.display?.showOnResourcePanel !== false
     );
-    const steps: Step[] = unfilteredSteps.filter((step: Step) => step.display?.showOnResourcePanel !== false);
+    const steps: Step[] = unfilteredSteps.filter((step: Step) => {
+        if (step.display?.showOnResourcePanel === false) {
+            return false;
+        }
+
+        if (step.type === StepTypes.View
+            && (step.variant === ViewStepVariants.PolicyConsent
+                || step.variant === ViewStepVariants.PreferenceManagement)
+            && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
+            return false;
+        }
+
+        return true;
+    });
     const templates: Template[] = unfilteredTemplates.filter(
         (template: Template) => template.display?.showOnResourcePanel !== false
     );

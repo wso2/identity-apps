@@ -23,10 +23,11 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PlaceholderComponent from "./placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import usePasswordExecutorValidation from "../../../../hooks/use-password-executor-validation";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
+import useUserResolveExecutorValidation from "../../../../hooks/use-user-resolve-executor-validation";
 import { ButtonVariants, Element } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
@@ -83,6 +84,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     );
 
     usePasswordExecutorValidation((resource as unknown) as Element);
+    useUserResolveExecutorValidation((resource as unknown) as Element);
 
     let config: ButtonProps = {};
     let image: string = "";

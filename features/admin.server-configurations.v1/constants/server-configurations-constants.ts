@@ -429,6 +429,7 @@ export class ServerConfigurationsConstants {
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
     public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
+    public static readonly CONSENT_MANAGEMENT_CATEGORY_ID: string = "policyManagement";
     public static readonly USER_ONBOARDING_CONNECTOR_CATEGORY_ID: string = "user-onboarding";
 
     /**
@@ -440,6 +441,8 @@ export class ServerConfigurationsConstants {
     public static readonly USERNAME_VALIDATION: string = "username-validation";
     public static readonly PASSWORD_RECOVERY: string = "password-recovery";
     public static readonly USERNAME_RECOVERY: string = "username-recovery";
+    public static readonly POLICY_CONSENTS_CONNECTOR_ID: string = "policyConsents";
+    public static readonly PREFERENCE_MANAGEMENT_CONNECTOR_ID: string = "preferenceManagement";
 
     /**
      * User Onboarding Catergory Constants.

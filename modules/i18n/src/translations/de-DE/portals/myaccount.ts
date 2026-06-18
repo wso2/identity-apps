@@ -364,7 +364,7 @@ export const myAccount: MyAccountNS = {
                 "dangerZones": {
                     "revoke": {
                         "actionTitle": "Widerrufen",
-                        "header": "Einwilligung widerrufen",
+                        "header": "Präferenz widerrufen",
                         "subheader": "Sie müssen dieser Anwendung erneut zustimmen."
                     }
                 },
@@ -439,6 +439,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "preferenceManagement": {
+            "consentedOnLabel": "Akzeptiert am",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Widerrufen",
+                    "header": "Kommunikationspräferenz widerrufen",
+                    "subheader": "Diese Aktion entfernt Ihre Präferenz für diese Kommunikation."
+                }
+            },
+            "elementsHeading": "Aktualisieren Sie Ihre Präferenzen unten. Deaktivieren Sie die Attribute, von denen Sie sich abmelden möchten, und klicken Sie auf „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf „Widerrufen“, um die Präferenz vollständig zu entfernen.",
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich abgerufen.",
+                        "message": "Abruf erfolgreich"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Die Kommunikationspräferenz wurde erfolgreich widerrufen.",
+                        "message": "Präferenz widerrufen"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich aktualisiert.",
+                        "message": "Präferenzen aktualisiert"
+                    }
+                }
+            },
+            "policyUrlLabel": "Richtlinie anzeigen",
+            "versionLabel": "Version {{version}}"
+        },
+        "policyConsentManagement": {
+            "consentedOnLabel": "Aktiv seit",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Widerrufen",
+                    "header": "Richtlinienzustimmung widerrufen",
+                    "subheader": "Diese Aktion widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen."
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Beim Abrufen Ihrer Richtlinienzustimmungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Abrufen Ihrer Richtlinienzustimmungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Richtlinienzustimmungen wurden erfolgreich abgerufen.",
+                        "message": "Abruf erfolgreich"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Beim Widerrufen der Richtlinienzustimmung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Widerrufen der Richtlinienzustimmung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Die Richtlinienzustimmung wurde erfolgreich widerrufen.",
+                        "message": "Zustimmung widerrufen"
+                    }
+                }
+            },
+            "policyUrlLabel": "Richtlinie anzeigen",
+            "versionLabel": "Version {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "Ich habs",
             "content": "Wir verwenden Cookies, um sicherzustellen, dass Sie das beste Gesamterlebnis erhalten. Diese Cookies werden verwendet, um eine ununterbrochene kontinuierliche Sitzung aufrechtzuerhalten und gleichzeitig reibungslose und personalisierte Dienste bereitzustellen. Um mehr darüber zu erfahren, wie wir Cookies verwenden, lesen Sie unsere <1>Cookie-Richtlinie</1> ."
@@ -1661,6 +1761,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "Entdecken Sie Ihre Anwendungen und greifen Sie darauf zu",
             "title": "Anwendungen"
         },
+        "consents": {
+            "subTitle": "Verwalten Sie die Zustimmungen, die Sie für Anwendungen und akzeptierte Richtlinien erteilt haben",
+            "title": "Zustimmungen"
+        },
         "overview": {
             "subTitle": "Verwalten Sie Ihre persönlichen Daten, Kontosicherheit und Datenschutzeinstellungen",
             "title": "Willkommen, {{firstName}}"
@@ -1758,6 +1862,24 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "Sie haben keiner Bewerbung zugestimmt"
+                }
+            }
+        },
+        "preferenceManagement": {
+            "description": "Überprüfen Sie Ihre Kommunikationspräferenzen und verwalten Sie diese.",
+            "heading": "Kommunikationspräferenzen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "Sie haben keine Kommunikationspräferenzen festgelegt"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "Überprüfen Sie die Richtlinien, denen Sie zugestimmt haben.",
+            "heading": "Richtlinienzustimmungen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "Sie haben keiner Richtlinienzustimmung zugestimmt"
                 }
             }
         },

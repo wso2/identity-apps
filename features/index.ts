@@ -27,6 +27,7 @@ export * from "./admin.branding.v1/public-api";
 export * from "./admin.certificates.v1/public-api";
 export * from "./admin.claims.v1/public-api";
 export * from "./admin.connections.v1/public-api";
+export * from "./admin.consents.v1/public-api";
 export * from "./admin.console-settings.v1/public-api";
 export * from "./admin.core.v1/public-api";
 export * from "./admin.email-and-sms.v1/public-api";

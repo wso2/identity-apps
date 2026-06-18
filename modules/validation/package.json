@@ -24,18 +24,19 @@
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --max-warnings=0",
-        "test": "jest --passWithNoTests",
-        "test:watch": "pnpm test -- --watch",
+        "test": "vitest run --passWithNoTests",
+        "test:coverage": "vitest run --passWithNoTests --coverage",
+        "test:watch": "vitest --passWithNoTests",
         "typecheck": "pnpm compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "devDependencies": {
-        "@types/jest": "^29.5.12",
+        "@vitest/coverage-v8": "^3.2.4",
         "eslint": "9.38.0",
-        "jest": "^29.7.0",
         "rimraf": "^3.0.2",
-        "typescript": "^5.1.6"
+        "typescript": "^5.1.6",
+        "vitest": "^3.2.4"
     },
     "dependencies": {
         "axios": "^1.7.0",

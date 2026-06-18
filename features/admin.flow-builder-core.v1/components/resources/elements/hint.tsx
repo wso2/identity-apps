@@ -20,7 +20,7 @@ import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./hint.scss";
-import PlaceholderComponent from "./adapters/placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 
 /**
  * Props interface of {@link Hint}

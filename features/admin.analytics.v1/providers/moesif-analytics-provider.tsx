@@ -20,6 +20,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { getAssociatedTenants } from "@wso2is/admin.tenants.v1/api/tenants";
 import { TenantInfo, TenantRequestResponse } from "@wso2is/admin.tenants.v1/models/tenant";
 import { MultiValueAttributeInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import moesif from "moesif-browser-js";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useCallback, useEffect, useMemo, useRef }
     from "react";
@@ -68,9 +69,36 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
         }
 
         try {
+            Object.keys(localStorage)
+                .filter((key: string) => key.startsWith("moesif_"))
+                .forEach((key: string) => localStorage.removeItem(key));
+        } catch (_error: unknown) {
+            // localStorage may be unavailable in some contexts.
+        }
+
+        const legacyCookies: string[] = [
+            "moesif_anonymous_id",
+            "moesif_stored_user_id",
+            "moesif_stored_company_id",
+            "moesif_campaign_company",
+            "moesif_campaign_data"
+        ];
+
+        const cookieDomain: string | undefined = URLUtils.getDomain(window.location.href);
+
+        legacyCookies.forEach((name: string) => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+            if (cookieDomain) {
+                document.cookie =
+                    `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${cookieDomain}`;
+            }
+        });
+
+        try {
             moesif.init({
                 applicationId: moesifApplicationId,
-                disableFetch: true
+                disableFetch: true,
+                persistence: "none"
             });
 
             isInitializedRef.current = true;
@@ -155,7 +183,7 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
      * Fires a Moesif action event with optional metadata.
      * On the first call, lazily triggers user and company identification.
      */
-    const track: (eventName: string, metadata?: Record<string, unknown>) => void = useCallback(
+    const track: (_eventName: string, _metadata?: Record<string, unknown>) => void = useCallback(
         (eventName: string, metadata?: Record<string, unknown>): void => {
             if (!isInitializedRef.current) {
                 return;

@@ -28,6 +28,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
@@ -81,6 +82,8 @@ const UserEditPage = (): ReactElement => {
     const dispatch: Dispatch<any> = useDispatch();
 
     const { mutateUserStoreList, isUserStoreReadOnly, readOnlyUserStoreNamesList } = useUserStores();
+
+    const { data: serverConfigs } = useServerConfigs();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -165,7 +168,10 @@ const UserEditPage = (): ReactElement => {
         || isReadOnlyUserStore
         || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
         || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled);
+        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled)
+        || (getUserNameWithoutDomain(user?.userName) === getUserNameWithoutDomain(
+            serverConfigs?.realmConfig?.adminUser ?? "")
+            && !UserManagementUtils.isAuthenticatedUser(profileInfo?.userName, user?.userName));
 
     /**
      * As there is a delay in updating user stores,

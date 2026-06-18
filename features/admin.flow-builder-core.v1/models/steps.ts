@@ -72,11 +72,17 @@ export enum ExecutionTypes {
     GithubFederation = "GithubExecutor",
     PasskeyEnrollment = "FIDO2Executor",
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
-    MagicLinkExecutor = "MagicLinkExecutor"
+    MagicLinkExecutor = "MagicLinkExecutor",
+    FlowExtension = "FlowExtensionExecutor"
 }
 
 export enum ExecutionStepViewTypes {
     Default = "Execution",
     MagicLinkView = "Magic Link View",
     PasskeyView = "Passkey View"
+}
+
+export enum ViewStepVariants {
+    PolicyConsent = "POLICY_CONSENT",
+    PreferenceManagement = "PREFERENCE_MANAGEMENT"
 }

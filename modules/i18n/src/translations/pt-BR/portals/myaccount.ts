@@ -369,10 +369,7 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Descrição",
-                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações " +
-                    "pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão " +
-                    "atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento " +
-                    "para todos os atributos.",
+                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento para todos os atributos.",
                 state: "Estado",
                 version: "Versão"
             },
@@ -442,6 +439,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        preferenceManagement: {
+            consentedOnLabel: "Aceito em",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar preferência de comunicação",
+                    subheader: "Esta ação removerá sua preferência para esta comunicação."
+                }
+            },
+            elementsHeading: "Gerencie suas preferências de comunicação abaixo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover a preferência de todos os atributos.",
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    success: {
+                        description: "Suas preferências de comunicação foram recuperadas com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    success: {
+                        description: "A preferência de comunicação foi revogada com sucesso.",
+                        message: "Preferência de comunicação revogada"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    success: {
+                        description: "Suas preferências de comunicação foram atualizadas com sucesso.",
+                        message: "Preferência de comunicação atualizada"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver política",
+            versionLabel: "Versão {{version}}"
+        },
+        policyConsentManagement: {
+            consentedOnLabel: "Ativo desde",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar Consentimento de Política",
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente na próxima vez que acessar o serviço."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    success: {
+                        description: "O consentimento da política foi revogado com sucesso.",
+                        message: "Consentimento Revogado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver Política",
+            versionLabel: "Versão {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "Entendi",
             content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies são usados ​​para manter uma sessão contínua ininterrupta, enquanto fornecendo serviços estáveis e personalizados. Para aprender mais sobre como utilizamos cookies, consulte nossa <1>Política de Cookies</1>."
@@ -1664,6 +1761,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Descubra e acesse suas aplicações",
             title: "Aplicações"
         },
+        consents: {
+            subTitle: "Gerencie os consentimentos que forneceu para aplicativos e políticas aceitas",
+            title: "Consentimentos"
+        },
         overview: {
             subTitle: "Gerencie suas informações pessoais, segurança da conta e configurações de privacidade",
             title: "Bem-vindo, {{firstName}}"
@@ -1761,6 +1862,24 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
+                }
+            }
+        },
+        preferenceManagement: {
+            description: "Revise e gerencie suas preferências de comunicação.",
+            heading: "Preferências de comunicação",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhuma preferência de comunicação"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Revise as políticas que você aceitou.",
+            heading: "Consentimentos de Política",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhum consentimento de política"
                 }
             }
         },

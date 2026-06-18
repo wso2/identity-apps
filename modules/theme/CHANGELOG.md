@@ -1,5 +1,35 @@
 # @wso2is/theme
 
+## 2.10.6
+
+### Patch Changes
+
+- [#10388](https://github.com/wso2/identity-apps/pull/10388) [`6170f90d894fdea6cce8aa345cb4d4c71fa3a28f`](https://github.com/wso2/identity-apps/commit/6170f90d894fdea6cce8aa345cb4d4c71fa3a28f) Thanks [@savindi7](https://github.com/savindi7)! - Update logo styles.
+
+## 2.10.5
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+## 2.10.4
+
+### Patch Changes
+
+- [#10322](https://github.com/wso2/identity-apps/pull/10322) [`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7) Thanks [@savindi7](https://github.com/savindi7)! - Add announcement banner.
+
+## 2.10.3
+
+### Patch Changes
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+## 2.10.2
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
 ## 2.10.1
 
 ### Patch Changes

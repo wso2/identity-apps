@@ -1,5 +1,46 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.216
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+- Updated dependencies [[`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5)]:
+  - @wso2is/admin.core.v1@2.57.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.219
+  - @wso2is/common.consents.v1@1.0.3
+
+## 1.1.215
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.218
+
+## 1.1.214
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.217
+  - @wso2is/admin.server-configurations.v1@2.38.53
+  - @wso2is/common.consents.v1@1.0.2
+
+## 1.1.213
+
+### Patch Changes
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/common.consents.v1@1.0.0
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.214
+  - @wso2is/admin.server-configurations.v1@2.38.52
+
 ## 1.1.212
 
 ### Patch Changes

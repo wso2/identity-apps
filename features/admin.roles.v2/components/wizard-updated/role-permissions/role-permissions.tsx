@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { Policy } from "@wso2is/admin.applications.v1/constants/api-authorization";
+import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
@@ -35,6 +36,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -102,6 +104,22 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
             userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update);
 
+        const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+            (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
+        );
+
+        const blockedAPIResourceIds: Set<string> = useMemo(() => {
+            const ids: Set<string> = new Set<string>();
+
+            blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+                if (entry?.api_id) {
+                    ids.add(entry.api_id);
+                }
+            });
+
+            return ids;
+        }, [ blockedAPIResourceEntries ]);
+
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
         const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
@@ -115,7 +133,14 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             isLoading: iscurrentAPIResourcesListLoading,
             error: currentAPIResourcesFetchRequestError,
             mutate: mutatecurrentAPIResourcesList
-        } = useAPIResources(apiCallNextAfterValue, null, null, roleAudience === RoleAudienceTypes.ORGANIZATION);
+        } = useAPIResources(
+            apiCallNextAfterValue,
+            undefined,
+            "type ne CONSOLE_FEATURE and type ne CONSOLE_ORG_FEATURE",
+            roleAudience === RoleAudienceTypes.ORGANIZATION,
+            undefined,
+            150
+        );
 
         const {
             data: selectedAPIResource,
@@ -171,6 +196,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.APPLICATION) {
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResourceIds.has(api?.id)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
@@ -185,7 +215,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(options);
             }
-        }, [ authorizedAPIListForApplication, selectedAPIResources ]);
+        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
 
         useEffect(() => {
             const options: DropdownItemProps[] = [];
@@ -193,6 +223,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 // API resources list options when role audience is "organization".
                 allAPIResourcesListData.map((api: APIResourceInterface) => {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResourceIds.has(api?.id)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
                         options.push({
@@ -217,7 +252,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(filteredOptions);
             }
-        }, [ selectedAPIResources ]);
+        }, [ selectedAPIResources, blockedAPIResourceIds ]);
 
         /**
          * Assign all the API resources to the dropdown options if the after value is not null.
@@ -233,6 +268,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 const filteredDropdownItemOptions: DropdownItemProps[] =
                 (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
                     apiResource: APIResourceInterface) {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResourceIds.has(apiResource?.id)) {
+                        return filtered;
+                    }
 
                     const isCurrentAPIResourceSubscribed: boolean = selectedAPIResources?.length === 0
                         || !selectedAPIResources?.some(
@@ -387,6 +426,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
 
 
+        const isLoading: boolean = roleAudience === RoleAudienceTypes.APPLICATION
+            ? isAuthorizedAPIListForApplicationLoading
+            : iscurrentAPIResourcesListLoading;
+
         return (
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
                 { isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission && (
@@ -481,7 +524,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 APIResourceUtils.sortApiResourceTypes(a, b)
                             )
                         }
-                        noOptionsText={ t("common:noResultsFound") }
+                        noOptionsText={ isLoading
+                            ? t("common:searching")
+                            : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.noApiResourcesAvailable")
+
+                        }
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
                                 { ...params }

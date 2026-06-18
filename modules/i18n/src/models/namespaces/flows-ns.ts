@@ -67,6 +67,12 @@ export interface flowsNS {
                 };
                 placeholder: string;
             };
+            preferenceManagement: {
+                emptyState: string;
+            };
+            policyConsent: {
+                emptyState: string;
+            };
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -114,6 +120,7 @@ export interface flowsNS {
                 facebook: string;
                 github: string;
                 google: string;
+                flowExtension: string;
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
@@ -292,6 +299,24 @@ export interface flowsNS {
                     text: string;
                     variant: string;
                 };
+                preferenceManagement: {
+                    general: string;
+                    purposeAttributesRequired: string;
+                    purposesRequired: string;
+                };
+                policyConsent: {
+                    general: string;
+                    noPoliciesAvailable: string;
+                    policiesRequired: string;
+                };
+                flowExtension: {
+                    general: string;
+                    actionId: string;
+                };
+            };
+            userResolveExecutorFields: {
+                message: string;
+                messageWithUserIdentifier: string;
             };
         };
         steps: {

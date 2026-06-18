@@ -369,25 +369,18 @@ export const myAccount: MyAccountNS = {
                     revoke: {
                         actionTitle: "Révoquer",
                         header: "Révoquer le consentement",
-                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à " +
-                            "cette application."
+                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à cette application."
                     }
                 },
                 description: "Description",
-                piiCategoryHeading:
-                    "Gérez le consentement pour la collecte et le partage de vos informations personnelles " +
-                    "avec l'application. Décochez les attributs que vous souhaitez révoquer puis validez en " +
-                    "cliquant sur le bouton de Mettre à jour pour enregistrer les modifications ou cliquez " +
-                    "sur le bouton de Révoquer pour supprimer le consentement pour tous les attributs.",
+                piiCategoryHeading: "Gérez le consentement pour la collecte et le partage de vos informations personnelles avec l'application. Décochez les attributs que vous souhaitez révoquer puis validez en cliquant sur le bouton de Mettre à jour pour enregistrer les modifications ou cliquez sur le bouton de Révoquer pour supprimer le consentement pour tous les attributs.",
                 state: "État",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Etes-vous sûr ?",
-                    message:
-                        "Cette opération est irréversible. Cela révoquera définitivement le consentement pour " +
-                        "tous les attributs. Êtes-vous sûr de vouloir continuer ?",
+                    message: "Cette opération est irréversible. Cela révoquera définitivement le consentement pour tous les attributs. Êtes-vous sûr de vouloir continuer ?",
                     warning: "Veuillez noter que vous serez redirigé vers la page de recueil de consentement"
                 }
             },
@@ -450,6 +443,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        preferenceManagement: {
+            consentedOnLabel: "Accepté le",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Révoquer",
+                    header: "Révoquer la préférence de communication",
+                    subheader: "Cette action supprimera votre préférence pour cette communication."
+                }
+            },
+            elementsHeading: "Mettez à jour vos préférences ci-dessous. Décochez les attributs auxquels vous souhaitez vous désabonner et appuyez sur le bouton de mise à jour pour enregistrer les modifications ou appuyez sur le bouton de révocation pour supprimer la préférence pour tous les attributs.",
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la récupération de vos préférences de communication.",
+                        message: "Échec de la récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération de vos préférences de communication.",
+                        message: "Échec de la récupération"
+                    },
+                    success: {
+                        description: "Vos préférences de communication ont été récupérées avec succès.",
+                        message: "Récupération réussie"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la révocation de la préférence de communication.",
+                        message: "Échec de la révocation"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la révocation de la préférence de communication.",
+                        message: "Échec de la révocation"
+                    },
+                    success: {
+                        description: "La préférence de communication a été révoquée avec succès.",
+                        message: "Préférence de communication révoquée"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la mise à jour de la préférence de communication.",
+                        message: "Échec de la mise à jour"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la mise à jour de la préférence de communication.",
+                        message: "Échec de la mise à jour"
+                    },
+                    success: {
+                        description: "Vos préférences de communication ont été mises à jour avec succès.",
+                        message: "Préférence de communication mise à jour"
+                    }
+                }
+            },
+            policyUrlLabel: "Voir la politique",
+            versionLabel: "Version {{version}}"
+        },
+        policyConsentManagement: {
+            consentedOnLabel: "Actif depuis",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Révoquer",
+                    header: "Révoquer le consentement de politique",
+                    subheader: "Cette action révoquera votre consentement pour cette politique. Vous pourrez être invité à donner à nouveau votre consentement la prochaine fois que vous accédez au service."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements de politique.",
+                        message: "Échec de la récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements de politique.",
+                        message: "Échec de la récupération"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement de politique.",
+                        message: "Échec de la révocation"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement de politique.",
+                        message: "Échec de la révocation"
+                    },
+                    success: {
+                        description: "Le consentement de politique a été révoqué avec succès.",
+                        message: "Consentement révoqué"
+                    }
+                }
+            },
+            policyUrlLabel: "Afficher la politique",
+            versionLabel: "Version {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "J'ai compris",
             content: "Nous utilisons des cookies pour vous garantir la meilleure expérience globale. Ces cookies " +
@@ -1745,6 +1838,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Découvrez et accédez à vos applications",
             title: "Applications"
         },
+        consents: {
+            subTitle: "Gérez les consentements que vous avez fournis pour les applications et les politiques acceptées",
+            title: "Consentements"
+        },
         overview: {
             subTitle: "Gérez vos informations personnelles, la sécurité de votre compte et vos paramètres de " +
                 "confidentialité",
@@ -1851,6 +1948,24 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Vous n'avez accordé aucun consentement"
+                }
+            }
+        },
+        preferenceManagement: {
+            description: "Examinez et gérez vos préférences de communication.",
+            heading: "Préférences de communication",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Vous n'avez défini aucune préférence de communication"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Examinez les politiques que vous avez acceptées.",
+            heading: "Consentements de politique",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Vous n'avez accepté aucun consentement de politique"
                 }
             }
         },

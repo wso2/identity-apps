@@ -114,6 +114,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             certificates: "",
             claims: "",
             clientCertificates: "",
+            consentMgtElements: "",
+            consentMgtPurposes: "",
             copilot: "",
             createSecret: "",
             createSecretType: "",
@@ -150,6 +152,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             multiFactorAuthenticators: "",
             myAccountConfigMgt: "",
             oidcScopes: "",
+            orgGovernanceEvaluate: "",
             organizations: "",
             passiveStsConfigurations: "",
             passwordExpiry: "",
@@ -182,6 +185,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             smsTemplates: "",
             tenantAssociationApi: "",
             tenantManagementApi: "",
+            tenantMoesifDashboardInfo: "",
             tenantSubscriptionApi: "",
             tenants: "",
             updateSecret: "",
@@ -224,6 +228,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 plannedRollOutDate: undefined
             },
             announcements: [],
+            apiResourceManagement: {
+                blockedAPIResources: []
+            },
             appCopyright: "",
             appLogo: {
                 defaultLogoPath: "",
@@ -339,6 +346,14 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productVersionConfig: null,
             pushDeviceManagement: {
                 maxDeviceLimitUpperBound: undefined
+            },
+            rebrandingBanner: {
+                announcementUrl: "",
+                buttonText: "",
+                description: "",
+                enabled: false,
+                subDescription: "",
+                title: ""
             },
             routes: {
                 organizationEnabledRoutes: undefined

@@ -43,6 +43,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.RecoveryResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendResponse" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -211,7 +212,18 @@
             RecoveryRequest recoveryRequest = new RecoveryRequest();
             recoveryRequest.setChannelId(channelId);
             recoveryRequest.setRecoveryCode(recoveryCode);
-            RecoveryResponse recoveryResponse = 
+
+            String spId = Encode.forJava(request.getParameter("spId"));
+            if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
+                List<Property> properties = new ArrayList<>();
+                Property spIdProperty = new Property();
+                spIdProperty.setKey("spId");
+                spIdProperty.setValue(spId);
+                properties.add(spIdProperty);
+                recoveryRequest.setProperties(properties);
+            }
+
+            RecoveryResponse recoveryResponse =
                 recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
             request.setAttribute("resendCode", recoveryResponse.getResendCode());
             request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
@@ -243,7 +255,18 @@
             }
             ResendRequest resendRequest = new ResendRequest();
             resendRequest.setResendCode(resendCode);
-            ResendResponse resendResponse = 
+
+            String spId = Encode.forJava(request.getParameter("spId"));
+            if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
+                List<Property> properties = new ArrayList<>();
+                Property spIdProperty = new Property();
+                spIdProperty.setKey("spId");
+                spIdProperty.setValue(spId);
+                properties.add(spIdProperty);
+                resendRequest.setProperties(properties);
+            }
+
+            ResendResponse resendResponse =
                 recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
             
             /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
@@ -301,6 +324,8 @@
         request.setAttribute("spId", spId);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
     } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
+        String spId = Encode.forJava(request.getParameter("spId"));
+        request.setAttribute("spId", spId);
         request.setAttribute("useRecoveryV2API", "true");
         request.getRequestDispatcher("password-reset-complete.jsp").forward(request, response);
     } else {

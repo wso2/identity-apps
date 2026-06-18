@@ -1,5 +1,35 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.31
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+- Updated dependencies [[`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60)]:
+  - @wso2is/admin.core.v1@2.57.17
+  - @wso2is/admin.extensions.v1@2.43.9
+
+## 2.29.30
+
+### Patch Changes
+
+- [#10353](https://github.com/wso2/identity-apps/pull/10353) [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add moesif dashboards and settings pages
+
+- Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/i18n@2.43.1
+
+## 2.29.29
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/admin.core.v1@2.57.9
+  - @wso2is/admin.extensions.v1@2.43.7
+
 ## 2.29.28
 
 ### Patch Changes

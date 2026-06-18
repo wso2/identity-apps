@@ -1,5 +1,36 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.54
+
+### Patch Changes
+
+- [#10365](https://github.com/wso2/identity-apps/pull/10365) [`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix routing in preference management
+
+- Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/i18n@2.43.1
+
+## 2.38.53
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/i18n@2.42.3
+
+## 2.38.52
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09), [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.users.v1@2.38.40
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.extensions.v1@2.43.8
+  - @wso2is/i18n@2.41.2
+
 ## 2.38.51
 
 ### Patch Changes

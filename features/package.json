@@ -11,9 +11,9 @@
         "postinstall": "node scripts/post-install.js",
         "copy:themes:features": "node scripts/copy-themes-to-features.js",
         "clean:themes:features": "pnpm rimraf ./themes",
-        "test": "jest --passWithNoTests",
-        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
-        "test:watch": "pnpm run test --watchAll"
+        "test": "vitest run --passWithNoTests",
+        "test:coverage": "vitest run --passWithNoTests --coverage",
+        "test:watch": "vitest --passWithNoTests"
     },
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
@@ -61,18 +61,14 @@
         "@svgr/rollup": "^6.2.1",
         "@testing-library/jest-dom": "^5.11.9",
         "@types/file-saver": "^2.0.1",
-        "@types/jest": "^26.0.14",
         "@types/node": "^13.9.2",
         "@types/react": "^18.0.18",
         "@types/react-dom": "^18.0.6",
         "@types/react-router": "^5.1.18",
-        "@types/testing-library__jest-dom": "^5.14.3",
         "@types/uuid": "^9.0.1",
         "@types/webpack-env": "^1.16.0",
+        "@vitest/coverage-v8": "^3.2.4",
         "@wso2is/unit-testing": "^0.7.0",
-        "jest": "^26.4.2",
-        "jest-environment-jsdom": "^26.3.0",
-        "jest-environment-jsdom-global": "^2.0.4",
         "rimraf": "^3.0.2",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
@@ -81,8 +77,8 @@
         "rollup-plugin-scss": "^4.0.0",
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
-        "ts-jest": "^26.4.0",
-        "typescript": "^5.1.6"
+        "typescript": "^5.1.6",
+        "vitest": "^3.2.4"
     },
     "browserslist": [
         "> 0.2%"

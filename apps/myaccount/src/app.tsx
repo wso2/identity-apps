@@ -366,7 +366,6 @@ const App = (): ReactElement => {
                                         ) }
                                     />
                                     <Switch>
-                                        <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
                                         {
                                             config
                                                 ? filterRoutes(baseRoutes, config)

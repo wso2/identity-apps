@@ -1,5 +1,20 @@
 # @wso2is/common.branding.v1
 
+## 2.28.5
+
+### Patch Changes
+
+- [#10354](https://github.com/wso2/identity-apps/pull/10354) [`719f2bb79f04803d0fa0c74206f0d326bac10f55`](https://github.com/wso2/identity-apps/commit/719f2bb79f04803d0fa0c74206f0d326bac10f55) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Define a version to auth react sdk dep
+
+## 2.28.4
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.core.v1@2.57.10
+
 ## 2.28.3
 
 ### Patch Changes

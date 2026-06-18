@@ -1,5 +1,30 @@
 # @wso2is/admin.users.v1
 
+## 2.38.40
+
+### Patch Changes
+
+- [#10305](https://github.com/wso2/identity-apps/pull/10305) [`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve sub-organization ID resolution to support shared actor impersonation.
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.extensions.v1@2.43.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.214
+  - @wso2is/admin.server-configurations.v1@2.38.52
+  - @wso2is/i18n@2.41.2
+
+## 2.38.39
+
+### Patch Changes
+
+- [#10261](https://github.com/wso2/identity-apps/pull/10261) [`93332f8b7d0731cbb8c435f5d991e616cade7ffb`](https://github.com/wso2/identity-apps/commit/93332f8b7d0731cbb8c435f5d991e616cade7ffb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide super admin management options (delete, lock, disable) for non-super-admin users
+
+## 2.38.38
+
+### Patch Changes
+
+- [#10291](https://github.com/wso2/identity-apps/pull/10291) [`9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505`](https://github.com/wso2/identity-apps/commit/9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user sharing view being read only for Administrators
+
 ## 2.38.37
 
 ### Patch Changes

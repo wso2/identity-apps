@@ -1,5 +1,396 @@
 # @wso2is/console
 
+## 4.11.8
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
+## 4.11.7
+
+### Patch Changes
+
+- [#10415](https://github.com/wso2/identity-apps/pull/10415) [`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Show the time zone alongside the time in the log management UI (e.g. `15:19:16 GMT+05:30`) so timestamps are unambiguous.
+
+* [#10364](https://github.com/wso2/identity-apps/pull/10364) [`3c842342e4ea92a790e1d90474b267a1bd6b7acd`](https://github.com/wso2/identity-apps/commit/3c842342e4ea92a790e1d90474b267a1bd6b7acd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add configs to enable moesif settings in console
+
+* Updated dependencies [[`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9)]:
+  - @wso2is/admin.logs.v1@1.6.9
+
+## 4.11.6
+
+### Patch Changes
+
+- [#10412](https://github.com/wso2/identity-apps/pull/10412) [`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for the new `FreeV2`, `PYG` and `PYG-Trial` tenant tiers. All existing `Free` tier behaviors now also apply to `FreeV2`, while `PYG` and `PYG-Trial` are treated as paid tiers.
+
+* [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
+* Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14), [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e)]:
+  - @wso2is/admin.console-settings.v1@2.26.46
+  - @wso2is/admin.subscription.v1@1.5.227
+  - @wso2is/admin.analytics.v1@0.0.9
+  - @wso2is/admin.core.v1@2.57.19
+  - @wso2is/admin.home.v1@1.7.198
+  - @wso2is/admin.onboarding.v1@1.0.88
+
+## 4.11.5
+
+### Patch Changes
+
+- [#10401](https://github.com/wso2/identity-apps/pull/10401) [`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Increase app name length limit
+
+* [#10400](https://github.com/wso2/identity-apps/pull/10400) [`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d) Thanks [@hwupathum](https://github.com/hwupathum)! - Hide consent banner from branding UI
+
+* Updated dependencies [[`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a), [`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d)]:
+  - @wso2is/admin.applications.v1@2.43.4
+  - @wso2is/admin.branding.v1@2.32.170
+
+## 4.11.4
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+* [#10398](https://github.com/wso2/identity-apps/pull/10398) [`4a30838fd51a4a6d9a18bafbe408ceb39d5f921e`](https://github.com/wso2/identity-apps/commit/4a30838fd51a4a6d9a18bafbe408ceb39d5f921e) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Improve trial activation and retrieval flow
+
+* Updated dependencies [[`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5), [`4a30838fd51a4a6d9a18bafbe408ceb39d5f921e`](https://github.com/wso2/identity-apps/commit/4a30838fd51a4a6d9a18bafbe408ceb39d5f921e)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.216
+  - @wso2is/admin.branding.v1@2.32.169
+  - @wso2is/admin.consents.v1@1.0.3
+  - @wso2is/admin.core.v1@2.57.18
+  - @wso2is/admin.registration-flow-builder.v1@0.10.176
+  - @wso2is/i18n@2.43.3
+  - @wso2is/admin.subscription.v1@1.5.226
+
+## 4.11.3
+
+### Patch Changes
+
+- [#10395](https://github.com/wso2/identity-apps/pull/10395) [`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Bind the Moesif Insights canvas to the console page scroller by sizing the iframe from CANVAS_RESIZE auto-height reports, and improve the dashboard template names and panel layout.
+
+* [#10396](https://github.com/wso2/identity-apps/pull/10396) [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4) Thanks [@savindi7](https://github.com/savindi7)! - Update banner title.
+
+* Updated dependencies [[`18c59ecf82ea43fbd61eec16ac3de276e6df0259`](https://github.com/wso2/identity-apps/commit/18c59ecf82ea43fbd61eec16ac3de276e6df0259), [`3079f2fc648e755710086db56983e51fb31071f4`](https://github.com/wso2/identity-apps/commit/3079f2fc648e755710086db56983e51fb31071f4)]:
+  - @wso2is/admin.analytics.v1@0.0.8
+  - @wso2is/admin.home.v1@1.7.197
+  - @wso2is/admin.onboarding.v1@1.0.87
+
+## 4.11.2
+
+### Patch Changes
+
+- [#10389](https://github.com/wso2/identity-apps/pull/10389) [`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve API Resources loading for authrization and role permissions
+
+- Updated dependencies [[`5681d4cb3cf3ad707fb12fa3d58184a309fd40a1`](https://github.com/wso2/identity-apps/commit/5681d4cb3cf3ad707fb12fa3d58184a309fd40a1)]:
+  - @wso2is/admin.api-resources.v2@2.26.12
+  - @wso2is/admin.applications.v1@2.43.3
+  - @wso2is/admin.roles.v2@2.27.385
+
+## 4.11.1
+
+### Patch Changes
+
+- [#10393](https://github.com/wso2/identity-apps/pull/10393) [`097524fc6fdeb7e7a1f521920bee48c6de11f2f5`](https://github.com/wso2/identity-apps/commit/097524fc6fdeb7e7a1f521920bee48c6de11f2f5) Thanks [@savindi7](https://github.com/savindi7)! - Bump all app versions.
+
+## 4.11.0
+
+### Minor Changes
+
+- [#10332](https://github.com/wso2/identity-apps/pull/10332) [`48d4a528de3cf610eadd8230c4cc46fe9e872bfb`](https://github.com/wso2/identity-apps/commit/48d4a528de3cf610eadd8230c4cc46fe9e872bfb) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add user enumeration controls and account status to password recovery flow
+
+### Patch Changes
+
+- Updated dependencies [[`48d4a528de3cf610eadd8230c4cc46fe9e872bfb`](https://github.com/wso2/identity-apps/commit/48d4a528de3cf610eadd8230c4cc46fe9e872bfb)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.0
+
+## 4.10.4
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+- Updated dependencies [[`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60)]:
+  - @wso2is/admin.applications.v1@2.43.2
+  - @wso2is/admin.core.v1@2.57.17
+  - @wso2is/admin.extensions.v1@2.43.9
+  - @wso2is/admin.home.v1@1.7.196
+  - @wso2is/admin.onboarding.v1@1.0.86
+  - @wso2is/admin.tenants.v1@2.29.31
+
+## 4.10.3
+
+### Patch Changes
+
+- [#10376](https://github.com/wso2/identity-apps/pull/10376) [`9391371247ed9c663e0e0bb89e44020358ed1ada`](https://github.com/wso2/identity-apps/commit/9391371247ed9c663e0e0bb89e44020358ed1ada) Thanks [@savindi7](https://github.com/savindi7)! - Minor style fix in banner.
+
+- Updated dependencies [[`9391371247ed9c663e0e0bb89e44020358ed1ada`](https://github.com/wso2/identity-apps/commit/9391371247ed9c663e0e0bb89e44020358ed1ada)]:
+  - @wso2is/admin.home.v1@1.7.195
+
+## 4.10.2
+
+### Patch Changes
+
+- [#10345](https://github.com/wso2/identity-apps/pull/10345) [`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5) Thanks [@KethniiImasha](https://github.com/KethniiImasha)! - Fix: show audience-specific message in API resource dropdown no options text
+
+* [#10369](https://github.com/wso2/identity-apps/pull/10369) [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve application v3 update message readability
+
+* Updated dependencies [[`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5), [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9)]:
+  - @wso2is/admin.roles.v2@2.27.384
+  - @wso2is/i18n@2.43.2
+  - @wso2is/admin.applications.v1@2.43.1
+
+## 4.10.1
+
+### Patch Changes
+
+- [#10365](https://github.com/wso2/identity-apps/pull/10365) [`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix routing in preference management
+
+* [#10353](https://github.com/wso2/identity-apps/pull/10353) [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add moesif dashboards and settings pages
+
+* Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/admin.server-configurations.v1@2.38.54
+  - @wso2is/admin.analytics.v1@0.0.7
+  - @wso2is/admin.tenants.v1@2.29.30
+  - @wso2is/i18n@2.43.1
+  - @wso2is/admin.onboarding.v1@1.0.85
+
+## 4.10.0
+
+### Minor Changes
+
+- [#10356](https://github.com/wso2/identity-apps/pull/10356) [`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24) Thanks [@Thumimku](https://github.com/Thumimku)! - Add graceful refresh token rotation support.
+
+### Patch Changes
+
+- Updated dependencies [[`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24)]:
+  - @wso2is/access-control@3.6.0
+  - @wso2is/admin.applications.v1@2.43.0
+  - @wso2is/i18n@2.43.0
+
+## 4.9.7
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185), [`ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4`](https://github.com/wso2/identity-apps/commit/ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.213
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.215
+  - @wso2is/admin.registration-flow-builder.v1@0.10.175
+  - @wso2is/i18n@2.42.4
+  - @wso2is/admin.applications.v1@2.42.32
+
+## 4.9.6
+
+### Patch Changes
+
+- [#10312](https://github.com/wso2/identity-apps/pull/10312) [`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show CDS banner in admin console carousal
+
+- Updated dependencies [[`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc)]:
+  - @wso2is/admin.feature-gate.v1@1.9.8
+  - @wso2is/admin.home.v1@1.7.194
+
+## 4.9.5
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.214
+  - @wso2is/admin.consents.v1@1.0.2
+  - @wso2is/admin.registration-flow-builder.v1@0.10.174
+  - @wso2is/admin.server-configurations.v1@2.38.53
+  - @wso2is/i18n@2.42.3
+
+## 4.9.4
+
+### Patch Changes
+
+- [#10274](https://github.com/wso2/identity-apps/pull/10274) [`256daabddebaa032dc06c3a5e7822a84eec0bbd7`](https://github.com/wso2/identity-apps/commit/256daabddebaa032dc06c3a5e7822a84eec0bbd7) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Provide support to block API resources in application api authorization and role permission assignment
+
+- Updated dependencies [[`5a79196bc94dd161fb167420d63ff9f57831cd15`](https://github.com/wso2/identity-apps/commit/5a79196bc94dd161fb167420d63ff9f57831cd15), [`256daabddebaa032dc06c3a5e7822a84eec0bbd7`](https://github.com/wso2/identity-apps/commit/256daabddebaa032dc06c3a5e7822a84eec0bbd7)]:
+  - @wso2is/admin.api-resources.v2@2.26.11
+  - @wso2is/admin.applications.v1@2.42.31
+  - @wso2is/admin.roles.v2@2.27.383
+  - @wso2is/admin.core.v1@2.57.15
+
+## 4.9.3
+
+### Patch Changes
+
+- [#10337](https://github.com/wso2/identity-apps/pull/10337) [`c8c969f9b91d34a4a08ff828f1da38aab7f1c918`](https://github.com/wso2/identity-apps/commit/c8c969f9b91d34a4a08ff828f1da38aab7f1c918) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where the last dropped node ID is missing from the last accessed resource
+
+## 4.9.2
+
+### Patch Changes
+
+- [#10331](https://github.com/wso2/identity-apps/pull/10331) [`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce in flow extension configuration support to registration flow builder
+
+- Updated dependencies [[`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a)]:
+  - @wso2is/admin.core.v1@2.57.14
+  - @wso2is/admin.registration-flow-builder.v1@0.10.173
+  - @wso2is/i18n@2.42.2
+
+## 4.9.1
+
+### Patch Changes
+
+- [#10327](https://github.com/wso2/identity-apps/pull/10327) [`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to announcements UI.
+
+- Updated dependencies [[`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132)]:
+  - @wso2is/admin.core.v1@2.57.13
+  - @wso2is/admin.home.v1@1.7.193
+
+## 4.9.0
+
+### Minor Changes
+
+- [#10314](https://github.com/wso2/identity-apps/pull/10314) [`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth Client Credentials and Password Credentials Based Authentication for Custom Authenticators
+
+### Patch Changes
+
+- [#10325](https://github.com/wso2/identity-apps/pull/10325) [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add missing QSG files for connections
+
+- Updated dependencies [[`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba), [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1)]:
+  - @wso2is/admin.connections.v1@2.38.0
+  - @wso2is/i18n@2.42.1
+
+## 4.8.1
+
+### Patch Changes
+
+- [#10322](https://github.com/wso2/identity-apps/pull/10322) [`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7) Thanks [@savindi7](https://github.com/savindi7)! - Add announcement banner.
+
+- Updated dependencies [[`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7)]:
+  - @wso2is/admin.core.v1@2.57.12
+  - @wso2is/admin.home.v1@1.7.192
+
+## 4.8.0
+
+### Minor Changes
+
+- [#10304](https://github.com/wso2/identity-apps/pull/10304) [`6ef23019c6c3d04ebcb9bbe5379075bce65ca30f`](https://github.com/wso2/identity-apps/commit/6ef23019c6c3d04ebcb9bbe5379075bce65ca30f) Thanks [@Shazaanashraff](https://github.com/Shazaanashraff)! - Add Dutch (nl-NL) language translations for the authentication portal, recovery portal, accounts portal, x509 certificate authentication portal, console and myaccount
+
+### Patch Changes
+
+- Updated dependencies [[`6ef23019c6c3d04ebcb9bbe5379075bce65ca30f`](https://github.com/wso2/identity-apps/commit/6ef23019c6c3d04ebcb9bbe5379075bce65ca30f)]:
+  - @wso2is/i18n@2.42.0
+
+## 4.7.11
+
+### Patch Changes
+
+- [#10315](https://github.com/wso2/identity-apps/pull/10315) [`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add sub organiation adaptive auth governance support
+
+* [#10313](https://github.com/wso2/identity-apps/pull/10313) [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix UI issues in policy consent UI
+
+* Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455), [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c)]:
+  - @wso2is/admin.applications.v1@2.42.30
+  - @wso2is/admin.core.v1@2.57.11
+  - @wso2is/i18n@2.41.3
+  - @wso2is/admin.consents.v1@1.0.1
+
+## 4.7.10
+
+### Patch Changes
+
+- [#10308](https://github.com/wso2/identity-apps/pull/10308) [`98543ddc65499bd5fb7671c4994a91fa001ed614`](https://github.com/wso2/identity-apps/commit/98543ddc65499bd5fb7671c4994a91fa001ed614) Thanks [@hwupathum](https://github.com/hwupathum)! - Add policy consent management related UIs
+
+- Updated dependencies [[`98543ddc65499bd5fb7671c4994a91fa001ed614`](https://github.com/wso2/identity-apps/commit/98543ddc65499bd5fb7671c4994a91fa001ed614)]:
+  - @wso2is/core@2.13.3
+
+## 4.7.9
+
+### Patch Changes
+
+- [#10305](https://github.com/wso2/identity-apps/pull/10305) [`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve sub-organization ID resolution to support shared actor impersonation.
+
+* [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+* Updated dependencies [[`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09), [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.users.v1@2.38.40
+  - @wso2is/admin.consents.v1@1.0.0
+  - @wso2is/admin.branding.v1@2.32.168
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.extensions.v1@2.43.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.172
+  - @wso2is/admin.server-configurations.v1@2.38.52
+  - @wso2is/i18n@2.41.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.213
+
+## 4.7.8
+
+### Patch Changes
+
+- [#10300](https://github.com/wso2/identity-apps/pull/10300) [`188876f6235b1f0e81c285187feabe92309ddfbd`](https://github.com/wso2/identity-apps/commit/188876f6235b1f0e81c285187feabe92309ddfbd) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Fix issue when not loading the authorized API resources when only view permissions are assigned to the logged in user
+
+- Updated dependencies [[`93332f8b7d0731cbb8c435f5d991e616cade7ffb`](https://github.com/wso2/identity-apps/commit/93332f8b7d0731cbb8c435f5d991e616cade7ffb), [`188876f6235b1f0e81c285187feabe92309ddfbd`](https://github.com/wso2/identity-apps/commit/188876f6235b1f0e81c285187feabe92309ddfbd)]:
+  - @wso2is/admin.users.v1@2.38.39
+  - @wso2is/admin.applications.v1@2.42.29
+
+## 4.7.7
+
+### Patch Changes
+
+- [#10297](https://github.com/wso2/identity-apps/pull/10297) [`c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7`](https://github.com/wso2/identity-apps/commit/c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix console maven release build
+
+## 4.7.6
+
+### Patch Changes
+
+- [#10295](https://github.com/wso2/identity-apps/pull/10295) [`30700a694dbf0be23a13c5f7b28ccfba7d6c4449`](https://github.com/wso2/identity-apps/commit/30700a694dbf0be23a13c5f7b28ccfba7d6c4449) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Close silent failure points of the release workflow
+
+## 4.7.5
+
+### Patch Changes
+
+- [#10291](https://github.com/wso2/identity-apps/pull/10291) [`9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505`](https://github.com/wso2/identity-apps/commit/9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user sharing view being read only for Administrators
+
+- Updated dependencies [[`9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505`](https://github.com/wso2/identity-apps/commit/9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505)]:
+  - @wso2is/admin.users.v1@2.38.38
+
+## 4.7.4
+
+### Patch Changes
+
+- [#10287](https://github.com/wso2/identity-apps/pull/10287) [`37b297be4a2c178eddb52d5378801ebe61012d31`](https://github.com/wso2/identity-apps/commit/37b297be4a2c178eddb52d5378801ebe61012d31) Thanks [@savindi7](https://github.com/savindi7)! - optimize analytics initialization config.
+
+## 4.7.3
+
+### Patch Changes
+
+- [#10281](https://github.com/wso2/identity-apps/pull/10281) [`381d9a7349aeb0a6fd83d1cf83a29bd5331f0381`](https://github.com/wso2/identity-apps/commit/381d9a7349aeb0a6fd83d1cf83a29bd5331f0381) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix sub-org to root org switch bounce-back
+
+* [#10275](https://github.com/wso2/identity-apps/pull/10275) [`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the refresh token extend expiry time description.
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+- Updated dependencies [[`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512)]:
+  - @wso2is/admin.applications.v1@2.42.28
+  - @wso2is/i18n@2.41.1
+
+## 4.7.2
+
+### Patch Changes
+
+- [#10278](https://github.com/wso2/identity-apps/pull/10278) [`e72bf00d7c6bb6199611f72bd5d0f7a46d29451d`](https://github.com/wso2/identity-apps/commit/e72bf00d7c6bb6199611f72bd5d0f7a46d29451d) Thanks [@savindi7](https://github.com/savindi7)! - Update Onboarding Wizard header.
+
+- Updated dependencies [[`e72bf00d7c6bb6199611f72bd5d0f7a46d29451d`](https://github.com/wso2/identity-apps/commit/e72bf00d7c6bb6199611f72bd5d0f7a46d29451d)]:
+  - @wso2is/admin.onboarding.v1@1.0.84
+
+## 4.7.1
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/admin.core.v1@2.57.9
+  - @wso2is/admin.extensions.v1@2.43.7
+  - @wso2is/admin.tenants.v1@2.29.29
+
 ## 4.7.0
 
 ### Minor Changes

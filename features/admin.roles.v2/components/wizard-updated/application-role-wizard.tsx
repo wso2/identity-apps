@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,7 @@ import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/mo
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
@@ -41,6 +42,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -111,6 +113,22 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
+    const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
+    );
+
+    const blockedAPIResourceIds: Set<string> = useMemo(() => {
+        const ids: Set<string> = new Set<string>();
+
+        blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            if (entry?.api_id) {
+                ids.add(entry.api_id);
+            }
+        });
+
+        return ids;
+    }, [ blockedAPIResourceEntries ]);
+
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
@@ -141,6 +159,11 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         const options: DropdownItemProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
+            // Hide the blocked API resources.
+            if (blockedAPIResourceIds.has(apiResource?.id)) {
+                return;
+            }
+
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
@@ -155,7 +178,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -522,7 +545,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                     onChange={ onAPIResourceSelected }
                                     noOptionsText={ isSubscribedAPIResourcesListLoading
                                         ? t("common:searching")
-                                        : t("common:noResultsFound")
+                                        : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.noApiResourcesAvailable")
                                     }
                                     key="apiResource"
                                     placeholder={ t("roles:addRoleWizard." +

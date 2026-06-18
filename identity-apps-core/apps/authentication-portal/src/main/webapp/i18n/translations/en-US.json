@@ -33,5 +33,6 @@
     "sign.up.form.button.continue.with.google": "Continue with Google",
     "sign.up.form.button.register": "Register",
     "sign.up.form.button.submit": "Submit",
-    "sign.up.form.button.continue": "Continue"
+    "sign.up.form.button.continue": "Continue",
+    "consent.validation.requiredPolicies": "You must accept all required policies."
 }

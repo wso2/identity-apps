@@ -102,7 +102,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         setTimeout(() => {
             switch (props.location.hash) {
                 case `#${ CommonConstants.CONSENTS_CONTROL }`:
-                    consentControl.current.scrollIntoView({
+                    consentControl.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "center"
                     });
@@ -269,6 +269,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
                 { hasLocalAccount
                     && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && !accessConfig?.consents?.enabled
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
