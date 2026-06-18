@@ -93,26 +93,6 @@
 
     // Whether the user is allowed to enroll an additional device. Sent by the push authenticator.
     boolean canRegisterDevice = Boolean.parseBoolean(request.getParameter("canRegisterDevice"));
-
-    /*
-     * If the user is returning from the additional-device registration page via the Back button, the authenticator
-     * passes the remaining countdown seconds captured at the moment the user navigated away so the timer here can
-     * resume from that exact value. A value of 0 is meaningful — it means the original countdown had already
-     * expired before the user navigated away, so the page should render in expired mode (Resend button enabled,
-     * no active polling). Only null/blank/non-numeric values fall back to the default countdown.
-     */
-    Integer resumedRemainingSeconds = null;
-    String resumedRemainingSecondsParam = request.getParameter("resumedRemainingSeconds");
-    if (resumedRemainingSecondsParam != null) {
-        try {
-            int parsed = Integer.parseInt(resumedRemainingSecondsParam);
-            if (parsed >= 0) {
-                resumedRemainingSeconds = parsed;
-            }
-        } catch (NumberFormatException ignored) {
-            // Fall back to the default countdown if the value is malformed.
-        }
-    }
 %>
 
 <% request.setAttribute("pageName", "push-auth"); %>
@@ -230,8 +210,6 @@
                             <input id="multiOptionURI" type="hidden" name="multiOptionURI"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                             <input type='hidden' name='scenario' id='scenario' value=''/>
-                            <%-- Tracks the live countdown so it can be sent to the server on "Register a new device" --%>
-                            <input type='hidden' name='pausedRemainingSeconds' id='pausedRemainingSeconds' value=''/>
 
                             <div class="buttons">
                                 <button type="button"
@@ -300,14 +278,37 @@
 
         <script type="text/javascript">
 
+            /*
+             * sessionStorage key for the current challenge's start timestamp. Resolved once at script load so the
+             * resend click handler and the polling-completed branch can clear it before the page navigates to its
+             * next state. The key is scoped per pushAuthId so parallel auth flows in other tabs cannot collide.
+             */
+            const PUSH_AUTH_URL_PARAMS = new URLSearchParams(window.location.search);
+            const CURRENT_PUSH_AUTH_ID = PUSH_AUTH_URL_PARAMS.has('pushAuthId')
+                ? PUSH_AUTH_URL_PARAMS.get('pushAuthId')
+                : null;
+            const PUSH_AUTH_STORAGE_KEY = CURRENT_PUSH_AUTH_ID
+                ? "push-auth-started:" + CURRENT_PUSH_AUTH_ID
+                : null;
+
+            function clearPushAuthStartedEntry() {
+                if (PUSH_AUTH_STORAGE_KEY) {
+                    sessionStorage.removeItem(PUSH_AUTH_STORAGE_KEY);
+                }
+            }
+
             $(document).ready(function () {
                 $("#resend").click(function () {
+                    // The current challenge is about to be replaced by a fresh one with a new pushAuthId; drop
+                    // the stored start timestamp so the orphan entry does not linger for the rest of the tab.
+                    clearPushAuthStartedEntry();
                     document.getElementById("scenario").value = "RESEND_PUSH_NOTIFICATION";
                     $("#submitForm").submit();
                 });
 
                 $("#registerNewDeviceLink").click(function () {
                     // Stop polling for the current authentication and route the user to enroll a new device.
+                    // The entry stays — coming back via the Back button will reuse it to resume the countdown.
                     stopPolling();
                     document.getElementById("scenario").value = "PUSH_DEVICE_ENROLLMENT";
                     $("#submitForm").submit();
@@ -317,30 +318,42 @@
             $(document).ready(handleWaitBeforeResendNotification);
 
             function handleWaitBeforeResendNotification() {
-                // value should be less than 3600
                 const DEFAULT_WAIT_TIME_SECONDS = <%= enableResendTime %>;
-                /*
-                 * When the user returns from the additional-device registration page via the Back button, the
-                 * authenticator forwards the remaining-seconds value captured at the moment of pause. A value of 0
-                 * means the original challenge had already expired — the page should render in expired mode
-                 * directly without starting a countdown or polling. Only when the value is null (no Back-resume
-                 * happened) do we fall back to the default countdown.
-                 */
-                const RESUMED_REMAINING_SECONDS = <%= resumedRemainingSeconds != null ? resumedRemainingSeconds : "null" %>;
-                const WAIT_TIME_SECONDS = (RESUMED_REMAINING_SECONDS !== null)
-                    ? RESUMED_REMAINING_SECONDS
-                    : DEFAULT_WAIT_TIME_SECONDS;
+                const RESEND_INTERVAL_MS = DEFAULT_WAIT_TIME_SECONDS * 1000;
 
-                const pausedRemainingField = document.getElementById("pausedRemainingSeconds");
+                /*
+                 * Compute the remaining countdown from a per-pushAuthId timestamp stored in sessionStorage. On the
+                 * first visit to a given challenge, we record the current time and use the full configured wait
+                 * window. On any subsequent visit to the same wait page — e.g. the user navigated to the
+                 * additional-device registration page and came back via the Back button — we read the stored
+                 * timestamp and use whatever time is left. If the window has elapsed, we render in expired mode
+                 * (Resend Notification enabled, no countdown, no polling) without contacting the server.
+                 */
+                let startedAt;
+                if (PUSH_AUTH_STORAGE_KEY) {
+                    const stored = sessionStorage.getItem(PUSH_AUTH_STORAGE_KEY);
+                    if (stored) {
+                        startedAt = parseInt(stored, 10);
+                    } else {
+                        startedAt = Date.now();
+                        sessionStorage.setItem(PUSH_AUTH_STORAGE_KEY, String(startedAt));
+                    }
+                } else {
+                    // Defensive: no pushAuthId on the URL. Just use defaults, no storage interaction.
+                    startedAt = Date.now();
+                }
+
+                const REMAINING_SECONDS = Math.max(
+                    0,
+                    Math.floor((startedAt + RESEND_INTERVAL_MS - Date.now()) / 1000)
+                );
+
                 const resendButton = document.getElementById("resend");
                 const resendButtonText = resendButton.innerHTML;
 
-                // Resumed-expired mode: skip the countdown and polling, jump straight to the expired UI state so
-                // the Resend Notification button is shown and the page does not look like a fresh notification.
-                if (WAIT_TIME_SECONDS <= 0) {
-                    if (pausedRemainingField) {
-                        pausedRemainingField.value = 0;
-                    }
+                // Expired-mode short-circuit: render the page in its post-countdown state without scheduling a
+                // countdown or polling. The user can manually click Resend to start a fresh challenge.
+                if (REMAINING_SECONDS <= 0) {
                     resendButton.disabled = false;
                     resendButton.innerHTML = resendButtonText;
                     document.getElementById("instruction-div").style.display = "none";
@@ -348,18 +361,12 @@
                     return;
                 }
 
-                // Seed the hidden field with the initial remaining value so an immediate click on "Register a new
-                // device" still posts a sensible number rather than an empty string.
-                if (pausedRemainingField) {
-                    pausedRemainingField.value = WAIT_TIME_SECONDS;
-                }
-
                 resendButton.disabled = true;
                 // Update the button text initially to avoid waiting until the first tick to update.
-                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
+                resendButton.innerHTML = Math.floor(REMAINING_SECONDS / 60).toString().padStart(2, '0') + " : " + (REMAINING_SECONDS % 60).toString().padStart(2, '0');
 
                 const countdown = new Countdown(
-                    Countdown.seconds(WAIT_TIME_SECONDS),
+                    Countdown.seconds(REMAINING_SECONDS),
                     () => {
                         resendButton.innerHTML = resendButtonText;
                         resendButton.disabled = false;
@@ -367,15 +374,9 @@
                         stopPolling();
                         document.getElementById("instruction-div").style.display = "none";
                         $("#noResponseMessage").transition("fade");
-                        if (pausedRemainingField) {
-                            pausedRemainingField.value = 0;
-                        }
                     },
                     (time) => {
                         resendButton.innerHTML = time.minutes.toString().padStart(2, '0') + " : " + time.seconds.toString().padStart(2, '0');
-                        if (pausedRemainingField) {
-                            pausedRemainingField.value = (time.minutes * 60) + time.seconds;
-                        }
                     },
                     "PUSH_NOTIFICATION_TIMER"
                 ).start();
@@ -390,22 +391,15 @@
 
                 const POLL_INTERVAL_MS = 5000;
 
-                const urlParams = new URLSearchParams(window.location.search);
-                var pushAuthId = null;
-                if (urlParams.has('pushAuthId')) {
-                    pushAuthId = encodeURIComponent(urlParams.get('pushAuthId'));
-                }
-
                 /*
-                * Defensive guard: do not poll when there is no real challenge to poll. This handles the
-                * Back-from-expired path where the wait page is rendered without an active pushAuthId — polling
-                * an empty id would either receive nothing meaningful or create a phantom PENDING cache entry.
-                */
-                if (pushAuthId === null || pushAuthId === "" || pushAuthId === "undefined") {
+                 * Defensive guard: do not poll when there is no real challenge to poll. Polling an empty id would
+                 * either receive nothing meaningful or create a phantom PENDING cache entry on the server.
+                 */
+                if (!CURRENT_PUSH_AUTH_ID) {
                     return;
                 }
 
-                const STATUS_URL = "/push-auth/check-status?pushAuthId="+pushAuthId;
+                const STATUS_URL = "/push-auth/check-status?pushAuthId=" + encodeURIComponent(CURRENT_PUSH_AUTH_ID);
 
                 pollingInterval = setInterval(() => {
                     $.ajax({
@@ -415,6 +409,8 @@
                         success: function (response) {
                             if (response.status === "COMPLETED") {
                                 clearInterval(pollingInterval);
+                                // Auth is committing; the start-timestamp entry is no longer needed.
+                                clearPushAuthStartedEntry();
                                 setTimeout(() => {
                                     document.getElementById("scenario").value = "PROCEED_PUSH_AUTHENTICATION";
                                     $("#submitForm").submit();

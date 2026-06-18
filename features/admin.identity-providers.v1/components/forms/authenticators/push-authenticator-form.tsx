@@ -233,19 +233,25 @@ const PUSH_NOTIFICATION_TYPE: string = "push";
 export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormPropsInterface> = (
     props: PushAuthenticatorFormPropsInterface
 ): ReactElement => {
-    const { metadata, initialValues: originalInitialValues, onSubmit, readOnly, ["data-testid"]: testId } = props;
+    const { 
+        metadata,
+        initialValues: originalInitialValues,
+        onSubmit,
+        readOnly,
+        ["data-testid"]: testId 
+    } = props;
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     // This can be used when `meta` support is there.
-    const [, setFormFields] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
-    const [initialValues, setInitialValues] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [isProgressiveEnrollmentEnabled, setIsProgressiveEnrollmentEnabled] = useState<boolean>(false);
-    const [isMultipleDeviceEnrollmentEnabled, setIsMultipleDeviceEnrollmentEnabled] = useState<boolean>(false);
-    const [isMultipleDeviceProgressiveEnrollmentEnabled, setIsMultipleDeviceProgressiveEnrollmentEnabled] = useState<
+    const [ , setFormFields ] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
+    const [ initialValues, setInitialValues ] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isProgressiveEnrollmentEnabled, setIsProgressiveEnrollmentEnabled ] = useState<boolean>(false);
+    const [ isMultipleDeviceEnrollmentEnabled, setIsMultipleDeviceEnrollmentEnabled ] = useState<boolean>(false);
+    const [ isMultipleDeviceProgressiveEnrollmentEnabled, setIsMultipleDeviceProgressiveEnrollmentEnabled ] = useState<
         boolean
     >(false);
     const [isDeviceRegistrationNotificationEnabled, setIsDeviceRegistrationNotificationEnabled] = useState<boolean>(
@@ -284,7 +290,10 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             return;
         }
 
-        const { resolvedFormFields, resolvedInitialValues } = resolveFormFields();
+        const {
+            resolvedFormFields,
+            resolvedInitialValues
+        } = resolveFormFields();
 
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
@@ -296,22 +305,21 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         setIsDeviceRegistrationNotificationEnabled(
             resolvedInitialValues?.PUSH_EnableDeviceRegistrationNotification ?? false
         );
-    }, [originalInitialValues, pushDeviceMgtConfig, isPushDeviceMgtConfigLoading]);
+    }, [ originalInitialValues, pushDeviceMgtConfig, isPushDeviceMgtConfigLoading ]);
 
     const resolveFormFields = () => {
         let resolvedFormFields: PushAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: PushAuthenticatorFormInitialValuesInterface = null;
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
-            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties.find(
-                (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key
-            );
+            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting resend time from seconds to minutes.
             if (moderatedName === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
-                const resendTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
+                const resendTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
@@ -329,14 +337,17 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     ...resolvedFormFields,
                     [moderatedName]: {
                         meta,
-                        value: value.value === "true" || value.value === "false" ? JSON.parse(value.value) : value.value
+                        value: (value.value === "true" || value.value === "false")
+                            ? JSON.parse(value.value)
+                            : value.value
                     }
                 };
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
-                    [moderatedName]:
-                        value.value === "true" || value.value === "false" ? JSON.parse(value.value) : value.value
+                    [moderatedName]: (value.value === "true" || value.value === "false")
+                        ? JSON.parse(value.value)
+                        : value.value
                 };
             }
         });
@@ -397,9 +408,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
      * @param values - Form values.
      * @returns Sanitized form values for the authenticator endpoint.
      */
-    const getUpdatedConfigurations = (
-        values: PushAuthenticatorFormInitialValuesInterface
-    ): CommonAuthenticatorFormInitialValuesInterface => {
+    const getUpdatedConfigurations = (values: PushAuthenticatorFormInitialValuesInterface)
+        : CommonAuthenticatorFormInitialValuesInterface => {
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         const deviceMgtPropertyKeys: Set<string> = new Set([
@@ -409,7 +419,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             "PUSH_MaximumDeviceLimit"
         ]);
 
-        for (const [name, value] of Object.entries(values)) {
+        for (const [ name, value ] of Object.entries(values)) {
             if (name == undefined || deviceMgtPropertyKeys.has(name)) {
                 continue;
             }
@@ -518,9 +528,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
      * @param values - Form Values.
      * @returns Form validation
      */
-    const validateForm = (
-        values: PushAuthenticatorFormInitialValuesInterface
-    ): PushAuthenticatorFormErrorValidationsInterface => {
+    const validateForm = (values: PushAuthenticatorFormInitialValuesInterface):
+        PushAuthenticatorFormErrorValidationsInterface => {
         const errors: PushAuthenticatorFormErrorValidationsInterface = {
             PUSH_EnableNumberChallenge: undefined,
             PUSH_EnableProgressiveEnrollment: undefined,

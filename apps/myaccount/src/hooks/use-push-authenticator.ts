@@ -41,7 +41,7 @@ import { addAlert } from "../store/actions/global";
 const usePushAuthenticator = () => {
     const {
         data: registeredDeviceList,
-        isLoading: isRegisteredDeviceListLoading,
+        isLoading:isRegisteredDeviceListLoading,
         error: registeredDeviceListFetchError,
         mutate: updateRegisteredDeviceList
     } = useGetPushAuthRegisteredDevices();
@@ -115,7 +115,9 @@ const usePushAuthenticator = () => {
     useEffect(() => {
         if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
             dispatch(addAlert({
-                description: t(translateKey + "notifications.deviceListFetchError.error.description"),
+                description: t(translateKey +
+                    "notifications.deviceListFetchError.error.description"
+                ),
                 level: AlertLevels.ERROR,
                 message: t(translateKey + "notifications.deviceListFetchError.error.message")
             }));

@@ -81,17 +81,13 @@
     String pushEnrollData = Encode.forHtmlAttribute(request.getParameter("pushEnrollData"));
 
     /*
-     * When the user reached this page by clicking "Register a new device" from the wait page, the authenticator
-     * passes a flag plus the paused challenge's id and remaining countdown seconds so a Back button here can
-     * resume the original wait page. These are echoed as hidden form fields below and travel with both the Back
-     * and Continue submissions: Back uses them to restore the paused challenge, Continue uses the id to expire it.
+     * canGoBack is set by the authenticator only when the user arrived at this page from the wait page via the
+     * "Register a new device" action (i.e. multi-device progressive enrollment of an already-enrolled user).
+     * When true, a Back button is rendered that returns the user to the wait page for the original challenge.
+     * The active pushAuthId is held by the AuthenticationContext on the server, so the Back submission carries
+     * nothing beyond the scenario name.
      */
     boolean canGoBack = Boolean.parseBoolean(request.getParameter("canGoBack"));
-    String pausedPushAuthId = Encode.forHtmlAttribute(
-            request.getParameter("pausedPushAuthId") != null ? request.getParameter("pausedPushAuthId") : "");
-    String pausedRemainingSeconds = Encode.forHtmlAttribute(
-            request.getParameter("pausedRemainingSeconds") != null
-                    ? request.getParameter("pausedRemainingSeconds") : "");
 %>
 
 <% request.setAttribute("pageName", "push-enroll"); %>
@@ -163,11 +159,6 @@
                             <input type="hidden" name="pushEnrollData" id="pushEnrollData"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("pushEnrollData"))%>'/>
                             <input type='hidden' name='scenario' id='scenario' value=''/>
-                            <%-- Paused-challenge carryover. Sent on both Back (to restore) and Continue (to expire). --%>
-                            <input type='hidden' name='pausedPushAuthId' id='pausedPushAuthId'
-                                value='<%= pausedPushAuthId %>'/>
-                            <input type='hidden' name='pausedRemainingSeconds' id='pausedRemainingSeconds'
-                                value='<%= pausedRemainingSeconds %>'/>
 
                             <div class="ui center aligned basic segment middle aligned pl-3">
                                 <form name="qrinp">
