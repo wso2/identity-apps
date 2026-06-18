@@ -54,6 +54,10 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { getSelectedNode } from "../utils/get-selected-node";
 import "./link-plugin.scss";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel/FormControlLabel";
+import Checkbox from "semantic-ui-react/dist/commonjs/modules/Checkbox/Checkbox";
+import Hint from "../../../resources/elements/hint";
+import Box from "@oxygen-ui/react/Box/Box";
 
 const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
@@ -162,7 +166,7 @@ const LinkEditor = (): ReactElement => {
     const [ isEditMode, setEditMode ] = useState(false);
     const [ lastSelection, setLastSelection ] = useState<BaseSelection | null>(null);
     const [ selectedUrlType, setSelectedUrlType ] = useState<string>("CUSTOM");
-
+    const [ linkTarget, setLinkTarget ] = useState<"_blank" | "_self">("_blank");
     const { t } = useTranslation();
 
     /**
@@ -178,14 +182,18 @@ const LinkEditor = (): ReactElement => {
 
             if ($isLinkNode(parent)) {
                 const url: string = parent.getURL();
+                const target:string = parent.getTarget() || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
+                setLinkTarget(target as "_blank" | "_self");
             } else if ($isLinkNode(node)) {
                 const url: string = node.getURL();
+                const target:string = node.getTarget() || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
+                setLinkTarget(target as "_blank" | "_self");
             } else {
                 setLinkUrl("");
                 setSelectedUrlType("CUSTOM");
@@ -367,9 +375,8 @@ const LinkEditor = (): ReactElement => {
                     if (url) {
                         // First use the default command to handle the link creation/update.
                         editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
-
                         // Then update the link attributes to include safe properties.
-                        const selection: BaseSelection = $getSelection();
+                        const selection: BaseSelection | null = $getSelection();
 
                         if ($isRangeSelection(selection)) {
                             const node: TextNode | ElementNode = getSelectedNode(selection);
@@ -377,10 +384,15 @@ const LinkEditor = (): ReactElement => {
 
                             if ($isLinkNode(linkNode)) {
                                 // Update the link node with safe attributes.
-                                linkNode.setTarget("_blank");
-                                linkNode.setRel("noopener noreferrer");
+                                linkNode.setTarget(linkTarget);
+                                if(linkTarget === "_blank") {
+                                    linkNode.setRel("noopener noreferrer");
+                                } else {
+                                    linkNode.setRel("");
+                                }
                             }
                         }
+
                     } else {
                         // If no URL, remove the link (same as TOGGLE_LINK_COMMAND with null).
                         editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
@@ -391,7 +403,7 @@ const LinkEditor = (): ReactElement => {
                 HighPriority
             )
         );
-    }, [ editor, updateLinkEditor, isEditMode ]);
+    }, [ editor, updateLinkEditor, isEditMode, linkTarget ]);
 
     /**
      * Updates the link editor position.
@@ -465,6 +477,59 @@ const LinkEditor = (): ReactElement => {
                                 }
                             } }
                         />
+                        {/* Link Target Checkbox - With Description */}
+                        <Box sx={ { display: "flex", flexDirection: "row", gap: 1, alignItems:"flex-start"
+                        } }>
+                            <FormControlLabel
+                                sx={ { "& .MuiFormControlLabel-label": { marginLeft: "8px" },
+                                    alignSelf:"flex-start",
+                                    marginLeft: 0 } }
+                                control={
+                                    <Checkbox
+                                        checked={ linkTarget === "_blank" }
+                                        onChange={ (event: React.FormEvent<HTMLInputElement>) => {
+                                            const newTarget:"_blank" | "_self" =
+                                            event.target.checked ? "_blank" : "_self";
+
+                                            setLinkTarget(newTarget);
+
+                                            if (lastSelection !== null) {
+                                                const currentUrl:any = getCurrentUrl();
+
+                                                if (currentUrl !== "") {
+                                                    editor.update(() => {
+                                                        const selection:BaseSelection | null = $getSelection();
+
+                                                        if ($isRangeSelection(selection)) {
+                                                            const node:TextNode | ElementNode =
+                                                            getSelectedNode(selection);
+                                                            const linkNode:any = $isLinkNode(node)
+                                                                ? node
+                                                                : node.getParent();
+
+                                                            if ($isLinkNode(linkNode)) {
+                                                                linkNode.setTarget(newTarget);
+                                                                linkNode.setRel(newTarget === "_blank"
+                                                                    ? "noopener noreferrer" : "");
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        } }
+                                        data-componentid="link-target-checkbox"
+                                    />
+                                }
+                                label={t("flows:core.elements.richText.linkEditor.linkTargetLabel")}
+                            />
+                            <Tooltip title={linkTarget === "_blank"
+                                ? t("flows:core.elements.richText.linkEditor.newTabHint")
+                                : t("flows:core.elements.richText.linkEditor.sameTabHint")
+                            } placement="top">
+                                <Hint></Hint>
+                            </Tooltip>
+
+                        </Box>
                         <Button
                             size="small"
                             variant="outlined"
@@ -472,6 +537,9 @@ const LinkEditor = (): ReactElement => {
                             onClick={ (event: ReactMouseEvent<HTMLButtonElement>) => {
                                 event.preventDefault();
                                 if (lastSelection !== null) {
+                                    editor.update(()=>{
+                                        lastSelection?.clone?.();
+                                    });
                                     const currentUrl: string = getCurrentUrl();
 
                                     if (currentUrl !== "") {

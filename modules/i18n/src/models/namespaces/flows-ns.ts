@@ -64,6 +64,10 @@ export interface flowsNS {
                         termsOfUseUrl: string;
                     };
                     urlTypeLabel: string;
+                    linkTargetLabel: string;
+                    linkTargetHint: string;
+                    newTabHint: string;
+                    sameTabHint: string;
                 };
                 placeholder: string;
             };

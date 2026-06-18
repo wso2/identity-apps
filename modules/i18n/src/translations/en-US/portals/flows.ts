@@ -55,7 +55,11 @@ export const flows: flowsNS = {
                         supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
-                    urlTypeLabel: "URL Type"
+                    linkTargetLabel: "Open link in new tab",
+                    linkTargetHint: "Allow admin to control whether links open in the same tab or new tab",
+                    urlTypeLabel: "URL Type",
+                    newTabHint: "Link will open in a new browser tab",
+                    sameTabHint: "Link will open in the same browser tab"
                 },
                 placeholder: "Enter rich text content here..."
             },
