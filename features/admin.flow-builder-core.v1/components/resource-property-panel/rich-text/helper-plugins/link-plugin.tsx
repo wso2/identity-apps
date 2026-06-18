@@ -55,9 +55,10 @@ import { useTranslation } from "react-i18next";
 import { getSelectedNode } from "../utils/get-selected-node";
 import "./link-plugin.scss";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel/FormControlLabel";
-import Checkbox from "semantic-ui-react/dist/commonjs/modules/Checkbox/Checkbox";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import Hint from "../../../resources/elements/hint";
 import Box from "@oxygen-ui/react/Box/Box";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 
 const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
@@ -478,16 +479,13 @@ const LinkEditor = (): ReactElement => {
                             } }
                         />
                         {/* Link Target Checkbox - With Description */}
-                        <Box sx={ { display: "flex", flexDirection: "row", gap: 1, alignItems:"flex-start"
+                        <Box sx={ { alignItems:"center", display: "flex", flexDirection: "row", gap: 0
                         } }>
                             <FormControlLabel
-                                sx={ { "& .MuiFormControlLabel-label": { marginLeft: "8px" },
-                                    alignSelf:"flex-start",
-                                    marginLeft: 0 } }
                                 control={
                                     <Checkbox
                                         checked={ linkTarget === "_blank" }
-                                        onChange={ (event: React.FormEvent<HTMLInputElement>) => {
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                                             const newTarget:"_blank" | "_self" =
                                             event.target.checked ? "_blank" : "_self";
 
@@ -525,8 +523,8 @@ const LinkEditor = (): ReactElement => {
                             <Tooltip title={linkTarget === "_blank"
                                 ? t("flows:core.elements.richText.linkEditor.newTabHint")
                                 : t("flows:core.elements.richText.linkEditor.sameTabHint")
-                            } placement="top">
-                                <Hint></Hint>
+                            } >
+                                <span><Hint></Hint></span>
                             </Tooltip>
 
                         </Box>

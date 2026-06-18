@@ -46,6 +46,9 @@ export const flows: flowsNS = {
         elements: {
             richText: {
                 linkEditor: {
+                    linkTargetHint: "Allow admin to control whether links open in the same tab or new tab",
+                    linkTargetLabel: "Open link in new tab",
+                    newTabHint: "Link will open in a new browser tab",
                     placeholder: "Enter link URL here...",
                     predefinedUrls: {
                         applicationAccessUrl: "Application Access URL",
@@ -55,11 +58,8 @@ export const flows: flowsNS = {
                         supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
-                    linkTargetLabel: "Open link in new tab",
-                    linkTargetHint: "Allow admin to control whether links open in the same tab or new tab",
-                    urlTypeLabel: "URL Type",
-                    newTabHint: "Link will open in a new browser tab",
-                    sameTabHint: "Link will open in the same browser tab"
+                    sameTabHint: "Link will open in the same browser tab",
+                    urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
             },
