@@ -26,16 +26,16 @@ import { AxiosError, AxiosResponse } from "axios";
 import { useMemo } from "react";
 import { KeyedMutator } from "swr";
 
-interface ApplicationObject {
+interface ApplicationInterface {
     id: string;
 }
 
-interface UseGetConsentPolicyAppsReturn {
+interface UseGetConsentPolicyAppsReturnInterface {
     data: string[];
     error: AxiosError<RequestErrorInterface> | undefined;
     isLoading: boolean;
     isValidating: boolean;
-    mutate: KeyedMutator<AxiosResponse<ApplicationObject[]>>;
+    mutate: KeyedMutator<AxiosResponse<ApplicationInterface[]>>;
 }
 
 /**
@@ -48,7 +48,7 @@ interface UseGetConsentPolicyAppsReturn {
 const useGetConsentPolicyApps = (
     purposeId: string,
     shouldFetch: boolean = true
-): UseGetConsentPolicyAppsReturn => {
+): UseGetConsentPolicyAppsReturnInterface => {
     const requestConfig: RequestConfigInterface = useMemo(
         (): RequestConfigInterface => ({
             headers: {
@@ -61,7 +61,7 @@ const useGetConsentPolicyApps = (
         [ purposeId ]
     );
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<ApplicationObject[], RequestErrorInterface>(
+    const { data, error, isLoading, isValidating, mutate } = useRequest<ApplicationInterface[], RequestErrorInterface>(
         shouldFetch && purposeId ? requestConfig : null
     );
 
@@ -71,7 +71,7 @@ const useGetConsentPolicyApps = (
                 return [];
             }
 
-            return data?.map((app: ApplicationObject): string => app.id) ?? [];
+            return data?.map((app: ApplicationInterface): string => app.id) ?? [];
         },
         [ data, error ]
     );

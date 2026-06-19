@@ -45,7 +45,7 @@ interface ApplicationObject {
  * @param purposeId - The purpose UUID.
  * @returns Array of application IDs, or empty array if the purpose has no assignments.
  */
-export const getConsentPolicyApps = (purposeId: string): Promise<string[]> => {
+const getConsentPolicyApps = (purposeId: string): Promise<string[]> => {
     const requestConfig: AxiosRequestConfig = {
         headers: JSON_HEADERS,
         method: HttpMethods.GET,
