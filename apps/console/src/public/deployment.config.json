@@ -877,12 +877,10 @@
                 "scopes": {
                     "create": [
                         "internal_consent_mgt_element_create",
-                        "internal_consent_mgt_purpose_app_create",
                         "internal_consent_mgt_purpose_create"
                     ],
                     "delete": [
                         "internal_consent_mgt_element_delete",
-                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_delete"
                     ],
                     "feature": [
@@ -897,6 +895,8 @@
                     ],
                     "update": [
                         "internal_branding_preference_policy_update",
+                        "internal_consent_mgt_purpose_app_create",
+                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_update"
                     ]
                 }
