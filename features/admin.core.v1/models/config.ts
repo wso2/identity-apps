@@ -60,6 +60,7 @@ import {
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
+import { FlowExtensionResourceEndpointsInterface } from "../configs/endpoints";
 
 type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -151,6 +152,10 @@ export interface FeatureConfigInterface {
      * Flow orchestration feature.
      */
     flows?: FeatureAccessConfigInterface;
+    /**
+     * Flow Extension feature.
+     */
+    flowExtensions?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -903,6 +908,7 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface,
+    FlowExtensionResourceEndpointsInterface,
     ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
