@@ -1,5 +1,14 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.10
+
+### Patch Changes
+
+- [#10429](https://github.com/wso2/identity-apps/pull/10429) [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update moesif dashboard styling
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006)]:
+  - @wso2is/admin.core.v1@2.57.20
+
 ## 0.0.9
 
 ### Patch Changes
