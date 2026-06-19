@@ -530,6 +530,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
      */
     const validateForm = (values: PushAuthenticatorFormInitialValuesInterface):
         PushAuthenticatorFormErrorValidationsInterface => {
+
         const errors: PushAuthenticatorFormErrorValidationsInterface = {
             PUSH_EnableNumberChallenge: undefined,
             PUSH_EnableProgressiveEnrollment: undefined,
@@ -544,29 +545,19 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
         if (!values.PUSH_ResendNotificationMaxAttempts) {
             // Check for required error.
-            errors.PUSH_ResendNotificationMaxAttempts = t(
-                "authenticationProvider:forms" +
-                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.required"
-            );
-        } else if (!FormValidation.isInteger((values.PUSH_ResendNotificationMaxAttempts as unknown) as number)) {
+            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
+                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.required");
+        } else if (!FormValidation.isInteger(values.PUSH_ResendNotificationMaxAttempts as unknown as number)) {
             // Check for invalid input.
-            errors.PUSH_ResendNotificationMaxAttempts = t(
-                "authenticationProvider:forms" +
-                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid"
-            );
-        } else if (
-            values.PUSH_ResendNotificationMaxAttempts <
-                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                    .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE ||
-            values.PUSH_ResendNotificationMaxAttempts >
-                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                    .ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE
-        ) {
+            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
+                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid");
+        } else if (values.PUSH_ResendNotificationMaxAttempts < ConnectionUIConstants
+            .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+            || (values.PUSH_ResendNotificationMaxAttempts > ConnectionUIConstants
+                .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
             // Check for invalid range.
-            errors.PUSH_ResendNotificationMaxAttempts = t(
-                "authenticationProvider:forms" +
-                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range"
-            );
+            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
+                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range");
         }
 
         if (values.PUSH_EnableMultipleDeviceEnrollment) {
@@ -600,24 +591,19 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
         if (!values.PUSH_ResendNotificationTime) {
             // Check for required error.
-            errors.PUSH_ResendNotificationTime = t(
-                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.required"
-            );
-        } else if (!FormValidation.isInteger((values.PUSH_ResendNotificationTime as unknown) as number)) {
+            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
+                ".authenticatorSettings.push.resendInterval.validations.required");
+        } else if (!FormValidation.isInteger(values.PUSH_ResendNotificationTime as unknown as number)) {
             // Check for invalid input.
-            errors.PUSH_ResendNotificationTime = t(
-                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.invalid"
-            );
-        } else if (
-            values.PUSH_ResendNotificationTime <
-                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE ||
-            values.PUSH_ResendNotificationTime >
-                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_VALUE
-        ) {
+            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
+                ".authenticatorSettings.push.resendInterval.validations.invalid");
+        } else if (values.PUSH_ResendNotificationTime < ConnectionUIConstants
+            .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE
+            || (values.PUSH_ResendNotificationTime > ConnectionUIConstants
+                .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_VALUE)) {
             // Check for invalid range.
-            errors.PUSH_ResendNotificationTime = t(
-                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.range"
-            );
+            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
+                ".authenticatorSettings.push.resendInterval.validations.range");
         }
 
         return errors;
@@ -625,13 +611,13 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
     return (
         <Form
-            id={FORM_ID}
-            uncontrolledForm={false}
-            onSubmit={(values: Record<string, any>) => {
+            id={ FORM_ID }
+            uncontrolledForm={ false }
+            onSubmit={ (values: Record<string, any>) => {
                 handleFormSubmit(values as PushAuthenticatorFormInitialValuesInterface);
             }}
-            initialValues={initialValues}
-            validate={validateForm}
+            initialValues={ initialValues }
+            validate={ validateForm }
         >
             <FormSpy subscription={{}}>
                 {({ form }: { form: { change: (name: string, value: unknown) => void } }) => {
@@ -640,114 +626,147 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     return null;
                 }}
             </FormSpy>
-            {!isSubOrganization() && (
-                <Message info>
-                    <Icon name="info circle" />
-                    <Trans i18nKey={"authenticationProvider:forms.authenticatorSettings" + ".push.hint"}>
-                        Ensure that an
-                        <Link
-                            external={false}
-                            onClick={() => {
-                                history.push(AppConstants.getPaths().get("PUSH_PROVIDER"));
-                            }}
+            {
+                !isSubOrganization() && (
+                    <Message info>
+                        <Icon name="info circle" />
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" +
+                                ".push.hint"
+                            }
                         >
-                            {" "}
-                            Push Provider
-                        </Link>
-                        &nbsp;is configured for the push notifications to be sent.
-                    </Trans>
-                </Message>
-            )}
+                        Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("PUSH_PROVIDER")
+                                    );
+                                } }
+                            >{" "}Push Provider
+                            </Link>
+                            &nbsp;is configured for the push notifications to be sent.
+                        </Trans>
+                    </Message>
+                )
+            }
             <Field.Checkbox
                 ariaLabel="Enable number challenge"
                 name="PUSH_EnableNumberChallenge"
-                label={t("authenticationProvider:forms.authenticatorSettings" + ".push.enableNumberChallenge.label")}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.enableNumberChallenge.label")
+                }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" + ".push.enableNumberChallenge.hint"
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableNumberChallenge.hint"
                         }
                     >
                         Please check this checkbox to enable number challenge during authentication.
-                    </Trans>
+                    </Trans>)
                 }
-                readOnly={isReadOnly}
-                width={16}
-                data-testid={`${testId}-push-enable-number-challenge-checkbox`}
+                readOnly={ isReadOnly }
+                width={ 16 }
+                data-testid={ `${ testId }-push-enable-number-challenge-checkbox` }
             />
-
             <Field.Input
                 ariaLabel="Push Notification Resend Interval"
                 inputType="number"
                 name="PUSH_ResendNotificationTime"
-                label={t("authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.label")}
-                labelPosition="right"
-                placeholder={t(
-                    "authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.placeholder"
-                )}
-                hint={
-                    <Trans i18nKey={"authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.hint"}>
-                        Please pich a value between <Code>1 minute</Code> & <Code>10 minutes</Code>.
-                    </Trans>
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.resendInterval.label")
                 }
-                required={true}
-                readOnly={isReadOnly}
-                min={ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE}
+                labelPosition="right"
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.resendInterval.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.resendInterval.hint"
+                        }
+                    >
+                        Please pich a value between <Code>1 minute</Code> & <Code>10 minutes</Code>.
+                    </Trans>)
+                }
+                required={ true }
+                readOnly={ isReadOnly }
+                min={
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE
+                }
                 maxLength={
-                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_LENGTH
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_LENGTH
                 }
                 minLength={
-                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_LENGTH
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_LENGTH
                 }
-                width={12}
-                data-testid={`${testId}-push-resend-interval-input`}
+                width={ 12 }
+                data-testid={ `${ testId }-push-resend-interval-input` }
             >
                 <input />
-                <Label>{t("authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.unit")}</Label>
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                            ".push.resendInterval.unit")
+                    }
+                </Label>
             </Field.Input>
             <Field.Input
                 ariaLabel="Push Notification Resend Attempts"
                 inputType="number"
                 name="PUSH_ResendNotificationMaxAttempts"
-                label={t(
-                    "authenticationProvider:forms.authenticatorSettings" + ".push.allowedResendAttemptsCount.label"
-                )}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.allowedResendAttemptsCount.label")
+                }
                 labelPosition="right"
-                placeholder={t(
-                    "authenticationProvider:forms.authenticatorSettings" +
-                        ".push.allowedResendAttemptsCount.placeholder"
-                )}
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.allowedResendAttemptsCount.placeholder")
+                }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
                             "authenticationProvider:forms.authenticatorSettings" +
                             ".push.allowedResendAttemptsCount.hint"
                         }
                     >
-                        Users will be limited to the specified resend attempt count when trying to resend the push
-                        notification.
-                    </Trans>
+                        Users will be limited to the specified resend attempt count when trying to resend the
+                        push notification.
+                    </Trans>)
                 }
-                required={true}
-                readOnly={isReadOnly}
+                required={ true }
+                readOnly={ isReadOnly }
                 min={
-                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                        .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
                 }
                 maxLength={
-                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                        .ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
                 }
                 minLength={
-                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                        .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
+                    ConnectionUIConstants
+                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
                 }
-                width={12}
-                data-testid={`${testId}-push-allowed-resend-attempts-input`}
+                width={ 12 }
+                data-testid={ `${ testId }-push-allowed-resend-attempts-input` }
             >
                 <input />
                 <Label>
-                    {t("authenticationProvider:forms.authenticatorSettings" + ".push.allowedResendAttemptsCount.unit")}
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                        ".push.allowedResendAttemptsCount.unit")
+                    }
                 </Label>
             </Field.Input>
 
@@ -983,16 +1002,16 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 </Message>
             )}
             <Field.Button
-                form={FORM_ID}
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Push Authenticator update button"
                 name="update-button"
-                data-testid={`${testId}-submit-button`}
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                label={t("common:update")}
-                hidden={isReadOnly}
+                data-testid={ `${ testId }-submit-button` }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
+                label={ t("common:update") }
+                hidden={ isReadOnly }
             />
             {showMultipleDeviceProgressiveEnrollmentConfirmation && (
                 <ConfirmationModal
