@@ -52,7 +52,14 @@
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
 
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        String errorCode = request.getParameter("errorCode");
+        if (StringUtils.isNotBlank(errorCode)) {
+            String errorCodeKey = "error.email.notification." + errorCode;
+            String errorCodeMsg = AuthenticationEndpointUtil.i18n(resourceBundle, errorCodeKey);
+            if (!errorCodeMsg.equalsIgnoreCase(errorCodeKey)) {
+                errorMessage = errorCodeMsg;
+            }
+        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (error.equalsIgnoreCase("authentication.fail.message")) {

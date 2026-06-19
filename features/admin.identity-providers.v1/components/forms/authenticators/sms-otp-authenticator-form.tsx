@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -104,6 +104,10 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      * Resend block time in minutes
      */
     SmsOTP_ResendBlockDuration: number;
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    SmsOTP_NotifySmsSendingFailure: boolean;
 }
 
 /**
@@ -130,6 +134,10 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      * Resend block time field
      */
     SmsOTP_ResendBlockDuration: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    SmsOTP_NotifySmsSendingFailure: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -156,6 +164,10 @@ interface SMSOTPAuthenticatorFormErrorValidationsInterface {
      * Resend block time field
      */
     SmsOTP_ResendBlockDuration: string;
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    SmsOTP_NotifySmsSendingFailure: string;
 }
 
 const FORM_ID: string = "sms-otp-authenticator-form";
@@ -297,6 +309,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         const errors: SMSOTPAuthenticatorFormErrorValidationsInterface = {
             SmsOTP_ExpiryTime: undefined,
+            SmsOTP_NotifySmsSendingFailure: undefined,
             SmsOTP_OTPLength: undefined,
             SmsOTP_OtpRegex_UseNumericChars: undefined,
             SmsOTP_ResendAttemptsCount: undefined,
@@ -626,6 +639,19 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
+            <Field.Checkbox
+                ariaLabel="Notify users on OTP delivery failure"
+                name="SmsOTP_NotifySmsSendingFailure"
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.notifySmsSendingFailure.label")
+                }
+                hint={ t("authenticationProvider:forms.authenticatorSettings" +
+                    ".smsOTP.notifySmsSendingFailure.hint") }
+                readOnly={ readOnly }
+                width={ 12 }
+                data-testid={ `${ testId }-show-failure-reason` }
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"
