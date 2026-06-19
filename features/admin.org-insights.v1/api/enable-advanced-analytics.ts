@@ -27,21 +27,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Enable Moesif (advanced) analytics for the current organisation.
  *
- * <p>Unlike the publisher enablement APIs (which call Identity Server directly), this calls the
- * user-management tenant API, which resolves the org's subscription tier and enables the appropriate
- * set of publishers (login/registration/token only on limited tiers, all publishers on higher tiers).</p>
- *
  * @returns A promise that resolves when analytics has been enabled.
  * @throws IdentityAppsApiException on non-2xx responses.
  */
 export const enableAdvancedAnalytics = async (): Promise<void> => {
 
     const tenantDomain: string = store.getState()?.auth?.tenantDomain ?? "";
-
-    // The user-mgt tenant API exposes /moesif/analytics alongside the already-configured
-    // /moesif/dashboard-info endpoint; derive it from the latter to share the same base.
-    const dashboardInfoEndpoint: string = `${ store.getState().config.endpoints.tenantMoesifDashboardInfo }`;
-    const enableAnalyticsEndpoint: string = dashboardInfoEndpoint.replace("/dashboard-info", "/analytics");
+    const enableAnalyticsEndpoint: string = store.getState().config.endpoints.tenantMoesifAnalytics;
 
     const response: { status: number } = await httpClient({
         headers: {

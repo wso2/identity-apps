@@ -186,6 +186,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             smsTemplates: "",
             tenantAssociationApi: "",
             tenantManagementApi: "",
+            tenantMoesifAnalytics: "",
             tenantMoesifDashboardInfo: "",
             tenantSubscriptionApi: "",
             tenants: "",
