@@ -465,7 +465,7 @@ interface ActionsUIConfigInterface {
 /**
  * Interface for Push Authenticator UI level configurations.
  */
-export interface PushDeviceManagementUIConfigInterface {
+interface PushDeviceManagementUIConfigInterface {
     /**
      * Server-level upper bound for the maximum device limit configurable by an organization admin.
      * Sourced from `push_device_management.max_device_limit_upper_bound` in the

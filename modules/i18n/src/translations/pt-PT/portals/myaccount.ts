@@ -1052,7 +1052,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "Pode utilizar os pedidos de início de sessão gerados pela sua aplicação autenticadora configurada para autenticação de dois fatores. Se não tiver acesso à aplicação, pode configurar uma nova aplicação autenticadora aqui.",
                 "deleteHint": "Remover",
                 "description": "Pode usar a aplicação autenticadora push para receber notificações de início de sessão como notificações push para autenticação de dois fatores.",
-                "deviceLimitReachedHint": "Limite máximo de {{limit}} dispositivos atingido",
+                "deviceLimitReachedHint": "Limite máximo de dispositivos ({{limit}}) atingido",
                 "heading": "Autenticador Push",
                 "hint": "Ver",
                 "modals": {

@@ -35,7 +35,7 @@ export interface PushDeviceMgtConfigInterface {
  * A single property entry in a ConfigPreferenceResponse.
  * Values are always returned as strings by the preferences API.
  */
-export interface ConfigPreferencePropertyInterface {
+interface ConfigPreferencePropertyInterface {
     name: string;
     value: string;
 }

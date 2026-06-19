@@ -284,7 +284,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     onSubmit={ onSubmit }
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ enableSubmitButton }
-                    data-testid={ testId }
+                    data-componentid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }

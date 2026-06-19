@@ -23,7 +23,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
 import { FormSpy } from "react-final-form";
@@ -53,7 +53,7 @@ import "./push-authenticator-form.scss";
 /**
  * Interface for the Push Authenticator Form props.
  */
-interface PushAuthenticatorFormPropsInterface extends TestableComponentInterface {
+interface PushAuthenticatorFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * Push Authenticator Metadata.
      */
@@ -238,7 +238,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
-        ["data-testid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -671,7 +671,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 }
                 readOnly={ isReadOnly }
                 width={ 16 }
-                data-testid={ `${ testId }-push-enable-number-challenge-checkbox` }
+                data-componentid={ `${ componentId }-push-enable-number-challenge-checkbox` }
             />
             <Field.Input
                 ariaLabel="Push Notification Resend Interval"
@@ -711,7 +711,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_LENGTH
                 }
                 width={ 12 }
-                data-testid={ `${ testId }-push-resend-interval-input` }
+                data-componentid={ `${ componentId }-push-resend-interval-input` }
             >
                 <input />
                 <Label>
@@ -760,7 +760,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
                 }
                 width={ 12 }
-                data-testid={ `${ testId }-push-allowed-resend-attempts-input` }
+                data-componentid={ `${ componentId }-push-allowed-resend-attempts-input` }
             >
                 <input />
                 <Label>
@@ -804,7 +804,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         formChangeRef.current?.("PUSH_DeviceRegistrationNotificationType", EMAIL_NOTIFICATION_TYPE);
                     }
                 }}
-                data-testid={`${testId}-push-enable-device-registration-notification-checkbox`}
+                data-componentid={`${componentId}-push-enable-device-registration-notification-checkbox`}
             />
             {isDeviceRegistrationNotificationEnabled && (
                 <Field.Radio
@@ -817,7 +817,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     )}
                     value={EMAIL_NOTIFICATION_TYPE}
                     readOnly={isReadOnly}
-                    data-testid={`${testId}-push-device-registration-email-notification-radio`}
+                    data-componentid={`${componentId}-push-device-registration-email-notification-radio`}
                 />
             )}
             {isDeviceRegistrationNotificationEnabled && (
@@ -831,7 +831,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     )}
                     value={PUSH_NOTIFICATION_TYPE}
                     readOnly={isReadOnly}
-                    data-testid={`${testId}-push-device-registration-push-notification-radio`}
+                    data-componentid={`${componentId}-push-device-registration-push-notification-radio`}
                 />
             )}
 
@@ -862,7 +862,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
                     }
                 }}
-                data-testid={`${testId}-push-enable-progressive-enrollment-checkbox`}
+                data-componentid={`${componentId}-push-enable-progressive-enrollment-checkbox`}
             />
 
             <Field.Checkbox
@@ -907,7 +907,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
                     }
                 }}
-                data-testid={`${testId}-push-enable-multiple-device-enrollment-checkbox`}
+                data-componentid={`${componentId}-push-enable-multiple-device-enrollment-checkbox`}
             />
             {isMultipleDeviceEnrollmentEnabled && (
                 <Field.Input
@@ -943,7 +943,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                             .MAXIMUM_DEVICE_LIMIT_MIN_LENGTH
                     }
                     width={12}
-                    data-testid={`${testId}-push-maximum-device-limit-input`}
+                    data-componentid={`${componentId}-push-maximum-device-limit-input`}
                 >
                     <input />
                     <Label>
@@ -984,7 +984,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                             setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
                         }
                     }}
-                    data-testid={`${testId}-push-enable-multiple-device-progressive-enrollment-checkbox`}
+                    data-componentid={`${componentId}-push-enable-multiple-device-progressive-enrollment-checkbox`}
                 />
             )}
             {isMultipleDeviceEnrollmentEnabled &&
@@ -993,7 +993,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 <Message
                     warning
                     className="push-authenticator-nested-setting"
-                    data-testid={`${testId}-push-multiple-device-progressive-enrollment-warning`}
+                    data-componentid={`${componentId}-push-multiple-device-progressive-enrollment-warning`}
                 >
                     <Icon name="warning sign" />
                     {t(
@@ -1008,7 +1008,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 buttonType="primary_btn"
                 ariaLabel="Push Authenticator update button"
                 name="update-button"
-                data-testid={ `${ testId }-submit-button` }
+                data-componentid={ `${ componentId }-submit-button` }
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
@@ -1033,10 +1033,10 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         setShowMultipleDeviceProgressiveEnrollmentConfirmation(false);
                     }}
                     closeOnDimmerClick={false}
-                    data-testid={`${testId}-push-multiple-device-progressive-enrollment-confirmation`}
+                    data-componentid={`${componentId}-push-multiple-device-progressive-enrollment-confirmation`}
                 >
                     <ConfirmationModal.Header
-                        data-testid={`${testId}-push-multiple-device-progressive-enrollment-confirmation-header`}
+                        data-componentid={`${componentId}-push-multiple-device-progressive-enrollment-confirmation-header`}
                     >
                         {t(
                             "authenticationProvider:confirmations" + ".enableMultipleDeviceProgressiveEnrollment.header"
@@ -1045,7 +1045,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     <ConfirmationModal.Message
                         attached
                         warning
-                        data-testid={`${testId}-push-multiple-device-progressive-enrollment-confirmation-message`}
+                        data-componentid={`${componentId}-push-multiple-device-progressive-enrollment-confirmation-message`}
                     >
                         {t(
                             "authenticationProvider:confirmations" +
@@ -1053,7 +1053,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         )}
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
-                        data-testid={`${testId}-push-multiple-device-progressive-enrollment-confirmation-content`}
+                        data-componentid={`${componentId}-push-multiple-device-progressive-enrollment-confirmation-content`}
                     >
                         {t(
                             "authenticationProvider:confirmations" +
@@ -1070,6 +1070,6 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
  * Default props for the component.
  */
 PushAuthenticatorForm.defaultProps = {
-    "data-testid": "push-authenticator-form",
+    "data-componentid": "push-authenticator-form",
     enableSubmitButton: true
 };

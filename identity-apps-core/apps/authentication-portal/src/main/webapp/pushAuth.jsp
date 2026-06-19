@@ -332,8 +332,9 @@
                 let startedAt;
                 if (PUSH_AUTH_STORAGE_KEY) {
                     const stored = sessionStorage.getItem(PUSH_AUTH_STORAGE_KEY);
-                    if (stored) {
-                        startedAt = parseInt(stored, 10);
+                    const parsedStartedAt = stored ? parseInt(stored, 10) : NaN;
+                    if (Number.isFinite(parsedStartedAt)) {
+                        startedAt = parsedStartedAt;
                     } else {
                         startedAt = Date.now();
                         sessionStorage.setItem(PUSH_AUTH_STORAGE_KEY, String(startedAt));
