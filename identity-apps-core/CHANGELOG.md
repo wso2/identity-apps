@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.2.4
+
+### Patch Changes
+
+- [#10423](https://github.com/wso2/identity-apps/pull/10423) [`315e6ea4b1b8df1a5ec3b7f313638bc14d8afd46`](https://github.com/wso2/identity-apps/commit/315e6ea4b1b8df1a5ec3b7f313638bc14d8afd46) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add missing Dutch (nl_NL) translations for user existence and account status messages
+
 ## 5.2.3
 
 ### Patch Changes
