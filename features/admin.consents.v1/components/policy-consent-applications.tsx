@@ -32,9 +32,9 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
 import { addAlert } from "@wso2is/core/store";
 import {
     deleteConsentPolicyApps,
-    getConsentPolicyApps,
     saveConsentPolicyApps
 } from "../api/consent-policy-apps";
+import useGetConsentPolicyApps from "../hooks/use-get-consent-policy-apps";
 import {
     DataTable,
     EmphasizedSegment,
@@ -113,24 +113,26 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
     const [ assignedIds, setAssignedIds ] = useState<Set<string>>(new Set<string>());
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
 
-    // Load existing assignments from config-mgt on mount.
+    const {
+        data: fetchedIds,
+        isLoading: isConsentAppsLoading,
+        error: consentAppsError
+    } = useGetConsentPolicyApps(props.purposeId, !!props.purposeId && !isApplicationListLoading);
+
     useEffect((): void => {
-        if (!props.purposeId || isApplicationListLoading) {
+        setAssignedIds(new Set<string>(fetchedIds));
+    }, [ fetchedIds ]);
+
+    useEffect((): void => {
+        if (!consentAppsError) {
             return;
         }
-
-        getConsentPolicyApps(props.purposeId)
-            .then((ids: string[]): void => {
-                setAssignedIds(new Set<string>(ids));
-            })
-            .catch((): void => {
-                dispatch(addAlert({
-                    description: t("consents:policyConsents.notifications.update.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("consents:policyConsents.notifications.update.error.message")
-                }));
-            });
-    }, [ props.purposeId, isApplicationListLoading ]);
+        dispatch(addAlert({
+            description: t("consents:policyConsents.notifications.update.error.description"),
+            level: AlertLevels.ERROR,
+            message: t("consents:policyConsents.notifications.update.error.message")
+        }));
+    }, [ consentAppsError ]);
 
     // Main list state (search + pagination over assigned apps).
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -438,10 +440,10 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
                     showPagination={ true }
                     totalPages={ Math.ceil(filteredAssigned.length / listItemLimit) }
                     totalListSize={ filteredAssigned.length }
-                    isLoading={ isApplicationListLoading }
+                    isLoading={ isApplicationListLoading || isConsentAppsLoading }
                 >
                     <DataTable<ApplicationListItemInterface>
-                        isLoading={ isApplicationListLoading }
+                        isLoading={ isApplicationListLoading || isConsentAppsLoading }
                         loadingStateOptions={ {
                             count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                             imageType: "square"
@@ -479,7 +481,7 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
                         className="one-column-selection"
                         selectionComponent
                         searchPlaceholder={ t("consents:policyConsents.promptScope.searchPlaceholder") }
-                        isLoading={ isApplicationListLoading }
+                        isLoading={ isApplicationListLoading || isConsentAppsLoading }
                         handleHeaderCheckboxChange={ handleSelectAll }
                         isHeaderCheckboxChecked={ isSelectAll }
                         handleUnelectedListSearch={
@@ -495,7 +497,7 @@ export const PolicyConsentApplications: FunctionComponent<PolicyConsentApplicati
                             bordered={ true }
                             selectionComponent
                             isListEmpty={ filteredModalApps.length === 0 }
-                            isLoading={ isApplicationListLoading }
+                            isLoading={ isApplicationListLoading || isConsentAppsLoading }
                             listType="unselected"
                             selectAllCheckboxLabel={ t("consents:policyConsents.promptScope.selectAll") }
                             data-componentid={ `${componentId}-transfer-list` }

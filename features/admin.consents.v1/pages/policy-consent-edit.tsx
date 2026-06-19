@@ -210,9 +210,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 <>
                     <Tabs value={ activeTab } onChange={ handleTabChange }>
                         <Tab label={ t("consents:tabs.general.label") } />
-                        { !isDefaultPolicy && (
-                            <Tab label={ t("consents:tabs.applications.label") } />
-                        ) }
+                        { !isDefaultPolicy && <Tab label={ t("consents:tabs.applications.label") } /> }
                     </Tabs>
                     <TabPanel value={ activeTab } index={ 0 }>
                         <EditPolicyConsent
