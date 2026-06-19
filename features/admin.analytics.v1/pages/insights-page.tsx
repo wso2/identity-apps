@@ -35,8 +35,10 @@ import { useSelector } from "react-redux";
 import MoesifCanvasIframe from "../components/moesif-canvas-iframe";
 
 interface InsightsFlagsInterface {
+    advancedAnalyticsUpgradeEnabled: boolean;
     dashboardEnabled: boolean;
     embeddingDomain: string;
+    insightsEnabled: boolean;
     settingsEnabled: boolean;
 }
 
@@ -51,8 +53,10 @@ const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppSt
         (analytics?.collectorKey as Record<string, unknown>) ?? {};
 
     return {
+        advancedAnalyticsUpgradeEnabled: !!(moesif?.advancedAnalyticsUpgradeEnabled),
         dashboardEnabled: !!(moesif?.dashboardEnabled),
         embeddingDomain: (moesif?.embeddedPortalUrl as string) ?? "",
+        insightsEnabled: !!(state?.config?.ui?.features?.insights?.enabled),
         settingsEnabled: !!(collectorKey?.settingsEnabled)
     };
 });
@@ -110,16 +114,20 @@ const CloudInsightsPage: FunctionComponent<CloudInsightsPagePropsInterface> = (
  *
  * - Moesif dashboard enabled (with embedding domain): renders the embedded Moesif Canvas
  *   dashboards. A gear icon on the page header navigates to /insights/settings.
- * - Moesif dashboard disabled but settings enabled: redirects to /insights/settings so the
- *   sidebar "Insights" link lands directly on the configuration page.
- * - Otherwise: falls back to the legacy OrgInsightsPage.
+ * - No dashboard + legacy insights disabled: redirects to /insights/settings.
+ * - No dashboard + legacy insights enabled: renders OrgInsightsPage with upgrade prompt.
  */
 const InsightsPage: FunctionComponent = (): ReactElement => {
-    const { dashboardEnabled, embeddingDomain, settingsEnabled }: InsightsFlagsInterface =
-        useInsightsFlags();
+    const {
+        advancedAnalyticsUpgradeEnabled,
+        dashboardEnabled,
+        embeddingDomain,
+        insightsEnabled,
+        settingsEnabled
+    }: InsightsFlagsInterface = useInsightsFlags();
 
     const isMoesifDashboardAvailable: boolean = dashboardEnabled && !!embeddingDomain;
-    const shouldRedirectToSettings: boolean = !isMoesifDashboardAvailable && settingsEnabled;
+    const shouldRedirectToSettings: boolean = !isMoesifDashboardAvailable && !insightsEnabled;
 
     useEffect(() => {
         if (shouldRedirectToSettings) {
@@ -140,7 +148,9 @@ const InsightsPage: FunctionComponent = (): ReactElement => {
         return <Box />;
     }
 
-    return <OrgInsightsPage />;
+    return (
+        <OrgInsightsPage showUpgradeCard={ advancedAnalyticsUpgradeEnabled } />
+    );
 };
 
 export default InsightsPage;

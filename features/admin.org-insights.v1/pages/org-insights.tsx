@@ -19,18 +19,28 @@
 import { SelectChangeEvent } from "@mui/material";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Hint, PageLayout, useDocumentation } from "@wso2is/react-components";
 import dayjs from "dayjs";
-import React, { FunctionComponent, useMemo, useState } from "react";
+import React, { FunctionComponent, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Tab, TabProps } from "semantic-ui-react";
+import { enableAdvancedAnalytics } from "../api/enable-advanced-analytics";
+import AdvancedAnalyticsUpgradeCard from "../components/advanced-analytics-upgrade-card";
 import { InsightsView } from "../components/insights-view";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ActivityType, DurationDropdownOption } from "../models/insights";
 import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 
-const OrgInsightsPage: FunctionComponent = () => {
+const OrgInsightsPage: FunctionComponent<{ showUpgradeCard?: boolean }> = (
+    { showUpgradeCard = false }: { showUpgradeCard?: boolean }
+) => {
+    const dispatch: Dispatch = useDispatch();
+    const [ isEnablingAdvanced, setIsEnablingAdvanced ] = useState<boolean>(false);
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
     const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(dayjs().format("HH:mm:ss"));
@@ -38,6 +48,29 @@ const OrgInsightsPage: FunctionComponent = () => {
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const handleEnableAdvancedAnalytics: () => Promise<void> = useCallback(async (): Promise<void> => {
+        setIsEnablingAdvanced(true);
+
+        try {
+            await enableAdvancedAnalytics();
+
+            dispatch(addAlert({
+                description: "Advanced analytics has been enabled for your organisation.",
+                level: AlertLevels.SUCCESS,
+                message: "Advanced Analytics Enabled"
+            }));
+        } catch (_error: unknown) {
+            dispatch(addAlert({
+                description: "Failed to enable advanced analytics. Please try again.",
+                level: AlertLevels.ERROR,
+                message: "Operation Failed"
+            }));
+        } finally {
+            setIsEnablingAdvanced(false);
+        }
+    }, [ dispatch ]);
+
 
     const handleDurationChange = (event: SelectChangeEvent) => {
         setDuration(Number(event.target.value));
@@ -142,6 +175,13 @@ const OrgInsightsPage: FunctionComponent = () => {
                 </>)
             }
         >
+            { showUpgradeCard && (
+                <AdvancedAnalyticsUpgradeCard
+                    data-componentid="org-insights-upgrade-card"
+                    isEnabling={ isEnablingAdvanced }
+                    onEnable={ handleEnableAdvancedAnalytics }
+                />
+            ) }
             <OrgInsightsContext.Provider
                 value={ {
                     duration,

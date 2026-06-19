@@ -34,6 +34,7 @@
                 "settingsEnabled": false
             },
             "moesif": {
+                "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
                 "embeddedPortalUrl": ""
             }
