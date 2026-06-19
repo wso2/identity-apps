@@ -176,6 +176,7 @@ export const common: CommonNS = {
     completed: "සම්පුර්ණ කරන ලද",
     configure: "වින්\u200Dයාස කරන්න",
     confirm: "තහවුරු කරන්න",
+    consents: "එකඟතාවයන්",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
     copied: "පිටපත් කළා!",

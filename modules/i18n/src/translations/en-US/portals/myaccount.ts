@@ -370,20 +370,14 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Description",
-                piiCategoryHeading:
-                    "Manage consent for the collection and sharing of your personal information " +
-                    "with the application. Uncheck the attributes that you need to revoke and press the update " +
-                    "button to save the changes or press the revoke button to remove the consent for all the " +
-                    "attributes.",
+                piiCategoryHeading: "Manage consent for the collection and sharing of your personal information with the application. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
                 state: "State",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Are you sure?",
-                    message:
-                        "This operation is not reversible. This will permanently revoke consent for all the " +
-                        "attributes. Are you sure you want to proceed?",
+                    message: "This operation is not reversible. This will permanently revoke consent for all the attributes. Are you sure you want to proceed?",
                     warning: "Please note that you will be redirected to the login consent page"
                 }
             },
@@ -447,20 +441,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            consentedOnLabel: "Active from",
+            consentedOnLabel: "Accepted on",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revoke",
                     header: "Revoke Policy Consent",
-                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
-                }
-            },
-            modals: {
-                revokeModal: {
-                    heading: "Revoke consent for {{policyName}}",
-                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent the next time you access the service."
                 }
             },
             notifications: {
@@ -490,6 +476,63 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "The policy consent has been revoked successfully.",
                         message: "Consent Revoked"
+                    }
+                }
+            },
+            policyUrlLabel: "View Policy",
+            versionLabel: "Version {{version}}"
+        },
+        preferenceManagement: {
+            consentedOnLabel: "Accepted on",
+            elementsHeading: "Manage your communication preferences. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revoke",
+                    header: "Revoke Communication Preference",
+                    subheader: "This action will revoke your consent for this communication preference."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "An error occurred while retrieving your communication preferences.",
+                        message: "Retrieval Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving your communication preferences.",
+                        message: "Retrieval Failed"
+                    },
+                    success: {
+                        description: "Your communication preferences were retrieved successfully.",
+                        message: "Retrieval Successful"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "An error occurred while revoking the communication preference.",
+                        message: "Revoke Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the communication preference.",
+                        message: "Revoke Failed"
+                    },
+                    success: {
+                        description: "The communication preference has been revoked successfully.",
+                        message: "Preference Revoked"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "An error occurred while updating the communication preference.",
+                        message: "Update Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the communication preference.",
+                        message: "Update Failed"
+                    },
+                    success: {
+                        description: "Your communication preferences have been updated successfully.",
+                        message: "Preferences Updated"
                     }
                 }
             },
@@ -1753,7 +1796,7 @@ export const myAccount: MyAccountNS = {
             title: "Applications"
         },
         consents: {
-            subTitle: "Manage the consents you have provided for applications and accepted policies",
+            subTitle: "View and manage consents for applications and policies you have accepted",
             title: "Consents"
         },
         overview: {
@@ -1850,8 +1893,7 @@ export const myAccount: MyAccountNS = {
                 empty: "You have not granted consent to any application"
             },
             description:
-                "Review the consents you have provided for each application. " +
-                "Also, you can revoke one or many of them as required.",
+                "Review consents granted to each application and revoke them as needed.",
             heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
@@ -1859,8 +1901,17 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        preferenceManagement: {
+            description: "Review and manage your communication preferences.",
+            heading: "Communication Preferences",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "You have not set any communication preference"
+                }
+            }
+        },
         policyConsentManagement: {
-            description: "Review the policies you have accepted.",
+            description: "Review the policies you have agreed to.",
             heading: "Policy Consents",
             placeholders: {
                 emptyConsentList: {

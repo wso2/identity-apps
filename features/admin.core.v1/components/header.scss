@@ -161,3 +161,9 @@ $contact-support-subtitle-margin-top: 4px !important;
     display: inline-block;
     margin-top: 4px;
 }
+
+.saas-header {
+    .oxygen-box.OxygenBox-root.OxygenHeader-brandLogo.oxygen-brand-logo {
+        height: 40px;
+    }
+}

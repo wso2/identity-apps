@@ -123,24 +123,27 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     );
 
     /**
-     * Transform the claims to ensure the username claim is always included.
-     * Sort the claims by displayName alphabetically.
+     * Resolve supported attributes from the meta endpoint as primary source.
+     * Falls back to local claims API if metadata is not available.
+     * Ensures the username claim is always included and sorts alphabetically.
      */
     const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
-        const claims: Attribute[] = claimsData as Attribute[];
-
-        if (!claims || claims.length === 0) {
-            // Fallback to metadata if API data is not available
-            const metadataClaims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
+        const metadataAttributes: Attribute[] = (metadata?.attributeMetadata ?? []).map(
+            (attr: { claimURI: string; name: string }) => ({
                 claimURI: attr.claimURI,
                 displayName: attr.name
-            }));
+            })
+        ) as Attribute[];
 
-            return transformClaimsWithUsername(metadataClaims as Attribute[]);
+        if (metadataAttributes.length > 0) {
+            return transformClaimsWithUsername(metadataAttributes);
         }
 
+        // Fallback to local claims API if metadata attributes are not available
+        const claims: Attribute[] = claimsData as Attribute[];
+
         return transformClaimsWithUsername(claims);
-    }, [ claimsData, metadata?.attributeMetadata ]);
+    }, [ metadata?.attributeMetadata, claimsData ]);
 
     const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);

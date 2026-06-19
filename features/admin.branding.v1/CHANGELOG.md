@@ -1,5 +1,25 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.170
+
+### Patch Changes
+
+- [#10400](https://github.com/wso2/identity-apps/pull/10400) [`780ba38b0b3d5607a1119ae3f4c76445da23b37d`](https://github.com/wso2/identity-apps/commit/780ba38b0b3d5607a1119ae3f4c76445da23b37d) Thanks [@hwupathum](https://github.com/hwupathum)! - Hide consent banner from branding UI
+
+- Updated dependencies [[`96b879f8cd5e49cb393e709727274fe9840b114a`](https://github.com/wso2/identity-apps/commit/96b879f8cd5e49cb393e709727274fe9840b114a)]:
+  - @wso2is/admin.applications.v1@2.43.4
+
+## 2.32.169
+
+### Patch Changes
+
+- [#10375](https://github.com/wso2/identity-apps/pull/10375) [`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5) Thanks [@hwupathum](https://github.com/hwupathum)! - Add default policies UI
+
+- Updated dependencies [[`3c89aa4a568dd851faffa49a5e0cfe53f8191dd5`](https://github.com/wso2/identity-apps/commit/3c89aa4a568dd851faffa49a5e0cfe53f8191dd5)]:
+  - @wso2is/admin.core.v1@2.57.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.219
+  - @wso2is/i18n@2.43.3
+
 ## 2.32.168
 
 ### Patch Changes

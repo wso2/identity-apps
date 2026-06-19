@@ -9,6 +9,7 @@
             "ESNext",
             "dom"
         ],
+        "baseUrl": ".",
         "module": "esnext",
         "moduleResolution": "node",
         "rootDir": ".",
@@ -16,14 +17,13 @@
         "skipDefaultLibCheck": true,
         "sourceMap": true,
         "target": "es2015",
-        "baseUrl": ".",
         "paths": {
-            "@wso2is/forms": ["modules/forms/src/index.ts"],
-            "@wso2is/forms/*": ["modules/forms/*"],
-            "@wso2is/forms/src/*": ["modules/forms/src/*"],
-            "@wso2is/forms/legacy": ["modules/forms/src/legacy/index.ts"],
+            "@wso2is/forms": ["./modules/forms/src/index.ts"],
+            "@wso2is/forms/*": ["./modules/forms/*"],
+            "@wso2is/forms/src/*": ["./modules/forms/src/*"],
+            "@wso2is/forms/legacy": ["./modules/forms/src/legacy/index.ts"],
             "@wso2is/react-components": [
-                "modules/react-components/src/index.ts"
+                "./modules/react-components/src/index.ts"
             ]
         }
     },

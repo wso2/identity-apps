@@ -175,6 +175,14 @@
             resetRequest.setResetCode(resetCode);
             resetRequest.setFlowConfirmationCode(flowConfirmationCode);
             resetRequest.setPassword(newPassword);
+            if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
+                List<Property> properties = new ArrayList<>();
+                Property spIdProperty = new Property();
+                spIdProperty.setKey("spId");
+                spIdProperty.setValue(spId);
+                properties.add(spIdProperty);
+                resetRequest.setProperties(properties);
+            }
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
             if (StringUtils.isBlank(username)) {
                 username = Encode.forJava(request.getParameter("username"));
@@ -200,6 +208,13 @@
             property.setKey("callback");
             property.setValue(URLEncoder.encode(callback, "UTF-8"));
             properties.add(property);
+        }
+
+        if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
+            Property spIdProperty = new Property();
+            spIdProperty.setKey("spId");
+            spIdProperty.setValue(spId);
+            properties.add(spIdProperty);
         }
 
         Property appIsAccessUrlAvailableProperty = new Property();

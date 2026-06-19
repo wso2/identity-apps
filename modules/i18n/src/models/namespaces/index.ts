@@ -80,3 +80,4 @@ export * from "./common-users-ns";
 export * from "./verifiable-credentials-ns";
 export * from "./customer-data-service-ns";
 export * from "./consents-ns";
+export * from "./flow-extension-ns";

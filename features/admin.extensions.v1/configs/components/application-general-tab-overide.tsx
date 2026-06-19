@@ -49,8 +49,9 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
         <ResourceTab.Pane controlledSegmentation>
             <EmphasizedSegment padded="very">
                 <div className="form-container with-max-width">
-                    <Heading bold as="h4">Welcome to Asgardeo Try it!</Heading>
-                    <Heading as="h6">Use the Try It application to experience different login flows on Asgardeo.
+                    <Heading bold as="h4">Welcome to WSO2 Identity Platform Try It!</Heading>
+                    <Heading as="h6">Use the Try It application to experience different login flows on
+                    WSO2 Identity Platform.
                     Update the Sign-in Methods and click{ " " }
                     <Heading as="h6" weight="bold" inline > Try Login</Heading>{ " " } to try out different login flows.
                     <DocumentationLink

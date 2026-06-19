@@ -132,6 +132,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             externalClaims: "",
             fidoConfigs: "",
             flow: "",
+            flowExtension: "",
+            flowExtensionContextTree: "",
             flowMeta: "",
             fraudDetectionConfigurations: "",
             fapiConfigurations: "",
@@ -185,6 +187,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             smsTemplates: "",
             tenantAssociationApi: "",
             tenantManagementApi: "",
+            tenantMoesifDashboardInfo: "",
             tenantSubscriptionApi: "",
             tenants: "",
             updateSecret: "",
@@ -227,6 +230,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 plannedRollOutDate: undefined
             },
             announcements: [],
+            apiResourceManagement: {
+                blockedAPIResources: []
+            },
             appCopyright: "",
             appLogo: {
                 defaultLogoPath: "",
@@ -345,6 +351,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 buttonText: "",
                 description: "",
                 enabled: false,
+                subDescription: "",
                 title: ""
             },
             routes: {

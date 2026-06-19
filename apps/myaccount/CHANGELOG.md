@@ -1,5 +1,49 @@
 # @wso2is/myaccount
 
+## 4.3.7
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
+## 4.3.6
+
+### Patch Changes
+
+- [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
+## 4.3.5
+
+### Patch Changes
+
+- [#10393](https://github.com/wso2/identity-apps/pull/10393) [`097524fc6fdeb7e7a1f521920bee48c6de11f2f5`](https://github.com/wso2/identity-apps/commit/097524fc6fdeb7e7a1f521920bee48c6de11f2f5) Thanks [@savindi7](https://github.com/savindi7)! - Bump all app versions.
+
+* [#10387](https://github.com/wso2/identity-apps/pull/10387) [`828551c05cf9df33e51508fc5402f494881c714d`](https://github.com/wso2/identity-apps/commit/828551c05cf9df33e51508fc5402f494881c714d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use defined home route path in the root route in myaccount
+
+## 4.3.4
+
+### Patch Changes
+
+- [#10383](https://github.com/wso2/identity-apps/pull/10383) [`17a0486041eef1a4d34df0361fca7a862954fc2d`](https://github.com/wso2/identity-apps/commit/17a0486041eef1a4d34df0361fca7a862954fc2d) Thanks [@savindi7](https://github.com/savindi7)! - Update Header styles.
+
+## 4.3.3
+
+### Patch Changes
+
+- [#10249](https://github.com/wso2/identity-apps/pull/10249) [`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60) Thanks [@savindi7](https://github.com/savindi7)! - Update product branding.
+
+- Updated dependencies [[`58f4a671d7ea3620d2b248f0773573b4521dad60`](https://github.com/wso2/identity-apps/commit/58f4a671d7ea3620d2b248f0773573b4521dad60)]:
+  - @wso2is/theme@2.10.5
+
+## 4.3.2
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/i18n@2.42.3
+
 ## 4.3.1
 
 ### Patch Changes

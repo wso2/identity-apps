@@ -28,6 +28,7 @@ import {
     CreatePurposeRequestInterface,
     CreatePurposeVersionRequestInterface,
     ElementDTOInterface,
+    NewElementBindingInterface,
     PolicyConsentDetailInterface,
     PolicyConsentListResponseInterface,
     PurposeDTOInterface,
@@ -39,12 +40,7 @@ import {
 /**
  * Group used when creating new purposes.
  */
-const CONSENT_MGT_GROUP: string = "Policy";
-
-/**
- * Description used when creating the policy consent element.
- */
-const POLICY_CONSENT_ELEMENT_DESCRIPTION: string = "Policy consent element";
+const POLICY_CONSENT_GROUP: string = "Policy";
 
 /**
  * Prefix used for policy URL elements.
@@ -115,6 +111,7 @@ export const mapPurposeSummaryToListItem = (purpose: PurposeSummaryDTOInterface)
     description: purpose.description,
     id: purpose.id,
     name: purpose.name,
+    tenantDomain: purpose.tenantDomain,
     type: purpose.type
 });
 
@@ -128,12 +125,13 @@ export const mapPurposeDTOToConsent = (purpose: PurposeDTOInterface): ConsentInt
     const elements: PurposeElementDTOInterface[] = purpose.elements ?? [];
 
     const mandatoryElement: PurposeElementDTOInterface | undefined = elements.find(
-        (element: PurposeElementDTOInterface) => element.name === CONSENT_MGT_GROUP
+        (element: PurposeElementDTOInterface) => element.name === POLICY_CONSENT_GROUP
     );
 
     return {
         description: purpose.description,
         displayName: purpose.name,
+        elements,
         id: purpose.id,
         mandatory: mandatoryElement?.mandatory ?? false,
         name: purpose.name,
@@ -144,6 +142,7 @@ export const mapPurposeDTOToConsent = (purpose: PurposeDTOInterface): ConsentInt
                     element.name.startsWith(`${ POLICY_URL_ELEMENT_PREFIX }:`)
             )?.displayName,
         promptOnLogin: purpose.properties?.promptOnLogin ?? "false",
+        tenantDomain: purpose.tenantDomain,
         type: purpose.type,
         version: purpose.latestVersion?.version,
         versionId: purpose.latestVersion?.id
@@ -245,7 +244,7 @@ const getOrCreatePolicyConsentElement = async (): Promise<string> => {
     const listConfig: RequestConfigInterface = {
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         method: HttpMethods.GET,
-        params: { filter: `name eq ${ CONSENT_MGT_GROUP }` },
+        params: { filter: `name eq ${ POLICY_CONSENT_GROUP }` },
         url: elementsUrl
     };
 
@@ -259,9 +258,9 @@ const getOrCreatePolicyConsentElement = async (): Promise<string> => {
     try {
         const createResponse: AxiosResponse<ElementDTOInterface> = await httpClient({
             data: {
-                description: POLICY_CONSENT_ELEMENT_DESCRIPTION,
-                displayName: CONSENT_MGT_GROUP,
-                name: CONSENT_MGT_GROUP
+                description: null,
+                displayName: POLICY_CONSENT_GROUP,
+                name: POLICY_CONSENT_GROUP
             },
             headers: { "Accept": "application/json", "Content-Type": "application/json" },
             method: HttpMethods.POST,
@@ -274,6 +273,56 @@ const getOrCreatePolicyConsentElement = async (): Promise<string> => {
             error as AxiosError<HttpErrorResponseDataInterface>;
 
         // Another concurrent request already created the element — re-fetch to get its ID.
+        if (axiosError.response?.status === 409) {
+            const retryResponse: AxiosResponse<ElementListResponseInterface> = await httpClient(listConfig);
+            const items: ElementDTOInterface[] = retryResponse.data?.Elements ?? [];
+
+            if (items.length > 0) {
+                return items[0].id;
+            }
+        }
+
+        throw error;
+    }
+};
+
+/**
+ * Fetches the consent element matching the given name, creating it if it doesn't exist.
+ *
+ * @param name - Canonical element name (e.g. a claim URI).
+ * @param displayName - Human-readable display name used only when creating.
+ * @param description - Optional description used only when creating.
+ * @returns A promise resolving to the element ID.
+ */
+const getOrCreateElement = async (name: string, displayName?: string, description?: string): Promise<string> => {
+    const elementsUrl: string = store.getState().config.endpoints.consentMgtElements;
+    const listConfig: RequestConfigInterface = {
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        params: { filter: `name eq ${ name }` },
+        url: elementsUrl
+    };
+
+    const listResponse: AxiosResponse<ElementListResponseInterface> = await httpClient(listConfig);
+    const existing: ElementDTOInterface[] = listResponse.data?.Elements ?? [];
+
+    if (existing.length > 0) {
+        return existing[0].id;
+    }
+
+    try {
+        const createResponse: AxiosResponse<ElementDTOInterface> = await httpClient({
+            data: { description: description ?? null, displayName: displayName ?? name, name },
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            method: HttpMethods.POST,
+            url: elementsUrl
+        });
+
+        return createResponse.data.id;
+    } catch (error: unknown) {
+        const axiosError: AxiosError<HttpErrorResponseDataInterface> =
+            error as AxiosError<HttpErrorResponseDataInterface>;
+
         if (axiosError.response?.status === 409) {
             const retryResponse: AxiosResponse<ElementListResponseInterface> = await httpClient(listConfig);
             const items: ElementDTOInterface[] = retryResponse.data?.Elements ?? [];
@@ -313,7 +362,7 @@ export const createPurpose = async (
         ],
         name,
         properties: { policyUrl, promptOnLogin: promptOnLogin ?? "false" },
-        type: CONSENT_MGT_GROUP,
+        type: POLICY_CONSENT_GROUP,
         version: "1"
     };
 
@@ -442,6 +491,141 @@ export const createPurposeVersion = async (
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
                     "Failed to create purpose version.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return response.data;
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
+
+/**
+ * Creates a new preference management purpose (no policy URL, mandatory, or promptOnLogin).
+ *
+ * @param name - Name of the preference management purpose.
+ * @param description - Optional description.
+ * @param newElements - Optional inline elements (user attributes) to bind.
+ * @returns A promise containing the created purpose DTO.
+ */
+export const createPreferencePurpose = async (
+    name: string,
+    description?: string,
+    newElements?: NewElementBindingInterface[]
+): Promise<PurposeDTOInterface> => {
+    const resolvedElements: Array<{ id: string; mandatory?: boolean }> = await Promise.all(
+        (newElements ?? []).map(
+            async (el: NewElementBindingInterface): Promise<{ id: string; mandatory?: boolean }> => ({
+                id: await getOrCreateElement(el.name, el.displayName, el.description),
+                mandatory: el.mandatory
+            })
+        )
+    );
+
+    const body: CreatePurposeRequestInterface = {
+        description,
+        elements: resolvedElements,
+        name,
+        type: "Preference",
+        version: "1"
+    };
+
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.consentMgtPurposes
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<PurposeDTOInterface>) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Failed to create preference purpose.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return response.data;
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
+
+/**
+ * Creates a new version for an existing preference management purpose.
+ *
+ * @param purposeId - ID of the purpose.
+ * @param versionLabel - Version label (e.g. "2").
+ * @param description - Description for this version.
+ * @param newElements - Optional inline elements (user attributes) to bind.
+ * @returns A promise containing the created version DTO.
+ */
+export const createPreferencePurposeVersion = async (
+    purposeId: string,
+    versionLabel: string,
+    description: string,
+    newElements?: NewElementBindingInterface[]
+): Promise<PurposeVersionDTOInterface> => {
+    const resolvedElements: Array<{ id: string; mandatory?: boolean }> = await Promise.all(
+        (newElements ?? []).map(
+            async (el: NewElementBindingInterface): Promise<{ id: string; mandatory?: boolean }> => ({
+                id: await getOrCreateElement(el.name, el.displayName, el.description),
+                mandatory: el.mandatory
+            })
+        )
+    );
+
+    const body: CreatePurposeVersionRequestInterface = {
+        description,
+        elements: resolvedElements,
+        setAsLatest: true,
+        version: versionLabel
+    };
+
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.consentMgtPurposes }/${ purposeId }/versions`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<PurposeVersionDTOInterface>) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Failed to create preference purpose version.",
                     null,
                     response.status,
                     response.request,

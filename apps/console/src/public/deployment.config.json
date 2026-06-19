@@ -30,8 +30,12 @@
     "docSiteUrl": "https://is.docs.wso2.com/en/latest",
     "extensions": {
         "analytics": {
+            "collectorKey": {
+                "settingsEnabled": false
+            },
             "moesif": {
-                "applicationId": ""
+                "dashboardEnabled": false,
+                "embeddedPortalUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -324,6 +328,9 @@
         },
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
+        "apiResourceManagement": {
+            "blocked_api_resources": []
+        },
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "appLogoPath": "/assets/images/branding/logo.svg",
@@ -575,6 +582,10 @@
                     "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
+                "properties": {
+                    "maxGracefulRefreshTokenReuseLimit": 5,
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                },
                 "featureFlags": [
                     {
                         "feature": "applications",
@@ -1141,6 +1152,34 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
+                }
+            },
+            "flowExtensions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flowExtensions",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_flow_extension_create"
+                    ],
+                    "delete": [
+                        "internal_flow_extension_delete"
+                    ],
+                    "feature": [
+                        "console:flowExtensions"
+                    ],
+                    "read": [
+                        "internal_flow_extension_view",
+                        "internal_claim_meta_view"
+                    ],
+                    "update": [
+                        "internal_flow_extension_update"
+                    ]
                 }
             },
             "gettingStarted": {
@@ -2245,6 +2284,7 @@
                 "attributeDialects": "v0.0.0",
                 "attributeUpdateVerificationSettings": "v1.0.0",
                 "branding": "v0.0.0",
+                "consents": "v0.0.0",
                 "consoleSettings": "v0.0.0",
                 "emailTemplates": "v0.0.0",
                 "flows": "v1.0.0",
@@ -2290,13 +2330,6 @@
             "enabled": false,
             "title": "Shape the Future of Identity Server!",
             "url": "https://docs.google.com/forms/d/e/1FAIpQLSe6Dr_8QmHQmPI1zj07aYVSDPzNbay7Ss3SMsEBTCCaXLPnUw/viewform"
-        },
-        "rebrandingBanner": {
-            "announcementUrl": "",
-            "buttonText": "",
-            "description": "",
-            "enabled": false,
-            "title": ""
         }
     }
 }

@@ -797,6 +797,11 @@ export interface governanceConnectorsNS {
                     friendlyName: string;
                     header: string;
                 };
+                preferenceManagement: {
+                    description: string;
+                    friendlyName: string;
+                    header: string;
+                };
             };
         };
         sessionManagement: {

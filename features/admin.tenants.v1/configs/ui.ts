@@ -18,7 +18,7 @@
 
 import {
     ReactComponent as AsgardeoLogo
-} from "@wso2is/admin.extensions.v1/assets/asgardeo-logo.svg";
+} from "@wso2is/admin.extensions.v1/assets/wso2-identity-platform-logo.svg";
 import { FunctionComponent, SVGProps } from "react";
 
 export const TenantCreationIcons = (): {

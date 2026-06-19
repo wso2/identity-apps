@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -80,7 +80,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
-import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
+import { getCompatibilitySettingsResourceEndpoints, getFlowExtensionResourceEndpoints } from "./endpoints";
 import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
@@ -308,7 +308,8 @@ export class Config {
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
                 I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
-                I18nConstants.CONSENTS_NAMESPACE
+                I18nConstants.CONSENTS_NAMESPACE,
+                I18nConstants.FLOW_EXTENSION_NAMESPACE
             ],
             preload: []
         };
@@ -384,6 +385,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
+            ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
@@ -423,6 +425,10 @@ export class Config {
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
+            apiResourceManagement: {
+                blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
+                    ?.blocked_api_resources ?? []
+            },
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),

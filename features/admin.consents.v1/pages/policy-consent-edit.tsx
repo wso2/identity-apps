@@ -17,6 +17,8 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { deletePurpose, useGetPurpose } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -29,12 +31,14 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
+import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -57,34 +61,46 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     const id: string = match?.params?.id;
 
-    const { data: consent, isLoading: isConsentRequestLoading } = useGetPurpose(id);
-
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
-    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
-    const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
+    // Check if the route param is a known default policy slug (not a UUID).
+    const defaultPolicyName: string | null = DEFAULT_POLICY_PATH_MAP[id] ?? null;
+    const isDefaultPolicy: boolean = defaultPolicyName !== null;
+
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+
+    // Only fetch from the API when the id is a real UUID, not a default-policy slug.
+    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(isDefaultPolicy ? "" : id);
+
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const handleBackButtonClick = (): void => {
         window.history.back();
     };
 
     const handleDeleteConsent = (): void => {
+        if (!consent?.id) {
+            return;
+        }
+
         setIsDeleting(true);
 
-        deletePurpose(id)
+        deletePurpose(consent.id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.delete.success.description"),
+                    description: t("consents:policyConsents.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.delete.success.message")
+                    message: t("consents:policyConsents.notifications.delete.success.message")
                 }));
-                handleBackButtonClick();
+                history.replace(AppConstants.getPaths().get("POLICY_CONSENTS"));
             })
             .catch((error: IdentityAppsApiException): void => {
                 const status: number = error?.response?.status;
@@ -93,22 +109,24 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.delete.error.notFound.description");
-                        message = t("consents:notifications.delete.error.notFound.message");
+                        description = t("consents:policyConsents.notifications.delete.error.notFound.description");
+                        message = t("consents:policyConsents.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.delete.error.conflict.description");
-                        message = t("consents:notifications.delete.error.conflict.message");
+                        description = t("consents:policyConsents.notifications.delete.error.conflict.description");
+                        message = t("consents:policyConsents.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.delete.error.serverError.description");
-                            message = t("consents:notifications.delete.error.serverError.message");
+                            description = t(
+                                "consents:policyConsents.notifications.delete.error.serverError.description"
+                            );
+                            message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
-                            description = t("consents:notifications.delete.error.description");
-                            message = t("consents:notifications.delete.error.message");
+                            description = t("consents:policyConsents.notifications.delete.error.description");
+                            message = t("consents:policyConsents.notifications.delete.error.message");
                         }
                 }
 
@@ -124,15 +142,37 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             });
     };
 
+    const pageTitle: string = isDefaultPolicy
+        ? defaultPolicyName
+        : (consent?.displayName || "");
+
+    const descriptionLabel: ReactElement | undefined = (() => {
+        if (isCrossTenant) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.sharedPolicy") }
+                </Label>
+            );
+        }
+        if (isDefaultPolicy) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.defaultPolicy") }
+                </Label>
+            );
+        }
+
+        return undefined;
+    })();
 
     return (
         <PageLayout
-            pageTitle={ t("consents:pages.edit.title") }
-            title={ consent?.displayName || "" }
-            description={ undefined }
+            pageTitle={ t("consents:policyConsents.pages.edit.title") }
+            title={ pageTitle }
+            description={ descriptionLabel }
             image={ (
                 <AnimatedAvatar
-                    name={ consent?.displayName }
+                    name={ pageTitle }
                     size="tiny"
                     floated="left"
                 />
@@ -144,24 +184,29 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
-            isLoading={ isConsentRequestLoading }
+            isLoading={ isConsentLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("consents:pages.edit.backButton")
+                text: t("consents:policyConsents.pages.edit.backButton")
             } }
         >
-            { consent && (
+            { (isDefaultPolicy || consent) && (
                 <>
-                    <EditPolicyConsent purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPolicyConsent
+                        purposeId={ isDefaultPolicy ? undefined : consent?.id }
+                        readOnly={ isCrossTenant }
+                        isDefault={ isDefaultPolicy }
+                        defaultName={ isDefaultPolicy ? defaultPolicyName : undefined }
+                    />
+                    { hasDeletePermission && !isCrossTenant && !isDefaultPolicy && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >
                             <DangerZone
-                                actionTitle={ t("consents:pages.edit.dangerZone.actionTitle") }
-                                header={ t("consents:pages.edit.dangerZone.header") }
-                                subheader={ t("consents:pages.edit.dangerZone.subheader") }
+                                actionTitle={ t("consents:policyConsents.pages.edit.dangerZone.actionTitle") }
+                                header={ t("consents:policyConsents.pages.edit.dangerZone.header") }
+                                subheader={ t("consents:policyConsents.pages.edit.dangerZone.subheader") }
                                 onActionClick={ () => setShowDeleteConfirmation(true) }
                             />
                         </DangerZoneGroup>
@@ -170,10 +215,10 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         onClose={ () => setShowDeleteConfirmation(false) }
                         type="negative"
                         open={ showDeleteConfirmation }
-                        assertionHint={ t("consents:pages.edit.deleteConfirmation.assertionHint") }
+                        assertionHint={ t("consents:policyConsents.pages.deleteConfirmation.assertionHint") }
                         assertionType="checkbox"
-                        primaryAction={ t("consents:pages.edit.deleteConfirmation.primaryAction") }
-                        secondaryAction={ t("consents:pages.edit.deleteConfirmation.secondaryAction") }
+                        primaryAction={ t("consents:policyConsents.pages.deleteConfirmation.primaryAction") }
+                        secondaryAction={ t("consents:policyConsents.pages.deleteConfirmation.secondaryAction") }
                         onSecondaryActionClick={ () => setShowDeleteConfirmation(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
                         data-componentid={ `${componentId}-delete-confirmation-modal` }
@@ -183,19 +228,19 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         <ConfirmationModal.Header
                             data-componentid={ `${componentId}-delete-confirmation-modal-header` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.header") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.message") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.content") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>

@@ -18,5 +18,7 @@
 
 export { default as useGetTenantTier } from "./api/use-get-tenant-tier";
 export { default as useSubscription } from "./hooks/use-subscription";
+export { useTrialDetails } from "./hooks/use-trial-details";
 export { default as SubscriptionProvider } from "./providers/subscription-provider";
+export { default as TrialProvider } from "./providers/trial-provider";
 export * from "./models/tenant-tier";

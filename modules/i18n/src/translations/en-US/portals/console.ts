@@ -2605,6 +2605,7 @@ export const console: ConsoleNS = {
                     extensions: "Extensions"
                 },
                 customize: "Customize",
+                flowExtensionEdit: "Flow Extensions Edit",
                 identityProviderEdit: "Connections Edit",
                 identityProviderTemplates: "Connection Templates",
                 identityProviders: "Connections",
@@ -2670,10 +2671,6 @@ export const console: ConsoleNS = {
                 alternateSubTitle: "Manage your applications and customize login flows.",
                 subTitle: "Create and manage your applications and configure sign-in.",
                 title: "Applications"
-            },
-            consents: {
-                description: "Manage and configure user consents.",
-                title: "Consents"
             },
             applicationsEdit: {
                 backButton: "Go back to Applications",

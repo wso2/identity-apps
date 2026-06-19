@@ -110,7 +110,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
     /**
      * Handles decline button click.
      */
-    const handleDeclineButtonClick = () => {
+    const handleCancelButtonClick = () => {
         submitUserConsent(false);
     };
 
@@ -173,7 +173,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         basic
                                         primary
                                         className="link-button"
-                                        onClick={ handleDeclineButtonClick }
+                                        onClick={ handleCancelButtonClick }
                                         disabled={ isLoading }
                                         data-componentid={ `${componentId}-decline-btn` }
                                     >

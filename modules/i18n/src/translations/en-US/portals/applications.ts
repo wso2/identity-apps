@@ -2073,11 +2073,10 @@ export const applications: ApplicationsNS = {
                             },
                             version300: {
                                 linkedLocalAccountAttributeHandling: {
-                                    instruction: "When you enable the use of linked local account attributes " +
-                                        "instead of federated attributes and mandate that a linked local account " +
-                                        "must exist, this configuration previously applied only to the <1>token " +
-                                        "exchange</1> flow. With this update, the same restriction now also " +
-                                        "applies to <3>login</3> scenarios."
+                                    instruction: "Previously, the \"Use linked local account attributes\" setting, " +
+                                        "when combined with the requirement for a linked local account, was enforced " +
+                                        "only during the <1>token exchange</1> flows. With this update, the same requirement " +
+                                        "will be enforced during <3>login</3> flows as well."
                                 }
                             }
                         }
@@ -2223,6 +2222,35 @@ export const applications: ApplicationsNS = {
                             label: "Renew refresh token",
                             validations: {
                                 empty: "This is a required field."
+                            }
+                        },
+                        gracefulRefreshTokenRotation: {
+                            hint: "When enabled, the previous refresh token remains valid for a grace period " +
+                                "after rotation, instead of being revoked immediately.",
+                            label: "Rotate refresh token gracefully"
+                        },
+                        gracefulRefreshTokenRotationValidityPeriod: {
+                            hint: "Time in seconds the previous refresh token remains usable after a new one is issued.",
+                            label: "Graceful rotation validity period",
+                            placeholder: "Enter the graceful rotation validity period",
+                            validations: {
+                                belowMin: "Value cannot be less than 0.",
+                                empty: "Please fill the graceful rotation validity period",
+                                invalid: "Graceful rotation validity period should be in seconds. " +
+                                    "Decimal points and negative numbers are not allowed.",
+                                maxExceeded: "Value cannot exceed the configured maximum of {{max}} seconds."
+                            }
+                        },
+                        gracefulRefreshTokenReuseLimit: {
+                            hint: "Maximum number of times the previous refresh token may be used within the grace period.",
+                            label: "Refresh token reuse limit",
+                            placeholder: "Enter the refresh token reuse limit",
+                            validations: {
+                                belowMin: "Value must be at least 1.",
+                                empty: "Please fill the refresh token reuse limit",
+                                invalid: "Refresh token reuse limit should be a whole number. " +
+                                    "Decimal points and negative numbers are not allowed.",
+                                maxExceeded: "Value cannot exceed the configured maximum of {{max}}."
                             }
                         }
                     },

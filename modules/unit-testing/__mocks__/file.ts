@@ -21,7 +21,7 @@
 /**
  * Stubs files such as .jpg, .png, etc.
  *
- * @see {@link jest.config.ts} for more file types that uses this stub.
+ * @see {@link vitest.config.ts} for more file types that use this stub.
  */
 
 module.exports = "test-file-stub";

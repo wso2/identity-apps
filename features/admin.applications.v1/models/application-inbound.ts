@@ -88,6 +88,9 @@ export interface OIDCMetadataInterface {
     defaultApplicationAccessTokenExpiryTime?: string;
     defaultRefreshTokenExpiryTime?: string;
     defaultIdTokenExpiryTime?: string;
+    defaultGracefulRefreshTokenRotationEnabled?: boolean;
+    defaultGracefulRefreshTokenRotationValidityPeriod?: string;
+    defaultGracefulRefreshTokenReuseLimit?: string;
     idTokenEncryptionAlgorithm?: MetadataPropertyInterface;
     idTokenEncryptionMethod?: MetadataPropertyInterface;
     idTokenSignatureAlgorithm?: MetadataPropertyInterface;
@@ -163,6 +166,9 @@ interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;
     extendRenewedRefreshTokenExpiryTime?: boolean;
+    gracefulRefreshTokenRotationEnabled?: boolean;
+    gracefulRefreshTokenRotationValidityPeriod?: number;
+    gracefulRefreshTokenReuseLimit?: number;
 }
 
 /**

@@ -18,6 +18,8 @@
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
+import useGetFlowExtension from "@wso2is/admin.flow-extensions.v1/api/use-get-flow-extension";
+import { FlowExtensionListResponseInterface } from "@wso2is/admin.flow-extensions.v1/models/flow-extension";
 import {
     useGetIdentityVerificationProviderList
 } from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-list";
@@ -69,7 +71,8 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     shouldFetchAuthenticators: boolean = true,
     shouldFetchIdVPs: boolean = true,
     shouldHideLocalEmailOTPAuthenticator: boolean = false,
-    shouldHideLocalSMSOTPAuthenticator: boolean = false
+    shouldHideLocalSMSOTPAuthenticator: boolean = false,
+    shouldFetchFlowExtensions: boolean = true
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
     const {
@@ -105,9 +108,20 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
+    const {
+        data: fetchedFlowExtensionList,
+        isLoading: isFlowExtensionListFetchRequestLoading,
+        isValidating: isFlowExtensionListFetchRequestValidating,
+        error: flowExtensionListFetchRequestError,
+        mutate: mutateFlowExtensionListFetchRequest
+    } = useGetFlowExtension<FlowExtensionListResponseInterface[], RequestErrorInterface>(
+        shouldFetchFlowExtensions
+    );
+
     const combinedData: ConnectionInterface[] = [];
 
-    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
+    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading
+        && !isFlowExtensionListFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
@@ -167,19 +181,36 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                 } as ConnectionInterface);
             }
         }
+
+        // Add Flow Extensions to the list.
+        if (Array.isArray(fetchedFlowExtensionList)) {
+            for (const flowExtension of fetchedFlowExtensionList) {
+                combinedData.push({
+                    description: flowExtension.description,
+                    id: flowExtension.id,
+                    image: flowExtension.iconUrl,
+                    name: flowExtension.name,
+                    type: ConnectionTypes.FLOW_EXTENSION
+                } as ConnectionInterface);
+            }
+        }
     }
 
     return {
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
-            || idVPListFetchRequestError as AxiosError<Error>,
+            || idVPListFetchRequestError as AxiosError<Error>
+            || flowExtensionListFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
-            || isIdVPListFetchRequestLoading,
+            || isIdVPListFetchRequestLoading
+            || isFlowExtensionListFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
-            || isIdVPListFetchRequestValidating,
+            || isIdVPListFetchRequestValidating
+            || isFlowExtensionListFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
             mutateIdVPListFetchRequest();
+            mutateFlowExtensionListFetchRequest();
         }
     };
 };

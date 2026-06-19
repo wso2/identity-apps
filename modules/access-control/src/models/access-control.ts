@@ -58,6 +58,12 @@ export interface FeatureAccessConfigInterface {
      * Feature flags for the feature.
      */
     featureFlags?: FeatureFlagsInterface[];
+    /**
+     * Feature-specific properties.
+     */
+    properties?: {
+        [key: string]: unknown;
+    };
 }
 
 export interface DeprecatedFeatureInterface {

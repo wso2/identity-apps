@@ -23,7 +23,7 @@ import "@testing-library/jest-dom";
 
 describe.skip("Impersonation Configuration", () => {
 
-    jest.mock("@wso2is/admin.impersonation.v1/api/impersonation-configuration", () => ({
+    vi.doMock("@wso2is/admin.impersonation.v1/api/impersonation-configuration", () => ({
         useImpersonationConfig: () => ({
             data: {
                 "enableEmailNotification":true

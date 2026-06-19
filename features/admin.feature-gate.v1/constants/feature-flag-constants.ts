@@ -32,12 +32,12 @@ class FeatureFlagConstants {
      */
     public static readonly FEATURE_FLAG_KEY_MAP: { [key: string]: string } = {
         ACTIONS: "actions",
+        ACTIONS_FEATURE_GATE: "console.actions",
         ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN: "actions.types.list.preIssueAccessToken",
         ACTIONS_TYPES_PRE_ISSUE_ID_TOKEN: "actions.types.list.preIssueIdToken",
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
-        ACTIONS_FEATURE_GATE: "console.actions",
         AGENTS: "agents",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
@@ -59,6 +59,7 @@ class FeatureFlagConstants {
         CUSTOMER_DATA_PROFILES: "customerDataProfiles",
         CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",
         CUSTOMER_DATA_PROFILE_ATTRIBUTES: "customerDataProfileAttributes",
+        CUSTOMER_DATA_SERVICE: "customerDataService",
         CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
         EMAIL_TEMPLATES_CUSTOMIZATION: "console.emailTemplates",
         FLOWS: "flows",

@@ -1498,6 +1498,7 @@ export interface Extensions {
             tabs: {
                 advance: {
                     label: string;
+                    policyManagementBanner: string;
                 };
                 design: {
                     label: string;
@@ -2344,6 +2345,90 @@ export interface Extensions {
             eventPublishing: string;
             emailTemplates: string;
             organizationInfo: string;
+        };
+        moesifAnalytics: {
+            collectorKeySettings: {
+                cancelButton: string;
+                description: string;
+                keyField: {
+                    label: string;
+                    placeholder: string;
+                };
+                notifications: {
+                    updateError: {
+                        description: string;
+                        message: string;
+                    };
+                    updateSuccess: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                saveButton: string;
+                settingsIconTooltip: string;
+                title: string;
+            };
+            dashboard: {
+                errors: {
+                    loadFailure: string;
+                    portalUrlNotConfigured: string;
+                };
+                iframeTitle: string;
+            };
+            settingsPage: {
+                title: string;
+                pageTitle: string;
+                description: string;
+                disableButton: string;
+                toggle: {
+                    label: string;
+                    description: string;
+                };
+                apiKeySection: {
+                    heading: string;
+                    description: string;
+                    existingKeyHint: string;
+                };
+                publishersSection: {
+                    heading: string;
+                    description: string;
+                };
+                publishers: {
+                    authentication: string;
+                    flow: string;
+                    orgSwitch: string;
+                    registration: string;
+                    session: string;
+                    token: string;
+                };
+            };
+            publisherSettings: {
+                createTitle: string;
+                updateTitle: string;
+                enableButton: string;
+                dangerZone: {
+                    sectionHeader: string;
+                    heading: string;
+                    description: string;
+                    deleteButton: string;
+                    confirmation: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                };
+                notifications: {
+                    deleteSuccess: {
+                        description: string;
+                        message: string;
+                    };
+                    deleteError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
         };
         eventPublishing: {
             eventsConfiguration: {

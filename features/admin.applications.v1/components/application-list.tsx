@@ -64,6 +64,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteApplication } from "../api/application";
 import { ApplicationManagementConstants } from "../constants/application-management";
+import TryItApplicationConstants from "../constants/try-it-constants";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
@@ -418,7 +419,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                     )
                             }
                             <Header.Content>
-                                { app.name }
+                                { app.name === TryItApplicationConstants.DISPLAY_NAME
+                                    ? "WSO2 Identity Platform Try It"
+                                    : app.name }
                                 {
                                     app.advancedConfigurations?.fragment && (
                                         <Label size="mini">

@@ -1,0 +1,54 @@
+{
+    "private": true,
+    "name": "@wso2is/admin.flow-extensions.v1",
+    "version": "0.1.0",
+    "description": "UI components, APIs and utilities for WSO2 Identity Server Flow Extensions",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@asgardeo/auth-react": "^5.1.2",
+        "@oxygen-ui/react": "catalog:",
+        "@wso2is/access-control": "workspace:^",
+        "@wso2is/admin.actions.v1": "workspace:^",
+        "@wso2is/admin.claims.v1": "workspace:^",
+        "@wso2is/admin.core.v1": "workspace:^",
+        "@wso2is/core": "workspace:^",
+        "@wso2is/forms": "workspace:^",
+        "@wso2is/react-components": "workspace:^",
+        "@wso2is/validation": "^2.4.1",
+        "axios": "^1.7.0",
+        "final-form": "^4.20.10",
+        "react-i18next": "^11.18.5",
+        "react-redux": "^7.2.9",
+        "redux": "^4.0.4",
+        "semantic-ui-react": "^2.1.3"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+        "@rollup/plugin-image": "^3.0.3",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@svgr/rollup": "^6.2.1",
+        "@types/node": "^13.9.2",
+        "@types/react": "^18.0.18",
+        "@types/react-dom": "^18.0.6",
+        "@types/react-redux": "^7.1.25",
+        "@types/react-router-dom": "^5.1.3",
+        "rollup": "^4.17.2",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "rollup-plugin-scss": "^4.0.0",
+        "rollup-plugin-svg": "^2.0.0",
+        "typescript": "^5.1.6"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^4.3.1"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

@@ -24,10 +24,10 @@ declare module "moesif-browser-js" {
     }
 
     interface MoesifInstance {
-        identifyCompany(companyId: string, metadata?: Record<string, unknown>): void;
-        identifyUser(userId: string, metadata?: Record<string, unknown>): void;
-        init(options: MoesifOptions): void;
-        track(actionName: string, metadata?: Record<string, unknown>): void;
+        identifyCompany(_companyId: string, _metadata?: Record<string, unknown>): void;
+        identifyUser(_userId: string, _metadata?: Record<string, unknown>): void;
+        init(_options: MoesifOptions): void;
+        track(_actionName: string, _metadata?: Record<string, unknown>): void;
     }
 
     const moesif: MoesifInstance;

@@ -1880,6 +1880,32 @@ export interface ApplicationsNS {
                                 empty: string;
                             };
                         };
+                        gracefulRefreshTokenRotation: {
+                            hint: string;
+                            label: string;
+                        };
+                        gracefulRefreshTokenRotationValidityPeriod: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                maxExceeded: string;
+                                belowMin: string;
+                            };
+                        };
+                        gracefulRefreshTokenReuseLimit: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                maxExceeded: string;
+                                belowMin: string;
+                            };
+                        };
                     };
                 };
                 subjectToken: {

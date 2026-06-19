@@ -2473,6 +2473,7 @@ export interface ConsoleNS {
                 authenticationProviderEdit: string;
                 authenticationProviderTemplates: string;
                 authenticationProviders: string;
+                flowExtensionEdit: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
@@ -2534,10 +2535,6 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
                 alternateSubTitle: string;
-            };
-            consents: {
-                title: string;
-                description: string;
             };
             applicationsEdit: {
                 backButton: string;
