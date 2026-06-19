@@ -91,12 +91,19 @@ const usePushAuthenticator = () => {
                     const getValue = (name: string): string | undefined =>
                         resource.attributeNames.find((p) => p.name === name)?.value;
 
+                    const parsedMaximumDeviceLimit: number = Number.parseInt(
+                        getValue(PushAuthenticatorConstants.PROPERTY_MAXIMUM_DEVICE_LIMIT) ?? "1",
+                        10
+                    );
+                    const safeMaximumDeviceLimit: number =
+                        Number.isFinite(parsedMaximumDeviceLimit) && parsedMaximumDeviceLimit > 0
+                            ? parsedMaximumDeviceLimit
+                            : 1;
+
                     setPushDeviceMgtConfig({
                         enableMultipleDeviceEnrollment:
-                            getValue(PushAuthenticatorConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT) === "true",
-                        maximumDeviceLimit: parseInt(
-                            getValue(PushAuthenticatorConstants.PROPERTY_MAXIMUM_DEVICE_LIMIT) ?? "1", 10
-                        )
+                            getValue(PushAuthenticatorConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT) === "true", 
+                        maximumDeviceLimit: safeMaximumDeviceLimit
                     });
                 }
             })

@@ -238,7 +238,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
-        ["data-testid"]: testId 
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -286,6 +286,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
+
         if (isEmpty(originalInitialValues?.properties) || isPushDeviceMgtConfigLoading) {
             return;
         }
@@ -424,7 +425,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 continue;
             }
 
-            const moderatedName: string = name.replace(/_/g, ".");
+                const moderatedName: string = name.replace(/_/g, ".");
 
             if (name === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
                 const timeInSeconds: number = value * 60;
@@ -550,14 +551,14 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         } else if (!FormValidation.isInteger(values.PUSH_ResendNotificationMaxAttempts as unknown as number)) {
             // Check for invalid input.
             errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
-                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid");
+                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid");
         } else if (values.PUSH_ResendNotificationMaxAttempts < ConnectionUIConstants
             .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
             || (values.PUSH_ResendNotificationMaxAttempts > ConnectionUIConstants
                 .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
             // Check for invalid range.
             errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
-                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range");
+                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range");
         }
 
         if (values.PUSH_EnableMultipleDeviceEnrollment) {
@@ -613,9 +614,9 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, any>) => {
+            onSubmit={ (values: Record<string, any>) =>{
                 handleFormSubmit(values as PushAuthenticatorFormInitialValuesInterface);
-            }}
+            } }
             initialValues={ initialValues }
             validate={ validateForm }
         >
@@ -636,7 +637,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                                 ".push.hint"
                             }
                         >
-                        Ensure that an
+                            Ensure that an
                             <Link
                                 external={ false }
                                 onClick={ () => {
@@ -741,7 +742,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         }
                     >
                         Users will be limited to the specified resend attempt count when trying to resend the
-                        push notification.
+                         push notification.
                     </Trans>)
                 }
                 required={ true }
@@ -765,7 +766,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 <Label>
                     {
                         t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.allowedResendAttemptsCount.unit")
+                            ".push.allowedResendAttemptsCount.unit")
                     }
                 </Label>
             </Field.Input>
