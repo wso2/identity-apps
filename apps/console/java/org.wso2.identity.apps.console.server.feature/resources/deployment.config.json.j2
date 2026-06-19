@@ -230,6 +230,9 @@
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
+        {% if oauth.extensions.token_generator is defined %}
+        "defaultTokenIssuerClass": "{{ oauth.extensions.token_generator }}",
+        {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "appWhiteLogoPath": "{{ console.ui.app_white_logo_path }}",
         "emailTemplates": {
