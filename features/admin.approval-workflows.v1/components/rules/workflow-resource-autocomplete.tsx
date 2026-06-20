@@ -44,6 +44,8 @@ import AutoCompleteRenderOption from "./auto-complete-render-option";
 import useGetWorkflowResources from "../../hooks/use-get-workflow-resources";
 import { normalizeResourceResponse, processResourceItems } from "../../utils/resource-utils";
 
+const EMPTY_STRING_ARRAY: string[] = [];
+
 /**
  * Value input autocomplete options interface.
  */
@@ -93,7 +95,7 @@ const WorkflowResourceAutocomplete: FunctionComponent<WorkflowResourceAutocomple
     conditionId: _conditionId,
     expressionId: _expressionId,
     shouldFetch,
-    hiddenResources: _hiddenResources = [],
+    hiddenResources: _hiddenResources = EMPTY_STRING_ARRAY,
     showClearFilter = false,
     readonly: isReadonly,
     showValidationError = false
