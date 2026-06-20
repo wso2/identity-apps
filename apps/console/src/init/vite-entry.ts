@@ -30,5 +30,34 @@ if (typeof (globalThis as Record<string, unknown>)["global"] === "undefined") {
     (globalThis as Record<string, unknown>)["global"] = globalThis;
 }
 
+/**
+ * Updates the console favicon with the configured favicon path on the client side.
+ *
+ * Note: This is a workaround to provide the custom favicon support.
+ * This should be removed when the branding support for console application is provided.
+ *
+ * @returns void
+ */
+const applyConfiguredFavicon: () => void = (): void => {
+    const faviconPath: string | undefined = window.__WSO2_IS_RUNTIME_CONFIG__.ui?.appFaviconPath;
+    const themeName: string | undefined = window.__WSO2_IS_RUNTIME_CONFIG__.ui?.theme?.name;
+    const configScript: HTMLScriptElement | null = document.querySelector("script[src$='config.js']");
+
+    if (!faviconPath || !themeName || !configScript?.src) {
+        return;
+    }
+
+    const favicon: HTMLLinkElement = document.createElement("link");
+
+    favicon.rel = "icon";
+    favicon.href = new URL(
+        `libs/themes/${ themeName }/${ faviconPath.replace(/^\/+/, "") }`,
+        configScript.src
+    ).href;
+    document.head.appendChild(favicon);
+};
+
+applyConfiguredFavicon();
+
 void import("./init")
     .then(() => import("../index"));

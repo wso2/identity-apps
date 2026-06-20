@@ -340,7 +340,6 @@ const consoleDevHtmlPlugin = (basePath: string): PluginOption => {
     ${themeStyleSheetPath
         ? `<link href="${themeStyleSheetPath}" rel="stylesheet" type="text/css" />`
         : ""}
-    <link rel="shortcut icon" href="${normalizedBasePath}libs/themes/${themeName}/assets/images/branding/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="${normalizedBasePath}extensions/stylesheet.css" />
     <script src="${normalizedBasePath}startup-config.js"></script>
     <script>

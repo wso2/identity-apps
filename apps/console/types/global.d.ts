@@ -21,6 +21,12 @@ declare global {
         themeHash: string;
         publicPath: string;
         __WSO2_IS_RUNTIME_CONFIG__: {
+            ui?: {
+                appFaviconPath?: string;
+                theme?: {
+                    name?: string;
+                };
+            };
             updates?: {
                 updateLevel?: string;
             };

@@ -40,7 +40,6 @@
         <!-- End of loading application configurations -->
 
         <link href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/theme.<%= buildOptions.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/assets/images/branding/favicon.ico" />
 
         <%= buildOptions.cookieproEnabledCheck %>
              <!-- CookiePro Cookies Consent Notice start for asgardeo.io -->

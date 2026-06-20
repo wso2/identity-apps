@@ -20,5 +20,11 @@ window.__WSO2_IS_RUNTIME_CONFIG__ = {
     server: {
         proxyContextPath: "{{ console.proxy_context_path }}"
     },
+    ui: {
+        appFaviconPath: {{ console.ui.app_favicon_path | tojson }},
+        theme: {
+            name: {{ console.theme | tojson }}
+        }
+    },
     updates: window.__WSO2_IS_UPDATE_CONFIG__
 };

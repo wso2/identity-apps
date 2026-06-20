@@ -20,5 +20,11 @@ window.__WSO2_IS_RUNTIME_CONFIG__ = {
     server: {
         proxyContextPath: ""
     },
+    ui: {
+        appFaviconPath: "/assets/images/branding/favicon.ico",
+        theme: {
+            name: "wso2is"
+        }
+    },
     updates: window.__WSO2_IS_UPDATE_CONFIG__
 };
