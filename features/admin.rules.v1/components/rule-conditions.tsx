@@ -57,7 +57,9 @@ import {
     RuleInterface
 } from "../models/rules";
 import "./rule-conditions.scss";
+
 const EMPTY_STRING_ARRAY: string[] = [];
+
 /**
  * Value input autocomplete options interface.
  */
