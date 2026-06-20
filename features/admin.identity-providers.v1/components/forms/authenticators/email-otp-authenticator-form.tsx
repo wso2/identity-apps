@@ -638,7 +638,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     ".emailOTP.notifyEmailSendingFailure.hint") }
                 readOnly={ readOnly }
                 width={ 12 }
-                data-testid={ `${ testId }-show-failure-reason` }
+                data-componentid={ `${ testId }-show-failure-reason` }
             />
             <Field.Button
                 form={ FORM_ID }
