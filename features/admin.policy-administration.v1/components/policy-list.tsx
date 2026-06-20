@@ -31,6 +31,8 @@ import PolicyListNode from "./policy-list-node";
 import { PolicyInterface } from "../models/policies";
 import "./policy-list.scss";
 
+const EMPTY_POLICIES: PolicyInterface[] = [];
+
 interface PolicyListProps extends IdentifiableComponentInterface {
     onDrop?: (containerId: string) => void;
     policies?: PolicyInterface[]; // Use PolicyInterface[]
@@ -66,7 +68,7 @@ interface PolicyListProps extends IdentifiableComponentInterface {
 
 export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
-    policies = [],
+    policies = EMPTY_POLICIES,
     deleteActivePolicy,
     deleteInactivePolicy,
     activatePolicy,
