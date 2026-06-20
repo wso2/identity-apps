@@ -403,7 +403,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         findMetaValuesAgainst,
         initialResourcesLoadUrl,
         filterBaseResourcesUrl,
-        hiddenResources = []
+        hiddenResources = EMPTY_STRING_ARRAY
     }: ResourceListSelectProps) => {
 
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
@@ -666,8 +666,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionValue,
         metaValue,
         setIsResourceMissing,
-        hiddenResources = [],
-        hiddenValues = []
+        hiddenResources = EMPTY_STRING_ARRAY,
+        hiddenValues = EMPTY_STRING_ARRAY
     }: ConditionValueInputProps) => {
 
         if (metaValue?.inputType === "input" || null) {
@@ -780,9 +780,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         index,
         isConditionLast,
         isConditionExpressionRemovable,
-        hiddenConditions = [],
-        hiddenResources = [],
-        hiddenValues = []
+        hiddenConditions = EMPTY_STRING_ARRAY,
+        hiddenResources = EMPTY_STRING_ARRAY,
+        hiddenValues = EMPTY_STRING_ARRAY
     }: RuleExpressionComponentProps) => {
 
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
