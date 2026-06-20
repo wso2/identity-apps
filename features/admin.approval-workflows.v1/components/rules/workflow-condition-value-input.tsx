@@ -33,6 +33,8 @@ import WorkflowConditionTextInput from "./workflow-condition-text-input";
 import WorkflowResourceListSelect from "./workflow-resource-list-select";
 import { APPROVAL_WORKFLOW_RULE_FIELDS } from "../../constants/approval-workflow-constants";
 
+const EMPTY_STRING_ARRAY: string[] = [];
+
 /**
  * Props interface of {@link WorkflowConditionValueInput}
  */
@@ -66,8 +68,8 @@ const WorkflowConditionValueInput: FunctionComponent<WorkflowConditionValueInput
     expressionValue: _expressionValue,
     metaValue,
     setIsResourceMissing,
-    hiddenResources: _hiddenResources = [],
-    hiddenValues: _hiddenValues = [],
+    hiddenResources: _hiddenResources = EMPTY_STRING_ARRAY,
+    hiddenValues: _hiddenValues = EMPTY_STRING_ARRAY,
     readonly: isReadonly,
     showValidationError = false
 }: WorkflowConditionValueInputPropsInterface) => {
