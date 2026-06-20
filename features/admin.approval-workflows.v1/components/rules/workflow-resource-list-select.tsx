@@ -40,6 +40,8 @@ import WorkflowResourceAutocomplete from "./workflow-resource-autocomplete";
 import useGetWorkflowResources from "../../hooks/use-get-workflow-resources";
 import { normalizeResourceResponse, processResourceItems } from "../../utils/resource-utils";
 
+const EMPTY_STRING_ARRAY: string[] = [];
+
 /**
  * Props interface of {@link WorkflowResourceListSelect}
  */
@@ -74,7 +76,7 @@ const WorkflowResourceListSelect: FunctionComponent<WorkflowResourceListSelectPr
     findMetaValuesAgainst,
     initialResourcesLoadUrl,
     filterBaseResourcesUrl,
-    hiddenResources: _hiddenResources = [],
+    hiddenResources: _hiddenResources = EMPTY_STRING_ARRAY,
     readonly: isReadonly,
     showValidationError = false
 }: WorkflowResourceListSelectPropsInterface) => {
