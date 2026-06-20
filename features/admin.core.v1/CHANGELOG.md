@@ -1,5 +1,37 @@
 # @wso2is/admin.core.v1
 
+## 2.57.21
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.applications.v1@2.43.6
+  - @wso2is/i18n@2.43.5
+
+## 2.57.20
+
+### Patch Changes
+
+- [#10359](https://github.com/wso2/identity-apps/pull/10359) [`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension management support.
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006)]:
+  - @wso2is/admin.connections.v1@2.38.1
+  - @wso2is/admin.applications.v1@2.43.5
+  - @wso2is/i18n@2.43.4
+
+## 2.57.19
+
+### Patch Changes
+
+- [#10412](https://github.com/wso2/identity-apps/pull/10412) [`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for the new `FreeV2`, `PYG` and `PYG-Trial` tenant tiers. All existing `Free` tier behaviors now also apply to `FreeV2`, while `PYG` and `PYG-Trial` are treated as paid tiers.
+
+* [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
+* Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14)]:
+  - @wso2is/admin.subscription.v1@1.5.227
+
 ## 2.57.18
 
 ### Patch Changes

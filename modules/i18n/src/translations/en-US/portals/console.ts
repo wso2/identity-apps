@@ -2605,6 +2605,7 @@ export const console: ConsoleNS = {
                     extensions: "Extensions"
                 },
                 customize: "Customize",
+                flowExtensionEdit: "Flow Extensions Edit",
                 identityProviderEdit: "Connections Edit",
                 identityProviderTemplates: "Connection Templates",
                 identityProviders: "Connections",

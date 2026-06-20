@@ -1,5 +1,11 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.9
+
+### Patch Changes
+
+- [#10415](https://github.com/wso2/identity-apps/pull/10415) [`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Show the time zone alongside the time in the log management UI (e.g. `15:19:16 GMT+05:30`) so timestamps are unambiguous.
+
 ## 1.6.8
 
 ### Patch Changes

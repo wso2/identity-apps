@@ -22,7 +22,20 @@ export interface TenantTierRequestResponse {
 
 export enum TenantTier {
     FREE = "Free",
+    FREE_V2 = "FreeV2",
     ESSENTIALS = "Essentials",
     PROFESSIONAL = "Professional",
-    ENTERPRISE = "Enterprise"
+    ENTERPRISE = "Enterprise",
+    PYG = "PYG",
+    PYG_TRIAL = "PYG-Trial"
 }
+
+/**
+ * Whether the given tier should receive Free-tier behavior.
+ * Both `Free` and `FreeV2` are treated as free tiers.
+ *
+ * @param tierName - The tenant's subscription tier.
+ * @returns `true` when the tier is a free tier.
+ */
+export const isFreeTier = (tierName: TenantTier): boolean =>
+    tierName === TenantTier.FREE || tierName === TenantTier.FREE_V2;

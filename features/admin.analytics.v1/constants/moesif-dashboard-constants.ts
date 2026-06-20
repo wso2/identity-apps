@@ -34,18 +34,22 @@ export class MoesifDashboardConstants {
     /**
      * Canvas template per subscription tier.
      *
-     * - Free            — minimal set aligned with the legacy Org Insights page
+     * - Free / FreeV2   — minimal set aligned with the legacy Org Insights page
      *                     (active users, login success vs failures, registrations, M2M tokens).
      * - Essentials      — the standard dashboard set (Overview, Login, Registration, Token).
      * - Professional /
-     *   Enterprise      — extended dashboard set (currently identical to Essentials;
+     *   Enterprise /
+     *   PYG / PYG-Trial — extended dashboard set (currently identical to Essentials;
      *                     kept as a separate file so it can diverge without code changes).
      */
     public static readonly TEMPLATES: Record<TenantTier, Record<string, unknown>> = {
         [ TenantTier.ENTERPRISE ]: premiumDashboardTemplate,
         [ TenantTier.ESSENTIALS ]: essentialsDashboardTemplate,
         [ TenantTier.FREE ]: freeDashboardTemplate,
-        [ TenantTier.PROFESSIONAL ]: premiumDashboardTemplate
+        [ TenantTier.FREE_V2 ]: freeDashboardTemplate,
+        [ TenantTier.PROFESSIONAL ]: premiumDashboardTemplate,
+        [ TenantTier.PYG ]: premiumDashboardTemplate,
+        [ TenantTier.PYG_TRIAL ]: premiumDashboardTemplate
     };
 
     /**

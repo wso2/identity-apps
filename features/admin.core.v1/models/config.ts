@@ -60,6 +60,7 @@ import {
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
+import { FlowExtensionResourceEndpointsInterface } from "../configs/endpoints";
 
 type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -151,6 +152,10 @@ export interface FeatureConfigInterface {
      * Flow orchestration feature.
      */
     flows?: FeatureAccessConfigInterface;
+    /**
+     * Flow Extension feature.
+     */
+    flowExtensions?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -491,6 +496,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configuration to enable Google One Tap for specific tenants.
      */
     googleOneTapEnabledTenants?: string[];
+    /**
+     * Fully-qualified class name of the default token issuer.
+     */
+    defaultTokenIssuerClass?: string;
     /**
      * API resource management UI configurations.
      */
@@ -903,6 +912,7 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface,
+    FlowExtensionResourceEndpointsInterface,
     ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;

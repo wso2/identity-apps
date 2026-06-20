@@ -1,5 +1,70 @@
 # @wso2is/console
 
+## 4.12.1
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+* [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+* Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.applications.v1@2.43.6
+  - @wso2is/admin.core.v1@2.57.21
+  - @wso2is/i18n@2.43.5
+
+## 4.12.0
+
+### Minor Changes
+
+- [#10359](https://github.com/wso2/identity-apps/pull/10359) [`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension management support.
+
+### Patch Changes
+
+- [#10429](https://github.com/wso2/identity-apps/pull/10429) [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update moesif dashboard styling
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006), [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09)]:
+  - @wso2is/admin.flow-extensions.v1@0.1.0
+  - @wso2is/admin.connections.v1@2.38.1
+  - @wso2is/admin.applications.v1@2.43.5
+  - @wso2is/admin.core.v1@2.57.20
+  - @wso2is/i18n@2.43.4
+  - @wso2is/admin.analytics.v1@0.0.10
+  - @wso2is/admin.onboarding.v1@1.0.89
+
+## 4.11.8
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
+## 4.11.7
+
+### Patch Changes
+
+- [#10415](https://github.com/wso2/identity-apps/pull/10415) [`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Show the time zone alongside the time in the log management UI (e.g. `15:19:16 GMT+05:30`) so timestamps are unambiguous.
+
+* [#10364](https://github.com/wso2/identity-apps/pull/10364) [`3c842342e4ea92a790e1d90474b267a1bd6b7acd`](https://github.com/wso2/identity-apps/commit/3c842342e4ea92a790e1d90474b267a1bd6b7acd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add configs to enable moesif settings in console
+
+* Updated dependencies [[`4c82c8b302c46d165cf9ec7eafa093b817e949c9`](https://github.com/wso2/identity-apps/commit/4c82c8b302c46d165cf9ec7eafa093b817e949c9)]:
+  - @wso2is/admin.logs.v1@1.6.9
+
+## 4.11.6
+
+### Patch Changes
+
+- [#10412](https://github.com/wso2/identity-apps/pull/10412) [`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for the new `FreeV2`, `PYG` and `PYG-Trial` tenant tiers. All existing `Free` tier behaviors now also apply to `FreeV2`, while `PYG` and `PYG-Trial` are treated as paid tiers.
+
+* [#10402](https://github.com/wso2/identity-apps/pull/10402) [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e) Thanks [@savindi7](https://github.com/savindi7)! - Remove unused pre-loader.css file.
+
+* Updated dependencies [[`68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14`](https://github.com/wso2/identity-apps/commit/68e54f5c2ddec7aaebcb3d02424ca7f5e8e57b14), [`400a055697a394b1e53b72c71cbf00196357718e`](https://github.com/wso2/identity-apps/commit/400a055697a394b1e53b72c71cbf00196357718e)]:
+  - @wso2is/admin.console-settings.v1@2.26.46
+  - @wso2is/admin.subscription.v1@1.5.227
+  - @wso2is/admin.analytics.v1@0.0.9
+  - @wso2is/admin.core.v1@2.57.19
+  - @wso2is/admin.home.v1@1.7.198
+  - @wso2is/admin.onboarding.v1@1.0.88
+
 ## 4.11.5
 
 ### Patch Changes

@@ -1154,6 +1154,34 @@
                     "update": []
                 }
             },
+            "flowExtensions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flowExtensions",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_flow_extension_create"
+                    ],
+                    "delete": [
+                        "internal_flow_extension_delete"
+                    ],
+                    "feature": [
+                        "console:flowExtensions"
+                    ],
+                    "read": [
+                        "internal_flow_extension_view",
+                        "internal_claim_meta_view"
+                    ],
+                    "update": [
+                        "internal_flow_extension_update"
+                    ]
+                }
+            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,

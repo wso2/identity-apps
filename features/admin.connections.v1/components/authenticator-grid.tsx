@@ -31,6 +31,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import deleteFlowExtension from "@wso2is/admin.flow-extensions.v1/api/delete-flow-extension";
 import {
     deleteIdentityVerificationProvider
 } from "@wso2is/admin.identity-verification-providers.v1/api/identity-verification-provider";
@@ -188,6 +189,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const hasIdVPDeletePermission: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.delete
     );
+    const hasFlowExtensionDeletePermission: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.delete
+    );
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -209,6 +213,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         switch (connectionType) {
             case ConnectionTypes.IDVP:
                 history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id));
+
+                break;
+
+            case ConnectionTypes.FLOW_EXTENSION:
+                history.push(AppConstants.getPaths().get("FLOW_EXTENSION_EDIT").replace(":id", id));
 
                 break;
 
@@ -247,8 +256,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const handleAuthenticatorDelete = async (idpId: string, connectionType: string,
         isCustomLocalAuthenticator?: boolean): Promise<void> => {
 
-        // If the connection is an Identity Verification Provider, then skip checking for connected apps.
-        if (connectionType === ConnectionTypes.IDVP) {
+        // Identity Verification Providers and Flow Extensions have no connected apps to check.
+        if (connectionType === ConnectionTypes.IDVP || connectionType === ConnectionTypes.FLOW_EXTENSION) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
             );
@@ -383,6 +392,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         if(connectionType === ConnectionTypes.IDVP) {
             deleteAuthenticator = deleteIdentityVerificationProvider;
+        } else if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
+            deleteAuthenticator = deleteFlowExtension;
         } else if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(deletingIDP)) {
             deleteAuthenticator = deleteCustomAuthenticator;
         } else {
@@ -493,6 +504,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return hasIdVPDeletePermission;
         }
 
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
+            return hasFlowExtensionDeletePermission;
+        }
+
         if (!hasConnectionDeletePermission) {
             return false;
         }
@@ -519,6 +534,12 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return connection?.image ? ConnectionsManagementUtils
                 .resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
                 : getConnectionIcons().default;
+        }
+
+        if (connection.type === ConnectionTypes.FLOW_EXTENSION) {
+            return connection?.image
+                ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
+                : AuthenticatorMeta.getFlowExtensionIcon();
         }
 
         if ((connection?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {

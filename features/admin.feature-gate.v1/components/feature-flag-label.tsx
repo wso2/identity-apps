@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import useFeatureFlag from "../hooks/use-feature-flag";
 import { FeatureStatusLabel } from "../models/feature-status";
+import "./feature-flag-label.scss";
 
 /**
  * Proptypes for the feature flag label component.

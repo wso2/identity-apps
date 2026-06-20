@@ -80,7 +80,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
-import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
+import { getCompatibilitySettingsResourceEndpoints, getFlowExtensionResourceEndpoints } from "./endpoints";
 import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
@@ -384,6 +384,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
+            ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
@@ -446,6 +447,7 @@ export class Config {
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
+            defaultTokenIssuerClass: window[ "AppUtils" ]?.getConfig()?.ui?.defaultTokenIssuerClass,
             disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
