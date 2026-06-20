@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AuthenticationProviderNS } from "../../../models";
 /**
  * NOTES: No need to care about the max-len for this file since it's easier to
@@ -332,6 +333,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Use alphanumeric characters for OTP",
                     validations: {
                         required: "Use alphanumeric characters for OTP is a required field."
+                    }
+                },
+                notifyEmailSendingFailure: {
+                    hint: "Notify users when OTP delivery fails, instead of proceeding silently.",
+                    label: "Notify users on OTP delivery failure",
+                    validations: {
+                        required: "Notify users on OTP delivery failure is a required field."
                     }
                 }
             },
@@ -889,6 +897,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Use only numeric characters for OTP",
                     validations: {
                         required: "Use only numeric characters for OTP token is a required field."
+                    }
+                },
+                notifySmsSendingFailure: {
+                    hint: "Notify users when OTP delivery fails, instead of proceeding silently.",
+                    label: "Notify users on OTP delivery failure",
+                    validations: {
+                        required: "Notify users on OTP delivery failure is a required field."
                     }
                 }
             },
