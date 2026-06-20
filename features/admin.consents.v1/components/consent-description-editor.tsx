@@ -529,7 +529,7 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
     policyUrl,
     "aria-labelledby": ariaLabelledBy
 }: LanguageTextFieldPropsInterface): ReactElement => {
-    const handleChange: (_value: string) => void = useCallback((html: string): void => {
+    const handleHtmlChange: (_value: string) => void = useCallback((html: string): void => {
         onChange({ target: { value: html } } as ChangeEvent<HTMLInputElement>);
     }, [ onChange ]);
 
@@ -553,7 +553,7 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
                 <ConsentFloatingLinkEditor />
                 <HtmlSyncPlugin
                     initialHtml={ value }
-                    onChange={ handleChange }
+                    onChange={ handleHtmlChange }
                     disabled={ disabled }
                 />
             </EditorWrapperBox>
