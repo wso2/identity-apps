@@ -27,6 +27,8 @@ import { Icon } from "semantic-ui-react";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import { ChannelStatus, WebhookChannelSubscriptionInterface } from "../models/webhooks";
 
+const EMPTY_CHANNEL_SUBSCRIPTIONS: WebhookChannelSubscriptionInterface[] = [];
+
 interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterface {
     /**
      * Specifies the channel configurations for the form.
@@ -45,7 +47,7 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
 const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterface> = ({
     channelConfigs,
     isReadOnly,
-    channelSubscriptions = [],
+    channelSubscriptions = EMPTY_CHANNEL_SUBSCRIPTIONS,
     ["data-componentid"]: _componentId = "webhook-channel-config-form"
 }: WebhookChannelConfigFormInterface): ReactElement => {
     const defaultChannels: WebhookChannelConfigInterface[] = channelConfigs;
