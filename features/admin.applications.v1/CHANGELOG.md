@@ -1,5 +1,26 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.6
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.core.v1@2.57.21
+  - @wso2is/i18n@2.43.5
+
+## 2.43.5
+
+### Patch Changes
+
+- [#10359](https://github.com/wso2/identity-apps/pull/10359) [`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension management support.
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006)]:
+  - @wso2is/admin.connections.v1@2.38.1
+  - @wso2is/admin.core.v1@2.57.20
+  - @wso2is/i18n@2.43.4
+
 ## 2.43.4
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 5.2.5
+
+### Patch Changes
+
+- [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+## 5.2.4
+
+### Patch Changes
+
+- [#10423](https://github.com/wso2/identity-apps/pull/10423) [`315e6ea4b1b8df1a5ec3b7f313638bc14d8afd46`](https://github.com/wso2/identity-apps/commit/315e6ea4b1b8df1a5ec3b7f313638bc14d8afd46) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add missing Dutch (nl_NL) translations for user existence and account status messages
+
 ## 5.2.3
 
 ### Patch Changes

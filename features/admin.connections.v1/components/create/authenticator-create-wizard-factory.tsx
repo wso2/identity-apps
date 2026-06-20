@@ -120,11 +120,16 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         true
     );
 
+    // The Flow Extension template has no protocol template to fetch — it is handled by a
+    // dedicated wizard in ConnectionCreateWizardFactory, so skip the template fetch for it.
+    const shouldFetchTemplate: boolean = type !== null
+        && type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION;
+
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
         error: connectionTemplateFetchRequestError
-    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, type !== null);
+    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, shouldFetchTemplate);
 
     useEffect(() => {
         if (connectionsFetchRequestError) {

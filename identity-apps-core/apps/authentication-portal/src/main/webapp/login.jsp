@@ -880,8 +880,7 @@
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         '<%=IWA_AUTHENTICATOR%>')"
-                                    id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
+                                    id="icon-<%=iconId%>">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>
                                 </button>
                             </div>
@@ -894,7 +893,6 @@
                                     <button class="ui secondary button" onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'x509CertificateAuthenticator')" id="icon-<%=iconId%>"
-                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> X509 Certificate"
                                     >
                                         <img
                                             class="ui image"
@@ -915,11 +913,12 @@
                             %>
                             <div class="social-login blurring social-dimmer">
                                 <div class="field">
-                                    <button class="ui button" onclick="handleNoDomain(this,
+                                    <button
+                                        class="ui button"
+                                        onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'FIDOAuthenticator')" id="icon-<%=iconId%>"
-                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>"
+                                        'FIDOAuthenticator')"
+                                        id="icon-<%=iconId%>"
                                         data-componentid="login-page-sign-in-with-fido"
                                     >
                                         <img
@@ -942,11 +941,12 @@
                             %>
                             <div class="social-login blurring social-dimmer">
                                 <div class="field">
-                                    <button class="ui secondary button" onclick="handleNoDomain(this,
-                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
-                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                    <button
+                                        class="ui secondary button"
+                                        onclick="handleNoDomain(this,
+                                            '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                            '<%=MAGIC_LINK_AUTHENTICATOR%>')"
+                                        id="icon-<%=iconId%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
                                         <img
                                             class="ui image"
@@ -957,7 +957,6 @@
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
                                         </span>
-
                                     </button>
                                 </div>
                             </div>

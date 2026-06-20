@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 4.12.1
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+* [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+* Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.applications.v1@2.43.6
+  - @wso2is/admin.core.v1@2.57.21
+  - @wso2is/i18n@2.43.5
+
+## 4.12.0
+
+### Minor Changes
+
+- [#10359](https://github.com/wso2/identity-apps/pull/10359) [`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension management support.
+
+### Patch Changes
+
+- [#10429](https://github.com/wso2/identity-apps/pull/10429) [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update moesif dashboard styling
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006), [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09)]:
+  - @wso2is/admin.flow-extensions.v1@0.1.0
+  - @wso2is/admin.connections.v1@2.38.1
+  - @wso2is/admin.applications.v1@2.43.5
+  - @wso2is/admin.core.v1@2.57.20
+  - @wso2is/i18n@2.43.4
+  - @wso2is/admin.analytics.v1@0.0.10
+  - @wso2is/admin.onboarding.v1@1.0.89
+
+## 4.11.8
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
 ## 4.11.7
 
 ### Patch Changes

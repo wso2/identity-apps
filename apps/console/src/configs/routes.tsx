@@ -707,6 +707,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            component: lazy(() =>
+                import("@wso2is/admin.flow-extensions.v1/pages/flow-extension-edit-page")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().childIcon
+            },
+            id: "flowExtensions",
+            name: "console:develop.features.sidePanel.flowExtensionEdit",
+            path: AppConstants.getPaths().get("FLOW_EXTENSION_EDIT"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             component: lazy(() => import(
                 "@wso2is/admin.identity-verification-providers.v1/pages/identity-verification-provider-edit-page")

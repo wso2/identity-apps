@@ -420,9 +420,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             sx={ (muiTheme: Theme) => ({
                 "&&.is-header.oxygen-header .oxygen-brand-logo": {
                     [muiTheme.breakpoints.up("sm")]: {
-                        height: "unset",
-                        maxWidth: "unset",
-                        width: "200px"
+                        height: "40px",
+                        maxWidth: "unset"
                     }
                 }
             }) }

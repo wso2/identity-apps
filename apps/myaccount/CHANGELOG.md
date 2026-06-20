@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 4.3.8
+
+### Patch Changes
+
+- [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/i18n@2.43.5
+
+## 4.3.7
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
 ## 4.3.6
 
 ### Patch Changes

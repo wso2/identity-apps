@@ -24,6 +24,14 @@ interface CompatibilitySettingsResourceEndpointsInterface {
 }
 
 /**
+ * Interface for the Flow Extension feature resource endpoints.
+ */
+export interface FlowExtensionResourceEndpointsInterface {
+    flowExtension: string;
+    flowExtensionContextTree: string;
+}
+
+/**
  * Get the resource endpoints for compatibility settings.
  *
  * @param serverOrigin - Server origin (tenant or org-qualified).
@@ -34,3 +42,19 @@ export const getCompatibilitySettingsResourceEndpoints = (
 ): CompatibilitySettingsResourceEndpointsInterface => ({
     compatibilitySettings: `${ serverOrigin }/api/server/v1/configs/compatibility-settings`
 });
+
+/**
+ * Get the resource endpoints for the flow extension feature.
+ *
+ * @param serverHost - Server Host.
+ *
+ * @returns Flow extension resource endpoints.
+ */
+export const getFlowExtensionResourceEndpoints = (
+    serverHost: string
+): FlowExtensionResourceEndpointsInterface => {
+    return {
+        flowExtension: `${ serverHost }/api/server/v1/flow/extension`,
+        flowExtensionContextTree: `${ serverHost }/api/server/v1/flow/extension/meta`
+    };
+};

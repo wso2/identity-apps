@@ -225,6 +225,12 @@ export class ApplicationManagementConstants {
     public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
+     * Fully-qualified class name for the built-in default token issuer.
+     */
+    public static readonly DEFAULT_OPAQUE_TOKEN_ISSUER_CLASS: string =
+        "org.wso2.carbon.identity.oauth2.token.OauthTokenIssuerImpl";
+
+    /**
      * List of available grant types.
      */
     public static readonly AVAILABLE_GRANT_TYPES: string[] = [
