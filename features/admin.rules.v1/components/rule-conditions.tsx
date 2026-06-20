@@ -57,7 +57,7 @@ import {
     RuleInterface
 } from "../models/rules";
 import "./rule-conditions.scss";
-
+const EMPTY_STRING_ARRAY: string[] = [];
 /**
  * Value input autocomplete options interface.
  */
@@ -210,7 +210,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         conditionId,
         expressionId,
         shouldFetch,
-        hiddenResources = []
+        hiddenResources = EMPTY_STRING_ARRAY
     }: ValueInputAutocompleteProps) => {
 
         const [ inputValue, setInputValue ] = useState<string>(null);
