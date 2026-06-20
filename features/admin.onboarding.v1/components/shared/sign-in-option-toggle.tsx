@@ -136,7 +136,7 @@ const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = 
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTION_TOGGLE
     } = props;
 
-    const handleChange: (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void =
+    const handleSignInOption: (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void =
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
             onToggle(checked);
         };
@@ -148,7 +148,7 @@ const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = 
                     size="small"
                     checked={ isEnabled }
                     disabled={ disabled }
-                    onChange={ handleChange }
+                    onChange={ handleSignInOption }
                     data-componentid={ `${componentId}-${option.id}-switch` }
                 />)
             }
