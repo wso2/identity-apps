@@ -256,7 +256,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
      *
      * @param event-change event.
      */
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const changeValue: string = event.target.value.trim();
 
         setSearchQuery(changeValue);
@@ -290,7 +290,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 <Input
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
-                    onChange={ handleChange }
+                    onChange={ handleSearchInputChange }
                     placeholder = { t("idp:connectedApps.placeholders.search") }
                     floated="left"
                     size="small"
