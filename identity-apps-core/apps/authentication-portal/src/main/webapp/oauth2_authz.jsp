@@ -46,6 +46,7 @@
 <%
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
+    String requestedActorName = request.getParameter("requestedActorName");
 
     String scopeMetaData = request.getParameter("scopeMetadata");
     List<String> scopesWithMetadata = new ArrayList<>();
@@ -133,12 +134,27 @@
                       <div class="field light-font">
                         <div>
                             <h4 class="app-name-container">
-                                <strong id="app-name"
-                                        class="text-capitalize text-typography primary login-portal-app-font"
-                                        data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
-                                    <%=Encode.forHtml(request.getParameter("application"))%>
-                                </strong>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
+                                <% if (StringUtils.isNotBlank(requestedActorName)) { %>
+                                    <strong id="agent-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content=<%=Encode.forHtml(requestedActorName)%>>
+                                        <%=Encode.forHtml(requestedActorName)%>
+                                    </strong>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.via")%>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.suffix")%>
+                                <% } else { %>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.profile")%>
+                                <% } %>
                             </h4>
                         </div>
                     </div>
@@ -162,7 +178,7 @@
                                 if (CollectionUtils.isNotEmpty(openIdScopes) || CollectionUtils.isNotEmpty(scopesWithMetadata) ) {
                         %>
                         <div style="text-align: left;">
-                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
+                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.provide.access.to")%>:</h5>
                             <div class="claim-list ui list">
                                 <%
                                     try {
@@ -299,9 +315,7 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="field mt-4 text-center login-portal-app-des-font">
-                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.giving.consent.you.agree.to.share.data")%> <span class="break-all-words">
-                                <%=Encode.forHtml(request.getParameter("application"))%></span>.
-                            </p>
+                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "click.allow.to.authorize.request")%></p>
                         </div>
 
                         <div class="ui divider hidden"></div>
