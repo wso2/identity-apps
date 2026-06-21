@@ -60,7 +60,7 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
 
     const { t } = useTranslation();
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const handleFilteredSelectionChange = (event: SelectChangeEvent<string[]>) => {
         const value: string[] | string = event.target.value;
 
         onChange(typeof value === "string" ? value.split(",") : value);
@@ -96,7 +96,7 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
                     className="account-status-select-input"
                     multiple
                     value={ selectedFilters }
-                    onChange={ handleChange }
+                    onChange={ handleFilteredSelectionChange }
                     renderValue={ renderLabelWithCount }
                     data-componentid={ `${componentId}-select-input` }
                     displayEmpty
