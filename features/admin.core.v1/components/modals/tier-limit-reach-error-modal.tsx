@@ -27,12 +27,12 @@ import { getEmptyPlaceholderIllustrations } from "../../configs/ui";
  * Prop types for the limit reach error modal component.
  */
 interface TierLimitReachErrorModalPropsInterface extends ModalProps, TestableComponentInterface {
-    actionLabel: string;
+    actionLabel?: string;
     description: string;
     handleModalClose: () => void;
-    header: string;
+    header?: string;
     message: string;
-    openModal: boolean;
+    open: boolean;
 }
 
 /**
@@ -45,13 +45,13 @@ interface TierLimitReachErrorModalPropsInterface extends ModalProps, TestableCom
 export const TierLimitReachErrorModal: FunctionComponent<TierLimitReachErrorModalPropsInterface> = (
     props: TierLimitReachErrorModalPropsInterface
 ): ReactElement => {
-    const { description, message, openModal, handleModalClose } = props;
+    const { description, message, open, handleModalClose } = props;
 
     const { t } = useTranslation();
 
     return (
         <Modal
-            open={ openModal }
+            open={ open }
             dimmer="blurring"
             onClose={ handleModalClose }
             closeOnDimmerClick={ false }
@@ -87,5 +87,5 @@ export const TierLimitReachErrorModal: FunctionComponent<TierLimitReachErrorModa
  * Default props for the component.
  */
 TierLimitReachErrorModal.defaultProps = {
-    openModal: false
+    open: false
 };

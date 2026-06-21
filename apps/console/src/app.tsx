@@ -37,9 +37,12 @@ import {
 import {
     DocumentationLinksInterface
 }  from "@wso2is/admin.core.v1/models/documentation";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import {
-    ConfigReducerStateInterface
+    ConfigReducerStateInterface,
+    TierLimitModalReducerStateInterface
 } from "@wso2is/admin.core.v1/models/reducer-state";
+import { hideTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -191,6 +194,8 @@ const App = ({
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const tierLimitReachErrorModalState: TierLimitModalReducerStateInterface =
+        useSelector((state: AppState) => state?.tierLimitModal);
 
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
     const [ featureGateConfigData, setFeatureGateConfigData ] =
@@ -202,6 +207,10 @@ const App = ({
     } = useGetAllFeatures();
 
     const { shouldShowOnboarding, isLoading: isOnboardingStatusLoading } = useOnboardingStatus();
+
+    const handleTierLimitReachedModalClose = (): void => {
+        dispatch(hideTierLimitReachedModal());
+    };
 
     /**
      * Redirect to onboarding page if user should see onboarding.
@@ -620,6 +629,10 @@ const App = ({
                                                             Reload the App
                                                         </Trans>)
                                                     }
+                                                />
+                                                <TierLimitReachErrorModal
+                                                    { ...tierLimitReachErrorModalState }
+                                                    handleModalClose={ handleTierLimitReachedModalClose }
                                                 />
                                                 <UserStoresProvider>
                                                     <Base

@@ -26,7 +26,7 @@ import {
     MainApplicationInterface,
     URLFragmentTypes
 } from "@wso2is/admin.applications.v1/models/application";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -91,7 +91,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const [ showApplicationShareModal, setShowApplicationShareModal ] = useState<boolean>(false);
     const [ lastCreatedApplicationId, setLastCreatedApplicationId ] = useState<string>(null);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
@@ -233,7 +232,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 if (error?.response?.status === 403
                     && error?.response?.data?.code === ApplicationManagementConstants
                         .ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t(
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.action"
+                        ),
+                        description: t(
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"
+                        ),
+                        header: t("applications:notifications.tierLimitReachedError.heading"),
+                        message: t(
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.title"
+                        )
+                    }));
+                    onClose();
 
                     return;
                 }
@@ -252,35 +263,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 );
             });
     };
-
-    if (openLimitReachedModal) {
-        return (
-            <TierLimitReachErrorModal
-                actionLabel={ t(
-                    "applications:notifications." +
-                    "tierLimitReachedError.emptyPlaceholder.action"
-                ) }
-                handleModalClose={
-                    () => {
-                        setOpenLimitReachedModal(false);
-                        onClose();
-                    }
-                }
-                header={ t(
-                    "applications:notifications.tierLimitReachedError.heading"
-                ) }
-                description={ t(
-                    "applications:notifications." +
-                    "tierLimitReachedError.emptyPlaceholder.subtitles"
-                ) }
-                message={ t(
-                    "applications:notifications." +
-                    "tierLimitReachedError.emptyPlaceholder.title"
-                ) }
-                openModal={ openLimitReachedModal }
-            />
-        );
-    }
 
     if (showApplicationShareModal) {
         return (

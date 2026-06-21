@@ -22,7 +22,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -121,7 +121,6 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
     const [ finishShouldBeDisabled, setFinishShouldBeDisabled ] = useState<boolean>(true);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
     const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
@@ -298,7 +297,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
                 if (error?.response?.status === 403 &&
                     error?.response?.data?.code ===identityAppsError.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t("idp:notifications.tierLimitReachedError.emptyPlaceholder.action"),
+                        description: t("idp:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"),
+                        header: t("idp:notifications.tierLimitReachedError.heading"),
+                        message: t("idp:notifications.tierLimitReachedError.emptyPlaceholder.title")
+                    }));
+                    onWizardClose();
 
                     return;
                 }
@@ -585,33 +590,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         </DocumentationLink>
     );
 
-    /**
-     * Close the limit reached modal.
-     */
-    const handleLimitReachedModalClose = (): void => {
-        setOpenLimitReachedModal(false);
-        onWizardClose();
-    };
-
     return (
         <>
-            { openLimitReachedModal &&
-                (
-                    <TierLimitReachErrorModal
-                        actionLabel={ t("idp:notifications.tierLimitReachedError." +
-                            "emptyPlaceholder.action") }
-                        handleModalClose={ handleLimitReachedModalClose }
-                        header={ t("idp:notifications.tierLimitReachedError.heading") }
-                        description={ t("idp:notifications.tierLimitReachedError." +
-                            "emptyPlaceholder.subtitles") }
-                        message={ t("idp:notifications.tierLimitReachedError." +
-                            "emptyPlaceholder.title") }
-                        openModal={ openLimitReachedModal }
-                    />
-                )
-            }
             <Modal
-                open={ !openLimitReachedModal }
+                open={ true }
                 className="wizard trusted-token-issuer-modal identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ onWizardClose }

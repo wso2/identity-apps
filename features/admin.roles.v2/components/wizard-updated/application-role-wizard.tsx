@@ -24,7 +24,7 @@ import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resou
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -102,7 +102,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -304,7 +303,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     && error?.response?.data?.code
                         === RoleConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     limitReached = true;
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.action"),
+                        description: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"),
+                        header: t("roles:notifications.tierLimitReachedError.heading"),
+                        message: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.title")
+                    }));
+                    closeWizard();
 
                     return;
                 }
@@ -377,22 +382,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         return errors;
     };
-
-    if (openLimitReachedModal) {
-        return (
-            <TierLimitReachErrorModal
-                actionLabel={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.action") }
-                handleModalClose={ () => {
-                    setOpenLimitReachedModal(false);
-                    closeWizard();
-                } }
-                header={ t("roles:notifications.tierLimitReachedError.heading") }
-                description={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
-                message={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.title") }
-                openModal={ openLimitReachedModal }
-            />
-        );
-    }
 
     return (
         <Modal
