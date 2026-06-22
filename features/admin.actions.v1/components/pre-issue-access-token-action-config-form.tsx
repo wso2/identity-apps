@@ -31,7 +31,7 @@ import { IdentifiableComponentInterface,
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
@@ -83,6 +83,38 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
     versionInfo: ActionVersionInfo;
 }
 
+interface FormStateInterface {
+    isAuthenticationUpdateFormState: boolean;
+    authenticationType: AuthenticationType;
+    isSubmitting: boolean;
+    isHasRule: boolean;
+    rule: RuleWithoutIdInterface;
+}
+
+type FormActionInterface =
+    | { type: "SET_AUTH_UPDATE_FORM_STATE"; payload: boolean }
+    | { type: "SET_AUTHENTICATION_TYPE"; payload: AuthenticationType }
+    | { type: "SET_IS_SUBMITTING"; payload: boolean }
+    | { type: "SET_IS_HAS_RULE"; payload: boolean }
+    | { type: "SET_RULE"; payload: RuleWithoutIdInterface };
+
+const formReducer = (state: FormStateInterface, action: FormActionInterface): FormStateInterface => {
+    switch (action.type) {
+        case "SET_AUTH_UPDATE_FORM_STATE":
+            return { ...state, isAuthenticationUpdateFormState: action.payload };
+        case "SET_AUTHENTICATION_TYPE":
+            return { ...state, authenticationType: action.payload };
+        case "SET_IS_SUBMITTING":
+            return { ...state, isSubmitting: action.payload };
+        case "SET_IS_HAS_RULE":
+            return { ...state, isHasRule: action.payload };
+        case "SET_RULE":
+            return { ...state, rule: action.payload };
+        default:
+            return state;
+    }
+};
+
 const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessTokenActionConfigFormInterface> = ({
     initialValues,
     isLoading,
@@ -94,12 +126,17 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
-    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
-    const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
-
+    const [ formState, dispatch ] = useReducer<React.Reducer<FormStateInterface, FormActionInterface>>(
+        formReducer,
+        {
+            isAuthenticationUpdateFormState: false,
+            authenticationType: null,
+            isSubmitting: false,
+            isHasRule: false,
+            rule: null
+        }
+    );
+    
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
