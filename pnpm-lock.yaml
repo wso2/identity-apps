@@ -356,7 +356,7 @@ importers:
         specifier: ^2.31.2
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.38.1
+        specifier: ^2.38.2
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.21
+        specifier: ^2.57.22
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -497,7 +497,7 @@ importers:
         specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.43.6
+        specifier: ^2.43.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -654,7 +654,7 @@ importers:
         specifier: ^2.10.3
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.5
+        specifier: ^2.43.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.1
@@ -3256,7 +3256,7 @@ importers:
         specifier: ^2.26.45
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.20
+        specifier: ^2.57.22
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
@@ -3295,7 +3295,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.4
+        specifier: ^2.43.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -3826,7 +3826,7 @@ importers:
         specifier: ^2.31.2
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.38.1
+        specifier: ^2.38.2
         version: link:../admin.connections.v1
       '@wso2is/admin.email-templates.v1':
         specifier: ^2.25.207
@@ -3934,7 +3934,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.5
+        specifier: ^2.43.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.43.7
+
+### Patch Changes
+
+- [#10444](https://github.com/wso2/identity-apps/pull/10444) [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b) Thanks [@savindi7](https://github.com/savindi7)! - Add tenant ID field in Microsoft Connection.
+
 ## 2.43.6
 
 ### Patch Changes
