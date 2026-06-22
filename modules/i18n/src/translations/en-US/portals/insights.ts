@@ -100,16 +100,6 @@ export const insights: insightsNS = {
                 description: "Advanced analytics has been enabled for your organization.",
                 message: "Advanced Analytics Enabled"
             }
-        },
-        preview: {
-            authenticationCaption: "Drill into a single login type to see success and failure rates over " +
-                "time, and how often MFA is used.",
-            heading: "What you get",
-            lead: "Advanced analytics brings dashboards for logins, registrations and token issuance, " +
-                "updated as activity happens.",
-            overviewCaption: "Track active users, token activity and login trends from a single overview.",
-            summaryCaption: "Switch between authentication, registration and token issuance to see the " +
-                "numbers that matter for each."
         }
     },
     advancedFilter: {

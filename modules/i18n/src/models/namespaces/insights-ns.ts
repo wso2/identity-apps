@@ -45,13 +45,6 @@ export interface insightsNS {
                 message: string;
             };
         };
-        preview: {
-            authenticationCaption: string;
-            heading: string;
-            lead: string;
-            overviewCaption: string;
-            summaryCaption: string;
-        };
     };
     durationMessage: string;
     durationOption: string;
