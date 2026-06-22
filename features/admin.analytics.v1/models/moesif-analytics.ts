@@ -25,8 +25,8 @@ export interface MoesifPublisherInterface {
      */
     name?: string;
     /**
-     * When true, all event publishers are enabled (set by the server after the
-     * enableAdvancedAnalytics API call succeeds).
+     * When true, all event publishers are enabled. In this case `eventPublisherEnablement`
+     * may be empty and should not be relied on to determine enablement.
      */
     enableAllPublishers?: boolean;
     /**

@@ -22,27 +22,56 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import {
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import OrgInsightsPage from "@wso2is/admin.org-insights.v1/pages/org-insights";
-import { PageLayout } from "@wso2is/react-components";
+import { ContentLoader, PageLayout } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
-    useEffect
+    useEffect,
+    useMemo
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useGetMoesifPublisher } from "../api/use-get-moesif-publisher";
 import MoesifCanvasIframe from "../components/moesif-canvas-iframe";
+import { MoesifPublisherInterface } from "../models/moesif-analytics";
 
 interface InsightsFlagsInterface {
     advancedAnalyticsUpgradeEnabled: boolean;
-    dashboardEnabled: boolean;
     embeddingDomain: string;
     insightsEnabled: boolean;
     moesifTermsOfServiceUrl: string;
     settingsEnabled: boolean;
     termsOfServiceUrl: string;
 }
+
+/**
+ * Determines whether advanced analytics (the embedded Moesif dashboards) is enabled, based on the
+ * publisher configuration returned by the get-publishers API.
+ *
+ * - `enableAllPublishers === true`: every publisher is on (the enablement map may be empty) → enabled.
+ * - Otherwise: enabled only when at least one publisher in the enablement map is on.
+ * - No publisher data (e.g. a 404 when no publisher is configured, or any fetch error): disabled.
+ *
+ * @param publisher - Publisher configuration from the get-publishers API, if available.
+ * @returns Whether advanced analytics is enabled for the organization.
+ */
+const isAdvancedAnalyticsEnabled = (publisher?: MoesifPublisherInterface): boolean => {
+    if (!publisher) {
+        return false;
+    }
+
+    if (publisher.enableAllPublishers) {
+        return true;
+    }
+
+    return Object.values(publisher.eventPublisherEnablement ?? {}).some((enabled: boolean) => enabled);
+};
 
 const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppState) => {
     const extensions: Record<string, unknown> =
@@ -56,7 +85,6 @@ const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppSt
 
     return {
         advancedAnalyticsUpgradeEnabled: !!(moesif?.advancedAnalyticsUpgradeEnabled),
-        dashboardEnabled: !!(moesif?.dashboardEnabled),
         embeddingDomain: (moesif?.embeddedPortalUrl as string) ?? "",
         insightsEnabled: !!(state?.config?.ui?.features?.insights?.enabled),
         moesifTermsOfServiceUrl: (moesif?.moesifTermsOfServiceUrl as string) ?? "",
@@ -116,15 +144,15 @@ const CloudInsightsPage: FunctionComponent<CloudInsightsPagePropsInterface> = (
 /**
  * Unified Insights page.
  *
- * - Moesif dashboard enabled (with embedding domain): renders the embedded Moesif Canvas
+ * Advanced analytics enablement is determined by the get-publishers API:
+ * - Advanced analytics enabled (with embedding domain): renders the embedded Moesif Canvas
  *   dashboards. A gear icon on the page header navigates to /insights/settings.
- * - No dashboard + legacy insights disabled: redirects to /insights/settings.
- * - No dashboard + legacy insights enabled: renders OrgInsightsPage with upgrade prompt.
+ * - Not enabled + legacy insights disabled: redirects to /insights/settings.
+ * - Not enabled + legacy insights enabled: renders OrgInsightsPage with upgrade prompt.
  */
 const InsightsPage: FunctionComponent = (): ReactElement => {
     const {
         advancedAnalyticsUpgradeEnabled,
-        dashboardEnabled,
         embeddingDomain,
         insightsEnabled,
         moesifTermsOfServiceUrl,
@@ -132,14 +160,30 @@ const InsightsPage: FunctionComponent = (): ReactElement => {
         termsOfServiceUrl
     }: InsightsFlagsInterface = useInsightsFlags();
 
-    const isMoesifDashboardAvailable: boolean = dashboardEnabled && !!embeddingDomain;
-    const shouldRedirectToSettings: boolean = !isMoesifDashboardAvailable && !insightsEnabled;
+    // The dashboards can only be embedded when an embedding domain is configured, so defer the
+    // publisher lookup until then. A 404 (no publisher configured) is handled gracefully as disabled.
+    const {
+        data: moesifPublisher,
+        isLoading: isPublisherLoading
+    }: RequestResultInterface<MoesifPublisherInterface, RequestErrorInterface> =
+        useGetMoesifPublisher(!!embeddingDomain);
+
+    const isMoesifDashboardAvailable: boolean = useMemo(
+        () => !!embeddingDomain && isAdvancedAnalyticsEnabled(moesifPublisher),
+        [ embeddingDomain, moesifPublisher ]
+    );
+    const shouldRedirectToSettings: boolean =
+        !isPublisherLoading && !isMoesifDashboardAvailable && !insightsEnabled;
 
     useEffect(() => {
         if (shouldRedirectToSettings) {
             history.replace(AppConstants.getPaths().get("INSIGHTS_SETTINGS"));
         }
     }, [ shouldRedirectToSettings ]);
+
+    if (isPublisherLoading) {
+        return <ContentLoader />;
+    }
 
     if (isMoesifDashboardAvailable) {
         return (
