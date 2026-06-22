@@ -321,17 +321,18 @@
                         <div class="ui divider hidden"></div>
 
                     </div>
-                    <div class="align-right buttons">
-                        <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
-                            value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
-                        <input type="hidden" name="consent" id="consent" value="deny"/>
-
-                        <input class="ui large button secondary" type="reset"
-                               onclick="deny(); return false;"
-                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
-                        <input type="button" class="ui primary large button" id="approve" name="approve"
+                    <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
+                        value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
+                    <div class="mt-0">
+                        <input type="button" class="ui primary fluid large button" id="approve" name="approve"
                                onclick="approved(); return false;"
                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"allow")%> "/>
+                    </div>
+                    <div class="mt-3 align-center">
+                        <input type="hidden" name="consent" id="consent" value="deny"/>
+                        <input class="ui fluid large button secondary" type="reset"
+                               onclick="deny(); return false;"
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
                     </div>
                 </form>
             </div>
