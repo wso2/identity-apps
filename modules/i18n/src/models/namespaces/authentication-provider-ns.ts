@@ -668,6 +668,10 @@ export interface AuthenticationProviderNS {
                     info: string;
                     label: string;
                     placeholder: string;
+                    validations: {
+                        invalid: string;
+                        required: string;
+                    };
                 };
             };
             hypr: {
