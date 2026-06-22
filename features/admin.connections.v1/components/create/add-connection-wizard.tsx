@@ -78,6 +78,7 @@ import {
     OutboundProvisioningConnectorInterface
 } from "../../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../../utils/connection-utils";
+import { applyMicrosoftTenantToEndpoint, isMicrosoftTenantValid } from "../../utils/microsoft-authenticator-utils";
 
 /**
  * Proptypes for the connection creation wizard component.
@@ -123,6 +124,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const [ microsoftTenantId, setMicrosoftTenantId ] = useState<string>(
         FederatedAuthenticatorConstants.MICROSOFT_DEFAULT_TENANT
     );
+    const [ microsoftTenantError, setMicrosoftTenantError ] = useState<string>("");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -199,19 +201,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         const trimmedTenant: string = tenant.trim();
         const properties: CommonPluggableComponentPropertyInterface[] = [ ...(authenticator?.properties ?? []) ];
 
-        // Swap only the tenant segment in the existing endpoint, preserving the rest of the URL the
-        // backend set. Fall back to the v2.0 template only if the endpoint value isn't present yet.
-        const resolveTenantEndpoint = (existingValue: string, fallbackTemplate: string): string => {
-            if (isEmpty(existingValue)) {
-                return fallbackTemplate.replace("{tenant}", trimmedTenant);
-            }
-
-            return existingValue.replace(
-                FederatedAuthenticatorConstants.MICROSOFT_TENANT_SEGMENT_REGEX,
-                `$1${ trimmedTenant }`
-            );
-        };
-
         const endpointFallbacks: Record<string, string> = {
             [ FederatedAuthenticatorConstants.AUTHORIZATION_ENDPOINT_URL_KEY ]:
                 FederatedAuthenticatorConstants.MICROSOFT_AUTHORIZE_ENDPOINT,
@@ -224,9 +213,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 properties.find((property: CommonPluggableComponentPropertyInterface) => property.key === key);
 
             if (existingProperty) {
-                existingProperty.value = resolveTenantEndpoint(existingProperty.value, fallbackTemplate);
+                existingProperty.value =
+                    applyMicrosoftTenantToEndpoint(existingProperty.value, fallbackTemplate, trimmedTenant);
             } else {
-                properties.push({ key, value: fallbackTemplate.replace("{tenant}", trimmedTenant) });
+                properties.push({ key, value: applyMicrosoftTenantToEndpoint("", fallbackTemplate, trimmedTenant) });
             }
         });
 
@@ -430,6 +420,26 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     };
 
     const onSubmitWizard = (values: any): void => {
+
+        // For Microsoft, the Directory (tenant) field is required and must be a valid tenant value.
+        // It lives outside the legacy dynamic form, so validate it manually before submitting.
+        if (isMicrosoftTemplate) {
+            if (isEmpty(microsoftTenantId.trim())) {
+                setMicrosoftTenantError(
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.required")
+                );
+
+                return;
+            }
+
+            if (!isMicrosoftTenantValid(microsoftTenantId)) {
+                setMicrosoftTenantError(
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.invalid")
+                );
+
+                return;
+            }
+        }
 
         // Update the template properties with the values from the wizard.
         const updatedProperties: { key: string; value: string }[] = connectionMetaDetails?.create?.properties?.map(
@@ -751,16 +761,32 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                 >
                                     <TextField
                                         fullWidth
+                                        required
                                         variant="outlined"
                                         name="microsoft-tenant"
                                         label={ t("authenticationProvider:forms.authenticatorSettings." +
                                             "microsoft.tenant.label") }
                                         placeholder={ t("authenticationProvider:forms.authenticatorSettings." +
                                             "microsoft.tenant.placeholder") }
+                                        InputLabelProps={ { required: true } }
+                                        error={ !isEmpty(microsoftTenantError) }
+                                        helperText={ microsoftTenantError || undefined }
                                         value={ microsoftTenantId }
-                                        onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                            setMicrosoftTenantId(event.target.value)
-                                        }
+                                        onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                            setMicrosoftTenantId(event.target.value);
+                                            if (!isEmpty(microsoftTenantError)) {
+                                                setMicrosoftTenantError("");
+                                            }
+                                        } }
+                                        onBlur={ () => {
+                                            if (isEmpty(microsoftTenantId.trim())) {
+                                                setMicrosoftTenantError(t("authenticationProvider:forms." +
+                                                    "authenticatorSettings.microsoft.tenant.validations.required"));
+                                            } else if (!isMicrosoftTenantValid(microsoftTenantId)) {
+                                                setMicrosoftTenantError(t("authenticationProvider:forms." +
+                                                    "authenticatorSettings.microsoft.tenant.validations.invalid"));
+                                            }
+                                        } }
                                         data-componentid={ `${ componentId }-microsoft-tenant-input` }
                                     />
                                     <Hint>

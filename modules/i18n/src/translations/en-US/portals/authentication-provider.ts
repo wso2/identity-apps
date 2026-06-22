@@ -668,7 +668,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         "only\" (single-tenant), enter your tenant ID here. Leaving <1>common</1> will cause " +
                         "every sign-in through this connection to fail.",
                     label: "Directory (tenant) ID",
-                    placeholder: "common"
+                    placeholder: "common",
+                    validations: {
+                        invalid: "Enter a valid Directory (tenant) ID (GUID), a domain such as " +
+                            "contoso.onmicrosoft.com, or one of \"common\", \"organizations\", or \"consumers\".",
+                        required: "Directory (tenant) ID is required. Use \"common\" to allow any " +
+                            "Microsoft organization."
+                    }
                 }
             },
             saml: {
