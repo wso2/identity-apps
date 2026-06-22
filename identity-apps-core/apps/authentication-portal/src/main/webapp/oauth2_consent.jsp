@@ -329,7 +329,7 @@
                                                 <% } %>
                                                 <div class="border-gray margin-bottom-double">
                                                     <div>
-                                                        <div class="mt-3 mb-3 claim-list">
+                                                        <div class="mb-3 claim-list">
                                                             <% for (String claim : mandatoryClaimList) {
                                                                 String[] mandatoryClaimData = claim.split("_", 2);
                                                                 if (mandatoryClaimData.length == 2) {
