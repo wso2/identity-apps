@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.1
+
+### Patch Changes
+
+- [#10447](https://github.com/wso2/identity-apps/pull/10447) [`7a47be8939aa0984e35f100b84bb7230e41fd7dd`](https://github.com/wso2/identity-apps/commit/7a47be8939aa0984e35f100b84bb7230e41fd7dd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix localization issue with product footer
+
 ## 5.3.0
 
 ### Minor Changes
