@@ -24,48 +24,35 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Dialog from "@oxygen-ui/react/Dialog";
+import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Paper from "@oxygen-ui/react/Paper";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { StarIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import analyticsPreview from "../assets/preview/analytics_preview.png";
 
-const StyledWrapper: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
+/**
+ * Plain white announcement banner: title and description on the left, enable action on the right.
+ */
+const StyledBanner: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
-    borderLeft: `4px solid ${ theme.palette.primary.main }`,
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${ theme.palette.divider }`,
     display: "flex",
     flexDirection: "row",
-    gap: theme.spacing(2),
+    gap: theme.spacing(3),
     justifyContent: "space-between",
     marginBottom: theme.spacing(3),
-    padding: theme.spacing(2.5, 3)
+    padding: theme.spacing(3),
+    width: "100%"
 }));
 
-const StyledIconBox: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    backgroundColor: theme.palette.primary.main + "14",
-    borderRadius: "50%",
-    color: theme.palette.primary.main,
-    display: "flex",
-    flexShrink: 0,
-    height: theme.spacing(6),
-    justifyContent: "center",
-    width: theme.spacing(6)
-}));
-
-const StyledBadge: typeof Chip = styled(Chip)(({ theme }: { theme: Theme }) => ({
-    fontSize: theme.typography.caption.fontSize,
-    height: theme.spacing(2.25)
-}));
-
-const StyledDialogActions: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    display: "flex",
-    gap: theme.spacing(1),
-    justifyContent: "flex-end",
+const StyledDialogActions: typeof DialogActions = styled(DialogActions)(({ theme }: { theme: Theme }) => ({
     padding: theme.spacing(2, 3)
 }));
 
@@ -77,7 +64,8 @@ interface AdvancedAnalyticsUpgradeCardPropsInterface extends IdentifiableCompone
 }
 
 /**
- * Upgrade prompt card that opens a confirmation dialog before enabling advanced analytics.
+ * Feature-announcement-style banner card. Clicking the enable button opens a compact
+ * confirmation dialog with the ToS bullets and an agreement checkbox.
  */
 const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCardPropsInterface> = (
     {
@@ -89,7 +77,6 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
     }: AdvancedAnalyticsUpgradeCardPropsInterface
 ): ReactElement => {
     const { t } = useTranslation();
-
     const [ dialogOpen, setDialogOpen ] = useState<boolean>(false);
     const [ agreed, setAgreed ] = useState<boolean>(false);
 
@@ -109,31 +96,24 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
 
     return (
         <>
-            <StyledWrapper
-                data-componentid={ componentId }
-                variant="outlined"
-                elevation={ 0 }
-            >
-                <StyledIconBox>
-                    <StarIcon />
-                </StyledIconBox>
-
-                <Box sx={ { flex: 1, minWidth: 0 } }>
-                    <Box sx={ { alignItems: "center", display: "flex", gap: 1, mb: 0.5 } }>
-                        <Typography variant="subtitle1" fontWeight={ 600 }>
+            { /* ── Banner ── */ }
+            <StyledBanner data-componentid={ componentId } elevation={ 0 }>
+                <Box>
+                    <Stack direction="row" alignItems="center" sx={ { mb: 1 } }>
+                        <Typography variant="h6">
                             { t("insights:advancedAnalytics.card.title") }
                         </Typography>
-                        <StyledBadge
-                            label={ t("insights:advancedAnalytics.card.badge") }
+                        <Chip
                             size="small"
-                            color="primary"
+                            label={ t("common:new") }
+                            className="oxygen-chip-new"
+                            sx={ { ml: 1 } }
                         />
-                    </Box>
+                    </Stack>
                     <Typography variant="body2" color="text.secondary">
                         { t("insights:advancedAnalytics.card.description") }
                     </Typography>
                 </Box>
-
                 <Button
                     data-componentid={ `${ componentId }-open-dialog-btn` }
                     variant="contained"
@@ -145,18 +125,19 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                 >
                     { t("insights:advancedAnalytics.card.enableButton") }
                 </Button>
-            </StyledWrapper>
+            </StyledBanner>
 
+            { /* ── Confirmation dialog ── */ }
             <Dialog
                 data-componentid={ `${ componentId }-dialog` }
                 open={ dialogOpen }
                 onClose={ handleCloseDialog }
-                maxWidth="sm"
+                maxWidth="md"
                 fullWidth
             >
                 <DialogTitle>{ t("insights:advancedAnalytics.dialog.title") }</DialogTitle>
 
-                <DialogContent>
+                <DialogContent dividers>
                     <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
                         { t("insights:advancedAnalytics.dialog.intro") }
                     </Typography>
@@ -167,20 +148,10 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                                 i18nKey="insights:advancedAnalytics.dialog.privacyPoint"
                                 components={ {
                                     1: <strong />,
-                                    3: (
-                                        <a
-                                            href={ termsOfServiceUrl }
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        />
-                                    ),
-                                    5: (
-                                        <a
-                                            href={ moesifTermsOfServiceUrl }
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        />
-                                    )
+                                    3: <a href={ termsOfServiceUrl }
+                                        target="_blank" rel="noopener noreferrer" />,
+                                    5: <a href={ moesifTermsOfServiceUrl }
+                                        target="_blank" rel="noopener noreferrer" />
                                 } }
                             />
                         </Typography>
@@ -198,13 +169,21 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                         </Typography>
                     </Box>
 
-                    <Alert
-                        data-componentid={ `${ componentId }-warning-alert` }
-                        severity="warning"
-                        sx={ { mt: 2.5 } }
-                    >
+                    <Alert severity="warning" sx={ { mt: 2 } }>
                         { t("insights:advancedAnalytics.dialog.warning") }
                     </Alert>
+
+                    <Box
+                        component="img"
+                        src={ analyticsPreview }
+                        alt="Advanced analytics preview"
+                        sx={ {
+                            borderRadius: 1,
+                            display: "block",
+                            mt: 2.5,
+                            width: "100%"
+                        } }
+                    />
 
                     <FormControlLabel
                         data-componentid={ `${ componentId }-agreement-checkbox` }
@@ -225,24 +204,25 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                 </DialogContent>
 
                 <StyledDialogActions>
-                    <Button
-                        data-componentid={ `${ componentId }-cancel-btn` }
-                        variant="outlined"
-                        onClick={ handleCloseDialog }
-                    >
-                        { t("common:cancel") }
-                    </Button>
-                    <Button
-                        data-componentid={ `${ componentId }-confirm-btn` }
-                        variant="contained"
-                        color="primary"
-                        onClick={ handleConfirm }
-                        disabled={ !agreed || isEnabling }
-                        startIcon={ isEnabling ? <CircularProgress size={ 16 } color="inherit" /> : null }
-                        sx={ { ml: 1 } }
-                    >
-                        { t("insights:advancedAnalytics.dialog.enableButton") }
-                    </Button>
+                    <Stack direction="row" justifyContent="space-between" sx={ { width: "100%" } }>
+                        <Button
+                            data-componentid={ `${ componentId }-cancel-btn` }
+                            color="primary"
+                            onClick={ handleCloseDialog }
+                        >
+                            { t("common:cancel") }
+                        </Button>
+                        <Button
+                            data-componentid={ `${ componentId }-confirm-btn` }
+                            variant="contained"
+                            color="primary"
+                            onClick={ handleConfirm }
+                            disabled={ !agreed || isEnabling }
+                            startIcon={ isEnabling ? <CircularProgress size={ 16 } color="inherit" /> : null }
+                        >
+                            { t("insights:advancedAnalytics.dialog.enableButton") }
+                        </Button>
+                    </Stack>
                 </StyledDialogActions>
             </Dialog>
         </>

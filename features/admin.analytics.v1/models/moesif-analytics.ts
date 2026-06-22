@@ -25,6 +25,11 @@ export interface MoesifPublisherInterface {
      */
     name?: string;
     /**
+     * When true, all event publishers are enabled (set by the server after the
+     * enableAdvancedAnalytics API call succeeds).
+     */
+    enableAllPublishers?: boolean;
+    /**
      * Map of event publisher key to enabled flag
      * (e.g. "moesif-authentication-publisher": true, "moesif-registration-publisher": false).
      */

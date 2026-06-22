@@ -70,27 +70,26 @@ export const insights: insightsNS = {
     },
     advancedAnalytics: {
         card: {
-            badge: "New",
-            description: "Unlock richer, real-time insights into authentication events, token usage, " +
-                "and user flows across your organization.",
+            description: "Get a clearer picture of how your users sign in, sign up, and use tokens, " +
+                "with live dashboards that update as activity happens.",
             enableButton: "Enable Advanced Analytics",
-            title: "Upgrade to Advanced Analytics"
+            title: "Switch to Advanced Analytics"
         },
         dialog: {
             agreement: "I have read and understood the above, and I agree to enable advanced analytics " +
                 "for my organization.",
-            dataRetentionPoint: "Your previous analytical data will <1>not</1> be carried over. Your " +
-                "analytics journey begins from the day you enable this feature.",
+            dataRetentionPoint: "Your existing analytics data will <1>not</1> carry over. Your new " +
+                "analytics history begins the moment you switch.",
             enableButton: "Enable",
-            intro: "Before you proceed, please read the following carefully.",
-            irreversiblePoint: "This action <1>cannot be undone</1>. Once enabled, you will not be able " +
-                "to revert to the previous analytics model.",
-            privacyPoint: "This feature is powered by <1>Moesif</1>, a WSO2-owned entity. Your end users' " +
-                "personally identifiable information (PII) — such as user identifiers and IP addresses — " +
-                "may be shared with Moesif for analytics processing. Review the <3>Terms of Service</3> and " +
-                "<5>Moesif Terms of Service</5> for details.",
-            title: "Enable Advanced Analytics",
-            warning: "Enabling this feature is permanent and affects all users in your organization."
+            intro: "Before you switch, please review the following carefully.",
+            irreversiblePoint: "This switch is <1>permanent</1>. Once advanced analytics is enabled, " +
+                "you cannot return to the previous analytics model.",
+            privacyPoint: "Advanced analytics is powered by <1>Moesif</1>, a WSO2-owned company. To generate " +
+                "these insights, some of your end users' personally identifiable information (PII), such as " +
+                "user identifiers and IP addresses, may be shared with Moesif. Review the <3>Terms of " +
+                "Service</3> and <5>Moesif Terms of Service</5> for details.",
+            title: "Switch to Advanced Analytics",
+            warning: "Enabling advanced analytics is permanent and applies to all users in your organization."
         },
         notifications: {
             enableError: {
@@ -101,6 +100,16 @@ export const insights: insightsNS = {
                 description: "Advanced analytics has been enabled for your organization.",
                 message: "Advanced Analytics Enabled"
             }
+        },
+        preview: {
+            authenticationCaption: "Drill into a single login type to see success and failure rates over " +
+                "time, and how often MFA is used.",
+            heading: "What you get",
+            lead: "Advanced analytics brings dashboards for logins, registrations and token issuance, " +
+                "updated as activity happens.",
+            overviewCaption: "Track active users, token activity and login trends from a single overview.",
+            summaryCaption: "Switch between authentication, registration and token issuance to see the " +
+                "numbers that matter for each."
         }
     },
     advancedFilter: {

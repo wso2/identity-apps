@@ -21,7 +21,6 @@ export interface insightsNS {
     description: string;
     advancedAnalytics: {
         card: {
-            badge: string;
             description: string;
             enableButton: string;
             title: string;
@@ -45,6 +44,13 @@ export interface insightsNS {
                 description: string;
                 message: string;
             };
+        };
+        preview: {
+            authenticationCaption: string;
+            heading: string;
+            lead: string;
+            overviewCaption: string;
+            summaryCaption: string;
         };
     };
     durationMessage: string;
