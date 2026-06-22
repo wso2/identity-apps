@@ -34,8 +34,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-const MOESIF_TOS_URL: string = "https://www.moesif.com/terms/";
-
 const StyledWrapper: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     borderLeft: `4px solid ${ theme.palette.primary.main }`,
@@ -73,6 +71,7 @@ const StyledDialogActions: typeof Box = styled(Box)(({ theme }: { theme: Theme }
 
 interface AdvancedAnalyticsUpgradeCardPropsInterface extends IdentifiableComponentInterface {
     isEnabling: boolean;
+    moesifTermsOfServiceUrl?: string;
     onEnable: () => void;
     termsOfServiceUrl?: string;
 }
@@ -84,6 +83,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
     {
         "data-componentid": componentId = "advanced-analytics-upgrade-card",
         isEnabling,
+        moesifTermsOfServiceUrl = "",
         onEnable,
         termsOfServiceUrl = ""
     }: AdvancedAnalyticsUpgradeCardPropsInterface
@@ -176,7 +176,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                                     ),
                                     5: (
                                         <a
-                                            href={ MOESIF_TOS_URL }
+                                            href={ moesifTermsOfServiceUrl }
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         />

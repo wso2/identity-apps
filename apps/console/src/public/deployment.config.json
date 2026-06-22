@@ -37,6 +37,7 @@
                 "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
                 "embeddedPortalUrl": "",
+                "moesifTermsOfServiceUrl": "https://www.moesif.com/terms/",
                 "termsOfServiceUrl": ""
             }
         },

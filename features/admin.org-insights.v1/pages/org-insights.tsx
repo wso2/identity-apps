@@ -37,12 +37,17 @@ import { ActivityType, DurationDropdownOption } from "../models/insights";
 import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 
 interface OrgInsightsPagePropsInterface {
+    moesifTermsOfServiceUrl?: string;
     showUpgradeCard?: boolean;
     termsOfServiceUrl?: string;
 }
 
 const OrgInsightsPage: FunctionComponent<OrgInsightsPagePropsInterface> = (
-    { showUpgradeCard = false, termsOfServiceUrl = "" }: OrgInsightsPagePropsInterface
+    {
+        moesifTermsOfServiceUrl = "",
+        showUpgradeCard = false,
+        termsOfServiceUrl = ""
+    }: OrgInsightsPagePropsInterface
 ) => {
     const dispatch: Dispatch = useDispatch();
     const [ isEnablingAdvanced, setIsEnablingAdvanced ] = useState<boolean>(false);
@@ -190,6 +195,7 @@ const OrgInsightsPage: FunctionComponent<OrgInsightsPagePropsInterface> = (
                     isEnabling={ isEnablingAdvanced }
                     onEnable={ handleEnableAdvancedAnalytics }
                     termsOfServiceUrl={ termsOfServiceUrl }
+                    moesifTermsOfServiceUrl={ moesifTermsOfServiceUrl }
                 />
             ) }
             <OrgInsightsContext.Provider
