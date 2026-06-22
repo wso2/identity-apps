@@ -19,6 +19,34 @@ export interface insightsNS {
     pageTitle: string;
     title: string;
     description: string;
+    advancedAnalytics: {
+        card: {
+            badge: string;
+            description: string;
+            enableButton: string;
+            title: string;
+        };
+        dialog: {
+            agreement: string;
+            dataRetentionPoint: string;
+            enableButton: string;
+            intro: string;
+            irreversiblePoint: string;
+            privacyPoint: string;
+            title: string;
+            warning: string;
+        };
+        notifications: {
+            enableError: {
+                description: string;
+                message: string;
+            };
+            enableSuccess: {
+                description: string;
+                message: string;
+            };
+        };
+    };
     durationMessage: string;
     durationOption: string;
     lastFetchedMessage: {

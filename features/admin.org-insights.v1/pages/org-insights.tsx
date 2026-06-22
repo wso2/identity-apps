@@ -36,8 +36,13 @@ import { OrgInsightsContext } from "../contexts/org-insights";
 import { ActivityType, DurationDropdownOption } from "../models/insights";
 import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 
-const OrgInsightsPage: FunctionComponent<{ showUpgradeCard?: boolean }> = (
-    { showUpgradeCard = false }: { showUpgradeCard?: boolean }
+interface OrgInsightsPagePropsInterface {
+    showUpgradeCard?: boolean;
+    termsOfServiceUrl?: string;
+}
+
+const OrgInsightsPage: FunctionComponent<OrgInsightsPagePropsInterface> = (
+    { showUpgradeCard = false, termsOfServiceUrl = "" }: OrgInsightsPagePropsInterface
 ) => {
     const dispatch: Dispatch = useDispatch();
     const [ isEnablingAdvanced, setIsEnablingAdvanced ] = useState<boolean>(false);
@@ -56,20 +61,24 @@ const OrgInsightsPage: FunctionComponent<{ showUpgradeCard?: boolean }> = (
             await enableAdvancedAnalytics();
 
             dispatch(addAlert({
-                description: "Advanced analytics has been enabled for your organisation.",
+                description: t("insights:advancedAnalytics.notifications.enableSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Advanced Analytics Enabled"
+                message: t("insights:advancedAnalytics.notifications.enableSuccess.message")
             }));
-        } catch (_error: unknown) {
+        } catch (error: unknown) {
+            const serverDescription: string | undefined =
+                (error as { response?: { data?: { description?: string } } })?.response?.data?.description;
+
             dispatch(addAlert({
-                description: "Failed to enable advanced analytics. Please try again.",
+                description: serverDescription
+                    ?? t("insights:advancedAnalytics.notifications.enableError.description"),
                 level: AlertLevels.ERROR,
-                message: "Operation Failed"
+                message: t("insights:advancedAnalytics.notifications.enableError.message")
             }));
         } finally {
             setIsEnablingAdvanced(false);
         }
-    }, [ dispatch ]);
+    }, [ dispatch, t ]);
 
 
     const handleDurationChange = (event: SelectChangeEvent) => {
@@ -180,6 +189,7 @@ const OrgInsightsPage: FunctionComponent<{ showUpgradeCard?: boolean }> = (
                     data-componentid="org-insights-upgrade-card"
                     isEnabling={ isEnablingAdvanced }
                     onEnable={ handleEnableAdvancedAnalytics }
+                    termsOfServiceUrl={ termsOfServiceUrl }
                 />
             ) }
             <OrgInsightsContext.Provider

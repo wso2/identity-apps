@@ -32,8 +32,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { StarIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 
-const ASGARDEO_TOS_URL: string = "https://wso2.com/asgardeo/terms-of-service/";
 const MOESIF_TOS_URL: string = "https://www.moesif.com/terms/";
 
 const StyledWrapper: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
@@ -59,6 +59,11 @@ const StyledIconBox: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
     width: theme.spacing(6)
 }));
 
+const StyledBadge: typeof Chip = styled(Chip)(({ theme }: { theme: Theme }) => ({
+    fontSize: theme.typography.caption.fontSize,
+    height: theme.spacing(2.25)
+}));
+
 const StyledDialogActions: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     gap: theme.spacing(1),
@@ -69,20 +74,22 @@ const StyledDialogActions: typeof Box = styled(Box)(({ theme }: { theme: Theme }
 interface AdvancedAnalyticsUpgradeCardPropsInterface extends IdentifiableComponentInterface {
     isEnabling: boolean;
     onEnable: () => void;
+    termsOfServiceUrl?: string;
 }
 
 /**
- * Upgrade prompt shown in the legacy Insights page.
- *
- * Renders a simple card with an "Enable Advanced Analytics" button. Clicking the button
- * opens a confirmation dialog that presents the data-privacy disclaimer, ToS links, and
- * irreversibility warning. The user must tick an agreement checkbox before the dialog's
- * enable action becomes available.
+ * Upgrade prompt card that opens a confirmation dialog before enabling advanced analytics.
  */
 const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCardPropsInterface> = (
-    { "data-componentid": componentId = "advanced-analytics-upgrade-card", isEnabling, onEnable }
-    : AdvancedAnalyticsUpgradeCardPropsInterface
+    {
+        "data-componentid": componentId = "advanced-analytics-upgrade-card",
+        isEnabling,
+        onEnable,
+        termsOfServiceUrl = ""
+    }: AdvancedAnalyticsUpgradeCardPropsInterface
 ): ReactElement => {
+    const { t } = useTranslation();
+
     const [ dialogOpen, setDialogOpen ] = useState<boolean>(false);
     const [ agreed, setAgreed ] = useState<boolean>(false);
 
@@ -114,18 +121,16 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                 <Box sx={ { flex: 1, minWidth: 0 } }>
                     <Box sx={ { alignItems: "center", display: "flex", gap: 1, mb: 0.5 } }>
                         <Typography variant="subtitle1" fontWeight={ 600 }>
-                            Upgrade to Advanced Analytics
+                            { t("insights:advancedAnalytics.card.title") }
                         </Typography>
-                        <Chip
-                            label="New"
+                        <StyledBadge
+                            label={ t("insights:advancedAnalytics.card.badge") }
                             size="small"
                             color="primary"
-                            sx={ { fontSize: "0.65rem", height: 18 } }
                         />
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                        Unlock richer, real-time insights into authentication events, token usage,
-                        and user flows across your organisation.
+                        { t("insights:advancedAnalytics.card.description") }
                     </Typography>
                 </Box>
 
@@ -138,7 +143,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                     startIcon={ isEnabling ? <CircularProgress size={ 16 } color="inherit" /> : null }
                     sx={ { flexShrink: 0 } }
                 >
-                    Enable Advanced Analytics
+                    { t("insights:advancedAnalytics.card.enableButton") }
                 </Button>
             </StyledWrapper>
 
@@ -149,36 +154,47 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                 maxWidth="sm"
                 fullWidth
             >
-                <DialogTitle>Enable Advanced Analytics</DialogTitle>
+                <DialogTitle>{ t("insights:advancedAnalytics.dialog.title") }</DialogTitle>
 
                 <DialogContent>
                     <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-                        Before you proceed, please read the following carefully.
+                        { t("insights:advancedAnalytics.dialog.intro") }
                     </Typography>
 
                     <Box component="ul" sx={ { m: 0, pl: 2.5 } }>
                         <Typography variant="body2" component="li" sx={ { mb: 1 } }>
-                            This feature is powered by{" "}
-                            <strong>Moesif</strong>, a WSO2-owned entity. Your end
-                            users&apos; personally identifiable information (PII) — such as user
-                            identifiers and IP addresses — may be shared with Moesif for analytics
-                            processing. Review the{" "}
-                            <a href={ ASGARDEO_TOS_URL } target="_blank" rel="noopener noreferrer">
-                                Asgardeo Terms of Service
-                            </a>{" "}
-                            and{" "}
-                            <a href={ MOESIF_TOS_URL } target="_blank" rel="noopener noreferrer">
-                                Moesif Terms of Service
-                            </a>{" "}
-                            for details.
+                            <Trans
+                                i18nKey="insights:advancedAnalytics.dialog.privacyPoint"
+                                components={ {
+                                    1: <strong />,
+                                    3: (
+                                        <a
+                                            href={ termsOfServiceUrl }
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        />
+                                    ),
+                                    5: (
+                                        <a
+                                            href={ MOESIF_TOS_URL }
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        />
+                                    )
+                                } }
+                            />
                         </Typography>
                         <Typography variant="body2" component="li" sx={ { mb: 1 } }>
-                            Your previous analytical data will <strong>not</strong> be carried over.
-                            Your analytics journey begins from the day you enable this feature.
+                            <Trans
+                                i18nKey="insights:advancedAnalytics.dialog.dataRetentionPoint"
+                                components={ { 1: <strong /> } }
+                            />
                         </Typography>
                         <Typography variant="body2" component="li">
-                            This action <strong>cannot be undone</strong>. Once enabled, you will
-                            not be able to revert to the previous analytics model.
+                            <Trans
+                                i18nKey="insights:advancedAnalytics.dialog.irreversiblePoint"
+                                components={ { 1: <strong /> } }
+                            />
                         </Typography>
                     </Box>
 
@@ -187,7 +203,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                         severity="warning"
                         sx={ { mt: 2.5 } }
                     >
-                        Enabling this feature is permanent and affects all users in your organisation.
+                        { t("insights:advancedAnalytics.dialog.warning") }
                     </Alert>
 
                     <FormControlLabel
@@ -202,8 +218,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                         }
                         label={
                             <Typography variant="body2">
-                                I have read and understood the above, and I agree to enable advanced
-                                analytics for my organisation.
+                                { t("insights:advancedAnalytics.dialog.agreement") }
                             </Typography>
                         }
                     />
@@ -215,7 +230,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                         variant="outlined"
                         onClick={ handleCloseDialog }
                     >
-                        Cancel
+                        { t("common:cancel") }
                     </Button>
                     <Button
                         data-componentid={ `${ componentId }-confirm-btn` }
@@ -226,7 +241,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                         startIcon={ isEnabling ? <CircularProgress size={ 16 } color="inherit" /> : null }
                         sx={ { ml: 1 } }
                     >
-                        Enable
+                        { t("insights:advancedAnalytics.dialog.enableButton") }
                     </Button>
                 </StyledDialogActions>
             </Dialog>

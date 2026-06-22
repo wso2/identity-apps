@@ -40,6 +40,7 @@ interface InsightsFlagsInterface {
     embeddingDomain: string;
     insightsEnabled: boolean;
     settingsEnabled: boolean;
+    termsOfServiceUrl: string;
 }
 
 const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppState) => {
@@ -57,7 +58,8 @@ const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppSt
         dashboardEnabled: !!(moesif?.dashboardEnabled),
         embeddingDomain: (moesif?.embeddedPortalUrl as string) ?? "",
         insightsEnabled: !!(state?.config?.ui?.features?.insights?.enabled),
-        settingsEnabled: !!(collectorKey?.settingsEnabled)
+        settingsEnabled: !!(collectorKey?.settingsEnabled),
+        termsOfServiceUrl: (moesif?.termsOfServiceUrl as string) ?? ""
     };
 });
 
@@ -123,7 +125,8 @@ const InsightsPage: FunctionComponent = (): ReactElement => {
         dashboardEnabled,
         embeddingDomain,
         insightsEnabled,
-        settingsEnabled
+        settingsEnabled,
+        termsOfServiceUrl
     }: InsightsFlagsInterface = useInsightsFlags();
 
     const isMoesifDashboardAvailable: boolean = dashboardEnabled && !!embeddingDomain;
@@ -149,7 +152,10 @@ const InsightsPage: FunctionComponent = (): ReactElement => {
     }
 
     return (
-        <OrgInsightsPage showUpgradeCard={ advancedAnalyticsUpgradeEnabled } />
+        <OrgInsightsPage
+            showUpgradeCard={ advancedAnalyticsUpgradeEnabled }
+            termsOfServiceUrl={ termsOfServiceUrl }
+        />
     );
 };
 

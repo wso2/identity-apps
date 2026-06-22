@@ -6,4 +6,4 @@
 "@wso2is/admin.core.v1": patch
 ---
 
-Add support to enable advance analytics
+Add support to enable advanced analytics

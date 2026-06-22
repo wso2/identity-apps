@@ -68,6 +68,41 @@ export const insights: insightsNS = {
             }
         }
     },
+    advancedAnalytics: {
+        card: {
+            badge: "New",
+            description: "Unlock richer, real-time insights into authentication events, token usage, " +
+                "and user flows across your organization.",
+            enableButton: "Enable Advanced Analytics",
+            title: "Upgrade to Advanced Analytics"
+        },
+        dialog: {
+            agreement: "I have read and understood the above, and I agree to enable advanced analytics " +
+                "for my organization.",
+            dataRetentionPoint: "Your previous analytical data will <1>not</1> be carried over. Your " +
+                "analytics journey begins from the day you enable this feature.",
+            enableButton: "Enable",
+            intro: "Before you proceed, please read the following carefully.",
+            irreversiblePoint: "This action <1>cannot be undone</1>. Once enabled, you will not be able " +
+                "to revert to the previous analytics model.",
+            privacyPoint: "This feature is powered by <1>Moesif</1>, a WSO2-owned entity. Your end users' " +
+                "personally identifiable information (PII) — such as user identifiers and IP addresses — " +
+                "may be shared with Moesif for analytics processing. Review the <3>Terms of Service</3> and " +
+                "<5>Moesif Terms of Service</5> for details.",
+            title: "Enable Advanced Analytics",
+            warning: "Enabling this feature is permanent and affects all users in your organization."
+        },
+        notifications: {
+            enableError: {
+                description: "Failed to enable advanced analytics. Please try again.",
+                message: "Operation Failed"
+            },
+            enableSuccess: {
+                description: "Advanced analytics has been enabled for your organization.",
+                message: "Advanced Analytics Enabled"
+            }
+        }
+    },
     advancedFilter: {
         filterAttribute: "Filter attribute",
         filterCondition: "Filter condition",
