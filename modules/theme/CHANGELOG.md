@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.10.8
+
+### Patch Changes
+
+- [#10428](https://github.com/wso2/identity-apps/pull/10428) [`6bb48ef7c7308065172e95a1dff385b43959e63b`](https://github.com/wso2/identity-apps/commit/6bb48ef7c7308065172e95a1dff385b43959e63b) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix role mapping dropdown menu height in dynamic field
+
 ## 2.10.7
 
 ### Patch Changes
