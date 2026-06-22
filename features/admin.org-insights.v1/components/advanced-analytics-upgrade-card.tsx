@@ -17,7 +17,6 @@
  */
 
 import { Theme, styled } from "@mui/material/styles";
-import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -138,12 +137,12 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                 <DialogTitle>{ t("insights:advancedAnalytics.dialog.title") }</DialogTitle>
 
                 <DialogContent dividers>
-                    <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
+                    <Typography variant="body1" color="text.secondary" sx={ { mb: 2 } }>
                         { t("insights:advancedAnalytics.dialog.intro") }
                     </Typography>
 
                     <Box component="ul" sx={ { m: 0, pl: 2.5 } }>
-                        <Typography variant="body2" component="li" sx={ { mb: 1 } }>
+                        <Typography variant="body1" component="li" sx={ { mb: 1 } }>
                             <Trans
                                 i18nKey="insights:advancedAnalytics.dialog.privacyPoint"
                                 components={ {
@@ -155,23 +154,13 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                                 } }
                             />
                         </Typography>
-                        <Typography variant="body2" component="li" sx={ { mb: 1 } }>
-                            <Trans
-                                i18nKey="insights:advancedAnalytics.dialog.dataRetentionPoint"
-                                components={ { 1: <strong /> } }
-                            />
+                        <Typography variant="body1" component="li" sx={ { mb: 1 } }>
+                            { t("insights:advancedAnalytics.dialog.dataRetentionPoint") }
                         </Typography>
-                        <Typography variant="body2" component="li">
-                            <Trans
-                                i18nKey="insights:advancedAnalytics.dialog.irreversiblePoint"
-                                components={ { 1: <strong /> } }
-                            />
+                        <Typography variant="body1" component="li">
+                            { t("insights:advancedAnalytics.dialog.irreversiblePoint") }
                         </Typography>
                     </Box>
-
-                    <Alert severity="warning" sx={ { mt: 2 } }>
-                        { t("insights:advancedAnalytics.dialog.warning") }
-                    </Alert>
 
                     <Box
                         component="img"
@@ -187,7 +176,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
 
                     <FormControlLabel
                         data-componentid={ `${ componentId }-agreement-checkbox` }
-                        sx={ { alignItems: "flex-start", mt: 2 } }
+                        sx={ { alignItems: "flex-start", mt: 3 } }
                         control={
                             <Checkbox
                                 sx={ { pt: 0 } }
@@ -196,7 +185,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                             />
                         }
                         label={
-                            <Typography variant="body2">
+                            <Typography variant="body1">
                                 { t("insights:advancedAnalytics.dialog.agreement") }
                             </Typography>
                         }

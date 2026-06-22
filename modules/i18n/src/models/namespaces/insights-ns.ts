@@ -33,7 +33,6 @@ export interface insightsNS {
             irreversiblePoint: string;
             privacyPoint: string;
             title: string;
-            warning: string;
         };
         notifications: {
             enableError: {

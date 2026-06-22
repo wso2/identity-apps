@@ -76,20 +76,19 @@ export const insights: insightsNS = {
             title: "Switch to Advanced Analytics"
         },
         dialog: {
-            agreement: "I have read and understood the above, and I agree to enable advanced analytics " +
-                "for my organization.",
-            dataRetentionPoint: "Your existing analytics data will <1>not</1> carry over. Your new " +
-                "analytics history begins the moment you switch.",
+            agreement: "I understand these changes apply to my whole organization and want to enable " +
+                "Advanced Analytics.",
+            dataRetentionPoint: "Your analytics history starts fresh from the moment you switch; existing " +
+                "data won't carry over.",
             enableButton: "Enable",
-            intro: "Before you switch, please review the following carefully.",
-            irreversiblePoint: "This switch is <1>permanent</1>. Once advanced analytics is enabled, " +
-                "you cannot return to the previous analytics model.",
-            privacyPoint: "Advanced analytics is powered by <1>Moesif</1>, a WSO2-owned company. To generate " +
-                "these insights, some of your end users' personally identifiable information (PII), such as " +
-                "user identifiers and IP addresses, may be shared with Moesif. Review the <3>Terms of " +
-                "Service</3> and <5>Moesif Terms of Service</5> for details.",
-            title: "Switch to Advanced Analytics",
-            warning: "Enabling advanced analytics is permanent and applies to all users in your organization."
+            intro: "Advanced Analytics gives you richer dashboards across logins, authentication, and " +
+                "tokens. A few things to know before you switch:",
+            irreversiblePoint: "Switching back isn't available from the dashboard, so it's worth being " +
+                "sure before you enable it. This applies to everyone in your organization.",
+            privacyPoint: "Advanced Analytics is powered by <1>Moesif</1>, a WSO2-owned company. To " +
+                "generate these insights, some end-user PII, like user identifiers and IP addresses, may " +
+                "be shared with Moesif. See the <3>Terms of Service</3> and <5>Moesif Terms of Service</5>.",
+            title: "Switch to Advanced Analytics"
         },
         notifications: {
             enableError: {
