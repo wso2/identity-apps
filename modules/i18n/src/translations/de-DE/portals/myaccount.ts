@@ -1169,7 +1169,7 @@ export const myAccount: MyAccountNS = {
                 "profileStatus": {
                     "completionPercentage": "Ihr Profilabschluss liegt bei {{percentage}} %",
                     "description": "Verwalten Sie Ihr Profil",
-                    "header": "Ihr {{productName}}-Profil",
+                    "header": "Ihr Profil",
                     "profileText": "Angaben zu Ihrem persönlichen Profil",
                     "readOnlyDescription": "Zeigen Sie Ihr Profil an",
                     "userSourceText": "(Anmeldung über {{source}})"

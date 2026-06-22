@@ -654,6 +654,21 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         }
                     },
                     placeholder: "e.g: openid"
+                },
+                tenant: {
+                    guide: "Leave <1>common</1> as-is to let users from any Microsoft organization sign in. " +
+                        "To limit sign-in to one organization, enter that directory's tenant ID or verified " +
+                        "domain. If your app registration is set to \"Accounts in this organizational directory " +
+                        "only\" (single-tenant), you must enter the tenant ID. <3>common</3> won't work.",
+                    guideHeading: "Directory (tenant) ID",
+                    hint: "Keep <1>common</1> to allow sign-in from any Microsoft organization, or enter your " +
+                        "Directory (tenant) ID or domain (e.g. <3>contoso.onmicrosoft.com</3>) to restrict " +
+                        "sign-in to a single organization.",
+                    info: "If your Microsoft app registration uses \"Accounts in this organizational directory " +
+                        "only\" (single-tenant), enter your tenant ID here. Leaving <1>common</1> will cause " +
+                        "every sign-in through this connection to fail.",
+                    label: "Directory (tenant) ID",
+                    placeholder: "common"
                 }
             },
             saml: {
@@ -1256,6 +1271,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
             genericError: {
                 description: "An error occurred while creating the connection.",
                 message: "Create error"
+            },
+            microsoftTenantError: {
+                description: "The connection was created, but applying the tenant-specific " +
+                    "endpoints failed. The default endpoints will be used.",
+                message: "Tenant configuration failed"
             },
             success: {
                 description: "Successfully created the connection.",
