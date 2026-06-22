@@ -74,6 +74,14 @@ interface AuthenticatorCreateWizardFactoryInterface extends IdentifiableComponen
 }
 
 /**
+ * Connection template Ids created through their own dedicated wizard in ConnectionCreateWizardFactory.
+ * These have no protocol template and don't need the duplicate-name lookup, so both fetches are skipped.
+ */
+const TEMPLATES_WITH_DEDICATED_WIZARD: string[] = [
+    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
+];
+
+/**
  * Authenticator Create Wizard factory.
  *
  * @param props - Props injected to the component.
@@ -108,6 +116,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
+    const hasDedicatedWizard: boolean = TEMPLATES_WITH_DEDICATED_WIZARD.includes(type);
+
     const {
         data: connectionsResponse,
         isLoading: isConnectionsFetchRequestLoading,
@@ -117,19 +127,17 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         null,
         !selectedTemplate?.idp?.name ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name,
         null,
-        true
+        !hasDedicatedWizard
     );
-
-    // The Flow Extension template has no protocol template to fetch — it is handled by a
-    // dedicated wizard in ConnectionCreateWizardFactory, so skip the template fetch for it.
-    const shouldFetchTemplate: boolean = type !== null
-        && type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION;
 
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
         error: connectionTemplateFetchRequestError
-    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, shouldFetchTemplate);
+    } = useGetConnectionTemplate(
+        type === "enterprise-protocols" ? "enterprise-idp" : type,
+        type !== null && !hasDedicatedWizard
+    );
 
     useEffect(() => {
         if (connectionsFetchRequestError) {
