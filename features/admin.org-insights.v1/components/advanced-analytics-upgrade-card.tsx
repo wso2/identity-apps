@@ -51,10 +51,6 @@ const StyledBanner: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) =
     width: "100%"
 }));
 
-const StyledDialogActions: typeof DialogActions = styled(DialogActions)(({ theme }: { theme: Theme }) => ({
-    padding: theme.spacing(2, 3)
-}));
-
 interface AdvancedAnalyticsUpgradeCardPropsInterface extends IdentifiableComponentInterface {
     isEnabling: boolean;
     moesifTermsOfServiceUrl?: string;
@@ -192,7 +188,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                     />
                 </DialogContent>
 
-                <StyledDialogActions>
+                <DialogActions sx={ { px: 3, py: 2 } }>
                     <Stack direction="row" justifyContent="space-between" sx={ { width: "100%" } }>
                         <Button
                             data-componentid={ `${ componentId }-cancel-btn` }
@@ -212,7 +208,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                             { t("insights:advancedAnalytics.dialog.enableButton") }
                         </Button>
                     </Stack>
-                </StyledDialogActions>
+                </DialogActions>
             </Dialog>
         </>
     );
