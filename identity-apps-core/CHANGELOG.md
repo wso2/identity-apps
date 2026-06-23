@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.2
+
+### Patch Changes
+
+- [#10455](https://github.com/wso2/identity-apps/pull/10455) [`09983a3bc71da637500f30a53ca852ec7fba42b9`](https://github.com/wso2/identity-apps/commit/09983a3bc71da637500f30a53ca852ec7fba42b9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop displaying the resend success message when the resend operation fails
+
 ## 5.3.1
 
 ### Patch Changes
