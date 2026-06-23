@@ -21,6 +21,10 @@
  */
 export interface ConsentMgtResourceEndpointsInterface {
     /**
+     * Base URL for consent policy app assignments: /api/server/v1/configs/consent/purposes
+     */
+    consentPolicyApps: string;
+    /**
      * Base URL for consent management elements: /api/identity/consent-mgt/v2.0/elements
      */
     consentMgtElements: string;

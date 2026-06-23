@@ -887,10 +887,16 @@
                         "console:consents"
                     ],
                     "read": [
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
                         "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_app_view",
                         "internal_consent_mgt_purpose_view"
                     ],
                     "update": [
+                        "internal_branding_preference_policy_update",
+                        "internal_consent_mgt_purpose_app_create",
+                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_update"
                     ]
                 }
