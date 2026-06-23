@@ -72,7 +72,8 @@
 %>
 <%
     boolean reCaptchaEnabled = false;
-    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha")) &&
+        !CaptchaUtil.isCaptchaDisabledForApplication(request.getParameter("spId"), tenantDomain)) {
         reCaptchaEnabled = true;
     }
 %>
