@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.23
+        specifier: ^2.57.24
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -461,7 +461,7 @@ importers:
         specifier: ^1.5.227
         version: link:../../features/admin.subscription.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.31
+        specifier: ^2.29.32
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.205
@@ -1521,7 +1521,7 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.20
+        specifier: ^2.57.24
         version: link:../admin.core.v1
       '@wso2is/admin.org-insights.v1':
         specifier: workspace:^
@@ -3862,7 +3862,7 @@ importers:
         specifier: ^2.26.3
         version: link:../admin.oidc-scopes.v1
       '@wso2is/admin.org-insights.v1':
-        specifier: ^2.26.4
+        specifier: ^2.26.5
         version: link:../admin.org-insights.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.28.4
@@ -3904,7 +3904,7 @@ importers:
         specifier: ^1.6.2
         version: link:../admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.31
+        specifier: ^2.29.32
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.38.40
@@ -6693,7 +6693,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.20
+        specifier: ^2.57.24
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: workspace:^
@@ -6838,7 +6838,7 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.57.24
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: workspace:^
@@ -9480,7 +9480,7 @@ importers:
         specifier: ^3.5.3
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.17
+        specifier: ^2.57.24
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.9
