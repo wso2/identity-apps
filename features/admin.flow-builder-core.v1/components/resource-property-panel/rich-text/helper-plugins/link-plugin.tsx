@@ -59,7 +59,8 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Hint from "../../../resources/elements/hint";
 import Box from "@oxygen-ui/react/Box/Box";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { LinkTarget } from "lexical/LexicalSelection";
+
+type LinkTarget = "_blank" | "_self";
 
 const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
