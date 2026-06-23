@@ -185,14 +185,14 @@ const LinkEditor = (): ReactElement => {
 
             if ($isLinkNode(parent)) {
                 const url: string = parent.getURL();
-                const target:LinkTarget = parent.getTarget() || "_blank";
+                const target:LinkTarget = parent.getTarget() as LinkTarget || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
                 setLinkTarget(target);
             } else if ($isLinkNode(node)) {
                 const url: string = node.getURL();
-                const target:LinkTarget = node.getTarget() || "_blank";
+                const target:LinkTarget = node.getTarget() as LinkTarget || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
