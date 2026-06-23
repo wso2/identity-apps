@@ -18,6 +18,7 @@
 
 import { DroppableContainer, GetDragItemProps, useDnD  } from "@oxygen-ui/react/dnd";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
@@ -30,8 +31,6 @@ import PolicyListDraggableNode from "./policy-list-draggable-node";
 import PolicyListNode from "./policy-list-node";
 import { PolicyInterface } from "../models/policies";
 import "./policy-list.scss";
-
-const EMPTY_POLICIES: PolicyInterface[] = [];
 
 interface PolicyListProps extends IdentifiableComponentInterface {
     onDrop?: (containerId: string) => void;
@@ -68,7 +67,7 @@ interface PolicyListProps extends IdentifiableComponentInterface {
 
 export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
-    policies = EMPTY_POLICIES,
+    policies = EMPTY_ARRAY,
     deleteActivePolicy,
     deleteInactivePolicy,
     activatePolicy,

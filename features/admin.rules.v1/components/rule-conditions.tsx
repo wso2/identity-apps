@@ -32,6 +32,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
@@ -57,8 +58,6 @@ import {
     RuleInterface
 } from "../models/rules";
 import "./rule-conditions.scss";
-
-const EMPTY_STRING_ARRAY: string[] = [];
 
 /**
  * Value input autocomplete options interface.
@@ -212,7 +211,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         conditionId,
         expressionId,
         shouldFetch,
-        hiddenResources = EMPTY_STRING_ARRAY
+        hiddenResources = EMPTY_ARRAY
     }: ValueInputAutocompleteProps) => {
 
         const [ inputValue, setInputValue ] = useState<string>(null);
@@ -405,7 +404,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         findMetaValuesAgainst,
         initialResourcesLoadUrl,
         filterBaseResourcesUrl,
-        hiddenResources = EMPTY_STRING_ARRAY
+        hiddenResources = EMPTY_ARRAY
     }: ResourceListSelectProps) => {
 
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
@@ -668,8 +667,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionValue,
         metaValue,
         setIsResourceMissing,
-        hiddenResources = EMPTY_STRING_ARRAY,
-        hiddenValues = EMPTY_STRING_ARRAY
+        hiddenResources = EMPTY_ARRAY,
+        hiddenValues = EMPTY_ARRAY
     }: ConditionValueInputProps) => {
 
         if (metaValue?.inputType === "input" || null) {
@@ -782,9 +781,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         index,
         isConditionLast,
         isConditionExpressionRemovable,
-        hiddenConditions = EMPTY_STRING_ARRAY,
-        hiddenResources = EMPTY_STRING_ARRAY,
-        hiddenValues = EMPTY_STRING_ARRAY
+        hiddenConditions = EMPTY_ARRAY,
+        hiddenResources = EMPTY_ARRAY,
+        hiddenValues = EMPTY_ARRAY
     }: RuleExpressionComponentProps) => {
 
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
