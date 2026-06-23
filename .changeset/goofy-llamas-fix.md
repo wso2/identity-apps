@@ -6,4 +6,4 @@
 "@wso2is/i18n": patch
 ---
 
-Fix suggestions
+Add support for configuring link target behavior in Rich Text Editor

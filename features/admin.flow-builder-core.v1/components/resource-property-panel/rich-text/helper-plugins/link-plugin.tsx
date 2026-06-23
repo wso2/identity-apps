@@ -28,6 +28,7 @@ import { PenToSquareIcon } from "@oxygen-ui/react-icons";
 import {
     $getSelection,
     $isRangeSelection,
+    $setSelection,
     BaseSelection,
     CLICK_COMMAND,
     CommandListenerPriority,
@@ -185,14 +186,14 @@ const LinkEditor = (): ReactElement => {
 
             if ($isLinkNode(parent)) {
                 const url: string = parent.getURL();
-                const target:LinkTarget = parent.getTarget() as LinkTarget || "_blank";
+                const target: LinkTarget = (parent.getTarget() ?? "_blank") as LinkTarget;
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
                 setLinkTarget(target);
             } else if ($isLinkNode(node)) {
                 const url: string = node.getURL();
-                const target:LinkTarget = node.getTarget() as LinkTarget || "_blank";
+                const target: LinkTarget = (node.getTarget() ?? "_blank") as LinkTarget;
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
@@ -480,28 +481,28 @@ const LinkEditor = (): ReactElement => {
                             } }
                         />
                         {/* Link Target Checkbox - With Description */}
-                        <Box sx={ { alignItems:"center", display: "flex", flexDirection: "row", gap: 0 }}>
+                        <Box sx={ { alignItems: "center", display: "flex", flexDirection: "row", gap: 0 } }>
                             <FormControlLabel
                                 control={
                                     <Checkbox
                                         checked={ linkTarget === "_blank" }
                                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                                            const newTarget:LinkTarget =
-                                            event.target.checked ? "_blank" : "_self";
+                                            const newTarget: LinkTarget =
+                                                event.target.checked ? "_blank" : "_self";
 
                                             setLinkTarget(newTarget);
 
                                             if (lastSelection !== null) {
-                                                const currentUrl:string = getCurrentUrl();
+                                                const currentUrl: string = getCurrentUrl();
 
                                                 if (currentUrl !== "") {
                                                     editor.update(() => {
-                                                        const selection:BaseSelection | null = $getSelection();
+                                                        const selection: BaseSelection | null = $getSelection();
 
                                                         if ($isRangeSelection(selection)) {
-                                                            const node:TextNode | ElementNode =
-                                                            getSelectedNode(selection);
-                                                            const linkNode = $isLinkNode(node)
+                                                            const node: TextNode | ElementNode =
+                                                                getSelectedNode(selection);
+                                                            const linkNode: ElementNode = $isLinkNode(node)
                                                                 ? node
                                                                 : node.getParent();
 
@@ -520,10 +521,11 @@ const LinkEditor = (): ReactElement => {
                                 }
                                 label={t("flows:core.elements.richText.linkEditor.linkTargetLabel")}
                             />
-                            <Tooltip title={linkTarget === "_blank"
-                                ? t("flows:core.elements.richText.linkEditor.newTabHint")
-                                : t("flows:core.elements.richText.linkEditor.sameTabHint")
-                            } >
+                            <Tooltip title={
+                                linkTarget === "_blank"
+                                    ? t("flows:core.elements.richText.linkEditor.newTabHint")
+                                    : t("flows:core.elements.richText.linkEditor.sameTabHint")
+                            }>
                                 <span><Hint hint="" /></span>
                             </Tooltip>
 
@@ -535,8 +537,8 @@ const LinkEditor = (): ReactElement => {
                             onClick={ (event: ReactMouseEvent<HTMLButtonElement>) => {
                                 event.preventDefault();
                                 if (lastSelection !== null) {
-                                    editor.update(()=>{
-                                        lastSelection?.clone?.();
+                                    editor.update(() => {
+                                        $setSelection(lastSelection.clone());
                                     });
                                     const currentUrl: string = getCurrentUrl();
 
