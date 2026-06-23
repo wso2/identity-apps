@@ -167,7 +167,7 @@ const LinkEditor = (): ReactElement => {
     const [ isEditMode, setEditMode ] = useState(false);
     const [ lastSelection, setLastSelection ] = useState<BaseSelection | null>(null);
     const [ selectedUrlType, setSelectedUrlType ] = useState<string>("CUSTOM");
-    const [ linkTarget, setLinkTarget ] = useState<"_blank" | "_self">("_blank");
+    const [ linkTarget, setLinkTarget ] = useState<LinkTarget>("_blank");
     const { t } = useTranslation();
 
     /**
@@ -183,18 +183,18 @@ const LinkEditor = (): ReactElement => {
 
             if ($isLinkNode(parent)) {
                 const url: string = parent.getURL();
-                const target:string = parent.getTarget() || "_blank";
+                const target:LinkTarget = parent.getTarget() || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
-                setLinkTarget(target as "_blank" | "_self");
+                setLinkTarget(target);
             } else if ($isLinkNode(node)) {
                 const url: string = node.getURL();
-                const target:string = node.getTarget() || "_blank";
+                const target:LinkTarget = node.getTarget() || "_blank";
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
-                setLinkTarget(target as "_blank" | "_self");
+                setLinkTarget(target);
             } else {
                 setLinkUrl("");
                 setSelectedUrlType("CUSTOM");
@@ -393,7 +393,6 @@ const LinkEditor = (): ReactElement => {
                                 }
                             }
                         }
-
                     } else {
                         // If no URL, remove the link (same as TOGGLE_LINK_COMMAND with null).
                         editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
@@ -479,14 +478,13 @@ const LinkEditor = (): ReactElement => {
                             } }
                         />
                         {/* Link Target Checkbox - With Description */}
-                        <Box sx={ { alignItems:"center", display: "flex", flexDirection: "row", gap: 0
-                        } }>
+                        <Box sx={ { alignItems:"center", display: "flex", flexDirection: "row", gap: 0 }}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
                                         checked={ linkTarget === "_blank" }
                                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                                            const newTarget:"_blank" | "_self" =
+                                            const newTarget:LinkTarget =
                                             event.target.checked ? "_blank" : "_self";
 
                                             setLinkTarget(newTarget);
@@ -524,7 +522,7 @@ const LinkEditor = (): ReactElement => {
                                 ? t("flows:core.elements.richText.linkEditor.newTabHint")
                                 : t("flows:core.elements.richText.linkEditor.sameTabHint")
                             } >
-                                <span><Hint></Hint></span>
+                                <span><Hint hint="" /></span>
                             </Tooltip>
 
                         </Box>
