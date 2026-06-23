@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import TextField from "@oxygen-ui/react/TextField";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { HelpPanelModal } from "@wso2is/admin.core.v1/components/modals/help-panel-modal";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
@@ -29,10 +31,12 @@ import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { DynamicWizard, DynamicWizardPage, renderFormFields } from "@wso2is/forms/legacy";
 import {
+    Code,
     ContentLoader,
     DocumentationLink,
     GenericIcon,
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton,
     useWizardAlert
@@ -41,22 +45,40 @@ import { AxiosError, AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FC, MutableRefObject, ReactElement, Suspense, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, {
+    ChangeEvent,
+    FC,
+    MutableRefObject,
+    ReactElement,
+    Suspense,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
-import { createConnection, useGetConnectionMetaData } from "../../api/connections";
+import {
+    createConnection,
+    getFederatedAuthenticatorDetails,
+    updateFederatedAuthenticator,
+    useGetConnectionMetaData
+} from "../../api/connections";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
+    CommonPluggableComponentPropertyInterface,
     ConnectionInterface,
+    FederatedAuthenticatorListItemInterface,
     GenericConnectionCreateWizardPropsInterface,
     IdpNameValidationCache,
     OutboundProvisioningConnectorInterface
 } from "../../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../../utils/connection-utils";
+import { applyMicrosoftTenantToEndpoint, isMicrosoftTenantValid } from "../../utils/microsoft-authenticator-utils";
 
 /**
  * Proptypes for the connection creation wizard component.
@@ -98,7 +120,16 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
     const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
+    // Microsoft Directory (tenant) segment.
+    const [ microsoftTenantId, setMicrosoftTenantId ] = useState<string>(
+        FederatedAuthenticatorConstants.MICROSOFT_DEFAULT_TENANT
+    );
+    const [ microsoftTenantError, setMicrosoftTenantError ] = useState<string>("");
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isMicrosoftTemplate: boolean =
+        template?.templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
 
     const {
         data: connectionMetaData,
@@ -157,6 +188,45 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     };
 
     /**
+     * Rewrites the Microsoft authenticator's authorization/token endpoints to use the given
+     * tenant segment, preserving all other authenticator properties.
+     */
+    const applyMicrosoftTenantEndpoints = async (idpId: string, tenant: string): Promise<void> => {
+        const authenticator: FederatedAuthenticatorListItemInterface =
+            await getFederatedAuthenticatorDetails(
+                idpId,
+                FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID
+            );
+
+        const trimmedTenant: string = tenant.trim();
+        const properties: CommonPluggableComponentPropertyInterface[] = [ ...(authenticator?.properties ?? []) ];
+
+        const endpointFallbacks: Record<string, string> = {
+            [ FederatedAuthenticatorConstants.AUTHORIZATION_ENDPOINT_URL_KEY ]:
+                FederatedAuthenticatorConstants.MICROSOFT_AUTHORIZE_ENDPOINT,
+            [ FederatedAuthenticatorConstants.TOKEN_ENDPOINT_URL_KEY ]:
+                FederatedAuthenticatorConstants.MICROSOFT_TOKEN_ENDPOINT
+        };
+
+        Object.entries(endpointFallbacks).forEach(([ key, fallbackTemplate ]: [ string, string ]) => {
+            const existingProperty: CommonPluggableComponentPropertyInterface =
+                properties.find((property: CommonPluggableComponentPropertyInterface) => property.key === key);
+
+            if (existingProperty) {
+                existingProperty.value =
+                    applyMicrosoftTenantToEndpoint(existingProperty.value, fallbackTemplate, trimmedTenant);
+            } else {
+                properties.push({ key, value: applyMicrosoftTenantToEndpoint("", fallbackTemplate, trimmedTenant) });
+            }
+        });
+
+        // `tags` is not allowed in the federated authenticator PUT payload.
+        delete authenticator.tags;
+
+        await updateFederatedAuthenticator(idpId, { ...authenticator, properties });
+    };
+
+    /**
      * The following function handle the connection create API call.
      */
     const createNewConnection = (connection: ConnectionInterface): void => {
@@ -164,10 +234,42 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         setIsSubmitting(true);
 
         createConnection(connection)
-            .then((response: AxiosResponse) => {
+            .then(async (response: AxiosResponse) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId
                 });
+
+                // The created resource's id is sent as a location header.
+                let createdIdpID: string = undefined;
+
+                if (!isEmpty(response.headers.location)) {
+                    const location: string = response.headers.location;
+
+                    createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                }
+
+                // For Microsoft, override the endpoints' tenant segment only when it differs from
+                // the default.
+                const trimmedTenant: string = microsoftTenantId.trim()
+                    || FederatedAuthenticatorConstants.MICROSOFT_DEFAULT_TENANT;
+
+                if (
+                    isMicrosoftTemplate
+                    && createdIdpID
+                    && trimmedTenant.toLowerCase() !== FederatedAuthenticatorConstants.MICROSOFT_DEFAULT_TENANT
+                ) {
+                    try {
+                        await applyMicrosoftTenantEndpoints(createdIdpID, trimmedTenant);
+                    } catch {
+                        dispatch(addAlert({
+                            description: t("authenticationProvider:notifications.addIDP." +
+                                "microsoftTenantError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications.addIDP." +
+                                "microsoftTenantError.message")
+                        }));
+                    }
+                }
 
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.addIDP." +
@@ -177,19 +279,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     "success.message")
                 }));
 
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
-                if (!isEmpty(response.headers.location)) {
-                    const location: string = response.headers.location;
-                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
-
-                    onIDPCreate(createdIdpID);
-
-                    return;
-                }
-
-                // Since the location header is not present, trigger callback without the id.
-                onIDPCreate();
+                // If the created resource's id is available, navigate to the edit page.
+                onIDPCreate(createdIdpID);
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
@@ -329,6 +420,26 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     };
 
     const onSubmitWizard = (values: any): void => {
+
+        // For Microsoft, the Directory (tenant) field is required and must be a valid tenant value.
+        // It lives outside the legacy dynamic form, so validate it manually before submitting.
+        if (isMicrosoftTemplate) {
+            if (isEmpty(microsoftTenantId.trim())) {
+                setMicrosoftTenantError(
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.required")
+                );
+
+                return;
+            }
+
+            if (!isMicrosoftTenantValid(microsoftTenantId)) {
+                setMicrosoftTenantError(
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.invalid")
+                );
+
+                return;
+            }
+        }
 
         // Update the template properties with the values from the wizard.
         const updatedProperties: { key: string; value: string }[] = connectionMetaDetails?.create?.properties?.map(
@@ -480,6 +591,35 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
             return null;
         }
 
+        const wizardHelp: any = connectionMetaData?.create?.modal?.wizardHelp;
+
+        // Append a guide entry for the Directory (tenant) field.
+        const resolvedWizardHelp: any = isMicrosoftTemplate
+            ? {
+                ...wizardHelp,
+                fields: [
+                    ...(wizardHelp?.fields ?? []),
+                    {
+                        fieldName: t("authenticationProvider:forms.authenticatorSettings." +
+                            "microsoft.tenant.guideHeading"),
+                        hint: (
+                            <Trans
+                                i18nKey={
+                                    "authenticationProvider:forms.authenticatorSettings.microsoft.tenant.guide"
+                                }
+                            >
+                                Leave <Code>common</Code> as-is to let users from any Microsoft organization
+                                sign in. To limit sign-in to one organization, enter that directory&apos;s
+                                tenant ID or verified domain. If your app registration is set to
+                                &quot;Accounts in this organizational directory only&quot; (single-tenant),
+                                you must enter the tenant ID. <Code>common</Code> won&apos;t work.
+                            </Trans>
+                        )
+                    }
+                ]
+            }
+            : wizardHelp;
+
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
@@ -494,7 +634,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                 ? <ContentLoader/>
                                 : (
                                     <CreateConnectionWizardHelp
-                                        wizardHelp={ connectionMetaData?.create?.modal?.wizardHelp }
+                                        wizardHelp={ resolvedWizardHelp }
                                         data-testid={ `${ componentId }-modal-wizard-help-panel` }
                                     />
                                 )
@@ -613,6 +753,75 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                 { renderFormFields(modifyFormFields(connectionMetaData?.create?.modal?.form?.fields)) }
                             </DynamicWizardPage>
                         </DynamicWizard>
+                        {
+                            isMicrosoftTemplate && (
+                                <div
+                                    className="fields mt-3"
+                                    data-componentid={ `${ componentId }-microsoft-tenant-selection` }
+                                >
+                                    <TextField
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        name="microsoft-tenant"
+                                        label={ t("authenticationProvider:forms.authenticatorSettings." +
+                                            "microsoft.tenant.label") }
+                                        placeholder={ t("authenticationProvider:forms.authenticatorSettings." +
+                                            "microsoft.tenant.placeholder") }
+                                        InputLabelProps={ { required: true } }
+                                        error={ !isEmpty(microsoftTenantError) }
+                                        helperText={ microsoftTenantError || undefined }
+                                        value={ microsoftTenantId }
+                                        onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                            setMicrosoftTenantId(event.target.value);
+                                            if (!isEmpty(microsoftTenantError)) {
+                                                setMicrosoftTenantError("");
+                                            }
+                                        } }
+                                        onBlur={ () => {
+                                            if (isEmpty(microsoftTenantId.trim())) {
+                                                setMicrosoftTenantError(t("authenticationProvider:forms." +
+                                                    "authenticatorSettings.microsoft.tenant.validations.required"));
+                                            } else if (!isMicrosoftTenantValid(microsoftTenantId)) {
+                                                setMicrosoftTenantError(t("authenticationProvider:forms." +
+                                                    "authenticatorSettings.microsoft.tenant.validations.invalid"));
+                                            }
+                                        } }
+                                        data-componentid={ `${ componentId }-microsoft-tenant-input` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "authenticationProvider:forms.authenticatorSettings." +
+                                                "microsoft.tenant.hint"
+                                            }
+                                        >
+                                            Keep <Code>common</Code> to allow sign-in from any Microsoft
+                                            organization, or enter your Directory (tenant) ID or domain
+                                            (e.g. <Code>contoso.onmicrosoft.com</Code>) to restrict sign-in
+                                            to a single organization.
+                                        </Trans>
+                                    </Hint>
+                                    <Alert
+                                        severity="info"
+                                        className="mt-2"
+                                        data-componentid={ `${ componentId }-microsoft-tenant-info` }
+                                    >
+                                        <Trans
+                                            i18nKey={
+                                                "authenticationProvider:forms.authenticatorSettings." +
+                                                "microsoft.tenant.info"
+                                            }
+                                        >
+                                            If your Microsoft app registration uses &quot;Accounts in this
+                                            organizational directory only&quot; (single-tenant), enter your
+                                            tenant ID here. Leaving <Code>common</Code> will cause every
+                                            sign-in through this connection to fail.
+                                        </Trans>
+                                    </Alert>
+                                </div>
+                            )
+                        }
                     </HelpPanelModal.Content>
                     <HelpPanelModal.Actions data-componentid={ `${ componentId }-modal-actions` }>
                         { resolveStepActions() }

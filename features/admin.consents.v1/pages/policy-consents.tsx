@@ -361,7 +361,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             { !isBrandingEnabled && (
                 <Alert severity="info" className="mb-4">
                     <Trans i18nKey="consents:policyConsents.brandingRequired">
-                        Enable branding to update default policies.{ " " }
+                        Enable branding to update default policies.
                         <Link
                             onClick={ () => history.push(AppConstants.getPaths().get("BRANDING")) }
                             sx={ { cursor: "pointer" } }

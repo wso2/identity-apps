@@ -1166,7 +1166,7 @@ export const myAccount: MyAccountNS = {
                 "profileStatus": {
                     "completionPercentage": "您的个人资料完成为{{percentage}}％",
                     "description": "管理您的个人资料",
-                    "header": "您的{{productName}}个人资料",
+                    "header": "您的个人资料",
                     "profileText": "您个人资料的详细信息",
                     "readOnlyDescription": "查看您的个人资料",
                     "userSourceText": "（通过{{source}}注册）"

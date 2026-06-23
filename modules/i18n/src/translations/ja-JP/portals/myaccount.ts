@@ -1166,7 +1166,7 @@ export const myAccount: MyAccountNS = {
                 "profileStatus": {
                     "completionPercentage": "あなたのプロファイルの完了は{{percentage}}％です",
                     "description": "プロフィールを管理します",
-                    "header": "あなたの{{productName}}プロファイル",
+                    "header": "あなたのプロファイル",
                     "profileText": "あなたの個人的なプロフィールの詳細",
                     "readOnlyDescription": "あなたのプロフィールを表示します",
                     "userSourceText": "（{{source}}経由でサインアップ）"

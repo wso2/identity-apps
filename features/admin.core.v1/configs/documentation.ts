@@ -59,26 +59,23 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             addAPIResource: {
                 rbacInfoBox: {
                     learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                        + "#role-based-access-control"
                 },
                 requiredAuthorization: {
                     learnMore: documentationBaseUrl + "/guides/api-authorization/"
-                        + "#authorize-the-api-resource-to-an-app"
+                        + "#authorize-apps-to-consume-api-resources"
                 }
             },
-            learnMore: documentationBaseUrl + "/guides/api-authorization/#register-an-api-resource"
+            learnMore: documentationBaseUrl + "/guides/api-authorization/#register-a-business-api"
         },
         applications: {
             apiAuthorization: {
-                learnMore: documentationBaseUrl + "/guides/api-authorization/#authorize-the-api-resource-to-an-app",
+                learnMore: documentationBaseUrl + "/guides/api-authorization/#authorize-apps-to-consume-api-resources",
                 policies: {
                     noPolicy: {
                         learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                            + "#no-authorization-policy"
                     },
                     rbac: {
                         learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                            + "#role-based-access-control"
                     }
                 }
             },
@@ -98,7 +95,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 },
                 attributeManagement: {
                     manageOIDCScopes: documentationBaseUrl + "/guides/users/attributes/manage-scopes"
-                        + "/#how-to-request-scope-to-request-user-attributes"
+                        + "/#use-scopes-to-request-attributes"
                 },
                 common: {
                     advanced: {
@@ -154,7 +151,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                     quickStart: {
                         applicationScopes: {
                             learnMore: documentationBaseUrl + "/guides/authentication/user-attributes/"
-                                + "enable-attributes-for-oidc-app/#application-requests-with-scopes"
+                                + "enable-attributes-for-oidc-app/#application-requests-attributes"
                         },
                         customConfig: {
                             learnMore: documentationBaseUrl + "/guides/authentication/oidc/implement-auth-code"
@@ -170,7 +167,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                         version100: {
                             removeUsernameFromIntrospectionRespForAppTokens: {
                                 documentationLink: documentationBaseUrl + "/guides/authentication/oidc"
-                                    + "/token-validation-resource-server/#application-access-token-response"
+                                    + "/token-validation-resource-server/#application-tokens"
                             },
                             useClientIdAsSubClaimOfAppTokens: {
                                 documentationLink: documentationBaseUrl + "/guides/authentication/user-attributes"
@@ -504,7 +501,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             userStoreProperties: {
                 learnMore: documentationBaseUrl + "/guides/users/user-stores/configure-a-user-store/"
-                    + "#set-up-the-remote-user-store/"
+                    + "#set-up-the-remote-user-store"
             },
             userStoresList: {
                 learnMore: documentationBaseUrl + "/guides/users/user-stores/"
@@ -515,7 +512,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl + "/guides/users/"
             },
             bulkUsers: {
-                learnMore: documentationBaseUrl + "/guides/users/manage-users/#onboard-multiple-user"
+                learnMore: documentationBaseUrl + "/guides/users/onboard-users/#onboard-multiple-users"
             },
             collaboratorAccounts: {
                 adminSettingsLearnMore: documentationBaseUrl

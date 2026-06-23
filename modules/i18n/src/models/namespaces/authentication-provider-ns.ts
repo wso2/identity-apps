@@ -661,6 +661,18 @@ export interface AuthenticationProviderNS {
                     };
                     placeholder: string;
                 };
+                tenant: {
+                    guide: string;
+                    guideHeading: string;
+                    hint: string;
+                    info: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                        required: string;
+                    };
+                };
             };
             hypr: {
                 appId: {
@@ -1517,6 +1529,10 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            microsoftTenantError: {
                 message: string;
                 description: string;
             };

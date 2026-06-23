@@ -60,7 +60,7 @@ interface WizardHelpInterface {
     /**
      * Help content fields.
      */
-    fields?: { fieldName: string, hint: string }[];
+    fields?: { fieldName: string, hint: string | ReactElement }[];
 }
 
 /**
@@ -201,12 +201,21 @@ CreateConnectionWizardHelpPropsInterface> = (
             { renderPreRequisites() }
             <Divider hidden/>
             {
-                wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
+                wizardHelp?.fields?.map((
+                    field: { fieldName: string, hint: string | ReactElement },
+                    index: number,
+                    fields: { fieldName: string, hint: string | ReactElement }[]
+                ) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        { /* eslint-disable-next-line react/no-danger */ }
-                        <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field?.hint) } }/>
-                        <Divider />
+                        {
+                            typeof field?.hint === "string"
+                                ? (
+                                    <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field.hint) } } />
+                                )
+                                : <p>{ field.hint }</p>
+                        }
+                        { index < fields.length - 1 && <Divider /> }
                     </div>
                 ))
             }
