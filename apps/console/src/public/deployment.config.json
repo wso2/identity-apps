@@ -38,6 +38,7 @@
                 "embeddedPortalUrl": ""
             }
         },
+        "cdsHost": "",
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
             {
