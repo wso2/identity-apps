@@ -492,7 +492,7 @@ const LinkEditor = (): ReactElement => {
                                             setLinkTarget(newTarget);
 
                                             if (lastSelection !== null) {
-                                                const currentUrl:any = getCurrentUrl();
+                                                const currentUrl:string = getCurrentUrl();
 
                                                 if (currentUrl !== "") {
                                                     editor.update(() => {
@@ -501,7 +501,7 @@ const LinkEditor = (): ReactElement => {
                                                         if ($isRangeSelection(selection)) {
                                                             const node:TextNode | ElementNode =
                                                             getSelectedNode(selection);
-                                                            const linkNode:any = $isLinkNode(node)
+                                                            const linkNode = $isLinkNode(node)
                                                                 ? node
                                                                 : node.getParent();
 
