@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.22
+        specifier: ^2.57.23
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -497,7 +497,7 @@ importers:
         specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.43.8
+        specifier: ^2.43.9
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -3464,7 +3464,7 @@ importers:
         specifier: workspace:^
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.3
+        specifier: ^2.43.9
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.25
@@ -3937,7 +3937,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.7
+        specifier: ^2.43.9
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
