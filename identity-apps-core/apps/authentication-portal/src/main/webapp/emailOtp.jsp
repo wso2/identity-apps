@@ -169,7 +169,7 @@
                 <div id="alertDiv"></div>
                 <%
                     String resendCode = request.getParameter("resendCode");
-                    if (resendCode != null && "true".equals(resendCode)) {
+                    if (resendCode != null && "true".equals(resendCode) && !"true".equals(authenticationFailed)) {
                 %>
                 <div id="resend-msg" class="ui positive message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code.success")%></div>
                 <div class="ui divider hidden"></div>
