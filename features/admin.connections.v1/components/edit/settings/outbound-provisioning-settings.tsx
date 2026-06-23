@@ -232,14 +232,15 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      *
      * @returns An array of available connectors.
      */
-    async function fetchConnectors() {
-        const connectors: OutboundProvisioningConnectorWithMetaInterface[] = [];
-
-        for (const connector of identityProvider.provisioning.outboundConnectors.connectors) {
-            connectors.push(await fetchConnector(connector.connectorId));
-        }
-
-        return connectors;
+     async function fetchConnectors(): Promise<OutboundProvisioningConnectorWithMetaInterface[]> {
+        return Promise.all(
+            identityProvider.provisioning.outboundConnectors.connectors.map(
+                async (connector: OutboundProvisioningConnectorInterface):
+                    Promise<OutboundProvisioningConnectorWithMetaInterface> => {
+                    return fetchConnector(connector.connectorId);
+                }
+            )
+        );
     }
 
     /**
