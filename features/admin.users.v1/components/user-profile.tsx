@@ -195,6 +195,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+    const hasUsersDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.delete
+    );
 
     const roleAssignmentsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.roleAssignments);
@@ -992,7 +995,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveDangerActions = (): ReactElement => {
-        if (!hasUsersUpdatePermissions) {
+        if (!hasUsersUpdatePermissions && !hasUsersDeletePermissions) {
             return null;
         }
 
@@ -1010,10 +1013,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) && (
                         !isCurrentUserAdmin
                         || !isUserCurrentLoggedInUser
+                    ) && (
+                        hasUsersDeletePermissions
+                        || hasUsersUpdatePermissions
                     ) ? (
-                            <Show
-                                when={ featureConfig?.users?.scopes?.delete }
-                            >
+                            <>
                                 <UserImpersonationAction
                                     user={ user }
                                     isLocked={ accountLocked }
@@ -1073,6 +1077,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 ) : null
                                         }
                                         {
+                                            hasUsersUpdatePermissions &&
                                             !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                                 <DangerZone
                                                     data-testid={ `${ testId }-account-disable-button` }
@@ -1092,7 +1097,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             )
                                         }
                                         {
-                                            !allowDeleteOnly && (
+                                            hasUsersUpdatePermissions && !allowDeleteOnly && (
                                                 <DangerZone
                                                     data-testid={ `${ testId }-danger-zone-toggle` }
                                                     actionTitle={ t("user:editUser." +
@@ -1118,6 +1123,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             )
                                         }
                                         {
+                                            hasUsersUpdatePermissions &&
                                             userConfig?.enableAdminPrivilegeRevokeOption && !isPrivilegedUser &&
                                             adminUserType === AdminAccountTypes.INTERNAL &&
                                             associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
@@ -1137,7 +1143,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 />
                                             )
                                         }
-                                        { !isUserCurrentLoggedInUser &&
+                                        { !isUserCurrentLoggedInUser && hasUsersDeletePermissions &&
                                             getUserNameWithoutDomain(user.userName) !== adminUsername && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone` }
@@ -1164,7 +1170,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ) }
                                     </DangerZoneGroup>
                                 ) }
-                            </Show>
+                            </>
                         ) : null }
             </>
         );

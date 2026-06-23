@@ -53,14 +53,24 @@ export interface ConsoleSettingsNS {
             organizationPermissions: {
                 label: string;
             };
+            permissionsCount: string;
             tenantPermissions: {
                 label: string;
             };
         };
         tabLabel: string;
         permissionLevels: {
-            edit: string;
             view: string;
+            edit: string;
+            selectAll: string;
+            selectCollection: string;
+            read: string;
+            create: string;
+            update: string;
+            delete: string;
+            viewRequiredWarning: string;
+            viewLockedRow: string;
+            viewSelectAllLocked: string;
         };
     };
     enterpriseLogin: {

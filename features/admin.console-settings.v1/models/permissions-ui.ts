@@ -47,18 +47,34 @@ export interface SelectedPermissionsInterface {
 
 /**
  * Interface to represent selected permission category.
+ *
+ * In the legacy (non-granular) mode only `read`, `write`, and `permissions` are populated.
+ * In the granular mode `write` is always `false` and the individual `create`, `update`,
+ * and `delete` flags are used instead.
  */
 export interface SelectedPermissionCategoryInterface {
     /**
-     * Indicates if the permission is read only.
+     * Indicates that the read permission level is selected.
      */
     read: boolean;
     /**
-     * Indicates if the permission is write only.
+     * Indicates that the write permission level is selected.
      */
     write: boolean;
     /**
-     * Indicates if the permission is delete only.
+     * Indicates that the create permission level is selected.
+     */
+    create?: boolean;
+    /**
+     * Indicates that the update permission level is selected.
+     */
+    update?: boolean;
+    /**
+     * Indicates that the delete permission level is selected.
+     */
+    delete?: boolean;
+    /**
+     * Flat list of permission scope values that are currently active for this collection.
      */
     permissions: PermissionScopeInterface[];
 }
