@@ -34,8 +34,11 @@
                 "settingsEnabled": false
             },
             "moesif": {
+                "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
-                "embeddedPortalUrl": ""
+                "embeddedPortalUrl": "",
+                "moesifTermsOfServiceUrl": "https://www.moesif.com/terms/",
+                "termsOfServiceUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
