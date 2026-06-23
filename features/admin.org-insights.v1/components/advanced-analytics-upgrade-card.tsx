@@ -33,7 +33,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import analyticsPreview from "../assets/preview/analytics_preview.png";
+import analyticsPreview from "../assets/preview/analytics_preview.svg";
 
 /**
  * Plain white announcement banner: title and description on the left, enable action on the right.
@@ -105,7 +105,7 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                             sx={ { ml: 1 } }
                         />
                     </Stack>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body1" color="text.secondary">
                         { t("insights:advancedAnalytics.card.description") }
                     </Typography>
                 </Box>
