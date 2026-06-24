@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.13.5
+
+### Patch Changes
+
+- [#10451](https://github.com/wso2/identity-apps/pull/10451) [`3d5172bf2d942be94ea69ce72b15552cb7bd7d71`](https://github.com/wso2/identity-apps/commit/3d5172bf2d942be94ea69ce72b15552cb7bd7d71) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Update certificate preview to display correct subjectDN
+
+- Updated dependencies [[`3d5172bf2d942be94ea69ce72b15552cb7bd7d71`](https://github.com/wso2/identity-apps/commit/3d5172bf2d942be94ea69ce72b15552cb7bd7d71)]:
+  - @wso2is/react-components@2.10.3
+
 ## 4.13.4
 
 ### Patch Changes
