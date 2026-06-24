@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.3
+
+### Patch Changes
+
+- [#10457](https://github.com/wso2/identity-apps/pull/10457) [`521e4218e1a6f814930e7f35ccdc7bfbf081e3f6`](https://github.com/wso2/identity-apps/commit/521e4218e1a6f814930e7f35ccdc7bfbf081e3f6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add logic to disable captcha prompting for console application logic
+
 ## 5.3.2
 
 ### Patch Changes
