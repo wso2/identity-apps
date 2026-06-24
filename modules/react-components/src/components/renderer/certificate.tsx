@@ -74,6 +74,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     const {
         version,
         issuerDN,
+        subjectDN,
         validFrom,
         validTill
     } = props.certificate;
@@ -264,7 +265,10 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
                                 <Grid.Column computer={ 6 } mobile={ 6 } tablet={ 6 }>
                                     <p className="certificate-field">
                                         <span>
-                                            { Object.entries(attribute)[ 0 ][ 1 ] }
+                                            { subjectDN[ index ]
+                                                ? Object.entries(subjectDN[ index ])[ 0 ][ 1 ]
+                                                : "-"
+                                            }
                                         </span>
                                     </p>
                                 </Grid.Column>
