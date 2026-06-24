@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.13.6
+
+### Patch Changes
+
+- [#10465](https://github.com/wso2/identity-apps/pull/10465) [`67d6d3ec5bcb4afa865bfaf3a888802fd340f8f2`](https://github.com/wso2/identity-apps/commit/67d6d3ec5bcb4afa865bfaf3a888802fd340f8f2) Thanks [@hwupathum](https://github.com/hwupathum)! - Bump console version
+
 ## 4.13.5
 
 ### Patch Changes
