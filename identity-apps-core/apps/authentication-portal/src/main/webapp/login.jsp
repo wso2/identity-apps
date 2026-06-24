@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -267,8 +267,10 @@
     }
 %>
 <%
+    boolean isCaptchaDisabledForApp = CaptchaUtil.isCaptchaDisabledForApplication(request.getParameter("spId"), tenantDomain);
     boolean reCaptchaEnabled = false;
-    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha")) &&
+        !isCaptchaDisabledForApp) {
         reCaptchaEnabled = true;
     }
 
@@ -461,7 +463,8 @@
     <% } %>
 
     <%
-        boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
+        boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor") &&
+            !isCaptchaDisabledForApp;
         if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
