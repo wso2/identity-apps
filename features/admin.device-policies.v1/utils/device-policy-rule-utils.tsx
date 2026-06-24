@@ -29,6 +29,7 @@ import React, { FunctionComponent, ReactElement, SVGProps } from "react";
 import {
     DevicePolicyExpressionInterface,
     DevicePolicyFieldDefinitionInterface,
+    PolicyANDRuleInterface,
     PolicyExpressionInterface,
     PolicyResourceResponseInterface,
     PolicyRuleInterface
@@ -64,18 +65,20 @@ export const mapToConditionsMeta = (
  * @returns Flat policy rule payload.
  */
 export const buildFlatRule = (rule: RuleWithoutIdInterface | null): PolicyRuleInterface => {
-    const expressions: PolicyExpressionInterface[] = (rule?.rules ?? []).flatMap(
-        (group: RuleConditionWithoutIdInterface) =>
-            (group.expressions ?? []).map(
+    const rules: PolicyANDRuleInterface[] = (rule?.rules ?? []).map(
+        (group: RuleConditionWithoutIdInterface): PolicyANDRuleInterface => ({
+            condition: "AND",
+            expressions: (group.expressions ?? []).map(
                 (e: { field: string; operator: string; value: string }): PolicyExpressionInterface => ({
                     field: e.field,
                     operator: e.operator,
                     value: e.value
                 })
             )
+        })
     );
 
-    return { condition: "AND", expressions };
+    return { condition: "OR", rules };
 };
 
 /**

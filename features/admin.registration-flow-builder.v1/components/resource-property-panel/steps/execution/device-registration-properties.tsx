@@ -26,14 +26,14 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { useGetDevicePolicies } from "@wso2is/admin.device-policies.v1/hooks/use-get-device-policies";
-import { DevicePolicyResponseInterface } from "@wso2is/admin.device-policies.v1/models/device-policy";
+import { PolicyListItemInterface } from "@wso2is/admin.device-policies.v1/models/device-policy";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 
 type DeviceRegistrationPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
-const NO_POLICY_OPTION: DevicePolicyResponseInterface = { id: "", name: "No policy (skip check)" };
+const NO_POLICY_OPTION: PolicyListItemInterface = { id: "", name: "No policy (skip check)" };
 
 /**
  * Property panel for the DeviceRegistrationExecutor step.
@@ -44,22 +44,22 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
     onChange,
     "data-componentid": componentId = "device-registration-properties"
 }: DeviceRegistrationPropertiesPropsInterface): ReactElement => {
-    const { data: policies, isLoading, error } = useGetDevicePolicies();
+    const { data: policyListResponse, isLoading, error } = useGetDevicePolicies();
 
-    const options: DevicePolicyResponseInterface[] = useMemo((): DevicePolicyResponseInterface[] => {
-        return [ NO_POLICY_OPTION, ...(policies ?? []) ];
-    }, [ policies ]);
+    const options: PolicyListItemInterface[] = useMemo((): PolicyListItemInterface[] => {
+        return [ NO_POLICY_OPTION, ...(policyListResponse?.policies ?? []) ];
+    }, [ policyListResponse ]);
 
     const currentPolicyName: string = resource?.data?.action?.executor?.meta?.policyName ?? "";
 
-    const selectedPolicy: DevicePolicyResponseInterface = useMemo(
-        (): DevicePolicyResponseInterface =>
-            options.find((p: DevicePolicyResponseInterface): boolean => p.name === currentPolicyName)
+    const selectedPolicy: PolicyListItemInterface = useMemo(
+        (): PolicyListItemInterface =>
+            options.find((p: PolicyListItemInterface): boolean => p.name === currentPolicyName)
             ?? NO_POLICY_OPTION,
         [ options, currentPolicyName ]
     );
 
-    const handleChange = (_e: React.SyntheticEvent, value: DevicePolicyResponseInterface): void => {
+    const handleChange = (_e: React.SyntheticEvent, value: PolicyListItemInterface): void => {
         onChange(
             "action.executor.meta.policyName",
             value?.id ? value.name : "",
@@ -86,10 +86,10 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
                 key={ resource.id }
                 options={ options }
                 loading={ isLoading }
-                getOptionLabel={ (option: DevicePolicyResponseInterface): string => option.name }
+                getOptionLabel={ (option: PolicyListItemInterface): string => option.name }
                 isOptionEqualToValue={ (
-                    option: DevicePolicyResponseInterface,
-                    value: DevicePolicyResponseInterface
+                    option: PolicyListItemInterface,
+                    value: PolicyListItemInterface
                 ): boolean => option.id === value.id }
                 value={ selectedPolicy }
                 onChange={ handleChange }

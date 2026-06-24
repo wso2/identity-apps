@@ -24,9 +24,14 @@ export interface PolicyExpressionInterface {
     value: string;
 }
 
-export interface PolicyRuleInterface {
-    condition: "AND" | "OR";
+export interface PolicyANDRuleInterface {
+    condition: "AND";
     expressions: PolicyExpressionInterface[];
+}
+
+export interface PolicyRuleInterface {
+    condition: "OR";
+    rules: PolicyANDRuleInterface[];
 }
 
 export interface PolicyResourceRequestInterface {
