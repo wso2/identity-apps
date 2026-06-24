@@ -73,13 +73,15 @@ export enum ExecutionTypes {
     PasskeyEnrollment = "FIDO2Executor",
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",
-    FlowExtension = "FlowExtensionExecutor"
+    FlowExtension = "FlowExtensionExecutor",
+    DigitalWalletFederation = "OpenID4VPRegistrationExecutor"
 }
 
 export enum ExecutionStepViewTypes {
     Default = "Execution",
     MagicLinkView = "Magic Link View",
-    PasskeyView = "Passkey View"
+    PasskeyView = "Passkey View",
+    WalletView = "Digital Wallet"
 }
 
 export enum ViewStepVariants {

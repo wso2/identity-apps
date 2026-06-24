@@ -104,6 +104,10 @@ export const pages: pagesNS = {
         subTitle: "Create and manage OpenID Connect (OIDC) scopes and the attributes bound to the scopes.",
         title: "OpenID Connect Scopes"
     },
+    openid4vpConfig: {
+        subTitle: "Configure OpenID for Verifiable Presentations (OpenID4VP) settings for organization.",
+        title: "OpenID4VP Configuration"
+    },
     oidcScopesEdit: {
         backButton: "Go back to Scopes",
         title: "Edit scope: {{ name }}"

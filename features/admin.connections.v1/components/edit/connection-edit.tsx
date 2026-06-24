@@ -31,6 +31,7 @@ import {
     AttributeSettings,
     AuthenticatorSettings,
     ConnectedApps,
+    DigitalCredentialsClaimMappingSettings,
     GeneralSettings,
     IdentityProviderGroupsTab,
     OutboundProvisioningSettings
@@ -175,6 +176,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+    const isDigitalCredentialsConnection: boolean = identityProvider?.templateId ===
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS;
     const isEnterpriseConnection: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
             FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
@@ -371,6 +374,41 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         </ResourceTab.Pane>
     );
 
+    const DigitalCredentialsConfigurationTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <GeneralSettings
+                showOnlyNameAndDescription={ true }
+                hideIdPLogoEditField={ ConnectionsManagementUtils.hideLogoInputFieldInIdPGeneralSettingsForm(
+                    identityProvider?.templateId
+                ) }
+                templateType={ type }
+                isSaml={ isSaml }
+                isOidc={ isOidc }
+                isCustomAuthenticator={ isCustomAuthenticator }
+                editingIDP={ identityProvider }
+                isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ onUpdate }
+                data-testid={ `${testId}-general-settings` }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const DigitalCredentialsClaimMappingTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <DigitalCredentialsClaimMappingSettings
+                identityProvider={ identityProvider }
+                isLoading={ isLoading }
+                isReadOnly={ isReadOnly }
+                onUpdate={ onUpdate }
+                loader={ Loader }
+                data-testid={ `${ testId }-digital-credentials-claim-mapping` }
+            />
+        </ResourceTab.Pane>
+    );
+
     useEffect(() => {
         setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
@@ -429,6 +467,65 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
+
+        if (isDigitalCredentialsConnection) {
+            if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+                panes.push(...tabPaneExtensions);
+            }
+
+            panes.push({
+                "data-tabid": "digital-credentials-configuration",
+                menuItem: "General",
+                render: DigitalCredentialsConfigurationTabPane
+            });
+
+            panes.push({
+                "data-tabid": "digital-credentials-settings",
+                menuItem: "Settings",
+                render: AuthenticatorSettingsTabPane
+            });
+
+            panes.push({
+                "data-tabid": "digital-credentials-claim-mapping",
+                menuItem: "Attributes",
+                render: DigitalCredentialsClaimMappingTabPane
+            });
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) &&
+                hasApplicationReadPermissions
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
+                    menuItem: "Connected Apps",
+                    render: ConnectedAppsTabPane
+                });
+            }
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
+                identityProviderConfig.editIdentityProvider.showJitProvisioning
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
+                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                    render: JITProvisioningSettingsTabPane
+                });
+            }
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
+                identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
+                    menuItem: "Advanced",
+                    render: AdvancedSettingsTabPane
+                });
+            }
+
+            return panes;
+        }
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
@@ -586,6 +683,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             !isExpertMode &&
             !isCustomAuthenticator &&
             !isOutboundProvisioningConnection &&
+            !isDigitalCredentialsConnection &&
             !tabPaneExtensions)
     ) {
         return <Loader />;

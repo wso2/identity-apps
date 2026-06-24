@@ -952,6 +952,7 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
+    vpTemplates: string;
     copilot: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;

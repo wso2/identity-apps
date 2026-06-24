@@ -226,7 +226,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
                     exact: true,
                     id: "editVCTemplate",
-                    name: "Edit Verifiable Credential",
+                    name: "Edit Credential Template",
                     path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -243,6 +243,35 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Verifiable Credentials",
             order: 7,
             path: AppConstants.getPaths().get("VC_TEMPLATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            children: [
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.presentation-definitions.v1/pages/presentation-definition-edit"
+                        )),
+                    exact: true,
+                    id: "editVPDefinition",
+                    name: "Edit Presentation Definition",
+                    path: AppConstants.getPaths().get("VP_DEFINITION_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.presentation-definitions.v1/pages/presentation-definitions")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.PRESENTATION_DEFINITIONS,
+            icon: {
+                icon: getSidePanelIcons().presentationDefinitions
+            },
+            id: "presentationDefinitions",
+            name: "Presentation Definitions",
+            order: 8,
+            path: AppConstants.getPaths().get("VP_DEFINITIONS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -334,6 +363,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "impersonationConfiguration",
                     name: "console:impersonationConfig.title",
                     path: AppConstants.getPaths().get("IMPERSONATION"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.openid4vp-config.v1/pages/openid4vp-configuration")),
+                    exact: true,
+                    featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                        .LOGIN_AND_REGISTRATION_VERIFIABLE_CREDENTIALS_OPENID4VP,
+                    id: "openid4vpConfiguration",
+                    name: "console:openid4vpConfig.title",
+                    path: AppConstants.getPaths().get("OPENID4VP_CONFIG"),
                     protected: true,
                     showOnSidePanel: false
                 },

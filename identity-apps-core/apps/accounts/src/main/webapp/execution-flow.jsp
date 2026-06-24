@@ -126,6 +126,19 @@
         };
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        .wallet-reg-spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid #ddd; border-top-color: #ff7300;
+            border-radius: 50%; animation: wallet-reg-spin 1s linear infinite;
+            vertical-align: middle; margin-right: 8px;
+        }
+        @keyframes wallet-reg-spin { to { transform: rotate(360deg); } }
+        .wallet-reg-steps { text-align: left; padding-left: 20px; }
+        .wallet-reg-steps li { margin-bottom: 8px; color: #444; font-size: 13px; }
+    </style>
+
 </head>
 <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -190,7 +203,7 @@
                 return;
             }
 
-            const { createElement, useEffect, useState } = React;
+            const { createElement, useEffect, useState, useRef } = React;
             const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
@@ -230,6 +243,8 @@
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
+                const [ walletQR, setWalletQR ] = useState(null);
+                const walletPollRef = useRef(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -328,6 +343,58 @@
                     })
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
+
+                useEffect(() => {
+                    if (!walletQR) return;
+
+                    const { url, txnId, flowId } = walletQR;
+
+                    var poll = function() {
+                        fetch(executionFlowApiProxyPath, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                flowId: flowId,
+                                actionId: "",
+                                inputs: { vp_txnId: txnId }
+                            })
+                        })
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) {
+                            if (data.error) {
+                                if (data.error.flowType) setFlowType(data.error.flowType);
+                                setError(data.error);
+                                clearInterval(walletPollRef.current);
+                                walletPollRef.current = null;
+                                setWalletQR(null);
+                                return;
+                            }
+                            if (data.flowId) localStorage.setItem("flowId", data.flowId);
+                            if (data.flowType) setFlowType(data.flowType);
+
+                            if (data.flowStatus !== "INCOMPLETE") {
+                                clearInterval(walletPollRef.current);
+                                walletPollRef.current = null;
+                                var isEnded = handleFlowStatus(data);
+                                if (!isEnded) {
+                                    handleStepType(data);
+                                    setFlowData(data);
+                                }
+                                setWalletQR(null);
+                            }
+                        })
+                        .catch(function() {});
+                    };
+
+                    walletPollRef.current = setInterval(poll, 5000);
+
+                    return function() {
+                        if (walletPollRef.current) {
+                            clearInterval(walletPollRef.current);
+                            walletPollRef.current = null;
+                        }
+                    };
+                }, [ walletQR ]);
 
                 useEffect(() => {
                     if (error && error.code) {
@@ -435,10 +502,18 @@
                             handleViewStep(flow);
                             setComponents(flow.data.components || []);
                             break;
-                        case "REDIRECTION":
-                            setLoading(true);
-                            window.location.href = flow.data.redirectURL;
+                        case "REDIRECTION": {
+                            var redirectURL = flow.data.redirectURL;
+                            if (redirectURL && redirectURL.startsWith("openid4vp://")) {
+                                var txnId = flow.data.additionalData && flow.data.additionalData.vp_txnId;
+                                setWalletQR({ url: redirectURL, txnId: txnId, flowId: flow.flowId });
+                                setLoading(false);
+                            } else {
+                                setLoading(true);
+                                window.location.href = redirectURL;
+                            }
                             break;
+                        }
 
                         case "INTERNAL_PROMPT":
                             handleInternalPrompt(flow);
@@ -487,6 +562,58 @@
                     );
                 }
 
+                const WalletQRView = function() {
+                    var qrRef = useRef(null);
+
+                    useEffect(function() {
+                        if (qrRef.current && walletQR && walletQR.url && typeof QRCode !== 'undefined') {
+                            qrRef.current.innerHTML = '';
+                            new QRCode(qrRef.current, {
+                                text: walletQR.url,
+                                width: 250,
+                                height: 250,
+                                colorDark: '#000000',
+                                colorLight: '#ffffff',
+                                correctLevel: QRCode.CorrectLevel.M
+                            });
+                        }
+                    }, []);
+
+                    return createElement("div", { className: "segment-form" },
+                        createElement("h3", { className: "ui header text-center" }, "Register with Digital Wallet"),
+                        createElement("p", { className: "text-center", style: { color: "#666", fontSize: "14px" } },
+                            "Scan the QR code below with your digital wallet to share your credentials"
+                        ),
+                        createElement("div", { className: "ui divider hidden" }),
+                        createElement("div", { className: "field text-center" },
+                            createElement("div", { ref: qrRef, style: { margin: "0 auto", width: "250px", height: "250px", display: "flex", alignItems: "center", justifyContent: "center" } })
+                        ),
+                        createElement("div", { className: "ui divider hidden" }),
+                        createElement("div", { className: "text-center" },
+                            createElement("span", { className: "wallet-reg-spinner" }),
+                            createElement("span", null, "Waiting for wallet verification...")
+                        ),
+                        createElement("div", { className: "ui info message", style: { marginTop: "16px" } },
+                            createElement("div", { className: "header", style: { fontSize: "14px", marginBottom: "10px" } }, "How to register"),
+                            createElement("ol", { className: "wallet-reg-steps" },
+                                createElement("li", null, "Open your digital wallet app (e.g. Inji)"),
+                                createElement("li", null, "Scan the QR code above"),
+                                createElement("li", null, "Review the credential request"),
+                                createElement("li", null, "Approve to share your credentials")
+                            )
+                        ),
+                        createElement("div", { className: "ui divider hidden" }),
+                        createElement("div", { className: "text-center" },
+                            createElement("p", { style: { color: "#888", fontSize: "13px", marginBottom: "10px" } },
+                                "Or tap below if you're on mobile:"
+                            ),
+                            createElement("a", { href: walletQR && walletQR.url, className: "ui primary fluid large button" },
+                                "Open in Wallet"
+                            )
+                        )
+                    );
+                };
+
                 // An auto-login assertion means the flow has completed. Submit the auto-login form
                 // regardless of the previous step type, so a passkey (WEBAUTHN) step that completes
                 // the flow does not get re-rendered and stall the auto-login.
@@ -506,6 +633,14 @@
                                 passkeyError: flowError
                             }
                         )
+                    );
+                }
+
+                if (walletQR) {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(WalletQRView, null)
                     );
                 }
 

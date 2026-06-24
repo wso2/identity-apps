@@ -32,6 +32,9 @@ import sortBy from "lodash-es/sortBy";
 import {
     ReactComponent as ResourceServersIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg";
+import {
+    ReactComponent as VerifiableCredentialsOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -274,6 +277,9 @@ export class RouteUtils {
         const isMcpServersFeatureEnabled: boolean =
             window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
+        const isOpenID4VPEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.openid4vpConfig?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -343,6 +349,13 @@ export class RouteUtils {
         const verifiableCredentials: NavCategory = {
             id: "verifiableCredentials",
             order: 2
+        };
+
+        const credentialTypes: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: VerifiableCredentialsOutlineIcon,
+            id: "credentialTypes",
+            name: "Verifiable Credentials",
+            order: 3
         };
 
         const preferences: NavCategory = {
@@ -427,9 +440,18 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/organizations")
             },
             {
-                category: verifiableCredentials,
+                category: manage,
                 id: "verifiableCredentials",
+                order: 0,
+                parent: isOpenID4VPEnabled ? credentialTypes : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")
+            },
+            {
+                category: manage,
+                id: "presentationDefinitions",
+                order: 1,
+                parent: credentialTypes,
+                selected: history.location.pathname.includes("/presentation-definitions")
             },
             {
                 category: workflows,

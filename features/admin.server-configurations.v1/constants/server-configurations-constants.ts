@@ -476,6 +476,7 @@ export class ServerConfigurationsConstants {
     public static readonly IMPERSONATION: string = "impersonation";
     public static readonly ISSUER_USAGE_SCOPE: string = "issuer-usage-scope";
     public static readonly FAPI_SECURITY_POLICY: string = "fapi-security-policy";
+    public static readonly OPENID4VP_CONFIG: string = "openid4vp-config";
 
     /**
      * Login Security Category Constants.

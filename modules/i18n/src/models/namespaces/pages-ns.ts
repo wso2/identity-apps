@@ -107,6 +107,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    openid4vpConfig: {
+        title: string;
+        subTitle: string;
+    };
     oidcScopesEdit: {
         title: string;
         backButton: string;

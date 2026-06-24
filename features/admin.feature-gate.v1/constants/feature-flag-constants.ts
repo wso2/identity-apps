@@ -88,6 +88,9 @@ class FeatureFlagConstants {
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
         USER_STORES_REMOTE_USER_STORES: "console.userStores.remoteUserStores",
+        PRESENTATION_DEFINITIONS: "presentationDefinitions",
+        LOGIN_AND_REGISTRATION_VERIFIABLE_CREDENTIALS_OPENID4VP:
+            "loginAndRegistration.verifiableCredentials.openid4vp",
         VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         WEBHOOKS: "webhooks",
         WEBHOOKS_FEATURE_GATE: "console.webhooks",

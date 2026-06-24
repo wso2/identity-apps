@@ -37,6 +37,7 @@ interface AttributesSelectionV2Props extends TestableComponentInterface {
     mappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
     onAttributesSelected: (mappingsToBeAdded: ConnectionCommonClaimMappingInterface[]) => void;
     isReadOnly: boolean;
+    allowedMappedValues?: string[];
 }
 
 const FORM_ID: string = "idp-attribute-selection-v2-form";
@@ -60,6 +61,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         mappedAttributesList,
         onAttributesSelected,
         isReadOnly,
+        allowedMappedValues,
         [ "data-testid" ]: testId
     } = props;
 
@@ -260,6 +262,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                         </Table.Header>
                                         <Table.Body>
                                             <AttributeMappingList
+                                                allowedMappedValues={ allowedMappedValues }
                                                 alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
                                                 attributeMappingsListToShow={
                                                     mappedAttributesList.filter(
@@ -324,6 +327,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             </Grid.Row>
             { showAddModal && (
                 <AddAttributeSelectionModal
+                    allowedMappedValues={ allowedMappedValues }
                     attributeList={ [ ...attributeList.filter((attribute: ConnectionClaimInterface) =>
                         !mappedAttrIds.includes(attribute.id)) ] }
                     alreadyMappedAttributesList={ [ ...mappedAttributesList ] }

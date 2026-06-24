@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import CustomAuthenticatorCreateWizard from "./custom-authenticator-create-wizard";
+import { DigitalCredentialsConnectionCreateWizard } from "./digital-credentials-connection-create-wizard";
 import { EnterpriseConnectionCreateWizard } from "./enterprise-connection-create-wizard";
 import { OutboundProvisioningConnectionCreateWizard } from "./outbound-provisioning-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
@@ -363,6 +364,23 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION:
                 return (
                     <OutboundProvisioningConnectionCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            handleModalVisibility(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                );
+
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS:
+                return (
+                    <DigitalCredentialsConnectionCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

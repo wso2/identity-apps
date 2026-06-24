@@ -270,7 +270,7 @@
             "openid",
             "profile"
         ],
-        "serverOrigin": "https://localhost:9443",
+        "serverOrigin": "https://babara-unexclusive-debbi.ngrok-free.dev",
         "storage": "webWorker"
     },
     "loginCallbackPath": "",
@@ -281,7 +281,7 @@
         "login": "",
         "logout": "/logout"
     },
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://babara-unexclusive-debbi.ngrok-free.dev",
     "session": {
         "checkSessionInterval": 3.0,
         "sessionRefreshTimeOut": 300.0,
@@ -1425,6 +1425,10 @@
                         "flag": ""
                     },
                     {
+                        "feature": "loginAndRegistration.verifiableCredentials.openid4vp",
+                        "flag": ""
+                    },
+                    {
                         "feature": "consents.policyConsents",
                         "flag": ""
                     },
@@ -2170,6 +2174,43 @@
                     }
                 }
             },
+            "presentationDefinitions": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                            "internal_vp_template_create"
+                    ],
+                    "delete": [
+                            "internal_vp_template_delete"
+                    ],
+                    "read": [
+                            "internal_application_mgt_view"
+                    ],
+                    "update": [
+                            "internal_vp_template_update"
+                    ]
+                }
+            },
+            "openid4vpConfig": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:openid4vpConfig"
+                    ],
+                    "read": [
+                        "internal_config_mgt_view"
+                    ],
+                    "update": [
+                        "internal_config_mgt_update"
+                    ]
+                }
+            },
             "verifiableCredentials": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -2264,7 +2305,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenApplicationTemplates": [],
+        "hiddenApplicationTemplates": ["verifier-application"],
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
             "OAuthRequestPathAuthenticator"
@@ -2362,6 +2403,7 @@
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",
+                "presentationDefinitions": "v0.0.0",
                 "residentOutboundProvisioning": "v0.0.0",
                 "roles": "v0.0.0",
                 "self-registration-connector": "v1.0.0",

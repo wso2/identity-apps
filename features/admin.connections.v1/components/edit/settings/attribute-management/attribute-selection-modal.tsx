@@ -31,6 +31,7 @@ import {
 interface AddAttributeSelectionModalProps extends TestableComponentInterface {
     attributeList: Array<ConnectionClaimInterface>;
     alreadyMappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
+    allowedMappedValues?: string[];
     onClose: () => void;
     onSave: (mappingsToBeAdded: ConnectionCommonClaimMappingInterface[]) => void;
     show: boolean;
@@ -50,6 +51,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
     const {
         attributeList,
         alreadyMappedAttributesList,
+        allowedMappedValues,
         show,
         onClose,
         onSave
@@ -199,6 +201,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                             <AttributeMappingAddItem
                                 availableAttributeList={ copyOfAttributes }
                                 alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
+                                allowedMappedValues={ allowedMappedValues }
                                 onSubmit={ onAttributeMappingAdd }
                             />
                         </Grid.Column>
@@ -238,6 +241,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                     <Table.Body>
                                         <AttributeMappingList
                                             key="attribute-mapping-working-list"
+                                            allowedMappedValues={ allowedMappedValues }
                                             alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
                                             onMappingDeleted={ onMappingDeleted }
                                             onMappingEdited={ onMappingEdited }

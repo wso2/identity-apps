@@ -115,6 +115,30 @@
     },
     {
         "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Digital Wallet",
+            "image": "assets/images/icons/scan.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "OpenID4VPRegistrationExecutor",
+                    "meta": {
+                        "idpName": ""
+                    }
+                },
+                "next": ""
+            }
+        }
+    },
+    {
+        "resourceType": "STEP",
         "category": "INTERFACE",
         "type": "VIEW",
         "variant": "PREFERENCE_MANAGEMENT",

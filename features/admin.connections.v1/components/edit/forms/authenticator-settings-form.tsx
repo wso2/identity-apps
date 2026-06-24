@@ -285,7 +285,17 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      */
     const renderFormFields = () => {
         if (settings) {
-            return renderDynamicFormFields(settings?.edit?.tabs?.settings);
+            const settingsConfig: any = settings?.edit?.tabs?.settings;
+
+            if (Array.isArray(settingsConfig)) {
+                return renderDynamicFormFields(settingsConfig);
+            }
+
+            if (Array.isArray(settingsConfig?.fields)) {
+                return renderDynamicFormFields(settingsConfig.fields);
+            }
+
+            return null;
         } else if (formFields) {
             const fields: DynamicInputElementsInterface[] = [];
 

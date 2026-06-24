@@ -18,7 +18,6 @@
 
 import { Field, FieldConstants, Form, FormPropsInterface } from "@wso2is/forms";
 import { Code, Popup } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
@@ -42,11 +41,10 @@ interface AttributeMappingListItemProps {
      * times and map attributes before saving.
      */
     alreadyMappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
+    allowedMappedValues?: string[];
     mapping?: ConnectionCommonClaimMappingInterface;
     onSubmit: (mapping: ConnectionCommonClaimMappingInterface) => void;
 }
-
-const toBits = (bool: boolean): number => bool ? 1 : 0;
 
 const FORM_ID: string = "idp-attributes-mapping-list-item-form";
 
@@ -79,6 +77,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         onSubmit,
         availableAttributeList,
         alreadyMappedAttributesList,
+        allowedMappedValues,
         mapping
     } = props;
 
@@ -108,6 +107,14 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             setCopyOfAttrs(copy);
         }
     }, [ availableAttributeList ]);
+
+    const getAllowedMappedValueOptions = () => {
+        return (allowedMappedValues ?? []).map((claimName: string) => ({
+            key: claimName,
+            text: claimName,
+            value: claimName
+        }));
+    };
 
     /**
      * Form submission handler.
@@ -142,71 +149,90 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             <Grid>
                 <Grid.Row columns={ 3 }>
                     <Grid.Column width={ 7 }>
-                        <Field.Input
-                            required
-                            name="mappedValue"
-                            inputType="identifier"
-                            maxLength={ 120 }
-                            minLength={ 1 }
-                            placeholder={
-                                t("idp:forms.attributeSettings.attributeMapping." +
-                                    "externalAttributeInput.placeHolder")
-                            }
-                            ariaLabel="External IdP Attribute Mapping Value"
-                            validation={ (value: string) => {
-                                if (!value || !value.trim()) {
-                                    setMappingHasError(true);
+                        {
+                            Array.isArray(allowedMappedValues) && allowedMappedValues.length > 0
+                                ? (
+                                    <Field.Dropdown
+                                        required
+                                        search
+                                        clearable
+                                        name="mappedValue"
+                                        options={ getAllowedMappedValueOptions() }
+                                        placeholder={
+                                            t("idp:forms.attributeSettings.attributeMapping." +
+                                                "externalAttributeInput.placeHolder")
+                                        }
+                                        ariaLabel="External IdP Attribute Mapping Value"
+                                        validation={ (value: string) => {
+                                            if (!value || !value.trim()) {
+                                                setMappingHasError(true);
 
-                                    return FieldConstants.FIELD_REQUIRED_ERROR;
-                                }
+                                                return FieldConstants.FIELD_REQUIRED_ERROR;
+                                            }
 
-                                /**
-                                 * Entity category support attribute values MUST be URIs. Such values
-                                 * are also referred to as "category support URIs" but at the same time
-                                 * our server allows simple strings as well.
-                                 *
-                                 * In the following if condition we do a bitwise AND SC operation
-                                 * to either allow one of them.
-                                 *
-                                 * @see {@link https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
-                                 */
-                                if (toBits(!FormValidation.url(value)) &
-                                    toBits(!FormValidation.isValidResourceName(value))) {
-                                    setMappingHasError(true);
+                                            const mappedValues: Set<string> = new Set(
+                                                alreadyMappedAttributesList.map(
+                                                    (attributeMapping: ConnectionCommonClaimMappingInterface) =>
+                                                        attributeMapping.mappedValue
+                                                )
+                                            );
 
-                                    return FieldConstants.INVALID_RESOURCE_ERROR;
-                                }
+                                            if (mappedValues.has(value) && mapping?.mappedValue !== value) {
+                                                setMappingHasError(true);
 
-                                // Check whether this attribute external name is already mapped.
-                                const mappedValues: Set<string> = new Set(
-                                    alreadyMappedAttributesList.map(
-                                        (attributeMapping: ConnectionCommonClaimMappingInterface) =>
-                                            attributeMapping.mappedValue
-                                    )
-                                );
+                                                return t("idp:forms.attributeSettings.attributeMapping." +
+                                                    "externalAttributeInput.existingErrorMessage");
+                                            }
 
-                                if (mappedValues.has(value)) {
-                                    // This means we have a mapping value like this...
-                                    // But we need to make sure that if the current value
-                                    // actually differs from the model value if user is in
-                                    // editing mode...
-                                    if (mapping?.mappedValue === value) {
-                                        setMappingHasError(false);
+                                            setMappingHasError(false);
 
-                                        return undefined;
-                                    }
-                                    setMappingHasError(true);
+                                            return undefined;
+                                        } }
+                                        listen={ (value: string) => setMappedInputValue(value) }
+                                        width={ 16 }
+                                    />
+                                )
+                                : (
+                                    <Field.Input
+                                        required
+                                        name="mappedValue"
+                                        inputType="identifier"
+                                        maxLength={ 120 }
+                                        minLength={ 1 }
+                                        placeholder={
+                                            t("idp:forms.attributeSettings.attributeMapping." +
+                                                "externalAttributeInput.placeHolder")
+                                        }
+                                        ariaLabel="External IdP Attribute Mapping Value"
+                                        validation={ (value: string) => {
+                                            if (!value || !value.trim()) {
+                                                setMappingHasError(true);
 
-                                    return t("idp:forms.attributeSettings.attributeMapping." +
-                                        "externalAttributeInput.existingErrorMessage");
-                                }
-                                // If there's no errors.
-                                setMappingHasError(false);
+                                                return FieldConstants.FIELD_REQUIRED_ERROR;
+                                            }
 
-                                return undefined;
-                            } }
-                            listen={ (value: string) => setMappedInputValue(value) }
-                            width={ 16 }/>
+                                            const mappedValues: Set<string> = new Set(
+                                                alreadyMappedAttributesList.map(
+                                                    (attributeMapping: ConnectionCommonClaimMappingInterface) =>
+                                                        attributeMapping.mappedValue
+                                                )
+                                            );
+
+                                            if (mappedValues.has(value) && mapping?.mappedValue !== value) {
+                                                setMappingHasError(true);
+
+                                                return t("idp:forms.attributeSettings.attributeMapping." +
+                                                    "externalAttributeInput.existingErrorMessage");
+                                            }
+
+                                            setMappingHasError(false);
+
+                                            return undefined;
+                                        } }
+                                        listen={ (value: string) => setMappedInputValue(value) }
+                                        width={ 16 }/>
+                                )
+                        }
                     </Grid.Column>
                     <Grid.Column width={ 7 }>
                         <div>{ mapping?.claim?.displayName }</div>

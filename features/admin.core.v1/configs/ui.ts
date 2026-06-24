@@ -307,6 +307,7 @@ type GetSidePanelIconsInterface = {
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
+    presentationDefinitions: FunctionComponent | ReactNode,
     verifiableCredentials: FunctionComponent | ReactNode,
 };
 
@@ -367,6 +368,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
+        presentationDefinitions: VerifiableCredentialsOutlineIcon,
         verifiableCredentials: VerifiableCredentialsOutlineIcon
     };
 };
