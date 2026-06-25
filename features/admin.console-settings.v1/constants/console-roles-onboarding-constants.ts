@@ -35,6 +35,8 @@ export class ConsoleRolesOnboardingConstants {
     public static readonly ORG_ROLE_API_RESOURCES_COLLECTION_NAME: string = "org_roles";
     public static readonly ADMINISTRATOR: string = "Administrator";
     public static readonly ORG_PREFIX: string = "org_";
+
+    // `disabledFeatures` key that turns the granular console-permission model.
     public static readonly GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY: string =
         "consoleSettings.useGranularConsolePermissions";
 }

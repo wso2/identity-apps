@@ -302,6 +302,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
+        const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(tenantAPIResourceCollections);
+
         clonedTenantAPIResourceCollections.apiResourceCollections =
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
@@ -327,6 +330,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
+
+        const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(organizationAPIResourceCollections);
 
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
