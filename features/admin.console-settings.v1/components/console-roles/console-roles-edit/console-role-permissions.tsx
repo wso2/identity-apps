@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -36,7 +37,13 @@ import {
     Heading,
     PrimaryButton
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import flatMap from "lodash-es/flatMap";
+import fromPairs from "lodash-es/fromPairs";
 import isEmpty from "lodash-es/isEmpty";
+import mapValues from "lodash-es/mapValues";
+import omit from "lodash-es/omit";
+import values from "lodash-es/values";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,6 +114,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         state?.config?.ui?.features?.consoleSettings?.disabledFeatures);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
+        (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
 
     /**
      * Switches the permissions evaluation between the legacy and the granular mode.
@@ -127,6 +136,24 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
+    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(() => {
+        const topLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = mapValues(
+            featureConfig,
+            (feature: FeatureAccessConfigInterface) => omit(feature, [ "subFeatures" ])
+        );
+
+        const subLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = fromPairs(
+            flatMap(values(featureConfig), (feature: FeatureAccessConfigInterface) => {
+                return Object.entries(feature.subFeatures || {});
+            })
+        );
+
+        return {
+            ...topLevelFeatures,
+            ...subLevelFeatures
+        } as FeatureConfigInterface;
+    }, [ featureConfig ]);
+
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
         if (!tenantAPIResourceCollections) {
@@ -138,18 +165,23 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
-        return {
-            ...tenantAPIResourceCollections,
-            apiResourceCollections: tenantAPIResourceCollections.apiResourceCollections.filter(
+        const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(tenantAPIResourceCollections);
+
+        clonedTenantAPIResourceCollections.apiResourceCollections =
+            clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                 (item: APIResourceCollectionInterface) =>
                     !filteringAPIResourceCollectionNames.includes(item?.name) &&
                     (!useGranularConsolePermissions || (
-                        featureConfig?.[item?.name]?.enabled
-                        || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                        enabledFeatureOverridesInConsoleRolePermissions?.includes(item?.name)
+                        || flattenedFeatureConfig?.[item?.name]?.enabled
+                        || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
                     ))
-            )
-        };
-    }, [ tenantAPIResourceCollections, featureConfig, useGranularConsolePermissions ]);
+            );
+
+        return clonedTenantAPIResourceCollections;
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions,
+        useGranularConsolePermissions ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -162,14 +194,31 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
-        return {
-            ...organizationAPIResourceCollections,
-            apiResourceCollections: organizationAPIResourceCollections.apiResourceCollections.filter(
-                (item: APIResourceCollectionInterface) =>
-                    !filteringAPIResourceCollectionNames.includes(item?.name)
-            )
-        };
-    }, [ organizationAPIResourceCollections ]);
+        const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(organizationAPIResourceCollections);
+
+        clonedOrganizationAPIResourceCollections.apiResourceCollections =
+            clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
+                (item: APIResourceCollectionInterface) => {
+                    const itemName: string = item?.name ?? "";
+                    const featureNameWithoutOrgPrefix: string = itemName.startsWith(
+                        ConsoleRolesOnboardingConstants.ORG_PREFIX)
+                        ? itemName.substring(ConsoleRolesOnboardingConstants.ORG_PREFIX.length)
+                        : itemName;
+
+                    return !filteringAPIResourceCollectionNames.includes(itemName) &&
+                        (!useGranularConsolePermissions || (
+                            enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
+                            || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
+                            || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[
+                                featureNameWithoutOrgPrefix]]?.enabled
+                        ));
+                }
+            );
+
+        return clonedOrganizationAPIResourceCollections;
+    }, [ organizationAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions,
+        useGranularConsolePermissions ]);
 
     /**
      * Extracts all scope names from a permission-category array.
