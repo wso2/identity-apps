@@ -211,47 +211,35 @@
                                 <% } %>
 
                                 <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
-                                    <div class="sms-otp-fields equal width fields">
+                                    <div class="sms-otp-fields equal width fields segmented-otp-field">
                                         <input
-                                            hidden
                                             type="text"
                                             id="OTPCode"
                                             name="OTPcode"
-                                            class="form-control"
-                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
+                                            class="segmented-otp-input"
+                                            maxlength="<%=otpLength%>"
+                                            autocomplete="one-time-code"
+                                            autocorrect="off"
+                                            autocapitalize="off"
+                                            spellcheck="false"
+                                            inputmode="<%= isOnlyNumeric ? "numeric" : "text" %>"
+                                            autofocus
+                                            aria-label="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
                                         >
-                                        <% for (int index = 1; index <= otpLength;) {
-                                            String previousStringIndex = null;
-                                            if (index != 1) {
-                                                previousStringIndex = "pincode-" + (index - 1);
-                                            }
-                                            String currentStringIndex = "pincode-" + index;
-                                            index++;
-                                            String nextStringIndex = null;
-                                            if (index != (otpLength + 1)) {
-                                                nextStringIndex = "pincode-" + index;
-                                            }
-                                        %>
-                                            <div class="field mt-5">
-                                                <input
-                                                    class="text-center p-1 pb-3 pt-3"
-                                                    id=<%= currentStringIndex %>
-                                                    name=<%= currentStringIndex %>
-                                                    onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
-                                                    tabindex="1"
-                                                    placeholder="·"
-                                                    autofocus
-                                                    maxlength="1"
-                                                    autocomplete="off"
-                                                    type="text"
-                                                    inputmode=<%= isOnlyNumeric ? "numeric" : "text" %>
-                                                >
-                                            </div>
+                                        <% for (int index = 1; index <= otpLength; index++) { %>
+                                        <div class="field mt-5">
+                                            <div class="text-center p-1 pb-3 pt-3" id="pincode-<%=index%>" aria-hidden="true">·</div>
+                                        </div>
                                         <% } %>
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper">
-                                        <input type="text" id='OTPCode' name="OTPcode" size='30' autocomplete="off"/>
+                                        <input type="text" id='OTPCode' name="OTPcode" size='30'
+                                            autocomplete="one-time-code"
+                                            autocorrect="off"
+                                            autocapitalize="off"
+                                            spellcheck="false"
+                                            inputmode="<%= isOnlyNumeric ? "numeric" : "text" %>"/>
                                         <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
@@ -288,8 +276,9 @@
                                 <div class="buttons">
                                     <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
                                         <div>
-                                            <input type="button"
+                                            <input type="submit"
                                                 id="subButton"
+                                                disabled
                                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                                 class="ui primary fluid large button" />
                                         </div>
@@ -396,52 +385,83 @@
             var insightsTenantIdentifier = "<%=userTenant%>";
             var otpLength = "<%=otpLength%>";
 
-            function movetoNext(current, nextFieldID, previousID) {
-                var key = event.keyCode || event.charCode;
-                if(key == 8 || key == 46) {
-                    if (previousID != null && previousID != 'null') {
-                        document.getElementById(previousID).focus();
-                    }
-                } else {
-                    if (nextFieldID != null && nextFieldID != 'null' && current.value.length >= current.maxLength) {
-                        document.getElementById(nextFieldID).focus();
+            (function() {
+                var OTPInput = document.getElementById('OTPCode');
+                if (!OTPInput || !OTPInput.classList.contains('segmented-otp-input')) return;
+                var submitBtn = document.getElementById('subButton');
+                var otpLen = parseInt(otpLength);
+                var isOnlyNumeric = <%= isOnlyNumeric %>;
+
+                function updateDigitBoxes(value) {
+                    for (var i = 1; i <= otpLen; i++) {
+                        var box = document.getElementById('pincode-' + i);
+                        if (box) box.textContent = (value.length >= i) ? value[i - 1] : '·';
                     }
                 }
-            }
 
+                function updateCursor(value) {
+                    for (var i = 1; i <= otpLen; i++) {
+                        var box = document.getElementById('pincode-' + i);
+                        if (box) box.classList.remove('active-pincode');
+                    }
+                    if (value.length < otpLen) {
+                        var activeBox = document.getElementById('pincode-' + (value.length + 1));
+                        if (activeBox) activeBox.classList.add('active-pincode');
+                    }
+                }
+
+                function handlePaste(e) {
+                    e.preventDefault();
+                    var pasted = (e.clipboardData || window.clipboardData).getData('Text').replace(/\s/g, '');
+                    var isValid = isOnlyNumeric ? /^\d+$/.test(pasted) : pasted.length > 0;
+                    if (!isValid) return;
+                    OTPInput.value = pasted.slice(0, otpLen);
+                    OTPInput.dispatchEvent(new InputEvent('input', { bubbles: true }));
+                }
+
+                function handleKeypress(e) {
+                    if (!isOnlyNumeric) return;
+                    var char = String.fromCharCode(e.which);
+                    if (!/\d/.test(char)) e.preventDefault();
+                }
+
+                function handleInput() {
+                    var sanitized = isOnlyNumeric ? OTPInput.value.replace(/\D/g, '') : OTPInput.value.replace(/\s/g, '');
+                    if (sanitized !== OTPInput.value) OTPInput.value = sanitized;
+                    updateDigitBoxes(sanitized);
+                    updateCursor(sanitized);
+                    if (submitBtn) submitBtn.disabled = sanitized.length !== otpLen;
+                }
+
+                document.addEventListener('selectionchange', function () {
+                    if (document.activeElement === OTPInput) {
+                        OTPInput.selectionStart = OTPInput.selectionEnd = OTPInput.value.length;
+                    }
+                });
+                OTPInput.addEventListener('copy', function (e) { e.preventDefault(); });
+                OTPInput.addEventListener('cut', function (e) { e.preventDefault(); });
+                OTPInput.addEventListener('focus', function () { updateCursor(this.value); });
+                OTPInput.addEventListener('blur', function () { updateCursor(Array(otpLen + 1).join('x')); });
+                OTPInput.addEventListener('keypress', handleKeypress);
+                OTPInput.addEventListener('paste', handlePaste);
+                OTPInput.addEventListener('input', handleInput);
+                updateCursor(OTPInput.value);
+            })();
+
+            // Shim retained so reCaptcha data-callback="sub" continues to submit the form
+            // when captcha is solved (segmented + reCaptcha-enabled case).
             function sub() {
-
-                var token = null;
-                var hasNullDigit = false;
-
-                for(var i = 1; i <= otpLength; i++){
-                    var currentDigit = document.getElementById("pincode-"+i).value;
-                    if(!currentDigit || currentDigit == null || currentDigit == 'null') {
-                        hasNullDigit = true;
-                        break;
-                    }
-                    if(i === 1) {
-                        token = currentDigit;
-                    } else {
-                        token += currentDigit;
-                    }
-                }
-
-                document.getElementById('OTPCode').value = token;
-
-                if (!hasNullDigit) {
-                    trackEvent("authentication-portal-sms-otp-click-continue", {
-                        "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
-                    });
-                    // Disable during the initial submission to prevent double submissions.
-                    document.getElementById("subButton").disabled = true;
-                    document.getElementById("codeForm").submit();
-                }
-
+                var OTPInput = document.getElementById('OTPCode');
+                if (!OTPInput || OTPInput.value.length < parseInt(otpLength)) return;
+                trackEvent("authentication-portal-sms-otp-click-continue", {
+                    "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
+                });
+                document.getElementById("subButton").disabled = true;
+                document.getElementById("codeForm").submit();
             }
 
             function submitForm() {
-                
+
                 var insightsTenantIdentifier = "<%=userTenant%>";
                 var code = document.getElementById("OTPCode").value;
                 if (code == "") {
@@ -458,60 +478,6 @@
                         });
                         $('#codeForm').submit();
                     }
-                }
-            }
-
-            // Handle paste events
-    	    function handlePaste(e) {
-     	        var clipboardData, value;
-
-                // Stop data get being pasted into element
-                e.stopPropagation();
-                e.preventDefault();
-
-                // Get pasted data via clipboard API
-                clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text').trim();
-                
-                var isValid = true;
-                var firstInput = document.getElementById('pincode-1');
-                var isOnlyNumeric = firstInput && firstInput.getAttribute('inputmode') === 'numeric';
-                
-                if (isOnlyNumeric) {
-                    isValid = /^\d+$/.test(value);
-                } else {
-                    isValid = value.length > 0;
-                }
-                
-                if (isValid) {
-                    value = value.substring(0, otpLength);
-                    
-                    for (let n = 0; n < value.length && n < otpLength; ++n) {
-                        $("#pincode-" + (n+1)).val(value[n]);
-                    }
-                    
-                    if (value.length < otpLength) {
-                        $("#pincode-" + (value.length + 1)).focus();
-                    } else {
-                        $("#pincode-" + otpLength).focus();
-                        var hasNullDigit = false;
-                        for (let i = 1; i <= otpLength; i++) {
-                            if (!$("#pincode-" + i).val()) {
-                                hasNullDigit = true;
-                                break;
-                            }
-                        }
-                        
-                        if (!hasNullDigit) {
-                            document.getElementById("subButton").disabled = false;
-                        }
-                    }
-                }
-            }
-
-            for (let i = 1; i <= otpLength; i++) {
-                if (document.getElementById('pincode-' + i)) {
-                    document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
                 }
             }
 
