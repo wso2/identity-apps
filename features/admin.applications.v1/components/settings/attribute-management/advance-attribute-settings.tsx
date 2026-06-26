@@ -119,6 +119,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         useState<boolean>(initialSubject?.useMappedLocalSubject);
     const [ mandateLinkedLocalAccount, setMandateLinkedLocalAccount ] =
         useState<boolean>(initialSubject?.mappedLocalSubjectMandatory);
+    const [ includeTenantDomain, setIncludeTenantDomain ] =
+        useState<boolean>(initialSubject?.includeTenantDomain ?? false);
 
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
@@ -260,7 +262,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             },
             subject: {
                 claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
-                includeTenantDomain: !!values.subjectIncludeTenantDomain,
+                includeTenantDomain: includeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
                 useMappedLocalSubject: validateLinkedLocalAccount
@@ -556,6 +558,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                             <Field.CheckboxLegacy
                                                 ariaLabel="Subject include tenant domain"
                                                 name="subjectIncludeTenantDomain"
+                                                listen={ (value: boolean) => setIncludeTenantDomain(value) }
                                                 label={
                                                     t("applications:forms.advancedAttributeSettings" +
                                                         ".sections.subject.fields.subjectIncludeTenantDomain.label")
