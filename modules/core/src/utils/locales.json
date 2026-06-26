@@ -1004,11 +1004,6 @@
     "flag": "tg",
     "name": "Eʋegbe (Togo)"
   },
-  "ewo-ewo": {
-    "code": "ewo-ewo",
-    "flag": "cm",
-    "name": "Ewondo"
-  },
   "ewo-CM": {
     "code": "ewo-CM",
     "flag": "cm",
@@ -1023,11 +1018,6 @@
     "code": "fo-DK",
     "flag": "dk",
     "name": "Føroyskt (Denmark)"
-  },
-  "fil-fil": {
-    "code": "fil-fil",
-    "flag": "ph",
-    "name": "Filipino"
   },
   "fil-PH": {
     "code": "fil-PH",
@@ -1269,11 +1259,6 @@
     "flag": "fr",
     "name": "Français (Wallis & Futuna)"
   },
-  "fur-fur": {
-    "code": "fur-fur",
-    "flag": "fur",
-    "name": "Furlan"
-  },
   "fur-IT": {
     "code": "fur-IT",
     "flag": "it",
@@ -1399,11 +1384,6 @@
     "flag": "gu",
     "name": "ગુજરાતી (India)"
   },
-  "guz-guz": {
-    "code": "guz-guz",
-    "flag": "guz",
-    "name": "Ekegusii"
-  },
   "guz-KE": {
     "code": "guz-KE",
     "flag": "guz",
@@ -1428,11 +1408,6 @@
     "code": "ha-NG",
     "flag": "ha",
     "name": "Hausa (Nigeria)"
-  },
-  "haw-haw": {
-    "code": "haw-haw",
-    "flag": "haw",
-    "name": "ʻŌlelo Hawaiʻi"
   },
   "haw-US": {
     "code": "haw-US",
@@ -1488,11 +1463,6 @@
     "code": "ig-NG",
     "flag": "ig",
     "name": "Igbo (Nigeria)"
-  },
-  "smn-smn": {
-    "code": "smn-smn",
-    "flag": "smn",
-    "name": "Anarâškielâ"
   },
   "smn-FI": {
     "code": "smn-FI",
@@ -1554,40 +1524,20 @@
     "flag": "jp",
     "name": "日本語 (Japan)"
   },
-  "dyo-dyo": {
-    "code": "dyo-dyo",
-    "flag": "dyo",
-    "name": "Joola"
-  },
   "dyo-SN": {
     "code": "dyo-SN",
     "flag": "dyo",
     "name": "Joola (Senegal)"
-  },
-  "kea-kea": {
-    "code": "kea-kea",
-    "flag": "kea",
-    "name": "Kabuverdianu"
   },
   "kea-CV": {
     "code": "kea-CV",
     "flag": "kea",
     "name": "Kabuverdianu (Cape Verde)"
   },
-  "kab-kab": {
-    "code": "kab-kab",
-    "flag": "kab",
-    "name": "Taqbaylit"
-  },
   "kab-DZ": {
     "code": "kab-DZ",
     "flag": "kab",
     "name": "Taqbaylit (Algeria)"
-  },
-  "kkj-kkj": {
-    "code": "kkj-kkj",
-    "flag": "kkj",
-    "name": "Kakɔ"
   },
   "kkj-CM": {
     "code": "kkj-CM",
@@ -1604,20 +1554,10 @@
     "flag": "kl",
     "name": "Kalaallisut (Greenland)"
   },
-  "kln-kln": {
-    "code": "kln-kln",
-    "flag": "kln",
-    "name": "Kalenjin"
-  },
   "kln-KE": {
     "code": "kln-KE",
     "flag": "kln",
     "name": "Kalenjin (Kenya)"
-  },
-  "kam-kam": {
-    "code": "kam-kam",
-    "flag": "kam",
-    "name": "Kikamba"
   },
   "kam-KE": {
     "code": "kam-KE",
@@ -1684,11 +1624,6 @@
     "flag": "rw",
     "name": "Kinyarwanda (Rwanda)"
   },
-  "kok-kok": {
-    "code": "kok-kok",
-    "flag": "kok",
-    "name": "कोंकणी"
-  },
   "kok-IN": {
     "code": "kok-IN",
     "flag": "kok",
@@ -1709,30 +1644,15 @@
     "flag": "ko",
     "name": "한국어 (South Korea)"
   },
-  "khq-khq": {
-    "code": "khq-khq",
-    "flag": "khq",
-    "name": "Koyra ciini"
-  },
   "khq-ML": {
     "code": "khq-ML",
     "flag": "ml",
     "name": "Koyra ciini (Mali)"
   },
-  "ses-ses": {
-    "code": "ses-ses",
-    "flag": "ses",
-    "name": "Koyraboro senni"
-  },
   "ses-ML": {
     "code": "ses-ML",
     "flag": "ml",
     "name": "Koyraboro senni (Mali)"
-  },
-  "nmg-nmg": {
-    "code": "nmg-nmg",
-    "flag": "nmg",
-    "name": "Kwasio"
   },
   "nmg-CM": {
     "code": "nmg-CM",
@@ -1749,20 +1669,10 @@
     "flag": "ky",
     "name": "Кыргызча (Kyrgyzstan)"
   },
-  "lkt-lkt": {
-    "code": "lkt-lkt",
-    "flag": "lkt",
-    "name": "Lakȟótiyapi"
-  },
   "lkt-US": {
     "code": "lkt-US",
     "flag": "lkt",
     "name": "Lakȟótiyapi (United States)"
-  },
-  "lag-lag": {
-    "code": "lag-lag",
-    "flag": "lag",
-    "name": "Kĩlaangi"
   },
   "lag-TZ": {
     "code": "lag-TZ",
@@ -1824,11 +1734,6 @@
     "flag": "lt",
     "name": "Lietuvių (Lithuania)"
   },
-  "nds-nds": {
-    "code": "nds-nds",
-    "flag": "nds",
-    "name": "Plattdüütsch"
-  },
   "nds-DE": {
     "code": "nds-DE",
     "flag": "nds",
@@ -1838,11 +1743,6 @@
     "code": "nds-NL",
     "flag": "nds",
     "name": "Plattdüütsch (Netherlands)"
-  },
-  "dsb-dsb": {
-    "code": "dsb-dsb",
-    "flag": "dsb",
-    "name": "Dolnoserbšćina"
   },
   "dsb-DE": {
     "code": "dsb-DE",
@@ -1859,11 +1759,6 @@
     "flag": "lu",
     "name": "Tshiluba (Congo - Kinshasa)"
   },
-  "luo-luo": {
-    "code": "luo-luo",
-    "flag": "luo",
-    "name": "Dholuo"
-  },
   "luo-KE": {
     "code": "luo-KE",
     "flag": "luo",
@@ -1878,11 +1773,6 @@
     "code": "lb-LU",
     "flag": "lb",
     "name": "Lëtzebuergesch (Luxembourg)"
-  },
-  "luy-luy": {
-    "code": "luy-luy",
-    "flag": "luy",
-    "name": "Luluhia"
   },
   "luy-KE": {
     "code": "luy-KE",
@@ -1899,30 +1789,15 @@
     "flag": "mk",
     "name": "Македонски (Macedonia)"
   },
-  "jmc-jmc": {
-    "code": "jmc-jmc",
-    "flag": "jmc",
-    "name": "Kimachame"
-  },
   "jmc-TZ": {
     "code": "jmc-TZ",
     "flag": "jmc",
     "name": "Kimachame (Tanzania)"
   },
-  "mgh-mgh": {
-    "code": "mgh-mgh",
-    "flag": "mgh",
-    "name": "Makua"
-  },
   "mgh-MZ": {
     "code": "mgh-MZ",
     "flag": "mgh",
     "name": "Makua (Mozambique)"
-  },
-  "kde-kde": {
-    "code": "kde-kde",
-    "flag": "kde",
-    "name": "Chimakonde"
   },
   "kde-TZ": {
     "code": "kde-TZ",
@@ -1999,11 +1874,6 @@
     "flag": "mr",
     "name": "मराठी (India)"
   },
-  "mas-mas": {
-    "code": "mas-mas",
-    "flag": "mas",
-    "name": "Maa"
-  },
   "mas-KE": {
     "code": "mas-KE",
     "flag": "mas",
@@ -2014,30 +1884,15 @@
     "flag": "mas",
     "name": "Maa (Tanzania)"
   },
-  "mzn-mzn": {
-    "code": "mzn-mzn",
-    "flag": "mzn",
-    "name": "مازندرانی"
-  },
   "mzn-IR": {
     "code": "mzn-IR",
     "flag": "mzn",
     "name": "مازندرانی (Iran)"
   },
-  "mer-mer": {
-    "code": "mer-mer",
-    "flag": "mer",
-    "name": "Kĩmĩrũ"
-  },
   "mer-KE": {
     "code": "mer-KE",
     "flag": "mer",
     "name": "Kĩmĩrũ (Kenya)"
-  },
-  "mgo-mgo": {
-    "code": "mgo-mgo",
-    "flag": "mgo",
-    "name": "Metaʼ"
   },
   "mgo-CM": {
     "code": "mgo-CM",
@@ -2054,30 +1909,15 @@
     "flag": "mn",
     "name": "Монгол (Mongolia)"
   },
-  "mfe-mfe": {
-    "code": "mfe-mfe",
-    "flag": "mfe",
-    "name": "Kreol Morisien"
-  },
   "mfe-MU": {
     "code": "mfe-MU",
     "flag": "mfe",
     "name": "Kreol Morisien (Mauritius)"
   },
-  "mua-mua": {
-    "code": "mua-mua",
-    "flag": "mua",
-    "name": "Mundang"
-  },
   "mua-CM": {
     "code": "mua-CM",
     "flag": "mua",
     "name": "Mundang (Cameroon)"
-  },
-  "naq-naq": {
-    "code": "naq-naq",
-    "flag": "naq",
-    "name": "Khoekhoegowab"
   },
   "naq-NA": {
     "code": "naq-NA",
@@ -2099,20 +1939,10 @@
     "flag": "ne",
     "name": "नेपाली (Nepal)"
   },
-  "nnh-nnh": {
-    "code": "nnh-nnh",
-    "flag": "nnh",
-    "name": "Shwóŋò ngiembɔɔn"
-  },
   "nnh-CM": {
     "code": "nnh-CM",
     "flag": "nnh",
     "name": "Shwóŋò ngiembɔɔn (Cameroon)"
-  },
-  "jgo-jgo": {
-    "code": "jgo-jgo",
-    "flag": "jgo",
-    "name": "Ndaꞌa"
   },
   "jgo-CM": {
     "code": "jgo-CM",
@@ -2128,11 +1958,6 @@
     "code": "nd-ZW",
     "flag": "nd",
     "name": "isiNdebele (Zimbabwe)"
-  },
-  "lrc-lrc": {
-    "code": "lrc-lrc",
-    "flag": "lrc",
-    "name": "لۊری شومالی"
   },
   "lrc-IR": {
     "code": "lrc-IR",
@@ -2204,20 +2029,10 @@
     "flag": "nn",
     "name": "Norsk nynorsk (Norway)"
   },
-  "nus-nus": {
-    "code": "nus-nus",
-    "flag": "nus",
-    "name": "Thok Nath"
-  },
   "nus-SS": {
     "code": "nus-SS",
     "flag": "nus",
     "name": "Thok Nath (South Sudan)"
-  },
-  "nyn-nyn": {
-    "code": "nyn-nyn",
-    "flag": "nyn",
-    "name": "Runyankole"
   },
   "nyn-UG": {
     "code": "nyn-UG",
@@ -2364,11 +2179,6 @@
     "flag": "pt",
     "name": "Português (Timor-Leste)"
   },
-  "prg-prg": {
-    "code": "prg-prg",
-    "flag": "prg",
-    "name": "Prūsiskan"
-  },
   "prg-001": {
     "code": "prg-001",
     "flag": "prg",
@@ -2434,11 +2244,6 @@
     "flag": "rm",
     "name": "Rumantsch (Switzerland)"
   },
-  "rof-rof": {
-    "code": "rof-rof",
-    "flag": "rof",
-    "name": "Kihorombo"
-  },
   "rof-TZ": {
     "code": "rof-TZ",
     "flag": "rof",
@@ -2489,30 +2294,15 @@
     "flag": "ru",
     "name": "Русский (Ukraine)"
   },
-  "rwk-rwk": {
-    "code": "rwk-rwk",
-    "flag": "rwk",
-    "name": "Kiruwa"
-  },
   "rwk-TZ": {
     "code": "rwk-TZ",
     "flag": "rwk",
     "name": "Kiruwa (Tanzania)"
   },
-  "sah-sah": {
-    "code": "sah-sah",
-    "flag": "sah",
-    "name": "Саха тыла"
-  },
   "sah-RU": {
     "code": "sah-RU",
     "flag": "sah",
     "name": "Саха тыла (Russia)"
-  },
-  "saq-saq": {
-    "code": "saq-saq",
-    "flag": "saq",
-    "name": "Kisampur"
   },
   "saq-KE": {
     "code": "saq-KE",
@@ -2529,11 +2319,6 @@
     "flag": "sg",
     "name": "Sängö (Central African Republic)"
   },
-  "sbp-sbp": {
-    "code": "sbp-sbp",
-    "flag": "sbp",
-    "name": "Ishisangu"
-  },
   "sbp-TZ": {
     "code": "sbp-TZ",
     "flag": "sbp",
@@ -2548,11 +2333,6 @@
     "code": "gd-GB",
     "flag": "gd",
     "name": "Gàidhlig (United Kingdom)"
-  },
-  "seh-seh": {
-    "code": "seh-seh",
-    "flag": "seh",
-    "name": "Cisena"
   },
   "seh-MZ": {
     "code": "seh-MZ",
@@ -2583,11 +2363,6 @@
     "code": "sr-CS",
     "flag": "sr",
     "name": "Српски (Serbia and Montenegro)"
-  },
-  "ksb-ksb": {
-    "code": "ksb-ksb",
-    "flag": "ksb",
-    "name": "Kishambaa"
   },
   "ksb-TZ": {
     "code": "ksb-TZ",
@@ -2809,11 +2584,6 @@
     "flag": "es",
     "name": "Español (Venezuela)"
   },
-  "zgh-zgh": {
-    "code": "zgh-zgh",
-    "flag": "zgh",
-    "name": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
-  },
   "zgh-MA": {
     "code": "zgh-MA",
     "flag": "ma",
@@ -2864,11 +2634,6 @@
     "flag": "sv",
     "name": "Svenska (Åland Islands)"
   },
-  "gsw-gsw": {
-    "code": "gsw-gsw",
-    "flag": "gsw",
-    "name": "Schwiizertüütsch"
-  },
   "gsw-FR": {
     "code": "gsw-FR",
     "flag": "gsw",
@@ -2884,35 +2649,10 @@
     "flag": "gsw",
     "name": "Schwiizertüütsch (Switzerland)"
   },
-  "shi-shi": {
-    "code": "shi-shi",
-    "flag": "shi",
-    "name": "ⵜⴰⵛⵍⵃⵉⵜ"
-  },
-  "shi-shi-latin": {
-    "code": "shi-shi",
-    "flag": "shi",
-    "name": "ⵜⴰⵛⵍⵃⵉⵜ (Latin)"
-  },
   "shi-MA": {
     "code": "shi-MA",
     "flag": "ma",
     "name": "ⵜⴰⵛⵍⵃⵉⵜ (Morocco)"
-  },
-  "shi-shi-tifinagh": {
-    "code": "shi-shi",
-    "flag": "shi",
-    "name": "ⵜⴰⵛⵍⵃⵉⵜ (Tifinagh)"
-  },
-  "shi-MA-alt": {
-    "code": "shi-MA",
-    "flag": "ma",
-    "name": "ⵜⴰⵛⵍⵃⵉⵜ (Morocco)"
-  },
-  "dav-dav": {
-    "code": "dav-dav",
-    "flag": "dav",
-    "name": "Kitaita"
   },
   "dav-KE": {
     "code": "dav-KE",
@@ -2954,11 +2694,6 @@
     "flag": "ta",
     "name": "தமிழ் (Sri Lanka)"
   },
-  "twq-twq": {
-    "code": "twq-twq",
-    "flag": "twq",
-    "name": "Tasawaq senni"
-  },
   "twq-NE": {
     "code": "twq-NE",
     "flag": "twq",
@@ -2984,11 +2719,6 @@
     "flag": "te",
     "name": "తెలుగు (India)"
   },
-  "teo-teo": {
-    "code": "teo-teo",
-    "flag": "teo",
-    "name": "Kiteso"
-  },
   "teo-KE": {
     "code": "teo-KE",
     "flag": "teo",
@@ -3005,11 +2735,6 @@
     "name": "ไทย"
   },
   "th-TH": {
-    "code": "th-TH",
-    "flag": "th",
-    "name": "ไทย (Thailand)"
-  },
-  "th-TH-alt": {
     "code": "th-TH",
     "flag": "th",
     "name": "ไทย (Thailand)"
@@ -3089,11 +2814,6 @@
     "flag": "ua",
     "name": "Українська (Ukraine)"
   },
-  "hsb-hsb": {
-    "code": "hsb-hsb",
-    "flag": "hsb",
-    "name": "Hornjoserbšćina"
-  },
   "hsb-DE": {
     "code": "hsb-DE",
     "flag": "de",
@@ -3154,32 +2874,7 @@
     "flag": "uz",
     "name": "Oʻzbekcha (Latin)"
   },
-  "uz-UZ-alt": {
-    "code": "uz-UZ",
-    "flag": "uz",
-    "name": "Oʻzbekcha (Uzbekistan)"
-  },
-  "vai-vai": {
-    "code": "vai-vai",
-    "flag": "vai",
-    "name": "ꕙꔤ"
-  },
-  "vai-vai-latin": {
-    "code": "vai-vai",
-    "flag": "vai",
-    "name": "ꕙꔤ (Latin)"
-  },
   "vai-LR": {
-    "code": "vai-LR",
-    "flag": "vai",
-    "name": "ꕙꔤ (Liberia)"
-  },
-  "vai-vai-vai": {
-    "code": "vai-vai",
-    "flag": "vai",
-    "name": "ꕙꔤ (Vai)"
-  },
-  "vai-LR-alt": {
     "code": "vai-LR",
     "flag": "vai",
     "name": "ꕙꔤ (Liberia)"
@@ -3204,20 +2899,10 @@
     "flag": "vo",
     "name": "Volapük (World)"
   },
-  "vun-vun": {
-    "code": "vun-vun",
-    "flag": "vun",
-    "name": "Kyivunjo"
-  },
   "vun-TZ": {
     "code": "vun-TZ",
     "flag": "vun",
     "name": "Kyivunjo (Tanzania)"
-  },
-  "wae-wae": {
-    "code": "wae-wae",
-    "flag": "wae",
-    "name": "Walser"
   },
   "wae-CH": {
     "code": "wae-CH",
@@ -3254,11 +2939,6 @@
     "flag": "wo",
     "name": "Wolof (Senegal)"
   },
-  "yav-yav": {
-    "code": "yav-yav",
-    "flag": "yav",
-    "name": "nuasue"
-  },
   "yav-CM": {
     "code": "yav-CM",
     "flag": "yav",
@@ -3288,11 +2968,6 @@
     "code": "yo-NG",
     "flag": "yo",
     "name": "Yorùbá (Nigeria)"
-  },
-  "dje-dje": {
-    "code": "dje-dje",
-    "flag": "dje",
-    "name": "Zarmaciine"
   },
   "dje-NE": {
     "code": "dje-NE",
