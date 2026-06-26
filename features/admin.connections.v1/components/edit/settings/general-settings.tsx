@@ -104,10 +104,6 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * Loading Component.
      */
     loader: () => ReactElement;
-    /**
-     * Show only connection name and description fields in the general details form.
-     */
-    showOnlyNameAndDescription?: boolean;
 }
 
 /**
@@ -130,7 +126,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isOidc,
         isCustomAuthenticator,
         templateType,
-        showOnlyNameAndDescription,
         loader: Loader,
         ["data-testid"]: testId
     } = props;
@@ -502,7 +497,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         <>
             { !isCustomAuthenticator ? (
                 <GeneralDetailsForm
-                    showOnlyNameAndDescription={ showOnlyNameAndDescription }
                     isSaml={ isSaml }
                     isOidc={ isOidc }
                     templateType={ templateType }
@@ -636,6 +630,5 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
  */
 GeneralSettings.defaultProps = {
     "data-testid": "idp-edit-general-settings",
-    hideIdPLogoEditField: false,
-    showOnlyNameAndDescription: false
+    hideIdPLogoEditField: false
 };

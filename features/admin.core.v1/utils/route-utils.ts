@@ -440,14 +440,14 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/organizations")
             },
             {
-                category: isOpenID4VPEnabled ? manage : verifiableCredentials,
+                category: verifiableCredentials,
                 id: "verifiableCredentials",
                 order: isOpenID4VPEnabled ? 0 : undefined,
                 parent: isOpenID4VPEnabled ? credentialTypes : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")
             },
             {
-                category: manage,
+                category: verifiableCredentials,
                 id: "presentationDefinitions",
                 order: 1,
                 parent: credentialTypes,
@@ -599,7 +599,8 @@ export class RouteUtils {
             {
                 category: preferences,
                 id: "notificationChannels",
-                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
+                selected:
+                    history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS") ||

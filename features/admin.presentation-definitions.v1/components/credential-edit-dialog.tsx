@@ -197,8 +197,12 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                     >
                         <IconButton
                             size="small"
-                            sx={ { position: "absolute", right: 4, top: 4 } }
-                            onClick={ () => removeClaim(index) }
+                            sx={ { position: "absolute", right: 4, top: 4, zIndex: 10 } }
+                            onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                                removeClaim(index);
+                            } }
                             aria-label="remove claim"
                             data-componentid={ `${componentId}-claim-${index}-remove` }
                         >
