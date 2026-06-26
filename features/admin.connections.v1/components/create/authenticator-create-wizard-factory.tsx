@@ -108,6 +108,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     const { t } = useTranslation();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const isOpenID4VPEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.openid4vpConfig?.enabled ?? false);
 
     const {
         data: connectionsResponse,
@@ -379,6 +381,10 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                 );
 
             case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS:
+                if (!isOpenID4VPEnabled) {
+                    return null;
+                }
+
                 return (
                     <DigitalCredentialsConnectionCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }

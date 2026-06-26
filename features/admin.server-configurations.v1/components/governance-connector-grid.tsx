@@ -94,7 +94,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         (state: AppState) => state?.config?.ui?.features?.organizations);
     const isFapiFeatureEnabled: boolean = useSelector(
         (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
-    
+    const isOpenID4VPEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.openid4vpConfig?.enabled ?? false);
+
+
     /**
      * Combine the connectors and dynamic connectors and group them by category.
      */
@@ -268,6 +271,11 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                             "ORGANIZATION_FAPI_SECURITY_POLICY"
                                                         )
                                                     ))) {
+                                                return null;
+                                            }
+
+                                            if (connector.id === ServerConfigurationsConstants.OPENID4VP_CONFIG
+                                                && !isOpenID4VPEnabled) {
                                                 return null;
                                             }
 

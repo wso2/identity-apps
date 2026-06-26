@@ -440,9 +440,9 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/organizations")
             },
             {
-                category: manage,
+                category: isOpenID4VPEnabled ? manage : verifiableCredentials,
                 id: "verifiableCredentials",
-                order: 0,
+                order: isOpenID4VPEnabled ? 0 : undefined,
                 parent: isOpenID4VPEnabled ? credentialTypes : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")
             },

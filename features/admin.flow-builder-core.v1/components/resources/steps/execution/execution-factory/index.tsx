@@ -18,9 +18,11 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import AppleExecution from "./apple-execution";
 import DigitalWalletExecution from "./digital-wallet-execution";
 import FacebookExecution from "./facebook-execution";
@@ -49,6 +51,8 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     "data-componentid": componentId = "execution-factory"
 }: ExecutionFactoryPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const isOpenID4VPEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.openid4vpConfig?.enabled ?? false);
 
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
         return (
@@ -80,7 +84,8 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         );
     }
 
-    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.DigitalWalletFederation) {
+    if (isOpenID4VPEnabled &&
+            (resource.data?.action as any)?.executor?.name === ExecutionTypes.DigitalWalletFederation) {
         return (
             <DigitalWalletExecution resource={ resource } />
         );

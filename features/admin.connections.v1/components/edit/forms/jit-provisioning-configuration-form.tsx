@@ -281,10 +281,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const updateConfiguration = (values: any): any => {
         const accountLookupAttributeMappings: JITProvisioningAccountLinkingAttributeMappingInterface[] = [];
 
-        const isChecked = (value: unknown, key: string): boolean => {
-            return Array.isArray(value) && value.includes(key);
-        };
-
         const firstMatchRuleFederatedAttr: string = values.get(
             JITProvisioningConstants.FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE
         );
@@ -315,35 +311,35 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             }
         }
 
-        const payload: JITProvisioningResponseInterface = {
-            accountLookupAttributeMappings: accountLookupAttributeMappings ?? [],
-            associateLocalUser: isChecked(
-                values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER),
-                JITProvisioningConstants.ASSOCIATE_LOCAL_USER
-            ),
-            attributeSyncMethod: (values.get(JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD)
-                ?? initialValues?.attributeSyncMethod
-                ?? SupportedAttributeSyncMethods.OVERRIDE_ALL) as string,
-            isEnabled: isChecked(
-                values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY),
+        return {
+            accountLookupAttributeMappings: accountLookupAttributeMappings
+                ? accountLookupAttributeMappings
+                : initialValues?.accountLookupAttributeMappings || [],
+            associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
+                ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
+            attributeSyncMethod: values?.get(
+                JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
+            ) ?? initialValues?.attributeSyncMethod,
+            homeRealmIdentifier: values.get("homeRealmIdentifier") ?? homeRealmIdentifier,
+            idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
+                ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ? ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                    : ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.MERGE_WITH_EXISTING)
+                : initialValues?.idpGroupSyncMethod,
+            isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
-            ),
-            scheme: (values.get(JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY)
-                ?? initialValues?.scheme
-                ?? SupportedJITProvisioningSchemes.PROVISION_SILENTLY) as SupportedJITProvisioningSchemes,
-            skipJITForLookupFailure: isChecked(
-                values.get(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH),
-                JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH
-            ),
-            userstore: (values.get(JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY)
-                ?? initialValues?.userstore
-                ?? primaryUserStoreDomainName) as string
+            ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
+            scheme: values.get(
+                JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY
+            ) ?? initialValues?.scheme,
+            skipJITForLookupFailure: values.get(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?.includes(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?? initialValues?.skipJITForLookupFailure,
+            userstore: values.get(
+                JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
+            ) ?? initialValues.userstore
         };
-
-        // NOTE: `idpGroupSyncMethod` is intentionally omitted for compatibility with API versions
-        // that reject unknown/unsupported JIT payload fields.
-
-        return payload;
     };
 
     const supportedProvisioningSchemes: {
@@ -486,22 +482,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
     };
 
-    /**
-     * Handles form submission with debug logs.
-     *
-     * @param values - Submitted form values map.
-     */
-    const handleFormSubmit = (values: Map<string, FormValue>): void => {
-        const payload: JITProvisioningResponseInterface = updateConfiguration(values);
-
-        console.log("[JIT] Submitted form values:", Array.from(values.entries()));
-        console.log("[JIT] Computed update payload:", payload);
-
-        onSubmit(payload);
-    };
-
     return (
-        <Forms onSubmit={ handleFormSubmit }>
+        <Forms onSubmit={ (values: Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
             <Grid className="jit-provisioning-configuration-form">
                 {
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
