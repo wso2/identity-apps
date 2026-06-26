@@ -73,6 +73,7 @@ const WSFederationConfigurationPage: FunctionComponent<WSFederationConfiguration
 
     const [ wsFederationConfig , setWSFederationConfig ] =
         useState<WSFederationConfigFormValuesInterface>(undefined);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
 
     const {
         data: originalWSFederationConfig,
@@ -194,11 +195,13 @@ const WSFederationConfigurationPage: FunctionComponent<WSFederationConfiguration
      * Handle WSFederation configuration revert.
      */
     const onConfigRevert = (): void => {
+        setIsReverting(true);
         revertWSFederationConfigurations().then(() => {
             handleRevertSuccess();
         }).catch(() => {
             handleRevertError();
         }).finally(() => {
+            setIsReverting(false);
             mutateWSFederationConfig();
         });
     };
@@ -311,6 +314,8 @@ const WSFederationConfigurationPage: FunctionComponent<WSFederationConfiguration
                                     header= { t("governanceConnectors:dangerZone.heading") }
                                     subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                     onActionClick={ () => onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-testid={ `${ componentId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

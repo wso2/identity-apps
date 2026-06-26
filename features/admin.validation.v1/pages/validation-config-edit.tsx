@@ -124,6 +124,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
     const maxPasswordLengthLimitLength: number = maxPasswordLengthLimit?.toString()?.length;
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setReverting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
         ValidationFormInterface
     >(undefined);
@@ -483,7 +484,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
     };
 
     const handleRevertValidationRules = async (): Promise<void> => {
-        setSubmitting(true);
+        setReverting(true);
         let isError: boolean = false;
 
         if (isPasswordInputValidationEnabled) {
@@ -491,7 +492,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
                 await revertValidationConfigData([ ValidationConfigurationFields.PASSWORD ]);
                 mutateValidationConfigFetchRequest();
             } catch (error) {
-                setSubmitting(false);
+                setReverting(false);
                 isError = true;
                 dispatch(
                     addAlert({
@@ -519,7 +520,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
 
                 getLegacyPasswordPolicyProperties();
             } catch (error) {
-                setSubmitting(false);
+                setReverting(false);
                 isError = true;
                 dispatch(
                     addAlert({
@@ -560,7 +561,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
 
             mutatePasswordHistoryCount();
             mutatePasswordExpiry();
-            setSubmitting(false);
+            setReverting(false);
             if (!isError) {
                 dispatch(
                     addAlert({
@@ -575,7 +576,7 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
                 );
             }
         } catch (error) {
-            setSubmitting(false);
+            setReverting(false);
             dispatch(
                 addAlert({
                     description: error?.response?.data?.detail ??
@@ -1906,6 +1907,8 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
                                 header= { t("governanceConnectors:dangerZone.heading") }
                                 subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                 onActionClick={ () => handleRevertValidationRules() }
+                                isButtonLoading={ isReverting }
+                                isButtonDisabled={ isReverting }
                                 data-testid={ `${ componentId }-danger-zone` }
                             />
                         </DangerZoneGroup>
