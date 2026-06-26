@@ -305,7 +305,18 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 active
             >
                 <span
-                    onClick={ () => handleOrganizationSwitch(item) }
+                    onClick={
+                        // Mirror the super-organization behavior so the root-org name click is
+                        // consistent across all root organizations: at the org's own root
+                        // (breadcrumbList.length === 1) let the click bubble up to open the
+                        // organization switch dropdown; only switch when navigated into a sub-org.
+                        breadcrumbList.length !== 1
+                            ? (event: SyntheticEvent<HTMLElement>) => {
+                                event.stopPropagation();
+                                handleOrganizationSwitch(item);
+                            }
+                            : null
+                    }
                     data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
                     className="organization-breadcrumb-item ellipsis"
                 >
