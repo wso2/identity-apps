@@ -203,6 +203,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             }
         } catch(e) {
             // TODO: Handle error
+        } finally {
+            updateOrganizationSwitchRequestLoadingState(false);
         }
     };
 
