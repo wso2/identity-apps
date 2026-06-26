@@ -17,6 +17,7 @@
  */
 
 import { Field, FieldConstants, Form } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,6 +44,8 @@ interface AttributeMappingAddItemProps {
     allowedMappedValues?: string[];
     onSubmit: (mapping: ConnectionCommonClaimMappingInterface) => void;
 }
+
+const toBits = (bool: boolean): number => bool ? 1 : 0;
 
 const FORM_ID: string = "idp-attributes-mapping-list-item-form";
 
@@ -227,6 +230,23 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                                                 setMappingHasError(true);
 
                                                 return FieldConstants.FIELD_REQUIRED_ERROR;
+                                            }
+
+                                            /**
+                                             * Entity category support attribute values MUST be URIs. Such values
+                                             * are also referred to as "category support URIs" but at the same time
+                                             * our server allows simple strings as well.
+                                             *
+                                             * In the following if condition we do a bitwise AND SC operation
+                                             * to either allow one of them.
+                                             *
+                                             * @see {@link https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
+                                             */
+                                            if (toBits(!FormValidation.url(value)) &
+                                                toBits(!FormValidation.isValidResourceName(value))) {
+                                                setMappingHasError(true);
+
+                                                return FieldConstants.INVALID_RESOURCE_ERROR;
                                             }
 
                                             const mappedValues: Set<string> = new Set(
