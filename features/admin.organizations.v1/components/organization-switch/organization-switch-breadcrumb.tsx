@@ -282,45 +282,31 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const generateSuperBreadcrumbItem = (
         item?: BreadcrumbItem
     ): ReactElement => {
-        return OrganizationUtils.isSuperOrganization(item) ? (
-            <>
-                <Breadcrumb.Section
-                    onClick={
-                        breadcrumbList.length !== 1
-                            ? (event: SyntheticEvent<HTMLElement>) => {
-                                event.stopPropagation();
-                                handleOrganizationSwitch(item);
-                            }
-                            : null
-                    }
-                    className="organization-breadcrumb-item"
-                >
-                    <span className="ellipsis organization-name">
-                        { item?.name }
-                    </span>
-                </Breadcrumb.Section>
-            </>
-        ) : (
+        // Render the root-organization breadcrumb item identically for the super
+        // organization and every other root organization, so both the click
+        // behavior and the styling (e.g. the hover indication) stay consistent
+        // across tenants. Previously this branched on
+        // `OrganizationUtils.isSuperOrganization(item)`: the super org rendered a
+        // clickable (link-styled) section while other root orgs rendered an
+        // `active` section, which left them without the hover indication and with
+        // a different click behavior. At the org's own root
+        // (breadcrumbList.length === 1) the click bubbles up to open the
+        // organization switch dropdown; only switch when navigated into a sub-org.
+        return (
             <Breadcrumb.Section
-                active
+                onClick={
+                    breadcrumbList.length !== 1
+                        ? (event: SyntheticEvent<HTMLElement>) => {
+                            event.stopPropagation();
+                            handleOrganizationSwitch(item);
+                        }
+                        : null
+                }
+                className="organization-breadcrumb-item"
+                data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
             >
-                <span
-                    onClick={
-                        // Mirror the super-organization behavior so the root-org name click is
-                        // consistent across all root organizations: at the org's own root
-                        // (breadcrumbList.length === 1) let the click bubble up to open the
-                        // organization switch dropdown; only switch when navigated into a sub-org.
-                        breadcrumbList.length !== 1
-                            ? (event: SyntheticEvent<HTMLElement>) => {
-                                event.stopPropagation();
-                                handleOrganizationSwitch(item);
-                            }
-                            : null
-                    }
-                    data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
-                    className="organization-breadcrumb-item ellipsis"
-                >
-                    { item.name }
+                <span className="ellipsis organization-name">
+                    { item?.name }
                 </span>
             </Breadcrumb.Section>
         );
