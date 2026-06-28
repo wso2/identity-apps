@@ -630,8 +630,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 className={ isSAASDeployment ? "is-header saas-header" : "is-header" }
                 brand={ {
                     logo: {
-                        desktop: <LOGO_IMAGE />,
-                        mobile: <LOGO_IMAGE />
+                        desktop: <LogoImage />,
+                        mobile: <LogoImage />
                     },
                     onClick: () =>
                         hasGettingStartedViewPermission &&
