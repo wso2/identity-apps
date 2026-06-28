@@ -1,5 +1,25 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.11
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.tenants.v1@2.29.32
+  - @wso2is/admin.org-insights.v1@2.26.5
+  - @wso2is/admin.core.v1@2.57.24
+
+## 0.0.10
+
+### Patch Changes
+
+- [#10429](https://github.com/wso2/identity-apps/pull/10429) [`660b37f72fd1798fc723c62aba99c5b9b9f79e09`](https://github.com/wso2/identity-apps/commit/660b37f72fd1798fc723c62aba99c5b9b9f79e09) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update moesif dashboard styling
+
+- Updated dependencies [[`bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006`](https://github.com/wso2/identity-apps/commit/bc7a9e4ee1664b6eedb6434693d0dd4cdf41e006)]:
+  - @wso2is/admin.core.v1@2.57.20
+
 ## 0.0.9
 
 ### Patch Changes

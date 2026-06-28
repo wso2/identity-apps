@@ -1205,7 +1205,7 @@ export const myAccount: MyAccountNS = {
                 profileStatus: {
                     completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
                     description: "உங்கள் சுயவிவரத்தை நிர்வகிக்கவும்",
-                    header: "உங்கள் {{productName}} சுயவிவரம்",
+                    header: "உங்கள் சுயவிவரம்",
                     profileText: "உங்கள் தனிப்பட்ட சுயவிவரத்தின் விவரங்கள்",
                     readOnlyDescription: "உங்கள் சுயவிவரத்தைப் பார்க்கவும்",
                     userSourceText: "(உடன் கையொப்பமிடப்பட்டுள்ளது {{source}})"

@@ -2473,6 +2473,7 @@ export interface ConsoleNS {
                 authenticationProviderEdit: string;
                 authenticationProviderTemplates: string;
                 authenticationProviders: string;
+                flowExtensionEdit: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;

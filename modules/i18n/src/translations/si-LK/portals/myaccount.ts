@@ -1191,7 +1191,7 @@ export const myAccount: MyAccountNS = {
                 profileStatus: {
                     completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
                     description: "ඔබගේ පැතිකඩ කළමනාකරණය කරන්න",
-                    header: "ඔබගේ  {{productName}} ගිණුම",
+                    header: "ඔබගේ ගිණුම",
                     profileText: "ඔබගේ පුද්ගලික පැතිකඩ පිළිබඳ විස්තර",
                     readOnlyDescription: "ඔබගේ පැතිකඩ බලන්න",
                     userSourceText: "({{source} හරහා පුරනය වී ඇත)"

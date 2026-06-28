@@ -34,8 +34,11 @@
                 "settingsEnabled": false
             },
             "moesif": {
+                "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
-                "embeddedPortalUrl": ""
+                "embeddedPortalUrl": "",
+                "moesifTermsOfServiceUrl": "https://www.moesif.com/terms/",
+                "termsOfServiceUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -887,10 +890,16 @@
                         "console:consents"
                     ],
                     "read": [
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
                         "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_app_view",
                         "internal_consent_mgt_purpose_view"
                     ],
                     "update": [
+                        "internal_branding_preference_policy_update",
+                        "internal_consent_mgt_purpose_app_create",
+                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_update"
                     ]
                 }
@@ -1152,6 +1161,34 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
+                }
+            },
+            "flowExtensions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flowExtensions",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_flow_extension_create"
+                    ],
+                    "delete": [
+                        "internal_flow_extension_delete"
+                    ],
+                    "feature": [
+                        "console:flowExtensions"
+                    ],
+                    "read": [
+                        "internal_flow_extension_view",
+                        "internal_claim_meta_view"
+                    ],
+                    "update": [
+                        "internal_flow_extension_update"
+                    ]
                 }
             },
             "gettingStarted": {

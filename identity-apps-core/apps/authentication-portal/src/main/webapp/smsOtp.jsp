@@ -79,7 +79,14 @@
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
 
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        String errorCode = request.getParameter("errorCode");
+        if (StringUtils.isNotBlank(errorCode)) {
+            String errorCodeKey = "error.sms.notification." + errorCode;
+            String errorCodeMsg = AuthenticationEndpointUtil.i18n(resourceBundle, errorCodeKey);
+            if (!errorCodeMsg.equalsIgnoreCase(errorCodeKey)) {
+                errorMessage = errorCodeMsg;
+            }
+        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (error.equalsIgnoreCase("authentication.fail.message")) {
@@ -92,7 +99,8 @@
 %>
 <%
     boolean reCaptchaEnabled = false;
-    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha")) &&
+        !CaptchaUtil.isCaptchaDisabledForApplication(request.getParameter("spId"), tenantDomain)) {
         reCaptchaEnabled = true;
     }
 %>
