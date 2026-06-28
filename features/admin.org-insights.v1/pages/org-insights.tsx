@@ -33,7 +33,7 @@ import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 const OrgInsightsPage: FunctionComponent = () => {
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
-    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(dayjs().format("HH:mm:ss"));
+    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(() => dayjs().format("HH:mm:ss"));
     const [ selectedActivityType, setSelectedActivityType ] = useState<ActivityType>(ActivityType.LOGIN);
 
     const { t } = useTranslation();

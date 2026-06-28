@@ -5,6 +5,16 @@ packages:
   - "features"
   - "features/*"
 
+allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  msw: false
+  nx: false
+  unrs-resolver: false
+
 catalog:
   "@mui/icons-material": "^5.11.16"
   "@mui/lab": "5.0.0-alpha.129"
