@@ -1367,7 +1367,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                         </Grid>
                         { /** This hidden button is used to submit the form programmatically */ }
                         <button
-                            type="button"
+                            type="submit"
                             ref={ submitButtonRef }
                             onClick={ () => onSubmitClick(hasValidationErrors) }
                             hidden
