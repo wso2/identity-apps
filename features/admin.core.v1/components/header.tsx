@@ -548,7 +548,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LOGO_IMAGE = () => {
+    const LogoImage = () => {
         return (
             <Image
                 src={ resolveAppLogoFilePath(
