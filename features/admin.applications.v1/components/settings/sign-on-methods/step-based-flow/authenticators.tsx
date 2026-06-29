@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
@@ -33,7 +30,6 @@ import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models/application";
@@ -116,8 +112,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const authenticatorCardClasses: string = classNames("authenticator", {
         "with-labels": showLabels
     });
-
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
      * Updates the internal selected authenticators state when the prop changes.
@@ -376,31 +370,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
     };
 
-    /**
-     * Render feature status chip.
-     *
-     * @param authenticator - Authenticator.
-     *
-     * @returns Feature status chip.
-     */
-    const renderFeatureStatusChip = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-        if (
-            isSAASDeployment &&
-            authenticator?.defaultAuthenticator?.authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
-                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
-        ) {
-            return (
-                <Chip
-                    size="small"
-                    label={ t(FeatureStatusLabel.BETA) }
-                    className="oxygen-chip-beta"
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
@@ -434,7 +403,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                featureStatus={ renderFeatureStatusChip(authenticator) }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
                                     ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator
