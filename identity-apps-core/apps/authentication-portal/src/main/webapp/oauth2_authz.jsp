@@ -137,20 +137,20 @@
                                 <% if (StringUtils.isNotBlank(requestedActorName)) { %>
                                     <strong id="agent-name"
                                             class="text-capitalize text-typography primary login-portal-app-font"
-                                            data-content=<%=Encode.forHtml(requestedActorName)%>>
+                                            data-content="<%=Encode.forHtmlAttribute(requestedActorName)%>">
                                         <%=Encode.forHtml(requestedActorName)%>
                                     </strong>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.via")%>
                                     <strong id="app-name"
                                             class="text-capitalize text-typography primary login-portal-app-font"
-                                            data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                     </strong>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.suffix")%>
                                 <% } else { %>
                                     <strong id="app-name"
                                             class="text-capitalize text-typography primary login-portal-app-font"
-                                            data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                     </strong>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.profile")%>
