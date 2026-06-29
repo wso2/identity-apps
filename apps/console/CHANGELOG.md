@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.13.7
+
+### Patch Changes
+
+- [#10481](https://github.com/wso2/identity-apps/pull/10481) [`fdb049bb1b0faac7df4021ee0737eb808c5129dc`](https://github.com/wso2/identity-apps/commit/fdb049bb1b0faac7df4021ee0737eb808c5129dc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the feature label from the Active Session Limit Handler
+
+- Updated dependencies [[`fdb049bb1b0faac7df4021ee0737eb808c5129dc`](https://github.com/wso2/identity-apps/commit/fdb049bb1b0faac7df4021ee0737eb808c5129dc)]:
+  - @wso2is/admin.applications.v1@2.43.7
+
 ## 4.13.6
 
 ### Patch Changes
