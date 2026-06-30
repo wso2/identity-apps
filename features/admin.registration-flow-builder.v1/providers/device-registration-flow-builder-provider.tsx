@@ -70,10 +70,7 @@ const DeviceRegistrationFlowBuilderProvider: FC<DeviceRegistrationFlowBuilderPro
             flowType={ FlowTypes.DEVICE_REGISTRATION }
             screenTypes={ screensList }
             shouldFetchMetadata={ false }
-            validationConfig={ {
-                isOTPValidationEnabled: true,
-                isPasswordExecutorValidationEnabled: true
-            } }
+            validationConfig={ {} }
         >
             <FlowContextWrapper>{ children }</FlowContextWrapper>
         </AuthenticationFlowBuilderCoreProvider>

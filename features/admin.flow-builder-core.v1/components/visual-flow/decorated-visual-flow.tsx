@@ -175,7 +175,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             );
 
             // Auto-assign connections for execution steps.
-            autoAssignConnections([ ...newNodes, defaultPropertySelector as Node ], metadata.executorConnections);
+            autoAssignConnections([ ...newNodes, defaultPropertySelector as Node ], metadata?.executorConnections ?? []);
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
@@ -391,7 +391,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onTemplateLoad(resource);
 
         // Auto-assign connections for execution steps.
-        autoAssignConnections(newNodes, metadata.executorConnections);
+        autoAssignConnections(newNodes, metadata?.executorConnections ?? []);
 
         // TODO: Figure-out a better way to handle this debounce.
         // Tracker: https://github.com/xyflow/xyflow/issues/2405

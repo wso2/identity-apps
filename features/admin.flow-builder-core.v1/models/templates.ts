@@ -31,5 +31,7 @@ export enum TemplateTypes {
     BasicFederated = "BASIC_FEDERATED",
     GeneratedWithAI = "GENERATE_WITH_AI",
     BasicPasskey = "BASIC_PASSKEY",
-    Default = "DEFAULT"
+    Default = "DEFAULT",
+    DeviceRegistrationEmailOTP = "DEVICE_REGISTRATION_EMAIL_OTP",
+    DeviceRegistrationSMSOTP = "DEVICE_REGISTRATION_SMS_OTP"
 }

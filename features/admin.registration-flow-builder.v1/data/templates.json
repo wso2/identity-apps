@@ -903,15 +903,19 @@
         "deprecated": false,
         "display": {
             "label": "Device Register",
-            "description": "Basic registration experience with device registration",
+            "description": "Device registration experience",
             "image": "assets/images/icons/smartphone.svg",
             "showOnResourcePanel": true
         },
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{USERNAME_COLLECTION_STEP_ID}}",
                     "replacers": [
+                        {
+                            "key": "USERNAME_COLLECTION_STEP_ID",
+                            "type": "ID"
+                        },
                         {
                             "key": "DEVICE_REGISTRATION_STEP_ID",
                             "type": "ID"
@@ -920,15 +924,15 @@
                 },
                 "steps": [
                     {
-                        "id": "{{ID}}",
+                        "id": "{{USERNAME_COLLECTION_STEP_ID}}",
                         "type": "VIEW",
                         "size": {
                             "width": 350,
-                            "height": 291
+                            "height": 400
                         },
                         "position": {
-                            "x": 0,
-                            "y": 330
+                            "x": 300,
+                            "y": 250
                         },
                         "data": {
                             "components": [
@@ -938,15 +942,23 @@
                                     "type": "TYPOGRAPHY",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "Register Account"
+                                        "text": "Register Device"
                                     }
                                 },
                                 {
+                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
-                                    "id": "{{ID}}",
                                     "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "DISPLAY",
+                                            "type": "RICH_TEXT",
+                                            "config": {
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Enter your username to register this device to your account.</span></h5>"
+                                            }
+                                        },
                                         {
                                             "id": "{{ID}}",
                                             "category": "FIELD",
@@ -963,57 +975,18 @@
                                         },
                                         {
                                             "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "EMAIL",
-                                            "config": {
-                                                "type": "email",
-                                                "hint": "",
-                                                "label": "Email",
-                                                "required": true,
-                                                "placeholder": "Enter your email",
-                                                "identifier": "http://wso2.org/claims/emailaddress"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "First Name",
-                                                "required": false,
-                                                "placeholder": "Enter your first name",
-                                                "identifier": "http://wso2.org/claims/givenname"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "Last Name",
-                                                "required": false,
-                                                "placeholder": "Enter your last name",
-                                                "identifier": "http://wso2.org/claims/lastname"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
-                                                "text": "Continue"
+                                                "text": "Register Device"
                                             },
                                             "action": {
-                                                "type": "NEXT",
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "UserResolveExecutor"
+                                                },
                                                 "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
                                             }
                                         }
@@ -1026,12 +999,12 @@
                         "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
                         "type": "EXECUTION",
                         "size": {
-                            "width": 350,
-                            "height": 291
+                            "width": 200,
+                            "height": 99
                         },
                         "position": {
-                            "x": 500,
-                            "y": 900
+                            "x": 750,
+                            "y": 330
                         },
                         "data": {
                             "action": {
@@ -1047,43 +1020,501 @@
                         "id": "END",
                         "type": "END",
                         "size": {
-                            "width": 280,
-                            "height": 220
+                            "width": 350,
+                            "height": 200
                         },
                         "position": {
-                            "x": 880,
-                            "y": 800
-                        },
-                        "config": {
-                            "isAccountLockOnCreationEnabled": "false",
-                            "isAutoLoginEnabled": "false",
-                            "isEmailVerificationEnabled": "true",
-                            "isFlowCompletionNotificationEnabled": "false"
+                            "x": 1100,
+                            "y": 330
                         },
                         "data": {
-                            "action": {
-                                "type": "EXECUTOR",
-                                "executor": {
-                                    "name": "UserProvisioningExecutor"
-                                }
-                            },
                             "components": [
                                 {
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
-                                    "id": "typography_u2oz",
+                                    "id": "typography_success",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "Registration Successful!"
+                                        "text": "Device Registered!"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
+                                    "id": "display_msg",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
-                                    },
-                                    "id": "display_hgvm"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "DEVICE_REGISTRATION_EMAIL_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Device Registration + Email OTP",
+            "description": "Device registration with email OTP verification",
+            "image": "assets/images/icons/email-otp.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{USERNAME_COLLECTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "USERNAME_COLLECTION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "EMAIL_OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{USERNAME_COLLECTION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 400
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 250
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Device"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "DISPLAY",
+                                            "type": "RICH_TEXT",
+                                            "config": {
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Enter your username to register this device to your account.</span></h5>"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "UserResolveExecutor"
+                                                },
+                                                "next": "{{EMAIL_OTP_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{EMAIL_OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 750,
+                            "y": 250
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Email OTP Verification"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Enter the code sent to your email",
+                                                "required": false,
+                                                "placeholder": "",
+                                                "identifier": "otp"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 200,
+                            "height": 99
+                        },
+                        "position": {
+                            "x": 1200,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 350,
+                            "height": 200
+                        },
+                        "position": {
+                            "x": 1550,
+                            "y": 330
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_success",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "id": "display_msg",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "DEVICE_REGISTRATION_SMS_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Device Registration + SMS OTP",
+            "description": "Device registration with SMS OTP verification",
+            "image": "assets/images/icons/sms-otp.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{USERNAME_COLLECTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "USERNAME_COLLECTION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "SMS_OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{USERNAME_COLLECTION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 400
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 250
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Device"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "DISPLAY",
+                                            "type": "RICH_TEXT",
+                                            "config": {
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Enter your username to register this device to your account.</span></h5>"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "UserResolveExecutor"
+                                                },
+                                                "next": "{{SMS_OTP_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{SMS_OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 750,
+                            "y": 250
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "SMS OTP Verification"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Enter the code sent to your mobile",
+                                                "required": false,
+                                                "placeholder": "",
+                                                "identifier": "otp"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "SMSOTPExecutor"
+                                                },
+                                                "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 200,
+                            "height": 99
+                        },
+                        "position": {
+                            "x": 1200,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 350,
+                            "height": 200
+                        },
+                        "position": {
+                            "x": 1550,
+                            "y": 330
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_success",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "id": "display_msg",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    }
                                 }
                             ]
                         }

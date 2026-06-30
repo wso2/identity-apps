@@ -109,5 +109,133 @@
                 "next": ""
             }
         }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Email OTP View",
+            "image": "assets/images/icons/email-otp.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "id": "{{ID}}",
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "label": "Enter the code sent to your email",
+                                "required": false,
+                                "placeholder": "",
+                                "identifier": "otp"
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Continue"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "EmailOTPExecutor"
+                                }
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "RESEND",
+                            "config": {
+                                "type": "submit",
+                                "text": "Resend OTP"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "SMS OTP View",
+            "image": "assets/images/icons/sms-otp.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "id": "{{ID}}",
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "label": "Enter the code sent to your mobile",
+                                "required": false,
+                                "placeholder": "",
+                                "identifier": "otp"
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Continue"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "SMSOTPExecutor"
+                                }
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "RESEND",
+                            "config": {
+                                "type": "submit",
+                                "text": "Resend OTP"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     }
 ]

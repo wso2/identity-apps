@@ -26,6 +26,7 @@ import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/mode
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import deviceRegistrationWidgets from "../data/device-registration-widgets.json";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
@@ -59,26 +60,44 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
             return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
         });
 
+        const deviceRegistrationTemplateTypes: Set<string> = new Set([
+            TemplateTypes.Blank,
+            TemplateTypes.BasicDeviceRegister,
+            TemplateTypes.DeviceRegistrationEmailOTP,
+            TemplateTypes.DeviceRegistrationSMSOTP
+        ]);
+
         const deviceRegistrationTemplates: Template[] = filteredTemplates.filter((template: Template) => {
-            return template?.type === TemplateTypes.BasicDeviceRegister;
+            return deviceRegistrationTemplateTypes.has(template?.type);
         });
 
-        const blankViewSteps: any[] = (coreResources?.steps ?? []).filter((step: any) => {
-            return step?.display?.label === "Blank View";
+        const deviceRegistrationPanelStepLabels: Set<string> = new Set([
+            "Email OTP View",
+            "SMS OTP View"
+        ]);
+
+        const deviceRegistrationSteps: any[] = (steps as any[]).filter((step: any) => {
+            return deviceRegistrationPanelStepLabels.has(step?.display?.label);
         });
 
         if (flowType === FlowTypes.DEVICE_REGISTRATION) {
+            // Keep all core steps for node-type registration but only show Blank View in panel.
+            const coreStepsWithPanelVisibility: any[] = (coreResources?.steps ?? []).map((step: any) => ({
+                ...step,
+                display: {
+                    ...step.display,
+                    showOnResourcePanel: step?.display?.label === "Blank View"
+                }
+            }));
+
             return {
                 ...coreResources,
                 steps: [
-                    ...(coreResources?.steps ?? []),
-                    ...blankViewSteps
+                    ...coreStepsWithPanelVisibility,
+                    ...deviceRegistrationSteps
                 ],
                 templates: deviceRegistrationTemplates,
-                widgets: [
-                    ...(coreResources?.widgets ?? []),
-                    ...widgets
-                ]
+                widgets: deviceRegistrationWidgets
             };
         }
 
