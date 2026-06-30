@@ -89,6 +89,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ saml2Config , setSaml2Config ] =
         useState<Saml2ConfigFormValuesInterface>(undefined);
     const [ destinationUrls, setDestinationUrls ] = useState<string>("");
@@ -253,7 +254,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
      * Handle saml2 configuration revert.
      */
     const onConfigRevert = (): void => {
-        setIsSubmitting(true);
+        setIsReverting(true);
 
         revertSaml2Configurations()
             .then(() => {
@@ -261,7 +262,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
             }).catch(() => {
                 handlerevertError();
             }).finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
                 mutateSaml2Config();
             });
     };
@@ -436,6 +437,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                                                 <PrimaryButton
                                                                     size="small"
                                                                     loading={ isSubmitting }
+                                                                    disabled={ isReverting }
                                                                     onClick={ () => {
                                                                         formRef?.current?.triggerSubmit();
                                                                     } }
@@ -466,6 +468,8 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting || isSubmitting }
                                         data-testid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>

@@ -67,6 +67,7 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ sessionManagementConfig , setSessionManagementConfig ] =
         useState<SessionManagementConfigFormValuesInterface>(undefined);
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -255,7 +256,7 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
     };
 
     const onConfigRevert = (): void => {
-        setIsSubmitting(true);
+        setIsReverting(true);
 
         const updateValues: PatchData[] = [
             {
@@ -288,7 +289,7 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
             .catch(() => {
                 handleRevertError();
             }).finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
             });
     };
 
@@ -517,6 +518,8 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting }
                                         data-componentid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>
