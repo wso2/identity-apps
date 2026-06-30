@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 4.13.8
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+- Updated dependencies [[`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3)]:
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.208
+  - @wso2is/admin.impersonation.v1@1.6.209
+  - @wso2is/admin.saml2-configuration.v1@2.25.209
+  - @wso2is/admin.server-configurations.v1@2.38.55
+  - @wso2is/admin.session-management.v1@2.26.7
+  - @wso2is/admin.username-validation.v1@1.5.206
+  - @wso2is/admin.validation.v1@2.28.5
+  - @wso2is/admin.wsfed-configuration.v1@2.25.208
+
 ## 4.13.7
 
 ### Patch Changes

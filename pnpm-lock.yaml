@@ -320,7 +320,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.agents.v1
       '@wso2is/admin.alternative-login-identifier.v1':
-        specifier: ^1.5.207
+        specifier: ^1.5.208
         version: link:../../features/admin.alternative-login-identifier.v1
       '@wso2is/admin.analytics.v1':
         specifier: workspace:^
@@ -401,7 +401,7 @@ importers:
         specifier: ^2.28.3
         version: link:../../features/admin.identity-verification-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.208
+        specifier: ^1.6.209
         version: link:../../features/admin.impersonation.v1
       '@wso2is/admin.issuer-usage-scope.v1':
         specifier: workspace:^
@@ -440,16 +440,16 @@ importers:
         specifier: ^2.27.385
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
-        specifier: ^2.25.208
+        specifier: ^2.25.209
         version: link:../../features/admin.saml2-configuration.v1
       '@wso2is/admin.secrets.v1':
         specifier: ^2.25.205
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.54
+        specifier: ^2.38.55
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
-        specifier: ^2.26.6
+        specifier: ^2.26.7
         version: link:../../features/admin.session-management.v1
       '@wso2is/admin.sms-providers.v1':
         specifier: ^2.25.211
@@ -464,7 +464,7 @@ importers:
         specifier: ^2.29.32
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
-        specifier: ^1.5.205
+        specifier: ^1.5.206
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.38.40
@@ -473,7 +473,7 @@ importers:
         specifier: ^2.27.42
         version: link:../../features/admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.28.4
+        specifier: ^2.28.5
         version: link:../../features/admin.validation.v1
       '@wso2is/admin.verifiable-credentials.v1':
         specifier: workspace:^
@@ -485,7 +485,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.workflow-requests.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.207
+        specifier: ^2.25.208
         version: link:../../features/admin.wsfed-configuration.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
@@ -1415,13 +1415,13 @@ importers:
         specifier: ^2.49.90
         version: link:../admin.core.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.38.55
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.36.57
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.28.5
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.7.6
@@ -8754,7 +8754,7 @@ importers:
         specifier: ^2.38.40
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.28.4
+        specifier: ^2.28.5
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.13.0
@@ -9625,7 +9625,7 @@ importers:
         specifier: ^2.46.30
         version: link:../admin.core.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.145
+        specifier: ^2.28.5
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -10126,7 +10126,7 @@ importers:
         specifier: ^2.27.381
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.51
+        specifier: ^2.38.55
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.38.36
