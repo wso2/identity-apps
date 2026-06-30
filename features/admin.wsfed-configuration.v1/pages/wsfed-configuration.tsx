@@ -178,6 +178,10 @@ const WSFederationConfigurationPage: FunctionComponent<WSFederationConfiguration
      * Handle WSFederation form submit.
      */
     const handleSubmit = (value: boolean) => {
+        if (isReverting) {
+            return;
+        }
+
         const data: WSFederationConfigAPIResponseInterface = {
             enableRequestSigning: value
         };
@@ -287,7 +291,7 @@ const WSFederationConfigurationPage: FunctionComponent<WSFederationConfiguration
                                                                 name="enableRequestSigning"
                                                                 label={ t("wsFederationConfig:form." +
                                                                     "enableRequestSigning.label") }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ isReadOnly || isReverting }
                                                                 width={ 16 }
                                                                 data-componentid={
                                                                     `${componentId}-enable-request-signing` }

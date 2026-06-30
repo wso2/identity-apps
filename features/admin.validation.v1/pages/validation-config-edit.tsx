@@ -492,7 +492,6 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
                 await revertValidationConfigData([ ValidationConfigurationFields.PASSWORD ]);
                 mutateValidationConfigFetchRequest();
             } catch (error) {
-                setReverting(false);
                 isError = true;
                 dispatch(
                     addAlert({
@@ -520,7 +519,6 @@ const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
 
                 getLegacyPasswordPolicyProperties();
             } catch (error) {
-                setReverting(false);
                 isError = true;
                 dispatch(
                     addAlert({

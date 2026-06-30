@@ -437,6 +437,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                                                 <PrimaryButton
                                                                     size="small"
                                                                     loading={ isSubmitting }
+                                                                    disabled={ isReverting }
                                                                     onClick={ () => {
                                                                         formRef?.current?.triggerSubmit();
                                                                     } }
@@ -468,7 +469,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
                                         isButtonLoading={ isReverting }
-                                        isButtonDisabled={ isReverting }
+                                        isButtonDisabled={ isReverting || isSubmitting }
                                         data-testid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>
