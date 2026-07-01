@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.3.11
+
+### Patch Changes
+
+- [#10494](https://github.com/wso2/identity-apps/pull/10494) [`0d0af7d35586a9280d7a1a99e35148cdf837ab9f`](https://github.com/wso2/identity-apps/commit/0d0af7d35586a9280d7a1a99e35148cdf837ab9f) Thanks [@hwupathum](https://github.com/hwupathum)! - Update consent API uri
+
 ## 4.3.10
 
 ### Patch Changes
