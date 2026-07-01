@@ -383,7 +383,7 @@ importers:
         specifier: ^2.43.9
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.9.8
+        specifier: ^1.9.9
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flow-extensions.v1':
         specifier: workspace:^
@@ -446,7 +446,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.55
+        specifier: ^2.38.56
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.26.7
@@ -458,7 +458,7 @@ importers:
         specifier: ^1.0.212
         version: link:../../features/admin.sms-templates.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.227
+        specifier: ^1.5.228
         version: link:../../features/admin.subscription.v1
       '@wso2is/admin.tenants.v1':
         specifier: ^2.29.32
@@ -8742,7 +8742,7 @@ importers:
         specifier: ^2.43.8
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.9.5
+        specifier: ^1.9.9
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.27.3

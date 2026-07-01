@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.13.11
+
+### Patch Changes
+
+- [#10497](https://github.com/wso2/identity-apps/pull/10497) [`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67) Thanks [@hwupathum](https://github.com/hwupathum)! - Add status flag for consent features
+
+* [#10499](https://github.com/wso2/identity-apps/pull/10499) [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Refine the free trial banner wording and reduce the size of the View Plans button
+
+* Updated dependencies [[`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67), [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b)]:
+  - @wso2is/admin.feature-gate.v1@1.9.9
+  - @wso2is/admin.server-configurations.v1@2.38.56
+  - @wso2is/admin.subscription.v1@1.5.228
+
 ## 4.13.10
 
 ### Patch Changes
