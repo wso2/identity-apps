@@ -55,6 +55,8 @@ class FeatureFlagConstants {
         CONNECTIONS_CUSTOM_AUTHENTICATOR: "console.connections.templates.customAuthenticator",
         CONNECTIONS_ENTERPRISE: "console.connections.templates.enterprise",
         CONNECTIONS_IDVP: "console.connections.templates.idvp",
+        CONSENTS_POLICY_CONSENTS: "consents.policyConsents",
+        CONSENTS_PREFERENCE_MANAGEMENT: "consents.preferenceManagement",
         CONSOLE_SETTINGS: "console.consoleSettings",
         CUSTOMER_DATA_PROFILES: "customerDataProfiles",
         CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",

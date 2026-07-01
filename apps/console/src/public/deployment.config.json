@@ -1387,6 +1387,14 @@
                     {
                         "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
                         "flag": ""
+                    },
+                    {
+                        "feature": "consents.policyConsents",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "consents.preferenceManagement",
+                        "flag": ""
                     }
                 ],
                 "scopes": {
