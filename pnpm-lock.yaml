@@ -494,7 +494,7 @@ importers:
         specifier: ^1.0.15
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.13.3
+        specifier: ^2.13.4
         version: link:../../modules/core
       '@wso2is/i18n':
         specifier: ^2.43.9

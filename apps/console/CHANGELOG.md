@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.13.9
+
+### Patch Changes
+
+- [#10489](https://github.com/wso2/identity-apps/pull/10489) [`4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0`](https://github.com/wso2/identity-apps/commit/4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid locale codes
+
+- Updated dependencies [[`4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0`](https://github.com/wso2/identity-apps/commit/4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0)]:
+  - @wso2is/core@2.13.4
+
 ## 4.13.8
 
 ### Patch Changes
