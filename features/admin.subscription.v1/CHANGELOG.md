@@ -1,5 +1,14 @@
 # @wso2is/admin.subscription.v1
 
+## 1.5.228
+
+### Patch Changes
+
+- [#10499](https://github.com/wso2/identity-apps/pull/10499) [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Refine the free trial banner wording and reduce the size of the View Plans button
+
+- Updated dependencies [[`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67)]:
+  - @wso2is/admin.feature-gate.v1@1.9.9
+
 ## 1.5.227
 
 ### Patch Changes
