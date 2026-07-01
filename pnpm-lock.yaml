@@ -341,13 +341,13 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.ask-password-flow-builder.v1
       '@wso2is/admin.authentication.v1':
-        specifier: ^2.25.210
+        specifier: ^2.25.211
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.32.170
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.5
+        specifier: ^1.6.6
         version: link:../../features/admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.24
+        specifier: ^2.57.25
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -467,7 +467,7 @@ importers:
         specifier: ^1.5.206
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.40
+        specifier: ^2.38.41
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -2374,7 +2374,7 @@ importers:
         specifier: ^5.6.1
         version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.57.25
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.28.4
@@ -2383,7 +2383,7 @@ importers:
         specifier: ^2.29.14
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.35
+        specifier: ^2.38.41
         version: link:../admin.users.v1
       '@wso2is/core':
         specifier: ^2.7.1
@@ -2839,7 +2839,7 @@ importers:
         specifier: ^2.42.27
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.8
+        specifier: ^2.57.25
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.12.10
@@ -3814,13 +3814,13 @@ importers:
         specifier: workspace:^
         version: link:../admin.ask-password-flow-builder.v1
       '@wso2is/admin.authentication.v1':
-        specifier: ^2.25.210
+        specifier: ^2.25.211
         version: link:../admin.authentication.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.32.169
         version: link:../admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.5
+        specifier: ^1.6.6
         version: link:../admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -3907,7 +3907,7 @@ importers:
         specifier: ^2.29.32
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.40
+        specifier: ^2.38.41
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -9749,16 +9749,16 @@ importers:
         specifier: workspace:^
         version: link:../admin.approval-workflows.v1
       '@wso2is/admin.authentication.v1':
-        specifier: ^2.25.210
+        specifier: ^2.25.211
         version: link:../admin.authentication.v1
       '@wso2is/admin.cds.v1':
-        specifier: 1.6.5
+        specifier: 1.6.6
         version: link:../admin.cds.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.2
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.10
+        specifier: ^2.57.25
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.8
