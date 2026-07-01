@@ -197,7 +197,10 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                                             i18nKey="consents:policyConsents.wizard.create.preview.exampleDescription"
                                             values={ { policyName } }
                                             components={ [
-                                                <a className="rich-text-link" />
+                                                <a
+                                                    className="rich-text-link"
+                                                    aria-label={ policyName }
+                                                />
                                             ] }
                                         />
                                         { mandatory && <MandatoryMarker /> }
