@@ -16,21 +16,51 @@
  * under the License.
  */
 
+import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { CustomerDataServiceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Resolve the host to use for Customer Data Service (CDS) endpoints.
+ *
+ * @param serverHost - Resolved (tenant/org-qualified) server host.
+ * @param cdsHost - Optional dedicated CDS host origin.
+ * @returns The host to prefix CDS endpoints with.
+ */
+const resolveCustomerDataServiceHost = (serverHost: string, cdsHost?: string): string => {
+    if (!cdsHost) {
+        return serverHost;
+    }
+
+    try {
+        const tenantedPath: string = new URL(serverHost).pathname;
+        const sanitizedPath: string = tenantedPath === "/" ? "" : tenantedPath;
+
+        return `${ cdsHost.replace(/\/+$/, "") }${ sanitizedPath }`;
+    } catch {
+        return cdsHost.replace(/\/+$/, "");
+    }
+};
 
 /**
  * Get the resource endpoints for Customer Data Service (CDS) related operations.
  *
+ * @param serverHost - Resolved (tenant/org-qualified) server host.
+ * @param deploymentConfig - Deployment configuration (used to read an optional dedicated CDS host).
  * @returns Customer Data Service resource endpoints.
  */
-
 export const getCustomerDataServiceEndpoints = (
-    serverOrigin: string
+    serverHost: string,
+    deploymentConfig?: DeploymentConfigInterface
 ): CustomerDataServiceEndpointsInterface => {
+    const cdsHost: string = resolveCustomerDataServiceHost(
+        serverHost,
+        deploymentConfig?.extensions?.cdsHost as string
+    );
+
     return {
-        cdsConfig: `${ serverOrigin }/cds/api/v1/config`,
-        cdsProfileSchema: `${ serverOrigin }/cds/api/v1/profile-schema`,
-        cdsProfiles: `${ serverOrigin }/cds/api/v1/profiles`,
-        cdsUnificationRules: `${ serverOrigin }/cds/api/v1/unification-rules`
+        cdsConfig: `${ cdsHost }/cds/api/v1/config`,
+        cdsProfileSchema: `${ cdsHost }/cds/api/v1/profile-schema`,
+        cdsProfiles: `${ cdsHost }/cds/api/v1/profiles`,
+        cdsUnificationRules: `${ cdsHost }/cds/api/v1/unification-rules`
     };
 };
