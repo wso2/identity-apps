@@ -84,18 +84,18 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
 
 interface FormStateInterface {
     isAuthenticationUpdateFormState: boolean;
-    authenticationType: AuthenticationType;
+    authenticationType: AuthenticationType | null;
     isSubmitting: boolean;
     isHasRule: boolean;
-    rule: RuleWithoutIdInterface;
+    rule: RuleWithoutIdInterface | null;
 }
 
 type FormActionInterface =
     | { type: "SET_AUTH_UPDATE_FORM_STATE"; payload: boolean }
-    | { type: "SET_AUTHENTICATION_TYPE"; payload: AuthenticationType }
+    | { type: "SET_AUTHENTICATION_TYPE"; payload: AuthenticationType | null }
     | { type: "SET_IS_SUBMITTING"; payload: boolean }
     | { type: "SET_IS_HAS_RULE"; payload: boolean }
-    | { type: "SET_RULE"; payload: RuleWithoutIdInterface };
+    | { type: "SET_RULE"; payload: RuleWithoutIdInterface | null };
 
 const formReducer = (state: FormStateInterface, action: FormActionInterface): FormStateInterface => {
     switch (action.type) {
@@ -217,7 +217,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-        if (formState.isAuthenticationUpdateFormState || isCreateFormState) {{
+        if (formState.isAuthenticationUpdateFormState || isCreateFormState) {
             switch (values.authenticationType) {
                 case AuthenticationType.BASIC:
                     authProperties.username = values.usernameAuthProperty;
@@ -400,5 +400,5 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         </>
     );
 };
-};
+
 export default PreIssueAccessTokenActionConfigForm;
