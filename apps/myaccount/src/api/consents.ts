@@ -36,7 +36,7 @@ import {
     ServiceInterface,
     UpdateReceiptInterface
 } from "../models";
-import { PolicyConsentDetailInterface, PolicyConsentListResponseInterface } from "../models/consents";
+import { PolicyConsentDetailInterface, PolicyConsentSummaryInterface } from "../models/consents";
 import { store } from "../store";
 
 /**
@@ -313,27 +313,25 @@ export const updateConsentedClaims = (
  * Retrieves the list of user consent records from the v2 consents API.
  *
  * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
- * @param subjectId - Username of the subject to filter consents.
  * @param state - Consent state filter (defaults to "ACTIVE").
  * @returns A promise containing the paginated consent list response.
  */
-export const getConsentsBySubject = (
+export const getMeConsents = (
     consentsBaseUrl: string,
-    subjectId: string,
     state: string = "ACTIVE"
-): Promise<PolicyConsentListResponseInterface> => {
+): Promise<PolicyConsentSummaryInterface[]> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: "GET",
-        params: { state, subjectId },
+        params: { state },
         url: consentsBaseUrl
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<PolicyConsentListResponseInterface>) => {
+        .then((response: HttpResponse<PolicyConsentSummaryInterface[]>) => {
             return response.data;
         })
         .catch((error: HttpError) => {

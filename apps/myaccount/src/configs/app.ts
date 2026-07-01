@@ -107,7 +107,7 @@ export class Config {
                 }
             },
             consentMgtV2: {
-                consents: `${this.getDeploymentConfig()?.serverHost}/api/identity/consent-mgt/v2.0/consents`
+                consents: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/consents`
             },
             federatedAssociations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn/finish-registration`,
