@@ -165,6 +165,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            pushDeviceMgtConfigs: "",
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
@@ -347,6 +348,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            pushDeviceManagement: {
+                maxDeviceLimitUpperBound: undefined
+            },
             rebrandingBanner: {
                 announcementUrl: "",
                 buttonText: "",

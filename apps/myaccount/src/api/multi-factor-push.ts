@@ -20,6 +20,10 @@ import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgar
 import { AxiosError, AxiosResponse } from "axios";
 import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import { HttpMethods } from "../models";
+import {
+    ConfigPreferenceResponseInterface,
+    ConfigPreferenceRequestInterface
+} from "../models/push-authenticator";
 import { store } from "../store";
 
 /**
@@ -69,6 +73,40 @@ const getPushEnabledDevices = () => {
             }
 
             return Promise.resolve(response);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Fetch push device management configuration preferences for the tenant.
+ *
+ * @param data - Resource types, names and properties to fetch.
+ * @returns Promise resolving to the config preference response.
+ */
+export const getConfigPreferences = (
+    data: ConfigPreferenceRequestInterface[]
+): Promise<ConfigPreferenceResponseInterface[]> => {
+    const requestConfig: HttpRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.pushDeviceMgtConfigs
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to fetch config preferences. Status: ${response.status}`)
+                );
+            }
+
+            return Promise.resolve(response?.data as ConfigPreferenceResponseInterface[]);
         })
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);

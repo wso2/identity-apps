@@ -1075,6 +1075,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "Vous pouvez utiliser les notifications de connexion générées par votre application d'authentification configurée pour l'authentification à deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer une nouvelle application d'authentification ici.",
                 "deleteHint": "Supprimer",
                 "description": "Vous pouvez utiliser l'application d'authentification push pour recevoir des notifications de connexion sous forme de notifications push pour l'authentification à deux facteurs.",
+                "deviceLimitReachedHint": "Limite maximale de {{limit}} appareils atteinte",
                 "heading": "Authentificateur Push",
                 "hint": "Voir",
                 "modals": {
@@ -1105,6 +1106,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "L'appareil enregistré a été supprimé avec succès",
                             "message": "Appareil supprimé avec succès"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Une erreur s'est produite lors de la récupération de la configuration de l'authentificateur push.",
+                            "message": "Une erreur s'est produite"
                         }
                     },
                     "deviceListFetchError": {

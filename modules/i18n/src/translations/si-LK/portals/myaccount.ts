@@ -1049,6 +1049,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "ඔබගේ සකසා ඇති push authenticator යෙදුමෙන් උත්පාදනය කරන ලද ලොගින් ප්‍රතිඥා තහවුරු කිරීම් දෙකක් සඳහා භාවිතා කළ හැක. යෙදුමට ප්‍රවේශ නොමැති නම්, නව authenticator යෙදුමක් මෙහි සිට සකස් කළ හැක.",
                 "deleteHint": "ඉවත් කරන්න",
                 "description": "Push authenticator යෙදුම භාවිතා කර ඔබට ලොගින් ප්‍රතිඥා push විද්‍යුත් පණිවිඩ ලෙස ලබාගත හැක, දෙකේ තහවුරුකිරීම සඳහා.",
+                "deviceLimitReachedHint": "උපරිම උපාංග සීමාව ({{limit}}) ළඟා වී ඇත",
                 "heading": "Push Authenticator",
                 "hint": "නරඹන්න",
                 "modals": {
@@ -1079,6 +1080,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "ලියාපදිංචි උපාංගය සාර්ථකව ඉවත් කරන ලදි",
                             "message": "උපාංගය සාර්ථකව ඉවත් කරන ලදි"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Push authenticator වින්‍යාසය ලබාගැනීමේදී දෝෂයක් සිදුවිය.",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
                         }
                     },
                     "deviceListFetchError": {

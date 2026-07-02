@@ -79,6 +79,15 @@
     }
 
     String pushEnrollData = Encode.forHtmlAttribute(request.getParameter("pushEnrollData"));
+
+    /*
+     * canGoBack is set by the authenticator only when the user arrived at this page from the wait page via the
+     * "Register a new device" action (i.e. multi-device progressive enrollment of an already-enrolled user).
+     * When true, a Back button is rendered that returns the user to the wait page for the original challenge.
+     * The active pushAuthId is held by the AuthenticationContext on the server, so the Back submission carries
+     * nothing beyond the scenario name.
+     */
+    boolean canGoBack = Boolean.parseBoolean(request.getParameter("canGoBack"));
 %>
 
 <% request.setAttribute("pageName", "push-enroll"); %>
@@ -174,6 +183,16 @@
                                         class="ui primary fluid large button" disabled>
                             </div>
 
+                            <% if (canGoBack) { %>
+                                <div class="text-center mt-1">
+                                    <button type="button"
+                                            class="ui primary basic button link-button"
+                                            id="backToAuthBtn">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.enroll.back")%>
+                                    </button>
+                                </div>
+                            <% } %>
+
                             <div class="text-center mt-1">
                                 <%
                                     String multiOptionURI = request.getParameter("multiOptionURI");
@@ -259,6 +278,11 @@
                 checkbox.prop('checked',false);
                 continueBtn.click(function() {
                     document.getElementById("scenario").value = "PUSH_DEVICE_ENROLLMENT";
+                    registerForm.submit();
+                });
+                // Back button: cancel the in-progress enrollment and resume the previously paused push challenge.
+                $("#backToAuthBtn").click(function() {
+                    document.getElementById("scenario").value = "CANCEL_PUSH_DEVICE_ENROLLMENT";
                     registerForm.submit();
                 });
                 showQR();

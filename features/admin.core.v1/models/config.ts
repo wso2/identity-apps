@@ -468,6 +468,18 @@ interface ActionsUIConfigInterface {
 }
 
 /**
+ * Interface for Push Authenticator UI level configurations.
+ */
+interface PushDeviceManagementUIConfigInterface {
+    /**
+     * Server-level upper bound for the maximum device limit configurable by an organization admin.
+     * Sourced from `push_device_management.max_device_limit_upper_bound` in the
+     * server `deployment.toml`/`default.json` via the console `deployment.config.json`.
+     */
+    maxDeviceLimitUpperBound?: number;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
@@ -641,6 +653,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable the custom claim mapping merge feature.
      */
     isCustomClaimMappingMergeEnabled?: boolean;
+    /**
+     * Push device management related configurations.
+     */
+    pushDeviceManagement?: PushDeviceManagementUIConfigInterface;
     /**
      * Configurations related to routing.
      */

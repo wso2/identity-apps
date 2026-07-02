@@ -558,6 +558,10 @@ export class Config {
             privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
+            pushDeviceManagement: {
+                maxDeviceLimitUpperBound:
+                    window[ "AppUtils" ]?.getConfig()?.ui?.pushDeviceManagement?.maxDeviceLimitUpperBound
+            },
             rebrandingBanner: window[ "AppUtils" ]?.getConfig()?.ui?.rebrandingBanner,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES

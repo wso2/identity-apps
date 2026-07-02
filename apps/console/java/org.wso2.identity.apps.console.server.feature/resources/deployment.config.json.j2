@@ -3043,6 +3043,11 @@
             {% endfor %}
             {% endif %}
         },
+        "pushDeviceManagement": {
+            {% if push_device_management.max_device_limit_upper_bound is defined %}
+            "maxDeviceLimitUpperBound": {{ push_device_management.max_device_limit_upper_bound }}
+            {% endif %}
+        },
         "routes": {
             "organizationEnabledRoutes": {
             {% if console.ui.routes.organizationEnabledRoutes.items() is defined %}

@@ -131,6 +131,7 @@ export class Config {
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
+            pushDeviceMgtConfigs: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/configs/preferences`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,

@@ -89,6 +89,7 @@ export interface ServiceResourceEndpointsInterface {
     preference: string;
     profileSchemas: string;
     push: string;
+    pushDeviceMgtConfigs: string;
     sessions: string;
     otpCodeValidate: string;
     token: string;

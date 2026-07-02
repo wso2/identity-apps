@@ -2290,6 +2290,9 @@
         "productVersionConfig": {
             "productVersion": "7.2.0"
         },
+        "pushDeviceManagement": {
+            "maxDeviceLimitUpperBound": 10
+        },
         "routes": {
             "organizationEnabledRoutes": {
                 "accountSecurity": "v1.0.0",

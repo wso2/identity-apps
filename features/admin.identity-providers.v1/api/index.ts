@@ -17,3 +17,4 @@
  */
 
 export * from "./identity-provider";
+export * from "./push-device-mgt-configs";
