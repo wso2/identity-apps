@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 4.13.12
+
+### Patch Changes
+
+- [#10472](https://github.com/wso2/identity-apps/pull/10472) [`db9957ba59a90fd5cbf6d9da659c857d78ab0f82`](https://github.com/wso2/identity-apps/commit/db9957ba59a90fd5cbf6d9da659c857d78ab0f82) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix custom authenticator creation issue
+
+* [#10498](https://github.com/wso2/identity-apps/pull/10498) [`ab4683ad10f1fecb961d0834ad0903358544bed3`](https://github.com/wso2/identity-apps/commit/ab4683ad10f1fecb961d0834ad0903358544bed3) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add customer data feature configs to console deployment config template
+
 ## 4.13.11
 
 ### Patch Changes
