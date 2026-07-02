@@ -213,7 +213,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
 
     const {
-        data: fapiConfig
+        data: fapiConfig,
+        isLoading: isFapiConfigLoading,
+        error: fapiConfigFetchError
     } = useGetFapiConfig(isFAPIAppCreationEnabled);
 
     const serverSupportedFapiProfiles: FapiProfile[] = (fapiConfig?.supportedProfiles?.length > 0)
@@ -490,6 +492,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         createApp(application);
 
     }, [ generalFormValues, protocolFormValues ]);
+
+    useEffect(() => {
+        if (!fapiConfigFetchError) {
+            return;
+        }
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchFapiConfig.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.fetchFapiConfig.genericError.message")
+        }));
+    }, [ fapiConfigFetchError ]);
 
     useEffect(() => {
         if (!protocolFormValues) {
@@ -1221,6 +1234,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             supportedProfiles={ serverSupportedFapiProfiles }
                                             onEnforcementToggle={ setIsFapiEnabled }
                                             onProfileChange={ setSelectedFapiProfile }
+                                            isReadOnly={ isFapiConfigLoading }
                                             checkboxLabel={ t("applications:forms.generalDetails" +
                                                 ".fields.isFapiApp.label") }
                                             checkboxHint={ t("applications:forms.generalDetails" +

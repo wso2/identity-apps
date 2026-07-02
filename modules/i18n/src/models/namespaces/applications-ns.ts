@@ -2724,6 +2724,12 @@ export interface ApplicationsNS {
                 description: string;
             };
         };
+        fetchFapiConfig: {
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
         fetchMyAccountApplication: {
             error: {
                 message: string;

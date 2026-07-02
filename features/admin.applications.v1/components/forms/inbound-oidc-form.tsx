@@ -277,7 +277,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     );
     const fapiConstraints = useFapiProfileConstraints(isFAPIApplication ? selectedFapiProfile : null);
 
-    const { data: fapiConfig } = useGetFapiConfig(isFAPIApplication);
+    const {
+        data: fapiConfig,
+        isLoading: isFapiConfigLoading,
+        error: fapiConfigFetchError
+    } = useGetFapiConfig(isFAPIApplication);
     const serverSupportedFapiProfiles: FapiProfile[] = fapiConfig?.supportedProfiles ?? [];
     const isSelectedFapiProfileUnsupported: boolean =
         isFAPIApplication
@@ -526,6 +530,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 : null
         );
     }, [ initialValues?.isFAPIApplication, initialValues?.fapiProfile ]);
+
+    useEffect(() => {
+        if (!fapiConfigFetchError) {
+            return;
+        }
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchFapiConfig.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.fetchFapiConfig.genericError.message")
+        }));
+    }, [ fapiConfigFetchError ]);
 
     useEffect(() => {
         if (sharedOrganizationsList || orgType === OrganizationType.SUBORGANIZATION) {
@@ -2384,7 +2399,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 value={ value }
                                                 checked={ selectedFapiProfile === value }
                                                 onChange={ (): void => setSelectedFapiProfile(value) }
-                                                disabled={ readOnly }
+                                                disabled={ readOnly || isFapiConfigLoading }
                                                 data-componentid={
                                                     `${ componentId }-fapi-profile-${ labelKey }`
                                                 }

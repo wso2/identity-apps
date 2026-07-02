@@ -64,14 +64,12 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.server?.scopes?.update);
 
-    // ── Local form state ──────────────────────────────────────────────────────
     const [ fapiEnabled, setFapiEnabled ] = useState<boolean>(true);
     const [ supportedProfiles, setSupportedProfiles ] = useState<FapiProfile[]>([]);
     const [ enableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(false);
     const [ dcrFapiProfile, setDcrFapiProfile ] = useState<FapiProfile>("FAPI1_ADVANCED");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    // ── Data fetching ─────────────────────────────────────────────────────────
     const {
         data: fapiConfigData,
         error: fapiConfigError,
@@ -86,7 +84,6 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
         mutate: mutateDcrConfig
     } = useGetDcrFapiConfig<DcrConfigAPIResponseInterface, IdentityAppsApiException>(true);
 
-    // ── Populate state from API responses ─────────────────────────────────────
     useEffect(() => {
         if (fapiConfigData) {
             setFapiEnabled(fapiConfigData.enabled);
@@ -101,7 +98,6 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
         }
     }, [ dcrConfigData ]);
 
-    // ── Error alerts ──────────────────────────────────────────────────────────
     useEffect(() => {
         if (fapiConfigError) {
             dispatch(addAlert<AlertInterface>({
@@ -122,7 +118,6 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
         }
     }, [ dcrConfigError ]);
 
-    // ── Handlers ──────────────────────────────────────────────────────────────
     const handleProfileToggle = (profile: FapiProfile): void => {
         setSupportedProfiles((prev: FapiProfile[]) => {
             const next: FapiProfile[] = prev.includes(profile)
@@ -196,9 +191,7 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
                         ? <ContentLoader />
                         : (
                             <>
-                                { /* ── Content — disabled when FAPI is off ──────────────── */ }
                                 <Box>
-                                    { /* ── Supported FAPI Profiles ──────────────────────── */ }
                                     <SupportedFapiProfiles
                                         data-componentid={ `${ componentId }-profiles` }
                                         selectedProfiles={ supportedProfiles }
@@ -209,7 +202,6 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
 
                                     <Divider />
 
-                                    { /* ── Dynamic Client Registration ─────────────────── */ }
                                     <Box mt={ 4 }>
                                         <Typography variant="h6" mb={ 2 }>
                                             { t("fapiSecurityPolicy:form.dcr.heading") }
@@ -225,7 +217,6 @@ const FapiSecurityPolicyConfigurationPage: FunctionComponent<FapiSecurityPolicyC
                                     </Box>
                                 </Box>
 
-                                { /* ── Action bar ───────────────────────────────────────── */ }
                                 { !isReadOnly && (
                                     <Grid xs={ 8 } marginTop={ 4 }>
                                         <PrimaryButton
