@@ -115,6 +115,16 @@ export interface PreUpdateProfileActionInterface extends ActionInterface {
 }
 
 /**
+ * Pre Issue ID Token Action configuration.
+ */
+export interface PreIssueIdTokenActionInterface extends ActionInterface {
+    /**
+     * User attribute list.
+     */
+    attributes?: string[];
+}
+
+/**
  *  Endpoint configuration.
  */
 interface EndpointInterface {
@@ -293,6 +303,16 @@ export interface PreUpdateProfileActionResponseInterface extends ActionResponseI
 }
 
 /**
+ * Pre Issue ID Token Action response configuration.
+ */
+export interface PreIssueIdTokenActionResponseInterface extends ActionResponseInterface {
+    /**
+     * User attribute list.
+     */
+    attributes?: string[];
+}
+
+/**
  *  Password Sharing configuration.
  */
 interface PasswordSharing {
@@ -381,6 +401,16 @@ export interface PreUpdatePasswordActionUpdateInterface extends ActionUpdateInte
  * Pre Update Profile Action Update configuration.
  */
 export interface PreUpdateProfileActionUpdateInterface extends ActionUpdateInterface {
+    /**
+     * User attribute list.
+     */
+    attributes?: string[];
+}
+
+/**
+ * Pre Issue ID Token Action update configuration.
+ */
+export interface PreIssueIdTokenActionUpdateInterface extends ActionUpdateInterface {
     /**
      * User attribute list.
      */
@@ -577,6 +607,16 @@ export interface PreUpdateProfileActionConfigFormPropertyInterface extends Actio
      * User attribute list.
      */
     attributes: string[];
+}
+
+/**
+ * Pre Issue ID Token Action config form property interface.
+ */
+export interface PreIssueIdTokenActionConfigFormPropertyInterface extends ActionConfigFormPropertyInterface {
+    /**
+     * User attribute list.
+     */
+    attributes?: string[];
 }
 
 /**
