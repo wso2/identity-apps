@@ -1833,6 +1833,11 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                fapiProfile: {
+                    heading: string;
+                    hint: string;
+                    unsupportedProfile: string;
+                };
                 requestObject: {
                     heading: string;
                     fields: {
@@ -2716,6 +2721,12 @@ export interface ApplicationsNS {
                 description: string;
             };
             success: {
+                message: string;
+                description: string;
+            };
+        };
+        fetchFapiConfig: {
+            genericError: {
                 message: string;
                 description: string;
             };

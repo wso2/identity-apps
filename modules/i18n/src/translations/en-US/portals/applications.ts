@@ -1669,8 +1669,8 @@ export const applications: ApplicationsNS = {
                     label: "Management Application"
                 },
                 isFapiApp: {
-                    hint: "Enable to allow the application to be FAPI compliant.",
-                    label: "FAPI Compliant Application"
+                    hint: "When enabled, the application enforces FAPI security profile requirements. Protocol configurations such as grant types, token binding, and client authentication methods will be restricted to conform to the selected FAPI profile.",
+                    label: "Enforce FAPI security profile compliance for this application"
                 },
                 name: {
                     label: "Name",
@@ -2164,6 +2164,11 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "Pushed Authorization Requests"
+                },
+                fapiProfile: {
+                    heading: "FAPI Profile",
+                    hint: "Select the FAPI security profile to enforce for this application. The selected profile restricts certain protocol configuration options to comply with the profile requirements.",
+                    unsupportedProfile: "The \"{{profile}}\" security profile is no longer enabled for this organization. Select a supported profile or contact your administrator."
                 },
                 requestObject: {
                     fields: {
@@ -3131,6 +3136,12 @@ export const applications: ApplicationsNS = {
             success: {
                 description: "Successfully retrieved application details.",
                 message: "Retrieval successful"
+            }
+        },
+        fetchFapiConfig: {
+            genericError: {
+                description: "Couldn't retrieve FAPI configuration. Using default profile options.",
+                message: "Something went wrong"
             }
         },
         fetchMyAccountApplication: {

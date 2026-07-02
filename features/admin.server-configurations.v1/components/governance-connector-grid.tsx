@@ -258,6 +258,16 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                 return null;
                                             }
 
+                                            if (connector.id === ServerConfigurationsConstants.FAPI_SECURITY_POLICY
+                                                && !isFeatureEnabled(
+                                                    organizationsFeatureConfig,
+                                                    OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+                                                        "ORGANIZATION_FAPI_SECURITY_POLICY"
+                                                    )
+                                                )) {
+                                                return null;
+                                            }
+
                                             return (
                                                 <Card
                                                     key={ connector.id }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,6 +44,7 @@ export const getServerConfigurationsResourceEndpoints = (
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
         fraudDetectionConfigurations: `${ serverHost }/api/server/v1/configs/fraud-detection`,
+        fapiConfigurations: `${ serverHost }/api/server/v1/configs/fapi`,
         governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
         impersonationConfigurations: `${ serverHost }/api/server/v1/configs/impersonation`,
         issuerUsageScope: `${ serverHost }/api/server/v1/configs/authentication/inbound/oauth2/issuer/usage-scope`,

@@ -324,6 +324,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
+                    component: lazy(() => import(
+                        "@wso2is/admin.fapi-security-policy.v1/pages/fapi-security-policy-configuration")),
+                    exact: true,
+                    id: "fapiSecurityPolicyConfiguration",
+                    name: "pages:fapiSecurityPolicy.title",
+                    path: AppConstants.getPaths().get("FAPI_SECURITY_POLICY"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
                     component: lazy(() =>
                         import(
                             "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"

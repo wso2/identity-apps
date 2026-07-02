@@ -33,6 +33,11 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import {
+    FapiEnforcementSettings,
+    FapiProfile,
+    useGetFapiConfig
+} from "@wso2is/admin.fapi-security-policy.v1";
 import { OrganizationManagementConstants, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -111,6 +116,7 @@ import {
 import {
     AllowedIssuerInterface,
     SAMLConfigModes,
+    SupportedAccessTokenBindingTypes,
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
@@ -206,6 +212,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isFAPIAppCreationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
+
+    const {
+        data: fapiConfig,
+        isLoading: isFapiConfigLoading,
+        error: fapiConfigFetchError
+    } = useGetFapiConfig(isFAPIAppCreationEnabled);
+
+    const serverSupportedFapiProfiles: FapiProfile[] = (fapiConfig?.supportedProfiles?.length > 0)
+        ? fapiConfig.supportedProfiles
+        : [ "FAPI1_ADVANCED" ];
+
     const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(featureConfig?.organizations,
         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION"));
     const isFirstLevelOrg: boolean = useSelector(
@@ -231,6 +248,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
     const [ isAgentCompliantApp, setIsAgentCompliantApp ] = useState<boolean>(false);
+    const [ isFapiEnabled, setIsFapiEnabled ] = useState<boolean>(false);
+    const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(null);
 
     const {
         tokenEndpoints,
@@ -395,7 +414,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         grantTypes: [
                             "client_credentials"
                         ],
-                        isFAPIApplication: generalFormValues.get("isFAPIApp")?.length >= 2
+                        isFAPIApplication: isFapiEnabled,
+                        ...(isFapiEnabled && {
+                            ...(selectedFapiProfile !== null && { fapiProfile: selectedFapiProfile }),
+                            accessToken: {
+                                type: "JWT",
+                                bindingType: SupportedAccessTokenBindingTypes.CERTIFICATE,
+                                validateTokenBinding: true,
+                                applicationAccessTokenExpiryInSeconds: 3600,
+                                userAccessTokenExpiryInSeconds: 3600
+                            }
+                        })
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
@@ -471,6 +500,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         createApp(application);
 
     }, [ generalFormValues, protocolFormValues ]);
+
+    useEffect(() => {
+        if (!fapiConfigFetchError) {
+            return;
+        }
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchFapiConfig.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.fetchFapiConfig.genericError.message")
+        }));
+    }, [ fapiConfigFetchError ]);
 
     useEffect(() => {
         if (!protocolFormValues) {
@@ -1186,40 +1226,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
+                        // FAPI profile section — only shown for OIDC Standard-Based apps
                         orgType !== OrganizationType.SUBORGANIZATION
                         && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                         && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <Box display="flex" alignItems="center">
-                                    <Field
-                                        data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                        name="isFAPIApp"
-                                        required={ false }
-                                        type="checkbox"
-                                        value={ [ "isFAPIApp" ] }
-                                        children={ [
-                                            {
-                                                label: t("applications:forms.generalDetails" +
-                                                    ".fields.isFapiApp.label" ),
-                                                value: "fapiApp"
-                                            }
-                                        ] }
-                                    />
+                                <Box display="flex" alignItems="center" mb={ 1 }>
+                                    <Box flex={ 1 }>
+                                        <FapiEnforcementSettings
+                                            data-componentid={ `${ componentId }-fapi-enforcement-settings` }
+                                            enableFapiEnforcement={ isFapiEnabled }
+                                            selectedProfile={ selectedFapiProfile }
+                                            supportedProfiles={ serverSupportedFapiProfiles }
+                                            onEnforcementToggle={ setIsFapiEnabled }
+                                            onProfileChange={ setSelectedFapiProfile }
+                                            isReadOnly={ isFapiConfigLoading }
+                                            checkboxLabel={ t("applications:forms.generalDetails" +
+                                                ".fields.isFapiApp.label") }
+                                            checkboxHint={ t("applications:forms.generalDetails" +
+                                                ".fields.isFapiApp.hint") }
+                                        />
+                                    </Box>
                                     { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
-                                        <div className="oxygen-chip-div" >
+                                        <div className="oxygen-chip-div">
                                             <Chip
                                                 label={ t(FeatureStatusLabel.BETA) }
-                                                className="oxygen-menu-item-chip oxygen-chip-beta" />
+                                                className="oxygen-menu-item-chip oxygen-chip-beta"
+                                            />
                                         </div>
                                     ) }
                                 </Box>
-                                <Hint compact>
-                                    { t("applications:forms.generalDetails.fields" +
-                                        ".isFapiApp.hint" ) }
-                                </Hint>
                             </div>
                         )
                     }

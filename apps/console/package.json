@@ -105,6 +105,7 @@
         "@wso2is/admin.webhooks.v1": "^1.1.4",
         "@wso2is/admin.workflow-requests.v1": "workspace:^",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.208",
+        "@wso2is/admin.fapi-security-policy.v1": "workspace:^",
         "@wso2is/common.ui.v1": "^0.2.0",
         "@wso2is/common.workflow-approvals.v1": "^1.0.15",
         "@wso2is/core": "^2.13.4",

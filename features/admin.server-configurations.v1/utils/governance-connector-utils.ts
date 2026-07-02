@@ -477,6 +477,15 @@ export class GovernanceConnectorUtils {
                         status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                             .LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE,
                         testId: "issuer-usage-scope-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:fapiSecurityPolicy.subTitle"),
+                        header: I18n.instance.t("pages:fapiSecurityPolicy.title"),
+                        id: ServerConfigurationsConstants.FAPI_SECURITY_POLICY,
+                        route: AppConstants.getPaths().get("FAPI_SECURITY_POLICY"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_FAPI_SECURITY_POLICY,
+                        testId: "fapi-security-policy-card"
                     }
                 ],
                 displayOrder: 0,

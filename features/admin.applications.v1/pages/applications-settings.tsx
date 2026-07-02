@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -82,7 +82,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
 
     const [ isAuthenticationRequired = true, setAuthenticationRequired ] = useState<boolean>(authenticationRequired);
     const [ isMandateSSA = !isAuthenticationRequired, setMandateSSA ] = useState<boolean>(mandateSSA);
-    const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -106,7 +105,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
         if (dcrConfigs) {
             setMandateSSA(dcrConfigs?.mandateSSA);
             setAuthenticationRequired(dcrConfigs?.authenticationRequired);
-            setEnableFapiEnforcement(dcrConfigs?.enableFapiEnforcement);
             setSsaJwks(dcrConfigs?.ssaJwks);
         }
     }, [ dcrConfigs ]);
@@ -232,11 +230,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             },
             {
                 operation: "REPLACE",
-                path: "/enableFapiEnforcement",
-                value: values.enableFapiEnforcement
-            },
-            {
-                operation: "REPLACE",
                 path: "/mandateSSA",
                 value: values.mandateSSA
             }
@@ -333,7 +326,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                     initialValues={ {
                         authenticationRequired: isAuthenticationRequired,
                         dcrEndpoint: dcrEndpointState,
-                        enableFapiEnforcement: isEnableFapiEnforcement,
                         mandateSSA: isMandateSSA,
                         ssaJwks: ssaJwksState
                     } }
@@ -410,17 +402,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                         width={ 16 }
                         readOnly={ !hasDynamicClientRegistrationUpdatePermission }
                         data-componentid={ `${componentId}-ssaJwks-url` }
-                    />
-                    <Field.Checkbox
-                        ariaLabel="Enforce Fapi"
-                        name="enableFapiEnforcement"
-                        label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label") }
-                        hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
-                        tabIndex={ 3 }
-                        width={ 16 }
-                        listen={ (value: boolean) => setEnableFapiEnforcement(value) }
-                        readOnly={ !hasDynamicClientRegistrationUpdatePermission }
-                        data-componentid={ `${componentId}-enableFapiEnforcement-checkbox` }
                     />
                     <Field.Button
                         form={ FORM_ID }
