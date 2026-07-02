@@ -345,10 +345,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         totalSteps: progressTotalSteps
     } = useStepProgress(visibleStep, onboardingData);
 
-    const isM2M: boolean = useMemo(
-        () => onboardingData.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION,
-        [ onboardingData.templateId ]
-    );
+    const isM2M: boolean = onboardingData.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION;
 
     const { data: templateListing } = useGetExtensionTemplates(ResourceTypes.APPLICATIONS);
 
