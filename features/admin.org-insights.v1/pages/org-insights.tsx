@@ -53,7 +53,7 @@ const OrgInsightsPage: FunctionComponent<OrgInsightsPagePropsInterface> = (
     const [ isEnablingAdvanced, setIsEnablingAdvanced ] = useState<boolean>(false);
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
-    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(dayjs().format("HH:mm:ss"));
+    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(() => dayjs().format("HH:mm:ss"));
     const [ selectedActivityType, setSelectedActivityType ] = useState<ActivityType>(ActivityType.LOGIN);
 
     const { t } = useTranslation();
