@@ -332,7 +332,7 @@ importers:
         specifier: ^1.6.1
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.43.7
+        specifier: ^2.43.8
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.25
+        specifier: ^2.57.26
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -449,7 +449,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.56
+        specifier: ^2.38.57
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.26.7
@@ -500,7 +500,7 @@ importers:
         specifier: ^2.13.4
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.43.9
+        specifier: ^2.43.10
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.3
@@ -1966,7 +1966,7 @@ importers:
         specifier: ^2.26.45
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.21
+        specifier: ^2.57.26
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.9
@@ -2002,7 +2002,7 @@ importers:
         specifier: ^2.25.205
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.51
+        specifier: ^2.38.57
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.subscription.v1':
         specifier: workspace:^
@@ -2029,7 +2029,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.5
+        specifier: ^2.43.10
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -3811,7 +3811,7 @@ importers:
         specifier: ^1.6.1
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.43.6
+        specifier: ^2.43.8
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -3898,7 +3898,7 @@ importers:
         specifier: ^2.25.205
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.54
+        specifier: ^2.38.57
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.sms-templates.v1':
         specifier: ^1.0.212
@@ -3943,7 +3943,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.9
+        specifier: ^2.43.10
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -4804,7 +4804,7 @@ importers:
         specifier: ^3.5.8
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.9
+        specifier: ^2.57.26
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.13.2
@@ -8833,7 +8833,7 @@ importers:
         specifier: ^3.5.6
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.16
+        specifier: ^2.57.26
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.8
@@ -8860,7 +8860,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.1
+        specifier: ^2.43.10
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0

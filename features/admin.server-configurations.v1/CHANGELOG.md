@@ -1,5 +1,15 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.57
+
+### Patch Changes
+
+- [#10290](https://github.com/wso2/identity-apps/pull/10290) [`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add FAPI 2 Support
+
+- Updated dependencies [[`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c)]:
+  - @wso2is/admin.core.v1@2.57.26
+  - @wso2is/i18n@2.43.10
+
 ## 2.38.56
 
 ### Patch Changes

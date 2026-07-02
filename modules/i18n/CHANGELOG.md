@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.43.10
+
+### Patch Changes
+
+- [#10290](https://github.com/wso2/identity-apps/pull/10290) [`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add FAPI 2 Support
+
 ## 2.43.9
 
 ### Patch Changes
