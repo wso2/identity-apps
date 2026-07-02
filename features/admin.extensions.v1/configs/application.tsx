@@ -693,7 +693,7 @@ export const applicationConfig: ApplicationConfig = {
         }
     },
     templates:{
-        agent: true,
+        agent: false,
         custom: true,
         customProtocol: true,
         m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
