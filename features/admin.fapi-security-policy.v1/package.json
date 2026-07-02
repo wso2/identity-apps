@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.fapi-security-policy.v1",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "FAPI Security Policy Configuration Package",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -10,7 +10,7 @@
         "@asgardeo/auth-react": "^5.6.1",
         "@oxygen-ui/react": "^2.4.6",
         "@wso2is/access-control": "^3.5.8",
-        "@wso2is/admin.core.v1": "^2.57.9",
+        "@wso2is/admin.core.v1": "^2.57.26",
         "@wso2is/core": "^2.13.2",
         "@wso2is/react-components": "^2.10.2",
         "axios": "^1.7.0",
