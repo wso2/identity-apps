@@ -50,7 +50,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.CREATE_FEATURE_SCOPE_SUFFIX;
+import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.DELETE_FEATURE_SCOPE_SUFFIX;
 import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.EDIT_FEATURE_SCOPE_SUFFIX;
+import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.UPDATE_FEATURE_SCOPE_SUFFIX;
 import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.VIEW_FEATURE_SCOPE_SUFFIX;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.ADMINISTRATOR;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.CONSOLE_APP_AUDIENCE_NAME;
@@ -67,6 +70,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     private static final String EVERYONE = "everyone";
     private static final String REQUIRE_FEATURE_PERMISSIONS = "SCIM2.ConsoleRoles.RequireFeaturePermissions";
     private static final String IS_CUSTOM_CONSOLE_ROLES_ENABLED = "SCIM2.ConsoleRoles.EnableCustomRoles";
+    private static final String USE_GRANULAR_CONSOLE_PERMISSIONS_CONFIG =
+        "ConsoleSettings.UseGranularConsolePermissions";
 
     @Override
     public int getDefaultOrderId() {
@@ -241,9 +246,9 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             }
         });
 
+        // Fetch all system permissions.
+        Map<String, Permission> systemPermissionsMap = getSystemPermissionsMap(tenantDomain);
         if (!addedPermissionNames.isEmpty()) {
-            // Fetch all system permissions.
-            Map<String, Permission> systemPermissionsMap = getSystemPermissionsMap(tenantDomain);
             addedPermissionNames.forEach(permissionName -> {
                 Permission permission = systemPermissionsMap.get(permissionName);
                 if (permission != null) {
@@ -252,12 +257,17 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             });
         }
 
+        resolveWriteFeatureScopes(resolvedRolePermissions, getAPIResourceCollections(tenantDomain),
+            new ArrayList<>(systemPermissionsMap.values()));
         return resolvedRolePermissions;
     }
 
     /**
-     * This method resolves the new permissions for the console roles. In this method, we resolve two type of console
-     * roles. 1. Console roles created after 7.0.0. 2. Console roles created in 7.0.0.
+     * This method resolves the new permissions for the console roles. In this method, we resolve 3 type of console
+     * roles.
+     *      1. Console roles created after 7.0.0.
+     *      2. Console roles created in 7.0.0.
+     *      3. Console roles with granular permissions (create, update, delete) added instead of edit permission.
      *
      * @param rolePermissions List of permissions of the role.
      * @param tenantDomain    Tenant domain.
@@ -269,13 +279,16 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
 
         // Fetch all system permissions.
         Map<String, Permission> systemPermissionsMap = getSystemPermissionsMap(tenantDomain);
+        List<APIResourceCollection> apiResourceCollections = getAPIResourceCollections(tenantDomain);
         List<Permission> consoleFeaturePermissions = getConsoleFeaturePermissions(rolePermissions);
         Set<String> addedPermissionNames = new HashSet<>();
+        List<Permission> upgradedPermissions;
         if (!consoleFeaturePermissions.isEmpty()) {
             // This is where we handle the new console roles (console roles created after 7.0.0) permissions.
             // We check whether the role has the view feature scope or edit feature scope. If the role has the
             // view feature scope, then we add all the read scopes. If the role has the edit feature scope, then we
-            // add all the write scopes.
+            // add all the write scopes. If granular permissions are enabled, we also resolve create/update/delete
+            // feature scopes the same way.
             // Fetch console feature scopes and its mapped permissions.
             Map<String, Set<String>> consoleFeaturePermissionsMap = getConsoleFeaturePermissionsMap(tenantDomain);
             List<Permission> resolvedRolePermissions = new ArrayList<>();
@@ -293,12 +306,11 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                     }
                 });
             }
-            return resolvedRolePermissions;
+            upgradedPermissions = resolvedRolePermissions;
         } else {
             // This is where we handle the initial console roles (console roles created in 7.0.0) permissions.
             // Here we assume these role only contains legacy feature scope not the new feature scopes.
             // Fetch all system scopes to resolve permission details from permission name.
-            List<APIResourceCollection> apiResourceCollections = getAPIResourceCollections(tenantDomain);
             Set<Permission> resolvedRolePermissions = new HashSet<>(new ArrayList<>(rolePermissions));
             List<Permission> consolePermissions = getConsolePermissions(rolePermissions);
             consolePermissions.forEach(permission -> {
@@ -326,8 +338,11 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                     }
                 });
             });
-            return new ArrayList<>(resolvedRolePermissions);
+            upgradedPermissions = new ArrayList<>(resolvedRolePermissions);
         }
+        resolveWriteFeatureScopes(upgradedPermissions, apiResourceCollections,
+            new ArrayList<>(systemPermissionsMap.values()));
+        return upgradedPermissions;
     }
 
     private void populateSystemConsoleRolesPermissions(List<String> permissions, List<String> roleIds,
@@ -440,12 +455,24 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         Map<String, Set<String>> featurePermissions = new HashMap<>();
         List<APIResourceCollection> apiResources = getAPIResourceCollections(tenantDomain);
         Map<String, APIResourceCollection> scopeToResourceMap = new HashMap<>();
+        boolean granular = isGranularConsolePermissionsEnabled();
         for (APIResourceCollection resource : apiResources) {
             if (resource.getViewFeatureScope() != null) {
                 scopeToResourceMap.put(resource.getViewFeatureScope(), resource);
             }
             if (resource.getEditFeatureScope() != null) {
                 scopeToResourceMap.put(resource.getEditFeatureScope(), resource);
+            }
+            if (granular) {
+                if (resource.getCreateFeatureScope() != null) {
+                    scopeToResourceMap.put(resource.getCreateFeatureScope(), resource);
+                }
+                if (resource.getUpdateFeatureScope() != null) {
+                    scopeToResourceMap.put(resource.getUpdateFeatureScope(), resource);
+                }
+                if (resource.getDeleteFeatureScope() != null) {
+                    scopeToResourceMap.put(resource.getDeleteFeatureScope(), resource);
+                }
             }
         }
 
@@ -461,6 +488,24 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                 Set<String> editPermissions = resolveScopes(apiResource.getWriteScopes(),
                     apiResource.getEditFeatureScope(), scopeToResourceMap, new HashSet<>());
                 featurePermissions.put(apiResource.getEditFeatureScope(), editPermissions);
+            }
+
+            if (granular) {
+                if (apiResource.getCreateFeatureScope() != null) {
+                    Set<String> createPermissions = resolveScopes(apiResource.getCreateScopes(),
+                        apiResource.getCreateFeatureScope(), scopeToResourceMap, new HashSet<>());
+                    featurePermissions.put(apiResource.getCreateFeatureScope(), createPermissions);
+                }
+                if (apiResource.getUpdateFeatureScope() != null) {
+                    Set<String> updatePermissions = resolveScopes(apiResource.getUpdateScopes(),
+                        apiResource.getUpdateFeatureScope(), scopeToResourceMap, new HashSet<>());
+                    featurePermissions.put(apiResource.getUpdateFeatureScope(), updatePermissions);
+                }
+                if (apiResource.getDeleteFeatureScope() != null) {
+                    Set<String> deletePermissions = resolveScopes(apiResource.getDeleteScopes(),
+                        apiResource.getDeleteFeatureScope(), scopeToResourceMap, new HashSet<>());
+                    featurePermissions.put(apiResource.getDeleteFeatureScope(), deletePermissions);
+                }
             }
         }
 
@@ -484,7 +529,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
 
             // Check if this is a console feature scope
             if (scope.startsWith(CONSOLE_SCOPE_PREFIX) &&
-                (scope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX) || scope.endsWith(EDIT_FEATURE_SCOPE_SUFFIX))) {
+                (scope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX) || scope.endsWith(EDIT_FEATURE_SCOPE_SUFFIX) ||
+                    scope.endsWith(CREATE_FEATURE_SCOPE_SUFFIX) ||
+                    scope.endsWith(UPDATE_FEATURE_SCOPE_SUFFIX) ||
+                    scope.endsWith(DELETE_FEATURE_SCOPE_SUFFIX))) {
 
                 APIResourceCollection nestedResource = scopeToResourceMap.get(scope);
                 if (nestedResource != null) {
@@ -494,6 +542,12 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                         nestedScopes = nestedResource.getReadScopes();
                     } else if (scope.equals(nestedResource.getEditFeatureScope())) {
                         nestedScopes = nestedResource.getWriteScopes();
+                    } else if (scope.equals(nestedResource.getCreateFeatureScope())) {
+                        nestedScopes = nestedResource.getCreateScopes();
+                    } else if (scope.equals(nestedResource.getUpdateFeatureScope())) {
+                        nestedScopes = nestedResource.getUpdateScopes();
+                    } else if (scope.equals(nestedResource.getDeleteFeatureScope())) {
+                        nestedScopes = nestedResource.getDeleteScopes();
                     } else {
                         nestedScopes = new ArrayList<>();
                     }
@@ -520,7 +574,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                 permission.getName() != null && (permission.getName().startsWith(CONSOLE_SCOPE_PREFIX)
                 || permission.getName().startsWith(CONSOLE_ORG_SCOPE_PREFIX)) &&
                 (permission.getName().endsWith(VIEW_FEATURE_SCOPE_SUFFIX) ||
-                    permission.getName().endsWith(EDIT_FEATURE_SCOPE_SUFFIX)))
+                    permission.getName().endsWith(EDIT_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(CREATE_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(UPDATE_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(DELETE_FEATURE_SCOPE_SUFFIX)))
             .collect(Collectors.toList());
     }
 
@@ -536,7 +593,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                 permission.getName() != null && (permission.getName().startsWith(CONSOLE_SCOPE_PREFIX)
                 || permission.getName().startsWith(CONSOLE_ORG_SCOPE_PREFIX)) &&
                 !(permission.getName().endsWith(VIEW_FEATURE_SCOPE_SUFFIX) ||
-                    permission.getName().endsWith(EDIT_FEATURE_SCOPE_SUFFIX)))
+                    permission.getName().endsWith(EDIT_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(CREATE_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(UPDATE_FEATURE_SCOPE_SUFFIX) ||
+                    permission.getName().endsWith(DELETE_FEATURE_SCOPE_SUFFIX)))
             .collect(Collectors.toList());
     }
 
@@ -603,5 +663,95 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             return false;
         }
         return Boolean.parseBoolean(isFeaturePermissionsRequiredValue);
+    }
+
+    /**
+     * Check whether the granular console permission model (create/update/delete feature scopes) is enabled.
+     *
+     * @return True if granular console permissions are enabled.
+     */
+    private boolean isGranularConsolePermissionsEnabled() {
+
+        return Boolean.parseBoolean(IdentityUtil.getProperty(USE_GRANULAR_CONSOLE_PERMISSIONS_CONFIG));
+    }
+
+    /**
+     * Supports backward compatibility between the legacy write model and the new granular permission model,
+     * so that a role resolves correctly regardless of which model it was created with:
+     *   - The edit (write) feature scope is equivalent to having the create, update and delete feature scopes.
+     *     So if the role has the edit feature scope and granular permissions are enabled, the create, update and
+     *     delete feature scopes are added.
+     *   - If `create, update and delete` are all present, the equivalent `edit` (write) feature scope is added.
+     *
+     * Only the feature scopes are added here; the internal scopes corresponding to these feature scopes are already
+     * resolved earlier in {@link #getUpgradedPermissions}.
+     *
+     * @param resolvedRolePermissions Resolved role permissions to be updated in place.
+     * @param apiResourceCollections  API resource collections.
+     * @param systemPermissions       System permissions used to resolve permission details from permission names.
+     */
+    private void resolveWriteFeatureScopes(List<Permission> resolvedRolePermissions,
+                                           List<APIResourceCollection> apiResourceCollections,
+                                           List<Permission> systemPermissions) {
+
+        Set<String> resolvedPermissionNames = resolvedRolePermissions.stream().map(Permission::getName)
+            .collect(Collectors.toCollection(HashSet::new));
+        boolean granular = isGranularConsolePermissionsEnabled();
+        apiResourceCollections.forEach(apiResourceCollection -> {
+            String editFeatureScope = apiResourceCollection.getEditFeatureScope();
+            String createFeatureScope = apiResourceCollection.getCreateFeatureScope();
+            String updateFeatureScope = apiResourceCollection.getUpdateFeatureScope();
+            String deleteFeatureScope = apiResourceCollection.getDeleteFeatureScope();
+
+            boolean hasEdit = editFeatureScope != null && resolvedPermissionNames.contains(editFeatureScope);
+            boolean hasCreate = createFeatureScope != null && resolvedPermissionNames.contains(createFeatureScope);
+            boolean hasUpdate = updateFeatureScope != null && resolvedPermissionNames.contains(updateFeatureScope);
+            boolean hasDelete = deleteFeatureScope != null && resolvedPermissionNames.contains(deleteFeatureScope);
+
+            // The edit feature scope is equivalent to having the create, update and delete feature scopes.
+            if (hasEdit && granular) {
+                if (!hasCreate) {
+                    addResolvedScope(createFeatureScope, systemPermissions, resolvedRolePermissions,
+                        resolvedPermissionNames);
+                }
+                if (!hasUpdate) {
+                    addResolvedScope(updateFeatureScope, systemPermissions, resolvedRolePermissions,
+                        resolvedPermissionNames);
+                }
+                if (!hasDelete) {
+                    addResolvedScope(deleteFeatureScope, systemPermissions, resolvedRolePermissions,
+                        resolvedPermissionNames);
+                }
+            }
+            // If the role has all the granular write feature scopes, it is equivalent to the edit feature scope.
+            if (hasCreate && hasUpdate && hasDelete && !hasEdit) {
+                addResolvedScope(editFeatureScope, systemPermissions, resolvedRolePermissions,
+                    resolvedPermissionNames);
+            }
+        });
+    }
+
+    /**
+     * Resolve the given scope name against the system permissions and add it to the resolved role permissions if it is
+     * not already present.
+     *
+     * @param scope                   Scope name to resolve and add.
+     * @param systemPermissions       System permissions used to resolve permission details from permission names.
+     * @param resolvedRolePermissions Resolved role permissions to be updated in place.
+     * @param resolvedPermissionNames Names of the already resolved permissions, used to avoid duplicates.
+     */
+    private void addResolvedScope(String scope, List<Permission> systemPermissions,
+                                  List<Permission> resolvedRolePermissions, Set<String> resolvedPermissionNames) {
+
+        if (scope == null || resolvedPermissionNames.contains(scope)) {
+            return;
+        }
+        systemPermissions.stream()
+            .filter(systemPermission -> systemPermission.getName().equals(scope))
+            .findFirst()
+            .ifPresent(systemPermission -> {
+                resolvedRolePermissions.add(systemPermission);
+                resolvedPermissionNames.add(scope);
+            });
     }
 }

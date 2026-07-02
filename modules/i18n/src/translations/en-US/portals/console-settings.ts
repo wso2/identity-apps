@@ -61,14 +61,24 @@ export const consoleSettings: ConsoleSettingsNS = {
             organizationPermissions: {
                 label: "Organization Permissions"
             },
+            permissionsCount: "{{count}} Permissions",
             tenantPermissions: {
                 label: "Root Organization Permissions"
             }
         },
         tabLabel: "Roles",
         permissionLevels: {
+            view: "View",
             edit: "Edit",
-            view: "View"
+            selectAll: "Select all {{label}} permissions",
+            selectCollection: "Select {{collection}} {{label}} permission",
+            read: "View",
+            create: "Create",
+            update: "Update",
+            delete: "Delete",
+            viewRequiredWarning: "View is required when other permissions are active.",
+            viewLockedRow: "View can't be turned off while other permissions are active.",
+            viewSelectAllLocked: "Some rows still have other permissions active. Remove them first."
         }
     },
     enterpriseLogin: {

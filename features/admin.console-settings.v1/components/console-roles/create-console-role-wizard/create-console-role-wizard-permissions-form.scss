@@ -5,9 +5,23 @@
         border: 1px solid var(--oxygen-palette-divider);
         margin: 10px 0;
 
+        .permissions-accordion-heading {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+
         .permissions-accordion-label {
-            width: 40%;
             flex-shrink: 0;
+        }
+
+        .permissions-count-chip {
+            font-weight: 500;
+        }
+        
+        .permissions-accordion-checkbox-placeholder {
+            visibility: hidden;
         }
 
         .permissions-table {
@@ -19,6 +33,9 @@
         }
 
         .oxygen-accordion-summary {
+            padding-left: var(--oxygen-spacing-3);
+            padding-right: var(--oxygen-spacing-3);
+
             .MuiAccordionSummary-content {
                 display: flex;
                 flex-direction: row;
@@ -26,7 +43,19 @@
                 align-content: center;
                 align-items: center;
                 justify-content: flex-start;
+
+                // MUI inflates the summary content margin when expanded, which opens up a
+                // large empty band between the title and the table. Keep it consistent.
+                &.Mui-expanded {
+                    margin: var(--oxygen-spacing-1) 0;
+                }
             }
+        }
+
+        .oxygen-accordion-details {
+            padding-top: 0;
+            padding-left: var(--oxygen-spacing-3);
+            padding-right: var(--oxygen-spacing-3);
         }
     }
 
@@ -34,6 +63,67 @@
         .oxygen-accordion {
             &.Mui-expanded:first-of-type {
                 margin-top: 10px;
+            }
+        }
+    }
+
+    /* Granular permission mode — View / Create / Update / Delete are each their own
+       TableCell, so MUI's table-layout aligns header-column checkboxes with data-row
+       checkboxes automatically. */
+    .granular-permission-column-cell {
+        width: 1%;            /* let auto layout shrink each column to its content + padding */
+        white-space: nowrap;  /* keep label and checkbox on one line in the header */
+    }
+
+    // Header cell content: column label stacked above its centered select-all checkbox,
+    // so the checkbox lines up vertically with the data-row checkboxes below it.
+    .granular-permission-column-header {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+
+        .granular-permission-column-label {
+            font-weight: 500;
+            line-height: 1.2;
+        }
+    }
+
+    .granular-permission-header-row {
+        background-color: var(--oxygen-palette-grey-100);
+
+        th {
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+        }
+    }
+
+    .granular-permission-column-cell {
+        /* A disabled checkbox — the form is read-only, or this create / update / delete level has
+           no corresponding action scope — must read as an inert, non-interactive control: a faded,
+           muted outline with a not-allowed cursor, never a filled grey box that looks like a
+           selected state. (MUI disables pointer events on a disabled control, so re-enable them
+           just enough to show the not-allowed cursor while keeping the hover highlight suppressed.) */
+        .MuiCheckbox-root.Mui-disabled {
+            pointer-events: auto;
+            cursor: not-allowed;
+
+            &:hover {
+                background-color: transparent;
+            }
+
+            /* Disabled + checked (e.g. a granted level shown in read-only mode): keep the checked
+               colour so the grant stays legible, dimmed so it still reads as non-interactive. */
+            &.Mui-checked {
+                color: var(--oxygen-palette-primary-main);
+                opacity: 0.5;
+            }
+
+            /* Disabled + unchecked: a plain muted outline, faded — no grey interior fill. */
+            &:not(.Mui-checked) {
+                opacity: 0.4;
+
+                .MuiSvgIcon-root {
+                    color: var(--oxygen-palette-grey-500);
+                }
             }
         }
     }
