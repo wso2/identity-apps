@@ -497,6 +497,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     googleOneTapEnabledTenants?: string[];
     /**
+     * Fully-qualified class name of the default token issuer.
+     */
+    defaultTokenIssuerClass?: string;
+    /**
      * API resource management UI configurations.
      */
     apiResourceManagement?: APIResourceManagementUIConfigInterface;

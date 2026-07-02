@@ -1,5 +1,56 @@
 # @wso2is/admin.core.v1
 
+## 2.57.25
+
+### Patch Changes
+
+- [#10492](https://github.com/wso2/identity-apps/pull/10492) [`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add seperate host support for CDS
+
+- Updated dependencies [[`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4)]:
+  - @wso2is/admin.authentication.v1@2.25.211
+  - @wso2is/admin.cds.v1@1.6.6
+  - @wso2is/admin.users.v1@2.38.41
+
+## 2.57.24
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.tenants.v1@2.29.32
+  - @wso2is/admin.org-insights.v1@2.26.5
+
+## 2.57.23
+
+### Patch Changes
+
+- [#10422](https://github.com/wso2/identity-apps/pull/10422) [`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671) Thanks [@hwupathum](https://github.com/hwupathum)! - Add application assignment UI for policies
+
+- Updated dependencies [[`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671)]:
+  - @wso2is/common.consents.v1@1.0.4
+  - @wso2is/i18n@2.43.9
+
+## 2.57.22
+
+### Patch Changes
+
+- [#10417](https://github.com/wso2/identity-apps/pull/10417) [`80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab`](https://github.com/wso2/identity-apps/commit/80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab) Thanks [@pasindubalasooriya](https://github.com/pasindubalasooriya)! - Fix broken anchors and outdated paths in Console "Learn More" documentation links
+
+- Updated dependencies [[`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b)]:
+  - @wso2is/admin.connections.v1@2.38.2
+  - @wso2is/i18n@2.43.7
+
+## 2.57.21
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.applications.v1@2.43.6
+  - @wso2is/i18n@2.43.5
+
 ## 2.57.20
 
 ### Patch Changes

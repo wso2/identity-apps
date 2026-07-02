@@ -116,6 +116,7 @@ import {
 import {
     AllowedIssuerInterface,
     SAMLConfigModes,
+    SupportedAccessTokenBindingTypes,
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
@@ -414,8 +415,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             "client_credentials"
                         ],
                         isFAPIApplication: isFapiEnabled,
-                        ...(isFapiEnabled && selectedFapiProfile !== null && {
-                            fapiProfile: selectedFapiProfile
+                        ...(isFapiEnabled && {
+                            ...(selectedFapiProfile !== null && { fapiProfile: selectedFapiProfile }),
+                            accessToken: {
+                                type: "JWT",
+                                bindingType: SupportedAccessTokenBindingTypes.CERTIFICATE,
+                                validateTokenBinding: true,
+                                applicationAccessTokenExpiryInSeconds: 3600,
+                                userAccessTokenExpiryInSeconds: 3600
+                            }
                         })
                     }
                 };

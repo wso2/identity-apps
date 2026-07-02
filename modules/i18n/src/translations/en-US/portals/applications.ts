@@ -1939,7 +1939,8 @@ export const applications: ApplicationsNS = {
                             label: "Token type",
                             valueDescriptions: {
                                 "default": "Issue an opaque UUID as a token.",
-                                "jwt": "Issue a self-contained JWT token."
+                                "jwt": "Issue a self-contained JWT token.",
+                                "opaque": "Issue an opaque UUID as a token."
                             }
                         },
                         validateBinding: {

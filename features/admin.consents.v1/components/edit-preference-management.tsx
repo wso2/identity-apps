@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
@@ -43,7 +44,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
-import { ContentLoader, Message, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, PrimaryButton } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     type ReactElement,
@@ -561,21 +562,18 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                             } }
                                                         />
                                                     </Box>
-                                                    <Message
-                                                        type="info"
-                                                        content={ (
-                                                            <Trans
-                                                                i18nKey="consents:preferenceManagement.form.linkHint"
+                                                    <Alert severity="info">
+                                                        <Trans
+                                                            i18nKey="consents:preferenceManagement.form.linkHint"
+                                                        >
+                                                            <Link
+                                                                onClick={ handleRegFlowBuilderClick }
+                                                                sx={ { cursor: "pointer" } }
                                                             >
-                                                                <Link
-                                                                    onClick={ handleRegFlowBuilderClick }
-                                                                    sx={ { cursor: "pointer" } }
-                                                                >
-                                                                    this link
-                                                                </Link>
-                                                            </Trans>
-                                                        ) }
-                                                    />
+                                                                this link
+                                                            </Link>
+                                                        </Trans>
+                                                    </Alert>
                                                 </Box>
                                             </Grid>
                                             { /* Preview column */ }

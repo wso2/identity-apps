@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AuthenticationProviderNS } from "../../../models";
 /**
  * NOTES: No need to care about the max-len for this file since it's easier to
@@ -333,6 +334,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     validations: {
                         required: "Use alphanumeric characters for OTP is a required field."
                     }
+                },
+                notifyEmailSendingFailure: {
+                    hint: "Notify users when OTP delivery fails, instead of proceeding silently.",
+                    label: "Notify users on OTP delivery failure",
+                    validations: {
+                        required: "Notify users on OTP delivery failure is a required field."
+                    }
                 }
             },
             facebook: {
@@ -646,6 +654,27 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         }
                     },
                     placeholder: "e.g: openid"
+                },
+                tenant: {
+                    guide: "Leave <1>common</1> as-is to let users from any Microsoft organization sign in. " +
+                        "To limit sign-in to one organization, enter that directory's tenant ID or verified " +
+                        "domain. If your app registration is set to \"Accounts in this organizational directory " +
+                        "only\" (single-tenant), you must enter the tenant ID. <3>common</3> won't work.",
+                    guideHeading: "Directory (tenant) ID",
+                    hint: "Keep <1>common</1> to allow sign-in from any Microsoft organization, or enter your " +
+                        "Directory (tenant) ID or domain (e.g. <3>contoso.onmicrosoft.com</3>) to restrict " +
+                        "sign-in to a single organization.",
+                    info: "If your Microsoft app registration uses \"Accounts in this organizational directory " +
+                        "only\" (single-tenant), enter your tenant ID here. Leaving <1>common</1> will cause " +
+                        "every sign-in through this connection to fail.",
+                    label: "Directory (tenant) ID",
+                    placeholder: "common",
+                    validations: {
+                        invalid: "Enter a valid Directory (tenant) ID (GUID), a domain such as " +
+                            "contoso.onmicrosoft.com, or one of \"common\", \"organizations\", or \"consumers\".",
+                        required: "Directory (tenant) ID is required. Use \"common\" to allow any " +
+                            "Microsoft organization."
+                    }
                 }
             },
             saml: {
@@ -889,6 +918,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Use only numeric characters for OTP",
                     validations: {
                         required: "Use only numeric characters for OTP token is a required field."
+                    }
+                },
+                notifySmsSendingFailure: {
+                    hint: "Notify users when OTP delivery fails, instead of proceeding silently.",
+                    label: "Notify users on OTP delivery failure",
+                    validations: {
+                        required: "Notify users on OTP delivery failure is a required field."
                     }
                 }
             },
@@ -1241,6 +1277,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
             genericError: {
                 description: "An error occurred while creating the connection.",
                 message: "Create error"
+            },
+            microsoftTenantError: {
+                description: "The connection was created, but applying the tenant-specific " +
+                    "endpoints failed. The default endpoints will be used.",
+                message: "Tenant configuration failed"
             },
             success: {
                 description: "Successfully created the connection.",

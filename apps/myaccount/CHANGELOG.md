@@ -1,5 +1,36 @@
 # @wso2is/myaccount
 
+## 4.3.11
+
+### Patch Changes
+
+- [#10494](https://github.com/wso2/identity-apps/pull/10494) [`0d0af7d35586a9280d7a1a99e35148cdf837ab9f`](https://github.com/wso2/identity-apps/commit/0d0af7d35586a9280d7a1a99e35148cdf837ab9f) Thanks [@hwupathum](https://github.com/hwupathum)! - Update consent API uri
+
+## 4.3.10
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+## 4.3.9
+
+### Patch Changes
+
+- [#10444](https://github.com/wso2/identity-apps/pull/10444) [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b) Thanks [@savindi7](https://github.com/savindi7)! - Add tenant ID field in Microsoft Connection.
+
+- Updated dependencies [[`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b)]:
+  - @wso2is/i18n@2.43.7
+  - @wso2is/theme@2.10.7
+
+## 4.3.8
+
+### Patch Changes
+
+- [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/i18n@2.43.5
+
 ## 4.3.7
 
 ### Patch Changes

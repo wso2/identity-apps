@@ -1024,6 +1024,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "jwt":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.type.valueDescriptions.jwt");
+            case "opaque":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.opaque");
             case "dpop":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.bindingType.valueDescriptions.dpop");
@@ -1167,11 +1170,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (metadataProp) {
             metadataProp.options.map((ele: string) => {
                 if ((ele === "Default") && !isBinding) {
+                    const issuerClass: string = config?.ui?.defaultTokenIssuerClass;
+                    let defaultTokenTypeLabel: string = "Default";
+                    let defaultTokenTypeHint: string | undefined = undefined;
+
+                    if (!issuerClass
+                        || issuerClass === ApplicationManagementConstants.DEFAULT_OPAQUE_TOKEN_ISSUER_CLASS) {
+                        defaultTokenTypeLabel = "Opaque";
+                        defaultTokenTypeHint = getMetadataHints("opaque");
+                    }
+
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele)
+                            content: defaultTokenTypeHint
                         },
-                        label: "Opaque",
+                        label: defaultTokenTypeLabel,
                         value: ele
                     });
                 // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with

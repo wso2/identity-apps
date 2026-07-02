@@ -101,7 +101,9 @@
         {% endif %}
         {% if console.extensions is defined %}
         {% for key, value in console.extensions.items() %}
-        {% if value is number or value is boolean %}
+        {% if key == 'cds_host' %}
+            "cdsHost": "{{ value }}"{{ "," if not loop.last }}
+        {% elif value is number or value is boolean %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
         {% elif value is mapping %}
             "{{ key }}": {
@@ -157,7 +159,8 @@
             },
             "moesif": {
                 "dashboardEnabled": false,
-                "embeddedPortalUrl": ""
+                "embeddedPortalUrl": "",
+                "advancedAnalyticsUpgradeEnabled": false
             }
         }
         {% endif %}
@@ -229,6 +232,9 @@
         {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
+        {% endif %}
+        {% if oauth.extensions.token_generator is defined %}
+        "defaultTokenIssuerClass": "{{ oauth.extensions.token_generator }}",
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "appWhiteLogoPath": "{{ console.ui.app_white_logo_path }}",
@@ -382,6 +388,154 @@
                     }{{ "," if not loop.last }}
                     {% endfor %}
                 }{% endif %}
+            },
+            {% endif %}
+            {% if console.customer_data_profile_attributes is defined %}
+            "customerDataProfileAttributes": {
+                "disabledFeatures": [
+                    {% if console.customer_data_profile_attributes.disabled_features is defined %}
+                    {% for feature in console.customer_data_profile_attributes.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.customer_data_profile_attributes.enabled is defined %} {{ console.customer_data_profile_attributes.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfileAttributes",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    {% if console.customer_data_profile_attributes.scopes is defined %}
+                    {% for operation, scopes in console.customer_data_profile_attributes.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.customer_data_profiles is defined %}
+            "customerDataProfiles": {
+                "disabledFeatures": [
+                    {% if console.customer_data_profiles.disabled_features is defined %}
+                    {% for feature in console.customer_data_profiles.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.customer_data_profiles.enabled is defined %} {{ console.customer_data_profiles.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfiles",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    {% if console.customer_data_profiles.scopes is defined %}
+                    {% for operation, scopes in console.customer_data_profiles.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.customer_data_service is defined %}
+            "customerDataService": {
+                "disabledFeatures": [
+                    {% if console.customer_data_service.disabled_features is defined %}
+                    {% for feature in console.customer_data_service.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.customer_data_service.enabled is defined %} {{ console.customer_data_service.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [
+                    {
+                        "feature": "customerDataService",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    {% if console.customer_data_service.scopes is defined %}
+                    {% for operation, scopes in console.customer_data_service.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.customer_data_unification_rules is defined %}
+            "customerDataUnificationRules": {
+                "disabledFeatures": [
+                    {% if console.customer_data_unification_rules.disabled_features is defined %}
+                    {% for feature in console.customer_data_unification_rules.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.customer_data_unification_rules.enabled is defined %} {{ console.customer_data_unification_rules.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [
+                    {
+                        "feature": "customerDataUnificationRules",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    {% if console.customer_data_unification_rules.scopes is defined %}
+                    {% for operation, scopes in console.customer_data_unification_rules.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
+                    {% endif %}
+                }
             },
             {% endif %}
             {% if console.login_and_registration is defined %}

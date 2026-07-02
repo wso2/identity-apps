@@ -1,5 +1,41 @@
 # @wso2is/identity-apps-core
 
+## 5.3.4
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+## 5.3.3
+
+### Patch Changes
+
+- [#10457](https://github.com/wso2/identity-apps/pull/10457) [`521e4218e1a6f814930e7f35ccdc7bfbf081e3f6`](https://github.com/wso2/identity-apps/commit/521e4218e1a6f814930e7f35ccdc7bfbf081e3f6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add logic to disable captcha prompting for console application logic
+
+## 5.3.2
+
+### Patch Changes
+
+- [#10455](https://github.com/wso2/identity-apps/pull/10455) [`09983a3bc71da637500f30a53ca852ec7fba42b9`](https://github.com/wso2/identity-apps/commit/09983a3bc71da637500f30a53ca852ec7fba42b9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop displaying the resend success message when the resend operation fails
+
+## 5.3.1
+
+### Patch Changes
+
+- [#10447](https://github.com/wso2/identity-apps/pull/10447) [`7a47be8939aa0984e35f100b84bb7230e41fd7dd`](https://github.com/wso2/identity-apps/commit/7a47be8939aa0984e35f100b84bb7230e41fd7dd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix localization issue with product footer
+
+## 5.3.0
+
+### Minor Changes
+
+- [#10437](https://github.com/wso2/identity-apps/pull/10437) [`7b3c52b42da27068217c63ceada4336e661dddc9`](https://github.com/wso2/identity-apps/commit/7b3c52b42da27068217c63ceada4336e661dddc9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add provider-level OTP delivery failure notifications for Email OTP and SMS OTP
+
+## 5.2.5
+
+### Patch Changes
+
+- [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
 ## 5.2.4
 
 ### Patch Changes

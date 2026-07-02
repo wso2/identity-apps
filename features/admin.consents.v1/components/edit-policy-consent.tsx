@@ -574,7 +574,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         <Trans
                                                             i18nKey="consents:policyConsents.brandingRequired"
                                                         >
-                                                            Enable branding to update default policies.{ " " }
+                                                            Enable branding to update default policies.
                                                             <Link
                                                                 onClick={ handleNavigateToBranding }
                                                                 sx={ { cursor: "pointer" } }

@@ -93,32 +93,38 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
                 borderRadius: 1,
                 display: "flex",
                 justifyContent: "space-between",
-                mb: 2,
+                mb: 1,
                 mt: 1,
                 px: 2.5,
-                py: 2
+                py: 1.5
             } }
             data-componentid={ componentId }
         >
             <Typography variant="body1" color="text.secondary">
-                You&apos;re on a free <strong>{ trialTierName } tier</strong> trial with { " " }
+                You&apos;re on the <strong>{ trialTierName }</strong> trial, with { " " }
                 <strong>{ daysRemaining }</strong>{ " " }
                 { daysRemaining === 1 ? "day" : "days" } remaining. { " " }
-                Take this time to try out capabilities not available on the Free plan. { " " }
+                Explore the additional capabilities { trialTierName } unlocks, and { " " }
                 <Link
                     href={ upgradeButtonURL }
                     target="_blank"
                     rel="noreferrer"
                     underline="always"
                 >
-                    Upgrade
+                    upgrade
                 </Link>
-                { " " }whenever you&apos;re ready.
+                { " " }when you&apos;re ready.
             </Typography>
             <Button
                 variant="outlined"
                 size="small"
-                sx={ { ml: 4, mr: 1, whiteSpace: "nowrap" } }
+                sx={ {
+                    ml: 4,
+                    mr: 1,
+                    px: 1.5,
+                    py: 0.25,
+                    whiteSpace: "nowrap"
+                } }
                 onClick={ () => window.open(pricingURL, "_blank", "noopener,noreferrer") }
                 data-componentid={ `${componentId}-view-plans-button` }
             >

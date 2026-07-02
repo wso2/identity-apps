@@ -13,9 +13,7 @@
         "skipDefaultLibCheck": true,
         "types": [
             "node",
-            "webpack-env",
-            "jest",
-            "@testing-library/jest-dom"
+            "webpack-env"
         ],
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -314,6 +314,13 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                notifyEmailSendingFailure: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
             };
             smsOTP: {
                 hint: string;
@@ -374,7 +381,13 @@ export interface AuthenticationProviderNS {
                         range: string;
                     };
                 };
-
+                notifySmsSendingFailure: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
             };
             push: {
                 hint: string;
@@ -647,6 +660,18 @@ export interface AuthenticationProviderNS {
                         };
                     };
                     placeholder: string;
+                };
+                tenant: {
+                    guide: string;
+                    guideHeading: string;
+                    hint: string;
+                    info: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                        required: string;
+                    };
                 };
             };
             hypr: {
@@ -1504,6 +1529,10 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            microsoftTenantError: {
                 message: string;
                 description: string;
             };

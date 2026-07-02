@@ -73,6 +73,7 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
         useState<ImpersonationConfigFormValuesInterface>(undefined);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
 
     const {
         data: originalImpersonationConfig,
@@ -149,7 +150,7 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         revertImpersonationConfigurations().then(() => {
             dispatch(
                 addAlert({
@@ -171,7 +172,7 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
                 })
             );
         }).finally(() => {
-            setIsSubmitting(false);
+            setIsReverting(false);
             mutateImpersonationConfig();
         });
     };
@@ -254,6 +255,8 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
                                     header= { t("governanceConnectors:dangerZone.heading") }
                                     subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                     onActionClick={ () => onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-testid={ `${ componentId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

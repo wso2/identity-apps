@@ -68,6 +68,39 @@ export const insights: insightsNS = {
             }
         }
     },
+    advancedAnalytics: {
+        card: {
+            description: "Get a clearer picture of how your users sign in, sign up, and use tokens, " +
+                "with live dashboards that update as activity happens.",
+            enableButton: "Enable Advanced Analytics",
+            title: "Switch to Advanced Analytics"
+        },
+        dialog: {
+            agreement: "I understand these changes apply to my whole organization and want to enable " +
+                "Advanced Analytics.",
+            dataRetentionPoint: "Your analytics history starts fresh from the moment you switch; existing " +
+                "data won't carry over.",
+            enableButton: "Enable",
+            intro: "Advanced Analytics gives you richer dashboards across logins, authentication, and " +
+                "tokens. A few things to know before you switch:",
+            irreversiblePoint: "Switching back isn't available from the dashboard, so it's worth being " +
+                "sure before you enable it. This applies to everyone in your organization.",
+            privacyPoint: "Advanced Analytics is powered by <1>Moesif</1>, a WSO2-owned company. To " +
+                "generate these insights, some end-user PII, like user identifiers and IP addresses, may " +
+                "be shared with Moesif. See the <3>Terms of Service</3> and <5>Moesif Terms of Service</5>.",
+            title: "Switch to Advanced Analytics"
+        },
+        notifications: {
+            enableError: {
+                description: "Failed to enable advanced analytics. Please try again.",
+                message: "Operation Failed"
+            },
+            enableSuccess: {
+                description: "Advanced analytics has been enabled for your organization.",
+                message: "Advanced Analytics Enabled"
+            }
+        }
+    },
     advancedFilter: {
         filterAttribute: "Filter attribute",
         filterCondition: "Filter condition",

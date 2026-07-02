@@ -1635,6 +1635,7 @@ export interface ApplicationsNS {
                             valueDescriptions: {
                                 default: string;
                                 jwt: string;
+                                opaque: string;
                             };
                         };
                         revokeToken: {

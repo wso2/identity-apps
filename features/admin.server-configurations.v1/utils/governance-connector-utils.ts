@@ -359,6 +359,7 @@ export class GovernanceConnectorUtils {
                         isCustom: false,
                         name: "policyConsents",
                         route: AppConstants.getPaths().get("POLICY_CONSENTS"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONSENTS_POLICY_CONSENTS,
                         testId: "policy-consents-card"
                     },
                     {
@@ -372,6 +373,7 @@ export class GovernanceConnectorUtils {
                         isCustom: false,
                         name: "preferenceManagement",
                         route: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONSENTS_PREFERENCE_MANAGEMENT,
                         testId: "preference-management-card"
                     }
                 ],

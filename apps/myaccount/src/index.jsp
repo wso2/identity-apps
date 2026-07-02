@@ -257,19 +257,16 @@
                  * @returns {boolean}
                  */
                 function isSuperTenant() {
-                    if (getTenantName()) {
-                        return false;
-                    }
-
-                    var tenantName;
+                    const tenantName = getTenantName();
+                    let superTenant;
 
                     if (startupConfig.superTenantProxy) {
-                        tenantName = startupConfig.superTenantProxy;
+                        superTenant = startupConfig.superTenantProxy;
                     } else {
-                        tenantName = startupConfig.superTenant;
+                        superTenant = startupConfig.superTenant;
                     }
 
-                    return tenantName === startupConfig.superTenant;
+                    return tenantName === "" || tenantName === superTenant;
                 }
 
                 /**

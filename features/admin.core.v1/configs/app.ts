@@ -116,6 +116,30 @@ export class Config {
     }
 
     /**
+     * Resolves the server host with the super tenant path mandated.
+     *
+     * Behaves like {@link resolveServerHost} (and therefore honours the tenant-qualified URLs
+     * flag) but additionally guarantees a tenant segment for the super tenant: by default the
+     * super tenant resolves to the bare origin with no `/<tenant-prefix>/<super-tenant>` path,
+     * and this method appends it. Regular tenants and sub-organizations are returned unchanged.
+     *
+     * @returns Server host with the super tenant path always present.
+     */
+    public static resolveServerHostWithSuperTenant(): string {
+        const serverHost: string = this.resolveServerHost();
+
+        // Only the super tenant resolves to the bare origin (no /<tenant-prefix>/ or /o/ path).
+        if (this.isTenantQualifiedURLsEnabled() && serverHost === this.getDeploymentConfig()?.serverOrigin) {
+            const tenantPrefix: string = window[ "AppUtils" ]?.getTenantPrefix();
+            const superTenant: string = window[ "AppUtils" ]?.getSuperTenant();
+
+            return `${ serverHost }/${ tenantPrefix }/${ superTenant }`;
+        }
+
+        return serverHost;
+    }
+
+    /**
      * This method resolves the server host without checking whether tenant-qualified URLs are enabled.
      * This is for paths that require the tenanted path regardless of whether tenant-qualified URLS
      * are enabled.
@@ -387,7 +411,7 @@ export class Config {
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
-            ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
+            ...getCustomerDataServiceEndpoints(this.resolveServerHostWithSuperTenant(), this.getDeploymentConfig()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
@@ -448,6 +472,7 @@ export class Config {
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
+            defaultTokenIssuerClass: window[ "AppUtils" ]?.getConfig()?.ui?.defaultTokenIssuerClass,
             disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,

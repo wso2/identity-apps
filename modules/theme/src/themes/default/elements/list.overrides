@@ -382,7 +382,9 @@
                     }
                 }
 
-                & * {
+                > .ui.input,
+                > .ui.input > input,
+                > .ui.dropdown {
                     height: 100%;
                 }
             }

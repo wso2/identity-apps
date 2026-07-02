@@ -1,5 +1,21 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.7
+
+### Patch Changes
+
+- [#10481](https://github.com/wso2/identity-apps/pull/10481) [`fdb049bb1b0faac7df4021ee0737eb808c5129dc`](https://github.com/wso2/identity-apps/commit/fdb049bb1b0faac7df4021ee0737eb808c5129dc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the feature label from the Active Session Limit Handler
+
+## 2.43.6
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.core.v1@2.57.21
+  - @wso2is/i18n@2.43.5
+
 ## 2.43.5
 
 ### Patch Changes

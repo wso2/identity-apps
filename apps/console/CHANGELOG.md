@@ -1,5 +1,149 @@
 # @wso2is/console
 
+## 4.13.11
+
+### Patch Changes
+
+- [#10497](https://github.com/wso2/identity-apps/pull/10497) [`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67) Thanks [@hwupathum](https://github.com/hwupathum)! - Add status flag for consent features
+
+* [#10499](https://github.com/wso2/identity-apps/pull/10499) [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Refine the free trial banner wording and reduce the size of the View Plans button
+
+* Updated dependencies [[`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67), [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b)]:
+  - @wso2is/admin.feature-gate.v1@1.9.9
+  - @wso2is/admin.server-configurations.v1@2.38.56
+  - @wso2is/admin.subscription.v1@1.5.228
+
+## 4.13.10
+
+### Patch Changes
+
+- [#10492](https://github.com/wso2/identity-apps/pull/10492) [`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add seperate host support for CDS
+
+- Updated dependencies [[`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4)]:
+  - @wso2is/admin.authentication.v1@2.25.211
+  - @wso2is/admin.cds.v1@1.6.6
+  - @wso2is/admin.core.v1@2.57.25
+  - @wso2is/admin.users.v1@2.38.41
+
+## 4.13.9
+
+### Patch Changes
+
+- [#10489](https://github.com/wso2/identity-apps/pull/10489) [`4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0`](https://github.com/wso2/identity-apps/commit/4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid locale codes
+
+- Updated dependencies [[`4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0`](https://github.com/wso2/identity-apps/commit/4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0)]:
+  - @wso2is/core@2.13.4
+
+## 4.13.8
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+- Updated dependencies [[`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3)]:
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.208
+  - @wso2is/admin.impersonation.v1@1.6.209
+  - @wso2is/admin.saml2-configuration.v1@2.25.209
+  - @wso2is/admin.server-configurations.v1@2.38.55
+  - @wso2is/admin.session-management.v1@2.26.7
+  - @wso2is/admin.username-validation.v1@1.5.206
+  - @wso2is/admin.validation.v1@2.28.5
+  - @wso2is/admin.wsfed-configuration.v1@2.25.208
+
+## 4.13.7
+
+### Patch Changes
+
+- [#10481](https://github.com/wso2/identity-apps/pull/10481) [`fdb049bb1b0faac7df4021ee0737eb808c5129dc`](https://github.com/wso2/identity-apps/commit/fdb049bb1b0faac7df4021ee0737eb808c5129dc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the feature label from the Active Session Limit Handler
+
+- Updated dependencies [[`fdb049bb1b0faac7df4021ee0737eb808c5129dc`](https://github.com/wso2/identity-apps/commit/fdb049bb1b0faac7df4021ee0737eb808c5129dc)]:
+  - @wso2is/admin.applications.v1@2.43.7
+
+## 4.13.6
+
+### Patch Changes
+
+- [#10465](https://github.com/wso2/identity-apps/pull/10465) [`67d6d3ec5bcb4afa865bfaf3a888802fd340f8f2`](https://github.com/wso2/identity-apps/commit/67d6d3ec5bcb4afa865bfaf3a888802fd340f8f2) Thanks [@hwupathum](https://github.com/hwupathum)! - Bump console version
+
+## 4.13.5
+
+### Patch Changes
+
+- [#10451](https://github.com/wso2/identity-apps/pull/10451) [`3d5172bf2d942be94ea69ce72b15552cb7bd7d71`](https://github.com/wso2/identity-apps/commit/3d5172bf2d942be94ea69ce72b15552cb7bd7d71) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Update certificate preview to display correct subjectDN
+
+- Updated dependencies [[`3d5172bf2d942be94ea69ce72b15552cb7bd7d71`](https://github.com/wso2/identity-apps/commit/3d5172bf2d942be94ea69ce72b15552cb7bd7d71)]:
+  - @wso2is/react-components@2.10.3
+
+## 4.13.4
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.tenants.v1@2.29.32
+  - @wso2is/admin.analytics.v1@0.0.11
+  - @wso2is/admin.core.v1@2.57.24
+  - @wso2is/admin.onboarding.v1@1.0.90
+
+## 4.13.3
+
+### Patch Changes
+
+- [#10422](https://github.com/wso2/identity-apps/pull/10422) [`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671) Thanks [@hwupathum](https://github.com/hwupathum)! - Add application assignment UI for policies
+
+- Updated dependencies [[`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671)]:
+  - @wso2is/admin.consents.v1@1.0.4
+  - @wso2is/admin.core.v1@2.57.23
+  - @wso2is/i18n@2.43.9
+
+## 4.13.2
+
+### Patch Changes
+
+- [#10449](https://github.com/wso2/identity-apps/pull/10449) [`4bf6a52297f1833ca69804f52ea4c2b866f3c9b7`](https://github.com/wso2/identity-apps/commit/4bf6a52297f1833ca69804f52ea4c2b866f3c9b7) Thanks [@savindi7](https://github.com/savindi7)! - Add support to update Microsoft tenant ID from settings.
+
+- Updated dependencies [[`4bf6a52297f1833ca69804f52ea4c2b866f3c9b7`](https://github.com/wso2/identity-apps/commit/4bf6a52297f1833ca69804f52ea4c2b866f3c9b7)]:
+  - @wso2is/admin.connections.v1@2.38.3
+  - @wso2is/i18n@2.43.8
+
+## 4.13.1
+
+### Patch Changes
+
+- [#10417](https://github.com/wso2/identity-apps/pull/10417) [`80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab`](https://github.com/wso2/identity-apps/commit/80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab) Thanks [@pasindubalasooriya](https://github.com/pasindubalasooriya)! - Fix broken anchors and outdated paths in Console "Learn More" documentation links
+
+* [#10444](https://github.com/wso2/identity-apps/pull/10444) [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b) Thanks [@savindi7](https://github.com/savindi7)! - Add tenant ID field in Microsoft Connection.
+
+* Updated dependencies [[`80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab`](https://github.com/wso2/identity-apps/commit/80d5d6a428c4fcb86c9b73b872ed9d6e826a2cab), [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b)]:
+  - @wso2is/admin.core.v1@2.57.22
+  - @wso2is/admin.connections.v1@2.38.2
+  - @wso2is/i18n@2.43.7
+
+## 4.13.0
+
+### Minor Changes
+
+- [#10437](https://github.com/wso2/identity-apps/pull/10437) [`7b3c52b42da27068217c63ceada4336e661dddc9`](https://github.com/wso2/identity-apps/commit/7b3c52b42da27068217c63ceada4336e661dddc9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add provider-level OTP delivery failure notifications for Email OTP and SMS OTP
+
+### Patch Changes
+
+- Updated dependencies [[`7b3c52b42da27068217c63ceada4336e661dddc9`](https://github.com/wso2/identity-apps/commit/7b3c52b42da27068217c63ceada4336e661dddc9)]:
+  - @wso2is/i18n@2.43.6
+
+## 4.12.1
+
+### Patch Changes
+
+- [#10435](https://github.com/wso2/identity-apps/pull/10435) [`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Derive default token type label from issuer class
+
+* [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+* Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/admin.applications.v1@2.43.6
+  - @wso2is/admin.core.v1@2.57.21
+  - @wso2is/i18n@2.43.5
+
 ## 4.12.0
 
 ### Minor Changes
