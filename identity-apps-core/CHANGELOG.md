@@ -4,6 +4,8 @@
 
 ### Patch Changes
 
+- [#10469](https://github.com/wso2/identity-apps/pull/10469) [`64032696c123ec874e9e564a39c974156040726e`](https://github.com/wso2/identity-apps/commit/64032696c123ec874e9e564a39c974156040726e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Improve OIDC/OAuth2 consent screens to surface agent identity in OBO flows and refine consent UI
+
 - [#10460](https://github.com/wso2/identity-apps/pull/10460) [`ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae`](https://github.com/wso2/identity-apps/commit/ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Handle passing anonymous_profile_tracker parameter to flow engine during registration
 
 ## 5.3.4
