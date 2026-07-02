@@ -102,6 +102,8 @@ $font-size-normal: 12px;
         @include flex-center;
         background: transparent;
         border: none;
+        padding: 0;
+        font: inherit;
         width: 18px;
         height: 18px;
         justify-content: center;
