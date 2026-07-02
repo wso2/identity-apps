@@ -267,27 +267,27 @@
                                             data-content="<%=Encode.forHtmlAttribute(requestedActorName)%>">
                                         <%=Encode.forHtml(requestedActorName)%>
                                     </strong>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.via")%>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.via")%>
                                     <strong id="app-name"
                                             class="text-capitalize text-typography primary login-portal-app-font"
                                             data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                     </strong>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.obo.agent.suffix")%>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.suffix")%>
                                 <% } else { %>
                                     <strong id="app-name"
                                             class="text-capitalize text-typography primary login-portal-app-font"
                                             data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                     </strong>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.permission.profile")%>
+                                    <%=i18n(resourceBundle, customText, "request.permission.profile")%>
                                 <% } %>
                             </h4>
                         </div>
                     </div>
 
                         <p class="login-portal-app-consent-request larger-font">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.provide.access.to")%>:
+                            <%=i18n(resourceBundle, customText, "this.will.provide.access.to")%>:
                         </p>
 
                     <div class="segment-form">
@@ -500,7 +500,7 @@
                             </div>
                         <div class="ui divider hidden"></div>
                         <div class="field mt-4 text-center login-portal-app-des-font">
-                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "click.allow.to.authorize.request")%></p>
+                            <p><%=i18n(resourceBundle, customText, "click.allow.to.authorize.request")%></p>
                         </div>
                         <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
