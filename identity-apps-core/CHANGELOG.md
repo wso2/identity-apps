@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.5
+
+### Patch Changes
+
+- [#10460](https://github.com/wso2/identity-apps/pull/10460) [`ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae`](https://github.com/wso2/identity-apps/commit/ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Handle passing anonymous_profile_tracker parameter to flow engine during registration
+
 ## 5.3.4
 
 ### Patch Changes
