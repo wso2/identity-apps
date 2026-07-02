@@ -93,13 +93,31 @@ const RichTextAdapter = ({ component }) => {
 
     // Resolve placeholders in the HTML content before sanitizing.
     const sanitizedHtml = useMemo(() => {
-        const i18nText = resolveElementText(translations, config.text);
-        const resolvedHtml = resolvePlaceholders(i18nText || "");
+    let html = resolveElementText(translations, config.text);
+    html = resolvePlaceholders(html || "");
 
-        return DOMPurify.sanitize(resolvedHtml, {
-            ADD_ATTR: [ "target" ]
+    // If linkTarget is configured, update links to use that target
+    if (config.linkTarget) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const links = doc.querySelectorAll('a');
+
+        links.forEach(link => {
+            link.setAttribute('target', config.linkTarget);
+            if (config.linkTarget === '_blank') {
+                link.setAttribute('rel', 'noopener noreferrer');
+            } else {
+                link.removeAttribute('rel');
+            }
         });
-    }, [ config.text, contextData ]);
+
+        html = doc.body.innerHTML;
+    }
+
+    return DOMPurify.sanitize(html, {
+        ADD_ATTR: [ "target", "rel" ]
+    });
+}, [ config.text, config.linkTarget, contextData ]);
 
     return (
         <div className="rich-text-content">
