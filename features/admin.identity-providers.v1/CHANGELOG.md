@@ -1,5 +1,11 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.28.1
+
+### Patch Changes
+
+- [#10472](https://github.com/wso2/identity-apps/pull/10472) [`db9957ba59a90fd5cbf6d9da659c857d78ab0f82`](https://github.com/wso2/identity-apps/commit/db9957ba59a90fd5cbf6d9da659c857d78ab0f82) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix custom authenticator creation issue
+
 ## 2.28.0
 
 ### Minor Changes
