@@ -32,6 +32,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
@@ -210,7 +211,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         conditionId,
         expressionId,
         shouldFetch,
-        hiddenResources = []
+        hiddenResources = EMPTY_ARRAY
     }: ValueInputAutocompleteProps) => {
 
         const [ inputValue, setInputValue ] = useState<string>(null);
@@ -403,7 +404,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         findMetaValuesAgainst,
         initialResourcesLoadUrl,
         filterBaseResourcesUrl,
-        hiddenResources = []
+        hiddenResources = EMPTY_ARRAY
     }: ResourceListSelectProps) => {
 
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
@@ -666,8 +667,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionValue,
         metaValue,
         setIsResourceMissing,
-        hiddenResources = [],
-        hiddenValues = []
+        hiddenResources = EMPTY_ARRAY,
+        hiddenValues = EMPTY_ARRAY
     }: ConditionValueInputProps) => {
 
         if (metaValue?.inputType === "input" || null) {
@@ -780,9 +781,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         index,
         isConditionLast,
         isConditionExpressionRemovable,
-        hiddenConditions = [],
-        hiddenResources = [],
-        hiddenValues = []
+        hiddenConditions = EMPTY_ARRAY,
+        hiddenResources = EMPTY_ARRAY,
+        hiddenValues = EMPTY_ARRAY
     }: RuleExpressionComponentProps) => {
 
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);

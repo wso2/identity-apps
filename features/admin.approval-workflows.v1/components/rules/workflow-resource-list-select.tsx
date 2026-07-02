@@ -25,6 +25,7 @@ import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     Dispatch,
@@ -74,7 +75,7 @@ const WorkflowResourceListSelect: FunctionComponent<WorkflowResourceListSelectPr
     findMetaValuesAgainst,
     initialResourcesLoadUrl,
     filterBaseResourcesUrl,
-    hiddenResources: _hiddenResources = [],
+    hiddenResources: _hiddenResources = EMPTY_ARRAY,
     readonly: isReadonly,
     showValidationError = false
 }: WorkflowResourceListSelectPropsInterface) => {

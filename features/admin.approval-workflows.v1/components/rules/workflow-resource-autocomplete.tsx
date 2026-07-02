@@ -28,6 +28,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, {
@@ -93,7 +94,7 @@ const WorkflowResourceAutocomplete: FunctionComponent<WorkflowResourceAutocomple
     conditionId: _conditionId,
     expressionId: _expressionId,
     shouldFetch,
-    hiddenResources: _hiddenResources = [],
+    hiddenResources: _hiddenResources = EMPTY_ARRAY,
     showClearFilter = false,
     readonly: isReadonly,
     showValidationError = false
