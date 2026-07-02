@@ -276,27 +276,33 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
      *
      * @param categories - Dynamic categories to get information from
      */
-    const resolveDynamicCategories = async (categories: GovernanceConnectorCategoryInterface[]): Promise<void> => {
-        const dynamicConnectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
-
+   const resolveDynamicCategories = async (categories: GovernanceConnectorCategoryInterface[]): Promise<void> => {
         if (categories?.length <= 0) {
             return;
         }
 
-        for (const category of categories) {
-            if (!serverConfigurationConfig.predefinedConnectorCategories.includes(category.id)) {
-                const connectorCategory: GovernanceConnectorCategoryInterface | null =
-                    await loadCategoryConnectors(category.id);
+        const dynamicCategories: GovernanceConnectorCategoryInterface[] = await Promise.all(
+            categories
+                .filter((category: GovernanceConnectorCategoryInterface) =>
+                    !serverConfigurationConfig.predefinedConnectorCategories.includes(category.id))
+                .map(async (category: GovernanceConnectorCategoryInterface):
+                    Promise<GovernanceConnectorCategoryInterface | null> => {
+                    const connectorCategory: GovernanceConnectorCategoryInterface | null =
+                        await loadCategoryConnectors(category.id);
 
-                // Filter out the SIFT connector from sub-organizations.
-                if (isSubOrganization() && connectorCategory?.connectors.length > 0) {
-                    connectorCategory.connectors =
-                        connectorCategory?.connectors?.filter((connector: GovernanceConnectorInterface) =>
-                            connector.id !== ServerConfigurationsConstants.SIFT_CONNECTOR_ID);
-                }
-                connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
-            }
-        }
+                    // Filter out the SIFT connector from sub-organizations.
+                    if (isSubOrganization() && connectorCategory?.connectors.length > 0) {
+                        connectorCategory.connectors =
+                            connectorCategory?.connectors?.filter((connector: GovernanceConnectorInterface) =>
+                                connector.id !== ServerConfigurationsConstants.SIFT_CONNECTOR_ID);
+                    }
+
+                    return connectorCategory;
+                })
+        );
+
+        const dynamicConnectorCategoryArray: GovernanceConnectorCategoryInterface[] =
+            dynamicCategories.filter(Boolean);
 
         setConnectors((connectors: GovernanceConnectorCategoryInterface[]) => [
             ...connectors,

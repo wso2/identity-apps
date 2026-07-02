@@ -435,14 +435,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * Asynchronous function to loop through federated authenticators, fetch data and metadata and
      * return an array of available authenticators.
      */
-    async function fetchAuthenticators() {
-        const authenticators: FederatedAuthenticatorWithMetaInterface[] = [];
-
-        for (const authenticator of identityProvider.federatedAuthenticators.authenticators) {
-            authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
-        }
-
-        return authenticators;
+    async function fetchAuthenticators(): Promise<FederatedAuthenticatorWithMetaInterface[]> {
+        return Promise.all(
+            identityProvider.federatedAuthenticators.authenticators.map(
+                async (authenticator: FederatedAuthenticatorListItemInterface):
+                    Promise<FederatedAuthenticatorWithMetaInterface> => {
+                    return fetchAuthenticator(authenticator.authenticatorId);
+                }
+            )
+        );
     }
 
     useEffect(() => {
