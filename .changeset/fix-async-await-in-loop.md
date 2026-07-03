@@ -1,0 +1,1 @@
+---\n"@wso2is/feature-admin-connections": patch\n"@wso2is/feature-admin-server-configurations": patch\n---\n\nfix: replace sequential await-in-loop with Promise.all for concurrent execution
