@@ -436,15 +436,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * return an array of available authenticators.
      */
     async function fetchAuthenticators(): Promise<FederatedAuthenticatorWithMetaInterface[]> {
-        return Promise.all(
-            identityProvider.federatedAuthenticators.authenticators.map(
-                async (authenticator: FederatedAuthenticatorListItemInterface):
-                    Promise<FederatedAuthenticatorWithMetaInterface> => {
-                    return fetchAuthenticator(authenticator.authenticatorId);
+    const results: (FederatedAuthenticatorWithMetaInterface | null)[] = await Promise.all(
+        identityProvider.federatedAuthenticators.authenticators.map(
+            async (authenticator: FederatedAuthenticatorListItemInterface):
+                Promise<FederatedAuthenticatorWithMetaInterface | null> => {
+                try {
+                    return await fetchAuthenticator(authenticator.authenticatorId);
+                } catch {
+                    return null;
                 }
-            )
-        );
-    }
+            }
+        )
+    );
+    return results.filter(Boolean) as FederatedAuthenticatorWithMetaInterface[];
+}
 
     useEffect(() => {
         if (isEmpty(identityProvider.federatedAuthenticators?.authenticators)) {

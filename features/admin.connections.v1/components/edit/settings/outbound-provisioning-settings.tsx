@@ -232,16 +232,21 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      *
      * @returns An array of available connectors.
      */
-     async function fetchConnectors(): Promise<OutboundProvisioningConnectorWithMetaInterface[]> {
-        return Promise.all(
-            identityProvider.provisioning.outboundConnectors.connectors.map(
-                async (connector: OutboundProvisioningConnectorInterface):
-                    Promise<OutboundProvisioningConnectorWithMetaInterface> => {
-                    return fetchConnector(connector.connectorId);
+    async function fetchConnectors(): Promise<OutboundProvisioningConnectorWithMetaInterface[]> {
+    const results: (OutboundProvisioningConnectorWithMetaInterface | null)[] = await Promise.all(
+        identityProvider.provisioning.outboundConnectors.connectors.map(
+            async (connector: OutboundProvisioningConnectorInterface):
+                Promise<OutboundProvisioningConnectorWithMetaInterface | null> => {
+                try {
+                    return await fetchConnector(connector.connectorId);
+                } catch {
+                    return null;
                 }
-            )
-        );
-    }
+            }
+        )
+    );
+    return results.filter(Boolean) as OutboundProvisioningConnectorWithMetaInterface[];
+}
 
     /**
      * Handles the connector config form submit action.
