@@ -400,45 +400,55 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
 
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
+        let isActive: boolean | null = null;
 
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
                 count = typeCounts?.preIssueAccessToken;
-
+                isActive = preIssueAccessTokenActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
                 break;
             case ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH:
                 count = typeCounts?.preIssueIdToken;
-
+                isActive = preIssueIdTokenActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
                 count = typeCounts?.preUpdatePassword;
+                isActive = preUpdatePasswordActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
 
                 break;
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
                 count = typeCounts?.preUpdateProfile;
-
+                isActive = preUpdateProfileActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
                 break;
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
                 count = typeCounts?.preRegistration;
-
+                isActive = preRegistrationActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
                 break;
             default:
                 break;
         }
 
         if (count > 0) {
-            return (
+        return (
+            <div className="status-tags-container">
                 <div
                     className="status-tag"
                     data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
                 >
                     <CircleCheckFilledIcon className="icon-configured"/>
-                    <Typography  className="text-configured" variant="h6">
+                    <Typography className="text-configured" variant="h6">
                         { t("actions:status.configured") }
                     </Typography>
                 </div>
-            );
-        } else {
+                
+                <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
+                    <Typography variant="h6">
+                        { isActive === null ? "?" : (isActive ? "Active" : "Inactive") }
+                    </Typography>
+                </div>
+            </div>
+        );
+    } else {
             return (
                 <div
                     className="status-tag"

@@ -81,6 +81,12 @@
             .oxygen-chip-coming-soon {
                 min-width: auto !important;
             }
+
+            .status-tags-container {
+                display: inline-flex; /* or `flex` depending on layout */
+                gap: 8px;
+                align-items: center;
+            }
         
             .status-tag {
                 display: inline-flex;
@@ -105,7 +111,32 @@
                     color: rgb(128, 134, 130);
                     font-size: 0.8em !important;
                 }
-            }
+
+                .status-tag.status-active {
+                    background-color: #07616f;
+                    border: 1px solid #5c93b1;
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                    }
+                .status-tag.status-inactive {
+                    background-color: #080729;
+                    border: 1px solid #cfb23b;
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                    }
+                .status-tag .text-active {
+                    color: #1d3960;
+                    font-size: 0.8em !important;
+                    font-weight: 600;
+                    }
+
+                .text-inactive {
+                    color: #4d6598;
+                    font-size: 0.8em !important;
+                    font-weight: 600;
+                    }
+                }
+                
         }
 
         .placeholder-box {
