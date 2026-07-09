@@ -2201,6 +2201,17 @@
                     "read": [],
                     "update": []
                 }
+            },
+            "fapi": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
             }
         },
         "flowExecution": {
