@@ -248,6 +248,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.config?.ui?.features?.applications?.properties?.maxGracefulRefreshTokenRotationValidityPeriod as number);
     const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.organizations);
+    const isFapiFeatureEnabled: boolean = useSelector(
+        (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
     const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
@@ -275,13 +277,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
         isFAPIApplication ? (initialFapiProfile ?? null) : null
     );
-    const fapiConstraints = useFapiProfileConstraints(isFAPIApplication ? selectedFapiProfile : null);
+    const fapiConstraints = useFapiProfileConstraints(
+        isFapiFeatureEnabled && isFAPIApplication ? selectedFapiProfile : null
+    );
 
     const {
         data: fapiConfig,
         isLoading: isFapiConfigLoading,
         error: fapiConfigFetchError
-    } = useGetFapiConfig(isFAPIApplication);
+    } = useGetFapiConfig(isFapiFeatureEnabled && isFAPIApplication);
     const serverSupportedFapiProfiles: FapiProfile[] = fapiConfig?.supportedProfiles ?? [];
     const isSelectedFapiProfileUnsupported: boolean =
         isFAPIApplication
@@ -2356,7 +2360,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             { /* Form Section: FAPI Profile */ }
             {
-                isFAPIApplication
+                isFapiFeatureEnabled
+                && isFAPIApplication
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (

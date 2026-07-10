@@ -205,6 +205,10 @@ export interface FeatureConfigInterface {
      */
     identityProviderGroups?: FeatureAccessConfigInterface;
     /**
+     * FAPI Security Policy feature.
+     */
+    fapi?: FeatureAccessConfigInterface;
+    /**
      * Identity verification provider management feature.
      */
     identityVerificationProviders?: FeatureAccessConfigInterface;

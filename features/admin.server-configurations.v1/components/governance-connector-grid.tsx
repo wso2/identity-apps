@@ -92,7 +92,9 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         (state: AppState) => state.config.ui.features?.loginAndRegistration?.featureFlags);
     const organizationsFeatureConfig: FeatureConfigInterface["organizations"] = useSelector(
         (state: AppState) => state?.config?.ui?.features?.organizations);
-
+    const isFapiFeatureEnabled: boolean = useSelector(
+        (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
+    
     /**
      * Combine the connectors and dynamic connectors and group them by category.
      */
@@ -259,12 +261,13 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                             }
 
                                             if (connector.id === ServerConfigurationsConstants.FAPI_SECURITY_POLICY
-                                                && !isFeatureEnabled(
-                                                    organizationsFeatureConfig,
-                                                    OrganizationManagementConstants.FEATURE_DICTIONARY.get(
-                                                        "ORGANIZATION_FAPI_SECURITY_POLICY"
-                                                    )
-                                                )) {
+                                                && (!isFapiFeatureEnabled
+                                                    || !isFeatureEnabled(
+                                                        organizationsFeatureConfig,
+                                                        OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+                                                            "ORGANIZATION_FAPI_SECURITY_POLICY"
+                                                        )
+                                                    ))) {
                                                 return null;
                                             }
 
