@@ -154,6 +154,7 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
                             data-componentid={ `${_componentId}-secret-property-field` }
                             name="secret"
                             type={ isShowSecret ? "text" : "password" }
+                            autoComplete="new-password"
                             InputProps={ {
                                 endAdornment: renderInputAdornmentOfSecret(isShowSecret, () =>
                                     setShowSecret(!isShowSecret)
