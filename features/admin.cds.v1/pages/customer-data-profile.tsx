@@ -23,7 +23,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, PageLayout } from "@wso2is/react-components";
+import { PageLayout } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -99,9 +99,6 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 { t("customerDataService:landing.enable.hint") }
             </Alert>
             <Divider hidden />
-            <Heading as="h5" className="text-uppercase">
-                { t("customerDataService:landing.configuration.heading") }
-            </Heading>
             <ConfigurationCard
                 title={ t("customerDataService:landing.configuration.profileAttributes.title") }
                 description={ t("customerDataService:landing.configuration.profileAttributes.description") }
@@ -123,12 +120,6 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 className={ classNames({ "cds-section-disabled": !isCDSEnabled }) }
                 data-componentid={ `${ componentId }-profiles-section` }
             >
-                <Heading as="h4">
-                    { t("customerDataService:landing.profiles.heading") }
-                </Heading>
-                <Heading as="h6" color="grey" compact>
-                    { t("customerDataService:landing.profiles.description") }
-                </Heading>
                 <ProfilesSection shouldFetch={ isCDSEnabled } />
             </div>
         </PageLayout>
