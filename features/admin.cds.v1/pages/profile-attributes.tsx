@@ -59,6 +59,7 @@ import { useProfileSchemaByScope } from "../hooks/use-profile-schema-by-scope";
 import type { ProfileSchemaListingRow, SchemaListingScope } from "../models/profile-attribute-listing";
 import type { ProfileSchemaAttribute } from "../models/profile-attributes";
 import { toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
+import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 const SORT_BY_NAME: string = "display_name";
 const SORT_BY_SCOPE: string = "scope";
@@ -468,6 +469,13 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
             title={ t("customerDataService:profileAttributes.list.page.title") }
             pageTitle={ t("customerDataService:profileAttributes.list.page.pageTitle") }
             description={ t("customerDataService:profileAttributes.list.page.description") }
+            backButton={ isCDSUnifiedProfileViewEnabled()
+                ? {
+                    onClick: () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE")),
+                    text: t("customerDataService:landing.backButton")
+                }
+                : undefined
+            }
             data-componentid={ `${componentId}-page-layout` }
             action={
                 (

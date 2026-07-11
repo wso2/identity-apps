@@ -48,6 +48,45 @@ export interface CustomerDataServiceNS {
         };
     };
 
+    landing: {
+        page: {
+            description: string;
+            title: string;
+        };
+        enable: {
+            hint: string;
+            label: string;
+        };
+        configuration: {
+            heading: string;
+            profileAttributes: {
+                description: string;
+                title: string;
+            };
+            unificationRules: {
+                description: string;
+                title: string;
+            };
+        };
+        profiles: {
+            description: string;
+            heading: string;
+        };
+        backButton: string;
+        notifications: {
+            update: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+    };
+
     profileAttributes: {
         create: {
             forms: {
@@ -528,6 +567,7 @@ export interface CustomerDataServiceNS {
         ProfileAttributes: string;
         Profiles: string;
         UnificationRules: string;
+        customerDataProfile: string;
     };
 
     unificationRules: {

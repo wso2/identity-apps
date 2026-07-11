@@ -42,6 +42,7 @@
             }
         },
         "cdsHost": "",
+        "cdsUnifiedProfileView": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
             {

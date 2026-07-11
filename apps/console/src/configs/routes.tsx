@@ -38,9 +38,11 @@ import {
     ReactComponent as ProfileAttributesIcon
 } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import {
     ReactComponent as UnificationRuleIcon
 } from "@wso2is/admin.cds.v1/assets/images/icons/unification-rules.svg";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -1795,111 +1797,217 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
-        {
-            category: "extensions:manage.sidePanel.categories.customerDataService",
-            children: [
-                {
-                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
+        ...(isCDSUnifiedProfileViewEnabled() ? [
+            {
+                category: "extensions:manage.sidePanel.categories.customerDataService",
+                children: [
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/profiles")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataProfiles",
+                        name: "customerDataService:sidePanel.Profiles",
+                        path: AppConstants.getPaths().get("PROFILES"),
+                        protected: true,
+                        showOnSidePanel: false
                     },
-                    id: "profile",
-                    name: "Profile View",
-                    path: AppConstants.getPaths().get("PROFILE"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profiles")
-            ),
-            exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES,
-            icon: {
-                icon: <ProfilesIcon className="icon" fill="black" />
-            },
-            id: "customerDataProfiles",
-            name: "customerDataService:sidePanel.Profiles",
-            order: 33,
-            path: AppConstants.getPaths().get("PROFILES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.customerDataService",
-            children: [
-                {
-                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/components/profile")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "profile",
+                        name: "Profile View",
+                        path: AppConstants.getPaths().get("PROFILE"),
+                        protected: true,
+                        showOnSidePanel: false
                     },
-                    id: "createProfileAttribute",
-                    name: "Create profile attribute",
-                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
-                    protected: true,
-                    showOnSidePanel: false
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attributes")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataProfileAttributes",
+                        name: "customerDataService:sidePanel.ProfileAttributes",
+                        path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "createProfileAttribute",
+                        name: "Create profile attribute",
+                        path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "UpdateProfileAttribute",
+                        name: "Update profile attribute",
+                        path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rules")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataUnificationRules",
+                        name: "customerDataService:sidePanel.UnificationRules",
+                        path: AppConstants.getPaths().get("UNIFICATION_RULES"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "createUnificationRule",
+                        name: "Create Unification Rule",
+                        path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.cds.v1/pages/customer-data-profile")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
+                icon: {
+                    icon: <CustomerDataIcon className="icon" fill="black" />
                 },
-                {
-                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "UpdateProfileAttribute",
-                    name: "Update profile attribute",
-                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-attributes")
-            ),
-            exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_ATTRIBUTES,
-            icon: {
-                icon: <ProfileAttributesIcon className="icon" fill="black" />
+                id: "customerDataService",
+                name: "customerDataService:sidePanel.customerDataProfile",
+                order: 32,
+                path: AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        ] : [
+            {
+                category: "extensions:manage.sidePanel.categories.customerDataService",
+                children: [
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/components/profile")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "profile",
+                        name: "Profile View",
+                        path: AppConstants.getPaths().get("PROFILE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.cds.v1/pages/profiles")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES,
+                icon: {
+                    icon: <ProfilesIcon className="icon" fill="black" />
+                },
+                id: "customerDataProfiles",
+                name: "customerDataService:sidePanel.Profiles",
+                order: 33,
+                path: AppConstants.getPaths().get("PROFILES"),
+                protected: true,
+                showOnSidePanel: true
             },
-            id: "customerDataProfileAttributes",
-            name: "customerDataService:sidePanel.ProfileAttributes",
-            order: 33,
-            path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.customerDataService",
-            children: [
-                {
-                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
+            {
+                category: "extensions:manage.sidePanel.categories.customerDataService",
+                children: [
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "createProfileAttribute",
+                        name: "Create profile attribute",
+                        path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
                     },
-                    id: "createUnificationRule",
-                    name: "Create Unification Rule",
-                    path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/unification-rules")
-            ),
-            exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES_UNIFICATION_RULES,
-            icon: {
-                icon: <UnificationRuleIcon className="icon" fill="black" />
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "UpdateProfileAttribute",
+                        name: "Update profile attribute",
+                        path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.cds.v1/pages/profile-attributes")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_ATTRIBUTES,
+                icon: {
+                    icon: <ProfileAttributesIcon className="icon" fill="black" />
+                },
+                id: "customerDataProfileAttributes",
+                name: "customerDataService:sidePanel.ProfileAttributes",
+                order: 33,
+                path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+                protected: true,
+                showOnSidePanel: true
             },
-            id: "customerDataUnificationRules",
-            name: "customerDataService:sidePanel.UnificationRules",
-            order: 34,
-            path: AppConstants.getPaths().get("UNIFICATION_RULES"),
-            protected: true,
-            showOnSidePanel: true
-        },
+            {
+                category: "extensions:manage.sidePanel.categories.customerDataService",
+                children: [
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "createUnificationRule",
+                        name: "Create Unification Rule",
+                        path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.cds.v1/pages/unification-rules")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES_UNIFICATION_RULES,
+                icon: {
+                    icon: <UnificationRuleIcon className="icon" fill="black" />
+                },
+                id: "customerDataUnificationRules",
+                name: "customerDataService:sidePanel.UnificationRules",
+                order: 34,
+                path: AppConstants.getPaths().get("UNIFICATION_RULES"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        ]),
         {
             category: "console:manage.features.sidePanel.categories.configurations",
             component: lazy(() =>
