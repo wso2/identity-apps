@@ -580,16 +580,12 @@
             },
             "applications": {
                 "disabledFeatures": [
+                    "applications.adaptiveAuth.orgGovernance",
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth",
-                    "applications.adaptiveAuth.orgGovernance"
+                    "applications.sharedApp.adaptiveAuth"
                 ],
                 "enabled": true,
-                "properties": {
-                    "maxGracefulRefreshTokenReuseLimit": 5,
-                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
-                },
                 "featureFlags": [
                     {
                         "feature": "applications",
@@ -608,6 +604,10 @@
                         "flag": ""
                     }
                 ],
+                "properties": {
+                    "maxGracefulRefreshTokenReuseLimit": 5,
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                },
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create"
@@ -1112,25 +1112,42 @@
                     ]
                 }
             },
-            "events": {
+            "fapi": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
+            "flowExtensions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flowExtensions",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
                     "create": [
-                        "internal_event_config_update"
+                        "internal_flow_extension_create"
                     ],
                     "delete": [
-                        "internal_event_config_update"
+                        "internal_flow_extension_delete"
                     ],
                     "feature": [
-                        "console:events"
+                        "console:flowExtensions"
                     ],
                     "read": [
-                        "internal_event_config_view"
+                        "internal_claim_meta_view",
+                        "internal_flow_extension_view"
                     ],
                     "update": [
-                        "internal_event_config_update"
+                        "internal_flow_extension_update"
                     ]
                 }
             },
@@ -1162,34 +1179,6 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
-                }
-            },
-            "flowExtensions": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "flowExtensions",
-                        "flag": ""
-                    }
-                ],
-                "scopes": {
-                    "create": [
-                        "internal_flow_extension_create"
-                    ],
-                    "delete": [
-                        "internal_flow_extension_delete"
-                    ],
-                    "feature": [
-                        "console:flowExtensions"
-                    ],
-                    "read": [
-                        "internal_flow_extension_view",
-                        "internal_claim_meta_view"
-                    ],
-                    "update": [
-                        "internal_flow_extension_update"
-                    ]
                 }
             },
             "gettingStarted": {
@@ -2192,17 +2181,6 @@
                 }
             },
             "wsFedConfiguration": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [],
-                "scopes": {
-                    "create": [],
-                    "delete": [],
-                    "read": [],
-                    "update": []
-                }
-            },
-            "fapi": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],

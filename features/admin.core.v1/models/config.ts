@@ -281,10 +281,6 @@ export interface FeatureConfigInterface {
      */
     tryIt?: FeatureAccessConfigInterface;
     /**
-     * Event Management feature
-     */
-    events?: FeatureAccessConfigInterface;
-    /**
      * Organization insights feature
      */
     insights?: FeatureAccessConfigInterface

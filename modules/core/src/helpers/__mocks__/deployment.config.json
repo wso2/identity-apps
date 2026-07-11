@@ -511,27 +511,6 @@
                     ]
                 }
             },
-            "events": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [
-                        "internal_event_config_update"
-                    ],
-                    "delete": [
-                        "internal_event_config_update"
-                    ],
-                    "feature": [
-                        "console:events"
-                    ],
-                    "read": [
-                        "internal_event_config_view"
-                    ],
-                    "update": [
-                        "internal_event_config_update"
-                    ]
-                }
-            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
