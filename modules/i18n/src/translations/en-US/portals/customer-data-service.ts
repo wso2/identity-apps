@@ -53,6 +53,44 @@ export const customerDataService: CustomerDataServiceNS = {
             notAllowed: "Not allowed"
         }
     },
+    landing: {
+        backButton: "Go back to Customer Data Profile",
+        configuration: {
+            heading: "Configuration",
+            profileAttributes: {
+                description: "Define the attributes captured on each customer profile and how they map to source data.",
+                title: "Profile Attributes"
+            },
+            unificationRules: {
+                description: "Set the rules used to match and merge duplicate identities into a single profile.",
+                title: "Unification Rules"
+            }
+        },
+        enable: {
+            hint: "When enabled, the Customer Data Service collects and unifies profile data across your applications. Configure how attributes are mapped and how duplicate identities are merged below.",
+            label: "Enable Customer Data Service"
+        },
+        notifications: {
+            update: {
+                error: {
+                    description: "Failed to update Customer Data Service settings. Please try again.",
+                    message: "Update error"
+                },
+                success: {
+                    description: "Customer Data Service configuration updated successfully.",
+                    message: "Update successful"
+                }
+            }
+        },
+        page: {
+            description: "Unify and manage customer profiles built from identity, behavioural and application data — all in one place.",
+            title: "Customer Data Profile"
+        },
+        profiles: {
+            description: "Manage customer profiles which have identity, behavioural and application data.",
+            heading: "Profiles"
+        }
+    },
     profileAttributes: {
         create: {
             forms: {
@@ -578,7 +616,8 @@ export const customerDataService: CustomerDataServiceNS = {
     sidePanel: {
         ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
-        UnificationRules: "Unification Rules"
+        UnificationRules: "Unification Rules",
+        customerDataProfile: "Customer Data Profile"
     },
     unificationRules: {
         common: {

@@ -41,6 +41,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
@@ -682,22 +683,26 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                            <Show
-                                when={ [
-                                    ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
-                                    ...(cdsFeatureConfig?.scopes?.update ?? [])
-                                ] }
-                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
-                            >
-                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
-                                    <ListItemIcon>
-                                        <PreviewFeaturesIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                </MenuItem>
+                        // CDS is the only preview feature. In the unified Customer Data Profile
+                        // view it is enabled from its own page, leaving the modal empty.
+                        !isCDSUnifiedProfileViewEnabled() && (
+                            <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                                <Show
+                                    when={ [
+                                        ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
+                                        ...(cdsFeatureConfig?.scopes?.update ?? [])
+                                    ] }
+                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                >
+                                    <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                        <ListItemIcon>
+                                            <PreviewFeaturesIcon />
+                                        </ListItemIcon>
+                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
+                                    </MenuItem>
+                                </Show>
                             </Show>
-                        </Show>,
+                        ),
                         isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"

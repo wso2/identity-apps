@@ -35,22 +35,19 @@ import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
+import useCDSToggle from "@wso2is/admin.cds.v1/hooks/use-cds-toggle";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NewCDSFeatureImage from "../../assets/illustrations/preview-features/new-cds-feature.png";
 import { AppConstants } from "../../constants/app-constants";
 import { history } from "../../helpers/history";
 import { AppState } from "../../store";
 import "./feature-preview-modal.scss";
-
-/** Added or removed as a system application when CDS is toggled. */
-const CDS_CONSOLE_APP:string = "CONSOLE";
 
 interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterface {
     open: boolean;
@@ -125,7 +122,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 }: FeaturePreviewModalPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch: any = useDispatch();
     const { selectedPreviewFeatureToShow } = useFeatureGate();
 
     const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -136,6 +132,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         data: cdsConfig,
         mutate: mutateCDSConfig
     } = useCDSConfig(open && (cdsFeatureConfig?.enabled ?? false));
+
+    const { toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfig);
 
     const hasCDSScopes: boolean = useRequiredScopes(
         cdsFeatureConfig?.scopes?.update
@@ -162,7 +160,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(() => (
         previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
             if (feature.id === "customer-data-service") {
-                return hasCDSScopes && !!cdsFeatureConfig?.enabled;
+                // In the unified Customer Data Profile view, CDS is enabled from its own page.
+                return hasCDSScopes && !!cdsFeatureConfig?.enabled && !isCDSUnifiedProfileViewEnabled();
             }
 
             return true;
@@ -202,47 +201,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 
         switch (actionId) {
             case "customer-data-service":
-                await handleCDSToggle(isChecked);
+                await toggleCDS(isChecked);
 
                 break;
 
             default:
                 break;
-        }
-    };
-
-    /**
-     * Handles CDS enable/disable via PATCH.
-     *
-     * Enabling  → set cds_enabled: true; if system_applications is empty, seed it with ["CONSOLE"].
-     * Disabling → set cds_enabled: false; remove "CONSOLE" from system_applications (leave others intact).
-     */
-    const handleCDSToggle = async (enable: boolean): Promise<void> => {
-        const currentApps: string[] = cdsConfig?.system_applications ?? [];
-
-        let nextApps: string[];
-
-        if (enable) {
-            nextApps = currentApps.length === 0
-                ? [ CDS_CONSOLE_APP ]
-                : currentApps;
-        } else {
-            nextApps = currentApps.filter((app: string) => app !== CDS_CONSOLE_APP);
-        }
-
-        try {
-            await updateCDSConfig({
-                cds_enabled: enable,
-                system_applications: nextApps
-            });
-
-            mutateCDSConfig();
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("customerDataService:common.featurePreview.updateError"),
-                level: AlertLevels.ERROR,
-                message: t("common:error")
-            }));
         }
     };
 

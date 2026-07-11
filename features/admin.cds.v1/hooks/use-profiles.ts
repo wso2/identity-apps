@@ -27,13 +27,16 @@ import { FetchProfilesParams, ProfileModel, ProfilesListResponse } from "../mode
  *
  * @param params - Query parameters for filtering and pagination
  * @param config - SWR configuration options
+ * @param shouldFetch - Should fetch the data.
  * @returns SWR response with profiles data
  */
 export const useCDSProfiles = (
     params: FetchProfilesParams = {},
-    config?: SWRConfiguration<ProfilesListResponse, AxiosError>
+    config?: SWRConfiguration<ProfilesListResponse, AxiosError>,
+    shouldFetch: boolean = true
 ): SWRResponse<ProfilesListResponse, AxiosError> => {
-    const key: ["cds-profiles", FetchProfilesParams] | null = params ? [ "cds-profiles", params ] : null;
+    const key: ["cds-profiles", FetchProfilesParams] | null =
+        shouldFetch && params ? [ "cds-profiles", params ] : null;
 
     return useSWR<ProfilesListResponse, AxiosError>(
         key,

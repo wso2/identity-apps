@@ -53,6 +53,7 @@ class FeatureFlagConstants {
         CUSTOMER_DATA_PROFILES: "customerDataProfiles",
         CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",
         CUSTOMER_DATA_PROFILE_ATTRIBUTES: "customerDataProfileAttributes",
+        CUSTOMER_DATA_SERVICE: "customerDataService",
         CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
         FLOWS: "flows",
         FLOWS_TYPES_REGISTRATION: "flows.types.list.registration",
