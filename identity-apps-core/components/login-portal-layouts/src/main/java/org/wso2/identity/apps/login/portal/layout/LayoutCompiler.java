@@ -64,7 +64,7 @@ public class LayoutCompiler {
     }
 
     /**
-     * This method will recursively find the `body.html` files inside a given directory
+     * This method will recursively find the `body.html` files inside a given directory.
      *
      * @param directory Path to a directory required to find the body.html files
      * @return array of claim mappings.

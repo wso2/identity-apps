@@ -398,68 +398,89 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
         </>
     );
 
+    const isActionStatusActive = (status: string | number | null | undefined): boolean | null => {
+        if (status === null || status === undefined) {
+            return null;
+        }
+
+        if (status === ActionsConstants.ACTIVE_STATUS) {
+            return true;
+        }
+
+        const normalizedStatus: string = status.toString().toUpperCase();
+
+        if (normalizedStatus === ActionsConstants.ACTIVE_STATUS) {
+            return true;
+        }
+
+        if (normalizedStatus === "0") {
+            return true;
+        }
+
+        return false;
+    };
+
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
         let isActive: boolean | null = null;
 
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                count = typeCounts?.preIssueAccessToken;
-                isActive = preIssueAccessTokenActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
+                count = typeCounts?.preIssueAccessToken ?? 0;
+                isActive = isActionStatusActive(preIssueAccessTokenActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH:
-                count = typeCounts?.preIssueIdToken;
-                isActive = preIssueIdTokenActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
+                count = typeCounts?.preIssueIdToken ?? 0;
+                isActive = isActionStatusActive(preIssueIdTokenActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                count = typeCounts?.preUpdatePassword;
-                isActive = preUpdatePasswordActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
-
+                count = typeCounts?.preUpdatePassword ?? 0;
+                isActive = isActionStatusActive(preUpdatePasswordActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                count = typeCounts?.preUpdateProfile;
-                isActive = preUpdateProfileActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
+                count = typeCounts?.preUpdateProfile ?? 0;
+                isActive = isActionStatusActive(preUpdateProfileActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                count = typeCounts?.preRegistration;
-                isActive = preRegistrationActions?.[0]?.status?.toString() === ActionsConstants.ACTIVE_STATUS;
+                count = typeCounts?.preRegistration ?? 0;
+                isActive = isActionStatusActive(preRegistrationActions?.[0]?.status);
                 break;
             default:
                 break;
         }
 
         if (count > 0) {
-        return (
-            <div className="status-tags-container">
-                <div
-                    className="status-tag"
-                    data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
-                >
-                    <CircleCheckFilledIcon className="icon-configured"/>
-                    <Typography className="text-configured" variant="h6">
-                        { t("actions:status.configured") }
-                    </Typography>
-                </div>
-                
-                <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
-                    <Typography variant="h6">
-                        { isActive === null ? "?" : (isActive ? "Active" : "Inactive") }
-                    </Typography>
-                </div>
-            </div>
-        );
-    } else {
             return (
-                <div
-                    className="status-tag"
-                    data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
-                >
-                    <Typography  className="text-not-configured" variant="h6">
-                        {  t("actions:status.notConfigured") }
-                    </Typography>
+                <div className="status-tags-container">
+                    <div
+                        className="status-tag"
+                        data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
+                    >
+                        <CircleCheckFilledIcon className="icon-configured" />
+                        <Typography className="text-configured" variant="h6">
+                            { t("actions:status.configured") }
+                        </Typography>
+                    </div>
+
+                    <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
+                        <Typography variant="h6">
+                            { isActive === null ? "?" : (isActive ? t("actions:status.active") : t("actions:status.inactive")) }
+                        </Typography>
+                    </div>
                 </div>
             );
         }
+
+        return (
+            <div
+                className="status-tag"
+                data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
+            >
+                <Typography className="text-not-configured" variant="h6">
+                    { t("actions:status.notConfigured") }
+                </Typography>
+            </div>
+        );
     };
 
     /**
