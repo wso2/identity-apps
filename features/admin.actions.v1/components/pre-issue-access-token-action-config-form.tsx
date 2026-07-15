@@ -31,7 +31,8 @@ import { IdentifiableComponentInterface,
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useReducer } from "react";import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement, useEffect, useReducer } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
@@ -83,10 +84,25 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
 }
 
 interface FormStateInterface {
+    /**
+     * Whether the authentication update form is active.
+     */
     isAuthenticationUpdateFormState: boolean;
+    /**
+     * The current authentication type selected.
+     */
     authenticationType: AuthenticationType | null;
+    /**
+     * Whether the form is currently submitting.
+     */
     isSubmitting: boolean;
+    /**
+     * Whether the action has an associated rule.
+     */
     isHasRule: boolean;
+    /**
+     * The current rule associated with the action.
+     */
     rule: RuleWithoutIdInterface | null;
 }
 
@@ -125,7 +141,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
-    const [ formState, dispatch ] = useReducer<React.Reducer<FormStateInterface, FormActionInterface>>(
+    const [ actionFormState, dispatch ] = useReducer<React.Reducer<FormStateInterface, FormActionInterface>>(
         formReducer,
         {
             isAuthenticationUpdateFormState: false,
@@ -193,12 +209,12 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     const validateForm = (values: ActionConfigFormPropertyInterface):
     Partial<ActionConfigFormPropertyInterface> => {
 
-    // Call the utility validate function
-    return validateActionCommonFields(values, {
-        authenticationType: formState.authenticationType,
-        isAuthenticationUpdateFormState: formState.isAuthenticationUpdateFormState,
-        isCreateFormState: isCreateFormState
-    });
+        // Call the utility validate function
+        return validateActionCommonFields(values, {
+            authenticationType: actionFormState.authenticationType,
+            isAuthenticationUpdateFormState: actionFormState.isAuthenticationUpdateFormState,
+            isCreateFormState: isCreateFormState
+        });
     };
 
     const handleSubmit = (
@@ -207,17 +223,17 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     {
         let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
-        if (formState.isHasRule) {
-            payloadRule = formState.rule;
+        if (actionFormState.isHasRule) {
+            payloadRule = actionFormState.rule;
         } else {
-            if (!isCreateFormState && !formState.rule) {
+            if (!isCreateFormState && !actionFormState.rule) {
                 payloadRule = {};
             }
         }
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-        if (formState.isAuthenticationUpdateFormState || isCreateFormState) {
+        if (actionFormState.isAuthenticationUpdateFormState || isCreateFormState) {
             switch (values.authenticationType) {
                 case AuthenticationType.BASIC:
                     authProperties.username = values.usernameAuthProperty;
@@ -286,14 +302,14 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         } else {
             // Updating the action
             const updatingValues: ActionUpdateInterface = {
-                endpoint: formState.isAuthenticationUpdateFormState ||
+                endpoint: actionFormState.isAuthenticationUpdateFormState ||
                 changedFields?.endpointUri ||
                 changedFields?.allowedHeaders ||
                 changedFields?.allowedParameters
                     ? {
                         allowedHeaders: changedFields?.allowedHeaders ? values.allowedHeaders : undefined,
                         allowedParameters: changedFields?.allowedParameters ? values.allowedParameters : undefined,
-                        authentication: formState.isAuthenticationUpdateFormState ? {
+                        authentication: actionFormState.isAuthenticationUpdateFormState ? {
                             properties: authProperties,
                             type: values.authenticationType as AuthenticationType
                         } : undefined,
@@ -340,10 +356,10 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
-                        rule={ formState.rule }
+                        rule={ actionFormState.rule }
                         ruleActionType={ actionTypeApiPath }
                         setRule={ (rule: RuleWithoutIdInterface) => dispatch({ type: "SET_RULE", payload: rule }) }
-                        isHasRule={ formState.isHasRule }
+                        isHasRule={ actionFormState.isHasRule }
                         setIsHasRule={ (isHasRule: boolean) => dispatch({ type: "SET_IS_HAS_RULE", payload: isHasRule }) }
                         data-componentid={ `${ _componentId }-rule` }
                     />
@@ -380,7 +396,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                                             onClick={ handleSubmit }
                                             className={ "button-container" }
                                             data-componentid={ `${ _componentId }-primary-button` }
-                                            loading={ formState.isSubmitting }
+                                            loading={ actionFormState.isSubmitting }
                                             disabled={ isReadOnly }
                                         >
                                             {
