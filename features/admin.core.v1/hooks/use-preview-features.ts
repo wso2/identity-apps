@@ -257,11 +257,8 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
     const canUsePreviewFeatures: boolean =
-        (
-            saasFeatureStatus === FeatureStatus.ENABLED &&
-            previewFeaturesFeatureStatus === FeatureStatus.ENABLED
-        ) ||
-        cdsFeatureConfig?.enabled === true &&
+        saasFeatureStatus === FeatureStatus.ENABLED &&
+        previewFeaturesFeatureStatus === FeatureStatus.ENABLED &&
         hasAccessiblePreviewFeatures;
 
     return {

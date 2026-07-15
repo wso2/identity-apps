@@ -62,6 +62,7 @@ import { Dispatch } from "redux";
 import { Divider, Form, Grid, TabProps } from "semantic-ui-react";
 import { deleteCDSProfile } from "../api/profiles";
 import { useCDSProfileDetails } from "../hooks/use-profiles";
+import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 // Lazy load Monaco Editor at module scope to prevent repeated remounting
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
@@ -86,6 +87,8 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
     const dispatch: Dispatch<any> = useDispatch();
     const profileId: string = match?.params?.id;
+
+    const profilesListPath: string = isCDSUnifiedProfileViewEnabled() ? "CUSTOMER_DATA_PROFILE" : "PROFILES";
 
     // Use SWR hook for fetching profile details
     const { data: profile, error, isLoading } = useCDSProfileDetails(profileId);
@@ -454,7 +457,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     message: t("customerDataService:profiles.details.notifications.deleteProfile.success.message")
                 });
 
-                history.push(AppConstants.getPaths().get("PROFILES"));
+                history.push(AppConstants.getPaths().get(profilesListPath));
             })
             .catch((deleteError: any) => {
                 setModalAlert({
@@ -485,7 +488,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             pageTitle={ t("customerDataService:profiles.details.page.pageTitle") }
             description={ displayName || undefined }
             backButton={ {
-                onClick: () => history.push(AppConstants.getPaths().get("PROFILES")),
+                onClick: () => history.push(AppConstants.getPaths().get(profilesListPath)),
                 text: t("customerDataService:profiles.details.page.backButton")
             } }
             data-testid={ testId }
