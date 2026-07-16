@@ -17,6 +17,7 @@
  */
 
 interface CredentialFieldsNS {
+    credentialQueryId: { label: string; placeholder: string; hint: string; patternError: string };
     type: { label: string; placeholder: string };
     purpose: { label: string; placeholder: string };
     claims: {
@@ -30,6 +31,13 @@ interface CredentialFieldsNS {
     };
     enforceTrustedIssuers: { label: string; hint: string };
     trustedIssuers: { label: string; placeholder: string; hint: string };
+    issuerCert: {
+        label: string;
+        hint: string;
+        none: { label: string; hint: string };
+        jwks: { label: string; urlLabel: string; urlPlaceholder: string; urlHint: string };
+        pem: { label: string; hint: string };
+    };
     addButton: string;
 }
 

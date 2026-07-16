@@ -65,6 +65,12 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
             credentials: {
                 label: "Requested Credentials",
                 hint: "Define the verifiable credentials the wallet must present. At least one credential type is required.",
+                credentialQueryId: {
+                    label: "Credential Query ID",
+                    placeholder: "e.g. my_credential_1",
+                    hint: "A unique identifier for this credential query. Used as the key in the DCQL request and wallet response. Only letters, digits, underscores and hyphens are allowed.",
+                    patternError: "Only letters, digits, underscores (_) and hyphens (-) are allowed."
+                },
                 type: {
                     label: "Credential Type",
                     placeholder: "e.g. urn:eudi:pid:de:1"
@@ -101,6 +107,24 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                     placeholder: "e.g. https://issuer.example.com",
                     hint: "Comma-separated list of trusted issuer URIs or DIDs."
                 },
+                issuerCert: {
+                    label: "Issuer Certificate",
+                    hint: "Configure how to verify the credential issuer's signature.",
+                    none: {
+                        label: "None",
+                        hint: "The credential's JWT must include an x5c certificate chain in its header. Verification will fail if no x5c header is present."
+                    },
+                    jwks: {
+                        label: "Use JWKS endpoint",
+                        urlLabel: "JWKS Endpoint URL",
+                        urlPlaceholder: "e.g. https://issuer.example.com/jwks",
+                        urlHint: "The JWKS endpoint URL of the credential issuer. Used instead of automatic well-known discovery."
+                    },
+                    pem: {
+                        label: "Provide Certificate",
+                        hint: "Paste the issuer's public certificate in PEM format. Verification will use this certificate directly without any network call."
+                    }
+                },
                 addButton: "Add Credential"
             },
             submitButton: "Create"
@@ -128,6 +152,12 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                 noCredentials: "No credentials configured yet. Click \"Add Credential\" to define one.",
                 addCredential: { title: "Add Credential" },
                 editCredential: { title: "Edit Credential" },
+                credentialQueryId: {
+                    label: "Credential Query ID",
+                    placeholder: "e.g. my_credential_1",
+                    hint: "A unique identifier for this credential query. Used as the key in the DCQL request and wallet response. Only letters, digits, underscores and hyphens are allowed.",
+                    patternError: "Only letters, digits, underscores (_) and hyphens (-) are allowed."
+                },
                 type: {
                     label: "Credential Type",
                     placeholder: "e.g. urn:eudi:pid:de:1"
@@ -163,6 +193,24 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                     label: "Trusted Issuers",
                     placeholder: "Type an issuer URI and press Enter",
                     hint: "Trusted issuer URIs or DIDs. Only enforced when \"Enforce Trusted Issuers\" is on."
+                },
+                issuerCert: {
+                    label: "Issuer Certificate",
+                    hint: "Configure how to verify the credential issuer's signature.",
+                    none: {
+                        label: "None",
+                        hint: "The credential's JWT must include an x5c certificate chain in its header. Verification will fail if no x5c header is present."
+                    },
+                    jwks: {
+                        label: "Use JWKS endpoint",
+                        urlLabel: "JWKS Endpoint URL",
+                        urlPlaceholder: "e.g. https://issuer.example.com/jwks",
+                        urlHint: "The JWKS endpoint URL of the credential issuer. Used instead of automatic well-known discovery."
+                    },
+                    pem: {
+                        label: "Provide Certificate",
+                        hint: "Paste the issuer's public certificate in PEM format. Verification will use this certificate directly without any network call."
+                    }
                 },
                 addButton: "Add Credential"
             }

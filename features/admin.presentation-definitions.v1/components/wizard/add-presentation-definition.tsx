@@ -57,6 +57,7 @@ interface DefinitionFormValues {
 }
 
 interface CredentialEntry {
+    credentialQueryId: string;
     type: string;
     purpose: string;
     claims: string;
@@ -79,7 +80,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ credentials, setCredentials ] = useState<CredentialEntry[]>([
-        { claims: "", enforceTrustedIssuers: false, purpose: "", trustedIssuers: "", type: "" }
+        { claims: "", credentialQueryId: "", enforceTrustedIssuers: false, purpose: "", trustedIssuers: "", type: "" }
     ]);
 
     // Keep a ref in sync so handleFormSubmit always reads the current credentials,
@@ -90,7 +91,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
     const addCredentialRow = (): void => {
         setCredentials((prev: CredentialEntry[]) => [
             ...prev,
-            { claims: "", enforceTrustedIssuers: false, purpose: "", trustedIssuers: "", type: "" }
+            { claims: "", credentialQueryId: "", enforceTrustedIssuers: false, purpose: "", trustedIssuers: "", type: "" }
         ]);
     };
 
@@ -123,7 +124,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
             if (!values?.name) return;
 
             const credentialModels: RequestedCredentialModel[] = credentialsRef.current
-                .filter((c: CredentialEntry) => c.type.trim() !== "")
+                .filter((c: CredentialEntry) => c.type.trim() !== "" && c.credentialQueryId.trim() !== "")
                 .map((c: CredentialEntry) => ({
                     claims: c.claims
                         ? c.claims.split(",")
@@ -131,6 +132,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                             .filter(Boolean)
                             .map((name: string): ClaimConstraintModel => ({ mandatory: true, name }))
                         : [],
+                    credentialQueryId: c.credentialQueryId.trim(),
                     enforceTrustedIssuers: c.enforceTrustedIssuers,
                     purpose: c.purpose.trim() || undefined,
                     trustedIssuers: c.enforceTrustedIssuers && c.trustedIssuers
@@ -262,6 +264,25 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                                                 <Icon name="close" />
                                             </IconButton>
                                         ) }
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label={ t(
+                                                "presentationDefinitions:wizard.form.credentials.credentialQueryId.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "presentationDefinitions:wizard.form.credentials.credentialQueryId.placeholder"
+                                            ) }
+                                            value={ credential.credentialQueryId }
+                                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                updateCredential(index, "credentialQueryId", e.target.value)
+                                            }
+                                            required
+                                            helperText={ t(
+                                                "presentationDefinitions:wizard.form.credentials.credentialQueryId.hint"
+                                            ) }
+                                            sx={ { mb: 1 } }
+                                        />
                                         <TextField
                                             fullWidth
                                             size="small"

@@ -17,6 +17,15 @@
  */
 
 /**
+ * Issuer certificate configuration type for a requested credential.
+ */
+export enum IssuerCertType {
+    NONE = "NONE",
+    JWKS = "JWKS",
+    PEM = "PEM"
+}
+
+/**
  * Interface for a single claim constraint within a requested credential.
  */
 export interface ClaimConstraintModel {
@@ -29,9 +38,12 @@ export interface ClaimConstraintModel {
  * Interface for a requested credential in a presentation definition.
  */
 export interface RequestedCredentialModel {
+    credentialQueryId: string;
     type: string;
     purpose?: string;
     issuer?: string;
+    issuerCertPem?: string;
+    jwksUri?: string;
     claims?: ClaimConstraintModel[];
     enforceTrustedIssuers?: boolean;
     trustedIssuers?: string[];

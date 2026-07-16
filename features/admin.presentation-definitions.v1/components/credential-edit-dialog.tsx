@@ -18,8 +18,12 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
+import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormLabel from "@oxygen-ui/react/FormLabel";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import MuiTextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -28,7 +32,8 @@ import { Button, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Modal } from "semantic-ui-react";
-import { ClaimConstraintModel, RequestedCredentialModel } from "../models/presentation-definitions";
+import { ClaimConstraintModel, IssuerCertType, RequestedCredentialModel }
+    from "../models/presentation-definitions";
 
 interface CredentialEditDialogPropsInterface extends IdentifiableComponentInterface {
     open: boolean;
@@ -54,19 +59,52 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
 }: CredentialEditDialogPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
+    const [ credentialQueryId, setCredentialQueryId ] = useState<string>("");
+    const [ credentialQueryIdError, setCredentialQueryIdError ] = useState<string>("");
     const [ type, setType ] = useState<string>("");
     const [ purpose, setPurpose ] = useState<string>("");
     const [ claims, setClaims ] = useState<ClaimConstraintModel[]>([]);
     const [ enforceTrustedIssuers, setEnforceTrustedIssuers ] = useState<boolean>(false);
     const [ trustedIssuers, setTrustedIssuers ] = useState<string[]>([]);
+    const [ issuerCertType, setIssuerCertType ] = useState<IssuerCertType>(IssuerCertType.NONE);
+    const [ jwksUri, setJwksUri ] = useState<string>("");
+    const [ issuerCertPem, setIssuerCertPem ] = useState<string>("");
+
+    const DCQL_ID_PATTERN: RegExp = /^[a-zA-Z0-9_-]+$/;
+
+    const handleCredentialQueryIdChange = (value: string): void => {
+        setCredentialQueryId(value);
+        if (value && !DCQL_ID_PATTERN.test(value)) {
+            setCredentialQueryIdError(
+                t("presentationDefinitions:editPage.form.credentials.credentialQueryId.patternError")
+            );
+        } else {
+            setCredentialQueryIdError("");
+        }
+    };
 
     useEffect(() => {
         if (open) {
+            setCredentialQueryId(editingCredential?.credentialQueryId ?? "");
+            setCredentialQueryIdError("");
             setType(editingCredential?.type ?? "");
             setPurpose(editingCredential?.purpose ?? "");
             setClaims(editingCredential?.claims ?? []);
             setEnforceTrustedIssuers(editingCredential?.enforceTrustedIssuers ?? false);
             setTrustedIssuers(editingCredential?.trustedIssuers ?? []);
+            if (editingCredential?.issuerCertPem) {
+                setIssuerCertType(IssuerCertType.PEM);
+                setIssuerCertPem(editingCredential.issuerCertPem);
+                setJwksUri("");
+            } else if (editingCredential?.jwksUri) {
+                setIssuerCertType(IssuerCertType.JWKS);
+                setJwksUri(editingCredential.jwksUri);
+                setIssuerCertPem("");
+            } else {
+                setIssuerCertType(IssuerCertType.NONE);
+                setJwksUri("");
+                setIssuerCertPem("");
+            }
         }
     }, [ open, editingCredential ]);
 
@@ -114,7 +152,7 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
     };
 
     const handleSave = (): void => {
-        if (!type.trim()) {
+        if (!credentialQueryId.trim() || credentialQueryIdError || !type.trim()) {
             return;
         }
 
@@ -128,7 +166,10 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
 
         onSave({
             claims: validClaims,
+            credentialQueryId: credentialQueryId.trim(),
             enforceTrustedIssuers,
+            issuerCertPem: issuerCertType === IssuerCertType.PEM ? issuerCertPem.trim() || undefined : undefined,
+            jwksUri: issuerCertType === IssuerCertType.JWKS ? jwksUri.trim() || undefined : undefined,
             purpose: purpose.trim() || undefined,
             trustedIssuers: enforceTrustedIssuers ? trustedIssuers : [],
             type: type.trim()
@@ -153,6 +194,25 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 }
             </Modal.Header>
             <Modal.Content scrolling>
+                <MuiTextField
+                    fullWidth
+                    size="small"
+                    label={ t("presentationDefinitions:editPage.form.credentials.credentialQueryId.label") }
+                    placeholder={ t(
+                        "presentationDefinitions:editPage.form.credentials.credentialQueryId.placeholder"
+                    ) }
+                    value={ credentialQueryId }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleCredentialQueryIdChange(e.target.value)
+                    }
+                    required
+                    error={ !!credentialQueryIdError }
+                    helperText={ credentialQueryIdError || t(
+                        "presentationDefinitions:editPage.form.credentials.credentialQueryId.hint"
+                    ) }
+                    sx={ { mb: 2 } }
+                    data-componentid={ `${componentId}-credential-query-id-field` }
+                />
                 <MuiTextField
                     fullWidth
                     size="small"
@@ -287,6 +347,101 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 </Button>
 
                 <Divider hidden />
+                <FormControl component="fieldset" fullWidth>
+                    <FormLabel component="legend" sx={ { fontSize: "0.875rem", fontWeight: 600, mb: 0.5 } }>
+                        { t("presentationDefinitions:editPage.form.credentials.issuerCert.label") }
+                    </FormLabel>
+                    <Hint>
+                        { t("presentationDefinitions:editPage.form.credentials.issuerCert.hint") }
+                    </Hint>
+                    <RadioGroup
+                        row
+                        value={ issuerCertType }
+                        onChange={ (_e: React.ChangeEvent<HTMLInputElement>, value: string) =>
+                            setIssuerCertType(value as IssuerCertType)
+                        }
+                        data-componentid={ `${componentId}-issuer-cert-type-radio-group` }
+                    >
+                        <FormControlLabel
+                            value={ IssuerCertType.NONE }
+                            control={ <Radio size="small" /> }
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.none.label"
+                            ) }
+                        />
+                        <FormControlLabel
+                            value={ IssuerCertType.JWKS }
+                            control={ <Radio size="small" /> }
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.label"
+                            ) }
+                        />
+                        <FormControlLabel
+                            value={ IssuerCertType.PEM }
+                            control={ <Radio size="small" /> }
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.label"
+                            ) }
+                        />
+                    </RadioGroup>
+                </FormControl>
+                { issuerCertType === IssuerCertType.NONE && (
+                    <Hint>
+                        { t(
+                            "presentationDefinitions:editPage.form.credentials.issuerCert.none.hint"
+                        ) }
+                    </Hint>
+                ) }
+                { issuerCertType === IssuerCertType.JWKS && (
+                    <Box sx={ { mt: 1 } }>
+                        <MuiTextField
+                            fullWidth
+                            size="small"
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlLabel"
+                            ) }
+                            placeholder={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlPlaceholder"
+                            ) }
+                            value={ jwksUri }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setJwksUri(e.target.value) }
+                            sx={ { mb: 0.5 } }
+                            data-componentid={ `${componentId}-jwks-uri-field` }
+                        />
+                        <Hint>
+                            { t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlHint"
+                            ) }
+                        </Hint>
+                    </Box>
+                ) }
+                { issuerCertType === IssuerCertType.PEM && (
+                    <Box sx={ { mt: 1 } }>
+                        <MuiTextField
+                            fullWidth
+                            multiline
+                            minRows={ 5 }
+                            size="small"
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.label"
+                            ) }
+                            placeholder="-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----"
+                            value={ issuerCertPem }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                setIssuerCertPem(e.target.value)
+                            }
+                            sx={ { fontFamily: "monospace", mb: 0.5 } }
+                            data-componentid={ `${componentId}-issuer-cert-pem-field` }
+                        />
+                        <Hint>
+                            { t(
+                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.hint"
+                            ) }
+                        </Hint>
+                    </Box>
+                ) }
+
+                <Divider hidden />
                 <FormControlLabel
                     control={
                         <Switch
@@ -349,7 +504,7 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 </Button>
                 <Button
                     primary
-                    disabled={ !type.trim() }
+                    disabled={ !credentialQueryId.trim() || !!credentialQueryIdError || !type.trim() }
                     onClick={ handleSave }
                     data-componentid={ `${componentId}-save-button` }
                 >
