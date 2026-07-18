@@ -212,6 +212,11 @@ export class I18nModuleConstants {
     public static readonly PUSH_PROVIDERS_NAMESPACE: string = "pushProviders";
 
     /**
+     * Function Libraries namespace.
+     */
+    public static readonly FUNCTION_LIBRARIES_NAMESPACE: string = "functionLibraries";
+
+    /**
      * SMS Templates namespace.
      * @constant
      * @type {string}

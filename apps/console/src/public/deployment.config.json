@@ -1074,6 +1074,28 @@
                     ]
                 }
             },
+            "functionLibraries": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_functional_lib_create"
+                    ],
+                    "delete": [
+                        "internal_functional_lib_delete"
+                    ],
+                    "feature": [
+                        "console:applications"
+                    ],
+                    "read": [
+                        "internal_functional_lib_view"
+                    ],
+                    "update": [
+                        "internal_functional_lib_update"
+                    ]
+                }
+            },
             "emailProviders": {
                 "disabledFeatures": [],
                 "enabled": true,

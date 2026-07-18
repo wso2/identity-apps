@@ -71,6 +71,7 @@ export * from "./remote-user-stores-ns";
 export * from "./rules-ns";
 export * from "./custom-authenticator-ns";
 export * from "./push-providers-ns";
+export * from "./function-libraries-ns";
 export * from "./webhooks-ns";
 export * from "./approval-workflows-ns";
 export * from "./workflow-requests-ns";

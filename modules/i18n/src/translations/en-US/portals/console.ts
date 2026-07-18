@@ -2678,7 +2678,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             applicationsSettings: {
-                backButton: "Go back to Applications",
+                backButton: "Go back to Applications Settings",
                 subTitle: "Dynamic Client Registration (DCR) can be used to create applications using DCR API.",
                 title: "Dynamic Client Registration",
                 learnMore: "Learn More",
@@ -2696,6 +2696,23 @@ export const console: ConsoleNS = {
                         message: "Update successful"
                     }
                 }
+            },
+            applicationsSettingsHub: {
+                backButton: "Go back to Applications",
+                cards: {
+                    dcr: {
+                        description: "Configure Dynamic Client Registration (DCR) to allow applications " +
+                            "to be created using the DCR API.",
+                        heading: "Dynamic Client Registration"
+                    },
+                    functionLibraries: {
+                        description: "Create and manage reusable JavaScript function libraries that can be " +
+                            "imported into conditional authentication scripts.",
+                        heading: "Function Libraries"
+                    }
+                },
+                subTitle: "Manage settings related to your applications.",
+                title: "Applications Settings"
             },
             authenticationProvider: {
                 subTitle: "Create and manage connections to use in the login flow of your applications.",

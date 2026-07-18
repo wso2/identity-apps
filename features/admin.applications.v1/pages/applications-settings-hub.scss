@@ -1,0 +1,55 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.applications-settings-hub {
+    .applications-settings-hub-grid-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 40px;
+
+        .applications-settings-hub-grid {
+            flex-grow: 1;
+            gap: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+            .applications-settings-hub-card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border: 1px solid #e8e8e8;
+                border-radius: 10px;
+                transition: box-shadow 0.3s ease;
+                cursor: pointer;
+
+                .applications-settings-hub-card-header {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 15px;
+                    align-content: center;
+                    align-items: center;
+                    padding: 10px 14px;
+
+                    .applications-settings-hub-card-icon-container {
+                        border-radius: var(--oxygen-shape-borderRadius);
+                    }
+                }
+            }
+        }
+    }
+}
