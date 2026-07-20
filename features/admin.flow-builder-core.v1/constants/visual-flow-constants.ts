@@ -65,6 +65,7 @@ class VisualFlowConstants {
         WidgetTypes.FacebookFederation,
         WidgetTypes.MicrosoftFederation,
         WidgetTypes.GithubFederation,
+        WidgetTypes.DaonFederation,
         WidgetTypes.PasskeyEnrollment,
         WidgetTypes.MagicLink,
         ElementTypes.Policy

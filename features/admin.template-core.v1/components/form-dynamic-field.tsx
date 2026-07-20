@@ -159,6 +159,36 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         }
                     />
                 );
+            case DynamicInputFieldTypes.NUMBER:
+                return (
+                    <FinalFormField
+                        fullWidth
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        type="text"
+                        inputProps={ {
+                            inputMode: "numeric"
+                        } }
+                        parse={ (value: string): string => value?.replace(/\D/g, "") }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
+                        component={ TextFieldAdapter }
+                        disabled={ disabled }
+                        readOnly={ readOnly || field?.readOnly }
+                        required={ field?.required }
+                        helperText={
+                            field?.helperText ? (
+                                <Hint compact>
+                                    { renderHelperText(field?.helperText) }
+                                </Hint>
+                            ) : null
+                        }
+                    />
+                );
             case DynamicInputFieldTypes.TEXTAREA:
                 return (
                     <FinalFormField

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+    <!-- Placeholder icon for the Daon TrustX connector. Replace with the official Daon logo asset. -->
+    <path d="M12 2 4 5v6c0 4.42 3.05 8.55 8 9.8 4.95-1.25 8-5.38 8-9.8V5l-8-3z"
+        fill="none" stroke="#40404B" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="12" cy="10" r="2.3" fill="none" stroke="#40404B" stroke-width="1.6"/>
+    <path d="M8 16.2c.6-1.9 2.1-2.9 4-2.9s3.4 1 4 2.9"
+        fill="none" stroke="#40404B" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

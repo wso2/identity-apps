@@ -70,6 +70,7 @@ export enum ExecutionTypes {
     FacebookFederation = "FacebookExecutor",
     MicrosoftFederation = "Office365Executor",
     GithubFederation = "GithubExecutor",
+    DaonFederation = "DaonExecutor",
     PasskeyEnrollment = "FIDO2Executor",
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",

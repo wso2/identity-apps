@@ -108,6 +108,7 @@ export const flows: flowsNS = {
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
+                daon: "Daon TrustX",
                 default: "Execution",
                 facebook: "Facebook",
                 flowExtension: "Flow Extension",
