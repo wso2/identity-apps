@@ -130,7 +130,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                         ? c.claims.split(",")
                             .map((s: string) => s.trim())
                             .filter(Boolean)
-                            .map((name: string): ClaimConstraintModel => ({ mandatory: true, name }))
+                            .map((name: string): ClaimConstraintModel => ({ mandatory: true, name, path: [ name ] }))
                         : [],
                     credentialQueryId: c.credentialQueryId.trim(),
                     enforceTrustedIssuers: c.enforceTrustedIssuers,

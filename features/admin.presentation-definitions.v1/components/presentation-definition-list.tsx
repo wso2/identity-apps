@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -33,7 +35,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { deletePresentationDefinition } from "../api/presentation-definitions";
@@ -62,6 +64,20 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
+    const presentationDefinitionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.presentationDefinitions
+    );
+
+    const hasCreatePermission: boolean = useRequiredScopes(
+        presentationDefinitionsFeatureConfig?.scopes?.create
+    );
+    const hasUpdatePermission: boolean = useRequiredScopes(
+        presentationDefinitionsFeatureConfig?.scopes?.update
+    );
+    const hasDeletePermission: boolean = useRequiredScopes(
+        presentationDefinitionsFeatureConfig?.scopes?.delete
+    );
+
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ currentDeletion, setCurrentDeletion ] = useState<PresentationDefinitionListItem>(null);
 
@@ -87,7 +103,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
     const resolveTableActions = (): TableActionsInterface[] => [
         {
             "data-componentid": `${componentId}-item-edit-button`,
-            hidden: (): boolean => false,
+            hidden: (): boolean => !hasUpdatePermission,
             icon: (): SemanticICONS => "pencil alternate",
             onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void =>
                 history.push(
@@ -98,7 +114,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
         },
         {
             "data-componentid": `${componentId}-item-delete-button`,
-            hidden: (): boolean => false,
+            hidden: (): boolean => !hasDeletePermission,
             icon: (): SemanticICONS => "trash alternate",
             onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void => {
                 setCurrentDeletion(definition);
@@ -165,13 +181,15 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
                     action={
-                        (<PrimaryButton
-                            data-componentid={ `${componentId}-empty-placeholder-add-button` }
-                            onClick={ onAddClick }
-                        >
-                            <Icon name="add" />
-                            { t("presentationDefinitions:buttons.addDefinition") }
-                        </PrimaryButton>)
+                        (<Show when={ presentationDefinitionsFeatureConfig?.scopes?.create }>
+                            <PrimaryButton
+                                data-componentid={ `${componentId}-empty-placeholder-add-button` }
+                                onClick={ onAddClick }
+                            >
+                                <Icon name="add" />
+                                { t("presentationDefinitions:buttons.addDefinition") }
+                            </PrimaryButton>
+                        </Show>)
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"

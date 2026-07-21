@@ -27,11 +27,37 @@ export enum IssuerCertType {
 
 /**
  * Interface for a single claim constraint within a requested credential.
+ *
+ * `id` and `path` map directly to the DCQL spec fields. `name` is kept for
+ * backward compatibility: when `path` is absent the backend treats `name` as
+ * a single-element path. `allowedValues` maps to the DCQL `values` field and
+ * is also enforced server-side.
  */
 export interface ClaimConstraintModel {
-    name: string;
+    /** DCQL claim id — used to reference this claim in claim_sets. */
+    id?: string;
+    /** DCQL path array, e.g. ["address", "street_address"]. */
+    path?: string[];
+    /** Backward-compat: single flat claim name used when path is absent. */
+    name?: string;
     mandatory?: boolean;
+    /** Communicated to the wallet via DCQL `values` and enforced server-side. */
     allowedValues?: string[];
+}
+
+/**
+ * Interface for a DCQL credential_sets entry.
+ *
+ * Each entry describes one group of acceptable credential combinations.
+ * `options` is a list of alternatives; at least one option (inner list of
+ * credential IDs) must be fully satisfied. When `required` is false the whole
+ * group is optional.
+ */
+export interface CredentialSetModel {
+    /** When false the set is optional. Defaults to true. */
+    required?: boolean;
+    /** Each inner array is one acceptable combination of credential IDs. */
+    options: string[][];
 }
 
 /**
@@ -45,6 +71,8 @@ export interface RequestedCredentialModel {
     issuerCertPem?: string;
     jwksUri?: string;
     claims?: ClaimConstraintModel[];
+    /** DCQL claim_sets: alternative groups of claim IDs; at least one must be satisfied. */
+    claimSets?: string[][];
     enforceTrustedIssuers?: boolean;
     trustedIssuers?: string[];
 }
@@ -57,6 +85,8 @@ export interface PresentationDefinition {
     name: string;
     description?: string;
     credentials: RequestedCredentialModel[];
+    /** DCQL credential_sets: required/optional combinations of credential IDs. */
+    credentialSets?: CredentialSetModel[];
 }
 
 /**
@@ -83,6 +113,7 @@ export interface PresentationDefinitionCreationModel {
     name: string;
     description?: string;
     credentials: RequestedCredentialModel[];
+    credentialSets?: CredentialSetModel[];
 }
 
 /**
@@ -92,4 +123,5 @@ export interface PresentationDefinitionUpdateModel {
     name?: string;
     description?: string;
     credentials?: RequestedCredentialModel[];
+    credentialSets?: CredentialSetModel[];
 }

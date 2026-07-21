@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Box from "@oxygen-ui/react/Box";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import IconButton from "@oxygen-ui/react/IconButton";
+import Switch from "@oxygen-ui/react/Switch";
+import MuiTextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
@@ -29,12 +36,14 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import {
     AnimatedAvatar,
     AppAvatar,
+    Button,
     ConfirmationModal,
     ContentLoader,
     DangerZone,
     DangerZoneGroup,
     DataTable,
     EmphasizedSegment,
+    Hint,
     PageLayout,
     PrimaryButton,
     ResourceTab,
@@ -52,7 +61,11 @@ import { Divider, Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deletePresentationDefinition, updatePresentationDefinition } from "../api/presentation-definitions";
 import CredentialEditDialog from "../components/credential-edit-dialog";
 import { useGetPresentationDefinition } from "../hooks/use-get-presentation-definition";
-import { PresentationDefinitionUpdateModel, RequestedCredentialModel } from "../models/presentation-definitions";
+import {
+    CredentialSetModel,
+    PresentationDefinitionUpdateModel,
+    RequestedCredentialModel
+} from "../models/presentation-definitions";
 
 interface RouteParams {
     id: string;
@@ -84,6 +97,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ showDeleteDefinitionModal, setShowDeleteDefinitionModal ] = useState<boolean>(false);
 
     const [ credentials, setCredentials ] = useState<RequestedCredentialModel[]>([]);
+    const [ credentialSets, setCredentialSets ] = useState<CredentialSetModel[]>([]);
     const [ showCredentialDialog, setShowCredentialDialog ] = useState<boolean>(false);
     const [ editingCredentialIndex, setEditingCredentialIndex ] = useState<number>(-1);
     const [ showDeleteCredentialModal, setShowDeleteCredentialModal ] = useState<boolean>(false);
@@ -104,6 +118,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     useEffect(() => {
         if (definition?.credentials) {
             setCredentials(definition.credentials);
+            setCredentialSets(definition.credentialSets ?? []);
         }
     }, [ definition ]);
 
@@ -141,6 +156,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setIsCredentialsSubmitting(true);
 
         const updateData: PresentationDefinitionUpdateModel = {
+            credentialSets: credentialSets.length > 0 ? credentialSets : undefined,
             credentials
         };
 
@@ -208,6 +224,77 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setShowDeleteCredentialModal(false);
         setDeletingCredentialIndex(-1);
     };
+
+    // ---- Credential set handlers ----
+
+    const addCredentialSet = (): void => {
+        setCredentialSets((prev: CredentialSetModel[]) => [
+            ...prev,
+            { options: [ [] ], required: true }
+        ]);
+    };
+
+    const removeCredentialSet = (setIndex: number): void => {
+        setCredentialSets((prev: CredentialSetModel[]) =>
+            prev.filter((_: CredentialSetModel, i: number) => i !== setIndex)
+        );
+    };
+
+    const updateCredentialSetRequired = (setIndex: number, required: boolean): void => {
+        setCredentialSets((prev: CredentialSetModel[]) => {
+            const updated: CredentialSetModel[] = [ ...prev ];
+
+            updated[setIndex] = { ...updated[setIndex], required };
+
+            return updated;
+        });
+    };
+
+    const addCredentialSetOption = (setIndex: number): void => {
+        setCredentialSets((prev: CredentialSetModel[]) => {
+            const updated: CredentialSetModel[] = [ ...prev ];
+
+            updated[setIndex] = {
+                ...updated[setIndex],
+                options: [ ...updated[setIndex].options, [] ]
+            };
+
+            return updated;
+        });
+    };
+
+    const removeCredentialSetOption = (setIndex: number, optionIndex: number): void => {
+        setCredentialSets((prev: CredentialSetModel[]) => {
+            const updated: CredentialSetModel[] = [ ...prev ];
+
+            updated[setIndex] = {
+                ...updated[setIndex],
+                options: updated[setIndex].options.filter(
+                    (_: string[], i: number) => i !== optionIndex
+                )
+            };
+
+            return updated;
+        });
+    };
+
+    const updateCredentialSetOption = (
+        setIndex: number,
+        optionIndex: number,
+        credentialIds: string[]
+    ): void => {
+        setCredentialSets((prev: CredentialSetModel[]) => {
+            const updated: CredentialSetModel[] = [ ...prev ];
+            const updatedOptions: string[][] = [ ...updated[setIndex].options ];
+
+            updatedOptions[optionIndex] = credentialIds;
+            updated[setIndex] = { ...updated[setIndex], options: updatedOptions };
+
+            return updated;
+        });
+    };
+
+    // ----
 
     const resolveCredentialTableColumns = (): TableColumnInterface[] => [
         {
@@ -297,6 +384,10 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         }
     ];
 
+    const availableCredentialQueryIds: string[] = credentials.map(
+        (c: RequestedCredentialModel) => c.credentialQueryId
+    );
+
     const GeneralTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <EmphasizedSegment paddingless={ false }>
@@ -364,6 +455,8 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const CredentialsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <EmphasizedSegment paddingless={ false }>
+
+                { /* ---- Credentials table ---- */ }
                 <DataTable<RequestedCredentialModel>
                     className="credentials-table"
                     isLoading={ false }
@@ -397,6 +490,146 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     <Icon name="add" />
                     { t("presentationDefinitions:editPage.form.credentials.addButton") }
                 </PrimaryButton>
+
+                { /* ---- Credential Sets ---- */ }
+                <Divider />
+
+                <Typography variant="subtitle1" sx={ { fontWeight: 600, mb: 0.5 } }>
+                    { t("presentationDefinitions:editPage.form.credentialSets.label") }
+                </Typography>
+                <Hint>
+                    { t("presentationDefinitions:editPage.form.credentialSets.hint") }
+                </Hint>
+
+                { credentialSets.map((credSet: CredentialSetModel, setIndex: number) => (
+                    <Box
+                        key={ setIndex }
+                        sx={ {
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 1,
+                            mb: 1.5,
+                            mt: 1,
+                            p: 1.5,
+                            position: "relative"
+                        } }
+                        data-componentid={ `${componentId}-credential-set-${setIndex}` }
+                    >
+                        <IconButton
+                            size="small"
+                            sx={ { position: "absolute", right: 4, top: 4 } }
+                            onClick={ () => removeCredentialSet(setIndex) }
+                            aria-label="remove credential set"
+                            data-componentid={ `${componentId}-credential-set-${setIndex}-remove` }
+                        >
+                            <Icon name="close" />
+                        </IconButton>
+
+                        <Typography variant="caption" sx={ { color: "text.secondary", display: "block", mb: 1 } }>
+                            { t("presentationDefinitions:editPage.form.credentialSets.setLabel",
+                                { index: setIndex + 1 }) }
+                        </Typography>
+
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={ credSet.required ?? true }
+                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                        updateCredentialSetRequired(setIndex, e.target.checked)
+                                    }
+                                    size="small"
+                                    data-componentid={ `${componentId}-credential-set-${setIndex}-required` }
+                                />
+                            }
+                            label={ t("presentationDefinitions:editPage.form.credentialSets.required.label") }
+                            sx={ { mb: 1 } }
+                        />
+
+                        <Typography variant="caption" sx={ { color: "text.secondary", display: "block", mb: 0.5 } }>
+                            { t("presentationDefinitions:editPage.form.credentialSets.options.label") }
+                        </Typography>
+                        <Hint>
+                            { t("presentationDefinitions:editPage.form.credentialSets.options.hint") }
+                        </Hint>
+
+                        { credSet.options.map((option: string[], optionIndex: number) => (
+                            <Box
+                                key={ optionIndex }
+                                sx={ { alignItems: "center", display: "flex", gap: 1, mb: 1, mt: 0.5 } }
+                                data-componentid={
+                                    `${componentId}-credential-set-${setIndex}-option-${optionIndex}`
+                                }
+                            >
+                                <Box sx={ { flex: 1 } }>
+                                    <Autocomplete
+                                        multiple
+                                        freeSolo
+                                        options={ availableCredentialQueryIds }
+                                        value={ option }
+                                        onChange={ (_e: React.SyntheticEvent, newValue: string[]) =>
+                                            updateCredentialSetOption(setIndex, optionIndex, newValue)
+                                        }
+                                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                                            <MuiTextField
+                                                { ...params }
+                                                label={ t(
+                                                    "presentationDefinitions:editPage.form.credentialSets.options.optionLabel",
+                                                    { index: optionIndex + 1 }
+                                                ) }
+                                                placeholder={
+                                                    option.length === 0
+                                                        ? t(
+                                                            "presentationDefinitions:editPage.form.credentialSets.options.optionPlaceholder"
+                                                        )
+                                                        : undefined
+                                                }
+                                                size="small"
+                                            />
+                                        ) }
+                                        data-componentid={
+                                            `${componentId}-credential-set-${setIndex}-option-${optionIndex}-ids`
+                                        }
+                                    />
+                                </Box>
+                                { credSet.options.length > 1 && (
+                                    <IconButton
+                                        size="small"
+                                        onClick={ () => removeCredentialSetOption(setIndex, optionIndex) }
+                                        aria-label="remove option"
+                                        data-componentid={
+                                            `${componentId}-credential-set-${setIndex}-option-${optionIndex}-remove`
+                                        }
+                                    >
+                                        <Icon name="close" />
+                                    </IconButton>
+                                ) }
+                            </Box>
+                        )) }
+
+                        <Button
+                            basic
+                            primary
+                            size="mini"
+                            type="button"
+                            onClick={ () => addCredentialSetOption(setIndex) }
+                            data-componentid={ `${componentId}-credential-set-${setIndex}-add-option` }
+                        >
+                            <Icon name="add" />
+                            { t("presentationDefinitions:editPage.form.credentialSets.options.addOption") }
+                        </Button>
+                    </Box>
+                )) }
+
+                <Button
+                    basic
+                    primary
+                    size="mini"
+                    type="button"
+                    onClick={ addCredentialSet }
+                    data-componentid={ `${componentId}-add-credential-set-button` }
+                >
+                    <Icon name="add" />
+                    { t("presentationDefinitions:editPage.form.credentialSets.addSet") }
+                </Button>
             </EmphasizedSegment>
 
             <Divider hidden />

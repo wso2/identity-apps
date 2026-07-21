@@ -87,6 +87,12 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                         label: "Claim Name",
                         placeholder: "e.g. given_name"
                     },
+                    claimPath: {
+                        label: "Claim Path",
+                        placeholder: "e.g. given_name",
+                        hint: "Each field is one path segment. For a simple claim add one segment (e.g. given_name). For a nested claim add multiple segments in order (e.g. address, then street_address).",
+                        addSegment: "Add Segment"
+                    },
                     mandatory: {
                         label: "Mandatory",
                         hint: "When enabled, the credential must include this claim."
@@ -97,6 +103,13 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                         hint: "If set, the claim value must be one of these."
                     },
                     addClaim: "Add Claim"
+                },
+                claimSets: {
+                    label: "Claim Sets",
+                    hint: "Define which claim combinations are acceptable. The wallet must satisfy at least one complete set.",
+                    optionLabel: "Set {{index}}",
+                    optionPlaceholder: "Select claim IDs",
+                    addSet: "Add Claim Set"
                 },
                 enforceTrustedIssuers: {
                     label: "Enforce Trusted Issuers",
@@ -174,6 +187,12 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                         label: "Claim Name",
                         placeholder: "e.g. given_name"
                     },
+                    claimPath: {
+                        label: "Claim Path",
+                        placeholder: "e.g. given_name",
+                        hint: "Each field is one path segment. For a simple claim add one segment (e.g. given_name). For a nested claim add multiple segments in order (e.g. address, then street_address).",
+                        addSegment: "Add Segment"
+                    },
                     mandatory: {
                         label: "Mandatory",
                         hint: "When enabled, the credential must include this claim."
@@ -184,6 +203,13 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                         hint: "If set, the claim value must be one of these."
                     },
                     addClaim: "Add Claim"
+                },
+                claimSets: {
+                    label: "Claim Sets",
+                    hint: "Define which claim combinations are acceptable. The wallet must satisfy at least one complete set.",
+                    optionLabel: "Set {{index}}",
+                    optionPlaceholder: "Select claim IDs",
+                    addSet: "Add Claim Set"
                 },
                 enforceTrustedIssuers: {
                     label: "Enforce Trusted Issuers",
@@ -213,6 +239,22 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                     }
                 },
                 addButton: "Add Credential"
+            },
+            credentialSets: {
+                label: "Credential Sets",
+                hint: "Define acceptable combinations of credentials. The wallet must satisfy at least one option in each required set.",
+                setLabel: "Set {{index}}",
+                required: {
+                    label: "Required"
+                },
+                options: {
+                    label: "Options",
+                    hint: "Each option is a list of credential query IDs that must all be presented. The wallet satisfies the set if it can fulfil any one option.",
+                    optionLabel: "Option {{index}}",
+                    optionPlaceholder: "Type credential query IDs and press Enter",
+                    addOption: "Add Option"
+                },
+                addSet: "Add Credential Set"
             }
         },
         dangerZone: {

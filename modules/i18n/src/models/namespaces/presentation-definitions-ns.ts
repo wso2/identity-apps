@@ -25,9 +25,17 @@ interface CredentialFieldsNS {
         placeholder: string;
         hint: string;
         claimName: { label: string; placeholder: string };
+        claimPath: { label: string; placeholder: string; hint: string; addSegment: string };
         mandatory: { label: string; hint: string };
         allowedValues: { label: string; placeholder: string; hint: string };
         addClaim: string;
+    };
+    claimSets: {
+        label: string;
+        hint: string;
+        optionLabel: string;
+        optionPlaceholder: string;
+        addSet: string;
     };
     enforceTrustedIssuers: { label: string; hint: string };
     trustedIssuers: { label: string; placeholder: string; hint: string };
@@ -99,6 +107,20 @@ export interface PresentationDefinitionsNS {
                 addCredential: { title: string };
                 editCredential: { title: string };
             } & CredentialFieldsNS;
+            credentialSets: {
+                label: string;
+                hint: string;
+                setLabel: string;
+                required: { label: string };
+                options: {
+                    label: string;
+                    hint: string;
+                    optionLabel: string;
+                    optionPlaceholder: string;
+                    addOption: string;
+                };
+                addSet: string;
+            };
         };
         dangerZone: {
             header: string;

@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Show } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AlertInterface, AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { PresentationDefinitionList } from "../components/presentation-definition-list";
@@ -42,6 +44,10 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
+
+    const presentationDefinitionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.presentationDefinitions
+    );
 
     const [ isAddWizardOpen, setIsAddWizardOpen ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
@@ -93,13 +99,15 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
             pageHeaderMaxWidth={ false }
             action={
                 definitions.length > 0 && !isLoading && (
-                    <PrimaryButton
-                        onClick={ () => setIsAddWizardOpen(true) }
-                        data-componentid={ `${componentId}-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("presentationDefinitions:buttons.addDefinition") }
-                    </PrimaryButton>
+                    <Show when={ presentationDefinitionsFeatureConfig?.scopes?.create }>
+                        <PrimaryButton
+                            onClick={ () => setIsAddWizardOpen(true) }
+                            data-componentid={ `${componentId}-add-button` }
+                        >
+                            <Icon name="add" />
+                            { t("presentationDefinitions:buttons.addDefinition") }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
         >
