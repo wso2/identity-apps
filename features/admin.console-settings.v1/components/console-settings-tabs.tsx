@@ -76,6 +76,15 @@ interface ConsoleSettingsTabInterface extends IdentifiableComponentInterface {
      */
     hidden?: boolean;
 }
+/**
+ * Callback type used to subscribe to an external store change.
+ */
+type SubscribeCallback = () => void;
+
+/**
+ * Cleanup function returned by a store subscription.
+ */
+type UnsubscribeFunction = () => void;
 
 /**
  * Tab component for the Console Settings page.
@@ -200,8 +209,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
     };
 
-    type SubscribeCallback = () => void;
-    type UnsubscribeFunction = () => void;
+    
 
     /**
      * Subscribe to hash changes on the URL so React can re-render when the active tab changes.

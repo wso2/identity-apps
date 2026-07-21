@@ -63,6 +63,16 @@ interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
 }
 
 /**
+ * Callback type used to subscribe to an external store change.
+ */
+type SubscribeCallback = () => void;
+
+/**
+ * Cleanup function returned by a store subscription.
+ */
+type UnsubscribeFunction = () => void;
+
+/**
  * Tab component for the System Settings applicable to all the root organizations.
  *
  * @param props - Props injected to the component.
@@ -115,8 +125,6 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
         return activeTabFromUrl ? activeTabFromUrl.value : tabs[0].value;
     };
 
-    type SubscribeCallback = () => void;
-    type UnsubscribeFunction = () => void;
 
     /**
      * Subscribe to hash changes on the URL so React can re-render when the active tab changes.
