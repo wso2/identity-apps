@@ -358,6 +358,14 @@ export interface FeatureConfigInterface {
      * Customer Data Service feature.
      */
     customerDataService?: FeatureAccessConfigInterface;
+    /**
+     * Presentation definitions (VP template) management feature.
+     */
+    presentationDefinitions?: FeatureAccessConfigInterface;
+    /**
+     * OpenID4VP configuration feature.
+     */
+    openid4vpConfig?: FeatureAccessConfigInterface;
 }
 
 /**

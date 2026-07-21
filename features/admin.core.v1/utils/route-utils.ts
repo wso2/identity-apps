@@ -354,7 +354,7 @@ export class RouteUtils {
         const credentialTypes: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: VerifiableCredentialsOutlineIcon,
             id: "credentialTypes",
-            name: "Verifiable Credentials",
+            name: "Verifiable Credentis",
             order: 3
         };
 

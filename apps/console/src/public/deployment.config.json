@@ -2185,8 +2185,12 @@
                     "delete": [
                             "internal_vp_template_delete"
                     ],
+                    "feature": [
+                            "console:vp_templates"
+                    ],
                     "read": [
-                            "internal_application_mgt_view"
+                            "internal_application_mgt_view",
+                            "internal_vp_template_view"
                     ],
                     "update": [
                             "internal_vp_template_update"
