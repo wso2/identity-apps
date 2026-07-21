@@ -58,7 +58,6 @@ const FORM_ID: string = "openid4vp-configuration-form";
 
 interface OpenID4VPConfigFormValuesInterface {
     clientIdScheme: string;
-    clientId: string;
     responseMode: string;
     rejectVcWithoutStatusClaim: boolean;
 }
@@ -138,7 +137,6 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
             originalConfig as OpenID4VPConfigAPIResponseInterface;
 
         setFormValues({
-            clientId: config.clientId ?? "",
             clientIdScheme: config.clientIdScheme ?? "",
             rejectVcWithoutStatusClaim: config.rejectVcWithoutStatusClaim ?? false,
             responseMode: config.responseMode ?? ""
@@ -149,7 +147,6 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
     const handleSubmit = (values: OpenID4VPConfigFormValuesInterface): void => {
         setIsSubmitting(true);
         updateOpenID4VPConfig({
-            clientId: values.clientId || undefined,
             clientIdScheme: values.clientIdScheme,
             registrationCertificate: registrationCertificate || undefined,
             rejectVcWithoutStatusClaim: values.rejectVcWithoutStatusClaim,
@@ -238,29 +235,6 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
                                                                 width={ 16 }
                                                                 data-componentid={
                                                                     `${ componentId }-client-id-scheme`
-                                                                }
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column width={ 10 }>
-                                                            <Field.Input
-                                                                ariaLabel={
-                                                                    t("openid4vp:form.clientId.label")
-                                                                }
-                                                                inputType="default"
-                                                                name="clientId"
-                                                                label={ t("openid4vp:form.clientId.label") }
-                                                                hint={ t("openid4vp:form.clientId.hint") }
-                                                                placeholder={
-                                                                    t("openid4vp:form.clientId.placeholder")
-                                                                }
-                                                                readOnly={ isReadOnly }
-                                                                maxLength={ null }
-                                                                minLength={ 0 }
-                                                                width={ 16 }
-                                                                data-componentid={
-                                                                    `${ componentId }-client-id`
                                                                 }
                                                             />
                                                         </Grid.Column>

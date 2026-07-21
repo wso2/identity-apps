@@ -27,13 +27,6 @@ export const openid4vp: OpenID4VPConfigNS = {
                    label: "Client ID Scheme",
                    placeholder: "Select a client ID scheme"
                },
-               clientId: {
-                   hint:
-                       "Override the client identifier sent in VP requests. Leave blank to auto-derive " +
-                       "from the selected client ID scheme.",
-                   label: "Client ID (optional)",
-                   placeholder: "Auto-derived from the selected client ID scheme if left blank"
-               },
                responseMode: {
                    directPost: {
                        hint: "Submits the VP response as plain JSON over HTTPS POST. No response encryption."

@@ -25,11 +25,6 @@ export interface OpenID4VPConfigNS {
             placeholder: string;
             hint: string;
         };
-        clientId: {
-            label: string;
-            placeholder: string;
-            hint: string;
-        };
         responseMode: {
             label: string;
             hint: string;

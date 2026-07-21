@@ -18,7 +18,6 @@
 
 export interface OpenID4VPConfigFormValuesInterface {
     clientIdScheme?: string;
-    clientId?: string;
     responseMode?: string;
     registrationCertificate?: string;
     rejectVcWithoutStatusClaim?: boolean;
@@ -26,7 +25,6 @@ export interface OpenID4VPConfigFormValuesInterface {
 
 export interface OpenID4VPConfigAPIResponseInterface {
     clientIdScheme?: string;
-    clientId?: string;
     responseMode?: string;
     registrationCertificate?: string;
     rejectVcWithoutStatusClaim?: boolean;
