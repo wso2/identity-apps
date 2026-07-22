@@ -250,7 +250,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
      * Moves wizard to the previous step.
      */
     const previous = () => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
     };
 
     return (

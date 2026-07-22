@@ -225,12 +225,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        setWizardState({
-            ...wizardState,
+        setWizardState((prevWizardState: WizardStateInterface) => ({
+            ...prevWizardState,
             [ WizardStepsFormTypes.USER_TYPE ]: {
                 userType: defaultUserTypeSelection
             }
-        });
+        }));
     }, [ defaultUserTypeSelection ]);
 
     /**
@@ -242,7 +242,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
@@ -632,7 +632,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSuccessfulUserAddition(response.data?.id);
                 } else {
                     // Once the user is created, take the user to next step which is the summary.
-                    setCurrentWizardStep(currentWizardStep + 1);
+                    setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
                 }
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
@@ -730,7 +730,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep + 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 

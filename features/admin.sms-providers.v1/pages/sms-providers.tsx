@@ -410,7 +410,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             const updatedParams: { [key: string]: SMSProviderInterface } =
                         { ...defaultProviderParams, [selectedProvider as string]: updatedSMSProvider };
 
-            setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
+            setSmsProviderSettings((prevSmsProviderSettings: SMSProviderSettingsState) =>
+                ({ ...prevSmsProviderSettings, providerParams: updatedParams }));
             dispatch(
                 addAlert({
                     description: t("smsProviders:" +

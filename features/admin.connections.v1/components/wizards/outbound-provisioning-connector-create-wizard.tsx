@@ -212,7 +212,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 return;
             }
 
-            setCurrentWizardStep(currentWizardStep - 1);
+            setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
             setPartiallyCompletedStep(undefined);
         }, [ partiallyCompletedStep ]);
 
@@ -311,7 +311,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 setWizardState({ ...wizardState, [ formType ]: values });
                 handleWizardFormFinish();
             } else {
-                setCurrentWizardStep(currentWizardStep + 1);
+                setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
                 setWizardState({ ...wizardState, [ formType ]: values });
             }
         };

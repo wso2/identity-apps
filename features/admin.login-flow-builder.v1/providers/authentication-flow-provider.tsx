@@ -176,10 +176,10 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
      */
     useEffect(() => {
         if (!application?.authenticationSequence?.script) {
-            setAuthenticationSequence({
-                ...authenticationSequence,
+            setAuthenticationSequence((prevAuthenticationSequence: AuthenticationSequenceInterface) => ({
+                ...prevAuthenticationSequence,
                 script: defaultAuthenticationSequence.script
-            });
+            }));
         }
     }, []);
 
