@@ -26,34 +26,14 @@ import Hint from "../hint";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
-const DOB_CLAIM_IDENTIFIER = "http://wso2.org/claims/dob";
-const DOB_DATE_FORMAT = "YYYY-MM-DD";
-const DOB_VALUE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const DOB_FORMAT_ERROR = "Date of Birth is not in the correct format of YYYY-MM-DD.";
-const DOB_FUTURE_DATE_ERROR = "Date of Birth cannot be a future date.";
+const DATE_VALIDATOR = "DateValidator";
+const ISO_DATE_FORMAT = "YYYY-MM-DD";
 
 /**
- * Parse a YYYY-MM-DD string into a Date. Returns null if the string
- * does not represent an existing calendar date (e.g. 2025-02-30).
+ * Format today's date as a YYYY-MM-DD string.
  */
-const parseDateString = (value) => {
-    const parts = value.split("-").map((part) => parseInt(part, 10));
-    const date = new Date(parts[0], parts[1] - 1, parts[2]);
-
-    if (date.getFullYear() !== parts[0]
-        || (date.getMonth() + 1) !== parts[1]
-        || date.getDate() !== parts[2]) {
-
-        return null;
-    }
-
-    return date;
-};
-
-/**
- * Format a Date as a YYYY-MM-DD string.
- */
-const formatDateString = (date) => {
+const formatToday = () => {
+    const date = new Date();
     const pad = (num) => String(num).padStart(2, "0");
 
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
@@ -68,58 +48,22 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
 
     const [ value, setValue ] = useState("");
 
-    const isDOBField = identifier === DOB_CLAIM_IDENTIFIER;
+    // Derive calendar constraints from the configured DateValidator rule, so the picker
+    // matches the validation rule the field was given (no field-specific logic here).
+    const dateValidatorRule = Array.isArray(validations)
+        ? validations.find((rule) => rule?.name === DATE_VALIDATOR)
+        : undefined;
+    const disallowFuture = Boolean(dateValidatorRule?.conditions?.some(
+        (condition) => condition.key === "disallow.future" && condition.value === "true"));
 
     useEffect(() => {
         formStateHandler(component.config.identifier, value);
     }, [ value ]);
 
-    /**
-     * Validate a date of birth value. Returns an error message or null.
-     */
-    const validateDateOfBirth = (value) => {
-        if (!value) {
-
-            return null;
-        }
-
-        if (!DOB_VALUE_PATTERN.test(value)) {
-
-            return DOB_FORMAT_ERROR;
-        }
-
-        const date = parseDateString(value);
-
-        if (!date) {
-
-            return DOB_FORMAT_ERROR;
-        }
-
-        const today = new Date();
-
-        today.setHours(0, 0, 0, 0);
-
-        if (date > today) {
-
-            return DOB_FUTURE_DATE_ERROR;
-        }
-
-        return null;
-    };
-
     const handleFieldValidation = (value) => {
-        const { errors } = validate({ identifier, required }, value);
-        const combinedErrors = [ ...errors ];
+        const { errors, isValid } = validate({ identifier, required }, value);
 
-        if (isDOBField) {
-            const dobError = validateDateOfBirth(value);
-
-            if (dobError) {
-                combinedErrors.push(dobError);
-            }
-        }
-
-        fieldErrorHandler(identifier, combinedErrors.length > 0 ? combinedErrors : null);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     return (
@@ -135,8 +79,8 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 } }
                 value={ value }
                 required={ required }
-                dateFormat={ isDOBField ? DOB_DATE_FORMAT : undefined }
-                maxDate={ isDOBField ? formatDateString(new Date()) : undefined }
+                dateFormat={ dateValidatorRule ? ISO_DATE_FORMAT : undefined }
+                maxDate={ disallowFuture ? formatToday() : undefined }
                 clearable
                 closeOnMouseLeave
                 closable
