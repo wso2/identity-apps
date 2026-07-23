@@ -55,6 +55,24 @@ import "./branding-page-layout.scss";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
+/**
+ * Number of applications fetched per page, and the minimum number of selectable applications
+ * we want loaded before we stop proactively fetching more (see the dropdown prefetch effect below).
+ */
+const APPLICATION_LIST_PAGE_SIZE: number = 10;
+
+/**
+ * Determines whether an application should be selectable in the branding application dropdown,
+ * i.e. not a system app, default app, or M2M app.
+ *
+ * @param application - Application to check.
+ * @returns Whether the application is selectable.
+ */
+const isSelectableApplication = (application: ApplicationListItemInterface): boolean =>
+    !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.name) &&
+    !ApplicationManagementConstants.DEFAULT_APPS.includes(application?.name) &&
+    !(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID);
+
 const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     props: BrandingPageLayoutInterface
 ): ReactElement => {
@@ -104,7 +122,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError
-    } = useApplicationList("templateId", 10, appListOffset, null,
+    } = useApplicationList("templateId", APPLICATION_LIST_PAGE_SIZE, appListOffset, null,
         brandingMode === BrandingModes.APPLICATION && shouldFetchApplications);
 
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
@@ -190,12 +208,11 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     }, [ applicationList ]);
 
     /**
-     * Proactively loads the next page while the dropdown content does not overflow its
-     * scrollable container. `InfiniteScroll` only fires its `next` callback on a scroll
-     * event, which never happens when the post-filter (non-M2M) options are too few to
-     * overflow the container. Rather than estimating from a fixed item count/height, we
-     * measure the actual container overflow and keep fetching until it can scroll (or no
-     * more pages remain).
+     * Proactively loads more pages while the dropdown is open and too few selectable
+     * (non-system, non-default, non-M2M) applications have been loaded to overflow the
+     * scrollable listbox. `InfiniteScroll` only fires its `next` callback on a scroll event,
+     * which never happens when M2M apps make up most of a page and too few selectable
+     * options remain to overflow the container.
      */
     useEffect(() => {
         if (
@@ -208,33 +225,12 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             return;
         }
 
-        let frameId: number;
-        let attempts: number = 0;
+        const selectableApplicationsCount: number = applications.filter(isSelectableApplication).length;
 
-        // The Autocomplete popup mounts asynchronously, so retry until the scroll
-        // container is available, then measure it. If the content does not overflow, no
-        // scroll event can fire to trigger the next page — load it proactively.
-        const measureAndMaybeFetch = (): void => {
-            const scrollContainer: HTMLElement | null =
-                document.getElementById("autocomplete-scroll-container");
-
-            if (!scrollContainer) {
-                if (attempts++ < 10) {
-                    frameId = requestAnimationFrame(measureAndMaybeFetch);
-                }
-
-                return;
-            }
-
-            if (scrollContainer.scrollHeight <= scrollContainer.clientHeight) {
-                setAppListOffset((prevOffset: number) => prevOffset + 10);
-                setShouldFetchApplications(true);
-            }
-        };
-
-        frameId = requestAnimationFrame(measureAndMaybeFetch);
-
-        return () => cancelAnimationFrame(frameId);
+        if (selectableApplicationsCount < APPLICATION_LIST_PAGE_SIZE) {
+            setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
+            setShouldFetchApplications(true);
+        }
     }, [ applications, hasMoreApplications, shouldFetchApplications,
         isApplicationListFetchRequestValidating, brandingMode, isApplicationDropdownOpen ]);
 
@@ -347,7 +343,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const loadMoreApplications = () => {
         if (!hasMoreApplications) return;
 
-        setAppListOffset((prevOffset: number) => prevOffset + 10);
+        setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
         setShouldFetchApplications(true);
     };
 
@@ -520,14 +516,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                         option.id === value.id
                                                     }
                                                     filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                                        options.filter((application: ApplicationListItemInterface) =>
-                                                            !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                                application?.name) &&
-                                                            !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                                application?.name) &&
-                                                            !(application?.templateId ===
-                                                                ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
-                                                        )
+                                                        options.filter(isSelectableApplication)
                                                     }
                                                     ListboxComponent={ customListboxComponent }
                                                     loading={ isApplicationListFetchRequestLoading }
