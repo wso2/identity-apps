@@ -28,6 +28,12 @@ import { LinkButton } from "../button";
 import { LabelWithPopup } from "../label";
 import { Popup } from "../popup";
 import { Hint } from "../typography";
+import {
+    combineRegexCallbackUrls,
+    isMixedRegexInput,
+    isSingleRegexValue,
+    splitURLState
+} from "./url-input-utils";
 import "./url-input.scss";
 
 export interface URLInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -240,44 +246,6 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
     const [ showMore, setShowMore ] = useState<boolean>(false);
 
-    // Whether the whole value is a single atomic `regexp=(...)`.
-    const isSingleRegexValue = (value: string): boolean => {
-        return !!value && /^regexp=\(.+\)$/.test(value.trim());
-    };
-
-    // Splits the URL state into chips, keeping a single atomic regex as one chip.
-    const splitURLState = (urls: string): string[] => {
-        if (!urls) {
-            return [];
-        }
-
-        if (isSingleRegexValue(urls)) {
-            return [ urls ];
-        }
-
-        return urls.split(",");
-    };
-
-    // Individual alternatives of a callback value: a comma list splits on commas;
-    // a regex splits on `|` only when every part is a plain URL, else is kept whole.
-    const toRegexAlternatives = (value: string): string[] => {
-        if (isSingleRegexValue(value)) {
-            const inner: string = value.trim().replace(/^regexp=\(/, "").replace(/\)$/, "");
-            const parts: string[] = inner.split("|");
-
-            return parts.every((part: string) => URLUtils.isHttpsOrHttpUrl(part)) ? parts : [ inner ];
-        }
-
-        return value.split(",");
-    };
-
-    // A value that mixes regex and comma-list syntax (e.g. `regexp=(a),b`), which is not allowed.
-    const isMixedRegexInput = (value: string): boolean => {
-        const v: string = value.trim();
-
-        return v.includes("regexp=(") && !isSingleRegexValue(v) && v.includes(",");
-    };
-
     /**
      * Add URL to the URL list.
      *
@@ -340,10 +308,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 let newURLState: string;
 
                 if (isRegexEntry || isSingleRegexValue(urlState)) {
-                    const alternatives: string[] = [ ...toRegexAlternatives(urlState), ...toRegexAlternatives(url) ];
-                    const unique: string[] = alternatives.filter((v, i) => alternatives.indexOf(v) === i);
-
-                    newURLState = `regexp=(${ unique.join("|") })`;
+                    newURLState = combineRegexCallbackUrls(urlState, url);
                 } else {
                     newURLState = url + "," + urlState;
                 }
@@ -988,7 +953,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 ) }
-                { urlState && splitURLState(urlState).map((url) => {
+                { urlState && splitURLState(urlState).map((url: string) => {
                     if (url !== "") {
                         const isRegexWrapper: boolean = isSingleRegexValue(url);
 

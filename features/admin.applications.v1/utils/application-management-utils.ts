@@ -401,12 +401,13 @@ export class ApplicationManagementUtils {
      */
     public static buildCallBackUrlWithRegExp = (urls: string): string => {
 
-        let callbackURL = urls.replace(/['"]+/g, "");
-
-        // Persist an already-wrapped regex verbatim.
-        if (/^regexp=\(.+\)$/.test(callbackURL.trim())) {
-            return callbackURL;
+        // Persist an already-wrapped regex verbatim, before any quote stripping, so
+        // patterns that legitimately contain quote characters are not corrupted.
+        if (/^regexp=\(.+\)$/.test(urls.trim())) {
+            return urls;
         }
+
+        let callbackURL = urls.replace(/['"]+/g, "");
 
         if (callbackURL.split(",").length > 1) {
             callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
