@@ -34,6 +34,7 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
     addURLTooltip?: string;
     duplicateURLErrorMessage: string;
     emptyErrorMessage?: string;
+    regexInputErrorMessage?: string;
     urlState: string;
     setURLState: any;
     placeholder?: string;
@@ -185,6 +186,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         customLabel,
         duplicateURLErrorMessage,
         emptyErrorMessage,
+        regexInputErrorMessage,
         isAllowEnabled,
         allowedOrigins,
         handleAddAllowedOrigin,
@@ -233,9 +235,48 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ predictValue, setPredictValue ] = useState<string[]>([]);
     const [ validURL, setValidURL ] = useState<boolean>(true);
     const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
+    const [ regexInputError, setRegexInputError ] = useState<boolean>(false);
     const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
     const [ showMore, setShowMore ] = useState<boolean>(false);
+
+    // Whether the whole value is a single atomic `regexp=(...)`.
+    const isSingleRegexValue = (value: string): boolean => {
+        return !!value && /^regexp=\(.+\)$/.test(value.trim());
+    };
+
+    // Splits the URL state into chips, keeping a single atomic regex as one chip.
+    const splitURLState = (urls: string): string[] => {
+        if (!urls) {
+            return [];
+        }
+
+        if (isSingleRegexValue(urls)) {
+            return [ urls ];
+        }
+
+        return urls.split(",");
+    };
+
+    // Individual alternatives of a callback value: a comma list splits on commas;
+    // a regex splits on `|` only when every part is a plain URL, else is kept whole.
+    const toRegexAlternatives = (value: string): string[] => {
+        if (isSingleRegexValue(value)) {
+            const inner: string = value.trim().replace(/^regexp=\(/, "").replace(/\)$/, "");
+            const parts: string[] = inner.split("|");
+
+            return parts.every((part: string) => URLUtils.isHttpsOrHttpUrl(part)) ? parts : [ inner ];
+        }
+
+        return value.split(",");
+    };
+
+    // A value that mixes regex and comma-list syntax (e.g. `regexp=(a),b`), which is not allowed.
+    const isMixedRegexInput = (value: string): boolean => {
+        const v: string = value.trim();
+
+        return v.includes("regexp=(") && !isSingleRegexValue(v) && v.includes(",");
+    };
 
     /**
      * Add URL to the URL list.
@@ -246,19 +287,26 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         let url: string = changeUrl;
 
+        if (isMixedRegexInput(url)) {
+            setRegexInputError(true);
+
+            return;
+        }
+
+        // A regex value is a valid callback entry, so it bypasses URL validation below.
+        const isRegexEntry: boolean = isSingleRegexValue(url);
+
         /**
          * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
-        if (!(skipValidation || skipInternalValidation) && !URLUtils.isURLValid(url, true)) {
+        if (!isRegexEntry && !(skipValidation || skipInternalValidation) && !URLUtils.isURLValid(url, true)) {
             setValidURL(false);
 
             return;
         }
 
-        const urlValid: boolean = skipValidation
-            ? true
-            : validation(url);
+        const urlValid: boolean = isRegexEntry || (skipValidation ? true : validation(url));
 
         setValidURL(urlValid);
 
@@ -266,13 +314,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * If the entered URL is valid and it is intended to be an origin URL,
          * and it has a trailing "/" at the end, it is sliced to get the valid origin.
         */
-        if (urlValid && onlyOrigin && url.charAt(url.length - 1) === "/") {
+        if (urlValid && !isRegexEntry && onlyOrigin && url.charAt(url.length - 1) === "/") {
             url = url.slice(0, -1);
         }
 
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
-            if (addOriginByDefault) {
+            if (addOriginByDefault && !isRegexEntry) {
                 const originOfURL: string = URLUtils.urlComponents(url).origin;
 
                 handleAddAllowedOrigin(originOfURL);
@@ -287,14 +335,27 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             urlValid && setDuplicateURL(duplicate);
 
             if (urlValid && !duplicate) {
-                setURLState((url + "," + urlState));
-                if (addOriginByDefault) {
+                // When either side is a regex, combine all alternatives into one
+                // de-duplicated `regexp=(...)`; otherwise comma-join plain URLs.
+                let newURLState: string;
+
+                if (isRegexEntry || isSingleRegexValue(urlState)) {
+                    const alternatives: string[] = [ ...toRegexAlternatives(urlState), ...toRegexAlternatives(url) ];
+                    const unique: string[] = alternatives.filter((v, i) => alternatives.indexOf(v) === i);
+
+                    newURLState = `regexp=(${ unique.join("|") })`;
+                } else {
+                    newURLState = url + "," + urlState;
+                }
+
+                setURLState(newURLState);
+                if (addOriginByDefault && !isRegexEntry) {
                     handleAddAllowedOrigin(url);
                     allowedOrigins.push(url);
                 }
                 setChangeUrl("");
 
-                return url + "," + urlState;
+                return newURLState;
             }
         }
 
@@ -350,7 +411,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @returns A boolean value denoting whether the URL is duplicated or not
      */
     const checkDuplicateUrl = useCallback((url: string): boolean => {
-        const availableURls: string[] = !urlState ? [] : urlState?.split(",");
+        const availableURls: string[] = splitURLState(urlState);
         const urls: Set<string> = new Set([
             ...(onlyOrigin ? (allowedOrigins ?? []) : []),
             ...(availableURls ?? [])
@@ -379,6 +440,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         if (!validURL) {
             setValidURL(true);
+        }
+
+        if (regexInputError) {
+            setRegexInputError(false);
         }
 
         const isDuplicate: boolean = checkDuplicateUrl(changeValue);
@@ -421,8 +486,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const removeValue = (removeURL) => {
         let urlsAfterRemoved: string = urlState;
 
-        if (urlState.split(",").length > 1) {
-            const urls: string[] = urlsAfterRemoved.split(",");
+        if (splitURLState(urlState).length > 1) {
+            const urls: string[] = splitURLState(urlsAfterRemoved);
             const removeIndex: number = urls.findIndex((url) => url === removeURL);
 
             urls.splice(removeIndex, 1);
@@ -663,6 +728,20 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             );
         }
 
+        if (regexInputError) {
+            return (
+                <Label
+                    data-componentid={ `${ componentId }-regex-input-error-message` }
+                    basic
+                    className="prompt"
+                    color="red"
+                    pointing
+                >
+                    { regexInputErrorMessage }
+                </Label>
+            );
+        }
+
         return customLabel;
     };
 
@@ -838,7 +917,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
                         <Input
                             fluid
-                            error={ !(validURL && !duplicateURL) }
+                            error={ !(validURL && !duplicateURL && !regexInputError) }
                             focus={ keepFocus }
                             value={ changeUrl }
                             onKeyDown={ keyPressed }
@@ -909,9 +988,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 ) }
-                { urlState && urlState.split(",").map((url) => {
+                { urlState && splitURLState(urlState).map((url) => {
                     if (url !== "") {
-                        const isRegexWrapper: boolean = /^regexp=\(.+\)$/.test(url);
+                        const isRegexWrapper: boolean = isSingleRegexValue(url);
 
                         if (skipValidation || skipInternalValidation || isRegexWrapper) {
                             return (
@@ -956,6 +1035,7 @@ URLInput.defaultProps = {
     isCustom: false,
     labelEnabled: false,
     onlyOrigin: false,
+    regexInputErrorMessage: "Enter either a single regexp=(…) pattern or individual URLs, not a combination of both.",
     restrictSecondaryContent: true,
     showPredictions: true
 };

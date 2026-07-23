@@ -403,6 +403,11 @@ export class ApplicationManagementUtils {
 
         let callbackURL = urls.replace(/['"]+/g, "");
 
+        // Persist an already-wrapped regex verbatim.
+        if (/^regexp=\(.+\)$/.test(callbackURL.trim())) {
+            return callbackURL;
+        }
+
         if (callbackURL.split(",").length > 1) {
             callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
         }
