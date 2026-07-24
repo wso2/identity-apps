@@ -40,24 +40,47 @@ const renderURLInput = (urlState: string): string => {
     return renderToStaticMarkup(element);
 };
 
+/**
+ * Extracts the callback chip values from rendered markup using their `data-componentid`
+ * (`url-input-<value>`), excluding the input's own container and the per-chip action buttons.
+ *
+ * @param html - The rendered markup.
+ * @returns The distinct chip values, one per rendered chip.
+ */
+const chipValues = (html: string): string[] => {
+    const container: HTMLDivElement = document.createElement("div");
+
+    container.innerHTML = html;
+
+    const ids: string[] = Array.from(container.querySelectorAll("[data-componentid]"))
+        .map((element: Element): string => element.getAttribute("data-componentid") ?? "")
+        .filter((id: string): boolean =>
+            id.startsWith("url-input-")
+            && id !== "url-input-add-button"
+            && !id.endsWith("-delete-button")
+            && !id.endsWith("-allow-button"));
+
+    return Array.from(new Set(ids)).map((id: string): string => id.replace(/^url-input-/, ""));
+};
+
 describe("URLInput", () => {
     it("renders a single complex regex callback as one chip, verbatim", () => {
         const value: string = "regexp=(https://(127.0.0.1|localhost)(:.[0-9]{0,4})?/cb)";
         const html: string = renderURLInput(value);
 
-        expect(html).toContain(value);
+        expect(chipValues(html)).toEqual([ value ]);
     });
 
     it("renders a comma-separated list as separate chips", () => {
         const html: string = renderURLInput("https://a.example.com/cb,https://b.example.com/cb");
+        const chips: string[] = chipValues(html);
 
-        expect(html).toContain("https://a.example.com/cb");
-        expect(html).toContain("https://b.example.com/cb");
+        expect(chips).toHaveLength(2);
+        expect(chips).toContain("https://a.example.com/cb");
+        expect(chips).toContain("https://b.example.com/cb");
     });
 
     it("renders without chips for an empty state", () => {
-        const html: string = renderURLInput("");
-
-        expect(typeof html).toBe("string");
+        expect(chipValues(renderURLInput(""))).toHaveLength(0);
     });
 });
