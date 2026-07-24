@@ -232,6 +232,15 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                 portalUrlStatus: "true"
             };
 
+        case "DAON-60001":
+
+            // Daon TrustX identity-verification failure: the user is not enrolled. Retrying won't help,
+            // so no portal "try again" button is shown.
+            return {
+                message: "daon.user.not.enrolled.message",
+                description: "daon.user.not.enrolled.description"
+            };
+
         default:
 
             return {
