@@ -226,6 +226,14 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "back.to.sign.in")%>
                             </a>
                         <% } %>
+                <% } else if ("DAON-60001".equals(errorCode)) { %>
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
+                    </h3>
+
+                    <p class="portal-tagline-description">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "daon.user.not.enrolled")%>
+                    </p>
                 <% } else { %>
                     <h3 class="ui header text-center slogan-message mt-3 mb-6">
                         <%=stat%>
