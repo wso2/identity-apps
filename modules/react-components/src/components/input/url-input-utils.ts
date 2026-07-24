@@ -87,10 +87,12 @@ export const isMixedRegexInput = (value: string): boolean => {
  * @returns The combined, de-duplicated `regexp=(...)` value.
  */
 export const combineRegexCallbackUrls = (existing: string, added: string): string => {
-    const alternatives: string[] = [ ...toRegexAlternatives(existing), ...toRegexAlternatives(added) ];
+    const alternatives: string[] = [ existing, added ]
+        .filter((value: string): boolean => value.trim().length > 0)
+        .flatMap((value: string): string[] => toRegexAlternatives(value));
     const unique: string[] = alternatives.filter(
         (value: string, index: number): boolean => alternatives.indexOf(value) === index
     );
 
-    return `regexp=(${ unique.join("|") })`;
+    return unique.length > 0 ? `regexp=(${ unique.join("|") })` : "";
 };

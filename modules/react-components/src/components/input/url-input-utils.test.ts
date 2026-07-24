@@ -96,6 +96,13 @@ describe("url-input-utils", () => {
                 .toBe("regexp=(https://combine.example.com/cb|internal-host/cb|https://added.example.com/cb)");
         });
 
+        it("does not emit a blank alternative when the existing state is empty", () => {
+            expect(combineRegexCallbackUrls("", "regexp=(https://a.example.com/cb|https://b.example.com/cb)"))
+                .toBe("regexp=(https://a.example.com/cb|https://b.example.com/cb)");
+            expect(combineRegexCallbackUrls("", "https://a.example.com/cb"))
+                .toBe("regexp=(https://a.example.com/cb)");
+        });
+
         it("de-duplicates shared alternatives across two regexes", () => {
             expect(combineRegexCallbackUrls(
                 "regexp=(https://d1.example.com/cb|https://d2.example.com/cb)",
