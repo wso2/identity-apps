@@ -42,7 +42,13 @@ export const parseIsoDate = (value) => {
     }
 
     const [ year, month, day ] = value.split("-").map((part) => parseInt(part, 10));
-    const date = new Date(year, month - 1, day);
+
+    // new Date(year, month, day) maps a year in [0, 99] to 1900 + year, so setFullYear is used
+    // instead to preserve four-digit years below 0100 (e.g. "0099-01-01").
+    const date = new Date(0);
+
+    date.setFullYear(year, month - 1, day);
+    date.setHours(0, 0, 0, 0);
 
     if (date.getFullYear() !== year || (date.getMonth() + 1) !== month || date.getDate() !== day) {
 
