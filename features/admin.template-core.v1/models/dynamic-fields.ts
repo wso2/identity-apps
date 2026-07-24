@@ -187,10 +187,6 @@ export enum DynamicInputFieldTypes {
      */
     TEXT = "text",
     /**
-     * Number input field.
-     */
-    NUMBER = "number",
-    /**
      * Checkbox field.
      */
     CHECKBOX = "checkbox",

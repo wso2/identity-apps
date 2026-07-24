@@ -77,6 +77,13 @@
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
     final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
 
+    // Errors from a federated connector (e.g. Daon) are returned as query parameters on the
+    // portal URL. The flow type is not carried in the redirect, so it is derived from the
+    // servlet path: /register -> REGISTRATION, /recovery -> PASSWORD_RECOVERY.
+    String daonError = request.getParameter("error");
+    String daonErrorDescription = request.getParameter("error_description");
+    String pathFlowType = "/recovery".equals(servletPath) ? PASSWORD_RECOVERY : REGISTRATION;
+
     if (StringUtils.isBlank(spId) && !StringUtils.isBlank(sp)) {
         try {
             if (sp.equals("My Account")) {
@@ -204,6 +211,9 @@
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
+                const daonError = "<%= Encode.forJavaScript(daonError) != null ? Encode.forJavaScript(daonError) : null %>";
+                const daonErrorDescription = "<%= Encode.forJavaScript(daonErrorDescription) != null ? Encode.forJavaScript(daonErrorDescription) : null %>";
+                const daonFlowType = "<%= pathFlowType %>";
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
                 const extendedInputResolvers = [
@@ -271,10 +281,36 @@
                     }
                 }, [confirmationCode, confirmationEffectDone]);
 
+                // Handle errors returned by a federated connector (e.g. Daon) as query
+                // parameters on the portal URL. This path is entered only when an "error"
+                // parameter is present, which the existing flows never produce, so it does
+                // not affect any existing error handling.
                 useEffect(() => {
-                    if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
+                    if (daonError === "null") return;
+
+                    // Keep the raw connector error for debugging; it is never shown to the user.
+                    console.error("Federated connector verification error:", daonError, daonErrorDescription);
+
+                    const portalUrl = accountsPortalUrl
+                        + (daonFlowType === "PASSWORD_RECOVERY" ? "/recovery" : "/register");
+
+                    // Daon-specific error text (i18n keys resolved by the error page). This is scoped to
+                    // this Daon-only effect, so other flow errors keep their own flowType-based messages.
+                    const errorPageURL = accountsPortalUrl + "/error?" + "SP_ID="
+                        + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + daonFlowType + "&"
+                        + "confirmation=" + "<%= Encode.forJavaScript(confirmationCode) %>" + "&"
+                        + "PORTAL_URL=" + portalUrl + "&"
+                        + "ERROR_MSG=" + "daon.identity.verification.failed.message" + "&"
+                        + "ERROR_DESC=" + "daon.identity.verification.failed.description" + "&"
+                        + "SP=" + "<%= Encode.forJavaScript(sp) %>";
+
+                    window.location.href = errorPageURL;
+                }, []);
+
+                useEffect(() => {
+                    if (!postBody && daonError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && daonError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);

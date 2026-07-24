@@ -140,5 +140,29 @@
                 }
             ]
         }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Daon TrustX",
+            "image": "assets/images/icons/daon.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "DaonExecutor",
+                    "meta": {
+                        "idpName": ""
+                    }
+                },
+                "next": ""
+            }
+        }
     }
 ]
