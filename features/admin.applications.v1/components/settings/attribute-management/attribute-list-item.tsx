@@ -222,6 +222,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         return subject || readOnly || isOIDCMapping;
     };
 
+    /**
+     * This function will resolve whether the requested checkbox should be read only or not.
+     */
+    const isRequestedCheckboxReadOnly = (): boolean => {
+        if (onlyOIDCConfigured) {
+            return (subject && requested) || readOnly || isOIDCMapping;
+        }
+
+        return subject || readOnly || isOIDCMapping;
+    };
+
     return (
         <Table.Row data-testid={ testId }>
             {
@@ -300,10 +311,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         { ...(!localDialect && { textAlign: "center" }) }
                     >
                         <Checkbox
-                            checked={ initialRequested || requested || subject }
-                            onClick={ (!readOnly && !subject) ? handleRequestedCheckChange : () => null }
+                            checked={ initialRequested || requested || (subject && !onlyOIDCConfigured) }
+                            onClick={ !isRequestedCheckboxReadOnly() ? handleRequestedCheckChange : () => null }
                             disabled={ mappingOn ? !mandatory : false }
-                            readOnly={ subject || readOnly || isOIDCMapping }
+                            readOnly={ isRequestedCheckboxReadOnly() }
                         />
                     </Table.Cell>
                 )
