@@ -47,8 +47,7 @@ interface LocaleListItemInterface {
 };
 
 /**
- * Interface for a raw locale metadata entry, common to both the bundled
- * supported languages and the full locale catalog from `@wso2is/core`.
+ * Interface for a raw locale metadata entry
  */
 interface LocaleMetaInterface {
     code: string;
@@ -92,7 +91,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
         : allSupportedLocales;
 
     const normalizedLocale: string = normalizeLocaleFormat(initialValue,
-        LocaleJoiningSymbol.HYPHEN, true, supportedI18nLanguages);
+        LocaleJoiningSymbol.HYPHEN, true, localeOptionsSource);
 
     /**
      * Validates the field value.
@@ -177,7 +176,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
                                     <ListItem
                                         className="p-0"
                                         data-componentid={
-                                            `${componentId}-profile-form-country-dropdown-${option.value}`
+                                            `${componentId}-profile-form-locale-dropdown-${option.value}`
                                         }
                                     >
                                         <ListItemIcon>
