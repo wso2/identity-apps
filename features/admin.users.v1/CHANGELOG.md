@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.38.48
+
+### Patch Changes
+
+- [#10570](https://github.com/wso2/identity-apps/pull/10570) [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Display all locales in the locale field in the user profile in console
+
+- Updated dependencies [[`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246)]:
+  - @wso2is/react-components@2.10.4
+
 ## 2.38.47
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.10.4
+
+### Patch Changes
+
+- [#10568](https://github.com/wso2/identity-apps/pull/10568) [`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Preserve complex regex callback URLs in migrated applications. A single `regexp=(...)` callback whose pattern contains a literal comma (e.g. a `{0,4}` quantifier) is now kept as one atomic value across display, edit and save instead of being split as a comma-separated list. Adding across syntaxes combines all alternatives into one de-duplicated `regexp=(...)`, and an input mixing both syntaxes is rejected.
+
 ## 2.10.3
 
 ### Patch Changes
