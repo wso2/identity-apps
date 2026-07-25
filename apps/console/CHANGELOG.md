@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.14.6
+
+### Patch Changes
+
+- [#10570](https://github.com/wso2/identity-apps/pull/10570) [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Display all locales in the locale field in the user profile in console
+
+* [#10427](https://github.com/wso2/identity-apps/pull/10427) [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix application dropdown in branding page not showing all applications
+
+* Updated dependencies [[`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246), [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14), [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48)]:
+  - @wso2is/react-components@2.10.4
+  - @wso2is/admin.applications.v1@2.43.13
+  - @wso2is/admin.users.v1@2.38.48
+  - @wso2is/admin.branding.v1@2.32.171
+
 ## 4.14.5
 
 ### Patch Changes
