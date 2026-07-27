@@ -24,7 +24,7 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -33,10 +33,9 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
-import FederationProperties from "./steps/execution/federation-properties";
 import DeviceRegistrationProperties from "./steps/execution/device-registration-properties";
+import FederationProperties from "./steps/execution/federation-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
-import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -168,18 +167,25 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
         case StepCategories.Workflow: {
             const executorName: string = resource?.data?.action?.executor?.name;
 
+            if (executorName === ExecutionTypes.DeviceRegistration) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <DeviceRegistrationProperties
+                            resource={ resource }
+                            data-componentid="device-registration-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
             return (
                 <>
                     { renderElementId() }
-                    { executorName === ExecutionTypes.DeviceRegistration
-                        ? (
-                            <DeviceRegistrationProperties
-                                resource={ resource }
-                                data-componentid="device-registration-properties"
-                                onChange={ onChange }
-                            />
-                        )
-                        : !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                    {
+                        !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
                             executorName as ExecutionTypes) && (
                             <FederationProperties
                                 resource={ resource }

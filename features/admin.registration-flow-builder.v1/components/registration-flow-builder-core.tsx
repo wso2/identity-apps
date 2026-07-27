@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,7 @@ import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
+import DEFAULT_END_NODE_TEMPLATE from "../migrations/templates/default-end-node.json";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
 /**
@@ -212,9 +213,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         if (registrationFlowFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("flows:builder.notifications.fetch.genericError.description"),
+                    description: "An error occurred while fetching the registration flow.",
                     level: AlertLevels.ERROR,
-                    message: t("flows:builder.notifications.fetch.genericError.message")
+                    message: "Couldn't retrieve  the registration flow."
                 })
             );
         }
@@ -547,26 +548,74 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return edges;
     };
 
-    const initialNodes: Node[] = useMemo<Node[]>(() => {
-        const initialTemplateType: TemplateTypes = flowType === FlowTypes.DEVICE_REGISTRATION
-            ? TemplateTypes.BasicDeviceRegister
-            : TemplateTypes.Basic;
-
-        const template: Template = cloneDeep(
-            templates.find((t: Template) => t.type === initialTemplateType)
+    const getBasicTemplateStepsWithoutOnBoardingStep: () => Step[] = useCallback(() => {
+        const basicTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Basic)
         );
 
-        const steps: Step[] = template?.config?.data?.steps ?? [];
+        const templateSteps: Step[] = basicTemplate?.config?.data?.steps ?? [];
 
-        if (steps.length === 0) {
+        if (templateSteps.length === 0) {
             return [];
         }
 
-        const nodes: Node[] = generateSteps(steps as any);
-        const replacers: any = template?.config?.data?.__generationMeta__?.replacers ?? [];
+        // Drop the last step from the template.
+        const stepsWithoutLast: Step[] = templateSteps.slice(0, -1);
 
-        return updateTemplatePlaceholderReferences(nodes, replacers)[0] as Node[];
-    }, [ generateSteps, templates, flowType ]);
+        // Resolve IDs and metadata for downstream usage.
+        const withIds: Step[] = generateIdsForResources<Step[]>(stepsWithoutLast) as unknown as Step[];
+
+        const withResolvedComponents: Step[] = withIds.map((s: Step) => {
+            if (s?.data?.components) {
+                return {
+                    ...s,
+                    data: {
+                        ...s.data,
+                        components: resolveComponentMetadata(resources, s.data.components as any)
+                    }
+                };
+            }
+
+            return s;
+        });
+
+        return resolveStepMetadata(resources, withResolvedComponents) as Step[];
+    }, [ templates, resources ]);
+
+    const initialNodes: Node[] = useMemo<Node[]>(() => {
+        if (flowType === FlowTypes.DEVICE_REGISTRATION) {
+            const template: Template = cloneDeep(
+                templates.find((t: Template) => t.type === TemplateTypes.BasicDeviceRegister)
+            );
+
+            const steps: Step[] = template?.config?.data?.steps ?? [];
+
+            if (steps.length === 0) {
+                return [];
+            }
+
+            const nodes: Node[] = generateSteps(steps as any);
+            const replacers: any = template?.config?.data?.__generationMeta__?.replacers ?? [];
+
+            return updateTemplatePlaceholderReferences(nodes, replacers)[0] as Node[];
+        }
+
+        // Try to seed from Basic template (without the last step).
+        const basicSteps: Step[] = getBasicTemplateStepsWithoutOnBoardingStep();
+
+        if (basicSteps.length > 0) {
+            const seedNodes: Node[] = [
+                ...basicSteps,
+                {
+                    ...DEFAULT_END_NODE_TEMPLATE,
+                    deletable: false,
+                    position: { x: 1200, y: 408 }
+                }
+            ];
+
+            return generateSteps(seedNodes);
+        }
+    }, [ flowType, getBasicTemplateStepsWithoutOnBoardingStep, generateSteps, templates ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
