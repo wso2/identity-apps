@@ -117,7 +117,7 @@
         "prettier": "^1.19.1",
         "prop-types": "^15.7.2",
         "rimraf": "^3.0.2",
-        "simple-git": "^1.129.0",
+        "simple-git": "^3.36.0",
         "storybook": "9.1.9",
         "style-loader": "^3.3.0",
         "typescript": "^5.1.6",
