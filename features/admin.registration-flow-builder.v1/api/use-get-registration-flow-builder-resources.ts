@@ -33,6 +33,15 @@ import registrationWidgets from "../data/registration-widgets.json";
 import steps from "../data/steps.json";
 
 /**
+ * Core step panel labels shown when building a device registration flow.
+ */
+const DEVICE_REGISTRATION_PANEL_STEP_LABELS: Set<string> = new Set([
+    "Blank View",
+    "Email OTP View",
+    "SMS OTP View"
+]);
+
+/**
  * Hook to get the resources supported by the registration flow builder.
  * Aggregates core resources with self-registration or device-registration specific resources.
  *
@@ -51,54 +60,42 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
     );
 
     const data: unknown = useMemo(() => {
-        const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
-            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION) || false;
-
-        const filteredRegistrationTemplates: Template[] = (registrationTemplates as Template[])
-            .filter((template: Template) => {
-                return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
-            });
-
-        const filteredDeviceRegistrationTemplates: Template[] = (deviceRegistrationTemplates as Template[])
-            .filter((template: Template) => {
-                return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
-            });
-
-        const deviceRegistrationPanelStepLabels: Set<string> = new Set([
-            "Blank View",
-            "Email OTP View",
-            "SMS OTP View"
-        ]);
-
         if (flowType === FlowTypes.DEVICE_REGISTRATION) {
-            const coreStepsWithPanelVisibility: any[] = (coreResources?.steps ?? []).map((step: any) => ({
+            const coreStepsForPanel: any[] = coreResources?.steps.map((step: any) => ({
                 ...step,
                 display: {
                     ...step.display,
-                    showOnResourcePanel: deviceRegistrationPanelStepLabels.has(step?.display?.label)
+                    showOnResourcePanel: DEVICE_REGISTRATION_PANEL_STEP_LABELS.has(step?.display?.label)
                 }
             }));
 
             return {
                 ...coreResources,
-                steps: coreStepsWithPanelVisibility,
-                templates: filteredDeviceRegistrationTemplates,
+                steps: coreStepsForPanel,
+                templates: deviceRegistrationTemplates,
                 widgets: deviceRegistrationWidgets
             };
         }
 
+        const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
+            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION);
+
+        const filteredTemplates: Template[] = (registrationTemplates as Template[]).filter((template: Template) => {
+            return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+        });
+
         return {
             ...coreResources,
             steps: [
-                ...(coreResources?.steps ?? []),
+                ...coreResources?.steps,
                 ...steps
             ],
             templates: [
-                ...(coreResources?.templates ?? []),
-                ...filteredRegistrationTemplates
+                ...coreResources?.templates,
+                ...filteredTemplates
             ],
             widgets: [
-                ...(coreResources?.widgets ?? []),
+                ...coreResources?.widgets,
                 ...registrationWidgets
             ]
         };
@@ -106,10 +103,10 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
 
     return {
         data: data as Data,
-        error: undefined,
+        error: null,
         isLoading: false,
         isValidating: false,
-        mutate: () => Promise.resolve(undefined)
+        mutate: () => null
     };
 };
 
