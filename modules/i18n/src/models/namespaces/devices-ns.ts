@@ -141,12 +141,17 @@ export interface DevicesNS {
                     edit: string;
                     noRuleNote: string;
                     conditionCount: string;
+                    appliesToAll: string;
                     assignHint: {
                         title: string;
                         loginFlow: string;
                         otherFlows: string;
                     };
                 };
+            };
+            connector: {
+                header: string;
+                description: string;
             };
             platforms: {
                 android: string;

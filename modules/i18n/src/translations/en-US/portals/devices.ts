@@ -97,6 +97,7 @@ export const devices: DevicesNS = {
                     sectionPolicy: "Policy",
                     sectionRules: "Execution rules",
                     title: "Review & Save",
+                    appliesToAll: "Applies to all {{platform}} devices",
                     assignHint: {
                         loginFlow: "To assign this policy in a <strong>login flow</strong>, use an Adaptive Authentication script.",
                         otherFlows: "To assign this policy in other flows (e.g. User Registration, Self Registration), click the <strong>cogwheel icon</strong> on the executor step and select this policy.",
@@ -150,6 +151,10 @@ export const devices: DevicesNS = {
                     }
                 }
             }
+        },
+        connector: {
+            description: "Define and manage device assurance policies for your organization.",
+            header: "Device Assurance"
         },
         description: "Define and manage device assurance policies for your organization.",
         list: {

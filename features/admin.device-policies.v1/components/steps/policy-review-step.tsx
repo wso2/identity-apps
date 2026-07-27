@@ -169,8 +169,13 @@ const PolicyReviewStep: FunctionComponent<PolicyReviewStepPropsInterface> = (
                             />
                             <Typography variant="caption" sx={ { color: "text.secondary" } }>
                                 { !isConfigured
-                                    ? <span>Applies to <strong>all { p.label } devices</strong></span>
-                                    : `${ condCount } condition(s) across ${ groupCount } group(s)`
+                                    ? t("devices:assurancePolicies.wizard.steps.review.appliesToAll", {
+                                        platform: p.label
+                                    })
+                                    : t("devices:assurancePolicies.wizard.steps.review.conditionCount", {
+                                        condCount,
+                                        groupCount
+                                    })
                                 }
                             </Typography>
                         </Stack>

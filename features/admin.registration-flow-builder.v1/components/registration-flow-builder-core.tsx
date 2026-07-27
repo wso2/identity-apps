@@ -212,9 +212,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         if (registrationFlowFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: "An error occurred while fetching the registration flow.",
+                    description: t("flows:builder.notifications.fetch.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Couldn't retrieve  the registration flow."
+                    message: t("flows:builder.notifications.fetch.genericError.message")
                 })
             );
         }
