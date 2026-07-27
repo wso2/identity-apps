@@ -234,15 +234,20 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             },
             {
                 operation: "REPLACE",
-                path: "/enableFapiEnforcement",
-                value: values.enableFapiEnforcement
-            },
-            {
-                operation: "REPLACE",
                 path: "/mandateSSA",
                 value: values.mandateSSA
             }
         ];
+
+        if (!isFapiFeatureEnabled) {
+            updateData.push(
+                {
+                    operation: "REPLACE",
+                    path: "/enableFapiEnforcement",
+                    value: values.enableFapiEnforcement
+                }
+            );
+        }
 
         if (values.ssaJwks != undefined) {
             updateData.push(
