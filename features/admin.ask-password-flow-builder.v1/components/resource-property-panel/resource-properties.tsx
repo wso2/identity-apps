@@ -34,6 +34,7 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import ConfirmationCodeProperties from "./steps/execution/confirmation-code-properties";
+import DeviceRegistrationProperties from "./steps/execution/device-registration-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-builder-constants";
 
@@ -164,9 +165,10 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             break;
-        case StepCategories.Workflow:
-            if (resource.type === StepTypes.Execution
-                && resource?.data?.action?.executor?.name === ExecutionTypes.ConfirmationCode) {
+        case StepCategories.Workflow: {
+            const executorName: string = resource?.data?.action?.executor?.name;
+
+            if (executorName === ExecutionTypes.ConfirmationCode) {
                 return (
                     <>
                         { renderElementId() }
@@ -178,24 +180,32 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         { renderElementPropertyFactory() }
                     </>
                 );
-            } else {
-                return (
-                    <>
-                        { renderElementId() }
-                        {
-                            !AskPasswordFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
-                                resource?.data?.action?.executor?.name) && (
-                                <FederationProperties
-                                    resource={ resource }
-                                    data-componentid="federation-properties"
-                                    onChange={ onChange }
-                                />
-                            )
-                        }
-                        { renderElementPropertyFactory() }
-                    </>
-                );
             }
+
+            return (
+                <>
+                    { renderElementId() }
+                    { executorName === ExecutionTypes.DeviceRegistration
+                        ? (
+                            <DeviceRegistrationProperties
+                                resource={ resource }
+                                data-componentid="device-registration-properties"
+                                onChange={ onChange }
+                            />
+                        )
+                        : !AskPasswordFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                            executorName as ExecutionTypes) && (
+                            <FederationProperties
+                                resource={ resource }
+                                data-componentid="federation-properties"
+                                onChange={ onChange }
+                            />
+                        )
+                    }
+                    { renderElementPropertyFactory() }
+                </>
+            );
+        }
         default:
             return (
                 <>

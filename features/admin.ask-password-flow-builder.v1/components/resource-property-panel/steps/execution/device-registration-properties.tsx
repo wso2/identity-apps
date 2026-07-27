@@ -38,7 +38,7 @@ type DeviceRegistrationPropertiesPropsInterface = CommonResourcePropertiesPropsI
 const NO_POLICY_OPTION: PolicyListItemInterface = { id: "", name: "No policy (skip check)" };
 
 /**
- * Property panel for the DeviceRegistrationExecutor step.
+ * Property panel for the DeviceRegistrationExecutor step in ask password flow builder.
  * Lets the user pick a device assurance policy (or none) to attach to the executor.
  */
 const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationPropertiesPropsInterface> = ({
