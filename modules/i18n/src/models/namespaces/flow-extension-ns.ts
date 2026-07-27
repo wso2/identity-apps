@@ -174,6 +174,8 @@ export interface flowExtensionNS {
             readOnlyBadge: string;
             editTooltip: string;
             deleteTooltip: string;
+            usernameWriteWarning: string;
+            identityClaimWriteWarning: string;
             encryption: {
                 title: string;
                 formReadOnly: string;
