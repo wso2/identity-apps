@@ -19,8 +19,6 @@
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
-import { getDevicePoliciesResourceEndpoints } from "@wso2is/admin.device-policies.v1/configs/endpoints";
-import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
@@ -382,8 +380,6 @@ export class Config {
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
-            ...getDevicesResourceEndpoints(this.resolveServerHost()),
-            ...getDevicePoliciesResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
@@ -391,6 +387,9 @@ export class Config {
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             copilot: `${ this.resolveServerHost() }/api/server/v1/copilot`,
+            devicePolicies: `${ this.resolveServerHost() }/api/server/v1/policies`,
+            devicePolicyMetadata: `${ this.resolveServerHost() }/api/server/v1/device-policies/metadata`,
+            devices: `${ this.resolveServerHost() }/api/server/v1/devices`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,

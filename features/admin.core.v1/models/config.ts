@@ -28,8 +28,6 @@ import {
     WorkflowAssociationsResourceEndpointsInterface,
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
-import { DevicePoliciesResourceEndpointsInterface } from "@wso2is/admin.device-policies.v1/models/endpoints";
-import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
@@ -864,12 +862,13 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
-    FlowBuilderCoreResourceEndpointsInterface,
-    DevicesResourceEndpointsInterface,
-    DevicePoliciesResourceEndpointsInterface {
+    FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
     copilot: string;
+    devicePolicies: string;
+    devicePolicyMetadata: string;
+    devices: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

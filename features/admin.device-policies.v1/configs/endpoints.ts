@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "@wso2is/admin.core.v1/store";
 import { DevicePoliciesResourceEndpointsInterface } from "../models/endpoints";
 
 /**
@@ -25,10 +26,12 @@ import { DevicePoliciesResourceEndpointsInterface } from "../models/endpoints";
  * @returns The device policy resource endpoints.
  */
 export const getDevicePoliciesResourceEndpoints = (
-    serverHost: string
+    serverHost?: string
 ): DevicePoliciesResourceEndpointsInterface => {
+    const host: string = serverHost ?? store.getState().config.endpoints.serverHost ?? "";
+
     return {
-        devicePolicies: `${ serverHost }/api/server/v1/policies`,
-        devicePolicyMetadata: `${ serverHost }/api/server/v1/device-policies/metadata`
+        devicePolicies: `${ host }/api/server/v1/policies`,
+        devicePolicyMetadata: `${ host }/api/server/v1/device-policies/metadata`
     };
 };

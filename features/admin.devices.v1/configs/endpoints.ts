@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "@wso2is/admin.core.v1/store";
 import { DevicesResourceEndpointsInterface } from "../models/endpoints";
 
 /**
@@ -24,8 +25,10 @@ import { DevicesResourceEndpointsInterface } from "../models/endpoints";
  * @param serverHost - The server host URL.
  * @returns The device resource endpoints.
  */
-export const getDevicesResourceEndpoints = (serverHost: string): DevicesResourceEndpointsInterface => {
+export const getDevicesResourceEndpoints = (serverHost?: string): DevicesResourceEndpointsInterface => {
+    const host: string = serverHost ?? store.getState().config.endpoints.serverHost ?? "";
+
     return {
-        devices: `${ serverHost }/api/server/v1/devices`
+        devices: `${ host }/api/server/v1/devices`
     };
 };
