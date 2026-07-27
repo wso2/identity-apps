@@ -55,13 +55,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {
-    DropdownProps,
-    Header,
-    Modal,
-    PaginationProps,
-    SemanticICONS
-} from "semantic-ui-react";
+import { SemanticICONS } from "semantic-ui-react";
+import Dialog from "@oxygen-ui/react/Dialog";
+import DialogActions from "@oxygen-ui/react/DialogActions";
+import DialogContent from "@oxygen-ui/react/DialogContent";
+import DialogTitle from "@oxygen-ui/react/DialogTitle";
+import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 
 const DEFAULT_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
 
@@ -112,11 +112,11 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
         }));
     }, [ error, t, dispatch ]);
 
-    const handlePaginationChange = (_e: MouseEvent<HTMLAnchorElement>, paginationData: PaginationProps): void => {
+    const handlePaginationChange = (_e: MouseEvent<HTMLAnchorElement>, paginationData: { activePage?: number | string }): void => {
         setListOffset(((paginationData.activePage as number) - 1) * listItemLimit);
     };
 
-    const handleItemsPerPageDropdownChange = (_e: SyntheticEvent<HTMLElement>, dropdownData: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = (_e: SyntheticEvent<HTMLElement>, dropdownData: { value?: unknown }): void => {
         setListItemLimit(dropdownData.value as number);
         setListOffset(0);
     };
@@ -218,10 +218,10 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
             id: "deviceName",
             key: "deviceName",
             render: (device: DeviceResponseInterface): ReactNode => (
-                <Header
-                    image
-                    as="h6"
-                    className="header-with-icon"
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={ 1.5 }
                     data-componentid={ `${ componentId }-item-heading` }
                 >
                     <AppAvatar
@@ -236,11 +236,17 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         spaced="right"
                         data-componentid={ `${ componentId }-item-image` }
                     />
-                    <Header.Content>
-                        { device.deviceName }
-                        <Header.Subheader>{ device.deviceModel }</Header.Subheader>
-                    </Header.Content>
-                </Header>
+                    <Stack spacing={ 0.25 }>
+                        <Typography variant="body2" sx={ { fontWeight: 600 } }>
+                            { device.deviceName }
+                        </Typography>
+                        { device.deviceModel && (
+                            <Typography variant="caption" sx={ { color: "text.secondary" } }>
+                                { device.deviceModel }
+                            </Typography>
+                        ) }
+                    </Stack>
+                </Stack>
             ),
             title: t("users:userDevices.list.columns.deviceName")
         },
@@ -370,14 +376,19 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                 </ConfirmationModal>
             ) }
             { renamingDevice && (
-                <Modal
+                <Dialog
                     open={ !!renamingDevice }
-                    size="tiny"
+                    maxWidth="xs"
+                    fullWidth
                     onClose={ (): void => setRenamingDevice(null) }
                     data-componentid={ `${ componentId }-rename-modal` }
                 >
-                    <Modal.Header>{ t("users:userDevices.rename.heading") }</Modal.Header>
-                    <Modal.Content>
+                    <DialogTitle>
+                        <Typography variant="h6">
+                            { t("users:userDevices.rename.heading") }
+                        </Typography>
+                    </DialogTitle>
+                    <DialogContent dividers>
                         <TextField
                             fullWidth
                             label={ t("users:userDevices.rename.nameLabel") }
@@ -387,8 +398,8 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                                 setNewDeviceName(e.target.value) }
                             data-componentid={ `${ componentId }-rename-input` }
                         />
-                    </Modal.Content>
-                    <Modal.Actions>
+                    </DialogContent>
+                    <DialogActions>
                         <LinkButton
                             onClick={ (): void => setRenamingDevice(null) }
                             data-componentid={ `${ componentId }-rename-cancel-button` }
@@ -403,8 +414,8 @@ export const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         >
                             { t("common:save") }
                         </PrimaryButton>
-                    </Modal.Actions>
-                </Modal>
+                    </DialogActions>
+                </Dialog>
             ) }
         </>
     );

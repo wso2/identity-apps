@@ -36,7 +36,9 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, SemanticICONS } from "semantic-ui-react";
+import { SemanticICONS } from "semantic-ui-react";
+import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 import { deleteDevicePolicy } from "../api/device-policies";
 import { PolicyListItemInterface } from "../models/device-policy";
 
@@ -105,10 +107,10 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
             id: "name",
             key: "name",
             render: (policy: PolicyListItemInterface): ReactNode => (
-                <Header
-                    image
-                    as="h6"
-                    className="header-with-icon"
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={ 1.5 }
                     data-componentid={ `${ componentId }-item-heading` }
                 >
                     <AppAvatar
@@ -123,10 +125,10 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = (
                         spaced="right"
                         data-componentid={ `${ componentId }-item-image` }
                     />
-                    <Header.Content>
+                    <Typography variant="body2" sx={ { fontWeight: 600 } }>
                         { policy.name }
-                    </Header.Content>
-                </Header>
+                    </Typography>
+                </Stack>
             ),
             title: t("devices:assurancePolicies.list.columns.name")
         },

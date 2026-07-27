@@ -42,7 +42,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import CreateDevicePolicyWizard from "../components/create-device-policy-wizard";
 import DevicePolicyList from "../components/device-policy-list";
 import { useGetDevicePolicies } from "../hooks/use-get-device-policies";
@@ -112,16 +112,18 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
         setListOffset(0);
     }, []);
 
-    const handlePaginationChange: (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps) => void =
-        useCallback((_event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+    const handlePaginationChange = useCallback(
+        (_event: MouseEvent<HTMLAnchorElement>, data: { activePage?: number | string }): void => {
             setListOffset(((data.activePage as number) - 1) * listItemLimit);
-        }, [ listItemLimit ]);
+        }, [ listItemLimit ]
+    );
 
-    const handleItemsPerPageDropdownChange: (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps) => void =
-        useCallback((_event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = useCallback(
+        (_event: MouseEvent<HTMLAnchorElement>, data: { value?: unknown }): void => {
             setListItemLimit(data.value as number);
             setListOffset(0);
-        }, []);
+        }, []
+    );
 
     const totalResults: number = policyListResponse?.totalResults ?? 0;
 
@@ -142,7 +144,7 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DeviceAssurancePoliciesPage
                     onClick={ (): void => setShowWizard(true) }
                     data-componentid={ `${ componentId }-add-button` }
                 >
-                    <Icon name="add" />
+                    <PlusIcon />
                     { t("devices:assurancePolicies.wizard.heading") }
                 </PrimaryButton>
             ) }

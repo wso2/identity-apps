@@ -180,7 +180,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                             />
                         )
                         : !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
-                            executorName) && (
+                            executorName as ExecutionTypes) && (
                             <FederationProperties
                                 resource={ resource }
                                 data-componentid="federation-properties"
