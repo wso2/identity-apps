@@ -21,13 +21,13 @@ import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import Card from "@oxygen-ui/react/Card";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { RuleConditionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { StyledReviewPlatformCard, StyledRuleSummaryCode } from "../device-policy-wizard-styles";
 import { DevicePlatformType, PlatformDefinitionInterface } from "../../models/device-policy";
 import { countConditions } from "../../utils/device-policy-rule-utils";
 
@@ -154,7 +154,7 @@ const PolicyReviewStep: FunctionComponent<PolicyReviewStepPropsInterface> = (
                 const groupCount: number = isConfigured && rule ? (rule.rules?.length ?? 0) : 0;
 
                 return (
-                    <StyledReviewPlatformCard key={ p.key }>
+                    <Card variant="outlined" sx={ { mb: 2, p: 2.25 } } key={ p.key }>
                         <Stack
                             direction="row"
                             alignItems="center"
@@ -175,7 +175,16 @@ const PolicyReviewStep: FunctionComponent<PolicyReviewStepPropsInterface> = (
                             </Typography>
                         </Stack>
                         { isConfigured && rule && (
-                            <StyledRuleSummaryCode>
+                            <Box
+                                sx={ {
+                                    backgroundColor: "action.hover",
+                                    borderRadius: 1,
+                                    fontFamily: "ui-monospace, \"SFMono-Regular\", Menlo, monospace",
+                                    fontSize: 13,
+                                    lineHeight: 1.8,
+                                    p: 1.75
+                                } }
+                            >
                                 { (rule.rules ?? []).map(
                                     (
                                         group: RuleConditionWithoutIdInterface,
@@ -260,9 +269,9 @@ const PolicyReviewStep: FunctionComponent<PolicyReviewStepPropsInterface> = (
                                         </React.Fragment>
                                     )
                                 ) }
-                            </StyledRuleSummaryCode>
+                            </Box>
                         ) }
-                    </StyledReviewPlatformCard>
+                    </Card>
                 );
             }) }
 

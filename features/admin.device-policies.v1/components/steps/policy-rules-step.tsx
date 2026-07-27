@@ -24,17 +24,15 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
+import Chip from "@oxygen-ui/react/Chip";
+import Tab from "@oxygen-ui/react/Tab";
+import Tabs from "@oxygen-ui/react/Tabs";
 import { ConditionExpressionsMetaDataInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    StyledPlatformTab,
-    StyledPlatformTabBar,
-    StyledTabBadge
-} from "../device-policy-wizard-styles";
 import { DevicePlatformType, PlatformDefinitionInterface } from "../../models/device-policy";
 import { countConditions, renderPlatformLogo } from "../../utils/device-policy-rule-utils";
 
@@ -145,7 +143,12 @@ const PolicyRulesStep: FunctionComponent<PolicyRulesStepPropsInterface> = (
 
     return (
         <Box>
-            <StyledPlatformTabBar>
+            <Tabs
+                value={ activeTabIndex }
+                onChange={ (_: React.SyntheticEvent, newValue: number): void => onTabChange(newValue) }
+                sx={ { borderBottom: 1, borderColor: "divider", mb: 3 } }
+                data-componentid={ `${ componentId }-tab-bar` }
+            >
                 { selectedPlatforms.map((platform: DevicePlatformType, index: number) => {
                     const pDef: PlatformDefinitionInterface | undefined =
                         platforms.find((p: PlatformDefinitionInterface) => p.key === platform);
@@ -156,57 +159,63 @@ const PolicyRulesStep: FunctionComponent<PolicyRulesStepPropsInterface> = (
                     const isConfigured: boolean = platformConfigured[platform] === true;
 
                     return (
-                        <StyledPlatformTab
+                        <Tab
                             key={ platform }
-                            type="button"
-                            isActive={ isActive }
-                            onClick={ (): void => onTabChange(index) }
+                            value={ index }
+                            icon={ pDef?.logo ? (renderPlatformLogo(pDef.logo, 18) as ReactElement) : undefined }
+                            iconPosition="start"
                             data-componentid={ `${ componentId }-${ platform }-tab` }
-                        >
-                            { pDef?.logo ? renderPlatformLogo(pDef.logo, 18) : null }
-                            { pDef?.label ?? platform }
-                            { isConfigured ? (
-                                <StyledTabBadge isActive={ isActive }>
-                                    { condCount }
-                                </StyledTabBadge>
-                            ) : (
-                                <StyledTabBadge isActive={ isActive }
-                                    sx={ { fontSize: 14, lineHeight: 1, px: "5px", py: 0 } }
-                                >
-                                    ·
-                                </StyledTabBadge>
-                            ) }
-                            { onRemovePlatform && (
-                                <Box
-                                    component="span"
-                                    onClick={ (e: React.MouseEvent): void => {
-                                        e.stopPropagation();
-                                        onRemovePlatform(platform);
-                                    } }
-                                    aria-label={ `Remove ${ pDef?.label ?? platform }` }
-                                    sx={ {
-                                        alignItems: "center",
-                                        borderRadius: "50%",
-                                        color: "inherit",
-                                        display: "inline-flex",
-                                        fontSize: 16,
-                                        fontWeight: 400,
-                                        height: 18,
-                                        justifyContent: "center",
-                                        lineHeight: 1,
-                                        ml: 0.75,
-                                        opacity: 0.6,
-                                        width: 18,
-                                        "&:hover": { opacity: 1 }
-                                    } }
-                                >
-                                    ×
-                                </Box>
-                            ) }
-                        </StyledPlatformTab>
+                            label={
+                                <Stack direction="row" alignItems="center" spacing={ 1 }>
+                                    <span>{ pDef?.label ?? platform }</span>
+                                    { isConfigured ? (
+                                        <Chip
+                                            label={ condCount }
+                                            size="small"
+                                            color={ isActive ? "primary" : "default" }
+                                            sx={ { height: 18, fontSize: 11, fontWeight: 700, minWidth: 18, px: 0.5 } }
+                                        />
+                                    ) : (
+                                        <Chip
+                                            label="·"
+                                            size="small"
+                                            variant="outlined"
+                                            sx={ { height: 18, fontSize: 14, minWidth: 18, px: 0.5 } }
+                                        />
+                                    ) }
+                                    { onRemovePlatform && (
+                                        <Box
+                                            component="span"
+                                            onClick={ (e: React.MouseEvent): void => {
+                                                e.stopPropagation();
+                                                onRemovePlatform(platform);
+                                            } }
+                                            aria-label={ `Remove ${ pDef?.label ?? platform }` }
+                                            sx={ {
+                                                alignItems: "center",
+                                                borderRadius: "50%",
+                                                color: "inherit",
+                                                display: "inline-flex",
+                                                fontSize: 16,
+                                                fontWeight: 400,
+                                                height: 18,
+                                                justifyContent: "center",
+                                                lineHeight: 1,
+                                                ml: 0.5,
+                                                opacity: 0.6,
+                                                width: 18,
+                                                "&:hover": { opacity: 1 }
+                                            } }
+                                        >
+                                            ×
+                                        </Box>
+                                    ) }
+                                </Stack>
+                            }
+                        />
                     );
                 }) }
-            </StyledPlatformTabBar>
+            </Tabs>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={ { mb: 1.5 } }>
                 <Heading as="h5">
