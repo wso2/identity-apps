@@ -26,20 +26,18 @@ import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/mode
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import deviceRegistrationTemplates from "../data/device-registration-templates.json";
 import deviceRegistrationWidgets from "../data/device-registration-widgets.json";
+import registrationTemplates from "../data/registration-templates.json";
+import registrationWidgets from "../data/registration-widgets.json";
 import steps from "../data/steps.json";
-import templates from "../data/templates.json";
-import widgets from "../data/widgets.json";
 
 /**
  * Hook to get the resources supported by the registration flow builder.
- * This hook will aggregate the core resources and the registration specific resources.
+ * Aggregates core resources with self-registration or device-registration specific resources.
  *
- * This function calls the GET method of the following endpoint to get the resources.
- * - TODO: Fill this
- * For more details, refer to the documentation:
- * {@link https://TODO:<fillthis>)}
- *
+ * @param flowType - The flow type (FlowTypes.REGISTRATION or FlowTypes.DEVICE_REGISTRATION).
+ * @param _shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = RequestErrorInterface>(
@@ -56,25 +54,15 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
         const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
             FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION) || false;
 
-        const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
-            return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
-        });
+        const filteredRegistrationTemplates: Template[] = (registrationTemplates as Template[])
+            .filter((template: Template) => {
+                return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+            });
 
-        const deviceRegistrationTemplateTypes: Set<string> = new Set([
-            TemplateTypes.Blank,
-            TemplateTypes.DeviceRegistrationEmailOTP,
-            TemplateTypes.DeviceRegistrationSMSOTP
-        ]);
-
-        const deviceRegistrationOnlyTypes: Set<string> = new Set([
-            TemplateTypes.BasicDeviceRegister,
-            TemplateTypes.DeviceRegistrationEmailOTP,
-            TemplateTypes.DeviceRegistrationSMSOTP
-        ]);
-
-        const deviceRegistrationTemplates: Template[] = filteredTemplates.filter((template: Template) => {
-            return deviceRegistrationTemplateTypes.has(template?.type);
-        });
+        const filteredDeviceRegistrationTemplates: Template[] = (deviceRegistrationTemplates as Template[])
+            .filter((template: Template) => {
+                return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+            });
 
         const deviceRegistrationPanelStepLabels: Set<string> = new Set([
             "Blank View",
@@ -83,7 +71,6 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
         ]);
 
         if (flowType === FlowTypes.DEVICE_REGISTRATION) {
-            // Show only Blank, Email OTP and SMS OTP views (all provided by core) in the panel.
             const coreStepsWithPanelVisibility: any[] = (coreResources?.steps ?? []).map((step: any) => ({
                 ...step,
                 display: {
@@ -95,7 +82,7 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
             return {
                 ...coreResources,
                 steps: coreStepsWithPanelVisibility,
-                templates: deviceRegistrationTemplates,
+                templates: filteredDeviceRegistrationTemplates,
                 widgets: deviceRegistrationWidgets
             };
         }
@@ -108,13 +95,11 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
             ],
             templates: [
                 ...(coreResources?.templates ?? []),
-                ...filteredTemplates.filter(
-                    (template: Template) => !deviceRegistrationOnlyTypes.has(template?.type)
-                )
+                ...filteredRegistrationTemplates
             ],
             widgets: [
                 ...(coreResources?.widgets ?? []),
-                ...widgets
+                ...registrationWidgets
             ]
         };
     }, [ coreResources, aiFeature, flowType ]);
