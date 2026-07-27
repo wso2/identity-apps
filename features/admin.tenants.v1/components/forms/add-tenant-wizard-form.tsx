@@ -288,16 +288,14 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields." +
                                                 "tenantName.validations.invalidLength"
                                             }
-                                            minLength={
-                                                TenantManagementConstants
+                                            values={ {
+                                                maxLength: TenantManagementConstants
+                                                    .FORM_FIELD_CONSTRAINTS
+                                                    .TENANT_NAME_MAX_LENGTH,
+                                                minLength: TenantManagementConstants
                                                     .FORM_FIELD_CONSTRAINTS
                                                     .TENANT_NAME_MIN_LENGTH
-                                            }
-                                            maxLength={
-                                                TenantManagementConstants
-                                                    .FORM_FIELD_CONSTRAINTS
-                                                    .TENANT_NAME_MAX_LENGTH
-                                            }
+                                            } }
                                         >
                                             The name you entered is less than { { minLength: TenantManagementConstants
                                                 .FORM_FIELD_CONSTRAINTS
@@ -341,16 +339,14 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields." +
                                                 "tenantName.validations.invalid"
                                             }
-                                            minLength={
-                                                TenantManagementConstants
+                                            values={ {
+                                                maxLength: TenantManagementConstants
+                                                    .FORM_FIELD_CONSTRAINTS
+                                                    .TENANT_NAME_MAX_LENGTH,
+                                                minLength: TenantManagementConstants
                                                     .FORM_FIELD_CONSTRAINTS
                                                     .TENANT_NAME_MIN_LENGTH
-                                            }
-                                            maxLength={
-                                                TenantManagementConstants
-                                                    .FORM_FIELD_CONSTRAINTS
-                                                    .TENANT_NAME_MAX_LENGTH
-                                            }
+                                            } }
                                         >
                                             Please enter a valid format for
                                             organization name. It must
