@@ -24,7 +24,7 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { ExecutionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -33,7 +33,6 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
-import DeviceRegistrationProperties from "./steps/execution/device-registration-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import PasswordRecoveryFlowBuilderConstants from "../../constants/password-recovery-flow-builder-constants";
 
@@ -164,22 +163,13 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             break;
-        case StepCategories.Workflow: {
-            const executorName: string = resource?.data?.action?.executor?.name;
-
+        case StepCategories.Workflow:
             return (
                 <>
                     { renderElementId() }
-                    { executorName === ExecutionTypes.DeviceRegistration
-                        ? (
-                            <DeviceRegistrationProperties
-                                resource={ resource }
-                                data-componentid="device-registration-properties"
-                                onChange={ onChange }
-                            />
-                        )
-                        : !PasswordRecoveryFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
-                            executorName as ExecutionTypes) && (
+                    {
+                        !PasswordRecoveryFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                            resource?.data?.action?.executor?.name) && (
                             <FederationProperties
                                 resource={ resource }
                                 data-componentid="federation-properties"
@@ -190,7 +180,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                     { renderElementPropertyFactory() }
                 </>
             );
-        }
         default:
             return (
                 <>
