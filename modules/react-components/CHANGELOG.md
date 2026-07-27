@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.10.5
+
+### Patch Changes
+
+- [#10577](https://github.com/wso2/identity-apps/pull/10577) [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use vite events to gracefully handle chunkload errors
+
 ## 2.10.4
 
 ### Patch Changes

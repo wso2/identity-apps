@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.38.49
+
+### Patch Changes
+
+- [#10558](https://github.com/wso2/identity-apps/pull/10558) [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Prevent future dates from being accepted for the Date of Birth attribute in the self-registration page, the dynamic registration flow date field, and the Console user profile and add-user forms.
+
+- Updated dependencies [[`0a908a7aafd983c09c0f8079e6e2aad698c52883`](https://github.com/wso2/identity-apps/commit/0a908a7aafd983c09c0f8079e6e2aad698c52883), [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a)]:
+  - @wso2is/admin.tenants.v1@2.29.33
+  - @wso2is/react-components@2.10.5
+
 ## 2.38.48
 
 ### Patch Changes
