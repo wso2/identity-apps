@@ -130,6 +130,7 @@ import {
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
+import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 import "./inbound-oidc-form.scss";
 
@@ -234,6 +235,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
+    const isMultipleClientSecretsEnabled: boolean = useSelector((state: AppState) =>
+        Boolean(state?.config?.ui?.features?.applications?.properties?.isMultipleClientSecretsEnabled));
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
@@ -5651,14 +5654,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
-                                                {
-                                                    t("applications:forms.inboundOIDC.fields" +
-                                                        ".clientSecret.label")
-                                                }
+                                                { t("applications:forms.inboundOIDC.fields.clientSecret.label") }
                                             </label>
                                             {
-                                                isClientSecretHashEnabled
+                                                isMultipleClientSecretsEnabled
                                                     ? (
+                                                        <ClientSecretsSection
+                                                            appId={ application?.id }
+                                                            clientSecret={ initialValues?.clientSecret }
+                                                            clientSecretExpiresAt={
+                                                                initialValues?.clientSecretExpiresAt
+                                                            }
+                                                            multipleClientSecretsConfigured={
+                                                                initialValues?.multipleClientSecretsConfigured
+                                                            }
+                                                            hasCreatePermission={
+                                                                !isEnforceClientSecretPermissionEnabled
+                                                                || hasClientSecretCreatePermission
+                                                            }
+                                                            readOnly={ readOnly }
+                                                            hideSecretValue={ isClientSecretHashEnabled }
+                                                            onUpdate={ onUpdate }
+                                                            data-componentid={
+                                                                `${ componentId }-client-secrets-section`
+                                                            }
+                                                        />
+                                                    )
+                                                    : isClientSecretHashEnabled
+                                                        ? (
                                                         <>
                                                             <Message
                                                                 visible

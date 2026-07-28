@@ -589,8 +589,10 @@
                 ],
                 "enabled": true,
                 "properties": {
+                    "isMultipleClientSecretsEnabled": true,
                     "maxGracefulRefreshTokenReuseLimit": 5,
-                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60,
+                    "multipleClientSecretsMaxCount": 5
                 },
                 "featureFlags": [
                     {

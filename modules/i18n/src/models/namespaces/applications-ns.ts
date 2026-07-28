@@ -170,6 +170,111 @@ export interface ApplicationsNS {
         };
         placeholder: string;
     };
+    clientSecrets: {
+        rotationInfo: string;
+        generateButton: string;
+        viewPreviousSecrets: string;
+        hidePreviousSecrets: string;
+        maxCountReachedHint: string;
+        status: {
+            active: string;
+            expiresSoon: string;
+            expired: string;
+        };
+        expiry: {
+            expiresOn: string;
+            expiredOn: string;
+            neverExpires: string;
+        };
+        confirmations: {
+            deleteSecret: {
+                assertionHint: string;
+                header: string;
+                message: string;
+                content: string;
+            };
+        };
+        wizard: {
+            heading: string;
+            subHeading: string;
+            expiration: {
+                label: string;
+                options: {
+                    days: string;
+                    neverExpire: string;
+                    custom: string;
+                };
+            };
+            customExpiry: {
+                label: string;
+                placeholder: string;
+                validations: {
+                    required: string;
+                    invalid: string;
+                };
+            };
+            expiryWarning: string;
+            generateButton: string;
+        };
+        dangerZone: {
+            revokeAll: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+                confirmation: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                };
+            };
+        };
+        expiryBanner: {
+            title: string;
+            description: string;
+        };
+        notifications: {
+            generateSecret: {
+                error: {
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            deleteSecret: {
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            revokeAll: {
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            getSecrets: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+    };
     confirmations: {
         addSocialLogin: {
             content: string;

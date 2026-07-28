@@ -76,6 +76,7 @@ import { Icon, Label } from "semantic-ui-react";
 import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
+import SecretExpiryBanner from "../components/banners/secret-expiry-banner";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants/application-management";
@@ -1095,7 +1096,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
-            alertBanner={ resolveAlertBanner() }
+            alertBanner={ (
+                <>
+                    <SecretExpiryBanner
+                        appId={ applicationId }
+                        isOIDCApplication={ inboundProtocolList?.includes(SupportedAuthProtocolTypes.OIDC) }
+                        isPublicClient={ applicationInboundConfigs?.publicClient }
+                        data-componentid={ `${ componentId }-secret-expiry-banner` }
+                    />
+                    { resolveAlertBanner() }
+                </>
+            ) }
             titleTextAlign="left"
             bottomMargin={ false }
             pageHeaderMaxWidth={ true }

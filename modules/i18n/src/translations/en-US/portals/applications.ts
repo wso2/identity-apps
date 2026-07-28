@@ -192,6 +192,122 @@ export const applications: ApplicationsNS = {
         },
         placeholder: "Search applications by name, client ID, or issuer"
     },
+    clientSecrets: {
+        confirmations: {
+            deleteSecret: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this client secret, the application will no longer be able to " +
+                    "authenticate. However, active tokens and authorization codes will not be revoked.",
+                header: "Are you sure?",
+                message: "This action is irreversible and permanently deletes the client secret. " +
+                    "Please proceed with caution."
+            }
+        },
+        dangerZone: {
+            revokeAll: {
+                actionTitle: "Revoke All",
+                confirmation: {
+                    assertionHint: "Please type <1>{{id}}</1> to revoke all the client secrets and " +
+                        "regenerate a new one.",
+                    content: "If you revoke all client secrets, all associated access tokens, refresh tokens, " +
+                        "and authorization codes will also be revoked, and active authentication flows will " +
+                        "fail. Please ensure you update your application with the new client secret.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and permanently revokes all the client secrets. " +
+                        "Please proceed with caution."
+                },
+                header: "Revoke All Client Secrets",
+                subheader: "Once the existing secrets are revoked, they cannot be recovered. A new secret will " +
+                    "be generated, and authentication flows using the old secrets will no longer work."
+            }
+        },
+        expiry: {
+            expiredOn: "Expired on {{date}}",
+            expiresOn: "Expires on {{date}}",
+            neverExpires: "Never expires"
+        },
+        expiryBanner: {
+            description: "One or more client secrets are expiring soon. Please rotate them to prevent " +
+                "authentication failures and application downtime.",
+            title: "Client Secrets Expiring Soon"
+        },
+        generateButton: "Generate New Secret",
+        hidePreviousSecrets: "Hide Previous Client Secrets",
+        maxCountReachedHint: "You have reached the maximum of {{count}} client secrets. Delete an existing " +
+            "secret to generate a new one.",
+        notifications: {
+            deleteSecret: {
+                genericError: {
+                    description: "An error occurred while deleting the client secret.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The client secret was deleted successfully.",
+                    message: "Client secret deleted"
+                }
+            },
+            generateSecret: {
+                error: {
+                    message: "Generation error"
+                },
+                genericError: {
+                    description: "An error occurred while generating the client secret.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "A new client secret was generated successfully.",
+                    message: "Client secret generated"
+                }
+            },
+            getSecrets: {
+                genericError: {
+                    description: "An error occurred while retrieving the client secrets.",
+                    message: "Something went wrong"
+                }
+            },
+            revokeAll: {
+                genericError: {
+                    description: "An error occurred while revoking the client secrets.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "All client secrets were revoked and a new secret was generated.",
+                    message: "Client secrets revoked"
+                }
+            }
+        },
+        rotationInfo: "Use multiple secrets for seamless rotation. Generate a new secret, update your " +
+            "application, and delete the old one or allow it to expire.",
+        status: {
+            active: "Active",
+            expired: "Expired",
+            expiresSoon: "Expires Soon"
+        },
+        viewPreviousSecrets: "View Previous Client Secrets",
+        wizard: {
+            customExpiry: {
+                label: "Custom Expiry Time (days)",
+                placeholder: "Enter the number of days",
+                validations: {
+                    invalid: "Enter a valid number of days.",
+                    required: "Enter the number of days until the secret expires."
+                }
+            },
+            expiration: {
+                label: "Expiration",
+                options: {
+                    custom: "Custom",
+                    days: "{{count}} days",
+                    neverExpire: "Never expires"
+                }
+            },
+            expiryWarning: "You can't change a client secret's expiry time after it's generated, so choose the " +
+                "expiration carefully.",
+            generateButton: "Generate",
+            heading: "Generate Client Secret",
+            subHeading: "Generate a new client secret for this application. Existing secrets remain valid."
+        }
+    },
     confirmations: {
         addSocialLogin: {
             content : "To add a new social login, we will need to route you to a different page and " +
