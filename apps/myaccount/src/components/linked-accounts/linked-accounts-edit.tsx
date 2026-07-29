@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
 import { UIConstants } from "../../constants";
@@ -59,7 +59,8 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
 
     const { t } = useTranslation();
 
-    const [ userName, setUserName ] = useState<string>(undefined);
+    // Captures the latest typed username; read only on submit, never rendered, so a ref avoids per-keystroke re-renders.
+    const userNameRef: MutableRefObject<string> = useRef<string>(undefined);
 
     /**
      *
@@ -67,7 +68,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
      * @param data - Input field data.
      */
     const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData): void => {
-        setUserName(data.value);
+        userNameRef.current = data.value;
     };
 
     /**
@@ -77,7 +78,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     const getFormValues = (values: Map<string, FormValue>): void => {
         const formValues: { password: string; username: string } = {
             password: values.get("password").toString(),
-            username: userName
+            username: userNameRef.current
         };
 
         onFormSubmit(formValues, UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER);
