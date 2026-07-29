@@ -70,6 +70,7 @@ import React, {
     SetStateAction,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -1162,6 +1163,23 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         });
     };
 
+    // Derived once per selection change and reused as both the Autocomplete `options` source
+    // and the base for the filtered `value`, instead of recomputing/duplicating it per render.
+    const assignedRolesOptions: SelectedOrganizationRoleInterface[] = useMemo(
+        () => getAssignedRolesOptions(selectedOrgId),
+        [ selectedOrgId, roleSelections, actualAssignedRolesMap ]
+    );
+
+    const currentlyAssignedRoles: RoleSharingInterface[] = actualAssignedRolesMap[selectedOrgId] ?? [];
+
+    const currentlyAssignedRolesValue: SelectedOrganizationRoleInterface[] = useMemo(
+        () => assignedRolesOptions.filter(
+            (role: SelectedOrganizationRoleInterface) =>
+                currentlyAssignedRoles.some((assignedRole: RoleSharingInterface) => isSameRole(role, assignedRole))
+        ),
+        [ assignedRolesOptions, currentlyAssignedRoles ]
+    );
+
     const resolveRoleSelectionPane = (): ReactNode => {
         if (!hideLeftPanel && isEmpty(selectedOrgId)) {
             return (
@@ -1194,11 +1212,6 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                 roleSelections[selectedOrgId]?.filter(
                     (role: SelectedOrganizationRoleInterface) => role.selected
                 ) ?? [];
-
-            const currentlyAssignedRoles: RoleSharingInterface[] =
-                actualAssignedRolesMap[selectedOrgId] ?? [];
-            const assignedRolesOptions: SelectedOrganizationRoleInterface[] =
-                getAssignedRolesOptions(selectedOrgId);
 
             return (
                 <Box className="role-list-container">
@@ -1253,12 +1266,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                             ".searchAvailableRolesPlaceholder"
                                         ) }
                                     options={ assignedRolesOptions }
-                                    value={ assignedRolesOptions.filter(
-                                        (role: SelectedOrganizationRoleInterface) =>
-                                            currentlyAssignedRoles.some((assignedRole: RoleSharingInterface) =>
-                                                isSameRole(role, assignedRole)
-                                            )
-                                    ) }
+                                    value={ currentlyAssignedRolesValue }
                                     noOptionsText={ t("common:noResultsFound") }
                                     getOptionLabel={ (dropdownOption: DropdownProps) =>
                                         dropdownOption?.displayName }
@@ -1320,11 +1328,6 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                 </Box>
             );
         }
-
-        const currentlyAssignedRoles: RoleSharingInterface[] =
-            actualAssignedRolesMap[selectedOrgId] ?? [];
-        const assignedRolesOptions: SelectedOrganizationRoleInterface[] =
-            getAssignedRolesOptions(selectedOrgId);
 
         return (
             <Box className="role-list-container">
@@ -1467,12 +1470,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                         ".searchAvailableRolesPlaceholder"
                                     ) }
                                 options={ assignedRolesOptions }
-                                value={ assignedRolesOptions.filter(
-                                    (role: SelectedOrganizationRoleInterface) =>
-                                        currentlyAssignedRoles.some((assignedRole: RoleSharingInterface) =>
-                                            isSameRole(role, assignedRole)
-                                        )
-                                ) }
+                                value={ currentlyAssignedRolesValue }
                                 onChange={ (
                                     _event: SyntheticEvent,
                                     value: SelectedOrganizationRoleInterface[],

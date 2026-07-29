@@ -192,8 +192,8 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         const sortedFinalValues: string[] = (selectedAttributeList?.map((claim: Claim) => claim?.claimURI)).sort();
         const sortedInitialValues: string[] = initialValues?.sort();
 
-        return !(sortedInitialValues?.length === sortedFinalValues?.length &&
-            sortedFinalValues.every((attribute: string, index: number) => attribute === sortedInitialValues[index]));
+        return sortedInitialValues?.length !== sortedFinalValues?.length ||
+            !sortedFinalValues.every((attribute: string, index: number) => attribute === sortedInitialValues[index]);
     };
 
     /**

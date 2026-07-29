@@ -629,7 +629,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
             tsconfigPaths({
                 projects: [ path.resolve(__dirname, "../../tsconfig.base.json") ]
             }),
-            basicSsl(),
+
             consoleDevHtmlPlugin(buildMode.publicBase),
             devServerBasePathRewritePlugin(buildMode.publicBase),
             devI18nAssetsPlugin(),
@@ -653,7 +653,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
                 port: devServerWebSocketPort
             },
             host: devServerHost,
-            https: true,
+            https: {
+                key: fs.readFileSync(path.resolve(__dirname, "dev-key.pem")),
+                cert: fs.readFileSync(path.resolve(__dirname, "dev-cert.pem"))
+            },
             open: buildMode.publicBase,
             port: devServerPort,
             strictPort: true
