@@ -337,8 +337,6 @@ export class AppConstants {
             ],
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
             [ "REGISTRATION_FLOW_BUILDER", `${ AppConstants.getMainViewBasePath() }/edit-self-registration-flow` ],
-            [ "DEVICE_REGISTRATION_FLOW_BUILDER",
-                `${ AppConstants.getDeveloperViewBasePath() }/edit-device-registration-flow` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
             [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],

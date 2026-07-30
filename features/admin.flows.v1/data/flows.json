@@ -26,15 +26,6 @@
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
             "type": "INVITED_USER_REGISTRATION",
             "disabled": false
-        },
-        {
-            "id": "device-registration",
-            "heading": "Device Enrollment",
-            "description": "Configure registration journeys that allow users to enroll their own devices as part of onboarding.",
-            "featureStatusKey": "flows.types.list.deviceRegistration",
-            "path": "DEVICE_REGISTRATION_FLOW_BUILDER",
-            "type": "DEVICE_REGISTRATION",
-            "disabled": false
         }
     ]
 }
