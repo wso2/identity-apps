@@ -103,18 +103,21 @@ export const mapToConditionsMeta = (
  * @returns Flat policy rule payload.
  */
 export const buildFlatRule = (rule: RuleWithoutIdInterface | null): PolicyRuleInterface => {
-    const rules: PolicyANDRuleInterface[] = (rule?.rules ?? []).map(
-        (group: RuleConditionWithoutIdInterface): PolicyANDRuleInterface => ({
-            condition: "AND",
-            expressions: (group.expressions ?? []).map(
-                (e: { field: string; operator: string; value: string }): PolicyExpressionInterface => ({
-                    field: e.field,
-                    operator: e.operator,
-                    value: e.value
-                })
-            )
-        })
-    );
+    const rules: PolicyANDRuleInterface[] = (rule?.rules ?? [])
+        .map(
+            (group: RuleConditionWithoutIdInterface): PolicyANDRuleInterface => ({
+                condition: "AND",
+                expressions: (group.expressions ?? []).map(
+                    (e: { field: string; operator: string; value: string }): PolicyExpressionInterface => ({
+                        field: e.field,
+                        operator: e.operator,
+                        value: e.value
+                    })
+                )
+            })
+        )
+        // Drop empty AND-groups so the payload satisfies the API's `expressions` minItems constraint.
+        .filter((group: PolicyANDRuleInterface): boolean => group.expressions.length > 0);
 
     return { condition: "OR", rules };
 };

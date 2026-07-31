@@ -287,13 +287,16 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
         }
 
         const resources: PolicyResourceRequestInterface[] =
-            selectedPlatforms.map(
-                (p: DevicePlatformType): PolicyResourceRequestInterface => ({
-                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null),
-                    resourceType: "RULE",
-                    target: p
-                })
-            );
+            selectedPlatforms
+                .map(
+                    (p: DevicePlatformType): PolicyResourceRequestInterface => ({
+                        rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null),
+                        resourceType: "RULE",
+                        target: p
+                    })
+                )
+                // Only send platforms with at least one rule group; the API rejects empty `rules`.
+                .filter((resource: PolicyResourceRequestInterface): boolean => resource.rule.rules.length > 0);
 
         updateDevicePolicy(policyId, { resources })
             .then((): void => {
