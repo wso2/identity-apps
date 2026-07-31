@@ -267,6 +267,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 }
             },
+            dynamicOptions: {
+                empty: "No matching connections available.",
+                loading: "Loading available connections...",
+                unavailable: "{{value}} (unavailable)"
+            },
             emailOTP: {
                 enableBackupCodes: {
                     hint: "Allow users to authenticate with backup codes.",

@@ -103,6 +103,17 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                         { ...omit(fieldProps, "type") }
                     />
                 );
+            case "select":
+            case "dropdown":
+                return (
+                    <DynamicField.Select
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        options={ fieldProps.options }
+                        { ...omit(fieldProps, [ "type", "options", "optionsSource" ]) }
+                    />
+                );
             default:
                 return (
                     <DynamicField.Input

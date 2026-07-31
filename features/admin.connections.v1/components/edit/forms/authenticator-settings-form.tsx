@@ -31,6 +31,7 @@ import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
+import useDynamicFieldOptions from "../../../hooks/use-dynamic-field-options";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -45,6 +46,11 @@ import "./authenticator-settings-form.scss";
  */
 interface AuthenticatorSettingsFormPropsInterface extends TestableComponentInterface {
     connectorSettings: any;
+    /**
+     * Resource id of the connection being edited.
+     * Used to resolve settings fields that reference other connections.
+     */
+    connectionId?: string;
     /**
      * The intended mode of the authenticator form.
      * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
@@ -132,6 +138,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
 ): any => {
 
     const {
+        connectionId,
         connectorSettings,
         metadata,
         initialValues: originalInitialValues,
@@ -145,6 +152,17 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
     const [ formFields, setFormFields ] = useState<any>(undefined);
     const [ initialValues, setInitialValues ] = useState<any>(undefined);
     const [ settings, setSettings ] = useState<any>(undefined);
+
+    /**
+     * Resolves the options of the settings fields that source them from another resource.
+     */
+    const { fields: resolvedSettingsFields } = useDynamicFieldOptions(
+        settings?.edit?.tabs?.settings,
+        {
+            currentConnectionId: connectionId,
+            currentValues: initialValues
+        }
+    );
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -285,7 +303,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      */
     const renderFormFields = () => {
         if (settings) {
-            return renderDynamicFormFields(settings?.edit?.tabs?.settings);
+            return renderDynamicFormFields(resolvedSettingsFields);
         } else if (formFields) {
             const fields: DynamicInputElementsInterface[] = [];
 
