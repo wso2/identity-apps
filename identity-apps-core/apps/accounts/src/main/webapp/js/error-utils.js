@@ -35,6 +35,17 @@ function stripBraces(s) {
  * @returns {object} The i18n keys for the given error code.
  */
 function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
+    // Daon server-side failures (DAON-65xxx) are a whole band rather than a handful of codes, and none of
+    // them is actionable by the user, so they share one message. The specific code is in the server log.
+    // Checked before the switch since a case label cannot match a prefix.
+    if (errorCode && errorCode.indexOf("DAON-65") === 0) {
+
+        return {
+            message: "daon.verification.server.error.message",
+            description: "daon.verification.server.error.description"
+        };
+    }
+
     switch (errorCode) {
         case "FE-60001":
 
@@ -239,6 +250,48 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
             return {
                 message: "daon.user.not.enrolled.message",
                 description: "daon.user.not.enrolled.description"
+            };
+
+        // None of the Daon cases below sets portalUrlStatus, so no "try again" button is rendered: by the
+        // time the connector reports a failure the flow's confirmation code has already been consumed, so
+        // restarting the portal flow would only fail again.
+
+        case "DAON-60002":
+
+            // The user cancelled or abandoned the verification (OAuth2 access_denied from Daon).
+            return {
+                message: "daon.verification.cancelled.message",
+                description: "daon.verification.cancelled.description"
+            };
+
+        case "DAON-60003":
+
+            // The details submitted did not match the identity document.
+            return {
+                message: "daon.claims.mismatch.message",
+                description: "daon.claims.mismatch.description"
+            };
+
+        case "DAON-60004":
+
+            return {
+                message: "daon.identity.verification.failed.message",
+                description: "daon.identity.verification.failed.description"
+            };
+
+        case "DAON-60005":
+
+            return {
+                message: "daon.verification.not.completed.message",
+                description: "daon.verification.not.completed.description"
+            };
+
+        case "DAON-60006":
+
+            // Password recovery: Daon verified someone other than the account holder being recovered.
+            return {
+                message: "daon.recovery.identity.mismatch.message",
+                description: "daon.recovery.identity.mismatch.description"
             };
 
         default:

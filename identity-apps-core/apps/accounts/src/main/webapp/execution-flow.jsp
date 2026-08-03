@@ -291,15 +291,33 @@
                     // Keep the raw connector error for debugging; it is never shown to the user.
                     console.error("Federated connector verification error:", daonError, daonErrorDescription);
 
-                    const portalUrl = accountsPortalUrl
-                        + (daonFlowType === "PASSWORD_RECOVERY" ? "/recovery" : "/register");
+                    const savedFlowId = localStorage.getItem("flowId");
 
+                    if (savedFlowId) {
+                        // Resume the flow with the error, mirroring the success (code/state) callback
+                        // above. The connector's executor classifies the raw error and returns its own
+                        // code, which comes back as error.code and is turned into a specific user-facing
+                        // message by getI18nKeyForError. Doing it here rather than redirecting straight to
+                        // the error page keeps that classification in one place, on the server.
+                        setPostBody({
+                            flowId: savedFlowId,
+                            actionId: "",
+                            inputs: {
+                                error: daonError,
+                                error_description: daonErrorDescription === "null" ? "" : daonErrorDescription
+                            }
+                        });
+
+                        return;
+                    }
+
+                    // No flow left to resume (the flow id is gone from storage), so the connector error
+                    // cannot be classified. Fall back to the generic connector-failure message.
                     // Daon-specific error text (i18n keys resolved by the error page). This is scoped to
                     // this Daon-only effect, so other flow errors keep their own flowType-based messages.
                     const errorPageURL = accountsPortalUrl + "/error?" + "SP_ID="
                         + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + daonFlowType + "&"
                         + "confirmation=" + "<%= Encode.forJavaScript(confirmationCode) %>" + "&"
-                        + "PORTAL_URL=" + portalUrl + "&"
                         + "ERROR_MSG=" + "daon.identity.verification.failed.message" + "&"
                         + "ERROR_DESC=" + "daon.identity.verification.failed.description" + "&"
                         + "SP=" + "<%= Encode.forJavaScript(sp) %>";
