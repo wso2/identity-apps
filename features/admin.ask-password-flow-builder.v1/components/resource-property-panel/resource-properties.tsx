@@ -25,6 +25,8 @@ import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { ExecutionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { useIsConnectionlessExtensionExecutor }
+    from "@wso2is/admin.flow-builder-core.v1/hooks/use-extension-executor";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -59,6 +61,10 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     const selectedVariant: Element = useMemo(() => {
         return resource?.variants?.find((_element: Element) => _element.variant === resource.variant);
     }, [ resource.variants, resource.variant ]);
+
+    const isConnectionlessExtensionExecutor: boolean = useIsConnectionlessExtensionExecutor(
+        resource?.data?.action?.executor?.name
+    );
 
     const renderElementId = (): ReactElement => {
         return (
@@ -213,6 +219,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                     <>
                         { renderElementId() }
                         {
+                            !isConnectionlessExtensionExecutor &&
                             !AskPasswordFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
                                 resource?.data?.action?.executor?.name) && (
                                 <FederationProperties
