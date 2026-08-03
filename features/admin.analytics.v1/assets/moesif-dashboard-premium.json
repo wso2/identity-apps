@@ -4468,10 +4468,9 @@
                   }
                 },
                 "aggs": {
-                  "weight|sum": {
-                    "sum": {
-                      "field": "weight",
-                      "missing": 1
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
                     }
                   }
                 }
@@ -4525,18 +4524,16 @@
                   }
                 },
                 "aggs": {
-                  "weight|sum": {
-                    "sum": {
-                      "field": "weight",
-                      "missing": 1
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
                     }
                   }
                 }
               },
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
                 }
               }
             }
@@ -4549,13 +4546,13 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie&seg[segments][0][name]=Agent%20Tokens&seg[segments][0][filterGroups][0][id]=f78dc78f&seg[segments][0][filterGroups][0][filters][0][id]=f2a252dc&seg[segments][0][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][0][filterGroups][0][filters][1][id]=ed20a788&seg[segments][0][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][0][filterGroups][0][filters][1][name]=&seg[segments][0][filterGroups][0][filters][1][op]=eq&seg[segments][0][filterGroups][0][filters][1][value][0]=false&seg[segments][0][filterGroups][0][filters][2][id]=f6996751&seg[segments][0][filterGroups][0][filters][2][field]=metadata.userStoreDomain.raw&seg[segments][0][filterGroups][0][filters][2][name]=&seg[segments][0][filterGroups][0][filters][2][op]=contains&seg[segments][0][filterGroups][0][filters][2][value][0]=AGENT&seg[segments][1][name]=Agent%20Tokens%20%20as%20Actors&seg[segments][1][filterGroups][0][id]=af80a108&seg[segments][1][filterGroups][0][filters][0][id]=4c082064&seg[segments][1][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][1][filterGroups][0][filters][1][id]=c6abf3f9&seg[segments][1][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[segments][1][filterGroups][0][filters][2][id]=4c43859d&seg[segments][1][filterGroups][0][filters][2][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][2][name]=&seg[segments][1][filterGroups][0][filters][2][op]=exists&seg[segments][1][filterGroups][0][filters][2][value]=&seg[segments][1][filterGroups][0][filters][3][id]=46a2fb34&seg[segments][1][filterGroups][0][filters][3][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][3][name]=&seg[segments][1][filterGroups][0][filters][3][op]=not_contain&seg[segments][1][filterGroups][0][filters][3][value][0]=NOT_AVAILABLE",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=count%28event_id%29&seg[chartType]=pie&seg[segments][0][name]=Agent%20Tokens&seg[segments][0][filterGroups][0][id]=f78dc78f&seg[segments][0][filterGroups][0][filters][0][id]=f2a252dc&seg[segments][0][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][0][filterGroups][0][filters][1][id]=ed20a788&seg[segments][0][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][0][filterGroups][0][filters][1][name]=&seg[segments][0][filterGroups][0][filters][1][op]=eq&seg[segments][0][filterGroups][0][filters][1][value][0]=false&seg[segments][0][filterGroups][0][filters][2][id]=f6996751&seg[segments][0][filterGroups][0][filters][2][field]=metadata.userStoreDomain.raw&seg[segments][0][filterGroups][0][filters][2][name]=&seg[segments][0][filterGroups][0][filters][2][op]=contains&seg[segments][0][filterGroups][0][filters][2][value][0]=AGENT&seg[segments][1][name]=Agent%20Tokens%20%20as%20Actors&seg[segments][1][filterGroups][0][id]=af80a108&seg[segments][1][filterGroups][0][filters][0][id]=4c082064&seg[segments][1][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][1][filterGroups][0][filters][1][id]=c6abf3f9&seg[segments][1][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[segments][1][filterGroups][0][filters][2][id]=4c43859d&seg[segments][1][filterGroups][0][filters][2][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][2][name]=&seg[segments][1][filterGroups][0][filters][2][op]=exists&seg[segments][1][filterGroups][0][filters][2][value]=&seg[segments][1][filterGroups][0][filters][3][id]=46a2fb34&seg[segments][1][filterGroups][0][filters][3][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][3][name]=&seg[segments][1][filterGroups][0][filters][3][op]=not_contain&seg[segments][1][filterGroups][0][filters][3][value][0]=NOT_AVAILABLE",
       "analyticType": "seg",
       "chartType": "pie",
       "settings": {
         "metrics": [
           {
-            "metricName": "sum(events)"
+            "metricName": "count(event_id)"
           }
         ],
         "chartType": "pie",
@@ -4754,7 +4751,7 @@
                   "size": 5,
                   "min_doc_count": 1,
                   "order": {
-                    "weight|sum": "desc"
+                    "_id|cardinality": "desc"
                   },
                   "missing": "(none)"
                 },
@@ -4765,31 +4762,28 @@
                       "size": 5,
                       "min_doc_count": 1,
                       "order": {
-                        "weight|sum": "desc"
+                        "_id|cardinality": "desc"
                       },
                       "missing": "(none)"
                     },
                     "aggs": {
-                      "weight|sum": {
-                        "sum": {
-                          "field": "weight",
-                          "missing": 1
+                      "_id|cardinality": {
+                        "cardinality": {
+                          "field": "_id"
                         }
                       }
                     }
                   },
-                  "weight|sum": {
-                    "sum": {
-                      "field": "weight",
-                      "missing": 1
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
                     }
                   }
                 }
               },
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
                 }
               }
             }
@@ -4802,7 +4796,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=804033d6&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=4558e4e7&evtcf[filtersGroups][0][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&evtcf[filtersGroups][0][filters][3][id]=09a65a7e&evtcf[filtersGroups][0][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=NOT_AVAILABLE&seg[groups][0][field]=metadata.actor.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[groups][1][field]=metadata.userId.raw&seg[groups][1][func]=terms&seg[groups][1][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=bar",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=804033d6&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=4558e4e7&evtcf[filtersGroups][0][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&evtcf[filtersGroups][0][filters][3][id]=09a65a7e&evtcf[filtersGroups][0][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=NOT_AVAILABLE&seg[groups][0][field]=metadata.actor.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[groups][1][field]=metadata.userId.raw&seg[groups][1][func]=terms&seg[groups][1][by]=metric&seg[metrics][0][metricName]=count%28event_id%29&seg[chartType]=bar",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -4820,7 +4814,7 @@
         ],
         "metrics": [
           {
-            "metricName": "sum(events)"
+            "metricName": "count(event_id)"
           }
         ],
         "chartType": "bar"
