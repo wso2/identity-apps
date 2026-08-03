@@ -3954,10 +3954,16 @@
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
         "metrics": [
           {
-            "metricName": "count(event_id)",
-            "customName": " "
+            "metricName": "count(event_id)"
           }
         ]
       }
@@ -4067,13 +4073,18 @@
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
         "metrics": [
           {
-            "metricName": "count(distinct(user_id))",
-            "customName": " "
+            "metricName": "count(distinct(user_id))"
           }
-        ],
-        "segments": ""
+        ]
       }
     },
     {
@@ -4146,10 +4157,16 @@
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
         "metrics": [
           {
-            "metricName": "sum(events)",
-            "customName": " "
+            "metricName": "sum(events)"
           }
         ]
       }
@@ -4239,11 +4256,17 @@
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
         "metrics": [
           {
             "field": "metadata.sessionId.raw",
-            "func": "cardinality",
-            "customName": " "
+            "func": "cardinality"
           }
         ]
       }
