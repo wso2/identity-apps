@@ -17,6 +17,7 @@
  */
 
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -36,6 +37,7 @@ import { useGetTrialDetails } from "../api/get-trial-details";
 import useGetTenantTier from "../api/use-get-tenant-tier";
 import TrialContext, { TrialContextPropsInterface } from "../contexts/trial-context";
 import { useTrialStatus } from "../hooks/use-trial-status";
+import { isFreeTier } from "../models/tenant-tier";
 import { TrialStatus } from "../models/trial";
 
 /**
@@ -45,9 +47,9 @@ type TrialProviderPropsInterface = PropsWithChildren<unknown>;
 
 /**
  * Provider that owns the trial lifecycle: it checks the user's trial status,
- * activates the trial when it is not yet enabled, and only then fetches the
- * tenant trial details. Sequencing the details fetch behind the activation
- * decision prevents consumers from caching stale "no trial" data.
+ * activates the trial for free tier tenants when it is not yet enabled, and only
+ * then fetches the tenant trial details. Sequencing the details fetch behind the
+ * activation decision prevents consumers from caching stale "no trial" data.
  *
  * @param props - Wrap content/elements.
  * @returns TrialContext Provider.
@@ -74,14 +76,33 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
         error: trialStatusError
     } = useTrialStatus();
 
-    const { mutate: mutateTenantTier } = useGetTenantTier();
+    const {
+        data: tenantTierData,
+        error: tenantTierError,
+        mutate: mutateTenantTier
+    } = useGetTenantTier();
     const { mutate: mutateAllFeatures } = useGetAllFeatures();
+
+    /**
+     * The tier request is only fired for first level organizations with the subscription
+     * API configured. When it cannot be fired at all, the tier is treated as resolved so
+     * the activation gate below settles instead of waiting forever.
+     */
+    const isTenantTierRequestEnabled: boolean =
+        isFirstLevelOrg && !!Config.getDeploymentConfig().extensions?.subscriptionApiPath;
+
+    const isTenantTierResolved: boolean =
+        !isTenantTierRequestEnabled || !!tenantTierData || !!tenantTierError;
+
+    const isFreeTierTenant: boolean =
+        !!tenantTierData?.tierName && isFreeTier(tenantTierData.tierName);
 
     const trialActivationAttempted: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const [ isActivationAttemptComplete, setIsActivationAttemptComplete ] = useState<boolean>(false);
 
     /**
-     * Fire-and-forget trial activation when trial is not yet enabled.
+     * Fire-and-forget trial activation when the tenant is on a free tier and the trial is
+     * not yet enabled. Paid tiers are never activated, so no request is sent for them.
      */
     useEffect(() => {
         if (
@@ -89,6 +110,7 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
             || isTrialStatusLoading
             || !isTrialStatusResolved
             || trialStatus !== TrialStatus.DISABLED
+            || !isFreeTierTenant
             || trialActivationAttempted.current
         ) {
             return;
@@ -114,19 +136,22 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
         isTrialFeatureEnabled,
         isTrialStatusLoading,
         isTrialStatusResolved,
-        trialStatus
+        trialStatus,
+        isFreeTierTenant
     ]);
 
     /**
      * Whether the activation decision is settled, i.e. it is safe to fetch trial
      * details without racing the activation POST. If the trial status can never
      * resolve (e.g. the username never reaches the profile state), the gate stays
-     * closed and trial details simply remain hidden for the session.
+     * closed and trial details simply remain hidden for the session. A resolved
+     * non-free tier settles the gate immediately since no activation is attempted.
      */
     const isActivationSettled: boolean =
         !isTrialFeatureEnabled
         || !isFirstLevelOrg
         || !!trialStatusError
+        || (isTenantTierResolved && !isFreeTierTenant)
         || (isTrialStatusResolved && trialStatus === TrialStatus.ENABLED)
         || isActivationAttemptComplete;
 
