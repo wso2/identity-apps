@@ -1,5 +1,56 @@
 # @wso2is/console
 
+## 4.14.7
+
+### Patch Changes
+
+- [#10577](https://github.com/wso2/identity-apps/pull/10577) [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use vite events to gracefully handle chunkload errors
+
+* [#10579](https://github.com/wso2/identity-apps/pull/10579) [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - show Enforce Fapi checkbox only when fapi feature is disabled
+
+- [#10558](https://github.com/wso2/identity-apps/pull/10558) [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Prevent future dates from being accepted for the Date of Birth attribute in the self-registration page, the dynamic registration flow date field, and the Console user profile and add-user forms.
+
+- Updated dependencies [[`0a908a7aafd983c09c0f8079e6e2aad698c52883`](https://github.com/wso2/identity-apps/commit/0a908a7aafd983c09c0f8079e6e2aad698c52883), [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a), [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa), [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848)]:
+  - @wso2is/admin.tenants.v1@2.29.33
+  - @wso2is/react-components@2.10.5
+  - @wso2is/admin.application-templates.v1@1.6.2
+  - @wso2is/admin.users.v1@2.38.49
+
+## 4.14.6
+
+### Patch Changes
+
+- [#10570](https://github.com/wso2/identity-apps/pull/10570) [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Display all locales in the locale field in the user profile in console
+
+* [#10427](https://github.com/wso2/identity-apps/pull/10427) [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix application dropdown in branding page not showing all applications
+
+* Updated dependencies [[`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246), [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14), [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48)]:
+  - @wso2is/react-components@2.10.4
+  - @wso2is/admin.applications.v1@2.43.13
+  - @wso2is/admin.users.v1@2.38.48
+  - @wso2is/admin.branding.v1@2.32.171
+
+## 4.14.5
+
+### Patch Changes
+
+- [#10571](https://github.com/wso2/identity-apps/pull/10571) [`933b1e5aff0b5b2b9781ae4850e8dc154c413963`](https://github.com/wso2/identity-apps/commit/933b1e5aff0b5b2b9781ae4850e8dc154c413963) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the subject attribute even if it is not a requested attribute
+
+- Updated dependencies [[`933b1e5aff0b5b2b9781ae4850e8dc154c413963`](https://github.com/wso2/identity-apps/commit/933b1e5aff0b5b2b9781ae4850e8dc154c413963)]:
+  - @wso2is/admin.applications.v1@2.43.12
+
+## 4.14.4
+
+### Patch Changes
+
+- [#10569](https://github.com/wso2/identity-apps/pull/10569) [`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the group assigning section
+
+* [#10566](https://github.com/wso2/identity-apps/pull/10566) [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Honor the configured `console.ui.app_favicon_path` in the Console application. The favicon is now applied from the runtime config via react-helmet instead of the hardcoded build-time default.
+
+* Updated dependencies [[`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532), [`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee), [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08)]:
+  - @wso2is/admin.core.v1@2.58.1
+  - @wso2is/admin.users.v1@2.38.47
+
 ## 4.14.3
 
 ### Patch Changes

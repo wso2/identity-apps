@@ -1,5 +1,16 @@
 # @wso2is/admin.core.v1
 
+## 2.58.1
+
+### Patch Changes
+
+- [#10478](https://github.com/wso2/identity-apps/pull/10478) [`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532) Thanks [@NethmikaKekuu](https://github.com/NethmikaKekuu)! - Rename LOGO_IMAGE component to LogoImage to follow JSX PascalCase naming convention.
+
+* [#10566](https://github.com/wso2/identity-apps/pull/10566) [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Honor the configured `console.ui.app_favicon_path` in the Console application. The favicon is now applied from the runtime config via react-helmet instead of the hardcoded build-time default.
+
+* Updated dependencies [[`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee)]:
+  - @wso2is/admin.users.v1@2.38.47
+
 ## 2.58.0
 
 ### Minor Changes

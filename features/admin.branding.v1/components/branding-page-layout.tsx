@@ -55,6 +55,24 @@ import "./branding-page-layout.scss";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
+/**
+ * Number of applications fetched per page, and the minimum number of selectable applications
+ * we want loaded before we stop proactively fetching more (see the dropdown prefetch effect below).
+ */
+const APPLICATION_LIST_PAGE_SIZE: number = 10;
+
+/**
+ * Determines whether an application should be selectable in the branding application dropdown,
+ * i.e. not a system app, default app, or M2M app.
+ *
+ * @param application - Application to check.
+ * @returns Whether the application is selectable.
+ */
+const isSelectableApplication = (application: ApplicationListItemInterface): boolean =>
+    !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.name) &&
+    !ApplicationManagementConstants.DEFAULT_APPS.includes(application?.name) &&
+    !(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID);
+
 const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     props: BrandingPageLayoutInterface
 ): ReactElement => {
@@ -67,6 +85,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const [ hasMoreApplications, setHasMoreApplications ] = useState(true);
     const [ appListOffset, setAppListOffset ] = useState<number>(0);
     const [ shouldFetchApplications, setShouldFetchApplications ] = useState<boolean>(true);
+    const [ isApplicationDropdownOpen, setIsApplicationDropdownOpen ] = useState<boolean>(false);
 
     const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
 
@@ -103,7 +122,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError
-    } = useApplicationList("templateId", 10, appListOffset, null,
+    } = useApplicationList("templateId", APPLICATION_LIST_PAGE_SIZE, appListOffset, null,
         brandingMode === BrandingModes.APPLICATION && shouldFetchApplications);
 
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
@@ -187,6 +206,33 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             setHasMoreApplications(false);
         }
     }, [ applicationList ]);
+
+    /**
+     * Proactively loads more pages while the dropdown is open and too few selectable
+     * (non-system, non-default, non-M2M) applications have been loaded to overflow the
+     * scrollable listbox. `InfiniteScroll` only fires its `next` callback on a scroll event,
+     * which never happens when M2M apps make up most of a page and too few selectable
+     * options remain to overflow the container.
+     */
+    useEffect(() => {
+        if (
+            !isApplicationDropdownOpen ||
+            !hasMoreApplications ||
+            shouldFetchApplications ||
+            isApplicationListFetchRequestValidating ||
+            brandingMode !== BrandingModes.APPLICATION
+        ) {
+            return;
+        }
+
+        const selectableApplicationsCount: number = applications.filter(isSelectableApplication).length;
+
+        if (selectableApplicationsCount < APPLICATION_LIST_PAGE_SIZE) {
+            setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
+            setShouldFetchApplications(true);
+        }
+    }, [ applications, hasMoreApplications, shouldFetchApplications,
+        isApplicationListFetchRequestValidating, brandingMode, isApplicationDropdownOpen ]);
 
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
@@ -297,7 +343,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const loadMoreApplications = () => {
         if (!hasMoreApplications) return;
 
-        setAppListOffset((prevOffset: number) => prevOffset + 10);
+        setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
         setShouldFetchApplications(true);
     };
 
@@ -450,6 +496,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     sx={ { width: 190 } }
                                                     readOnly={ isBrandingAppsRedirect }
                                                     clearIcon={ null }
+                                                    onOpen={ () => setIsApplicationDropdownOpen(true) }
+                                                    onClose={ () => setIsApplicationDropdownOpen(false) }
                                                     options={ applications ?? [] }
                                                     value={ applications?.find(
                                                         (app: ApplicationListItemInterface) =>
@@ -468,14 +516,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                         option.id === value.id
                                                     }
                                                     filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                                        options.filter((application: ApplicationListItemInterface) =>
-                                                            !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                                application?.name) &&
-                                                            !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                                application?.name) &&
-                                                            !(application?.templateId ===
-                                                                ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
-                                                        )
+                                                        options.filter(isSelectableApplication)
                                                     }
                                                     ListboxComponent={ customListboxComponent }
                                                     loading={ isApplicationListFetchRequestLoading }

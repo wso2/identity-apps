@@ -1,5 +1,22 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.13
+
+### Patch Changes
+
+- [#10568](https://github.com/wso2/identity-apps/pull/10568) [`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Preserve complex regex callback URLs in migrated applications. A single `regexp=(...)` callback whose pattern contains a literal comma (e.g. a `{0,4}` quantifier) is now kept as one atomic value across display, edit and save instead of being split as a comma-separated list. Adding across syntaxes combines all alternatives into one de-duplicated `regexp=(...)`, and an input mixing both syntaxes is rejected.
+
+- Updated dependencies [[`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246), [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14), [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48)]:
+  - @wso2is/react-components@2.10.4
+  - @wso2is/admin.users.v1@2.38.48
+  - @wso2is/admin.branding.v1@2.32.171
+
+## 2.43.12
+
+### Patch Changes
+
+- [#10571](https://github.com/wso2/identity-apps/pull/10571) [`933b1e5aff0b5b2b9781ae4850e8dc154c413963`](https://github.com/wso2/identity-apps/commit/933b1e5aff0b5b2b9781ae4850e8dc154c413963) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the subject attribute even if it is not a requested attribute
+
 ## 2.43.11
 
 ### Patch Changes

@@ -747,10 +747,12 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      */
     const createDropdownOption = (): DropdownOptionsInterface[] => {
         const options: DropdownOptionsInterface[] = [];
+        const currentSubjectUri: string = claimConfigurations?.subject?.claim?.uri;
 
         if (selectedDialect.localDialect) {
             if (claimMappingOn) {
                 let usernameAdded: boolean = false;
+                let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute;
                 const claimMappingOption: DropdownOptionsInterface[] = [];
                 const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
 
@@ -775,6 +777,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     if (element.localClaim.uri === DefaultSubjectAttribute) {
                         usernameAdded = true;
                     }
+                    if (element.applicationClaim === currentSubjectUri) {
+                        subjectAdded = true;
+                    }
                     claimMappingOption.push(option);
                 });
                 if (claimMappingList.length === 0 || !usernameAdded) {
@@ -798,10 +803,45 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         claimMappingOption.push(option);
                     }
                 }
+                if (!subjectAdded) {
+                    // Preserve a subject claim that isn't part of the current claim mappings so the dropdown
+                    // can render it and it survives round-trips through this form.
+                    const subjectClaim: ExtendedClaimInterface = claims.filter(
+                        (element: ExtendedClaimInterface) => element.claimURI === currentSubjectUri)[ 0 ];
+
+                    if (subjectClaim !== null && typeof subjectClaim !== "undefined") {
+                        claimMappingOption.push({
+                            key: subjectClaim.claimURI,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ subjectClaim.id }
+                                    displayName={ subjectClaim.displayName }
+                                    claimURI={ subjectClaim.claimURI }
+                                    value={ subjectClaim.claimURI }
+                                />
+                            ),
+                            value: subjectClaim.claimURI
+                        });
+                    } else {
+                        claimMappingOption.push({
+                            key: currentSubjectUri,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ currentSubjectUri }
+                                    displayName={ currentSubjectUri }
+                                    claimURI={ currentSubjectUri }
+                                    value={ currentSubjectUri }
+                                />
+                            ),
+                            value: currentSubjectUri
+                        });
+                    }
+                }
 
                 return sortBy(claimMappingOption, "key");
             } else {
                 let usernameAdded: boolean = false;
+                let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute;
 
                 selectedClaims.map((element: ExtendedClaimInterface) => {
                     const option: DropdownOptionsInterface = {
@@ -820,6 +860,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     options.push(option);
                     if (element.claimURI === DefaultSubjectAttribute) {
                         usernameAdded = true;
+                    }
+                    if (element.claimURI === currentSubjectUri) {
+                        subjectAdded = true;
                     }
                 });
                 if (!usernameAdded) {
@@ -843,9 +886,44 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         options.push(option);
                     }
                 }
+                if (!subjectAdded) {
+                    // Preserve a subject claim that isn't part of the currently selected claims so the dropdown
+                    // can render it and it survives round-trips through this form.
+                    const subjectClaim: ExtendedClaimInterface = claims.filter(
+                        (element: ExtendedClaimInterface) => element.claimURI === currentSubjectUri)[ 0 ];
+
+                    if (subjectClaim !== null && typeof subjectClaim !== "undefined") {
+                        options.push({
+                            key: subjectClaim.claimURI,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ subjectClaim.id }
+                                    displayName={ subjectClaim.displayName }
+                                    claimURI={ subjectClaim.claimURI }
+                                    value={ subjectClaim.claimURI }
+                                />
+                            ),
+                            value: subjectClaim.claimURI
+                        });
+                    } else {
+                        options.push({
+                            key: currentSubjectUri,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ currentSubjectUri }
+                                    displayName={ currentSubjectUri }
+                                    claimURI={ currentSubjectUri }
+                                    value={ currentSubjectUri }
+                                />
+                            ),
+                            value: currentSubjectUri
+                        });
+                    }
+                }
             }
         } else {
             let usernameAdded: boolean = false;
+            let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute;
 
             unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 scope?.claims.map((element: ExtendedExternalClaimInterface) => {
@@ -866,6 +944,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         options.push(option);
                         if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
                             usernameAdded = true;
+                        }
+                        if (element.mappedLocalClaimURI === currentSubjectUri) {
+                            subjectAdded = true;
                         }
                     }
                 });
@@ -893,6 +974,44 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     };
 
                     options.push(option);
+                }
+            }
+            if (!subjectAdded) {
+                // Preserve a subject claim that isn't in the currently requested claims so the dropdown
+                // can render it and it survives round-trips through this form.
+                const allExternalClaims: ExtendedExternalClaimInterface[] = [
+                    ...externalClaims, ...selectedExternalClaims
+                ];
+                const subjectExternalClaim: ExtendedExternalClaimInterface = allExternalClaims.filter(
+                    (element: ExtendedExternalClaimInterface) =>
+                        element.mappedLocalClaimURI === currentSubjectUri)[ 0 ];
+
+                if (subjectExternalClaim !== null && typeof subjectExternalClaim !== "undefined") {
+                    options.push({
+                        key: subjectExternalClaim.claimURI,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ subjectExternalClaim.id }
+                                displayName={ subjectExternalClaim.localClaimDisplayName }
+                                claimURI={ subjectExternalClaim.claimURI }
+                                value={ subjectExternalClaim.mappedLocalClaimURI }
+                            />
+                        ),
+                        value: subjectExternalClaim.mappedLocalClaimURI
+                    });
+                } else {
+                    options.push({
+                        key: currentSubjectUri,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ currentSubjectUri }
+                                displayName={ currentSubjectUri }
+                                claimURI={ currentSubjectUri }
+                                value={ currentSubjectUri }
+                            />
+                        ),
+                        value: currentSubjectUri
+                    });
                 }
             }
         }

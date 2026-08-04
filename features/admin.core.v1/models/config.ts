@@ -492,6 +492,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         plannedRollOutDate: string;
     };
     /**
+     * Path to the favicon of the application.
+     */
+    appFaviconPath?: string;
+    /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.
      * `REMOTE` will fetch templates from the template management REST API.

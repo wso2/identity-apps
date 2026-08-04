@@ -26,6 +26,19 @@ import Hint from "../hint";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
+const DATE_VALIDATOR = "DateValidator";
+const ISO_DATE_FORMAT = "YYYY-MM-DD";
+
+/**
+ * Format today's date as a YYYY-MM-DD string.
+ */
+const formatToday = () => {
+    const date = new Date();
+    const pad = (num) => String(num).padStart(2, "0");
+
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+};
+
 const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
     const { identifier, required, label, placeholder, validations, hint } = component.config;
@@ -34,6 +47,14 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
     const { fieldErrors, validate } = useFieldValidation(validations);
 
     const [ value, setValue ] = useState("");
+
+    // Derive calendar constraints from the configured DateValidator rule, so the picker
+    // matches the validation rule the field was given (no field-specific logic here).
+    const dateValidatorRule = Array.isArray(validations)
+        ? validations.find((rule) => rule?.name === DATE_VALIDATOR)
+        : undefined;
+    const disallowFuture = Boolean(dateValidatorRule?.conditions?.some(
+        (condition) => condition.key === "disallow.future" && condition.value === "true"));
 
     useEffect(() => {
         formStateHandler(component.config.identifier, value);
@@ -58,6 +79,8 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 } }
                 value={ value }
                 required={ required }
+                dateFormat={ dateValidatorRule ? ISO_DATE_FORMAT : undefined }
+                maxDate={ disallowFuture ? formatToday() : undefined }
                 clearable
                 closeOnMouseLeave
                 closable

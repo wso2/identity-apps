@@ -55,6 +55,7 @@ import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -79,6 +80,8 @@ import {
     isMultipleEmailsAndMobileNumbersEnabled,
     isSchemaReadOnly
 } from "../../utils/user-management-utils";
+
+dayjs.extend(customParseFormat);
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -1213,6 +1216,18 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                             validation.isValid = false;
                             validation.errorMessages
                                 .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        } else if (!dayjs(value, "YYYY-MM-DD", true).isValid()) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        } else if (dayjs().isBefore(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.futureDateError", {
                                     field: fieldName
                                 }));
                         }

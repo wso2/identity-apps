@@ -65,6 +65,8 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,
@@ -105,6 +107,8 @@ import {
     normalizeLocaleFormat
 } from "../../../utils";
 import "./add-user-basic/add-user-basic.scss";
+
+dayjs.extend(customParseFormat);
 
 /**
  * Proptypes for the add user component.
@@ -1873,6 +1877,18 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                             validation.isValid = false;
                             validation.errorMessages
                                 .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        } else if (!dayjs(value, "YYYY-MM-DD", true).isValid()) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        } else if (dayjs().isBefore(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.futureDateError", {
                                     field: fieldName
                                 }));
                         }
