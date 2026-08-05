@@ -11,7 +11,7 @@ import ActionTypesListingPage from "../../pages/actions";
 
 vi.mock("../../api/use-get-action-types");
 vi.mock("../../api/use-get-actions-by-type");
-vi.mock("@wso2is/access-control", () => ({...vi.importActual("@wso2is/access-control"),useCheckFeatureStatus: vi.fn()}));
+vi.mock("@wso2is/access-control", () => ({useCheckFeatureStatus: vi.fn()}));
 vi.mock("@wso2is/admin.organizations.v1/hooks/use-get-organization-type", () => ({useGetCurrentOrganizationType: vi.fn()}));
 vi.mock("react-i18next", () => ({useTranslation: vi.fn()}));
 vi.mock("@wso2is/react-components", () => ({
@@ -19,7 +19,20 @@ vi.mock("@wso2is/react-components", () => ({
     GenericIcon: ({ children }: { children: React.ReactNode }) => <div>{ children }</div>,
     PageLayout: ({ children }: { children: React.ReactNode }) => <div>{ children }</div>,
     useDocumentation: () => ({ getLink: () => "https://example.com" })}));
-
+vi.mock("@asgardeo/auth-react", () => ({
+    useAuthContext: () => ({
+        getDecodedIDToken: vi.fn(),
+        getAccessToken: vi.fn(),
+        state: {}
+    }),
+    AuthProvider: ({ children }: { children: React.ReactNode }) => <>{ children }</>,
+    AsgardeoSPAClient: {
+        getInstance: () => ({
+            httpRequest: vi.fn(),
+            httpRequestAll: vi.fn()
+        })
+    }
+}));
 const mockedUseGetActionTypes = vi.mocked(useGetActionTypes);
 const mockedUseGetActionsByType = vi.mocked(useGetActionsByType);
 const mockedUseCheckFeatureStatus = vi.mocked(useCheckFeatureStatus);

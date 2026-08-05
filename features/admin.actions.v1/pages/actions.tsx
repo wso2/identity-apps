@@ -413,8 +413,8 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
             return true;
         }
 
-        if (normalizedStatus === "0") {
-            return true;
+        if (normalizedStatus === ActionsConstants.INACTIVE_STATUS) {
+            return false;
         }
 
         return false;
@@ -457,13 +457,16 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
                         data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
                     >
                         <CircleCheckFilledIcon className="icon-configured" />
-                        <Typography className="text-configured" variant="h6">
+                        <Typography className="text-configured" variant="h6" color="inherit">
                             { t("actions:status.configured") }
                         </Typography>
                     </div>
 
                     <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
-                        <Typography variant="h6">
+                        { isActive === true && (
+                            <CircleCheckFilledIcon className="icon-status" />
+                        ) }
+                        <Typography className="text-status" variant="h6" color="inherit">
                             { isActive === null ? "?" : (isActive ? t("actions:status.active") : t("actions:status.inactive")) }
                         </Typography>
                     </div>
@@ -476,7 +479,7 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
                 className="status-tag"
                 data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
             >
-                <Typography className="text-not-configured" variant="h6">
+                <Typography className="text-not-configured" variant="h6" color="inherit">
                     { t("actions:status.notConfigured") }
                 </Typography>
             </div>
