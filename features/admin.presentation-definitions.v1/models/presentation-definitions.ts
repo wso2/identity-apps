@@ -17,15 +17,6 @@
  */
 
 /**
- * Issuer certificate configuration type for a requested credential.
- */
-export enum IssuerCertType {
-    NONE = "NONE",
-    JWKS = "JWKS",
-    PEM = "PEM"
-}
-
-/**
  * Interface for a single claim constraint within a requested credential.
  *
  * `id` and `path` map directly to the DCQL spec fields. `name` is kept for
@@ -46,35 +37,33 @@ export interface ClaimConstraintModel {
 }
 
 /**
- * Interface for a DCQL credential_sets entry.
- *
- * Each entry describes one group of acceptable credential combinations.
- * `options` is a list of alternatives; at least one option (inner list of
- * credential IDs) must be fully satisfied. When `required` is false the whole
- * group is optional.
- */
-export interface CredentialSetModel {
-    /** When false the set is optional. Defaults to true. */
-    required?: boolean;
-    /** Each inner array is one acceptable combination of credential IDs. */
-    options: string[][];
-}
-
-/**
  * Interface for a requested credential in a presentation definition.
  */
 export interface RequestedCredentialModel {
-    credentialQueryId: string;
+    /** User-defined alphanumeric identifier (DCQL credential query id). */
+    id: string;
     type: string;
     purpose?: string;
     issuer?: string;
-    issuerCertPem?: string;
+    enforceTrustedIssuer?: boolean;
+    /** Base64-encoded PEM root CA certificates trusted for x5c chain validation. */
+    trustedCaPems?: string[];
+    /** Key resolution method: x5c | jwks_uri | pem. Default: x5c. */
+    keyResolutionMethod?: string;
+    /** JWKS endpoint URL (used when keyResolutionMethod is 'jwks_uri'). */
     jwksUri?: string;
+    /** PEM-encoded issuer certificate (used when keyResolutionMethod is 'pem'). */
+    issuerPem?: string;
     claims?: ClaimConstraintModel[];
-    /** DCQL claim_sets: alternative groups of claim IDs; at least one must be satisfied. */
-    claimSets?: string[][];
-    enforceTrustedIssuers?: boolean;
-    trustedIssuers?: string[];
+}
+
+/**
+ * Patch operation for trusted CA certificates.
+ */
+export interface CertificatePatch {
+    operation: "ADD" | "REMOVE" | "REPLACE";
+    certificateIndex?: number;
+    certificate?: string;
 }
 
 /**
@@ -85,8 +74,6 @@ export interface PresentationDefinition {
     name: string;
     description?: string;
     credentials: RequestedCredentialModel[];
-    /** DCQL credential_sets: required/optional combinations of credential IDs. */
-    credentialSets?: CredentialSetModel[];
 }
 
 /**
@@ -99,10 +86,19 @@ export interface PresentationDefinitionListItem {
 }
 
 /**
+ * Interface for a pagination link in a list response.
+ */
+export interface PaginationLink {
+    rel: string;
+    href: string;
+}
+
+/**
  * Interface for the Presentation Definition list API response.
  */
 export interface PresentationDefinitionList {
     totalResults?: number;
+    links?: PaginationLink[];
     presentationDefinitions: PresentationDefinitionListItem[];
 }
 
@@ -113,7 +109,6 @@ export interface PresentationDefinitionCreationModel {
     name: string;
     description?: string;
     credentials: RequestedCredentialModel[];
-    credentialSets?: CredentialSetModel[];
 }
 
 /**
@@ -123,5 +118,23 @@ export interface PresentationDefinitionUpdateModel {
     name?: string;
     description?: string;
     credentials?: RequestedCredentialModel[];
-    credentialSets?: CredentialSetModel[];
+}
+
+/**
+ * Interface for a single connection (IDP) referencing a presentation definition.
+ */
+export interface ConnectedConnectionItemInterface {
+    connectionId: string;
+    name: string;
+    self: string;
+}
+
+/**
+ * Interface for the connected connections API response.
+ */
+export interface ConnectedConnectionsResponseInterface {
+    totalResults: number;
+    startIndex: number;
+    count: number;
+    connectedConnections: ConnectedConnectionItemInterface[];
 }

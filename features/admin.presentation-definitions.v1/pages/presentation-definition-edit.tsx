@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,19 @@
  * under the License.
  */
 
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import Chip from "@oxygen-ui/react/Chip";
+import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import IconButton from "@oxygen-ui/react/IconButton";
+import MuiGrid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import MuiTextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     AlertInterface,
     AlertLevels,
@@ -32,40 +36,71 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
-    Button,
+    CertFileStrategy,
     ConfirmationModal,
     ContentLoader,
+    CopyInputField,
     DangerZone,
     DangerZoneGroup,
     DataTable,
+    EmptyPlaceholder,
     EmphasizedSegment,
+    FilePicker,
+    Heading,
     Hint,
+    LinkButton,
     PageLayout,
+    PickerResult,
     PrimaryButton,
     ResourceTab,
-    ResourceTabPaneInterface,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, {
+    FunctionComponent,
+    KeyboardEvent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "redux";
-import { Divider, Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { deletePresentationDefinition, updatePresentationDefinition } from "../api/presentation-definitions";
-import CredentialEditDialog from "../components/credential-edit-dialog";
+import {
+    Divider,
+    Grid,
+    Header,
+    Icon,
+    List,
+    Modal,
+    Popup,
+    Segment,
+    SemanticICONS
+} from "semantic-ui-react";
+import {
+    deletePresentationDefinition,
+    getConnectedConnections,
+    updatePresentationDefinition
+} from "../api/presentation-definitions";
 import { useGetPresentationDefinition } from "../hooks/use-get-presentation-definition";
 import {
-    CredentialSetModel,
+    ClaimConstraintModel,
+    ConnectedConnectionsResponseInterface,
+    PresentationDefinition,
     PresentationDefinitionUpdateModel,
     RequestedCredentialModel
 } from "../models/presentation-definitions";
+import { AddTrustedCaModal } from "../components/add-trusted-ca-modal";
+import { TrustedCaCertificatesList } from "../components/trusted-ca-certificates-list";
 
 interface RouteParams {
     id: string;
@@ -73,13 +108,9 @@ interface RouteParams {
 
 type PresentationDefinitionEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps<RouteParams>;
 
-interface GeneralFormValues {
-    name: string;
-    description?: string;
-}
-
 /**
- * Presentation Definition edit page.
+ * Presentation Definition edit page with four tabs:
+ * General, Settings, Claims, and Issuer Trust.
  *
  * @param props - Props injected to the component.
  * @returns React element.
@@ -88,20 +119,45 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     match,
     "data-componentid": componentId = "presentation-definition-edit"
 }: PresentationDefinitionEditPagePropsInterface): ReactElement => {
+
     const definitionId: string = match?.params?.id;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ isGeneralSubmitting, setIsGeneralSubmitting ] = useState<boolean>(false);
-    const [ isCredentialsSubmitting, setIsCredentialsSubmitting ] = useState<boolean>(false);
-    const [ showDeleteDefinitionModal, setShowDeleteDefinitionModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
+    const [ showDeleteBlockedModal, setShowDeleteBlockedModal ] = useState<boolean>(false);
+    const [ connectedConnectionNames, setConnectedConnectionNames ] = useState<string[]>(undefined);
+    const [ isConnectionsLoading, setIsConnectionsLoading ] = useState<boolean>(false);
 
-    const [ credentials, setCredentials ] = useState<RequestedCredentialModel[]>([]);
-    const [ credentialSets, setCredentialSets ] = useState<CredentialSetModel[]>([]);
-    const [ showCredentialDialog, setShowCredentialDialog ] = useState<boolean>(false);
-    const [ editingCredentialIndex, setEditingCredentialIndex ] = useState<number>(-1);
-    const [ showDeleteCredentialModal, setShowDeleteCredentialModal ] = useState<boolean>(false);
-    const [ deletingCredentialIndex, setDeletingCredentialIndex ] = useState<number>(-1);
+    // General tab state
+    const [ name, setName ] = useState<string>("");
+    const [ description, setDescription ] = useState<string>("");
+
+    // Shared identity (read-only, displayed in General tab)
+    const [ credentialId, setCredentialId ] = useState<string>("");
+
+    // Settings tab state
+    const [ credentialType, setCredentialType ] = useState<string>("");
+
+    // Claims tab state
+    const [ claims, setClaims ] = useState<ClaimConstraintModel[]>([]);
+    const [ showClaimModal, setShowClaimModal ] = useState<boolean>(false);
+    const [ claimModalIndex, setClaimModalIndex ] = useState<number | null>(null);
+    const [ modalPath, setModalPath ] = useState<string>("");
+    const [ modalMandatory, setModalMandatory ] = useState<boolean>(true);
+    const [ modalAllowedValues, setModalAllowedValues ] = useState<string[]>([]);
+    const [ modalAllowedValueInput, setModalAllowedValueInput ] = useState<string>("");
+
+    // Issuer Trust tab state
+    const [ keyResolutionMethod, setKeyResolutionMethod ] = useState<string>("x5c");
+    const [ enforceTrustedIssuer, setEnforceTrustedIssuer ] = useState<boolean>(false);
+    const [ jwksUri, setJwksUri ] = useState<string>("");
+    const [ issuerPem, setIssuerPem ] = useState<string>("");
+    const [ trustedCaPems, setTrustedCaPems ] = useState<string[]>([]);
+    const [ showAddCertModal, setShowAddCertModal ] = useState<boolean>(false);
+
+    const [ isFormReady, setIsFormReady ] = useState<boolean>(false);
 
     const { data: definition, isLoading, error } = useGetPresentationDefinition(definitionId, true);
 
@@ -116,26 +172,72 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     }, [ error ]);
 
     useEffect(() => {
-        if (definition?.credentials) {
-            setCredentials(definition.credentials);
-            setCredentialSets(definition.credentialSets ?? []);
-        }
+        if (!definition) return;
+
+        const cred: RequestedCredentialModel | undefined = definition.credentials?.[0];
+
+        setName(definition.name ?? "");
+        setDescription(definition.description ?? "");
+        setCredentialId(cred?.id ?? "");
+        setCredentialType(cred?.type ?? "");
+        setClaims(
+            (cred?.claims ?? []).map((c: ClaimConstraintModel) => ({
+                ...c,
+                path: c.path ?? (c.name ? [ c.name ] : [ "" ])
+            }))
+        );
+        setEnforceTrustedIssuer(cred?.enforceTrustedIssuer ?? false);
+        setKeyResolutionMethod(cred?.keyResolutionMethod ?? "x5c");
+        setJwksUri(cred?.jwksUri ?? "");
+        setIssuerPem(cred?.issuerPem ?? "");
+        setTrustedCaPems(cred?.trustedCaPems ?? []);
+        setIsFormReady(true);
     }, [ definition ]);
 
-    const handleGeneralUpdate = (values: GeneralFormValues): void => {
-        if (!values?.name) {
-            return;
-        }
+    const buildUpdatePayload = useCallback((): PresentationDefinitionUpdateModel => {
+        const validClaims: ClaimConstraintModel[] = claims
+            .map((c: ClaimConstraintModel) => ({
+                ...c,
+                path: (c.path ?? []).map((s: string) => s.trim()).filter(Boolean)
+            }))
+            .filter((c: ClaimConstraintModel) => (c.path ?? []).length > 0)
+            .map((c: ClaimConstraintModel) => ({
+                allowedValues: (c.allowedValues ?? []).length > 0 ? c.allowedValues : undefined,
+                mandatory: c.mandatory ?? true,
+                path: c.path ?? []
+            }));
 
-        setIsGeneralSubmitting(true);
-
-        const updateData: PresentationDefinitionUpdateModel = {
-            description: values.description?.trim() || undefined,
-            name: values.name.trim()
+        const credential: RequestedCredentialModel = {
+            claims: validClaims,
+            enforceTrustedIssuer: keyResolutionMethod === "x5c" ? enforceTrustedIssuer : false,
+            id: credentialId,
+            issuerPem: keyResolutionMethod === "pem" ? (issuerPem.trim() || undefined) : undefined,
+            jwksUri: keyResolutionMethod === "jwks_uri" ? (jwksUri.trim() || undefined) : undefined,
+            keyResolutionMethod: keyResolutionMethod,
+            trustedCaPems: keyResolutionMethod === "x5c"
+                ? (trustedCaPems.length > 0 ? trustedCaPems : undefined)
+                : undefined,
+            type: credentialType
         };
 
-        updatePresentationDefinition(definitionId, updateData)
-            .then(() => {
+        return {
+            credentials: [ credential ],
+            description: description.trim() || undefined,
+            name: name.trim()
+        };
+    }, [ name, description, credentialId, credentialType, claims, enforceTrustedIssuer,
+        keyResolutionMethod, jwksUri, issuerPem, trustedCaPems ]);
+
+    const handleUpdate = useCallback((): void => {
+        if (!name.trim()) return;
+        setIsSubmitting(true);
+
+        updatePresentationDefinition(definitionId, buildUpdatePayload())
+            .then((updated: PresentationDefinition) => {
+                const updatedCred: RequestedCredentialModel | undefined =
+                    updated.credentials?.find((c: RequestedCredentialModel) => c.id === credentialId);
+
+                setTrustedCaPems(updatedCred?.trustedCaPems ?? []);
                 dispatch(addAlert<AlertInterface>({
                     description: t("presentationDefinitions:notifications.updateDefinition.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -149,46 +251,29 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     message: t("presentationDefinitions:notifications.updateDefinition.error.message")
                 }));
             })
-            .finally(() => setIsGeneralSubmitting(false));
-    };
+            .finally(() => setIsSubmitting(false));
+    }, [ buildUpdatePayload, name ]);
 
-    const handleCredentialsUpdate = (): void => {
-        setIsCredentialsSubmitting(true);
+    const handleAddCert = useCallback((pem: string): void => {
+        setTrustedCaPems((prev: string[]) => [ ...prev, pem ]);
+    }, []);
 
-        const updateData: PresentationDefinitionUpdateModel = {
-            credentialSets: credentialSets.length > 0 ? credentialSets : undefined,
-            credentials
-        };
+    const handleRemoveCert = useCallback((index: number): void => {
+        setTrustedCaPems((prev: string[]) => prev.filter((_: string, i: number) => i !== index));
+    }, []);
 
-        updatePresentationDefinition(definitionId, updateData)
-            .then(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("presentationDefinitions:notifications.updateDefinition.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("presentationDefinitions:notifications.updateDefinition.success.message")
-                }));
-            })
-            .catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("presentationDefinitions:notifications.updateDefinition.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("presentationDefinitions:notifications.updateDefinition.error.message")
-                }));
-            })
-            .finally(() => setIsCredentialsSubmitting(false));
-    };
-
-    const handleDeleteDefinition = (): void => {
-        deletePresentationDefinition(definitionId)
-            .then(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t(
-                        "presentationDefinitions:notifications.deleteDefinition.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t("presentationDefinitions:notifications.deleteDefinition.success.message")
-                }));
-                history.push(AppConstants.getPaths().get("VP_DEFINITIONS"));
+    const handleDeleteInitiation = useCallback((): void => {
+        setIsConnectionsLoading(true);
+        getConnectedConnections(definitionId)
+            .then((response: ConnectedConnectionsResponseInterface) => {
+                if (response?.count === 0) {
+                    setShowDeleteModal(true);
+                } else {
+                    setConnectedConnectionNames(
+                        (response?.connectedConnections ?? []).map((c) => c.name)
+                    );
+                    setShowDeleteBlockedModal(true);
+                }
             })
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -198,244 +283,164 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     level: AlertLevels.ERROR,
                     message: t("presentationDefinitions:notifications.deleteDefinition.error.message")
                 }));
+            })
+            .finally(() => setIsConnectionsLoading(false));
+    }, [ definitionId ]);
+
+    const handleDeleteDefinition = useCallback((): void => {
+        deletePresentationDefinition(definitionId)
+            .then(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.deleteDefinition.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("presentationDefinitions:notifications.deleteDefinition.success.message")
+                }));
+                history.push(AppConstants.getPaths().get("VP_DEFINITIONS"));
+            })
+            .catch(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.deleteDefinition.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("presentationDefinitions:notifications.deleteDefinition.error.message")
+                }));
             });
+    }, [ definitionId ]);
+
+    // ── Claims helpers ────────────────────────────────────────────────────────
+
+    const openAddClaimModal = (): void => {
+        setClaimModalIndex(null);
+        setModalPath("");
+        setModalMandatory(true);
+        setModalAllowedValues([]);
+        setModalAllowedValueInput("");
+        setShowClaimModal(true);
     };
 
-    const handleCredentialSave = (credential: RequestedCredentialModel): void => {
-        setCredentials((prev: RequestedCredentialModel[]) => {
-            const updated: RequestedCredentialModel[] = [ ...prev ];
+    const openEditClaimModal = (index: number): void => {
+        const claim: ClaimConstraintModel = claims[index];
 
-            if (editingCredentialIndex >= 0) {
-                updated[editingCredentialIndex] = credential;
-            } else {
-                updated.push(credential);
-            }
-
-            return updated;
-        });
-        setShowCredentialDialog(false);
-        setEditingCredentialIndex(-1);
+        setClaimModalIndex(index);
+        setModalPath((claim.path ?? []).join("."));
+        setModalMandatory(claim.mandatory ?? true);
+        setModalAllowedValues(claim.allowedValues ?? []);
+        setModalAllowedValueInput("");
+        setShowClaimModal(true);
     };
 
-    const handleCredentialDelete = (): void => {
-        setCredentials((prev: RequestedCredentialModel[]) =>
-            prev.filter((_: RequestedCredentialModel, i: number) => i !== deletingCredentialIndex)
+    const saveClaimModal = (): void => {
+        if (!modalPath.trim()) return;
+        const updated: ClaimConstraintModel = {
+            allowedValues: modalAllowedValues.length > 0 ? modalAllowedValues : undefined,
+            mandatory: modalMandatory,
+            path: modalPath.trim().split(".")
+        };
+
+        if (claimModalIndex === null) {
+            setClaims((prev: ClaimConstraintModel[]) => [ ...prev, updated ]);
+        } else {
+            setClaims((prev: ClaimConstraintModel[]) => {
+                const next: ClaimConstraintModel[] = [ ...prev ];
+
+                next[claimModalIndex] = updated;
+                return next;
+            });
+        }
+        setShowClaimModal(false);
+    };
+
+    const addModalAllowedValue = (): void => {
+        if (!modalAllowedValueInput.trim()) return;
+        setModalAllowedValues((prev: string[]) => [ ...prev, modalAllowedValueInput.trim() ]);
+        setModalAllowedValueInput("");
+    };
+
+    const removeClaim = (index: number): void => {
+        setClaims((prev: ClaimConstraintModel[]) =>
+            prev.filter((_: ClaimConstraintModel, i: number) => i !== index)
         );
-        setShowDeleteCredentialModal(false);
-        setDeletingCredentialIndex(-1);
     };
 
-    // ---- Credential set handlers ----
+    // ── Tab pane renderers ────────────────────────────────────────────────────
 
-    const addCredentialSet = (): void => {
-        setCredentialSets((prev: CredentialSetModel[]) => [
-            ...prev,
-            { options: [ [] ], required: true }
-        ]);
-    };
-
-    const removeCredentialSet = (setIndex: number): void => {
-        setCredentialSets((prev: CredentialSetModel[]) =>
-            prev.filter((_: CredentialSetModel, i: number) => i !== setIndex)
-        );
-    };
-
-    const updateCredentialSetRequired = (setIndex: number, required: boolean): void => {
-        setCredentialSets((prev: CredentialSetModel[]) => {
-            const updated: CredentialSetModel[] = [ ...prev ];
-
-            updated[setIndex] = { ...updated[setIndex], required };
-
-            return updated;
-        });
-    };
-
-    const addCredentialSetOption = (setIndex: number): void => {
-        setCredentialSets((prev: CredentialSetModel[]) => {
-            const updated: CredentialSetModel[] = [ ...prev ];
-
-            updated[setIndex] = {
-                ...updated[setIndex],
-                options: [ ...updated[setIndex].options, [] ]
-            };
-
-            return updated;
-        });
-    };
-
-    const removeCredentialSetOption = (setIndex: number, optionIndex: number): void => {
-        setCredentialSets((prev: CredentialSetModel[]) => {
-            const updated: CredentialSetModel[] = [ ...prev ];
-
-            updated[setIndex] = {
-                ...updated[setIndex],
-                options: updated[setIndex].options.filter(
-                    (_: string[], i: number) => i !== optionIndex
-                )
-            };
-
-            return updated;
-        });
-    };
-
-    const updateCredentialSetOption = (
-        setIndex: number,
-        optionIndex: number,
-        credentialIds: string[]
-    ): void => {
-        setCredentialSets((prev: CredentialSetModel[]) => {
-            const updated: CredentialSetModel[] = [ ...prev ];
-            const updatedOptions: string[][] = [ ...updated[setIndex].options ];
-
-            updatedOptions[optionIndex] = credentialIds;
-            updated[setIndex] = { ...updated[setIndex], options: updatedOptions };
-
-            return updated;
-        });
-    };
-
-    // ----
-
-    const resolveCredentialTableColumns = (): TableColumnInterface[] => [
-        {
-            allowToggleVisibility: false,
-            dataIndex: "type",
-            id: "type",
-            key: "type",
-            render: (credential: RequestedCredentialModel): ReactNode => (
-                <Header image as="h6" className="header-with-icon">
-                    <AppAvatar
-                        image={
-                            <AnimatedAvatar
-                                name={ credential.type }
-                                size="mini"
-                                data-componentid={ `${componentId}-credential-avatar` }
+    const renderGeneralTab = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation attached={ false }>
+            <EmphasizedSegment padded="very">
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <label className="form-label">
+                                { t("presentationDefinitions:editPage.quickCopy.definitionId.label") }
+                            </label>
+                            <CopyInputField
+                                value={ definitionId }
+                                data-componentid={ `${componentId}-definition-id-copy` }
                             />
-                        }
-                        size="mini"
-                        spaced="right"
-                    />
-                    <Header.Content>
-                        { credential.type }
-                        { credential.purpose && (
-                            <Header.Subheader>{ credential.purpose }</Header.Subheader>
-                        ) }
-                    </Header.Content>
-                </Header>
-            ),
-            title: t("presentationDefinitions:editPage.form.credentials.type.label")
-        },
-        {
-            allowToggleVisibility: false,
-            dataIndex: "enforceTrustedIssuers",
-            id: "enforceTrustedIssuers",
-            key: "enforceTrustedIssuers",
-            render: (credential: RequestedCredentialModel): ReactNode => (
-                credential.enforceTrustedIssuers
-                    ? (
-                        <span>
-                            <Icon name="check circle" color="green" />
-                            { (credential.trustedIssuers?.length ?? 0) > 0
-                                ? `${credential.trustedIssuers.length} issuer(s)`
-                                : "Enforced"
-                            }
-                        </span>
-                    )
-                    : <span>{ "—" }</span>
-            ),
-            title: t("presentationDefinitions:editPage.form.credentials.enforceTrustedIssuers.label")
-        },
-        {
-            allowToggleVisibility: false,
-            dataIndex: "action",
-            id: "actions",
-            key: "actions",
-            textAlign: "right",
-            title: t("presentationDefinitions:list.columns.actions")
-        }
-    ];
+                            <Hint compact>
+                                { t("presentationDefinitions:editPage.quickCopy.definitionId.hint") }
+                            </Hint>
 
-    const resolveCredentialTableActions = (): TableActionsInterface[] => [
-        {
-            "data-componentid": `${componentId}-credential-edit-button`,
-            hidden: (): boolean => false,
-            icon: (): SemanticICONS => "pencil alternate",
-            onClick: (_e: SyntheticEvent, credential: RequestedCredentialModel): void => {
-                const index: number = credentials.indexOf(credential);
+                            <Divider hidden />
 
-                setEditingCredentialIndex(index);
-                setShowCredentialDialog(true);
-            },
-            popupText: (): string => t("common:edit"),
-            renderer: "semantic-icon"
-        },
-        {
-            "data-componentid": `${componentId}-credential-delete-button`,
-            hidden: (): boolean => false,
-            icon: (): SemanticICONS => "trash alternate",
-            onClick: (_e: SyntheticEvent, credential: RequestedCredentialModel): void => {
-                const index: number = credentials.indexOf(credential);
-
-                setDeletingCredentialIndex(index);
-                setShowDeleteCredentialModal(true);
-            },
-            popupText: (): string => t("common:delete"),
-            renderer: "semantic-icon"
-        }
-    ];
-
-    const availableCredentialQueryIds: string[] = credentials.map(
-        (c: RequestedCredentialModel) => c.credentialQueryId
-    );
-
-    const GeneralTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <EmphasizedSegment paddingless={ false }>
-                <FinalForm
-                    initialValues={ {
-                        description: definition?.description ?? "",
-                        name: definition?.name ?? ""
-                    } }
-                    onSubmit={ handleGeneralUpdate }
-                    render={ ({ handleSubmit }: FormRenderProps) => (
-                        <form id="editPresentationDefinitionGeneralForm" onSubmit={ handleSubmit }>
-                            <FinalFormField
-                                name="name"
+                            <MuiTextField
+                                fullWidth
+                                required
+                                size="small"
                                 label={ t("presentationDefinitions:editPage.form.name.label") }
                                 placeholder={ t("presentationDefinitions:editPage.form.name.placeholder") }
-                                required={ true }
-                                component={ TextFieldAdapter }
-                                maxLength={ 100 }
-                                minLength={ 0 }
+                                value={ name }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value) }
+                                sx={ { mb: 2 } }
+                                data-componentid={ `${componentId}-name-input` }
                             />
-                            <FinalFormField
-                                name="description"
+                            <MuiTextField
+                                fullWidth
+                                multiline
+                                rows={ 3 }
+                                size="small"
                                 label={ t("presentationDefinitions:editPage.form.description.label") }
                                 placeholder={ t("presentationDefinitions:editPage.form.description.placeholder") }
-                                required={ false }
-                                component={ TextFieldAdapter }
-                                maxLength={ 255 }
-                                minLength={ 0 }
+                                value={ description }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setDescription(e.target.value)
+                                }
+                                sx={ { mb: 2 } }
+                                data-componentid={ `${componentId}-description-input` }
                             />
+                            <div style={ { marginBottom: "16px" } }>
+                                <MuiTextField
+                                    fullWidth
+                                    required
+                                    size="small"
+                                    label={ t("presentationDefinitions:editPage.form.credentials.type.label") }
+                                    placeholder={ t(
+                                        "presentationDefinitions:editPage.form.credentials.type.placeholder"
+                                    ) }
+                                    value={ credentialType }
+                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setCredentialType(e.target.value)
+                                    }
+                                    sx={ { mb: 0.5 } }
+                                    data-componentid={ `${componentId}-credential-type-input` }
+                                />
+                                <Hint compact>
+                                    { t("presentationDefinitions:wizard.form.credentialType.hint") }
+                                </Hint>
+                            </div>
                             <Divider hidden />
+
                             <PrimaryButton
-                                type="submit"
-                                disabled={ isGeneralSubmitting }
-                                loading={ isGeneralSubmitting }
-                                onClick={ () => {
-                                    document
-                                        .getElementById("editPresentationDefinitionGeneralForm")
-                                        .dispatchEvent(
-                                            new Event("submit", { bubbles: true, cancelable: true })
-                                        );
-                                } }
-                                data-componentid={ `${componentId}-general-save-button` }
+                                size="small"
+                                disabled={ isSubmitting || !name.trim() || !credentialType.trim() }
+                                loading={ isSubmitting }
+                                onClick={ handleUpdate }
+                                data-componentid={ `${componentId}-general-update-button` }
                             >
                                 { t("common:update") }
                             </PrimaryButton>
-                        </form>
-                    ) }
-                />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </EmphasizedSegment>
 
             <Divider hidden />
@@ -445,222 +450,634 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     actionTitle={ t("presentationDefinitions:editPage.dangerZone.delete.actionTitle") }
                     header={ t("presentationDefinitions:editPage.dangerZone.delete.header") }
                     subheader={ t("presentationDefinitions:editPage.dangerZone.delete.subheader") }
-                    onActionClick={ () => setShowDeleteDefinitionModal(true) }
+                    onActionClick={ handleDeleteInitiation }
                     data-componentid={ `${componentId}-danger-zone` }
                 />
             </DangerZoneGroup>
         </ResourceTab.Pane>
     );
 
-    const CredentialsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <EmphasizedSegment paddingless={ false }>
+    const renderClaimsTab = (): ReactElement => {
+        const claimTableColumns: TableColumnInterface[] = [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "path",
+                id: "path",
+                key: "path",
+                render: (claim: ClaimConstraintModel): ReactNode => {
+                    const pathLabel: string = (claim.path ?? []).join(".") || "—";
 
-                { /* ---- Credentials table ---- */ }
-                <DataTable<RequestedCredentialModel>
-                    className="credentials-table"
-                    isLoading={ false }
-                    actions={ resolveCredentialTableActions() }
-                    columns={ resolveCredentialTableColumns() }
-                    data={ credentials }
-                    placeholders={ credentials.length === 0
-                        ? (
-                            <div className="no-content-placeholder">
-                                { t("presentationDefinitions:editPage.form.credentials.noCredentials") }
-                            </div>
-                        )
-                        : null
-                    }
-                    selectable={ false }
-                    showHeader={ true }
-                    transparent={ credentials.length === 0 }
-                    data-componentid={ `${componentId}-credentials-table` }
-                />
+                    return (
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-componentid={ `${componentId}-claim-item-heading` }
+                        >
+                            <AppAvatar
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ pathLabel }
+                                        size="mini"
+                                        data-componentid={ `${componentId}-claim-item-image-inner` }
+                                    />
+                                ) }
+                                size="mini"
+                                spaced="right"
+                                data-componentid={ `${componentId}-claim-item-image` }
+                            />
+                            <Header.Content>
+                                { pathLabel }
+                            </Header.Content>
+                        </Header>
+                    );
+                },
+                title: t("presentationDefinitions:editPage.form.credentials.claims.claimPath.label")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "mandatory",
+                id: "mandatory",
+                key: "mandatory",
+                render: (claim: ClaimConstraintModel): ReactNode => (
+                    <Header as="h6" data-componentid={ `${componentId}-claim-mandatory-heading` }>
+                        <Header.Content>
+                            { claim.mandatory !== false
+                                ? <Icon name="check" color="green" />
+                                : <Icon name="minus" color="grey" />
+                            }
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("presentationDefinitions:editPage.form.credentials.claims.required.label")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "allowedValues",
+                id: "allowedValues",
+                key: "allowedValues",
+                render: (claim: ClaimConstraintModel): ReactNode => (
+                    <div style={ { display: "flex", flexWrap: "wrap", gap: "4px" } }>
+                        { (claim.allowedValues ?? []).length > 0
+                            ? (claim.allowedValues ?? []).map((v: string, vi: number) => (
+                                <Chip key={ vi } label={ v } size="small" />
+                            ))
+                            : <span style={ { color: "#aaa" } }>—</span>
+                        }
+                    </div>
+                ),
+                title: t("presentationDefinitions:editPage.form.credentials.claims.allowedValues.label")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: null
+            }
+        ];
+
+        const claimTableActions: TableActionsInterface[] = [
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
+                    openEditClaimModal(claims.indexOf(claim));
+                },
+                popupText: (): string => t("common:edit"),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
+                    removeClaim(claims.indexOf(claim));
+                },
+                popupText: (): string => t("common:remove"),
+                renderer: "semantic-icon"
+            }
+        ];
+
+        return (
+        <ResourceTab.Pane controlledSegmentation attached={ false }>
+            <EmphasizedSegment padded="very">
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                <Heading as="h4">
+                    { t("presentationDefinitions:editPage.form.credentials.claims.label") }
+                </Heading>
+                <Heading subHeading ellipsis as="h6">
+                    { t("presentationDefinitions:editPage.form.credentials.claims.hint") }
+                </Heading>
+                { claims.length === 0 ? (
+                    <EmptyPlaceholder
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        action={
+                            (<PrimaryButton
+                                size="small"
+                                onClick={ openAddClaimModal }
+                                data-componentid={ `${componentId}-add-claim-button` }
+                            >
+                                <Icon name="add" />
+                                { t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim",
+                                    "Add Claim"
+                                ) }
+                            </PrimaryButton>)
+                        }
+                        subtitle={ [
+                            t(
+                                "presentationDefinitions:editPage.form.credentials.claims.emptyPlaceholder",
+                                "No claims added yet. Add a claim to specify which credential attributes the wallet must present."
+                            )
+                        ] }
+                        data-componentid={ `${componentId}-claims-empty-placeholder` }
+                    />
+                ) : (
+                    <>
+                        <div style={ { marginBottom: "16px" } }>
+                            <PrimaryButton
+                                size="small"
+                                onClick={ openAddClaimModal }
+                                data-componentid={ `${componentId}-add-claim-button` }
+                            >
+                                <Icon name="add" />
+                                { t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim",
+                                    "Add Claim"
+                                ) }
+                            </PrimaryButton>
+                        </div>
+                        <DataTable<ClaimConstraintModel>
+                            columns={ claimTableColumns }
+                            data={ claims }
+                            actions={ claimTableActions }
+                            showHeader={ true }
+                            isRowSelectable={ () => false }
+                            data-componentid={ `${componentId}-claims-table` }
+                        />
+                    </>
+                ) }
 
                 <Divider hidden />
 
                 <PrimaryButton
-                    size="mini"
-                    onClick={ () => {
-                        setEditingCredentialIndex(-1);
-                        setShowCredentialDialog(true);
-                    } }
-                    data-componentid={ `${componentId}-add-credential-button` }
+                    size="small"
+                    disabled={ isSubmitting }
+                    loading={ isSubmitting }
+                    onClick={ handleUpdate }
+                    data-componentid={ `${componentId}-claims-update-button` }
                 >
-                    <Icon name="add" />
-                    { t("presentationDefinitions:editPage.form.credentials.addButton") }
+                    { t("common:update") }
                 </PrimaryButton>
-
-                { /* ---- Credential Sets ---- */ }
-                <Divider />
-
-                <Typography variant="subtitle1" sx={ { fontWeight: 600, mb: 0.5 } }>
-                    { t("presentationDefinitions:editPage.form.credentialSets.label") }
-                </Typography>
-                <Hint>
-                    { t("presentationDefinitions:editPage.form.credentialSets.hint") }
-                </Hint>
-
-                { credentialSets.map((credSet: CredentialSetModel, setIndex: number) => (
-                    <Box
-                        key={ setIndex }
-                        sx={ {
-                            border: "1px solid #e0e0e0",
-                            borderRadius: 1,
-                            mb: 1.5,
-                            mt: 1,
-                            p: 1.5,
-                            position: "relative"
-                        } }
-                        data-componentid={ `${componentId}-credential-set-${setIndex}` }
-                    >
-                        <IconButton
-                            size="small"
-                            sx={ { position: "absolute", right: 4, top: 4 } }
-                            onClick={ () => removeCredentialSet(setIndex) }
-                            aria-label="remove credential set"
-                            data-componentid={ `${componentId}-credential-set-${setIndex}-remove` }
-                        >
-                            <Icon name="close" />
-                        </IconButton>
-
-                        <Typography variant="caption" sx={ { color: "text.secondary", display: "block", mb: 1 } }>
-                            { t("presentationDefinitions:editPage.form.credentialSets.setLabel",
-                                { index: setIndex + 1 }) }
-                        </Typography>
-
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={ credSet.required ?? true }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                        updateCredentialSetRequired(setIndex, e.target.checked)
-                                    }
-                                    size="small"
-                                    data-componentid={ `${componentId}-credential-set-${setIndex}-required` }
-                                />
-                            }
-                            label={ t("presentationDefinitions:editPage.form.credentialSets.required.label") }
-                            sx={ { mb: 1 } }
-                        />
-
-                        <Typography variant="caption" sx={ { color: "text.secondary", display: "block", mb: 0.5 } }>
-                            { t("presentationDefinitions:editPage.form.credentialSets.options.label") }
-                        </Typography>
-                        <Hint>
-                            { t("presentationDefinitions:editPage.form.credentialSets.options.hint") }
-                        </Hint>
-
-                        { credSet.options.map((option: string[], optionIndex: number) => (
-                            <Box
-                                key={ optionIndex }
-                                sx={ { alignItems: "center", display: "flex", gap: 1, mb: 1, mt: 0.5 } }
-                                data-componentid={
-                                    `${componentId}-credential-set-${setIndex}-option-${optionIndex}`
-                                }
-                            >
-                                <Box sx={ { flex: 1 } }>
-                                    <Autocomplete
-                                        multiple
-                                        freeSolo
-                                        options={ availableCredentialQueryIds }
-                                        value={ option }
-                                        onChange={ (_e: React.SyntheticEvent, newValue: string[]) =>
-                                            updateCredentialSetOption(setIndex, optionIndex, newValue)
-                                        }
-                                        renderInput={ (params: AutocompleteRenderInputParams) => (
-                                            <MuiTextField
-                                                { ...params }
-                                                label={ t(
-                                                    "presentationDefinitions:editPage.form.credentialSets.options.optionLabel",
-                                                    { index: optionIndex + 1 }
-                                                ) }
-                                                placeholder={
-                                                    option.length === 0
-                                                        ? t(
-                                                            "presentationDefinitions:editPage.form.credentialSets.options.optionPlaceholder"
-                                                        )
-                                                        : undefined
-                                                }
-                                                size="small"
-                                            />
-                                        ) }
-                                        data-componentid={
-                                            `${componentId}-credential-set-${setIndex}-option-${optionIndex}-ids`
-                                        }
-                                    />
-                                </Box>
-                                { credSet.options.length > 1 && (
-                                    <IconButton
-                                        size="small"
-                                        onClick={ () => removeCredentialSetOption(setIndex, optionIndex) }
-                                        aria-label="remove option"
-                                        data-componentid={
-                                            `${componentId}-credential-set-${setIndex}-option-${optionIndex}-remove`
-                                        }
-                                    >
-                                        <Icon name="close" />
-                                    </IconButton>
-                                ) }
-                            </Box>
-                        )) }
-
-                        <Button
-                            basic
-                            primary
-                            size="mini"
-                            type="button"
-                            onClick={ () => addCredentialSetOption(setIndex) }
-                            data-componentid={ `${componentId}-credential-set-${setIndex}-add-option` }
-                        >
-                            <Icon name="add" />
-                            { t("presentationDefinitions:editPage.form.credentialSets.options.addOption") }
-                        </Button>
-                    </Box>
-                )) }
-
-                <Button
-                    basic
-                    primary
-                    size="mini"
-                    type="button"
-                    onClick={ addCredentialSet }
-                    data-componentid={ `${componentId}-add-credential-set-button` }
-                >
-                    <Icon name="add" />
-                    { t("presentationDefinitions:editPage.form.credentialSets.addSet") }
-                </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </EmphasizedSegment>
 
-            <Divider hidden />
-
-            <PrimaryButton
-                disabled={ isCredentialsSubmitting }
-                loading={ isCredentialsSubmitting }
-                onClick={ handleCredentialsUpdate }
-                data-componentid={ `${componentId}-credentials-save-button` }
+            <Modal
+                open={ showClaimModal }
+                size="small"
+                dimmer="blurring"
+                onClose={ () => setShowClaimModal(false) }
+                data-componentid={ `${componentId}-claim-modal` }
             >
-                { t("common:update") }
-            </PrimaryButton>
+                <Modal.Header>
+                    { claimModalIndex === null
+                        ? t(
+                            "presentationDefinitions:editPage.form.credentials.claims.addClaim",
+                            "Add Claim"
+                        )
+                        : t(
+                            "presentationDefinitions:editPage.form.credentials.claims.editClaim",
+                            "Edit Claim"
+                        )
+                    }
+                </Modal.Header>
+                <Modal.Content>
+                    <Box sx={ { mb: 2 } }>
+                        <MuiTextField
+                            fullWidth
+                            required
+                            size="small"
+                            autoFocus
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.label",
+                                "Claim Path"
+                            ) }
+                            placeholder={ t(
+                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.placeholder"
+                            ) }
+                            value={ modalPath }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setModalPath(e.target.value) }
+                            data-componentid={ `${componentId}-modal-claim-path` }
+                        />
+                        <Hint compact>
+                            { t(
+                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint",
+                                "Use dot notation for nested paths, e.g. address.street_address."
+                            ) }
+                        </Hint>
+                    </Box>
+                    <Box sx={ { mb: 2 } }>
+                        <FormControlLabel
+                            control={ (
+                                <Checkbox
+                                    checked={ modalMandatory }
+                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setModalMandatory(e.target.checked)
+                                    }
+                                    data-componentid={ `${componentId}-modal-claim-mandatory` }
+                                />
+                            ) }
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.claims.required.label",
+                                "Required"
+                            ) }
+                        />
+                        <Hint compact>
+                            { t(
+                                "presentationDefinitions:editPage.form.credentials.claims.required.hint",
+                                "When enabled, the wallet must include this claim in the credential presentation."
+                            ) }
+                        </Hint>
+                    </Box>
+                    <Box>
+                        <MuiTextField
+                            fullWidth
+                            size="small"
+                            label={ t(
+                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label",
+                                "Allowed Values"
+                            ) }
+                            placeholder={ t(
+                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.placeholder"
+                            ) }
+                            value={ modalAllowedValueInput }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                setModalAllowedValueInput(e.target.value)
+                            }
+                            onKeyDown={ (e: KeyboardEvent<HTMLInputElement>) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    addModalAllowedValue();
+                                }
+                            } }
+                            data-componentid={ `${componentId}-modal-allowed-value-input` }
+                        />
+                        <Hint compact>
+                            { t(
+                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.hint",
+                                "If set, the claim value must be one of these."
+                            ) }
+                        </Hint>
+                    </Box>
+                    { modalAllowedValues.length > 0 && (
+                        <div style={ { display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "8px" } }>
+                            { modalAllowedValues.map((val: string, vi: number) => (
+                                <Chip
+                                    key={ vi }
+                                    label={ val }
+                                    size="small"
+                                    onDelete={ () =>
+                                        setModalAllowedValues((prev: string[]) =>
+                                            prev.filter((_: string, i: number) => i !== vi)
+                                        )
+                                    }
+                                />
+                            )) }
+                        </div>
+                    ) }
+                </Modal.Content>
+                <Modal.Actions>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <LinkButton
+                                    floated="left"
+                                    onClick={ () => setShowClaimModal(false) }
+                                    data-componentid={ `${componentId}-modal-cancel-button` }
+                                >
+                                    { t("common:cancel") }
+                                </LinkButton>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 } textAlign="right">
+                                <PrimaryButton
+                                    floated="right"
+                                    disabled={ !modalPath.trim() }
+                                    onClick={ saveClaimModal }
+                                    data-componentid={ `${componentId}-modal-save-button` }
+                                >
+                                    { t("common:save") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Modal.Actions>
+            </Modal>
         </ResourceTab.Pane>
-    );
+        );
+    };
 
-    const getPanes = (): ResourceTabPaneInterface[] => [
+    const renderIssuerTrustTab = (): ReactElement => {
+
+        const x5cSubSection: ReactNode = (
+            <>
+                <FormControlLabel
+                    control={ (
+                        <Switch
+                            checked={ enforceTrustedIssuer }
+                            onChange={ (
+                                _event: React.ChangeEvent<HTMLInputElement>,
+                                checked: boolean
+                            ) => setEnforceTrustedIssuer(checked) }
+                            data-componentid={ `${componentId}-enforce-trusted-issuer-toggle` }
+                        />
+                    ) }
+                    label={ t(
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.label",
+                        "Enforce Trusted Issuer"
+                    ) }
+                />
+                <Hint compact>
+                    { t(
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.hint",
+                        "Enable this to verify that the credential's certificate chain ends at a " +
+                        "trusted root CA configured in the system."
+                    ) }
+                </Hint>
+
+                <AnimatePresence>
+                { enforceTrustedIssuer && (
+                <motion.div
+                    key="trusted-ca-block"
+                    initial={ { height: 0, opacity: 0 } }
+                    animate={ { height: "auto", opacity: 1 } }
+                    exit={ { height: 0, opacity: 0 } }
+                    transition={ { duration: 0.3 } }
+                    style={ { overflow: "hidden" } }
+                >
+                <Divider hidden />
+
+                { trustedCaPems.length === 0 ? (
+                    <div
+                        style={ { alignItems: "center", display: "flex", gap: "12px" } }
+                        data-componentid={ `${componentId}-trusted-ca-empty-placeholder` }
+                    >
+                        <Hint compact>
+                            { t(
+                                "presentationDefinitions:editPage.issuerTrust.trustedCas" +
+                                ".emptyPlaceholder.subtitle0",
+                                "No trusted CA certificates added yet."
+                            ) }
+                        </Hint>
+                        <PrimaryButton
+                            size="mini"
+                            onClick={ () => setShowAddCertModal(true) }
+                            type="button"
+                            data-componentid={ `${componentId}-empty-add-cert-button` }
+                        >
+                            <Icon name="add" />
+                            { t(
+                                "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton",
+                                "Add Certificate"
+                            ) }
+                        </PrimaryButton>
+                    </div>
+                ) : (
+                    <Segment>
+                        <MuiGrid direction="column" container spacing={ 2 }>
+                            <MuiGrid xs={ 12 }>
+                                <PrimaryButton
+                                    floated="right"
+                                    disabled={ !enforceTrustedIssuer }
+                                    onClick={ () => setShowAddCertModal(true) }
+                                    data-componentid={ `${componentId}-add-cert-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton",
+                                        "Add Certificate"
+                                    ) }
+                                </PrimaryButton>
+                            </MuiGrid>
+                            <MuiGrid xs={ 12 }>
+                                <TrustedCaCertificatesList
+                                    trustedCaPems={ trustedCaPems }
+                                    onRemove={ handleRemoveCert }
+                                    isReadOnly={ !enforceTrustedIssuer }
+                                    data-componentid={ `${componentId}-trusted-ca-list` }
+                                />
+                            </MuiGrid>
+                        </MuiGrid>
+                    </Segment>
+                ) }
+                </motion.div>
+                ) }
+                </AnimatePresence>
+            </>
+        );
+
+        const jwksUriSubSection: ReactNode = (
+            <>
+                <MuiTextField
+                    fullWidth
+                    size="small"
+                    placeholder={ t(
+                        "presentationDefinitions:editPage.issuerTrust.jwksUri.placeholder",
+                        "https://issuer.example.com/.well-known/jwks.json"
+                    ) }
+                    value={ jwksUri }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setJwksUri(e.target.value) }
+                    sx={ { mb: 0.5 } }
+                    data-componentid={ `${componentId}-jwks-uri-input` }
+                />
+                <Hint compact>
+                    { t(
+                        "presentationDefinitions:editPage.issuerTrust.jwksUri.hint",
+                        "The URL of the issuer's JSON Web Key Set (JWKS) endpoint used to fetch " +
+                        "the public key for signature verification."
+                    ) }
+                </Hint>
+            </>
+        );
+
+        const pemSubSection: ReactNode = (
+            <>
+                <div style={ { maxWidth: "500px" } }>
+                    <FilePicker
+                        fileStrategy={ new CertFileStrategy() }
+                        normalizeStateOnRemoveOperations={ true }
+                        onChange={ (result: PickerResult<string | File>) => {
+                            setIssuerPem(result.serialized?.pem ?? "");
+                        } }
+                        uploadButtonText="Upload Certificate File"
+                        dropzoneText="Drag and drop a certificate file here."
+                        pasteAreaPlaceholderText="Paste issuer certificate in PEM format."
+                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                        placeholderIcon={ <Icon name="file alternate" size="huge" /> }
+                        data-componentid={ `${componentId}-issuer-pem-picker` }
+                    />
+                </div>
+                <Hint compact>
+                    { t(
+                        "presentationDefinitions:editPage.issuerTrust.issuerPem.hint",
+                        "Paste the PEM-encoded X.509 certificate of the credential issuer. " +
+                        "The public key will be extracted from this certificate."
+                    ) }
+                </Hint>
+            </>
+        );
+
+        return (
+            <ResourceTab.Pane controlledSegmentation attached={ false }>
+                <EmphasizedSegment padded="very">
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Heading as="h4">
+                                    { t("presentationDefinitions:editPage.issuerTrust.heading") }
+                                </Heading>
+                                <Heading subHeading ellipsis as="h6">
+                                    { t("presentationDefinitions:editPage.issuerTrust.hint") }
+                                </Heading>
+
+                                <Divider hidden />
+
+                                <FormControl>
+                                    <RadioGroup
+                                        name="key-resolution-method"
+                                        value={ keyResolutionMethod }
+                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                            setKeyResolutionMethod(e.target.value)
+                                        }
+                                        data-componentid={ `${componentId}-key-resolution-method-group` }
+                                    >
+                                        <FormControlLabel
+                                            value="x5c"
+                                            control={ <Radio /> }
+                                            label={ t(
+                                                "presentationDefinitions:editPage.issuerTrust" +
+                                                ".keyResolutionMethod.options.x5c",
+                                                "X.509 Certificate Chain"
+                                            ) }
+                                            data-componentid={ `${componentId}-krm-x5c` }
+                                        />
+                                        <AnimatePresence mode="wait">
+                                            { keyResolutionMethod === "x5c" && (
+                                                <motion.div
+                                                    key="x5c-block"
+                                                    initial={ { height: 0, opacity: 0 } }
+                                                    animate={ { height: "auto", opacity: 1 } }
+                                                    exit={ { height: 0, opacity: 0 } }
+                                                    transition={ { duration: 0.3 } }
+                                                    style={ { marginLeft: "2rem", overflow: "hidden" } }
+                                                >
+                                                    { x5cSubSection }
+                                                </motion.div>
+                                            ) }
+                                        </AnimatePresence>
+                                        <FormControlLabel
+                                            value="jwks_uri"
+                                            control={ <Radio /> }
+                                            label={ t(
+                                                "presentationDefinitions:editPage.issuerTrust" +
+                                                ".keyResolutionMethod.options.jwks_uri",
+                                                "JWKS URI"
+                                            ) }
+                                            data-componentid={ `${componentId}-krm-jwks-uri` }
+                                        />
+                                        <AnimatePresence mode="wait">
+                                            { keyResolutionMethod === "jwks_uri" && (
+                                                <motion.div
+                                                    key="jwks-block"
+                                                    initial={ { height: 0, opacity: 0 } }
+                                                    animate={ { height: "auto", opacity: 1 } }
+                                                    exit={ { height: 0, opacity: 0 } }
+                                                    transition={ { duration: 0.3 } }
+                                                    style={ { marginLeft: "2rem", overflow: "hidden" } }
+                                                >
+                                                    { jwksUriSubSection }
+                                                </motion.div>
+                                            ) }
+                                        </AnimatePresence>
+                                        <FormControlLabel
+                                            value="pem"
+                                            control={ <Radio /> }
+                                            label={ t(
+                                                "presentationDefinitions:editPage.issuerTrust" +
+                                                ".keyResolutionMethod.options.pem",
+                                                "PEM Certificate"
+                                            ) }
+                                            data-componentid={ `${componentId}-krm-pem` }
+                                        />
+                                        <AnimatePresence mode="wait">
+                                            { keyResolutionMethod === "pem" && (
+                                                <motion.div
+                                                    key="pem-block"
+                                                    initial={ { height: 0, opacity: 0 } }
+                                                    animate={ { height: "auto", opacity: 1 } }
+                                                    exit={ { height: 0, opacity: 0 } }
+                                                    transition={ { duration: 0.3 } }
+                                                    style={ { marginLeft: "2rem", overflow: "hidden" } }
+                                                >
+                                                    { pemSubSection }
+                                                </motion.div>
+                                            ) }
+                                        </AnimatePresence>
+                                    </RadioGroup>
+                                </FormControl>
+
+                                <Divider hidden />
+                                <PrimaryButton
+                                    size="small"
+                                    disabled={ isSubmitting }
+                                    loading={ isSubmitting }
+                                    onClick={ handleUpdate }
+                                    data-componentid={ `${componentId}-issuer-trust-update-button` }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment>
+
+                { showAddCertModal && (
+                    <AddTrustedCaModal
+                        existingCertPems={ trustedCaPems }
+                        onAdd={ handleAddCert }
+                        isOpen={ showAddCertModal }
+                        onClose={ () => setShowAddCertModal(false) }
+                        data-componentid={ `${componentId}-add-cert-modal` }
+                    />
+                ) }
+            </ResourceTab.Pane>
+        );
+    };
+
+    if (isLoading || !isFormReady) {
+        return <ContentLoader />;
+    }
+
+    const panes = [
         {
             "data-tabid": "general",
             menuItem: t("presentationDefinitions:editPage.tabs.general"),
-            render: GeneralTabPane
+            render: renderGeneralTab
         },
         {
-            "data-tabid": "credentials",
-            menuItem: t("presentationDefinitions:editPage.tabs.credentials"),
-            render: CredentialsTabPane
+            "data-tabid": "claims",
+            menuItem: t("presentationDefinitions:editPage.tabs.claims"),
+            render: renderClaimsTab
+        },
+        {
+            "data-tabid": "issuer-trust",
+            menuItem: t("presentationDefinitions:editPage.tabs.issuerTrust"),
+            render: renderIssuerTrustTab
         }
     ];
-
-    if (isLoading) {
-        return <ContentLoader />;
-    }
 
     return (
         <PageLayout
@@ -678,23 +1095,24 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             } }
         >
             <ResourceTab
-                panes={ getPanes() }
-                data-componentid={ `${componentId}-resource-tabs` }
+                panes={ panes }
+                defaultActiveIndex={ 0 }
+                data-componentid={ `${componentId}-tabs` }
             />
 
-            { showDeleteDefinitionModal && (
+            { showDeleteModal && (
                 <ConfirmationModal
                     data-componentid={ `${componentId}-delete-definition-modal` }
-                    onClose={ () => setShowDeleteDefinitionModal(false) }
+                    onClose={ () => setShowDeleteModal(false) }
                     type="negative"
-                    open={ showDeleteDefinitionModal }
+                    open={ showDeleteModal }
                     assertionHint={ t(
                         "presentationDefinitions:editPage.confirmations.deleteDefinition.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ () => setShowDeleteDefinitionModal(false) }
+                    onSecondaryActionClick={ () => setShowDeleteModal(false) }
                     onPrimaryActionClick={ handleDeleteDefinition }
                     closeOnDimmerClick={ false }
                 >
@@ -709,46 +1127,50 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
-
-            { showDeleteCredentialModal && (
+            { showDeleteBlockedModal && (
                 <ConfirmationModal
-                    data-componentid={ `${componentId}-delete-credential-modal` }
-                    onClose={ () => setShowDeleteCredentialModal(false) }
+                    data-componentid={ `${componentId}-delete-blocked-modal` }
+                    onClose={ () => setShowDeleteBlockedModal(false) }
                     type="negative"
-                    open={ showDeleteCredentialModal }
-                    assertionType="checkbox"
-                    assertionHint={ t("common:confirm") }
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ () => setShowDeleteCredentialModal(false) }
-                    onPrimaryActionClick={ handleCredentialDelete }
+                    open={ showDeleteBlockedModal }
+                    secondaryAction={ t("common:close") }
+                    onSecondaryActionClick={ () => setShowDeleteBlockedModal(false) }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header>
-                        { t("presentationDefinitions:list.confirmations.deleteItem.header") }
+                    <ConfirmationModal.Header data-componentid={ `${componentId}-delete-blocked-modal-header` }>
+                        { t("presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.header",
+                            "Unable to Delete") }
                     </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
-                        { t("presentationDefinitions:list.confirmations.deleteItem.message") }
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${componentId}-delete-blocked-modal-message` }
+                    >
+                        { t(
+                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.message",
+                            "There are connections using this presentation definition."
+                        ) }
                     </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("presentationDefinitions:list.confirmations.deleteItem.content") }
+                    <ConfirmationModal.Content
+                        data-componentid={ `${componentId}-delete-blocked-modal-content` }
+                    >
+                        { t(
+                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.content",
+                            "Remove the associations from these connections before deleting:"
+                        ) }
+                        <Divider hidden />
+                        <List ordered className="ml-6">
+                            { isConnectionsLoading ? (
+                                <ContentLoader />
+                            ) : (
+                                connectedConnectionNames?.map((name: string, index: number) => (
+                                    <List.Item key={ index }>{ name }</List.Item>
+                                ))
+                            ) }
+                        </List>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
-
-            <CredentialEditDialog
-                open={ showCredentialDialog }
-                onClose={ () => {
-                    setShowCredentialDialog(false);
-                    setEditingCredentialIndex(-1);
-                } }
-                onSave={ handleCredentialSave }
-                editingCredential={
-                    editingCredentialIndex >= 0 ? credentials[editingCredentialIndex] : undefined
-                }
-                isAdd={ editingCredentialIndex < 0 }
-                data-componentid={ `${componentId}-credential-edit-dialog` }
-            />
         </PageLayout>
     );
 };

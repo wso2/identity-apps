@@ -27,6 +27,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
+    ContentLoader,
     DataTable,
     EmptyPlaceholder,
     PrimaryButton,
@@ -36,16 +37,21 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { Dispatch } from "redux";
-import { deletePresentationDefinition } from "../api/presentation-definitions";
-import { PresentationDefinitionListItem } from "../models/presentation-definitions";
+import { deletePresentationDefinition, getConnectedConnections } from "../api/presentation-definitions";
+import {
+    ConnectedConnectionsResponseInterface,
+    PresentationDefinitionListItem
+} from "../models/presentation-definitions";
 
 interface PresentationDefinitionListProps extends IdentifiableComponentInterface {
     isLoading: boolean;
     list: PresentationDefinitionListItem[];
     mutateList: () => void;
     onAddClick: () => void;
+    searchQuery?: string;
+    onSearchQueryClear?: () => void;
 }
 
 /**
@@ -59,6 +65,8 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
     list,
     mutateList,
     onAddClick,
+    searchQuery,
+    onSearchQueryClear,
     "data-componentid": componentId = "presentation-definition-list"
 }: PresentationDefinitionListProps): ReactElement => {
     const dispatch: Dispatch = useDispatch();
@@ -79,7 +87,36 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
     );
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
+    const [ showDeleteBlockedModal, setShowDeleteBlockedModal ] = useState<boolean>(false);
     const [ currentDeletion, setCurrentDeletion ] = useState<PresentationDefinitionListItem>(null);
+    const [ connectedConnectionNames, setConnectedConnectionNames ] = useState<string[]>(undefined);
+    const [ isConnectionsLoading, setIsConnectionsLoading ] = useState<boolean>(false);
+
+    const handleDeleteInitiation = (definition: PresentationDefinitionListItem): void => {
+        setIsConnectionsLoading(true);
+        setCurrentDeletion(definition);
+        getConnectedConnections(definition.id)
+            .then((response: ConnectedConnectionsResponseInterface) => {
+                if (response?.count === 0) {
+                    setShowDeleteConfirmation(true);
+                } else {
+                    setConnectedConnectionNames(
+                        (response?.connectedConnections ?? []).map((c) => c.name)
+                    );
+                    setShowDeleteBlockedModal(true);
+                }
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "presentationDefinitions:notifications.deleteDefinition.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("presentationDefinitions:notifications.deleteDefinition.error.message")
+                }));
+            })
+            .finally(() => setIsConnectionsLoading(false));
+    };
 
     const handleDelete = (definition: PresentationDefinitionListItem): void => {
         deletePresentationDefinition(definition.id)
@@ -117,8 +154,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             hidden: (): boolean => !hasDeletePermission,
             icon: (): SemanticICONS => "trash alternate",
             onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void => {
-                setCurrentDeletion(definition);
-                setShowDeleteConfirmation(true);
+                handleDeleteInitiation(definition);
             },
             popupText: (): string => t("common:delete"),
             renderer: "semantic-icon"
@@ -177,6 +213,30 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
 
     const showPlaceholders = (): ReactElement => {
         if (!list || list.length === 0) {
+            if (searchQuery) {
+                return (
+                    <EmptyPlaceholder
+                        className="list-placeholder mr-0"
+                        action={
+                            (<PrimaryButton
+                                data-componentid={ `${componentId}-empty-search-placeholder-clear-button` }
+                                onClick={ onSearchQueryClear }
+                            >
+                                { t("common:clearSearch") }
+                            </PrimaryButton>)
+                        }
+                        image={ getEmptyPlaceholderIllustrations().emptySearch }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("presentationDefinitions:placeholders.emptySearch.subtitle1"),
+                            t("presentationDefinitions:placeholders.emptySearch.subtitle2")
+                        ] }
+                        title={ t("presentationDefinitions:placeholders.emptySearch.title") }
+                        data-componentid={ `${componentId}-empty-search-placeholder` }
+                    />
+                );
+            }
+
             return (
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
@@ -246,6 +306,50 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
                         { t("presentationDefinitions:list.confirmations.deleteItem.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showDeleteBlockedModal && (
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-delete-blocked-modal` }
+                    onClose={ (): void => setShowDeleteBlockedModal(false) }
+                    type="negative"
+                    open={ showDeleteBlockedModal }
+                    secondaryAction={ t("common:close") }
+                    onSecondaryActionClick={ (): void => setShowDeleteBlockedModal(false) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-componentid={ `${componentId}-delete-blocked-modal-header` }>
+                        { t(
+                            "presentationDefinitions:list.confirmations.deleteBlockedByConnections.header",
+                            "Unable to Delete"
+                        ) }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${componentId}-delete-blocked-modal-message` }
+                    >
+                        { t(
+                            "presentationDefinitions:list.confirmations.deleteBlockedByConnections.message",
+                            "There are connections using this presentation definition."
+                        ) }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content data-componentid={ `${componentId}-delete-blocked-modal-content` }>
+                        { t(
+                            "presentationDefinitions:list.confirmations.deleteBlockedByConnections.content",
+                            "Remove the associations from these connections before deleting:"
+                        ) }
+                        <Divider hidden />
+                        <List ordered className="ml-6">
+                            { isConnectionsLoading ? (
+                                <ContentLoader />
+                            ) : (
+                                connectedConnectionNames?.map((name: string, index: number) => (
+                                    <List.Item key={ index }>{ name }</List.Item>
+                                ))
+                            ) }
+                        </List>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

@@ -9,6 +9,7 @@
         "@asgardeo/auth-react": "^5.1.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
+        "framer-motion": "^11.1.9",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/admin.core.v1": "^2.55.6",
         "@wso2is/core": "^2.12.10",

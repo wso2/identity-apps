@@ -16,39 +16,6 @@
  * under the License.
  */
 
-interface CredentialFieldsNS {
-    credentialQueryId: { label: string; placeholder: string; hint: string; patternError: string };
-    type: { label: string; placeholder: string };
-    purpose: { label: string; placeholder: string };
-    claims: {
-        label: string;
-        placeholder: string;
-        hint: string;
-        claimName: { label: string; placeholder: string };
-        claimPath: { label: string; placeholder: string; hint: string; addSegment: string };
-        mandatory: { label: string; hint: string };
-        allowedValues: { label: string; placeholder: string; hint: string };
-        addClaim: string;
-    };
-    claimSets: {
-        label: string;
-        hint: string;
-        optionLabel: string;
-        optionPlaceholder: string;
-        addSet: string;
-    };
-    enforceTrustedIssuers: { label: string; hint: string };
-    trustedIssuers: { label: string; placeholder: string; hint: string };
-    issuerCert: {
-        label: string;
-        hint: string;
-        none: { label: string; hint: string };
-        jwks: { label: string; urlLabel: string; urlPlaceholder: string; urlHint: string };
-        pem: { label: string; hint: string };
-    };
-    addButton: string;
-}
-
 export interface PresentationDefinitionsNS {
     page: {
         title: string;
@@ -61,6 +28,11 @@ export interface PresentationDefinitionsNS {
     placeholders: {
         emptyList: {
             subtitle: string;
+        };
+        emptySearch: {
+            title: string;
+            subtitle1: string;
+            subtitle2: string;
         };
     };
     list: {
@@ -77,16 +49,24 @@ export interface PresentationDefinitionsNS {
                 assertionHint: string;
             };
         };
+        search: {
+            placeholder: string;
+            filterAttributePlaceholder: string;
+            filterConditionsPlaceholder: string;
+            filterValuePlaceholder: string;
+            attributes: {
+                name: string;
+            };
+        };
     };
     wizard: {
         title: string;
         form: {
             name: { label: string; placeholder: string; hint: string };
+            handle: { label: string; placeholder: string; hint: string; validationError: string };
             description: { label: string; placeholder: string };
-            credentials: {
-                label: string;
-                hint: string;
-            } & CredentialFieldsNS;
+            credentialType: { label: string; placeholder: string; hint: string };
+            format: { label: string; hint: string };
             submitButton: string;
         };
     };
@@ -95,31 +75,80 @@ export interface PresentationDefinitionsNS {
         backButton: string;
         tabs: {
             general: string;
-            credentials: string;
+            settings: string;
+            claims: string;
+            issuerTrust: string;
+        };
+        quickCopy: {
+            heading: string;
+            hint: string;
+            definitionId: { label: string; hint: string };
+            handle: { label: string; hint: string };
+        };
+        settings: { heading: string; hint: string };
+        issuerTrust: {
+            heading: string;
+            hint: string;
+            keyResolutionMethod: {
+                label: string;
+                hint: string;
+                options: {
+                    x5c: string;
+                    jwks_uri: string;
+                    pem: string;
+                    metadata_discovery: string;
+                };
+            };
+            enforceTrustedIssuer: {
+                label: string;
+                hint: string;
+                dialogHint: string;
+            };
+            trustedCas: {
+                heading: string;
+                hint: string;
+                disabledHint: string;
+                addButton: string;
+                emptyPlaceholder: {
+                    title: string;
+                    subtitle0: string;
+                    subtitle1: string;
+                };
+            };
+            jwksUri: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            issuerPem: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            metadataDiscovery: {
+                hint: string;
+            };
         };
         form: {
-            name: { label: string; placeholder: string };
+            name: { label: string; placeholder: string; requiredError: string };
             description: { label: string; placeholder: string };
             credentials: {
                 label: string;
                 hint: string;
-                noCredentials: string;
                 addCredential: { title: string };
                 editCredential: { title: string };
-            } & CredentialFieldsNS;
-            credentialSets: {
-                label: string;
-                hint: string;
-                setLabel: string;
-                required: { label: string };
-                options: {
+                credentialId: { label: string; placeholder: string; hint: string };
+                type: { label: string; placeholder: string };
+                purpose: { label: string; placeholder: string };
+                claims: {
                     label: string;
                     hint: string;
-                    optionLabel: string;
-                    optionPlaceholder: string;
-                    addOption: string;
+                    claimPath: { label: string; placeholder: string; hint: string };
+                    mandatory: { label: string; hint: string };
+                    required: { label: string; hint: string };
+                    allowedValues: { label: string; placeholder: string; hint: string };
+                    addClaim: string;
                 };
-                addSet: string;
             };
         };
         dangerZone: {
@@ -158,6 +187,16 @@ export interface PresentationDefinitionsNS {
         deleteDefinition: {
             success: { message: string; description: string };
             error: { message: string; description: string };
+        };
+        addCertificate: {
+            success: { message: string; description: string };
+            error: { message: string; description: string };
+            genericError: { message: string; description: string };
+        };
+        deleteCertificate: {
+            success: { message: string; description: string };
+            error: { message: string; description: string };
+            genericError: { message: string; description: string };
         };
     };
 }

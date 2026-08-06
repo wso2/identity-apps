@@ -18,12 +18,7 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
-import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormLabel from "@oxygen-ui/react/FormLabel";
-import IconButton from "@oxygen-ui/react/IconButton";
-import Radio from "@oxygen-ui/react/Radio";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import MuiTextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -32,8 +27,18 @@ import { Button, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Modal } from "semantic-ui-react";
-import { ClaimConstraintModel, IssuerCertType, RequestedCredentialModel }
+import { ClaimConstraintModel, RequestedCredentialModel }
     from "../models/presentation-definitions";
+
+/**
+ * Internal state for a single claim row — path stored as dot-notation string for the input,
+ * converted to string[] on save.
+ */
+interface ClaimDraft {
+    pathDotNotation: string;
+    mandatory: boolean;
+    allowedValues: string[];
+}
 
 interface CredentialEditDialogPropsInterface extends IdentifiableComponentInterface {
     open: boolean;
@@ -59,81 +64,63 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
 }: CredentialEditDialogPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const [ credentialQueryId, setCredentialQueryId ] = useState<string>("");
-    const [ credentialQueryIdError, setCredentialQueryIdError ] = useState<string>("");
+    const [ credentialId, setCredentialId ] = useState<string>("");
     const [ type, setType ] = useState<string>("");
     const [ purpose, setPurpose ] = useState<string>("");
-    const [ claims, setClaims ] = useState<ClaimConstraintModel[]>([]);
-    const [ enforceTrustedIssuers, setEnforceTrustedIssuers ] = useState<boolean>(false);
-    const [ trustedIssuers, setTrustedIssuers ] = useState<string[]>([]);
-    const [ issuerCertType, setIssuerCertType ] = useState<IssuerCertType>(IssuerCertType.NONE);
-    const [ jwksUri, setJwksUri ] = useState<string>("");
-    const [ issuerCertPem, setIssuerCertPem ] = useState<string>("");
-
-    const DCQL_ID_PATTERN: RegExp = /^[a-zA-Z0-9_-]+$/;
-
-    const handleCredentialQueryIdChange = (value: string): void => {
-        setCredentialQueryId(value);
-        if (value && !DCQL_ID_PATTERN.test(value)) {
-            setCredentialQueryIdError(
-                t("presentationDefinitions:editPage.form.credentials.credentialQueryId.patternError")
-            );
-        } else {
-            setCredentialQueryIdError("");
-        }
-    };
+    const [ claimDrafts, setClaimDrafts ] = useState<ClaimDraft[]>([]);
+    const [ enforceTrustedIssuer, setEnforceTrustedIssuer ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (open) {
-            setCredentialQueryId(editingCredential?.credentialQueryId ?? "");
-            setCredentialQueryIdError("");
-            setType(editingCredential?.type ?? "");
-            setPurpose(editingCredential?.purpose ?? "");
-            setClaims(editingCredential?.claims ?? []);
-            setEnforceTrustedIssuers(editingCredential?.enforceTrustedIssuers ?? false);
-            setTrustedIssuers(editingCredential?.trustedIssuers ?? []);
-            if (editingCredential?.issuerCertPem) {
-                setIssuerCertType(IssuerCertType.PEM);
-                setIssuerCertPem(editingCredential.issuerCertPem);
-                setJwksUri("");
-            } else if (editingCredential?.jwksUri) {
-                setIssuerCertType(IssuerCertType.JWKS);
-                setJwksUri(editingCredential.jwksUri);
-                setIssuerCertPem("");
-            } else {
-                setIssuerCertType(IssuerCertType.NONE);
-                setJwksUri("");
-                setIssuerCertPem("");
-            }
+        if (!open) {
+            return;
         }
+
+        setCredentialId(editingCredential?.id ?? "");
+        setType(editingCredential?.type ?? "");
+        setPurpose(editingCredential?.purpose ?? "");
+
+        const drafts: ClaimDraft[] = (editingCredential?.claims ?? []).map(
+            (c: ClaimConstraintModel): ClaimDraft => {
+                const pathArray: string[] = c.path ?? (c.name ? [ c.name ] : []);
+
+                return {
+                    allowedValues: c.allowedValues ?? [],
+                    mandatory: c.mandatory ?? true,
+                    pathDotNotation: pathArray.join(".")
+                };
+            }
+        );
+
+        setClaimDrafts(drafts);
+        setEnforceTrustedIssuer(editingCredential?.enforceTrustedIssuer ?? false);
     }, [ open, editingCredential ]);
 
-    const addClaim = (): void => {
-        setClaims((prev: ClaimConstraintModel[]) => [
+    const addClaimDraft = (): void => {
+        setClaimDrafts((prev: ClaimDraft[]) => [
             ...prev,
-            { allowedValues: [], mandatory: true, name: "" }
+            { allowedValues: [], mandatory: true, pathDotNotation: "" }
         ]);
     };
 
-    const removeClaim = (index: number): void => {
-        setClaims((prev: ClaimConstraintModel[]) => prev.filter(
-            (_: ClaimConstraintModel, i: number) => i !== index
-        ));
+    const removeClaimDraft = (index: number): void => {
+        setClaimDrafts((prev: ClaimDraft[]) =>
+            prev.filter((_: ClaimDraft, i: number) => i !== index)
+        );
     };
 
-    const updateClaimName = (index: number, name: string): void => {
-        setClaims((prev: ClaimConstraintModel[]) => {
-            const updated: ClaimConstraintModel[] = [ ...prev ];
+    const updateClaimPath = (index: number, value: string): void => {
+        setClaimDrafts((prev: ClaimDraft[]) => {
+            const updated: ClaimDraft[] = [ ...prev ];
 
-            updated[index] = { ...updated[index], name };
+            updated[index] = { ...updated[index], pathDotNotation: value };
 
             return updated;
         });
     };
 
     const updateClaimMandatory = (index: number, mandatory: boolean): void => {
-        setClaims((prev: ClaimConstraintModel[]) => {
-            const updated: ClaimConstraintModel[] = [ ...prev ];
+        setClaimDrafts((prev: ClaimDraft[]) => {
+            const updated: ClaimDraft[] = [ ...prev ];
 
             updated[index] = { ...updated[index], mandatory };
 
@@ -142,8 +129,8 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
     };
 
     const updateClaimAllowedValues = (index: number, allowedValues: string[]): void => {
-        setClaims((prev: ClaimConstraintModel[]) => {
-            const updated: ClaimConstraintModel[] = [ ...prev ];
+        setClaimDrafts((prev: ClaimDraft[]) => {
+            const updated: ClaimDraft[] = [ ...prev ];
 
             updated[index] = { ...updated[index], allowedValues };
 
@@ -152,26 +139,23 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
     };
 
     const handleSave = (): void => {
-        if (!credentialQueryId.trim() || credentialQueryIdError || !type.trim()) {
+        if (!credentialId.trim() || !type.trim()) {
             return;
         }
 
-        const validClaims: ClaimConstraintModel[] = claims
-            .filter((c: ClaimConstraintModel) => c.name.trim() !== "")
-            .map((c: ClaimConstraintModel) => ({
-                allowedValues: c.allowedValues ?? [],
-                mandatory: c.mandatory ?? true,
-                name: c.name.trim()
-            }));
+        const validClaims: ClaimConstraintModel[] = claimDrafts
+            .map((draft: ClaimDraft): ClaimConstraintModel => ({
+                allowedValues: draft.allowedValues,
+                mandatory: draft.mandatory,
+                path: draft.pathDotNotation.trim().split(".").map((s: string) => s.trim()).filter(Boolean)
+            }))
+            .filter((c: ClaimConstraintModel) => (c.path ?? []).length > 0);
 
         onSave({
             claims: validClaims,
-            credentialQueryId: credentialQueryId.trim(),
-            enforceTrustedIssuers,
-            issuerCertPem: issuerCertType === IssuerCertType.PEM ? issuerCertPem.trim() || undefined : undefined,
-            jwksUri: issuerCertType === IssuerCertType.JWKS ? jwksUri.trim() || undefined : undefined,
+            enforceTrustedIssuer: enforceTrustedIssuer,
+            id: credentialId.trim(),
             purpose: purpose.trim() || undefined,
-            trustedIssuers: enforceTrustedIssuers ? trustedIssuers : [],
             type: type.trim()
         });
     };
@@ -197,21 +181,18 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 <MuiTextField
                     fullWidth
                     size="small"
-                    label={ t("presentationDefinitions:editPage.form.credentials.credentialQueryId.label") }
-                    placeholder={ t(
-                        "presentationDefinitions:editPage.form.credentials.credentialQueryId.placeholder"
-                    ) }
-                    value={ credentialQueryId }
-                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleCredentialQueryIdChange(e.target.value)
-                    }
+                    label={ t("presentationDefinitions:editPage.form.credentials.credentialId.label") }
+                    placeholder={ t("presentationDefinitions:editPage.form.credentials.credentialId.placeholder") }
+                    value={ credentialId }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setCredentialId(e.target.value) }
                     required
-                    error={ !!credentialQueryIdError }
-                    helperText={ credentialQueryIdError || t(
-                        "presentationDefinitions:editPage.form.credentials.credentialQueryId.hint"
-                    ) }
+                    disabled={ !isAdd }
+                    helperText={ isAdd
+                        ? t("presentationDefinitions:editPage.form.credentials.credentialId.hint")
+                        : undefined
+                    }
                     sx={ { mb: 2 } }
-                    data-componentid={ `${componentId}-credential-query-id-field` }
+                    data-componentid={ `${componentId}-credential-id-field` }
                 />
                 <MuiTextField
                     fullWidth
@@ -235,14 +216,14 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                     data-componentid={ `${componentId}-purpose-field` }
                 />
 
-                <Typography variant="subtitle2" sx={ { mb: 0.5, fontWeight: 600 } }>
+                <Typography variant="subtitle2" sx={ { fontWeight: 600, mb: 0.5 } }>
                     { t("presentationDefinitions:editPage.form.credentials.claims.label") }
                 </Typography>
                 <Hint>
                     { t("presentationDefinitions:editPage.form.credentials.claims.hint") }
                 </Hint>
 
-                { claims.map((claim: ClaimConstraintModel, index: number) => (
+                { claimDrafts.map((draft: ClaimDraft, index: number) => (
                     <Box
                         key={ index }
                         sx={ {
@@ -250,44 +231,42 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                             borderRadius: 1,
                             mb: 1,
                             mt: 1,
-                            p: 1.5,
-                            position: "relative"
+                            p: 1.5
                         } }
                         data-componentid={ `${componentId}-claim-row-${index}` }
                     >
-                        <IconButton
-                            size="small"
-                            sx={ { position: "absolute", right: 4, top: 4, zIndex: 10 } }
-                            onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
-                                e.stopPropagation();
-                                e.nativeEvent.stopImmediatePropagation();
-                                removeClaim(index);
-                            } }
-                            aria-label="remove claim"
-                            data-componentid={ `${componentId}-claim-${index}-remove` }
-                        >
-                            <Icon name="close" />
-                        </IconButton>
-                        <MuiTextField
-                            fullWidth
-                            size="small"
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.claimName.label"
-                            ) }
-                            placeholder={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.claimName.placeholder"
-                            ) }
-                            value={ claim.name }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                updateClaimName(index, e.target.value)
-                            }
-                            sx={ { mb: 1, pr: 4 } }
-                            data-componentid={ `${componentId}-claim-${index}-name` }
-                        />
+                        <Box sx={ { alignItems: "flex-start", display: "flex", gap: 1 } }>
+                            <MuiTextField
+                                fullWidth
+                                size="small"
+                                label={ t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.claimPath.label"
+                                ) }
+                                placeholder={ t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.claimPath.placeholder"
+                                ) }
+                                value={ draft.pathDotNotation }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                    updateClaimPath(index, e.target.value)
+                                }
+                                data-componentid={ `${componentId}-claim-${index}-path` }
+                            />
+                            <Box sx={ { flexShrink: 0, mt: 1 } }>
+                                <Icon
+                                    link
+                                    name="close"
+                                    color="grey"
+                                    size="small"
+                                    onClick={ () => removeClaimDraft(index) }
+                                    aria-label="remove claim"
+                                    data-componentid={ `${componentId}-claim-${index}-remove` }
+                                />
+                            </Box>
+                        </Box>
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={ claim.mandatory ?? true }
+                                    checked={ draft.mandatory }
                                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                         updateClaimMandatory(index, e.target.checked)
                                     }
@@ -298,13 +277,13 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                             label={ t(
                                 "presentationDefinitions:editPage.form.credentials.claims.mandatory.label"
                             ) }
-                            sx={ { mb: 0.5 } }
+                            sx={ { display: "flex", mb: 0.5, mt: 1 } }
                         />
                         <Autocomplete
                             multiple
                             freeSolo
                             options={ [] as string[] }
-                            value={ claim.allowedValues ?? [] }
+                            value={ draft.allowedValues }
                             onChange={ (_e: SyntheticEvent, newValue: string[]) =>
                                 updateClaimAllowedValues(index, newValue)
                             }
@@ -314,7 +293,7 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                                     label={ t(
                                         "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label"
                                     ) }
-                                    placeholder={ (claim.allowedValues ?? []).length === 0
+                                    placeholder={ draft.allowedValues.length === 0
                                         ? t(
                                             "presentationDefinitions:editPage.form.credentials.claims.allowedValues.placeholder"
                                         )
@@ -339,7 +318,7 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                     primary
                     size="mini"
                     type="button"
-                    onClick={ addClaim }
+                    onClick={ addClaimDraft }
                     data-componentid={ `${componentId}-add-claim-button` }
                 >
                     <Icon name="add" />
@@ -347,150 +326,30 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 </Button>
 
                 <Divider hidden />
-                <FormControl component="fieldset" fullWidth>
-                    <FormLabel component="legend" sx={ { fontSize: "0.875rem", fontWeight: 600, mb: 0.5 } }>
-                        { t("presentationDefinitions:editPage.form.credentials.issuerCert.label") }
-                    </FormLabel>
-                    <Hint>
-                        { t("presentationDefinitions:editPage.form.credentials.issuerCert.hint") }
-                    </Hint>
-                    <RadioGroup
-                        row
-                        value={ issuerCertType }
-                        onChange={ (_e: React.ChangeEvent<HTMLInputElement>, value: string) =>
-                            setIssuerCertType(value as IssuerCertType)
-                        }
-                        data-componentid={ `${componentId}-issuer-cert-type-radio-group` }
-                    >
-                        <FormControlLabel
-                            value={ IssuerCertType.NONE }
-                            control={ <Radio size="small" /> }
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.none.label"
-                            ) }
-                        />
-                        <FormControlLabel
-                            value={ IssuerCertType.JWKS }
-                            control={ <Radio size="small" /> }
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.label"
-                            ) }
-                        />
-                        <FormControlLabel
-                            value={ IssuerCertType.PEM }
-                            control={ <Radio size="small" /> }
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.label"
-                            ) }
-                        />
-                    </RadioGroup>
-                </FormControl>
-                { issuerCertType === IssuerCertType.NONE && (
-                    <Hint>
-                        { t(
-                            "presentationDefinitions:editPage.form.credentials.issuerCert.none.hint"
-                        ) }
-                    </Hint>
-                ) }
-                { issuerCertType === IssuerCertType.JWKS && (
-                    <Box sx={ { mt: 1 } }>
-                        <MuiTextField
-                            fullWidth
-                            size="small"
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlLabel"
-                            ) }
-                            placeholder={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlPlaceholder"
-                            ) }
-                            value={ jwksUri }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setJwksUri(e.target.value) }
-                            sx={ { mb: 0.5 } }
-                            data-componentid={ `${componentId}-jwks-uri-field` }
-                        />
-                        <Hint>
-                            { t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.jwks.urlHint"
-                            ) }
-                        </Hint>
-                    </Box>
-                ) }
-                { issuerCertType === IssuerCertType.PEM && (
-                    <Box sx={ { mt: 1 } }>
-                        <MuiTextField
-                            fullWidth
-                            multiline
-                            minRows={ 5 }
-                            size="small"
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.label"
-                            ) }
-                            placeholder="-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----"
-                            value={ issuerCertPem }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                setIssuerCertPem(e.target.value)
-                            }
-                            sx={ { fontFamily: "monospace", mb: 0.5 } }
-                            data-componentid={ `${componentId}-issuer-cert-pem-field` }
-                        />
-                        <Hint>
-                            { t(
-                                "presentationDefinitions:editPage.form.credentials.issuerCert.pem.hint"
-                            ) }
-                        </Hint>
-                    </Box>
-                ) }
-
-                <Divider hidden />
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={ enforceTrustedIssuers }
+                            checked={ enforceTrustedIssuer }
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                setEnforceTrustedIssuers(e.target.checked)
+                                setEnforceTrustedIssuer(e.target.checked)
                             }
                             size="small"
-                            data-componentid={ `${componentId}-enforce-issuers-switch` }
+                            data-componentid={ `${componentId}-enforce-trusted-issuer` }
                         />
                     }
-                    label={ t("presentationDefinitions:editPage.form.credentials.enforceTrustedIssuers.label") }
-                    sx={ { mb: 0.5 } }
+                    label={ t(
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.label",
+                        "Enforce Trusted Issuer"
+                    ) }
+                    sx={ { display: "flex", mb: 0.5 } }
                 />
                 <Hint>
-                    { t("presentationDefinitions:editPage.form.credentials.enforceTrustedIssuers.hint") }
+                    { t(
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.dialogHint",
+                        "When enabled, the credential's x5c chain must validate against a trusted root CA. " +
+                        "Trusted CA certificates can be configured after saving."
+                    ) }
                 </Hint>
-                { enforceTrustedIssuers && (
-                    <>
-                        <Divider hidden />
-                        <Autocomplete
-                            multiple
-                            freeSolo
-                            options={ [] as string[] }
-                            value={ trustedIssuers }
-                            onChange={ (_e: SyntheticEvent, newValue: string[]) => setTrustedIssuers(newValue) }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <MuiTextField
-                                    { ...params }
-                                    label={ t(
-                                        "presentationDefinitions:editPage.form.credentials.trustedIssuers.label"
-                                    ) }
-                                    placeholder={ trustedIssuers.length === 0
-                                        ? t(
-                                            "presentationDefinitions:editPage.form.credentials.trustedIssuers.placeholder"
-                                        )
-                                        : undefined
-                                    }
-                                    size="small"
-                                />
-                            ) }
-                            sx={ { mb: 1 } }
-                            data-componentid={ `${componentId}-trusted-issuers-autocomplete` }
-                        />
-                        <Hint>
-                            { t("presentationDefinitions:editPage.form.credentials.trustedIssuers.hint") }
-                        </Hint>
-                    </>
-                ) }
             </Modal.Content>
             <Modal.Actions>
                 <Button
@@ -504,7 +363,7 @@ const CredentialEditDialog: FunctionComponent<CredentialEditDialogPropsInterface
                 </Button>
                 <Button
                     primary
-                    disabled={ !credentialQueryId.trim() || !!credentialQueryIdError || !type.trim() }
+                    disabled={ !credentialId.trim() || !type.trim() }
                     onClick={ handleSave }
                     data-componentid={ `${componentId}-save-button` }
                 >

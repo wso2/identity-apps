@@ -33,6 +33,11 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
     placeholders: {
         emptyList: {
             subtitle: "There are no presentation definitions configured yet. Click the button to create one."
+        },
+        emptySearch: {
+            title: "No results found",
+            subtitle1: "We couldn't find any presentation definitions matching your search.",
+            subtitle2: "Try a different search term."
         }
     },
     list: {
@@ -48,6 +53,15 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                 content: "If you delete this presentation definition, it will no longer be available for VP requests. Please proceed with caution.",
                 assertionHint: "Please confirm your action."
             }
+        },
+        search: {
+            placeholder: "Search by name",
+            filterAttributePlaceholder: "Filter by",
+            filterConditionsPlaceholder: "Condition",
+            filterValuePlaceholder: "Enter value",
+            attributes: {
+                name: "Name"
+            }
         }
     },
     wizard: {
@@ -58,87 +72,24 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                 placeholder: "Enter a name for this presentation definition",
                 hint: "A descriptive name to identify this presentation definition."
             },
+            handle: {
+                label: "Handle",
+                placeholder: "e.g. my-credential",
+                hint: "Auto-generated from the name. Identifies the credential query in DCQL. Use letters, numbers, underscores, or hyphens only.",
+                validationError: "Only letters, numbers, underscores, and hyphens are allowed."
+            },
             description: {
-                label: "Description (optional)",
+                label: "Description",
                 placeholder: "Enter a brief description"
             },
-            credentials: {
-                label: "Requested Credentials",
-                hint: "Define the verifiable credentials the wallet must present. At least one credential type is required.",
-                credentialQueryId: {
-                    label: "Credential Query ID",
-                    placeholder: "e.g. my_credential_1",
-                    hint: "A unique identifier for this credential query. Used as the key in the DCQL request and wallet response. Only letters, digits, underscores and hyphens are allowed.",
-                    patternError: "Only letters, digits, underscores (_) and hyphens (-) are allowed."
-                },
-                type: {
-                    label: "Credential Type",
-                    placeholder: "e.g. urn:eudi:pid:de:1"
-                },
-                purpose: {
-                    label: "Purpose (optional)",
-                    placeholder: "e.g. Identity Verification"
-                },
-                claims: {
-                    label: "Claims",
-                    placeholder: "e.g. given_name, family_name, birth_date",
-                    hint: "Comma-separated list of claim names to request.",
-                    claimName: {
-                        label: "Claim Name",
-                        placeholder: "e.g. given_name"
-                    },
-                    claimPath: {
-                        label: "Claim Path",
-                        placeholder: "e.g. given_name",
-                        hint: "Each field is one path segment. For a simple claim add one segment (e.g. given_name). For a nested claim add multiple segments in order (e.g. address, then street_address).",
-                        addSegment: "Add Segment"
-                    },
-                    mandatory: {
-                        label: "Mandatory",
-                        hint: "When enabled, the credential must include this claim."
-                    },
-                    allowedValues: {
-                        label: "Allowed Values",
-                        placeholder: "Type a value and press Enter",
-                        hint: "If set, the claim value must be one of these."
-                    },
-                    addClaim: "Add Claim"
-                },
-                claimSets: {
-                    label: "Claim Sets",
-                    hint: "Define which claim combinations are acceptable. The wallet must satisfy at least one complete set.",
-                    optionLabel: "Set {{index}}",
-                    optionPlaceholder: "Select claim IDs",
-                    addSet: "Add Claim Set"
-                },
-                enforceTrustedIssuers: {
-                    label: "Enforce Trusted Issuers",
-                    hint: "When enabled, only credentials issued by the listed trusted issuers will be accepted."
-                },
-                trustedIssuers: {
-                    label: "Trusted Issuers",
-                    placeholder: "e.g. https://issuer.example.com",
-                    hint: "Comma-separated list of trusted issuer URIs or DIDs."
-                },
-                issuerCert: {
-                    label: "Issuer Certificate",
-                    hint: "Configure how to verify the credential issuer's signature.",
-                    none: {
-                        label: "None",
-                        hint: "The credential's JWT must include an x5c certificate chain in its header. Verification will fail if no x5c header is present."
-                    },
-                    jwks: {
-                        label: "Use JWKS endpoint",
-                        urlLabel: "JWKS Endpoint URL",
-                        urlPlaceholder: "e.g. https://issuer.example.com/jwks",
-                        urlHint: "The JWKS endpoint URL of the credential issuer. Used instead of automatic well-known discovery."
-                    },
-                    pem: {
-                        label: "Provide Certificate",
-                        hint: "Paste the issuer's public certificate in PEM format. Verification will use this certificate directly without any network call."
-                    }
-                },
-                addButton: "Add Credential"
+            credentialType: {
+                label: "Credential Type",
+                placeholder: "e.g. urn:eudi:pid:de:1",
+                hint: "The Verifiable Credential Type (vct) claim value as defined in SD-JWT VC (RFC 9596). Must match exactly the vct in the credential issued by the issuer."
+            },
+            format: {
+                label: "Format",
+                hint: "SD-JWT VC format that enables selective disclosure of individual claims from a verifiable credential."
             },
             submitButton: "Create"
         }
@@ -148,54 +99,117 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
         backButton: "Go back to Presentation Definitions",
         tabs: {
             general: "General",
-            credentials: "Credentials"
+            settings: "Settings",
+            claims: "Claims",
+            issuerTrust: "Issuer Verification"
+        },
+        quickCopy: {
+            heading: "Quick Copy",
+            hint: "Copy these identifiers to reference this definition in your application or API calls.",
+            definitionId: {
+                label: "Definition ID",
+                hint: "The unique identifier for this presentation definition. Use this ID when referencing it in API calls or application configuration."
+            },
+            handle: {
+                label: "Handle",
+                hint: "The DCQL credential query identifier. Used in VP request authorization."
+            }
+        },
+        settings: {
+            heading: "Credential Settings",
+            hint: "Configure the credential type this definition requests from the wallet."
+        },
+        issuerTrust: {
+            heading: "Issuer Verification",
+            hint: "Choose how the issuer's public key is resolved to verify the credential signature.",
+            keyResolutionMethod: {
+                label: "Key Resolution Method",
+                hint: "Select the method to resolve the issuer's public key for signature verification.",
+                options: {
+                    x5c: "X.509 Certificate Chain",
+                    jwks_uri: "JWKS URI",
+                    pem: "PEM Certificate",
+                    metadata_discovery: "Metadata Discovery (Automatic)"
+                }
+            },
+            enforceTrustedIssuer: {
+                label: "Enforce Trusted Issuer",
+                hint: "Enable this to verify that the credential's certificate chain ends at a trusted root CA configured in the system.",
+                dialogHint: "When enabled, the credential's x5c chain must validate against a trusted root CA. Trusted CA certificates can be configured after saving."
+            },
+            trustedCas: {
+                heading: "Trusted CA Certificates",
+                hint: "The x5c chain is accepted if it validates against any of these CAs.",
+                disabledHint: "Enable Enforce Trusted Issuer above to manage trusted CA certificates.",
+                addButton: "Add Certificate",
+                emptyPlaceholder: {
+                    title: "No certificates",
+                    subtitle0: "This credential has no trusted CA certificates configured.",
+                    subtitle1: "Add a certificate to enforce x5c chain validation."
+                }
+            },
+            jwksUri: {
+                label: "JWKS URI",
+                placeholder: "https://issuer.example.com/.well-known/jwks.json",
+                hint: "The URL of the issuer's JSON Web Key Set (JWKS) endpoint used to fetch public keys."
+            },
+            issuerPem: {
+                label: "Issuer PEM Certificate",
+                placeholder: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+                hint: "Paste the PEM-encoded X.509 certificate of the credential issuer. The public key will be extracted from this certificate."
+            },
+            metadataDiscovery: {
+                hint: "Automatically fetches the issuer's public key from their published metadata. " +
+                    "No configuration required."
+            }
         },
         form: {
             name: {
                 label: "Name",
-                placeholder: "Enter a name"
+                placeholder: "Enter a name",
+                requiredError: "Name is required."
             },
             description: {
-                label: "Description (optional)",
+                label: "Description",
                 placeholder: "Enter a brief description"
             },
             credentials: {
-                label: "Requested Credentials",
-                hint: "Define the verifiable credentials the wallet must present.",
-                noCredentials: "No credentials configured yet. Click \"Add Credential\" to define one.",
-                addCredential: { title: "Add Credential" },
-                editCredential: { title: "Edit Credential" },
-                credentialQueryId: {
-                    label: "Credential Query ID",
-                    placeholder: "e.g. my_credential_1",
-                    hint: "A unique identifier for this credential query. Used as the key in the DCQL request and wallet response. Only letters, digits, underscores and hyphens are allowed.",
-                    patternError: "Only letters, digits, underscores (_) and hyphens (-) are allowed."
+                label: "Requested Credential",
+                hint: "Define the verifiable credential the wallet must present.",
+                addCredential: {
+                    title: "Add Credential"
+                },
+                editCredential: {
+                    title: "Edit Credential"
+                },
+                credentialId: {
+                    label: "Credential ID",
+                    placeholder: "e.g. employee_badge",
+                    hint: "A unique identifier for this credential entry. Use alphanumeric characters, underscores, or hyphens only."
                 },
                 type: {
                     label: "Credential Type",
                     placeholder: "e.g. urn:eudi:pid:de:1"
                 },
                 purpose: {
-                    label: "Purpose (optional)",
+                    label: "Purpose",
                     placeholder: "e.g. Identity Verification"
                 },
                 claims: {
                     label: "Claims",
-                    placeholder: "Type a claim name and press Enter",
-                    hint: "Claim names to request from the credential (e.g. given_name, birth_date).",
-                    claimName: {
-                        label: "Claim Name",
-                        placeholder: "e.g. given_name"
-                    },
+                    hint: "Claim names to request from the credential.",
                     claimPath: {
                         label: "Claim Path",
-                        placeholder: "e.g. given_name",
-                        hint: "Each field is one path segment. For a simple claim add one segment (e.g. given_name). For a nested claim add multiple segments in order (e.g. address, then street_address).",
-                        addSegment: "Add Segment"
+                        placeholder: "e.g. given_name or address.street_address",
+                        hint: "Use dot notation for nested paths, e.g. address.street_address."
                     },
                     mandatory: {
                         label: "Mandatory",
                         hint: "When enabled, the credential must include this claim."
+                    },
+                    required: {
+                        label: "Required",
+                        hint: "When enabled, the wallet must include this claim in the credential presentation."
                     },
                     allowedValues: {
                         label: "Allowed Values",
@@ -204,57 +218,6 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                     },
                     addClaim: "Add Claim"
                 },
-                claimSets: {
-                    label: "Claim Sets",
-                    hint: "Define which claim combinations are acceptable. The wallet must satisfy at least one complete set.",
-                    optionLabel: "Set {{index}}",
-                    optionPlaceholder: "Select claim IDs",
-                    addSet: "Add Claim Set"
-                },
-                enforceTrustedIssuers: {
-                    label: "Enforce Trusted Issuers",
-                    hint: "When enabled, only credentials issued by the listed trusted issuers will be accepted."
-                },
-                trustedIssuers: {
-                    label: "Trusted Issuers",
-                    placeholder: "Type an issuer URI and press Enter",
-                    hint: "Trusted issuer URIs or DIDs. Only enforced when \"Enforce Trusted Issuers\" is on."
-                },
-                issuerCert: {
-                    label: "Issuer Certificate",
-                    hint: "Configure how to verify the credential issuer's signature.",
-                    none: {
-                        label: "None",
-                        hint: "The credential's JWT must include an x5c certificate chain in its header. Verification will fail if no x5c header is present."
-                    },
-                    jwks: {
-                        label: "Use JWKS endpoint",
-                        urlLabel: "JWKS Endpoint URL",
-                        urlPlaceholder: "e.g. https://issuer.example.com/jwks",
-                        urlHint: "The JWKS endpoint URL of the credential issuer. Used instead of automatic well-known discovery."
-                    },
-                    pem: {
-                        label: "Provide Certificate",
-                        hint: "Paste the issuer's public certificate in PEM format. Verification will use this certificate directly without any network call."
-                    }
-                },
-                addButton: "Add Credential"
-            },
-            credentialSets: {
-                label: "Credential Sets",
-                hint: "Define acceptable combinations of credentials. The wallet must satisfy at least one option in each required set.",
-                setLabel: "Set {{index}}",
-                required: {
-                    label: "Required"
-                },
-                options: {
-                    label: "Options",
-                    hint: "Each option is a list of credential query IDs that must all be presented. The wallet satisfies the set if it can fulfil any one option.",
-                    optionLabel: "Option {{index}}",
-                    optionPlaceholder: "Type credential query IDs and press Enter",
-                    addOption: "Add Option"
-                },
-                addSet: "Add Credential Set"
             }
         },
         dangerZone: {
@@ -319,6 +282,34 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
             error: {
                 message: "Deletion Failed",
                 description: "An error occurred while deleting the presentation definition."
+            }
+        },
+        addCertificate: {
+            success: {
+                message: "Certificate Added",
+                description: "Trusted CA certificate added successfully."
+            },
+            error: {
+                message: "Add Failed",
+                description: "An error occurred while adding the certificate."
+            },
+            genericError: {
+                message: "Add Failed",
+                description: "An error occurred while adding the certificate."
+            }
+        },
+        deleteCertificate: {
+            success: {
+                message: "Certificate Deleted",
+                description: "Trusted CA certificate deleted successfully."
+            },
+            error: {
+                message: "Delete Failed",
+                description: "An error occurred while deleting the certificate."
+            },
+            genericError: {
+                message: "Delete Failed",
+                description: "An error occurred while deleting the certificate."
             }
         }
     }

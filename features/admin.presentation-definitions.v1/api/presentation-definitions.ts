@@ -22,6 +22,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
+    ConnectedConnectionsResponseInterface,
     PresentationDefinition,
     PresentationDefinitionCreationModel,
     PresentationDefinitionUpdateModel
@@ -65,7 +66,7 @@ export const updatePresentationDefinition = (
     const requestConfig: RequestConfigInterface = {
         data,
         headers: { "Content-Type": "application/json" },
-        method: HttpMethods.PUT,
+        method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.vpTemplates}/${definitionId}`
     };
 
@@ -89,5 +90,25 @@ export const deletePresentationDefinition = (definitionId: string): Promise<Axio
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => Promise.resolve(response))
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => Promise.reject(error));
+};
+
+/**
+ * Get connections that reference a presentation definition.
+ *
+ * @param definitionId - The ID of the presentation definition.
+ * @returns Promise with the connected connections response.
+ */
+export const getConnectedConnections = (
+    definitionId: string
+): Promise<ConnectedConnectionsResponseInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Accept": "application/json" },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.vpTemplates}/${definitionId}/connected-connections`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response?.data))
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => Promise.reject(error));
 };

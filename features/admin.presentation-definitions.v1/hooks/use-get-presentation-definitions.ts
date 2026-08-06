@@ -26,17 +26,33 @@ import { HttpMethods } from "@wso2is/core/models";
 import { PresentationDefinitionList } from "../models/presentation-definitions";
 
 /**
- * Hook to fetch the list of presentation definitions.
+ * Hook to fetch the list of presentation definitions with cursor-based pagination.
  *
+ * @param limit - Maximum number of definitions to return.
+ * @param before - Base64 encoded cursor for backward pagination.
+ * @param after - Base64 encoded cursor for forward pagination.
+ * @param filter - SCIM-style filter expression.
  * @param shouldFetch - Whether to fetch the data.
  * @returns RequestResultInterface with the definition list.
  */
 export const useGetPresentationDefinitions = (
+    limit?: number,
+    before?: string,
+    after?: string,
+    filter?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<PresentationDefinitionList, RequestErrorInterface> => {
+    const params: Record<string, string | number> = {};
+
+    if (limit) params.limit = limit;
+    if (before) params.before = before;
+    if (after) params.after = after;
+    if (filter) params.filter = filter;
+
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
+        params,
         url: store.getState().config.endpoints.vpTemplates
     };
 
