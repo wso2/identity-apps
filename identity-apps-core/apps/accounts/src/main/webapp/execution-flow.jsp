@@ -347,25 +347,58 @@
                 useEffect(() => {
                     if (!walletQR) return;
 
-                    const { url, txnId, flowId } = walletQR;
+                    const { url, requestId, flowId } = walletQR;
 
-                    var poll = function() {
+                    if (!requestId) {
+                        setWalletError({
+                            message: "Wallet session identifier is missing. Please try again.",
+                            flowId: flowId
+                        });
+                        setWalletQR(null);
+                        return;
+                    }
+
+                    // VP-scoped polling guards — local to this effect invocation.
+                    var vpPollInFlight = false;
+                    var vpSubmitted = false;
+                    var vpNetworkErrors = 0;
+                    var VP_MAX_NETWORK_ERRORS = 5;
+                    var VP_POLL_INTERVAL = 2000;
+                    var VP_POLL_TIMEOUT = 8000;
+
+                    function schedulePoll() {
+                        walletPollRef.current = setTimeout(poll, VP_POLL_INTERVAL);
+                    }
+
+                    function poll() {
+                        if (vpSubmitted || vpPollInFlight) return;
+                        vpPollInFlight = true;
+
+                        var controller = new AbortController();
+                        var timeoutId = setTimeout(function() { controller.abort(); }, VP_POLL_TIMEOUT);
+
                         fetch(executionFlowApiProxyPath, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
+                            signal: controller.signal,
                             body: JSON.stringify({
                                 flowId: flowId,
                                 actionId: "",
-                                inputs: { vp_txnId: txnId }
+                                inputs: { vp_request_id: requestId }
                             })
                         })
-                        .then(function(r) { return r.json(); })
+                        .then(function(r) {
+                            clearTimeout(timeoutId);
+                            return r.json();
+                        })
                         .then(function(data) {
+                            vpPollInFlight = false;
+                            vpNetworkErrors = 0;
+
                             if (data.error) {
+                                vpSubmitted = true;
                                 if (data.error.flowType) setFlowType(data.error.flowType);
                                 setError(data.error);
-                                clearInterval(walletPollRef.current);
-                                walletPollRef.current = null;
                                 setWalletQR(null);
                                 return;
                             }
@@ -373,24 +406,39 @@
                             if (data.flowType) setFlowType(data.flowType);
 
                             if (data.flowStatus !== "INCOMPLETE") {
-                                clearInterval(walletPollRef.current);
-                                walletPollRef.current = null;
+                                vpSubmitted = true;
                                 var isEnded = handleFlowStatus(data);
                                 if (!isEnded) {
                                     handleStepType(data);
                                     setFlowData(data);
                                 }
                                 setWalletQR(null);
+                            } else {
+                                schedulePoll();
                             }
                         })
-                        .catch(function() {});
-                    };
+                        .catch(function(err) {
+                            clearTimeout(timeoutId);
+                            vpPollInFlight = false;
+                            if (vpSubmitted) return;
 
-                    walletPollRef.current = setInterval(poll, 5000);
+                            vpNetworkErrors++;
+                            if (vpNetworkErrors < VP_MAX_NETWORK_ERRORS) {
+                                schedulePoll();
+                            } else {
+                                vpSubmitted = true;
+                                setError({ code: "NETWORK_ERROR", message: "Unable to reach the server. Please check your connection and try again." });
+                                setWalletQR(null);
+                            }
+                        });
+                    }
+
+                    schedulePoll();
 
                     return function() {
+                        vpSubmitted = true;
                         if (walletPollRef.current) {
-                            clearInterval(walletPollRef.current);
+                            clearTimeout(walletPollRef.current);
                             walletPollRef.current = null;
                         }
                     };
@@ -505,8 +553,8 @@
                         case "REDIRECTION": {
                             var redirectURL = flow.data.redirectURL;
                             if (redirectURL && redirectURL.startsWith("openid4vp://")) {
-                                var txnId = flow.data.additionalData && flow.data.additionalData.vp_txnId;
-                                setWalletQR({ url: redirectURL, txnId: txnId, flowId: flow.flowId });
+                                var requestId = flow.data.additionalData && flow.data.additionalData.vp_request_id;
+                                setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId });
                                 setLoading(false);
                             } else {
                                 setLoading(true);
@@ -564,18 +612,34 @@
 
                 const WalletQRView = function() {
                     var qrRef = useRef(null);
+                    var [ qrStatus, setQrStatus ] = useState("pending");
+                    var [ qrErrorMsg, setQrErrorMsg ] = useState("");
 
                     useEffect(function() {
-                        if (qrRef.current && walletQR && walletQR.url && typeof QRCode !== 'undefined') {
-                            qrRef.current.innerHTML = '';
+                        if (!walletQR || !walletQR.url) {
+                            setQrStatus("error");
+                            setQrErrorMsg("Missing wallet URL. Please use the link below to open your wallet.");
+                            return;
+                        }
+                        if (typeof QRCode === "undefined") {
+                            setQrStatus("error");
+                            setQrErrorMsg("QR code library failed to load. Please use the link below or refresh the page.");
+                            return;
+                        }
+                        try {
+                            qrRef.current.innerHTML = "";
                             new QRCode(qrRef.current, {
                                 text: walletQR.url,
                                 width: 250,
                                 height: 250,
-                                colorDark: '#000000',
-                                colorLight: '#ffffff',
+                                colorDark: "#000000",
+                                colorLight: "#ffffff",
                                 correctLevel: QRCode.CorrectLevel.M
                             });
+                            setQrStatus("ok");
+                        } catch (e) {
+                            setQrStatus("error");
+                            setQrErrorMsg("Failed to generate QR code. Please use the link below to open your wallet.");
                         }
                     }, []);
 
@@ -586,13 +650,28 @@
                         ),
                         createElement("div", { className: "ui divider hidden" }),
                         createElement("div", { className: "field text-center" },
-                            createElement("div", { ref: qrRef, style: { margin: "0 auto", width: "250px", height: "250px", display: "flex", alignItems: "center", justifyContent: "center" } })
+                            createElement("div", {
+                                ref: qrRef,
+                                style: {
+                                    margin: "0 auto",
+                                    width: "250px",
+                                    height: qrStatus === "error" ? "0" : "250px",
+                                    overflow: "hidden",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }
+                            })
                         ),
                         createElement("div", { className: "ui divider hidden" }),
-                        createElement("div", { className: "text-center" },
-                            createElement("span", { className: "wallet-reg-spinner" }),
-                            createElement("span", null, "Waiting for wallet verification...")
-                        ),
+                        qrStatus === "error"
+                            ? createElement("div", { className: "ui warning message", style: { textAlign: "center" } },
+                                createElement("span", null, qrErrorMsg)
+                              )
+                            : createElement("div", { className: "text-center" },
+                                createElement("span", { className: "wallet-reg-spinner" }),
+                                createElement("span", null, "Waiting for wallet verification...")
+                              ),
                         createElement("div", { className: "ui info message", style: { marginTop: "16px" } },
                             createElement("div", { className: "header", style: { fontSize: "14px", marginBottom: "10px" } }, "How to register"),
                             createElement("ol", { className: "wallet-reg-steps" },
