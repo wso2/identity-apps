@@ -351,10 +351,10 @@ export class RouteUtils {
             order: 2
         };
 
-        const credentialTypes: Omit<RouteInterface, "showOnSidePanel"> = {
+        const digitalCredentials: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: VerifiableCredentialsOutlineIcon,
-            id: "credentialTypes",
-            name: "Verifiable Credentis",
+            id: "digitalCredentials",
+            name: "Verifiable Credentials",
             order: 3
         };
 
@@ -441,16 +441,16 @@ export class RouteUtils {
             },
             {
                 category: verifiableCredentials,
-                id: "verifiableCredentials",
+                id: "credentialTemplates",
                 order: isOpenID4VPEnabled ? 0 : undefined,
-                parent: isOpenID4VPEnabled ? credentialTypes : null,
+                parent: isOpenID4VPEnabled ? digitalCredentials : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")
             },
             {
                 category: verifiableCredentials,
                 id: "presentationDefinitions",
                 order: 1,
-                parent: credentialTypes,
+                parent: isOpenID4VPEnabled ? digitalCredentials : null,
                 selected: history.location.pathname.includes("/presentation-definitions")
             },
             {
