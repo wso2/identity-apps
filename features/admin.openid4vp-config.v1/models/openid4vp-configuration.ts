@@ -19,13 +19,9 @@
 export interface OpenID4VPConfigFormValuesInterface {
     clientIdScheme?: string;
     responseMode?: string;
-    registrationCertificate?: string;
-    rejectVcWithoutStatusClaim?: boolean;
 }
 
 export interface OpenID4VPConfigAPIResponseInterface {
     clientIdScheme?: string;
     responseMode?: string;
-    registrationCertificate?: string;
-    rejectVcWithoutStatusClaim?: boolean;
 }

@@ -27,7 +27,6 @@ export class OpenID4VPConfigConstants {
            public static readonly OPENID4VP_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR_CODE: string = "OID4VP-00004";
 
            public static readonly CLIENT_ID_SCHEME_OPTIONS: { key: string; text: string; value: string }[] = [
-               { key: "redirect_uri", text: "redirect_uri", value: "redirect_uri" },
                { key: "x509_san_dns", text: "x509_san_dns", value: "x509_san_dns" },
                { key: "x509_hash", text: "x509_hash", value: "x509_hash" }
            ];

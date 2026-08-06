@@ -19,7 +19,8 @@
 import { OpenID4VPConfigNS } from "../../../models/namespaces/openid4vp-ns";
 
 export const openid4vp: OpenID4VPConfigNS = {
-           description: "Configure the OpenID for Verifiable Presentations (OpenID4VP) settings for this tenant.",
+           description: "Manage how your organization requests and verifies credentials from digital wallets.",
+           goBack: "Go back to Presentation Definitions",
            form: {
                clientIdScheme: {
                    hint:
@@ -40,24 +41,6 @@ export const openid4vp: OpenID4VPConfigNS = {
                        "response encryption; direct_post for plain JSON.",
                    label: "Response Mode"
                },
-               registrationCert: {
-                   dropzoneText: "Drag and drop a file containing the registration certificate JWT here.",
-                   hint:
-                       "A JWT-encoded registration attestation (rc-wrp+jwt) issued by a trust anchor. " +
-                       "Paste the JWT string or upload a file containing it. Leave blank if not applicable.",
-                   label: "Registration Certificate JWT (optional)",
-                   placeholder: "Paste the rc-wrp+jwt string here",
-                   uploadButtonText: "Upload JWT File"
-               },
-               revocation: {
-                   rejectVcWithoutStatusClaim: {
-                       hint:
-                           "When enabled, credentials that do not include a status claim are rejected " +
-                           "during verification. Disable to allow credentials issued without revocation support.",
-                       label: "Reject credentials without a status claim"
-                   },
-                   sectionTitle: "Revocation"
-               }
            },
            notifications: {
                getConfiguration: {
@@ -77,5 +60,5 @@ export const openid4vp: OpenID4VPConfigNS = {
                    }
                }
            },
-           title: "OpenID4VP Configuration"
+           title: "Verifiable Presentation Settings"
        };

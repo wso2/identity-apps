@@ -17,7 +17,6 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -28,13 +27,9 @@ import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     ContentLoader,
     EmphasizedSegment,
-    FilePicker,
     Hint,
     PageLayout,
-    PickerResult,
-    PickerStrategy,
-    PrimaryButton,
-    ValidationResult
+    PrimaryButton
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -59,7 +54,6 @@ const FORM_ID: string = "openid4vp-configuration-form";
 interface OpenID4VPConfigFormValuesInterface {
     clientIdScheme: string;
     responseMode: string;
-    rejectVcWithoutStatusClaim: boolean;
 }
 
 const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageInterface> = (
@@ -81,30 +75,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
 
     const [ formValues, setFormValues ] =
         useState<OpenID4VPConfigFormValuesInterface>(undefined);
-    const [ registrationCertificate, setRegistrationCertificate ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
-    const jwtFileStrategy: PickerStrategy<string> = {
-        mimeTypes: [ ".jwt", ".txt" ],
-        serialize: (data: File | string): Promise<string> => {
-            if (!data) {
-                return Promise.resolve("");
-            }
-            if (data instanceof File) {
-                return new Promise<string>((resolve: (value: string) => void): void => {
-                    const reader: FileReader = new FileReader();
-
-                    reader.onload = (): void => resolve((reader.result as string ?? "").trim());
-                    reader.readAsText(data, "UTF-8");
-                });
-            }
-
-            return Promise.resolve((data as string).trim());
-        },
-        validate: (_data: File | string): Promise<ValidationResult> => {
-            return Promise.resolve({ valid: true });
-        }
-    };
 
     const {
         data: originalConfig,
@@ -138,18 +109,14 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
 
         setFormValues({
             clientIdScheme: config.clientIdScheme ?? "",
-            rejectVcWithoutStatusClaim: config.rejectVcWithoutStatusClaim ?? false,
-            responseMode: config.responseMode ?? ""
+            responseMode: config.responseMode ?? "direct_post.jwt"
         });
-        setRegistrationCertificate(config.registrationCertificate ?? "");
     }, [ originalConfig ]);
 
     const handleSubmit = (values: OpenID4VPConfigFormValuesInterface): void => {
         setIsSubmitting(true);
         updateOpenID4VPConfig({
             clientIdScheme: values.clientIdScheme,
-            registrationCertificate: registrationCertificate || undefined,
-            rejectVcWithoutStatusClaim: values.rejectVcWithoutStatusClaim,
             responseMode: values.responseMode
         })
             .then(() => {
@@ -177,7 +144,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
     };
 
     const onBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+        history.goBack();
     };
 
     return (
@@ -187,7 +154,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
             description={ t("openid4vp:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("governanceConnectors:goBackLoginAndRegistration")
+                text: t("openid4vp:goBack")
             } }
             bottomMargin={ false }
             contentTopMargin={ false }
@@ -223,6 +190,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
                                                                 }
                                                                 name="clientIdScheme"
                                                                 label={ t("openid4vp:form.clientIdScheme.label") }
+                                                                required={ true }
                                                                 hint={ t("openid4vp:form.clientIdScheme.hint") }
                                                                 options={
                                                                     OpenID4VPConfigConstants.CLIENT_ID_SCHEME_OPTIONS
@@ -241,9 +209,11 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column width={ 10 }>
-                                                            <label className="display-flex">
-                                                                { t("openid4vp:form.responseMode.label") }
-                                                            </label>
+                                                            <div className="required field">
+                                                                <label>
+                                                                    { t("openid4vp:form.responseMode.label") }
+                                                                </label>
+                                                            </div>
                                                             <Field.Radio
                                                                 ariaLabel="direct_post"
                                                                 name="responseMode"
@@ -313,74 +283,6 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
                                                             <Hint>
                                                                 { t("openid4vp:form.responseMode.hint") }
                                                             </Hint>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column width={ 10 }>
-                                                            <label className="display-flex">
-                                                                { t("openid4vp:form.registrationCert.label") }
-                                                            </label>
-                                                            <FilePicker
-                                                                key={ 1 }
-                                                                fileStrategy={ jwtFileStrategy }
-                                                                normalizeStateOnRemoveOperations={ true }
-                                                                onChange={ (result: PickerResult<string>) => {
-                                                                    setRegistrationCertificate(
-                                                                        result.serialized ?? result.pastedContent ?? ""
-                                                                    );
-                                                                } }
-                                                                uploadButtonText={ t(
-                                                                    "openid4vp:form.registrationCert.uploadButtonText"
-                                                                ) }
-                                                                dropzoneText={ t(
-                                                                    "openid4vp:form.registrationCert.dropzoneText"
-                                                                ) }
-                                                                pasteAreaPlaceholderText={ t(
-                                                                    "openid4vp:form.registrationCert.placeholder"
-                                                                ) }
-                                                                pastedContent={ registrationCertificate }
-                                                                placeholderIcon={
-                                                                    <Icon name="file alternate" size="huge" />
-                                                                }
-                                                                data-componentid={
-                                                                    `${ componentId }-registration-cert`
-                                                                }
-                                                            />
-                                                            <Hint>
-                                                                { t("openid4vp:form.registrationCert.hint") }
-                                                            </Hint>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column width={ 10 }>
-                                                            <Divider horizontal className="mb-3">
-                                                                <small>
-                                                                    { t(
-                                                                        "openid4vp:form.revocation.sectionTitle"
-                                                                    ) }
-                                                                </small>
-                                                            </Divider>
-                                                            <Field.Checkbox
-                                                                ariaLabel={ t(
-                                                                    "openid4vp:form.revocation" +
-                                                                    ".rejectVcWithoutStatusClaim.label"
-                                                                ) }
-                                                                name="rejectVcWithoutStatusClaim"
-                                                                label={ t(
-                                                                    "openid4vp:form.revocation" +
-                                                                    ".rejectVcWithoutStatusClaim.label"
-                                                                ) }
-                                                                hint={ t(
-                                                                    "openid4vp:form.revocation" +
-                                                                    ".rejectVcWithoutStatusClaim.hint"
-                                                                ) }
-                                                                readOnly={ isReadOnly }
-                                                                width={ 16 }
-                                                                data-componentid={
-                                                                    `${ componentId }-reject-vc-without-status-claim`
-                                                                }
-                                                                toggle
-                                                            />
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>

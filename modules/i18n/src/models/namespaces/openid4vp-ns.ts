@@ -19,6 +19,7 @@
 export interface OpenID4VPConfigNS {
     title: string;
     description: string;
+    goBack: string;
     form: {
         clientIdScheme: {
             label: string;
@@ -30,20 +31,6 @@ export interface OpenID4VPConfigNS {
             hint: string;
             directPost: { hint: string };
             directPostJwt: { hint: string };
-        };
-        registrationCert: {
-            label: string;
-            placeholder: string;
-            hint: string;
-            uploadButtonText: string;
-            dropzoneText: string;
-        };
-        revocation: {
-            sectionTitle: string;
-            rejectVcWithoutStatusClaim: {
-                label: string;
-                hint: string;
-            };
         };
     };
     notifications: {
