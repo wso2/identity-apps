@@ -62,6 +62,11 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      * List of claim mappings.
      */
     selectedClaimMappings?: ConnectionCommonClaimMappingInterface[];
+    /**
+     * When true, hides the "Default Subject" option from the subject dropdown.
+     * Defaults to false to preserve existing behaviour for other connection types.
+     */
+    hideDefaultSubject?: boolean;
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -82,6 +87,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         isOIDC,
         isSaml,
         selectedClaimMappings,
+        hideDefaultSubject,
         [ "data-testid" ]: testId
     } = props;
 
@@ -293,15 +299,17 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Form.Select
                             fluid
                             options={
-                                dropDownOptions.concat(
-                                    {
-                                        key: "default_subject",
-                                        text: t("authenticationProvider:forms." +
-                                            "uriAttributeSettings.subject." +
-                                            "placeHolder"),
-                                        value: ""
-                                    } as DropdownOptionsInterface
-                                )
+                                hideDefaultSubject
+                                    ? dropDownOptions
+                                    : dropDownOptions.concat(
+                                        {
+                                            key: "default_subject",
+                                            text: t("authenticationProvider:forms." +
+                                                "uriAttributeSettings.subject." +
+                                                "placeHolder"),
+                                            value: ""
+                                        } as DropdownOptionsInterface
+                                    )
                             }
                             value={ getValidatedInitialValue(initialSubjectUri) }
                             placeholder={ t("authenticationProvider:forms." +

@@ -105,8 +105,8 @@ export const pages: pagesNS = {
         title: "OpenID Connect Scopes"
     },
     openid4vpConfig: {
-        subTitle: "Configure OpenID for Verifiable Presentations (OpenID4VP) settings for organization.",
-        title: "OpenID4VP Configuration"
+        subTitle: "Manage how your organization requests and verifies credentials from digital wallets.",
+        title: "Verifiable Presentation Settings"
     },
     oidcScopesEdit: {
         backButton: "Go back to Scopes",

@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Form, Icon, Input, Label } from "semantic-ui-react";
+import { Divider, Dropdown, DropdownItemProps, DropdownProps, Form, Icon, Input, Label } from "semantic-ui-react";
 import { getFederatedAuthenticatorDetails } from "../../../api/authenticators";
 import {
     CreatePresentationDefinitionRequestInterface,
@@ -60,9 +60,14 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
     const [ claims, setClaims ] = useState<string[]>([]);
     const [ definitionName, setDefinitionName ] = useState<string>("");
     const [ definitionDescription, setDefinitionDescription ] = useState<string>("");
-    const [ issuer, setIssuer ] = useState<string>("");
     const [ vcType, setVcType ] = useState<string>("");
-    const [ vcPurpose, setVcPurpose ] = useState<string>("");
+    const [ vcFormat, setVcFormat ] = useState<string>("dc+sd-jwt");
+
+    const FORMAT_OPTIONS: DropdownItemProps[] = [
+        { key: "dc+sd-jwt", text: "dc+sd-jwt (SD-JWT VC)", value: "dc+sd-jwt" },
+        { key: "mso_mdoc", text: "mso_mdoc (ISO mDL)", value: "mso_mdoc" },
+        { key: "jwt_vc_json", text: "jwt_vc_json (JWT VC)", value: "jwt_vc_json" }
+    ];
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ presentationDefinitionId, setPresentationDefinitionId ] = useState<string>(undefined);
@@ -124,8 +129,7 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
         setDefinitionName(definition?.name ?? "");
         setDefinitionDescription(definition?.description ?? "");
         setVcType(firstCredential?.type ?? "");
-        setVcPurpose(firstCredential?.purpose ?? "");
-        setIssuer(firstCredential?.issuer ?? "");
+        setVcFormat(firstCredential?.format ?? "dc+sd-jwt");
         setClaims(firstCredential?.claims ?? []);
     };
 
@@ -135,8 +139,7 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
             setDefinitionName("");
             setDefinitionDescription("");
             setVcType("");
-            setVcPurpose("");
-            setIssuer("");
+            setVcFormat("dc+sd-jwt");
 
             return;
         }
@@ -174,8 +177,7 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
             credentials: [
                 {
                     claims: nextClaims ?? claims,
-                    issuer,
-                    purpose: vcPurpose,
+                    format: vcFormat,
                     type: vcType
                 }
             ],
@@ -215,9 +217,9 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
     }, [ presentationDefinitionId ]);
 
     const onSaveChanges = (): void => {
-        if (isEmpty(vcType?.trim()) || isEmpty(vcPurpose?.trim()) || isEmpty(issuer?.trim())) {
+        if (isEmpty(vcType?.trim())) {
             dispatch(addAlert({
-                description: "Credential Type, Request Purpose, and Trusted Issuer are required.",
+                description: "Credential Type is required.",
                 level: AlertLevels.ERROR,
                 message: "Cannot update with blank required fields"
             }));
@@ -250,33 +252,23 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                     </p>
                 </Form.Field>
 
-                <Form.Field>
-                    <label>Request Purpose</label>
-                    <Input
-                        value={ vcPurpose }
-                        readOnly={ isReadOnly }
-                        onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: { value: string }) => {
-                            setVcPurpose(data.value);
-                        } }
-                    />
-                    <p className="ui-hint">
-                        <Icon floated="left" aria-hidden="true" className="grey info circle icon" />
-                        A short message displayed in the user&apos;s wallet app.
-                    </p>
-                </Form.Field>
+                <Divider hidden />
 
                 <Form.Field>
-                    <label>Trusted Issuer</label>
-                    <Input
-                        value={ issuer }
-                        readOnly={ isReadOnly }
-                        onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: { value: string }) => {
-                            setIssuer(data.value);
+                    <label>Credential Format</label>
+                    <Dropdown
+                        fluid
+                        selection
+                        value={ vcFormat }
+                        options={ FORMAT_OPTIONS }
+                        disabled={ isReadOnly }
+                        onChange={ (_event: React.SyntheticEvent, data: DropdownProps) => {
+                            setVcFormat(data.value as string);
                         } }
                     />
                     <p className="ui-hint">
                         <Icon floated="left" aria-hidden="true" className="grey info circle icon" />
-                        Credential issued organization.
+                        Credential format as defined by OID4VP §6.1.
                     </p>
                 </Form.Field>
 
@@ -308,8 +300,6 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                                 disabled={
                                     isSubmitting
                                         || isEmpty(vcType?.trim())
-                                        || isEmpty(vcPurpose?.trim())
-                                        || isEmpty(issuer?.trim())
                                 }
                                 onClick={ onSaveChanges }
                             >

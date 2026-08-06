@@ -91,8 +91,7 @@ export const createConnection = (
 
 export interface PresentationDefinitionCredentialInterface {
     claims: string[];
-    issuer: string;
-    purpose: string;
+    format: string;
     type: string;
 }
 
