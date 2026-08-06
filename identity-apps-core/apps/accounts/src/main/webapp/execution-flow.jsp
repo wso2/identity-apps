@@ -311,15 +311,14 @@
                         return;
                     }
 
-                    // No flow left to resume (the flow id is gone from storage), so the connector error
-                    // cannot be classified. Fall back to the generic connector-failure message.
-                    // Daon-specific error text (i18n keys resolved by the error page). This is scoped to
-                    // this Daon-only effect, so other flow errors keep their own flowType-based messages.
+                    // No flow left to resume (the flow id is gone from storage), so the raw connector error
+                    // never reaches the executor that would classify it into the connector's own
+                    // user-facing message. Neither ERROR_MSG nor ERROR_DESC is sent: the error page then
+                    // falls back to its flow-type wording, which is already localized. Anything more
+                    // specific here would be Daon text duplicated outside the connector's catalogue.
                     const errorPageURL = accountsPortalUrl + "/error?" + "SP_ID="
                         + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + daonFlowType + "&"
                         + "confirmation=" + "<%= Encode.forJavaScript(confirmationCode) %>" + "&"
-                        + "ERROR_MSG=" + "daon.identity.verification.failed.message" + "&"
-                        + "ERROR_DESC=" + "daon.identity.verification.failed.description" + "&"
                         + "SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                     window.location.href = errorPageURL;

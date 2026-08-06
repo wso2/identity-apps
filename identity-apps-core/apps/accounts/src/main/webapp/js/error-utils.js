@@ -35,14 +35,31 @@ function stripBraces(s) {
  * @returns {object} The i18n keys for the given error code.
  */
 function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
-    // Daon server-side failures (DAON-65xxx) are a whole band rather than a handful of codes, and none of
-    // them is actionable by the user, so they share one message. The specific code is in the server log.
-    // Checked before the switch since a case label cannot match a prefix.
-    if (errorCode && errorCode.indexOf("DAON-65") === 0) {
+    // Daon failures carry their own user-facing text, so they need no per-code entries here or in the
+    // resource bundle: the connector's error catalogue is the single source of that wording. The error
+    // page renders an unresolvable key verbatim (AuthenticationEndpointUtil.i18n returns the string when
+    // the bundle has no entry), which is what lets the message through untranslated.
+    //
+    // Handled before the switch: a case label cannot match a prefix.
+    if (errorCode && errorCode.indexOf("DAON-") === 0) {
+
+        // DAON-65xxx are server-side failures. Their catalogue messages are written for an administrator
+        // ("check the Daon Verifier ID it references"), and none of them is actionable by the end user, so
+        // nothing specific is shown - both fields stay empty and the page falls back to its flow-type
+        // wording. The specific code is in the server log.
+        var isDaonServerError = errorCode.indexOf("DAON-65") === 0;
 
         return {
-            message: "daon.verification.server.error.message",
-            description: "daon.verification.server.error.description"
+            // Left empty so the heading falls back to the flow's own ("Password Reset Unsuccessful" and
+            // friends), which is already localized. The Daon text is a full sentence and reads as a body,
+            // not a heading.
+            message: "",
+            // `errorDescription` is deliberately not used: on the flow-exception paths it is the
+            // diagnostic detail, which can name internal configuration. `errorMessage` is the field the
+            // connector populates with user-safe text.
+            description: isDaonServerError ? "" : (stripBraces(errorMessage) || "")
+            // No portalUrlStatus: by the time Daon reports a failure the flow's confirmation code has
+            // been consumed, so a "try again" button would only fail again.
         };
     }
 
@@ -241,57 +258,6 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                 message: stripBraces(errorMessage) || "orchestration.flow.error.failed.message",
                 description: stripBraces(errorDescription) || "orchestration.flow.error.failed.description",
                 portalUrlStatus: "true"
-            };
-
-        case "DAON-60001":
-
-            // Daon TrustX identity-verification failure: the user is not enrolled. Retrying won't help,
-            // so no portal "try again" button is shown.
-            return {
-                message: "daon.user.not.enrolled.message",
-                description: "daon.user.not.enrolled.description"
-            };
-
-        // None of the Daon cases below sets portalUrlStatus, so no "try again" button is rendered: by the
-        // time the connector reports a failure the flow's confirmation code has already been consumed, so
-        // restarting the portal flow would only fail again.
-
-        case "DAON-60002":
-
-            // The user cancelled or abandoned the verification (OAuth2 access_denied from Daon).
-            return {
-                message: "daon.verification.cancelled.message",
-                description: "daon.verification.cancelled.description"
-            };
-
-        case "DAON-60003":
-
-            // The details submitted did not match the identity document.
-            return {
-                message: "daon.claims.mismatch.message",
-                description: "daon.claims.mismatch.description"
-            };
-
-        case "DAON-60004":
-
-            return {
-                message: "daon.identity.verification.failed.message",
-                description: "daon.identity.verification.failed.description"
-            };
-
-        case "DAON-60005":
-
-            return {
-                message: "daon.verification.not.completed.message",
-                description: "daon.verification.not.completed.description"
-            };
-
-        case "DAON-60006":
-
-            // Password recovery: Daon verified someone other than the account holder being recovered.
-            return {
-                message: "daon.recovery.identity.mismatch.message",
-                description: "daon.recovery.identity.mismatch.description"
             };
 
         default:

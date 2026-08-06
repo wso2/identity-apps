@@ -98,7 +98,6 @@
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String PUSH_NOTIFICATION_AUTHENTICATOR = "push-notification-authenticator";
     private static final String ORG_IDENTIFIER_HANDLER = "OrganizationIdentifierHandler";
-    private static final String DAON_AUTHENTICATOR = "DaonAuthenticator";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
     private static final String CUSTOM_LOCAL_AUTHENTICATOR_PREFIX = "custom-";
@@ -173,13 +172,6 @@
         errorCode = request.getParameter(Constants.ERROR_CODE) ;
     }
     String loginFailed = "false";
-
-    // Daon TrustX identity-verification failures come back as the generic login.fail.message. Detect the
-    // Daon step from the current step's authenticators so a dedicated "Identity Verification Failed" message
-    // can be shown for it, and only it (other authenticators keep their existing messages).
-    String authenticatorsParam = request.getParameter("authenticators");
-    boolean isDaonVerificationStep = authenticatorsParam != null
-            && authenticatorsParam.contains(DAON_AUTHENTICATOR);
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         loginFailed = "true";
@@ -557,9 +549,9 @@
 
                 <div class="segment-form">
                     <%
-                        // For federated-only authentication steps (e.g. Daon TrustX face/push) the local-auth
-                        // fragments (identifierauth.jsp / basicauth.jsp) that normally render the login-failure
-                        // banner are not included, so a failure returned as authFailure=true&authFailureMsg=...
+                        // For federated-only authentication steps the local-auth fragments
+                        // (identifierauth.jsp / basicauth.jsp) that normally render the login-failure banner
+                        // are not included, so a failure returned as authFailure=true&authFailureMsg=...
                         // would show no message at all. Render the banner here for that case. When local
                         // basic/identifier auth is present, that fragment renders the banner, so skip it here
                         // to avoid a duplicate.
@@ -570,11 +562,7 @@
                         if ("true".equals(loginFailed) && !localAuthRendersError) {
                     %>
                         <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-                            <% if (isDaonVerificationStep) { %>
-                                <p><%= AuthenticationEndpointUtil.i18n(resourceBundle, "daon.identity.verification.failed.message") %></p>
-                            <% } else { %>
-                                <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
-                            <% } %>
+                            <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
                         </div>
                     <%
                         }
