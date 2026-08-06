@@ -449,7 +449,7 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
             [ "OPENID4VP_CONFIG",
-                `${AppConstants.getAdminViewBasePath()}/login-and-registration/openid4vp-config` ],
+                `${AppConstants.getAdminViewBasePath()}/verifier-settings` ],
             [ "ISSUER_USAGE_SCOPE",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
             [ "FAPI_SECURITY_POLICY",

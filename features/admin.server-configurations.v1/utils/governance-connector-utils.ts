@@ -495,22 +495,6 @@ export class GovernanceConnectorUtils {
             {
                 connectors: [
                     {
-                        description: I18n.instance.t("pages:openid4vpConfig.subTitle"),
-                        header: I18n.instance.t("pages:openid4vpConfig.title"),
-                        id: ServerConfigurationsConstants.OPENID4VP_CONFIG,
-                        route: AppConstants.getPaths().get("OPENID4VP_CONFIG"),
-                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .LOGIN_AND_REGISTRATION_VERIFIABLE_CREDENTIALS_OPENID4VP,
-                        testId: "openid4vp-config-card"
-                    }
-                ],
-                displayOrder: 0,
-                id: "verifiable-credentials",
-                title: "Verifiable Credentials"
-            },
-            {
-                connectors: [
-                    {
                         description: I18n.instance.t(
                             "applications:resident.provisioning.outbound.subHeading"),
                         header: I18n.instance.t(
