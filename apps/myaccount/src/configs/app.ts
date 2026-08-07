@@ -167,6 +167,7 @@ export class Config {
                 .replace("${year}", new Date().getFullYear()),
             disableMFAForFederatedUsers: window["AppUtils"]?.getConfig()?.ui?.disableMFAForFederatedUsers,
             disableMFAforSuperTenantUser: window["AppUtils"]?.getConfig()?.ui?.disableMFAforSuperTenantUser,
+            enableLegacyLocaleDropdown: window["AppUtils"]?.getConfig()?.ui?.enableLegacyLocaleDropdown ?? false,
             enableMFAUserWise: window["AppUtils"]?.getConfig()?.ui?.enableMFAUserWise,
             features: window["AppUtils"]?.getConfig()?.ui?.features,
             forceBackupCode: window["AppUtils"]?.getConfig()?.ui?.forceBackupCode,
