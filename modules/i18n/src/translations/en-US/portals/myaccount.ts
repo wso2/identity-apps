@@ -1901,7 +1901,7 @@ export const myAccount: MyAccountNS = {
             },
             description:
                 "Review consents granted to each application and revoke them as needed.",
-            heading: "Manage Consents",
+            heading: "Consent Management",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
