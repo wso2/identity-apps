@@ -69,7 +69,7 @@ export class CommonAuthenticatorConstants {
     } = {
             APPLE: "apple-idp",
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
-            DIGITAL_CREDENTIALS: "digital-credentials",
+            DIGITAL_CREDENTIALS: "digital-wallet",
             DUO: "duo-idp",
             ENTERPRISE: "enterprise-idp",
             EXPERT_MODE: "expert-mode-idp",
