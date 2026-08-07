@@ -154,19 +154,19 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         return OverriddenForm;
     }
 
-    if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS) {
+    if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET) {
         return (
             <DigitalCredentialsAuthenticatorForm
-                mode={ mode }
-                initialValues={ initialValues }
-                metadata={ metadata }
-                onSubmit={ onSubmit }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ enableSubmitButton }
-                data-testid={ testId }
-                showCustomProperties={ showCustomProperties }
-                readOnly={ isReadOnly }
-                isSubmitting={ isSubmitting }
+                mode={mode}
+                initialValues={initialValues}
+                metadata={metadata}
+                onSubmit={onSubmit}
+                triggerSubmit={triggerSubmit}
+                enableSubmitButton={enableSubmitButton}
+                data-testid={testId}
+                showCustomProperties={showCustomProperties}
+                readOnly={isReadOnly}
+                isSubmitting={isSubmitting}
             />
         );
     }

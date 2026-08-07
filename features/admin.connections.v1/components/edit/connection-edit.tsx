@@ -176,8 +176,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
-    const isDigitalCredentialsConnection: boolean = identityProvider?.templateId ===
-        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS;
+    const isDigitalCredentialsConnection: boolean =
+        identityProvider?.templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET;
     const isEnterpriseConnection: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
             FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||

@@ -109,7 +109,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const isOpenID4VPEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.openid4vpConfig?.enabled ?? false);
+        (state: AppState) => state?.config?.ui?.features?.verifiablePresentationSettings?.enabled ?? false);
 
     const {
         data: connectionsResponse,
@@ -380,7 +380,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_CREDENTIALS:
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET:
                 if (!isOpenID4VPEnabled) {
                     return null;
                 }
