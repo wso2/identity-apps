@@ -279,6 +279,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     formStateRef.current.change("tokenEndpoint", currentProvider.tokenEndpoint);
                     formStateRef.current.change("scopes", currentProvider.scopes);
                     formStateRef.current.change("clientSecret", null);
+                } else if (currentProvider.authType === AuthType.PASSWORD_CREDENTIAL) {
+                    formStateRef.current.change("clientId", currentProvider.clientId);
+                    formStateRef.current.change("tokenEndpoint", currentProvider.tokenEndpoint);
+                    formStateRef.current.change("scopes", currentProvider.scopes);
+                    formStateRef.current.change("userName", currentProvider.userName);
+                    formStateRef.current.change("clientSecret", null);
+                    formStateRef.current.change("password", null);
                 } else if (currentProvider.authType === AuthType.BEARER) {
                     formStateRef.current.change("accessToken", null);
                 } else if (currentProvider.authType === AuthType.API_KEY) {
@@ -352,6 +359,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             } else if (values.authType === AuthType.CLIENT_CREDENTIAL) {
                 submittingValues.authentication.properties.clientId = values.clientId;
                 submittingValues.authentication.properties.clientSecret = values.clientSecret;
+                submittingValues.authentication.properties.tokenEndpoint = values.tokenEndpoint;
+                submittingValues.authentication.properties.scopes = values.scopes;
+            } else if (values.authType === AuthType.PASSWORD_CREDENTIAL) {
+                submittingValues.authentication.properties.clientId = values.clientId;
+                submittingValues.authentication.properties.clientSecret = values.clientSecret;
+                submittingValues.authentication.properties.username = values.userName;
+                submittingValues.authentication.properties.password = values.password;
                 submittingValues.authentication.properties.tokenEndpoint = values.tokenEndpoint;
                 submittingValues.authentication.properties.scopes = values.scopes;
             } else if (values.authType === AuthType.BEARER) {
@@ -551,6 +565,32 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 }
                 if (!values?.clientSecret && requireSecrets) {
                     error.clientSecret = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.tokenEndpoint) {
+                    error.tokenEndpoint = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+            } else if (values?.authType === AuthType.PASSWORD_CREDENTIAL) {
+                if (!values?.clientId) {
+                    error.clientId = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.clientSecret && requireSecrets) {
+                    error.clientSecret = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.userName) {
+                    error.userName = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.password && requireSecrets) {
+                    error.password = t(
                         "smsProviders:form.custom.validations.required"
                     );
                 }
