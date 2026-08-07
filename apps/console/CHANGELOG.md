@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.14.8
+
+### Patch Changes
+
+- [#10588](https://github.com/wso2/identity-apps/pull/10588) [`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the search of the "User Attribute to map to" dropdown in the external attribute mapping edit form always returning "No results found."
+
+- Updated dependencies [[`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718)]:
+  - @wso2is/admin.claims.v1@2.31.3
+
 ## 4.14.7
 
 ### Patch Changes

@@ -353,7 +353,7 @@ importers:
         specifier: ^2.25.206
         version: link:../../features/admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.31.2
+        specifier: ^2.31.3
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.39.0
