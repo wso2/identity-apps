@@ -32,108 +32,112 @@ export enum ConnectionsFeatureDictionaryKeys {
  * This class contains the constants for the Common for Authenticators.
  */
 export class CommonAuthenticatorConstants {
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-    private constructor() { }
+           /**
+            * Private constructor to avoid object instantiation from outside
+            * the class.
+            */
+           private constructor() {}
 
-    /**
-     * Set of Connection template Ids.
-     */
-    public static readonly CONNECTION_TEMPLATE_IDS: {
-        APPLE: string;
-        CUSTOM_AUTHENTICATOR: string;
-        DIGITAL_CREDENTIALS: string;
-        DUO: string;
-        ENTERPRISE: string;
-        EXPERT_MODE: string;
-        EXTERNAL_CUSTOM_AUTHENTICATOR: string;
-        FACEBOOK: string;
-        FLOW_EXTENSION: string;
-        GITHUB: string;
-        GOOGLE: string;
-        HYPR: string;
-        INTERNAL_CUSTOM_AUTHENTICATOR: string;
-        IPROOV: string;
-        LINKEDIN: string;
-        MICROSOFT: string;
-        OIDC: string;
-        ORGANIZATION_ENTERPRISE_IDP: string;
-        OUTBOUND_PROVISIONING_CONNECTION: string;
-        SAML: string;
-        SIGNICAT: string;
-        SWE: string;
-        TRUSTED_TOKEN_ISSUER: string;
-        TWO_FACTOR_CUSTOM_AUTHENTICATOR: string;
-    } = {
-            APPLE: "apple-idp",
-            CUSTOM_AUTHENTICATOR: "custom-authenticator",
-            DIGITAL_CREDENTIALS: "digital-wallet",
-            DUO: "duo-idp",
-            ENTERPRISE: "enterprise-idp",
-            EXPERT_MODE: "expert-mode-idp",
-            EXTERNAL_CUSTOM_AUTHENTICATOR: "external-custom-authenticator",
-            FACEBOOK: "facebook-idp",
-            FLOW_EXTENSION: "flow-extension",
-            GITHUB: "github-idp",
-            GOOGLE: "google-idp",
-            HYPR: "hypr-idp",
-            INTERNAL_CUSTOM_AUTHENTICATOR: "internal-user-custom-authenticator",
-            IPROOV: "iproov-idp",
-            LINKEDIN: "linkedin-idp",
-            MICROSOFT: "microsoft-idp",
-            OIDC: "enterprise-oidc-idp",
-            ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
-            OUTBOUND_PROVISIONING_CONNECTION: "outbound-provisioning-connection",
-            SAML: "enterprise-saml-idp",
-            SIGNICAT: "signicat",
-            SWE: "swe-idp",
-            TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
-            TWO_FACTOR_CUSTOM_AUTHENTICATOR: "two-factor-custom-authenticator"
-        };
+           /**
+            * Set of Connection template Ids.
+            */
+           public static readonly CONNECTION_TEMPLATE_IDS: {
+               APPLE: string;
+               CUSTOM_AUTHENTICATOR: string;
+               DIGITAL_WALLET: string;
+               DUO: string;
+               ENTERPRISE: string;
+               EXPERT_MODE: string;
+               EXTERNAL_CUSTOM_AUTHENTICATOR: string;
+               FACEBOOK: string;
+               FLOW_EXTENSION: string;
+               GITHUB: string;
+               GOOGLE: string;
+               HYPR: string;
+               INTERNAL_CUSTOM_AUTHENTICATOR: string;
+               IPROOV: string;
+               LINKEDIN: string;
+               MICROSOFT: string;
+               OIDC: string;
+               ORGANIZATION_ENTERPRISE_IDP: string;
+               OUTBOUND_PROVISIONING_CONNECTION: string;
+               SAML: string;
+               SIGNICAT: string;
+               SWE: string;
+               TRUSTED_TOKEN_ISSUER: string;
+               TWO_FACTOR_CUSTOM_AUTHENTICATOR: string;
+           } = {
+               APPLE: "apple-idp",
+               CUSTOM_AUTHENTICATOR: "custom-authenticator",
+               DIGITAL_WALLET: "digital-wallet",
+               DUO: "duo-idp",
+               ENTERPRISE: "enterprise-idp",
+               EXPERT_MODE: "expert-mode-idp",
+               EXTERNAL_CUSTOM_AUTHENTICATOR: "external-custom-authenticator",
+               FACEBOOK: "facebook-idp",
+               FLOW_EXTENSION: "flow-extension",
+               GITHUB: "github-idp",
+               GOOGLE: "google-idp",
+               HYPR: "hypr-idp",
+               INTERNAL_CUSTOM_AUTHENTICATOR: "internal-user-custom-authenticator",
+               IPROOV: "iproov-idp",
+               LINKEDIN: "linkedin-idp",
+               MICROSOFT: "microsoft-idp",
+               OIDC: "enterprise-oidc-idp",
+               ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
+               OUTBOUND_PROVISIONING_CONNECTION: "outbound-provisioning-connection",
+               SAML: "enterprise-saml-idp",
+               SIGNICAT: "signicat",
+               SWE: "swe-idp",
+               TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
+               TWO_FACTOR_CUSTOM_AUTHENTICATOR: "two-factor-custom-authenticator"
+           };
 
-    /**
-	 * UUID of the Multi-Factor Authenticators governance connector category.
-	 */
-    public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+           /**
+            * UUID of the Multi-Factor Authenticators governance connector category.
+            */
+           public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
 
-    /**
-     * ID of the deprecated SCIM1 provisioning connector.
-     */
-    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
+           /**
+            * ID of the deprecated SCIM1 provisioning connector.
+            */
+           public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 
-    /**
-     * Local Server host.
-     */
-    public static readonly LOCAL_SERVER_URL: string = "localhost";
+           /**
+            * Local Server host.
+            */
+           public static readonly LOCAL_SERVER_URL: string = "localhost";
 
-    public static readonly ERROR_CODES: {
-        CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string
-    } = {
-            CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: "IDP-65004"
-        };
+           public static readonly ERROR_CODES: {
+               CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string;
+           } = {
+               CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: "IDP-65004"
+           };
 
-    public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
-    public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
+           public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
+           public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 
-    public static readonly API_KEY_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
-    public static readonly IDENTIFIER_REGEX: RegExp = /^[a-zA-Z0-9_-]{3,}$/;
-    public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
+           public static readonly API_KEY_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
+           public static readonly IDENTIFIER_REGEX: RegExp = /^[a-zA-Z0-9_-]{3,}$/;
+           public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
 
-    public static readonly TEMPLATE_ID_FIELD: string = "templateId";
+           public static readonly TEMPLATE_ID_FIELD: string = "templateId";
 
-    /**
-     * Set of keys used to enable/disable sub-features.
-     */
-    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
-        [ ConnectionsFeatureDictionaryKeys.FederationHub, "identityProviders.federationHub" ],
-        [ ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "identityProviders.saml.artifactBinding" ],
-        [ ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
-            "identityProviders.saml.attributeConsumingServiceIndex" ],
-        [ ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator, "authenticators.local.emailOTP" ],
-        [ ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator, "authenticators.local.smsOTP" ],
-        [ ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2,
-            "identityProviders.outboundProvisioningConnectionV2" ]
-    ]);
-}
+           /**
+            * Set of keys used to enable/disable sub-features.
+            */
+           public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
+               [ConnectionsFeatureDictionaryKeys.FederationHub, "identityProviders.federationHub"],
+               [ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "identityProviders.saml.artifactBinding"],
+               [
+                   ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
+                   "identityProviders.saml.attributeConsumingServiceIndex"
+               ],
+               [ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator, "authenticators.local.emailOTP"],
+               [ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator, "authenticators.local.smsOTP"],
+               [
+                   ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2,
+                   "identityProviders.outboundProvisioningConnectionV2"
+               ]
+           ]);
+       }
