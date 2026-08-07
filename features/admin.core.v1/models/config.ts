@@ -365,7 +365,7 @@ export interface FeatureConfigInterface {
     /**
      * OpenID4VP configuration feature.
      */
-    openid4vpConfig?: FeatureAccessConfigInterface;
+    verifiablePresentationSettings?: FeatureAccessConfigInterface;
 }
 
 /**

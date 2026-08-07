@@ -278,7 +278,7 @@ export class RouteUtils {
             window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
         const isOpenID4VPEnabled: boolean =
-            window["AppUtils"]?.getConfig()?.ui?.features?.openid4vpConfig?.enabled;
+            window["AppUtils"]?.getConfig()?.ui?.features?.verifiablePresentationSettings?.enabled;
 
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
@@ -441,7 +441,7 @@ export class RouteUtils {
             },
             {
                 category: verifiableCredentials,
-                id: "credentialTemplates",
+                id: "verifiableCredentials",
                 order: isOpenID4VPEnabled ? 0 : undefined,
                 parent: isOpenID4VPEnabled ? digitalCredentials : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")

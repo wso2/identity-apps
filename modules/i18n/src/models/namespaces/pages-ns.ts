@@ -107,7 +107,7 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
-    openid4vpConfig: {
+    verifiablePresentationSettings: {
         title: string;
         subTitle: string;
     };

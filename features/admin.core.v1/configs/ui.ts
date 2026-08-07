@@ -112,9 +112,6 @@ import {
 import {
     ReactComponent as PresentationDefinitionsOutlineIcon
 } from "../../themes/default/assets/images/icons/outline-icons/presentation-definitions-outline.svg";
-import {
-    ReactComponent as VerifiableCredentialsOutlineIcon
-} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
 import {
@@ -313,7 +310,6 @@ type GetSidePanelIconsInterface = {
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
-    credentialTemplates: FunctionComponent | ReactNode,
     presentationDefinitions: FunctionComponent | ReactNode,
     verifiableCredentials: FunctionComponent | ReactNode,
 };
@@ -375,9 +371,8 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
-        credentialTemplates: CredentialTemplatesOutlineIcon,
         presentationDefinitions: PresentationDefinitionsOutlineIcon,
-        verifiableCredentials: VerifiableCredentialsOutlineIcon
+        verifiableCredentials: CredentialTemplatesOutlineIcon
     };
 };
 

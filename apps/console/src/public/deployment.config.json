@@ -2197,7 +2197,7 @@
                     ]
                 }
             },
-            "openid4vpConfig": {
+            "verifiablePresentationSettings": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
@@ -2205,7 +2205,7 @@
                     "create": [],
                     "delete": [],
                     "feature": [
-                        "console:openid4vpConfig"
+                        "console:verifiablePresentationSettings"
                     ],
                     "read": [
                         "internal_config_mgt_view"
