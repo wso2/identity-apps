@@ -53,6 +53,7 @@
         },
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "disableMFAForFederatedUsers": true,
+        "enableLegacyLocaleDropdown": false,
         "enableMFAUserWise": true,
         "features": {
             "applications": {
