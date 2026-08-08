@@ -609,7 +609,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
             preprocessorOptions: {
                 scss: {
                     // This silences the legacy JS API warning specifically
-                    silenceDeprecations: [ "legacy-js-api" ]
+                    silenceDeprecations: [ "legacy-js-api" ] as [ "legacy-js-api" ]
                 }
             }
         },
