@@ -1897,7 +1897,8 @@ export const myAccount: MyAccountNS = {
         },
         consentManagement: {
             actionTitles: {
-                empty: "You have not granted consent to any application"
+                empty: "You have not granted consent to any application",
+                learnMore: "Learn more about consent management"
             },
             description:
                 "Review consents granted to each application and revoke them as needed.",
@@ -1905,7 +1906,6 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
-                    learnMore: "Learn more about consent management"
                 }
             }
         },
