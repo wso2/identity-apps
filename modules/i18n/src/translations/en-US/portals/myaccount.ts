@@ -1905,6 +1905,7 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
+                    learnMore: "Learn more about consent management"
                 }
             }
         },

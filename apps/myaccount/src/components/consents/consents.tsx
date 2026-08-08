@@ -790,15 +790,14 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     !(consentedApps && consentedApps.length && consentedApps.length > 0)
         ? (
             <div>
-                { t("myaccount:sections.consentManagement.actionTitles.empty") }
+                { t("myAccount:sections.consentManagement.actionTitles.empty") }
                 <br />
                 <a 
                     href="https://is.docs.wso2.com/en/latest/guides/consent-mgt/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    style={{ color: '#007bff', textDecoration: 'underline' }}
                 >
-                    Learn more about consent management
+                    { t("myAccount:sections.consentManagement.actionTitles.learnMore") }
                 </a>
             </div>
         )
