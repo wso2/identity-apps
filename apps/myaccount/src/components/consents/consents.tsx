@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
+import { Link } from "react-router-dom";
 import {
     fetchAllPurposes,
     fetchConsentReceipt,
@@ -786,10 +787,23 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 description={ t("myAccount:sections.consentManagement.description") }
                 header={ t("myAccount:sections.consentManagement.heading") }
                 placeholder={
-                    !(consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? t("myAccount:sections.consentManagement.actionTitles.empty")
-                        : null
-                }
+    !(consentedApps && consentedApps.length && consentedApps.length > 0)
+        ? (
+            <div>
+                { t("myaccount:sections.consentManagement.actionTitles.empty") }
+                <br />
+                <a 
+                    href="https://is.docs.wso2.com/en/latest/guides/consent-mgt/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ color: '#007bff', textDecoration: 'underline' }}
+                >
+                    Learn more about consent management
+                </a>
+            </div>
+        )
+        : null
+}
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
                 <AppConsentList
