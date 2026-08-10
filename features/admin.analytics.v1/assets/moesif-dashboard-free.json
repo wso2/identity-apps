@@ -783,10 +783,9 @@
                             }
                         },
                         "aggs": {
-                            "weight|sum": {
-                                "sum": {
-                                    "field": "weight",
-                                    "missing": 1
+                            "_id|cardinality": {
+                                "cardinality": {
+                                    "field": "_id"
                                 }
                             }
                         }
@@ -800,7 +799,7 @@
             },
             "view": "segment",
             "funnel_query": {},
-            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=a2892735&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=a2892735&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
             "analyticType": "seg",
             "chartType": "bar",
             "settings": {
@@ -813,7 +812,7 @@
                 },
                 "metrics": [
                     {
-                        "metricName": "sum(events)"
+                        "metricName": "count(event_id)"
                     }
                 ]
             }
