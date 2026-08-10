@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import dayjs from "dayjs";
 import { ClientSecretInterface, ClientSecretStatus } from "../../models/application-inbound";
 
 /**
@@ -55,12 +56,7 @@ export const resolveClientSecretExpiry = (
     referenceTime: number = Date.now()
 ): { state: ClientSecretExpiryState; formattedDate: string | null } => {
 
-    const formatDate = (epochSeconds: number): string => new Date(epochSeconds * 1000).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "short",
-        weekday: "short",
-        year: "numeric"
-    });
+    const formatDate = (epochSeconds: number): string => dayjs.unix(epochSeconds).format("ddd, MMM D, YYYY");
 
     if (secret?.status === ClientSecretStatus.EXPIRED) {
         return {

@@ -22,7 +22,7 @@ import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInter
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -59,12 +59,8 @@ interface ClientSecretsSectionPropsInterface extends IdentifiableComponentInterf
      */
     multipleClientSecretsConfigured?: boolean;
     /**
-     * Whether the user has the client secret create scope. Gates the generate and delete actions
-     * (the delete endpoint requires the same create scope as the create endpoint).
-     */
-    hasCreatePermission?: boolean;
-    /**
-     * Whether the section is rendered in read-only mode.
+     * Whether the section is rendered in read-only mode. The parent folds the client secret create
+     * scope into this, so it also gates the generate and delete actions.
      */
     readOnly?: boolean;
     /**
@@ -93,7 +89,6 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
         clientSecret,
         clientSecretExpiresAt,
         multipleClientSecretsConfigured,
-        hasCreatePermission,
         readOnly,
         hideSecretValue,
         onUpdate,
@@ -108,13 +103,12 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
     const isClientSecretHashEnabled: boolean = useSelector(
         (state: AppState) => state.config.ui.isClientSecretHashEnabled);
 
-    const [ showPrevious, setShowPrevious ] = useState<boolean>(false);
+    const [ showPreviousSecrets, setShowPreviousSecrets ] = useState<boolean>(false);
     const [ showGenerateModal, setShowGenerateModal ] = useState<boolean>(false);
     const [ generatedSecret, setGeneratedSecret ] = useState<ClientSecretInterface>(null);
     const [ secretToDelete, setSecretToDelete ] = useState<ClientSecretInterface>(null);
 
-    /* Generate and delete both require the client secret create scope. */
-    const canManageSecrets: boolean = !readOnly && hasCreatePermission;
+    const canManageSecrets: boolean = !readOnly;
 
     /*
      * The list is fetched up front only for users who can generate, since they are the ones who need
@@ -127,23 +121,13 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
         isLoading: isClientSecretListLoading,
         error: clientSecretListError,
         mutate: mutateClientSecretList
-    } = useGetOAuthClientSecrets(appId, canManageSecrets || showPrevious);
-
-    /* Notify once per failed fetch; SWR retries update the error reference, so guard against re-toasting. */
-    const isFetchErrorNotified: React.MutableRefObject<boolean> = useRef(false);
+    } = useGetOAuthClientSecrets(appId, canManageSecrets || showPreviousSecrets);
 
     useEffect(() => {
         if (!clientSecretListError) {
-            isFetchErrorNotified.current = false;
-
             return;
         }
 
-        if (isFetchErrorNotified.current) {
-            return;
-        }
-
-        isFetchErrorNotified.current = true;
         dispatch(addAlert({
             description: t("applications:clientSecrets.notifications.getSecrets.genericError.description"),
             level: AlertLevels.ERROR,
@@ -258,15 +242,15 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                     <LinkButton
                         type="button"
                         className="client-secrets-section-toggle"
-                        onClick={ (): void => setShowPrevious((previous: boolean) => !previous) }
+                        onClick={ (): void => setShowPreviousSecrets((previous: boolean) => !previous) }
                         data-componentid={ `${ componentId }-toggle` }
                     >
-                        <Icon name={ showPrevious ? "chevron up" : "chevron down" } />
-                        { showPrevious
+                        <Icon name={ showPreviousSecrets ? "chevron up" : "chevron down" } />
+                        { showPreviousSecrets
                             ? t("applications:clientSecrets.hidePreviousSecrets")
                             : t("applications:clientSecrets.viewPreviousSecrets") }
                     </LinkButton>
-                    { showPrevious && (
+                    { showPreviousSecrets && (
                         <PreviousClientSecrets
                             secrets={ previousSecrets }
                             isLoading={ isClientSecretListLoading }

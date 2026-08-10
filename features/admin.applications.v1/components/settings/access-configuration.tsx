@@ -1056,7 +1056,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         return (
             <RevokeAllClientSecretsDangerZone
-                clientId={ oidcConfig?.clientId }
                 readOnly={ readOnly }
                 onRevokeAll={ handleRevokeAllClientSecrets }
                 data-componentid={ `${ componentId }-revoke-all-danger-zone` }

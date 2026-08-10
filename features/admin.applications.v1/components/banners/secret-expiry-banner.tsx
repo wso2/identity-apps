@@ -18,11 +18,14 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Link from "@oxygen-ui/react/Link";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { TAB_URL_HASH_FRAGMENT } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useGetOAuthClientSecrets from "../../api/use-get-oauth-client-secrets";
@@ -80,8 +83,6 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
     const hasClientSecretReadPermission: boolean = useRequiredScopes(
         applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
 
-    const [ dismissed, setDismissed ] = useState<boolean>(false);
-
     /* Suppress the banner (and the underlying secrets fetch) when the user lacks the view permission. */
     const hasViewPermission: boolean = !isEnforceClientSecretPermissionEnabled || hasClientSecretReadPermission;
     const shouldFetch: boolean = isMultipleClientSecretsEnabled && isOIDCApplication && !isPublicClient
@@ -89,7 +90,7 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
 
     const { data: clientSecretList } = useGetOAuthClientSecrets<ClientSecretListInterface>(appId, shouldFetch);
 
-    if (dismissed || !shouldFetch) {
+    if (!shouldFetch) {
         return null;
     }
 
@@ -101,8 +102,17 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
     return (
         <Alert
             severity="warning"
-            onClose={ (): void => setDismissed(true) }
             sx={ { marginBottom: 2 } }
+            action={ (
+                <Link
+                    onClick={ (): void => {
+                        window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
+                    } }
+                    data-componentid={ `${ componentId }-view-details-link` }
+                >
+                    { t("applications:clientSecrets.expiryBanner.viewDetails") }
+                </Link>
+            ) }
             data-componentid={ componentId }
         >
             <AlertTitle>

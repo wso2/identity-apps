@@ -275,6 +275,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
     const hasClientSecretCreatePermission: boolean = useRequiredScopes(
         applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
+    /* Only enforced when the feature flag is on; otherwise everyone with form access can manage secrets. */
+    const hasClientSecretCreateAccess: boolean =
+        !isEnforceClientSecretPermissionEnabled || hasClientSecretCreatePermission;
 
     const { isFAPIApplication, fapiProfile: initialFapiProfile } = initialValues;
     const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
@@ -5668,11 +5671,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             multipleClientSecretsConfigured={
                                                                 initialValues?.multipleClientSecretsConfigured
                                                             }
-                                                            hasCreatePermission={
-                                                                !isEnforceClientSecretPermissionEnabled
-                                                                || hasClientSecretCreatePermission
-                                                            }
-                                                            readOnly={ readOnly }
+                                                            readOnly={ readOnly || !hasClientSecretCreateAccess }
                                                             hideSecretValue={ isClientSecretHashEnabled }
                                                             onUpdate={ onUpdate }
                                                             data-componentid={

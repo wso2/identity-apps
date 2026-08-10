@@ -22,7 +22,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import {
@@ -34,10 +34,6 @@ import {
  * Props for the revoke all client secrets danger zone component.
  */
 interface RevokeAllClientSecretsDangerZonePropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Client ID of the application, used as the assertion to confirm the action.
-     */
-    clientId: string;
     /**
      * Callback fired when the revocation is confirmed.
      */
@@ -59,7 +55,6 @@ const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecrets
 ): ReactElement => {
 
     const {
-        clientId,
         onRevokeAll,
         readOnly,
         [ "data-componentid" ]: componentId = "revoke-all-client-secrets-danger-zone"
@@ -103,21 +98,10 @@ const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecrets
                 />
             </DangerZoneGroup>
             <ConfirmationModal
-                type="warning"
+                type="negative"
                 open={ showConfirmationModal }
-                assertion={ clientId }
-                assertionHint={ (
-                    <p>
-                        <Trans
-                            i18nKey="applications:clientSecrets.dangerZone.revokeAll.confirmation.assertionHint"
-                            tOptions={ { id: clientId } }
-                        >
-                            Please type <strong>{ clientId }</strong> to revoke all the client secrets
-                            and regenerate a new one.
-                        </Trans>
-                    </p>
-                ) }
-                assertionType="input"
+                assertionHint={ t("applications:clientSecrets.dangerZone.revokeAll.confirmation.assertionHint") }
+                assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onClose={ (): void => setShowConfirmationModal(false) }
@@ -134,7 +118,7 @@ const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecrets
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-componentid={ `${ componentId }-confirmation-modal-message` }
                 >
                     { t("applications:clientSecrets.dangerZone.revokeAll.confirmation.message") }

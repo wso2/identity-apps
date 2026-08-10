@@ -207,8 +207,7 @@ export const applications: ApplicationsNS = {
             revokeAll: {
                 actionTitle: "Revoke All",
                 confirmation: {
-                    assertionHint: "Please type <1>{{id}}</1> to revoke all the client secrets and " +
-                        "regenerate a new one.",
+                    assertionHint: "Please confirm your action.",
                     content: "If you revoke all client secrets, all associated access tokens, refresh tokens, " +
                         "and authorization codes will also be revoked, and active authentication flows will " +
                         "fail. Please ensure you update your application with the new client secret.",
@@ -229,7 +228,8 @@ export const applications: ApplicationsNS = {
         expiryBanner: {
             description: "One or more client secrets are expiring soon. Please rotate them to prevent " +
                 "authentication failures and application downtime.",
-            title: "Client Secrets Expiring Soon"
+            title: "Client Secrets Expiring Soon",
+            viewDetails: "View details"
         },
         generateButton: "Generate New Secret",
         hidePreviousSecrets: "Hide Previous Client Secrets",

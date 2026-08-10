@@ -261,6 +261,7 @@ export enum ClientSecretStatus {
 export interface ClientSecretInterface {
     secretId?: string;
     secretValue?: string;
+    // Expiry of the client secret in Unix epoch seconds (0 when it does not expire).
     expiresAt?: number;
     status?: ClientSecretStatus;
     latest?: boolean;
@@ -278,6 +279,7 @@ export interface ClientSecretListInterface {
  * Request payload for creating a new client secret.
  */
 export interface ClientSecretCreationRequestInterface {
+    // Requested expiry of the client secret in Unix epoch seconds (omit for a non-expiring secret).
     expiresAt?: number;
 }
 

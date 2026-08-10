@@ -232,6 +232,7 @@ export interface ApplicationsNS {
         expiryBanner: {
             title: string;
             description: string;
+            viewDetails: string;
         };
         notifications: {
             generateSecret: {
