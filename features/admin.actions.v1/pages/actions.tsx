@@ -22,6 +22,7 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import {
+    BoltIcon,
     CircleCheckFilledIcon,
     KeyFlowIcon,
     PadlockAsteriskFlowIcon,
@@ -464,7 +465,7 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
 
                     <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
                         { isActive === true && (
-                            <CircleCheckFilledIcon className="icon-status" />
+                            <BoltIcon className="icon-status" />
                         ) }
                         <Typography className="text-status" variant="h6" color="inherit">
                             { isActive === null ? "?" : (isActive ? t("actions:status.active") : t("actions:status.inactive")) }
