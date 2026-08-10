@@ -1,5 +1,11 @@
 # @wso2is/admin.users.v1
 
+## 2.38.50
+
+### Patch Changes
+
+- [#10596](https://github.com/wso2/identity-apps/pull/10596) [`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Fix readOnly prop logic in ShareUserForm component
+
 ## 2.38.49
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.14.9
+
+### Patch Changes
+
+- [#10596](https://github.com/wso2/identity-apps/pull/10596) [`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Fix readOnly prop logic in ShareUserForm component
+
+* [#10591](https://github.com/wso2/identity-apps/pull/10591) [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add Active Agent Sessions, Agent Token Distribution and Agent Usage by Users widgets to the Moesif agent dashboard
+
+* Updated dependencies [[`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4), [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173)]:
+  - @wso2is/admin.users.v1@2.38.50
+  - @wso2is/admin.analytics.v1@0.0.15
+  - @wso2is/admin.onboarding.v1@1.0.94
+
 ## 4.14.8
 
 ### Patch Changes
