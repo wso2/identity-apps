@@ -22,7 +22,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import AppleExecution from "./apple-execution";
-import DaonExecution from "./daon-execution";
 import FacebookExecution from "./facebook-execution";
 import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
@@ -77,12 +76,6 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GithubFederation) {
         return (
             <GithubExecution resource={ resource } />
-        );
-    }
-
-    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.DaonFederation) {
-        return (
-            <DaonExecution resource={ resource } />
         );
     }
 

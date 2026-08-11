@@ -116,7 +116,6 @@ export interface flowsNS {
             names: {
                 apple: string;
                 confirmationCode: string;
-                daon: string;
                 default: string;
                 facebook: string;
                 github: string;
