@@ -162,7 +162,6 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             loader={ loader }
             isOIDC={ false }
             isSaml={ false }
-            requireSubjectClaim={ true }
             allowedMappedValues={ allowedMappedValues }
         />
     );

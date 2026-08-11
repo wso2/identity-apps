@@ -249,6 +249,7 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                                                 return FieldConstants.INVALID_RESOURCE_ERROR;
                                             }
 
+                                            // Check whether this attribute external name is already mapped.
                                             const mappedValues: Set<string> = new Set(
                                                 alreadyMappedAttributesList.map(
                                                     (attributeMapping: ConnectionCommonClaimMappingInterface) =>
@@ -257,12 +258,16 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                                             );
 
                                             if (mappedValues.has(value)) {
+                                                // This means we have a mapping value like this...
+                                                // But we need to make sure that if the current value
+                                                // actually differs from the model value if user is in
+                                                // editing mode...
                                                 setMappingHasError(true);
 
                                                 return t("idp:forms.attributeSettings.attributeMapping." +
                                                     "externalAttributeInput.existingErrorMessage");
                                             }
-
+                                            // If there's no errors.
                                             setMappingHasError(false);
 
                                             return undefined;

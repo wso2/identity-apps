@@ -231,6 +231,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                                 return FieldConstants.INVALID_RESOURCE_ERROR;
                                             }
 
+                                            // Check whether this attribute external name is already mapped.
                                             const mappedValues: Set<string> = new Set(
                                                 alreadyMappedAttributesList.map(
                                                     (attributeMapping: ConnectionCommonClaimMappingInterface) =>
@@ -238,13 +239,22 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                                 )
                                             );
 
-                                            if (mappedValues.has(value) && mapping?.mappedValue !== value) {
+                                            if (mappedValues.has(value)) {
+                                                // This means we have a mapping value like this...
+                                                // But we need to make sure that if the current value
+                                                // actually differs from the model value if user is in
+                                                // editing mode...
+                                                if (mapping?.mappedValue === value) {
+                                                    setMappingHasError(false);
+
+                                                    return undefined;
+                                                }
                                                 setMappingHasError(true);
 
                                                 return t("idp:forms.attributeSettings.attributeMapping." +
                                                     "externalAttributeInput.existingErrorMessage");
                                             }
-
+                                            // If there's no errors.
                                             setMappingHasError(false);
 
                                             return undefined;

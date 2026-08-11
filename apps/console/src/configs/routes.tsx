@@ -221,31 +221,45 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+        {
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
+                    exact: true,
+                    id: "editVCTemplate",
+                    name: "Edit Credential Template",
+                    path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VERIFIABLE_CREDENTIALS,
+            icon: {
+                icon: getSidePanelIcons().verifiableCredentials
+            },
+            id: "verifiableCredentials",
+            name: "Credential Templates",
+            order: 7,
+            path: AppConstants.getPaths().get("VC_TEMPLATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
         ...(isOpenID4VPEnabled ? [
             {
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
-                        exact: true,
-                        id: "editVCTemplate",
-                        name: "Edit Credential Template",
-                        path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
                 component: lazy(() =>
-                    import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+                    import("@wso2is/admin.openid4vp-config.v1/pages/openid4vp-configuration")),
                 exact: true,
-                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VERIFIABLE_CREDENTIALS,
                 icon: {
-                    icon: getSidePanelIcons().verifiableCredentials
+                    icon: getSidePanelIcons().presentationDefinitions
                 },
-                id: "verifiableCredentials",
-                name: "Credential Templates",
-                order: 7,
-                path: AppConstants.getPaths().get("VC_TEMPLATES"),
+                id: "verifiablePresentationSettings",
+                name: "Verifier Settings",
+                order: 8,
+                path: AppConstants.getPaths().get("OPENID4VP_CONFIG"),
                 protected: true,
                 showOnSidePanel: true
             },
@@ -273,7 +287,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 id: "presentationDefinitions",
                 name: "Presentation Definitions",
-                order: 8,
+                order: 9,
                 path: AppConstants.getPaths().get("VP_DEFINITIONS"),
                 protected: true,
                 showOnSidePanel: true

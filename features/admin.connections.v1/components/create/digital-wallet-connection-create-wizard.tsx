@@ -73,11 +73,11 @@ interface PresentationDefinitionListInterface {
     presentationDefinitions: PresentationDefinitionListItemInterface[];
 }
 
-interface DigitalCredentialsConnectionCreateWizardPropsInterface extends
+interface DigitalWalletConnectionCreateWizardPropsInterface extends
     GenericConnectionCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
-interface DigitalCredentialWizardFormValuesInterface {
+interface DigitalWalletWizardFormValuesInterface {
     name: string;
 }
 
@@ -85,10 +85,10 @@ interface WizardRefInterface {
     gotoNextPage: () => void;
 }
 
-export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
-    DigitalCredentialsConnectionCreateWizardPropsInterface
+export const DigitalWalletConnectionCreateWizard: FunctionComponent<
+    DigitalWalletConnectionCreateWizardPropsInterface
 > = (
-    props: DigitalCredentialsConnectionCreateWizardPropsInterface
+    props: DigitalWalletConnectionCreateWizardPropsInterface
 ): ReactElement => {
 
     const {
@@ -97,7 +97,7 @@ export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
         title,
         subTitle,
         template,
-        [ "data-componentid" ]: componentId = "digital-credentials"
+        [ "data-componentid" ]: componentId = "digital-wallet"
     } = props;
 
     const { t } = useTranslation();
@@ -152,7 +152,7 @@ export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
         })
     );
 
-    const initialValues: DigitalCredentialWizardFormValuesInterface = {
+    const initialValues: DigitalWalletWizardFormValuesInterface = {
         name: "Digital Wallet"
     };
 
@@ -161,7 +161,7 @@ export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
     };
 
     const createConnectionFromValues = async (
-        values: DigitalCredentialWizardFormValuesInterface
+        values: DigitalWalletWizardFormValuesInterface
     ): Promise<void> => {
         const connection: ConnectionInterface = cloneDeep(template.idp);
 
@@ -211,7 +211,7 @@ export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
         onIDPCreate();
     };
 
-    const handleFormSubmit = async (values: DigitalCredentialWizardFormValuesInterface): Promise<void> => {
+    const handleFormSubmit = async (values: DigitalWalletWizardFormValuesInterface): Promise<void> => {
         if (isEmpty(selectedPresentationDefinitionId)) {
             setAlert({
                 description: "Please select a presentation definition before creating the connection.",
@@ -258,7 +258,7 @@ export const DigitalCredentialsConnectionCreateWizard: FunctionComponent<
 
     const singlePage = (): ReactElement => (
         <WizardPage
-            validate={ (values: DigitalCredentialWizardFormValuesInterface) => {
+            validate={ (values: DigitalWalletWizardFormValuesInterface) => {
                 const errors: Record<string, string> = {};
 
                 errors.name = composeValidators(required, length({ max: 50, min: 3 }))(values.name);

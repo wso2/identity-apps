@@ -34,7 +34,7 @@ import { AuthenticatorSettingsForm } from "../authenticator-settings-form";
 import {
     AppleAuthenticatorForm,
     CommonAuthenticatorForm,
-    DigitalCredentialsAuthenticatorForm,
+    DigitalWalletAuthenticatorForm,
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
@@ -156,7 +156,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET) {
         return (
-            <DigitalCredentialsAuthenticatorForm
+            <DigitalWalletAuthenticatorForm
                 mode={mode}
                 initialValues={initialValues}
                 metadata={metadata}

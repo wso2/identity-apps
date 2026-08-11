@@ -32,6 +32,7 @@ import {
     AuthenticatorSettings,
     ConnectedApps,
     DigitalCredentialsClaimMappingSettings,
+    DigitalWalletGeneralSettings,
     GeneralSettings,
     IdentityProviderGroupsTab,
     OutboundProvisioningSettings
@@ -376,20 +377,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const DigitalCredentialsConfigurationTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <GeneralSettings
-                showOnlyNameAndDescription={ true }
-                hideIdPLogoEditField={ ConnectionsManagementUtils.hideLogoInputFieldInIdPGeneralSettingsForm(
-                    identityProvider?.templateId
-                ) }
-                templateType={ type }
-                isSaml={ isSaml }
-                isOidc={ isOidc }
-                isCustomAuthenticator={ isCustomAuthenticator }
+            <DigitalWalletGeneralSettings
                 editingIDP={ identityProvider }
                 isLoading={ isLoading }
-                onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                data-testid={ `${testId}-general-settings` }
+                data-testid={ `${testId}-digital-wallet-general-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />

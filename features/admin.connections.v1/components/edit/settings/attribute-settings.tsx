@@ -128,11 +128,6 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * If provided, users can only map to these values.
      */
     allowedMappedValues?: string[];
-    /**
-     * When true, blocks form submission if no Subject Attribute is selected.
-     * Defaults to false to preserve existing behaviour for other connection types.
-     */
-    requireSubjectClaim?: boolean;
 }
 
 const LocalDialectURI: string = "http://wso2.org/claims";
@@ -154,7 +149,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         isOIDC,
         isSaml,
         allowedMappedValues,
-        requireSubjectClaim,
         [ "data-testid" ]: testId
     } = props;
 
@@ -285,10 +279,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         let canSubmit: boolean = true;
         const claimConfigurations: ConnectionClaimsInterface = { ...initialClaims };
-
-        if (requireSubjectClaim && !subjectClaimUri) {
-            canSubmit = false;
-        }
 
         // Prepare claim mapping for submission.
         if (!isEmpty(selectedClaimsWithMapping?.filter(
@@ -452,7 +442,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 isOIDC={ isOIDC }
                                 isSaml={ isSaml }
                                 selectedClaimMappings={ selectedClaimsWithMapping }
-                                hideDefaultSubject={ requireSubjectClaim }
                             />
                         )
                     }

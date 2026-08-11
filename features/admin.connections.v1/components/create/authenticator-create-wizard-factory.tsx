@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import CustomAuthenticatorCreateWizard from "./custom-authenticator-create-wizard";
-import { DigitalCredentialsConnectionCreateWizard } from "./digital-credentials-connection-create-wizard";
+import { DigitalWalletConnectionCreateWizard } from "./digital-wallet-connection-create-wizard";
 import { EnterpriseConnectionCreateWizard } from "./enterprise-connection-create-wizard";
 import { OutboundProvisioningConnectionCreateWizard } from "./outbound-provisioning-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
@@ -386,7 +386,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                 }
 
                 return (
-                    <DigitalCredentialsConnectionCreateWizard
+                    <DigitalWalletConnectionCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

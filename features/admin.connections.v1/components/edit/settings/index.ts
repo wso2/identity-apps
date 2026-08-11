@@ -25,5 +25,6 @@ export * from "./attribute-settings";
 export * from "./attribute-management";
 export * from "./connected-apps";
 export * from "./digital-credentials-claim-mapping-settings";
+export * from "./digital-wallet-general-settings";
 export * from "./digital-credentials-presentation-definition-claims";
 export * from "./identity-provider-groups";

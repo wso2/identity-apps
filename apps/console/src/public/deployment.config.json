@@ -284,9 +284,9 @@
     "serverOrigin": "https://babara-unexclusive-debbi.ngrok-free.dev",
     "session": {
         "checkSessionInterval": 3.0,
-        "sessionRefreshTimeOut": 1000.0,
-        "userIdleTimeOut": 1800.0,
-        "userIdleWarningTimeOut": 1500.0
+        "sessionRefreshTimeOut": 300.0,
+        "userIdleTimeOut": 600.0,
+        "userIdleWarningTimeOut": 580.0
     },
     "superTenantProxy": "",
     "tenantContext": {
@@ -2208,10 +2208,10 @@
                         "console:verifiablePresentationSettings"
                     ],
                     "read": [
-                        "internal_config_mgt_view"
+                        "internal_config_view"
                     ],
                     "update": [
-                        "internal_config_mgt_update"
+                        "internal_config_update"
                     ]
                 }
             },

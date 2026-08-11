@@ -51,7 +51,7 @@ interface PresentationDefinitionListInterface {
     presentationDefinitions: PresentationDefinitionListItemInterface[];
 }
 
-interface DigitalCredentialsAuthenticatorFormPropsInterface extends TestableComponentInterface {
+interface DigitalWalletAuthenticatorFormPropsInterface extends TestableComponentInterface {
     mode: AuthenticatorSettingsFormModes;
     metadata?: any;
     initialValues: FederatedAuthenticatorListItemInterface;
@@ -72,10 +72,10 @@ const MANAGED_KEYS: string[] = [
  * Renders the Presentation Definition field as a dropdown populated from the
  * presentation definitions API, instead of a plain read-only text input.
  */
-export const DigitalCredentialsAuthenticatorForm: FunctionComponent<
-    DigitalCredentialsAuthenticatorFormPropsInterface
+export const DigitalWalletAuthenticatorForm: FunctionComponent<
+    DigitalWalletAuthenticatorFormPropsInterface
 > = (
-    props: DigitalCredentialsAuthenticatorFormPropsInterface
+    props: DigitalWalletAuthenticatorFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -83,7 +83,7 @@ export const DigitalCredentialsAuthenticatorForm: FunctionComponent<
         onSubmit,
         readOnly,
         isSubmitting,
-        [ "data-testid" ]: testId = "digital-credentials-authenticator-form"
+        [ "data-testid" ]: testId = "digital-wallet-authenticator-form"
     } = props;
 
     const { t } = useTranslation();
@@ -213,7 +213,7 @@ export const DigitalCredentialsAuthenticatorForm: FunctionComponent<
     );
 };
 
-DigitalCredentialsAuthenticatorForm.defaultProps = {
-    "data-testid": "digital-credentials-authenticator-form",
+DigitalWalletAuthenticatorForm.defaultProps = {
+    "data-testid": "digital-wallet-authenticator-form",
     enableSubmitButton: true
 };
