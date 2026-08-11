@@ -264,7 +264,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission) ?? ""
     );
     const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
         organizationsFeatureConfig,
@@ -272,12 +272,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     );
 
     const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read ?? []);
     const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
-    /* Only enforced when the feature flag is on; otherwise everyone with form access can manage secrets. */
-    const hasClientSecretCreateAccess: boolean =
-        !isEnforceClientSecretPermissionEnabled || hasClientSecretCreatePermission;
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create ?? []);
 
     const { isFAPIApplication, fapiProfile: initialFapiProfile } = initialValues;
     const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
@@ -5650,8 +5647,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
-                            && (!isEnforceClientSecretPermissionEnabled
-                                || hasClientSecretReadPermission)
+                            && (isMultipleClientSecretsEnabled
+                                ? hasClientSecretReadPermission
+                                : (!isEnforceClientSecretPermissionEnabled
+                                    || hasClientSecretReadPermission))
                             && (
                                 <Grid.Row columns={ 2 } data-componentid={ `${ testId }-oidc-client-secret` }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -5671,9 +5670,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             multipleClientSecretsConfigured={
                                                                 initialValues?.multipleClientSecretsConfigured
                                                             }
-                                                            readOnly={ readOnly || !hasClientSecretCreateAccess }
                                                             hideSecretValue={ isClientSecretHashEnabled }
                                                             onUpdate={ onUpdate }
+                                                            readOnly={ readOnly }
                                                             data-componentid={
                                                                 `${ componentId }-client-secrets-section`
                                                             }

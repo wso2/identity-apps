@@ -17,6 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -59,11 +60,6 @@ interface ClientSecretsSectionPropsInterface extends IdentifiableComponentInterf
      */
     multipleClientSecretsConfigured?: boolean;
     /**
-     * Whether the section is rendered in read-only mode. The parent folds the client secret create
-     * scope into this, so it also gates the generate and delete actions.
-     */
-    readOnly?: boolean;
-    /**
      * Whether secret values are unavailable (client secret hashing enabled).
      */
     hideSecretValue?: boolean;
@@ -71,6 +67,10 @@ interface ClientSecretsSectionPropsInterface extends IdentifiableComponentInterf
      * Callback to refresh the inbound OIDC configuration (e.g. after the current secret changes).
      */
     onUpdate: (id: string) => void;
+    /**
+     * Whether the application is in a read-only (non-editable) state.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -89,9 +89,9 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
         clientSecret,
         clientSecretExpiresAt,
         multipleClientSecretsConfigured,
-        readOnly,
         hideSecretValue,
         onUpdate,
+        readOnly,
         [ "data-componentid" ]: componentId = "client-secrets-section"
     } = props;
 
@@ -102,26 +102,38 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
         state?.config?.ui?.features?.applications?.properties?.multipleClientSecretsMaxCount as number);
     const isClientSecretHashEnabled: boolean = useSelector(
         (state: AppState) => state.config.ui.isClientSecretHashEnabled);
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
 
     const [ showPreviousSecrets, setShowPreviousSecrets ] = useState<boolean>(false);
     const [ showGenerateModal, setShowGenerateModal ] = useState<boolean>(false);
-    const [ generatedSecret, setGeneratedSecret ] = useState<ClientSecretInterface>(null);
-    const [ secretToDelete, setSecretToDelete ] = useState<ClientSecretInterface>(null);
+    const [ generatedSecret, setGeneratedSecret ] = useState<ClientSecretInterface | null>(null);
+    const [ secretToDelete, setSecretToDelete ] = useState<ClientSecretInterface | null>(null);
 
-    const canManageSecrets: boolean = !readOnly;
+    /*
+     * Generating and deleting secrets are both disabled while the app is read-only (view mode). When
+     * editable, each is gated on its own dedicated client secret scope, which the /secrets endpoints
+     * always enforce (the skip-enforce flag applies only to the legacy single-secret path).
+     */
+    const hasGeneratePermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create ?? []);
+    const hasDeletePermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.delete ?? []);
+    const canGenerate: boolean = !readOnly && hasGeneratePermission;
+    const canDelete: boolean = !readOnly && hasDeletePermission;
 
     /*
      * The list is fetched up front only for users who can generate, since they are the ones who need
-     * the total count to know whether the limit is reached (which disables the button). Read-only
-     * viewers have no generate button, so the list is fetched lazily when they expand the previous
-     * secrets dropdown. Either way the dropdown is a pure show/hide toggle over this same data.
+     * the total count to know whether the limit is reached (which disables the button). Other viewers
+     * fetch lazily when they expand the previous secrets dropdown. Either way the dropdown is a pure
+     * show/hide toggle over this same data.
      */
     const {
         data: clientSecretList,
         isLoading: isClientSecretListLoading,
         error: clientSecretListError,
         mutate: mutateClientSecretList
-    } = useGetOAuthClientSecrets(appId, canManageSecrets || showPreviousSecrets);
+    } = useGetOAuthClientSecrets(appId, canGenerate || showPreviousSecrets);
 
     useEffect(() => {
         if (!clientSecretListError) {
@@ -184,7 +196,11 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
     };
 
     const handleDelete = (secret: ClientSecretInterface): void => {
-        deleteClientSecretById(appId, secret?.secretId)
+        if (!secret?.secretId) {
+            return;
+        }
+
+        deleteClientSecretById(appId, secret.secretId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("applications:clientSecrets.notifications.deleteSecret.success.description"),
@@ -212,7 +228,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
             <ClientSecretRow
                 secret={ currentSecret }
                 hideSecretValue={ hideSecretValue }
-                action={ canManageSecrets && (
+                action={ canGenerate && (
                     <Popup
                         wide
                         position="top center"
@@ -254,7 +270,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                         <PreviousClientSecrets
                             secrets={ previousSecrets }
                             isLoading={ isClientSecretListLoading }
-                            readOnly={ !canManageSecrets }
+                            readOnly={ !canDelete }
                             hideSecretValue={ hideSecretValue }
                             onDelete={ (secret: ClientSecretInterface): void => setSecretToDelete(secret) }
                             data-componentid={ `${ componentId }-previous` }

@@ -22,14 +22,12 @@ import Link from "@oxygen-ui/react/Link";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { TAB_URL_HASH_FRAGMENT } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useGetOAuthClientSecrets from "../../api/use-get-oauth-client-secrets";
-import { ApplicationFeatureDictionaryKeys, ApplicationManagementConstants } from "../../constants/application-management";
 import { ClientSecretListInterface } from "../../models/application-inbound";
 import { hasCriticallyExpiringSecret } from "../client-secrets/client-secret-utils";
 
@@ -59,7 +57,7 @@ interface SecretExpiryBannerPropsInterface extends IdentifiableComponentInterfac
  */
 const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = (
     props: SecretExpiryBannerPropsInterface
-): ReactElement => {
+): ReactElement | null => {
 
     const {
         appId,
@@ -75,18 +73,15 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications);
 
-    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
-        applicationFeatureConfig,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
-    );
-    const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
+    const hasClientSecretViewPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read ?? []);
 
-    /* Suppress the banner (and the underlying secrets fetch) when the user lacks the view permission. */
-    const hasViewPermission: boolean = !isEnforceClientSecretPermissionEnabled || hasClientSecretReadPermission;
+    /*
+     * The banner only applies when multiple client secrets is enabled, so the GET /secrets view scope
+     * is always required (the skip-enforce flag governs only the legacy single-secret path).
+     */
     const shouldFetch: boolean = isMultipleClientSecretsEnabled && isOIDCApplication && !isPublicClient
-        && hasViewPermission && !!appId;
+        && hasClientSecretViewPermission && !!appId;
 
     const { data: clientSecretList } = useGetOAuthClientSecrets<ClientSecretListInterface>(appId, shouldFetch);
 

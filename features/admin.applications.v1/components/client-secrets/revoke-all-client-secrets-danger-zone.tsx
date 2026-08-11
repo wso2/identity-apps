@@ -39,7 +39,7 @@ interface RevokeAllClientSecretsDangerZonePropsInterface extends IdentifiableCom
      */
     onRevokeAll: () => void;
     /**
-     * Whether the danger zone is rendered in read-only mode.
+     * Whether the application is in a read-only (non-editable) state.
      */
     readOnly?: boolean;
 }
@@ -52,7 +52,7 @@ interface RevokeAllClientSecretsDangerZonePropsInterface extends IdentifiableCom
  */
 const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecretsDangerZonePropsInterface> = (
     props: RevokeAllClientSecretsDangerZonePropsInterface
-): ReactElement => {
+): ReactElement | null => {
 
     const {
         onRevokeAll,
@@ -68,18 +68,21 @@ const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecrets
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission) ?? ""
     );
-    const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
+    /* Regenerating a secret maps to the update level of the client secret management resource. */
+    const hasClientSecretRegeneratePermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.update ?? []);
 
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
 
     /*
-     * Read-only covers the application update baseline. Regenerating a secret additionally needs the
-     * client secret create scope when client secret permission enforcement is on.
+     * Mirrors the pre-feature regenerate gate: the app must be editable, and when client secret
+     * permission enforcement is on, the dedicated regenerate scope is additionally required. With
+     * enforcement off, the regenerate-secret endpoint falls back to broad application management,
+     * which the readOnly gate already covers.
      */
-    if (readOnly || (isEnforceClientSecretPermissionEnabled && !hasClientSecretCreatePermission)) {
+    if (readOnly || (isEnforceClientSecretPermissionEnabled && !hasClientSecretRegeneratePermission)) {
         return null;
     }
 

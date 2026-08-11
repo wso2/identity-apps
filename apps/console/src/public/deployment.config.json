@@ -666,10 +666,10 @@
                         "featureFlags": [],
                         "scopes": {
                             "create": [ "internal_application_mgt_client_secret_create" ],
-                            "delete": [],
+                            "delete": [ "internal_application_mgt_client_secret_delete" ],
                             "feature": [],
                             "read": [ "internal_application_mgt_client_secret_view" ],
-                            "update": []
+                            "update": [ "internal_application_mgt_client_secret_regenerate" ]
                         }
                     },
                     "applicationInternalAPIAuthorization": {
