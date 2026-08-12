@@ -173,7 +173,9 @@ export interface ApplicationsNS {
     clientSecrets: {
         rotationInfo: string;
         generateButton: string;
+        viewPreviousSecret: string;
         viewPreviousSecrets: string;
+        hidePreviousSecret: string;
         hidePreviousSecrets: string;
         maxCountReachedHint: string;
         status: {
@@ -232,7 +234,7 @@ export interface ApplicationsNS {
         expiryBanner: {
             title: string;
             description: string;
-            viewDetails: string;
+            viewSecrets: string;
         };
         notifications: {
             generateSecret: {

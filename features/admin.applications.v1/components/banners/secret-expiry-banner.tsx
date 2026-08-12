@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Link from "@oxygen-ui/react/Link";
+import Button from "@oxygen-ui/react/Button";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
@@ -99,14 +99,15 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
             severity="warning"
             sx={ { marginBottom: 2 } }
             action={ (
-                <Link
+                <Button
+                    className="banner-view-hide-details"
                     onClick={ (): void => {
                         window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
                     } }
-                    data-componentid={ `${ componentId }-view-details-link` }
+                    data-componentid={ `${ componentId }-view-secrets-button` }
                 >
-                    { t("applications:clientSecrets.expiryBanner.viewDetails") }
-                </Link>
+                    { t("applications:clientSecrets.expiryBanner.viewSecrets") }
+                </Button>
             ) }
             data-componentid={ componentId }
         >

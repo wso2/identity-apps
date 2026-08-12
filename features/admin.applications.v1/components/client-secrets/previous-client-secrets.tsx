@@ -19,7 +19,7 @@
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, Message } from "@wso2is/react-components";
+import { ContentLoader, Message, Popup } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -85,13 +85,16 @@ const PreviousClientSecrets: FunctionComponent<PreviousClientSecretsPropsInterfa
 
     return (
         <div className="previous-client-secrets" data-componentid={ componentId }>
-            <div className="previous-client-secrets-info">
-                <Message
-                    type="info"
-                    content={ t("applications:clientSecrets.rotationInfo") }
-                    data-componentid={ `${ componentId }-info` }
-                />
-            </div>
+            { /* The rotation hint guides generating/deleting secrets, so hide it in read-only mode. */ }
+            { !readOnly && (
+                <div className="previous-client-secrets-info">
+                    <Message
+                        type="info"
+                        content={ t("applications:clientSecrets.rotationInfo") }
+                        data-componentid={ `${ componentId }-info` }
+                    />
+                </div>
+            ) }
             <div
                 className={ classNames("previous-client-secrets-list", {
                     "previous-client-secrets-list-scroll": secrets?.length > MAX_VISIBLE_ROWS
@@ -103,14 +106,21 @@ const PreviousClientSecrets: FunctionComponent<PreviousClientSecretsPropsInterfa
                         secret={ secret }
                         hideSecretValue={ hideSecretValue }
                         action={ !readOnly && (
-                            <IconButton
-                                type="button"
-                                onClick={ (): void => onDelete(secret) }
-                                aria-label={ t("common:delete") }
-                                data-componentid={ `${ componentId }-delete-${ index }` }
-                            >
-                                <TrashIcon size={ 16 } />
-                            </IconButton>
+                            <Popup
+                                trigger={ (
+                                    <IconButton
+                                        type="button"
+                                        onClick={ (): void => onDelete(secret) }
+                                        aria-label={ t("common:delete") }
+                                        data-componentid={ `${ componentId }-delete-${ index }` }
+                                    >
+                                        <TrashIcon />
+                                    </IconButton>
+                                ) }
+                                position="top center"
+                                content={ t("common:delete") }
+                                inverted
+                            />
                         ) }
                         data-componentid={ `${ componentId }-row-${ index }` }
                     />

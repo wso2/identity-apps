@@ -229,9 +229,10 @@ export const applications: ApplicationsNS = {
             description: "One or more client secrets are expiring soon. Please rotate them to prevent " +
                 "authentication failures and application downtime.",
             title: "Client Secrets Expiring Soon",
-            viewDetails: "View details"
+            viewSecrets: "View secrets"
         },
         generateButton: "Generate New Secret",
+        hidePreviousSecret: "Hide Previous Client Secret",
         hidePreviousSecrets: "Hide Previous Client Secrets",
         maxCountReachedHint: "You have reached the maximum of {{count}} client secrets. Delete an existing " +
             "secret to generate a new one.",
@@ -283,6 +284,7 @@ export const applications: ApplicationsNS = {
             expired: "Expired",
             expiresSoon: "Expires Soon"
         },
+        viewPreviousSecret: "View Previous Client Secret",
         viewPreviousSecrets: "View Previous Client Secrets",
         wizard: {
             customExpiry: {

@@ -223,6 +223,25 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
             });
     };
 
+    /*
+     * Pluralize the toggle by how many previous secrets the app can hold (the max total minus the
+     * current secret), which is known from configuration up front — unlike the actual count, which is
+     * unavailable until the list is fetched (e.g. before a viewer without generate access expands it).
+     */
+    const resolvePreviousSecretsToggleLabel = (): string => {
+        const maxPreviousSecrets: number = maxCount - 1;
+
+        if (showPreviousSecrets) {
+            return maxPreviousSecrets === 1
+                ? t("applications:clientSecrets.hidePreviousSecret")
+                : t("applications:clientSecrets.hidePreviousSecrets");
+        }
+
+        return maxPreviousSecrets === 1
+            ? t("applications:clientSecrets.viewPreviousSecret")
+            : t("applications:clientSecrets.viewPreviousSecrets");
+    };
+
     return (
         <div className="client-secrets-section" data-componentid={ componentId }>
             <ClientSecretRow
@@ -262,9 +281,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                         data-componentid={ `${ componentId }-toggle` }
                     >
                         <Icon name={ showPreviousSecrets ? "chevron up" : "chevron down" } />
-                        { showPreviousSecrets
-                            ? t("applications:clientSecrets.hidePreviousSecrets")
-                            : t("applications:clientSecrets.viewPreviousSecrets") }
+                        { resolvePreviousSecretsToggleLabel() }
                     </LinkButton>
                     { showPreviousSecrets && (
                         <PreviousClientSecrets
