@@ -1,5 +1,11 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.15
+
+### Patch Changes
+
+- [#10591](https://github.com/wso2/identity-apps/pull/10591) [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add Active Agent Sessions, Agent Token Distribution and Agent Usage by Users widgets to the Moesif agent dashboard
+
 ## 0.0.14
 
 ### Patch Changes
