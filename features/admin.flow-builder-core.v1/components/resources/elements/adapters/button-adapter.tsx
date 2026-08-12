@@ -126,8 +126,8 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             <Button
                 sx={ resource?.config.styles }
                 startIcon={ resource?.config?.image
-                    ? <img src={ loadStaticResource(resource?.config?.image) } height={ 20 } />
-                    : image && <img src={ loadStaticResource(image) } height={ 20 } />
+                    ? <img src={ loadStaticResource(resource?.config?.image) } alt="" height={ 20 } />
+                    : image && <img src={ loadStaticResource(image) } alt="" height={ 20 } />
                 }
                 { ...config }
             >
