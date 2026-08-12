@@ -167,7 +167,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
         return property?.value?.split(",") || [];
     };
     const [ excludedUserStores, setExcludedUserStores ] = useState<string[]>(
-        getExcludedStoresFromClaim(claim)
+        () => getExcludedStoresFromClaim(claim)
     );
 
     const getMappedAttributeForUserStore = (userStore: string): string | undefined => {
