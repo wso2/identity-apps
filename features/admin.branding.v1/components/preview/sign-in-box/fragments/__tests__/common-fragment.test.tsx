@@ -16,14 +16,19 @@
  * under the License.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import CommonFragment from "../common-fragment";
 
 describe("CommonFragment", (): void => {
     it("renders the decorative header placeholder without heading semantics", (): void => {
-        const { container }: { container: HTMLElement } = render(<CommonFragment />);
+        const { container }: { container: HTMLElement } = render(
+            <CommonFragment data-componentid="branding-preview-common-fragment" />,
+            {
+                featureConfig: {}
+            }
+        );
         const headerPlaceholder: Element | null = container.querySelector(".ui.header");
         const commonFragment: Element | null = container.querySelector(
             "[data-componentid='branding-preview-common-fragment']"
