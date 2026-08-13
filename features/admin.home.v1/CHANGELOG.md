@@ -1,5 +1,16 @@
 # @wso2is/admin.home.v1
 
+## 1.7.199
+
+### Patch Changes
+
+- [#10543](https://github.com/wso2/identity-apps/pull/10543) [`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix Customer Data Service navigation issues in the unified Customer Data view. The Feature Preview menu no longer appears empty when there are no accessible preview features, the home-page CDS banner routes to the Customer Data page, and the profile details page returns to the Customer Data page.
+
+- Updated dependencies [[`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19), [`68f2289f4500b32f9f65e2e0988a791a5d63be79`](https://github.com/wso2/identity-apps/commit/68f2289f4500b32f9f65e2e0988a791a5d63be79)]:
+  - @wso2is/admin.core.v1@2.57.31
+  - @wso2is/admin.cds.v1@1.6.9
+  - @wso2is/admin.applications.v1@2.43.11
+
 ## 1.7.198
 
 ### Patch Changes

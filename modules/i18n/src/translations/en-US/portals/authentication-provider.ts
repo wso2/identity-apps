@@ -83,6 +83,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
             content: "Remove the associations from these applications before deleting:",
             header: "Unable to Delete",
             message: "There are applications using this connection."
+        },
+        enableMultipleDeviceProgressiveEnrollment: {
+            assertionHint: "I understand the security risk and want to enable this feature.",
+            content: "When enabled, users can register additional push devices before completing " +
+                "authentication. An attacker with the user's primary credentials could enroll their " +
+                 "own device during sign-in and use it for future authentication. Enable this option " +
+                 "only if your use case requires it.",
+            header: "Are you sure?",
+            message: "Enabling progressive enrollment for multiple devices introduces a security risk."
         }
     },
     dangerZoneGroup: {
@@ -963,8 +972,52 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     hint: "When enabled, users may enroll their devices for push authentication at the moment they log in to the application.",
                     label: "Enable push notification device progressive enrollment",
                     validations: {
-                        required: "Enablin push notification device progressive enrollment is required."
+                        required: "Enabling push notification device progressive enrollment is required."
                     }
+                },
+                enableDeviceRegistrationNotification: {
+                    hint: "When enabled, users will be notified when a new device is registered " +
+                        "for push authentication.",
+                    label: "Enable device registration notifications"
+                },
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: "Notify via email",
+                        push: "Notify via push notification"
+                    }
+                },
+                enableMultipleDeviceEnrollment: {
+                    hint: "When enabled, users can enroll multiple devices for push authentication.",
+                    label: "Allow users to register multiple devices",
+                    validations: {
+                        required: "Enabling multiple device enrollment is required."
+                    }
+                },
+                maximumDeviceLimit: {
+                    hint: "The maximum device limit for users when multiple device enrollment is enabled.",
+                    label: "Maximum number of push devices",
+                    placeholder: "Enter maximum device limit.",
+                    validations: {
+                        required: "Maximum device limit is a required field.",
+                        invalid: "Maximum device limit should be an integer.",
+                        range: "Maximum device limit should be between {{min}} & {{max}}."
+                    },
+                    unit: "devices"
+                },
+                enableMultipleDeviceProgressiveEnrollment: {
+                    hint: "When enabled, users may progressively enroll additional devices for push authentication " +
+                        "when multiple device enrollment is enabled.",
+                    label: "Allow progressive enrollment for multiple devices",
+                    securityWarning: "Progressive enrollment for multiple devices is enabled. Users can register " +
+                        "additional push devices before completing authentication, and an attacker with the user's " +
+                        "primary credentials could enroll their own device during sign-in and use it for future " +
+                        "authentication.",
+                    validations: {
+                        required: "Enabling progressive enrollment for multiple devices is required."
+                    }
+                },
+                deviceManagementSettings: {
+                    label: "Device management settings"
                 }
             },
             totp: {
@@ -1837,6 +1890,20 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the SMS OTP connector.",
+                message: "Update successful"
+            }
+        },
+        updatePushAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating the push authenticator configurations.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the Push authenticator configurations.",
                 message: "Update successful"
             }
         }

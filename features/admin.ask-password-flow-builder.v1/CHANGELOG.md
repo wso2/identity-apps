@@ -1,5 +1,14 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.217
+
+### Patch Changes
+
+- [#10537](https://github.com/wso2/identity-apps/pull/10537) [`9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac`](https://github.com/wso2/identity-apps/commit/9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension step support to password recovery and ask password flow builders
+
+- Updated dependencies [[`9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac`](https://github.com/wso2/identity-apps/commit/9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.221
+
 ## 1.1.216
 
 ### Patch Changes

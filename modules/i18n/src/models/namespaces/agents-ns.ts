@@ -116,6 +116,10 @@ export interface AgentsNS {
                 message: string;
                 description: string;
             };
+            limitReached: {
+                message: string;
+                description: string;
+            };
             clientIdFetchFailed: {
                 message: string;
                 description: string;

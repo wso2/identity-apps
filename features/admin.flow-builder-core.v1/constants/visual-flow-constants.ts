@@ -66,8 +66,7 @@ class VisualFlowConstants {
         WidgetTypes.MicrosoftFederation,
         WidgetTypes.GithubFederation,
         WidgetTypes.PasskeyEnrollment,
-        WidgetTypes.MagicLink,
-        ElementTypes.Policy
+        WidgetTypes.MagicLink
     ];
 
     public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [

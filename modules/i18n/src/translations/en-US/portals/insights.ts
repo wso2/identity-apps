@@ -70,6 +70,8 @@ export const insights: insightsNS = {
     },
     advancedAnalytics: {
         card: {
+            dataRetentionHint: "Once enabled, your analytics journey begins new; your analytics " +
+                "history starts fresh and existing data won't carry over.",
             description: "Get a clearer picture of how your users sign in, sign up, and use tokens, " +
                 "with live dashboards that update as activity happens.",
             enableButton: "Enable Advanced Analytics",

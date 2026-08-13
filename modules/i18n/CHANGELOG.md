@@ -1,5 +1,45 @@
 # @wso2is/i18n
 
+## 2.44.1
+
+### Patch Changes
+
+- [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+* [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+## 2.44.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10538](https://github.com/wso2/identity-apps/pull/10538) [`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Show a specific error message when agent creation fails because the organization's application limit has been reached, instead of the generic "Something went wrong" alert.
+
+* [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+## 2.43.14
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+## 2.43.13
+
+### Patch Changes
+
+- [#10534](https://github.com/wso2/identity-apps/pull/10534) [`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add a config-switchable unified Customer Data page for the Customer Data Service
+
+## 2.43.12
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+* [#10528](https://github.com/wso2/identity-apps/pull/10528) [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update email template update premium info message
+
 ## 2.43.11
 
 ### Patch Changes

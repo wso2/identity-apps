@@ -456,6 +456,7 @@ export class Config {
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            appFaviconPath: window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath,
             appLogo: {
                 defaultLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath,

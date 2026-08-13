@@ -767,8 +767,8 @@
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.analytics.scopes is defined %}
-                    {% for operation, scopes in console.analytics.scopes.items() %}
+                    {% if console.analytics.moesif.scopes is defined %}
+                    {% for operation, scopes in console.analytics.moesif.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1634,6 +1634,11 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "properties": {
+                    "maxPushDeviceLimitPerUser": {% if push_device_management.max_device_limit_per_user is defined %}{{ push_device_management.max_device_limit_per_user }}{% else %}10{% endif %},
+                    "multiplePushDeviceSupportEnabled": {% if push_device_management.multiple_device_support_enabled is defined %}{{ push_device_management.multiple_device_support_enabled }}{% else %}true{% endif %},
+                    "pushDeviceRegistrationNotificationsEnabled": {% if push_device_management.device_registration_notifications_enabled is defined %}{{ push_device_management.device_registration_notifications_enabled }}{% else %}true{% endif %}
                 }
             },
             {% endif %}

@@ -24,6 +24,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -541,24 +542,38 @@ export class RouteUtils {
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
-            {
-                category: customerDataCategory,
-                id: "customerDataProfiles",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILES"))
-            },
-            {
-                category: customerDataCategory,
-                id: "customerDataProfileAttributes",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"))
-            },
-            {
-                category: customerDataCategory,
-                id: "customerDataUnificationRules",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("UNIFICATION_RULES"))
-            },
+            ...(isCDSUnifiedProfileViewEnabled() ? [
+                {
+                    category: manage,
+                    id: "customerDataService",
+                    order: 1,
+                    selected: [
+                        AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"),
+                        AppConstants.getPaths().get("PROFILES"),
+                        AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+                        AppConstants.getPaths().get("UNIFICATION_RULES")
+                    ].some((path: string) => history.location.pathname.startsWith(path))
+                }
+            ] : [
+                {
+                    category: customerDataCategory,
+                    id: "customerDataProfiles",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILES"))
+                },
+                {
+                    category: customerDataCategory,
+                    id: "customerDataProfileAttributes",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"))
+                },
+                {
+                    category: customerDataCategory,
+                    id: "customerDataUnificationRules",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("UNIFICATION_RULES"))
+                }
+            ]),
             {
                 category: preferences,
                 id: "notificationChannels",

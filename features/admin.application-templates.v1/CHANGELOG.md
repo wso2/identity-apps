@@ -1,5 +1,11 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.6.2
+
+### Patch Changes
+
+- [#10579](https://github.com/wso2/identity-apps/pull/10579) [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - show Enforce Fapi checkbox only when fapi feature is disabled
+
 ## 1.6.1
 
 ### Patch Changes

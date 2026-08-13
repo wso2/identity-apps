@@ -108,6 +108,9 @@ const AdvancedAnalyticsUpgradeCard: FunctionComponent<AdvancedAnalyticsUpgradeCa
                     <Typography variant="body1" color="text.secondary">
                         { t("insights:advancedAnalytics.card.description") }
                     </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={ { mt: 0.5 } }>
+                        { t("insights:advancedAnalytics.card.dataRetentionHint") }
+                    </Typography>
                 </Box>
                 <Button
                     data-componentid={ `${ componentId }-open-dialog-btn` }

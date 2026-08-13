@@ -1,5 +1,15 @@
 # @wso2is/admin.agents.v1
 
+## 1.2.1
+
+### Patch Changes
+
+- [#10538](https://github.com/wso2/identity-apps/pull/10538) [`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Show a specific error message when agent creation fails because the organization's application limit has been reached, instead of the generic "Something went wrong" alert.
+
+- Updated dependencies [[`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/admin.core.v1@2.58.0
+  - @wso2is/admin.users.v1@2.38.45
+
 ## 1.2.0
 
 ### Minor Changes

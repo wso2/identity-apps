@@ -178,6 +178,30 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
+            "label": "Flow Extension",
+            "image": "assets/images/icons/flow-extension.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "FlowExtensionExecutor",
+                    "meta": {
+                        "actionId": ""
+                    }
+                },
+                "next": ""
+            }
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
             "label": "Execution",
             "image": "assets/images/icons/play.svg",
             "showOnResourcePanel": false

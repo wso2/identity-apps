@@ -1,5 +1,21 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.15
+
+### Patch Changes
+
+- [#10591](https://github.com/wso2/identity-apps/pull/10591) [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add Active Agent Sessions, Agent Token Distribution and Agent Usage by Users widgets to the Moesif agent dashboard
+
+## 0.0.14
+
+### Patch Changes
+
+- [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+- Updated dependencies [[`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4), [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2)]:
+  - @wso2is/admin.subscription.v1@1.5.229
+  - @wso2is/admin.org-insights.v1@2.26.7
+
 ## 0.0.13
 
 ### Patch Changes

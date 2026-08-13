@@ -119,6 +119,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         useState<boolean>(initialSubject?.useMappedLocalSubject);
     const [ mandateLinkedLocalAccount, setMandateLinkedLocalAccount ] =
         useState<boolean>(initialSubject?.mappedLocalSubjectMandatory);
+    const [ subjectIncludeUserDomain, setSubjectIncludeUserDomain ] =
+        useState<boolean>(initialSubject?.includeUserDomain);
+    const [ subjectIncludeTenantDomain, setSubjectIncludeTenantDomain ] =
+        useState<boolean>(initialSubject?.includeTenantDomain);
 
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
@@ -260,8 +264,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             },
             subject: {
                 claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
-                includeTenantDomain: !!values.subjectIncludeTenantDomain,
-                includeUserDomain: !!values.subjectIncludeUserDomain,
+                includeTenantDomain: !!subjectIncludeTenantDomain,
+                includeUserDomain: !!subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
                 useMappedLocalSubject: validateLinkedLocalAccount
             }
@@ -351,6 +355,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const mandateLinkedAccountCheckboxHandler = (value: boolean) => {
         setMandateLinkedLocalAccount(value);
+    };
+
+    const subjectIncludeUserDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeUserDomain(value);
+    };
+
+    const subjectIncludeTenantDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeTenantDomain(value);
     };
 
     /**
@@ -543,13 +555,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeUserDomainChangeHandler }
                                                 ariaLabel="Subject include user domain"
                                                 name="subjectIncludeUserDomain"
                                                 label={ t("applications:forms.advancedAttributeSettings." +
                                                     "sections.subject.fields.subjectIncludeUserDomain.label") }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                                    subjectIncludeUserDomain ? [ "includeUserDomain" ] : [] }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
                                                 hint={
@@ -570,6 +583,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeTenantDomainChangeHandler }
                                                 ariaLabel="Subject include tenant domain"
                                                 name="subjectIncludeTenantDomain"
                                                 label={
@@ -578,7 +592,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeTenantDomain
+                                                    subjectIncludeTenantDomain
                                                         ? [ "includeTenantDomain" ]
                                                         : []
                                                 }

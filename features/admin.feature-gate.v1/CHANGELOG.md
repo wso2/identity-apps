@@ -1,5 +1,11 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.9.10
+
+### Patch Changes
+
+- [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
 ## 1.9.9
 
 ### Patch Changes

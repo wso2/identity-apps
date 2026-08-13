@@ -53,6 +53,42 @@ export const customerDataService: CustomerDataServiceNS = {
             notAllowed: "Not allowed"
         }
     },
+    landing: {
+        backButton: "Go back to Customer Data",
+        configuration: {
+            profileAttributes: {
+                description: "Manage the attributes that make up the customer profiles",
+                title: "Profile Attributes"
+            },
+            unificationRules: {
+                description: "Manage profile unification rules",
+                title: "Unification Rules"
+            }
+        },
+        enable: {
+            label: "Enable Customer Data Service"
+        },
+        notifications: {
+            update: {
+                error: {
+                    description: "Failed to update Customer Data Service settings. Please try again.",
+                    message: "Update error"
+                },
+                success: {
+                    description: "Customer Data Service configuration updated successfully.",
+                    message: "Update successful"
+                }
+            }
+        },
+        page: {
+            description: "Collect and unify customer data across your applications",
+            title: "Customer Data"
+        },
+        profiles: {
+            description: "Manage customer profiles which have identity, behavioural and application data.",
+            heading: "Profiles"
+        }
+    },
     profileAttributes: {
         create: {
             forms: {
@@ -598,7 +634,8 @@ export const customerDataService: CustomerDataServiceNS = {
     sidePanel: {
         ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
-        UnificationRules: "Unification Rules"
+        UnificationRules: "Unification Rules",
+        customerDataProfile: "Customer Data"
     },
     unificationRules: {
         common: {

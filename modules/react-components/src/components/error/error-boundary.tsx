@@ -33,7 +33,7 @@ interface ErrorBoundaryState {
 interface ErrorBoundaryProps {
     fallback: React.ReactNode;
     onChunkLoadError: () => void;
-    handleError?: (error: Error, errorInfo: ErrorInfo) => void;
+    handleError?: (_error: Error, _errorInfo: ErrorInfo) => void;
 }
 
 /**
@@ -74,11 +74,17 @@ class ErrorBoundary extends Component<
 
         const { onChunkLoadError, handleError } = this.props;
 
-        handleError && handleError(error, errorInfo);
-
-        if (error.name === "ChunkLoadError") {
-            onChunkLoadError && onChunkLoadError();
+        if (handleError) {
+            handleError(error, errorInfo);
         }
+
+        window.addEventListener("vite:preloadError", (event) => {
+            event.preventDefault();
+
+            if (onChunkLoadError) {
+                onChunkLoadError();
+            }
+        });
 
         // Catch errors in any components below and re-render with error message
         this.setState({

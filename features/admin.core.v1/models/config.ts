@@ -141,6 +141,11 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Console settings feature. Currently the only consumer is the console-roles permissions UI,
+     * which reads the granular-console-permissions flag from its `disabledFeatures` list.
+     */
+    consoleSettings?: FeatureAccessConfigInterface;
+    /**
      * Copilot AI assistant feature.
      */
     copilot?: FeatureAccessConfigInterface;
@@ -486,6 +491,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         enabled: boolean;
         plannedRollOutDate: string;
     };
+    /**
+     * Path to the favicon of the application.
+     */
+    appFaviconPath?: string;
     /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.

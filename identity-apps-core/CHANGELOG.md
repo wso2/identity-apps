@@ -1,5 +1,33 @@
 # @wso2is/identity-apps-core
 
+## 5.4.1
+
+### Patch Changes
+
+- [#10558](https://github.com/wso2/identity-apps/pull/10558) [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Prevent future dates from being accepted for the Date of Birth attribute in the self-registration page, the dynamic registration flow date field, and the Console user profile and add-user forms.
+
+## 5.4.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+## 5.3.8
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+## 5.3.7
+
+### Patch Changes
+
+- [#10454](https://github.com/wso2/identity-apps/pull/10454) [`c8c20a49d099d63791bfee33584e3621cb703376`](https://github.com/wso2/identity-apps/commit/c8c20a49d099d63791bfee33584e3621cb703376) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support the `anonymous_profile_tracker` query param as a fallback to track the CDS profile in the registration orchestration flow
+
 ## 5.3.6
 
 ### Patch Changes

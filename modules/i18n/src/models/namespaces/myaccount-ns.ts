@@ -620,8 +620,12 @@ export interface MyAccountNS {
                     };
                     deviceListFetchError: {
                         error: NotificationItem;
+                    };
+                    configFetchError: {
+                        genericError: NotificationItem;
                     }
                 };
+                deviceLimitReachedHint: string;
             },
             backupCode: {
                 actions: {

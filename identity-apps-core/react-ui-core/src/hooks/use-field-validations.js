@@ -18,7 +18,7 @@
 
 import { useCallback, useState } from "react";
 import { DEFAULT_ALPHANUMERIC_REGEX, DEFAULT_EMAIL_REGEX } from "../constants/validation-constants";
-import { validateWithRegex } from "../utils/validation-utils";
+import { isFutureDate, parseIsoDate, validateWithRegex } from "../utils/validation-utils";
 
 /**
  * A custom hook for validating form fields using a flexible “rules” approach.
@@ -186,6 +186,24 @@ const useFieldValidation = (validationConfig) => {
             case "AlphanumericValidator": {
                 if (!validateWithRegex(value, DEFAULT_ALPHANUMERIC_REGEX)) {
                     return "Must contain only alphanumeric characters.";
+                }
+
+                break;
+            }
+
+            case "DateValidator": {
+                if (!value) {
+                    break;
+                }
+
+                if (!parseIsoDate(value)) {
+                    return "Must be a valid date in the format YYYY-MM-DD.";
+                }
+
+                const disallowFuture = getStrCondition(conditions, "disallow.future") === "true";
+
+                if (disallowFuture && isFutureDate(value)) {
+                    return "Cannot be a future date.";
                 }
 
                 break;

@@ -43,6 +43,7 @@
         },
         "cdsApplicationIdentifierType": "client_id",
         "cdsHost": "",
+        "cdsUnifiedProfileView": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
             {
@@ -909,7 +910,8 @@
             "consoleSettings": {
                 "disabledFeatures": [
                     "consoleSettings.invitedExternalAdmins",
-                    "consoleSettings.privilegedUsers"
+                    "consoleSettings.privilegedUsers",
+                    "consoleSettings.useGranularConsolePermissions"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1293,6 +1295,11 @@
                 ],
                 "enabled": true,
                 "featureFlags": [],
+                "properties": {
+                    "maxPushDeviceLimitPerUser": 10,
+                    "multiplePushDeviceSupportEnabled": true,
+                    "pushDeviceRegistrationNotificationsEnabled": true
+                },
                 "scopes": {
                     "create": [
                         "internal_idp_create"

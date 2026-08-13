@@ -1,5 +1,192 @@
 # @wso2is/console
 
+## 4.14.9
+
+### Patch Changes
+
+- [#10596](https://github.com/wso2/identity-apps/pull/10596) [`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Fix readOnly prop logic in ShareUserForm component
+
+* [#10591](https://github.com/wso2/identity-apps/pull/10591) [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add Active Agent Sessions, Agent Token Distribution and Agent Usage by Users widgets to the Moesif agent dashboard
+
+* Updated dependencies [[`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4), [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173)]:
+  - @wso2is/admin.users.v1@2.38.50
+  - @wso2is/admin.analytics.v1@0.0.15
+  - @wso2is/admin.onboarding.v1@1.0.94
+
+## 4.14.8
+
+### Patch Changes
+
+- [#10588](https://github.com/wso2/identity-apps/pull/10588) [`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the search of the "User Attribute to map to" dropdown in the external attribute mapping edit form always returning "No results found."
+
+- Updated dependencies [[`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718)]:
+  - @wso2is/admin.claims.v1@2.31.3
+
+## 4.14.7
+
+### Patch Changes
+
+- [#10577](https://github.com/wso2/identity-apps/pull/10577) [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use vite events to gracefully handle chunkload errors
+
+* [#10579](https://github.com/wso2/identity-apps/pull/10579) [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - show Enforce Fapi checkbox only when fapi feature is disabled
+
+- [#10558](https://github.com/wso2/identity-apps/pull/10558) [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Prevent future dates from being accepted for the Date of Birth attribute in the self-registration page, the dynamic registration flow date field, and the Console user profile and add-user forms.
+
+- Updated dependencies [[`0a908a7aafd983c09c0f8079e6e2aad698c52883`](https://github.com/wso2/identity-apps/commit/0a908a7aafd983c09c0f8079e6e2aad698c52883), [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a), [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa), [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848)]:
+  - @wso2is/admin.tenants.v1@2.29.33
+  - @wso2is/react-components@2.10.5
+  - @wso2is/admin.application-templates.v1@1.6.2
+  - @wso2is/admin.users.v1@2.38.49
+
+## 4.14.6
+
+### Patch Changes
+
+- [#10570](https://github.com/wso2/identity-apps/pull/10570) [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Display all locales in the locale field in the user profile in console
+
+* [#10427](https://github.com/wso2/identity-apps/pull/10427) [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix application dropdown in branding page not showing all applications
+
+* Updated dependencies [[`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246), [`8286096b632fda272a45d47f2a68018713925e14`](https://github.com/wso2/identity-apps/commit/8286096b632fda272a45d47f2a68018713925e14), [`39e7fb8e75d261b853007fe6527c20b8d6b16d48`](https://github.com/wso2/identity-apps/commit/39e7fb8e75d261b853007fe6527c20b8d6b16d48)]:
+  - @wso2is/react-components@2.10.4
+  - @wso2is/admin.applications.v1@2.43.13
+  - @wso2is/admin.users.v1@2.38.48
+  - @wso2is/admin.branding.v1@2.32.171
+
+## 4.14.5
+
+### Patch Changes
+
+- [#10571](https://github.com/wso2/identity-apps/pull/10571) [`933b1e5aff0b5b2b9781ae4850e8dc154c413963`](https://github.com/wso2/identity-apps/commit/933b1e5aff0b5b2b9781ae4850e8dc154c413963) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the subject attribute even if it is not a requested attribute
+
+- Updated dependencies [[`933b1e5aff0b5b2b9781ae4850e8dc154c413963`](https://github.com/wso2/identity-apps/commit/933b1e5aff0b5b2b9781ae4850e8dc154c413963)]:
+  - @wso2is/admin.applications.v1@2.43.12
+
+## 4.14.4
+
+### Patch Changes
+
+- [#10569](https://github.com/wso2/identity-apps/pull/10569) [`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the group assigning section
+
+* [#10566](https://github.com/wso2/identity-apps/pull/10566) [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Honor the configured `console.ui.app_favicon_path` in the Console application. The favicon is now applied from the runtime config via react-helmet instead of the hardcoded build-time default.
+
+* Updated dependencies [[`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532), [`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee), [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08)]:
+  - @wso2is/admin.core.v1@2.58.1
+  - @wso2is/admin.users.v1@2.38.47
+
+## 4.14.3
+
+### Patch Changes
+
+- [#10563](https://github.com/wso2/identity-apps/pull/10563) [`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix duplicate "Danger Zone" header on the user edit page.
+
+* [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+- [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+- Updated dependencies [[`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063), [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4), [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2)]:
+  - @wso2is/admin.users.v1@2.38.46
+  - @wso2is/admin.feature-gate.v1@1.9.10
+  - @wso2is/admin.subscription.v1@1.5.229
+  - @wso2is/i18n@2.44.1
+  - @wso2is/admin.analytics.v1@0.0.14
+  - @wso2is/admin.onboarding.v1@1.0.93
+
+## 4.14.2
+
+### Patch Changes
+
+- [#10555](https://github.com/wso2/identity-apps/pull/10555) [`128ed8b644ed228e04633b8c645f87da76c688e0`](https://github.com/wso2/identity-apps/commit/128ed8b644ed228e04633b8c645f87da76c688e0) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Gate push device management config fetch and update on enabled features
+
+## 4.14.1
+
+### Patch Changes
+
+- [#10551](https://github.com/wso2/identity-apps/pull/10551) [`1f92355a3f9d099148c1595b0e5c05b1c247e44c`](https://github.com/wso2/identity-apps/commit/1f92355a3f9d099148c1595b0e5c05b1c247e44c) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove policy from the steps
+
+## 4.14.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10538](https://github.com/wso2/identity-apps/pull/10538) [`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Show a specific error message when agent creation fails because the organization's application limit has been reached, instead of the generic "Something went wrong" alert.
+
+* [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+* Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/admin.agents.v1@1.2.1
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.connections.v1@2.39.0
+  - @wso2is/admin.core.v1@2.58.0
+  - @wso2is/admin.console-settings.v1@2.26.47
+  - @wso2is/admin.users.v1@2.38.45
+
+## 4.13.24
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+- Updated dependencies [[`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.177
+  - @wso2is/i18n@2.43.14
+
+## 4.13.23
+
+### Patch Changes
+
+- [#10543](https://github.com/wso2/identity-apps/pull/10543) [`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix Customer Data Service navigation issues in the unified Customer Data view. The Feature Preview menu no longer appears empty when there are no accessible preview features, the home-page CDS banner routes to the Customer Data page, and the profile details page returns to the Customer Data page.
+
+* [#10541](https://github.com/wso2/identity-apps/pull/10541) [`68f2289f4500b32f9f65e2e0988a791a5d63be79`](https://github.com/wso2/identity-apps/commit/68f2289f4500b32f9f65e2e0988a791a5d63be79) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Persist the "Include organization name" and "Include user domain" options independently in the application subject identifier settings, so un-checking one no longer clears the other on save.
+
+* Updated dependencies [[`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19), [`68f2289f4500b32f9f65e2e0988a791a5d63be79`](https://github.com/wso2/identity-apps/commit/68f2289f4500b32f9f65e2e0988a791a5d63be79)]:
+  - @wso2is/admin.core.v1@2.57.31
+  - @wso2is/admin.home.v1@1.7.199
+  - @wso2is/admin.cds.v1@1.6.9
+  - @wso2is/admin.applications.v1@2.43.11
+  - @wso2is/admin.users.v1@2.38.44
+
+## 4.13.22
+
+### Patch Changes
+
+- [#10537](https://github.com/wso2/identity-apps/pull/10537) [`9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac`](https://github.com/wso2/identity-apps/commit/9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension step support to password recovery and ask password flow builders
+
+- Updated dependencies [[`9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac`](https://github.com/wso2/identity-apps/commit/9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.217
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.1
+
+## 4.13.21
+
+### Patch Changes
+
+- [#10534](https://github.com/wso2/identity-apps/pull/10534) [`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add a config-switchable unified Customer Data page for the Customer Data Service
+
+* [#10533](https://github.com/wso2/identity-apps/pull/10533) [`7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09`](https://github.com/wso2/identity-apps/commit/7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix consent policy apps endpoint not using sub-org path
+
+* Updated dependencies [[`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf)]:
+  - @wso2is/admin.cds.v1@1.6.8
+  - @wso2is/admin.core.v1@2.57.30
+  - @wso2is/i18n@2.43.13
+  - @wso2is/admin.users.v1@2.38.43
+
+## 4.13.20
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+* [#10528](https://github.com/wso2/identity-apps/pull/10528) [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update email template update premium info message
+
+* Updated dependencies [[`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b), [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12)]:
+  - @wso2is/admin.applications.v1@2.43.10
+  - @wso2is/admin.cds.v1@1.6.7
+  - @wso2is/admin.core.v1@2.57.29
+  - @wso2is/i18n@2.43.12
+  - @wso2is/admin.users.v1@2.38.42
+
 ## 4.13.19
 
 ### Patch Changes
