@@ -23,7 +23,7 @@ import { ExtensionExecutorInterface } from "../models/metadata";
 /**
  * Hook that resolves the metadata of an executor contributed by an extension deployed on the server.
  */
-export const useExtensionExecutor = (executorName: string): ExtensionExecutorInterface | null => {
+const useExtensionExecutor = (executorName: string): ExtensionExecutorInterface | null => {
     const { metadata } = useAuthenticationFlowBuilderCore();
 
     return useMemo(() => {
@@ -35,15 +35,6 @@ export const useExtensionExecutor = (executorName: string): ExtensionExecutorInt
             (executor: ExtensionExecutorInterface) => executor.name === executorName
         ) || null;
     }, [ executorName, metadata?.extensionExecutors ]);
-};
-
-/**
- * Hook that decides whether the connection picker applies to an dynamically registered executor.
- */
-export const useIsConnectionlessExtensionExecutor = (executorName: string): boolean => {
-    const executor: ExtensionExecutorInterface | null = useExtensionExecutor(executorName);
-
-    return !!executor && executor.requiresConnection === false;
 };
 
 export default useExtensionExecutor;

@@ -129,7 +129,7 @@ const useRecoveryFactorValidation = (node: Node): void => {
     const hasAncestors: boolean = ancestors?.length > 0;
 
     /**
-     * Checks if any ancestor nodes have factor views such as SMS OTP, Email OTP and Magic Link.
+     * Checks if any ancestor nodes have a recovery factor view.
      */
     const checkIfAncestorsHaveFactors: boolean = useMemo((): boolean => {
         if (!isRecoveryFactorValidationEnabled || !containsResetPassword || !node) return false;
@@ -170,9 +170,8 @@ const useRecoveryFactorValidation = (node: Node): void => {
                 errorNotificationId,
                 t(
                     "flowBuilder:validations.passwordRecoveryRequiresFactors.message",
-                    "Password recovery requires at least one of the following " +
-                        "factors to be present in the flow: Email OTP, SMS OTP, " +
-                        "or Magic Link."
+                    "Password recovery requires at least one recovery factor, such as " +
+                        "Email OTP, SMS OTP or Magic Link, to be present in the flow."
                 ),
                 NotificationType.ERROR
             );
