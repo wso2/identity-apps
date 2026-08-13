@@ -104,7 +104,6 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                     />
                 );
             case "select":
-            case "dropdown":
                 return (
                     <DynamicField.Select
                         key={ fieldProps.name }

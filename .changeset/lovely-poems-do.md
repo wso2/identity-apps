@@ -1,7 +1,8 @@
 ---
-"@wso2is/admin.connections.v1": patch
-"@wso2is/forms": patch
+"@wso2is/admin.connections.v1": minor
+"@wso2is/console": patch
+"@wso2is/forms": minor
 "@wso2is/i18n": patch
 ---
 
-Add support for `select`/`dropdown` fields in connection create and edittemplates, including a `useDynamicFieldOptions` hook that resolves fieldoptions from existing connections declared via `optionsSource` metadata.
+Add support for `select` fields in connection create and edit templates, including a `useDynamicFieldOptions` hook that resolves field options from existing connections declared via `optionsSource` metadata.

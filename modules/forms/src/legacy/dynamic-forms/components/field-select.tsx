@@ -20,7 +20,7 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import { FieldState } from "final-form";
-import React, { ReactElement, ReactNode } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldProps, FieldRenderProps, Field as FinalFormField } from "react-final-form";
 import SelectFieldAdapter from "../../../components/adapters/select-field-adapter";
 import { getValidation } from "../utils/validate";
@@ -28,7 +28,7 @@ import { getValidation } from "../utils/validate";
 /**
  * Option of a dynamic select field.
  */
-export interface DynamicFieldOptionInterface {
+interface DynamicFieldOptionInterface {
     /**
      * Text displayed for the option.
      */
@@ -39,7 +39,13 @@ export interface DynamicFieldOptionInterface {
     value: string;
 }
 
-export interface FieldSelectPropsInterface extends Omit<FieldProps<any, any, any>, "component">,
+/**
+ * Value a dynamic select field holds. Multiple selection is not supported.
+ */
+type DynamicSelectFieldValueType = string;
+
+interface FieldSelectPropsInterface
+    extends Omit<FieldProps<DynamicSelectFieldValueType, FieldRenderProps<DynamicSelectFieldValueType>>, "component">,
     IdentifiableComponentInterface, TestableComponentInterface {
 
     /**
@@ -63,9 +69,12 @@ export interface FieldSelectPropsInterface extends Omit<FieldProps<any, any, any
      */
     readOnly?: boolean;
     /**
-     * Validation of the field.
+     * Validation of the field. Resolves to the error message, or to `undefined` when the value is valid.
      */
-    validation?: (value: string | number | any, allValues: Record<string, unknown>) => any;
+    validation?: (
+        value: DynamicSelectFieldValueType,
+        allValues: Record<string, unknown>
+    ) => string | undefined | Promise<string | undefined>;
 }
 
 /**
@@ -73,7 +82,9 @@ export interface FieldSelectPropsInterface extends Omit<FieldProps<any, any, any
  *
  * @param props - Props injected to the component.
  */
-export const FieldSelect = (props: FieldSelectPropsInterface): ReactElement => {
+export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
+    props: FieldSelectPropsInterface
+): ReactElement => {
 
     const {
         hint,
@@ -93,12 +104,14 @@ export const FieldSelect = (props: FieldSelectPropsInterface): ReactElement => {
         <FormGroup>
             <FinalFormField
                 name={ name }
-                parse={ (value: any) => value }
+                parse={ (value: DynamicSelectFieldValueType) => value }
                 initialValue={ initialValue }
-                validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                    getValidation(value, allValues, meta, required, validation)
-                }
-                render={ ({ input, meta }: FieldRenderProps<any>) => (
+                validate={ (
+                    value: DynamicSelectFieldValueType,
+                    allValues: Record<string, unknown>,
+                    meta: FieldState<DynamicSelectFieldValueType>
+                ) => getValidation(value, allValues, meta, required, validation) }
+                render={ ({ input, meta }: FieldRenderProps<DynamicSelectFieldValueType>) => (
                     <SelectFieldAdapter
                         input={ input }
                         meta={ meta }

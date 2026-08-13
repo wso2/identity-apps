@@ -69,6 +69,32 @@ interface DynamicFieldOptionsSourceInterface {
 }
 
 /**
+ * Attributes of a dynamic form field this hook reads or rewrites.
+ */
+interface DynamicFieldInterface {
+    /**
+     * Name of the field, also the key its value is persisted under.
+     */
+    name?: string;
+    /**
+     * Placeholder of the field, replaced while the options are being resolved.
+     */
+    placeholder?: string;
+    /**
+     * Whether the field is read only.
+     */
+    readOnly?: boolean;
+    /**
+     * Declaration of where the options of the field come from, if any.
+     */
+    optionsSource?: DynamicFieldOptionsSourceInterface;
+    /**
+     * Renderer specific attributes declared by the connector metadata.
+     */
+    [ key: string ]: unknown;
+}
+
+/**
  * Context of the form the fields are rendered in.
  */
 interface DynamicFieldOptionsContextInterface {
@@ -79,7 +105,7 @@ interface DynamicFieldOptionsContextInterface {
     /**
      * Values the form was initialized with, keyed by field name.
      */
-    currentValues?: Record<string, any>;
+    currentValues?: Record<string, unknown>;
 }
 
 /**
@@ -89,7 +115,7 @@ interface DynamicFieldOptionsResultInterface {
     /**
      * The given fields, with the options of every `optionsSource` backed field resolved.
      */
-    fields: Record<string, any>[];
+    fields: DynamicFieldInterface[];
     /**
      * Whether the options are still being resolved.
      */
@@ -98,22 +124,9 @@ interface DynamicFieldOptionsResultInterface {
 
 /**
  * Resolves the options of dynamic form fields that declare an `optionsSource`.
- *
- * The dynamic form renderer (`@wso2is/forms/legacy` `renderFormFields`) only understands a static
- * `options` array, and a connector's `metadata.json` cannot know the connections of an organization.
- * This hook bridges the two: it reads the declarative `optionsSource` of each field and returns a
- * copy of the fields with a concrete `options` array attached, so a connector can offer a picker of
- * existing connections without any connector specific code in the console.
- *
- * Fields without an `optionsSource` are returned untouched and no request is made.
- *
- * @param fields - Dynamic form field definitions, as read from the connector metadata.
- * @param context - Context of the form the fields are rendered in.
- *
- * @returns The fields with resolved options and the resolution status.
  */
 const useDynamicFieldOptions = (
-    fields: Record<string, any>[],
+    fields: DynamicFieldInterface[],
     context?: DynamicFieldOptionsContextInterface
 ): DynamicFieldOptionsResultInterface => {
 
@@ -131,7 +144,7 @@ const useDynamicFieldOptions = (
         }
 
         return fields
-            .map((field: Record<string, any>) => field?.optionsSource)
+            .map((field: DynamicFieldInterface) => field?.optionsSource)
             .filter((source: DynamicFieldOptionsSourceInterface) =>
                 source?.type === DynamicFieldOptionsSourceTypes.CONNECTIONS);
     }, [ fields ]);
@@ -242,12 +255,12 @@ const useDynamicFieldOptions = (
 
     const isLoading: boolean = isConnectionListLoading || isResolvingTemplateIds;
 
-    const resolvedFields: Record<string, any>[] = useMemo(() => {
+    const resolvedFields: DynamicFieldInterface[] = useMemo(() => {
         if (!Array.isArray(fields)) {
             return fields;
         }
 
-        return fields.map((field: Record<string, any>) => {
+        return fields.map((field: DynamicFieldInterface) => {
             const source: DynamicFieldOptionsSourceInterface = field?.optionsSource;
 
             if (source?.type !== DynamicFieldOptionsSourceTypes.CONNECTIONS) {
@@ -277,7 +290,10 @@ const useDynamicFieldOptions = (
             /*
              * Keep an already persisted value selectable even when it is not part of the resolved options.
              */
-            const persistedValue: string = context?.currentValues?.[ field?.name ];
+            const currentValue: unknown = field?.name
+                ? context?.currentValues?.[ field.name ]
+                : undefined;
+            const persistedValue: string = typeof currentValue === "string" ? currentValue : "";
 
             if (!isEmpty(persistedValue)
                 && !options.some((option: { value: string }) => option.value === persistedValue)) {
