@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
@@ -599,6 +601,14 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             .isOrganizationSSOConnection((authenticator as ConnectionInterface)
                                 .federatedAuthenticators?.defaultAuthenticatorId);
 
+                        // Shared identity providers are flagged via the `isShared` attribute in the API response.
+                        const isSharedConnection: boolean = !!authenticator.isShared;
+
+                        const resourceName: string = isIdP
+                            ? authenticator.name
+                            : (authenticator as AuthenticatorInterface).displayName
+                                || (authenticator as AuthenticatorInterface).name;
+
                         return (
                             <Fragment key={ index }>
                                 <ResourceGrid.Card
@@ -629,14 +639,27 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     ) }
                                     showActions={ true }
                                     showResourceEdit={ true }
-                                    showResourceDelete={ isDeleteEnabled(authenticator) }
+                                    showResourceDelete={ !isSharedConnection && isDeleteEnabled(authenticator) }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
-                                        isIdP
-                                            ? authenticator.name
-                                            : (authenticator as AuthenticatorInterface).displayName
-                                                    || (authenticator as AuthenticatorInterface).name
+                                        isSharedConnection
+                                            ? (
+                                                <Box
+                                                    sx={ {
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                        gap: 1
+                                                    } }
+                                                >
+                                                    { resourceName }
+                                                    <Chip
+                                                        label={ t("authenticationProvider:sharedConnection.label") }
+                                                        size="small"
+                                                    />
+                                                </Box>
+                                            )
+                                            : resourceName
                                     }
                                     resourceCategory={
                                         AuthenticatorMeta.getAuthenticatorCategory(

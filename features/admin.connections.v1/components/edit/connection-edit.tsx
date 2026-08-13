@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
@@ -36,6 +37,7 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import CustomAuthenticatorSettings from "./settings/custom-authenticator-settings";
+import IdentityProviderSharedAccess from "./settings/identity-provider-shared-access";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import {
     CommonAuthenticatorConstants,
@@ -148,6 +150,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
+
+    // Shared identity providers (flagged via the `isShared` attribute) expose a limited set of editable options.
+    const isSharedConnection: boolean = !!identityProvider?.isShared;
+
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         featureConfig?.identityProviders,
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
@@ -232,6 +239,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-general-settings` }
                 isReadOnly={ isReadOnly }
+                isSharedConnection={ isSharedConnection }
                 loader={ Loader }
             />
         </ResourceTab.Pane>
@@ -309,6 +317,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-outbound-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                isSharedConnection={ isSharedConnection }
                 loader={ Loader }
             />
         </ResourceTab.Pane>
@@ -362,11 +371,21 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <IdentityProviderGroupsTab
                 editingIDP={ identityProvider }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isReadOnly || isSharedConnection }
                 isLoading={ isLoading }
                 loader={ Loader }
                 isOIDC={ isOidc }
                 data-componentid={ `${testId}-groups-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const SharedAccessTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <IdentityProviderSharedAccess
+                identityProvider={ identityProvider }
+                isReadOnly={ isReadOnly }
+                data-componentid={ `${testId}-shared-access` }
             />
         </ResourceTab.Pane>
     );
@@ -442,7 +461,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) {
+        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator
+            && !isSharedConnection) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.SETTINGS,
                 menuItem: "Settings",
@@ -501,6 +521,25 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
+        // Shared Access tab is shown for real identity provider connections (not shared ones,
+        // trusted token issuers, custom authenticators or the organization enterprise authenticator)
+        // when organization management is enabled. Trusted token issuers are not allowed to be shared.
+        if (
+            shouldShowTab(type, ConnectionTabTypes.SHARED_ACCESS) &&
+            isOrganizationManagementEnabled &&
+            !isSharedConnection &&
+            !isTrustedTokenIssuer &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator &&
+            !isCustomLocalAuthenticator
+        ) {
+            panes.push({
+                "data-tabid": ConnectionUIConstants.TabIds.SHARED_ACCESS,
+                menuItem: "Shared Access",
+                render: SharedAccessTabPane
+            });
+        }
+
         if (
             shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
             shouldShowOutboundProvisioningTab() &&
@@ -531,7 +570,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
             identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
             !isOrganizationEnterpriseAuthenticator &&
-            !isCustomAuthenticator
+            !isCustomAuthenticator &&
+            !isSharedConnection
         ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,

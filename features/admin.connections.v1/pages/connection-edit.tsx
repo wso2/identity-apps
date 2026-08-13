@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -46,7 +48,7 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
-import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -622,12 +624,20 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
+            const isSharedConnection: boolean = !!(connector as ConnectionInterface)?.isShared;
+
             return (
-                <Fragment>
+                <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
                     { connector.name }
+                    { isSharedConnection && (
+                        <Chip
+                            label={ t("authenticationProvider:sharedConnection.label") }
+                            size="small"
+                        />
+                    ) }
                     { isConnectorDetailsFetchRequestLoading === false && connector.name &&
                         resolveStatusLabel(connector) }
-                </Fragment>
+                </Box>
             );
         }
 

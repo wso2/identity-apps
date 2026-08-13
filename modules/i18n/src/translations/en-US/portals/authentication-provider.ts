@@ -1835,6 +1835,48 @@ export const authenticationProvider:AuthenticationProviderNS = {
             }
         }
     },
+    sharedConnection: {
+        label: "Shared"
+    },
+    sharedAccess: {
+        modes: {
+            doNotShare: "Do not share with any organization",
+            shareWithAll: "Share with all organizations",
+            shareWithSelected: "Share with selected organizations"
+        },
+        notifications: {
+            fetchOrganizations: {
+                genericError: {
+                    description: "An error occurred while retrieving the organizations.",
+                    message: "Couldn't retrieve organizations"
+                }
+            },
+            noOrganizationsSelected: {
+                description: "Please select at least one organization to share the connection with.",
+                message: "No organizations selected"
+            },
+            share: {
+                genericError: {
+                    description: "An error occurred while updating the shared access of the connection.",
+                    message: "Couldn't update shared access"
+                },
+                success: {
+                    description: "The shared access of the connection was updated successfully.",
+                    message: "Shared access updated"
+                }
+            }
+        },
+        selectAnOrganizationToManage: "Select an organization to manage its sharing settings.",
+        shareAllInfo: "This connection will be shared with all existing organizations and any " +
+            "organizations created in the future.",
+        shareWithFutureChildOrgs: "Share with future child organizations",
+        sharingSettingsLabel: "Sharing settings for ",
+        subTitle: "Share this connection with organizations so that they can use it for authentication.",
+        tabName: "Shared Access",
+        title: "Sharing Policy",
+        toManageOrganizationSelectLeftPanel: "Select the organization from the left panel to manage its " +
+            "sharing settings."
+    },
     placeHolders: {
         emptyAuthenticatorList: {
             subtitles: {

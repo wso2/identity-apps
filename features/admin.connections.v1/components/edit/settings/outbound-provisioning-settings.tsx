@@ -91,6 +91,11 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface,
      */
     isReadOnly: boolean;
     /**
+     * Whether the connection is a shared (shadow) connection. For shared connections only the outbound
+     * provisioning groups are shown and editable; the connector configuration is inherited from the parent.
+     */
+    isSharedConnection?: boolean;
+    /**
      * Loading Component.
      */
     loader: () => ReactElement;
@@ -112,6 +117,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         isLoading,
         onUpdate,
         isReadOnly,
+        isSharedConnection,
         [ "data-testid" ]: testId = "idp-edit-outbound-provisioning-settings",
         [ "data-componentid" ]: componentId = "idp-edit-outbound-provisioning-settings"
     } = props;
@@ -297,6 +303,123 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         setAccordionActiveIndexes(newIndexes);
     };
 
+    /**
+     * Renders the outbound provisioning connector configuration section (accordion of connector forms, or the
+     * empty placeholder with the add-connector action). Not shown for shared connections.
+     *
+     * @returns The connectors configuration section.
+     */
+    const renderConnectorsSection = (): ReactElement => {
+        if (outboundConnectors.connectors.length === 0) {
+            return (
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
+                            <Divider hidden />
+                            <Segment>
+                                <EmptyPlaceholder
+                                    title={ t("authenticationProvider:placeHolders.emptyConnectorList.title") }
+                                    subtitle={ [
+                                        t("authenticationProvider:placeHolders.emptyConnectorList.subtitles.0"),
+                                        t("authenticationProvider:placeHolders.emptyConnectorList.subtitles.1")
+                                    ] }
+                                    imageSize="tiny"
+                                    action={ (
+                                        <Show when={ featureConfig?.identityProviders?.scopes?.update }>
+                                            <PrimaryButton
+                                                onClick={ () => setShowWizard(true) }
+                                                data-testid={ `${ testId }-add-connector-button` }
+                                                data-componentid={ `${ componentId }-add-connector-button` }>
+                                                <Icon name="add"/>
+                                                { t("authenticationProvider:buttons.addConnector") }
+                                            </PrimaryButton>
+                                        </Show>
+                                    ) }
+                                    data-testid={ `${ testId }-empty-placeholder` }
+                                    data-componentid={ `${ componentId }-empty-placeholder` }
+                                />
+                            </Segment>
+                            <Divider hidden />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            );
+        }
+
+        if (isLoading || isFetchingConnectors) {
+            return <ContentLoader/>;
+        }
+
+        return (
+            <div className="default-provisioning-connector-section" style={ { marginTop: "1rem" } }>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {
+                                availableConnectors
+                                    // Filter the scim1 connector since it is deprecated.
+                                    .filter((connector: OutboundProvisioningConnectorWithMetaInterface) =>
+                                        connector.id !== CommonAuthenticatorConstants
+                                            .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
+                                    // Filter inactive connectors.
+                                    .filter((connector: OutboundProvisioningConnectorWithMetaInterface) =>
+                                        connector.data?.isEnabled)
+                                    .map((
+                                        connector: OutboundProvisioningConnectorWithMetaInterface,
+                                        index: number
+                                    ) => (
+                                        <AuthenticatorAccordion
+                                            key={ index }
+                                            globalActions={ [] }
+                                            authenticators={ [
+                                                {
+                                                    actions: createAccordionActions(connector),
+                                                    content: (
+                                                        <OutboundProvisioningConnectorFormFactory
+                                                            mode={ AuthenticatorSettingsFormModes.EDIT }
+                                                            metadata={ connector.meta }
+                                                            initialValues={ connector.data }
+                                                            onSubmit={ handleConnectorConfigFormSubmit }
+                                                            type={ connector.meta?.name }
+                                                            enableSubmitButton={ false }
+                                                            triggerSubmit={ triggerConnectorFormSubmit }
+                                                            data-testid={
+                                                                `${ testId }-${ connector.meta?.name }-content` }
+                                                            data-componentid={
+                                                                `${ componentId }-${ connector.meta?.name }-content` }
+                                                            isReadOnly={ isReadOnly }
+                                                        />
+                                                    ),
+                                                    icon: {
+                                                        icon: connector?.localMeta?.icon,
+                                                        verticalAlign: "middle"
+                                                    },
+                                                    id: connector?.id,
+                                                    title: connector?.localMeta?.displayName
+                                                        ?? connector?.meta?.displayName,
+                                                    titleOptions: {
+                                                        flex: true
+                                                    }
+                                                }
+                                            ] }
+                                            data-testid={ `${ testId }-accordion` }
+                                            data-componentid={ `${ componentId }-accordion` }
+                                            accordionActiveIndexes={ accordionActiveIndexes }
+                                            accordionIndex={ index }
+                                            handleAccordionOnClick={ handleAccordionOnClick }
+                                            accordionContentStyle={ {
+                                                backgroundColor: "var(--oxygen-palette-common-white)"
+                                            } }
+                                        />
+                                    ))
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </div>
+        );
+    };
+
     return (
         <EmphasizedSegment padded="very" data-componentid={ componentId }>
             <Grid.Row>
@@ -308,130 +431,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             </Grid.Row>
 
             {
-                outboundConnectors.connectors.length > 0 ? (
-                    (!isLoading && !isFetchingConnectors)
-                        ? (
-                            <div className="default-provisioning-connector-section" style={ { marginTop: "1rem" } }>
-                                <Grid>
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            {
-                                                availableConnectors
-                                                    // Filter the scim1 connector since it is deprecated.
-                                                    .filter((
-                                                        connector: OutboundProvisioningConnectorWithMetaInterface
-                                                    ) => connector.id !==
-                                                        CommonAuthenticatorConstants
-                                                            .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
-                                                    // Filter inactive connectors.
-                                                    .filter((
-                                                        connector: OutboundProvisioningConnectorWithMetaInterface
-                                                    ) => connector.data?.isEnabled)
-                                                    .map((
-                                                        connector: OutboundProvisioningConnectorWithMetaInterface,
-                                                        index: number
-                                                    ) => {
-                                                        return (
-                                                            <AuthenticatorAccordion
-                                                                key={ index }
-                                                                globalActions={ [] }
-                                                                authenticators={ [
-                                                                    {
-                                                                        actions: createAccordionActions(connector),
-                                                                        content: (
-                                                                            <OutboundProvisioningConnectorFormFactory
-                                                                                mode={
-                                                                                    AuthenticatorSettingsFormModes.EDIT
-                                                                                }
-                                                                                metadata={ connector.meta }
-                                                                                initialValues={ connector.data }
-                                                                                onSubmit={
-                                                                                    handleConnectorConfigFormSubmit }
-                                                                                type={ connector.meta?.name }
-                                                                                enableSubmitButton={ false }
-                                                                                triggerSubmit={
-                                                                                    triggerConnectorFormSubmit }
-                                                                                data-testid={ `${testId}-${
-                                                                                    connector.meta?.name }-content` }
-                                                                                data-componentid={ `${componentId}-${
-                                                                                    connector.meta?.name }-content` }
-                                                                                isReadOnly={ isReadOnly }
-                                                                            />
-                                                                        ),
-                                                                        icon: {
-                                                                            icon: connector?.localMeta?.icon,
-                                                                            verticalAlign: "middle"
-                                                                        },
-                                                                        id: connector?.id,
-                                                                        title: connector?.localMeta?.displayName
-                                                                            ?? connector?.meta?.displayName,
-                                                                        titleOptions: {
-                                                                            flex: true
-                                                                        }
-                                                                    }
-                                                                ] }
-                                                                data-testid={ `${ testId }-accordion` }
-                                                                data-componentid={ `${ componentId }-accordion` }
-                                                                accordionActiveIndexes = { accordionActiveIndexes }
-                                                                accordionIndex = { index }
-                                                                handleAccordionOnClick={ handleAccordionOnClick }
-                                                                accordionContentStyle={ {
-                                                                    backgroundColor:
-                                                                        "var(--oxygen-palette-common-white)"
-                                                                } }
-                                                            />
-                                                        );
-                                                    })
-                                            }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </div>
-                        )
-                        : <ContentLoader/>
-                ) : (
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } computer={ 12 }>
-                                <Divider hidden />
-                                <Segment>
-                                    <EmptyPlaceholder
-                                        title={ t("authenticationProvider:" +
-                                                "placeHolders.emptyConnectorList." +
-                                            "title") }
-                                        subtitle={ [
-                                            t("authenticationProvider:" +
-                                                "placeHolders.emptyConnectorList." +
-                                                "subtitles.0"),
-                                            t("authenticationProvider:" +
-                                                "placeHolders.emptyConnectorList." +
-                                                "subtitles.1")
-                                        ] }
-                                        imageSize="tiny"
-                                        action={ (
-                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
-                                                <PrimaryButton
-                                                    onClick={ () => setShowWizard(true) }
-                                                    data-testid={ `${ testId }-add-connector-button` }
-                                                    data-componentid={ `${ componentId }-add-connector-button` }>
-                                                    <Icon name="add"/>
-                                                    { t("authenticationProvider:" +
-                                                            "buttons.addConnector") }
-                                                </PrimaryButton>
-                                            </Show>
-                                        ) }
-                                        data-testid={ `${ testId }-empty-placeholder` }
-                                        data-componentid={ `${ componentId }-empty-placeholder` }
-                                    />
-                                </Segment>
-                                <Divider hidden />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                )
+                /* For shared connections the connector configuration is inherited from the parent and is not
+                   editable; only the outbound provisioning groups are shown below. */
+                !isSharedConnection && renderConnectorsSection()
             }
             {
-                showWizard && (
+                !isSharedConnection && showWizard && (
                     <OutboundProvisioningConnectorCreateWizard
                         closeWizard={ () => setShowWizard(false) }
                         updateIdentityProvider={ onUpdate }
@@ -451,13 +456,13 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             data-componentid={ `${ componentId }-groups` }
                             isReadOnly={ isReadOnly }
                             onUpdate={ onUpdate }
-                            hideUpdateButton={ true }
+                            hideUpdateButton={ !isSharedConnection }
                             triggerSave={ triggerGroupsSave }
                         />
                     )
                     : <ContentLoader/>
             }
-            { !isReadOnly && outboundConnectors.connectors.length > 0 && (
+            { !isSharedConnection && !isReadOnly && outboundConnectors.connectors.length > 0 && (
                 <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                     <PrimaryButton
                         onClick={ handleUpdate }

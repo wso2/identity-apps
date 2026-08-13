@@ -104,6 +104,11 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * Loading Component.
      */
     loader: () => ReactElement;
+    /**
+     * When the connection is a shared identity provider, only the enable/disable
+     * connection option is shown and all other general settings are hidden.
+     */
+    isSharedConnection?: boolean;
 }
 
 /**
@@ -127,6 +132,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isCustomAuthenticator,
         templateType,
         loader: Loader,
+        isSharedConnection,
         ["data-testid"]: testId
     } = props;
 
@@ -495,7 +501,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     return !isLoading && !isIdPListRequestLoading ? (
         <>
-            { !isCustomAuthenticator ? (
+            { !isSharedConnection && (!isCustomAuthenticator ? (
                 <GeneralDetailsForm
                     isSaml={ isSaml }
                     isOidc={ isOidc }
@@ -521,7 +527,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     isReadOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
-            ) }
+            )) }
             <Divider hidden />
             <Show
                 when={
@@ -550,15 +556,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             data-testid={ `${testId}-disable-idp-danger-zone` }
                         />
                     </Show>
-                    <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
-                        <DangerZone
-                            actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
-                            header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
-                            subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
-                            onActionClick={ handleConnectorDeleteInitiation }
-                            data-testid={ `${testId}-delete-idp-danger-zone` }
-                        />
-                    </Show>
+                    { !isSharedConnection && (
+                        <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
+                            <DangerZone
+                                actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
+                                header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
+                                subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
+                                onActionClick={ handleConnectorDeleteInitiation }
+                                data-testid={ `${testId}-delete-idp-danger-zone` }
+                            />
+                        </Show>
+                    ) }
                 </DangerZoneGroup>
             </Show>
             { showDeleteConfirmationModal && (

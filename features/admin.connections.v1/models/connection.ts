@@ -45,6 +45,10 @@ export interface StrictConnectionInterface {
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     templateId?: string;
     comingSoon?: boolean;
+    /**
+     * Whether the connection is a shared identity provider (shared from a parent organization).
+     */
+    isShared?: boolean;
 }
 
 /**
@@ -718,6 +722,7 @@ export enum ConnectionTabTypes {
     IDENTITY_PROVIDER_GROUPS = "identity-provider-groups",
     OUTBOUND_PROVISIONING = "outbound-provisioning",
     JIT_PROVISIONING = "jit-provisioning",
+    SHARED_ACCESS = "shared-access",
 }
 
 export interface FederatedAuthenticatorWithMetaInterface {

@@ -226,6 +226,7 @@ export class IdentityProviderManagementUtils {
                                 ? authenticator.image
                                 : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
+                            isShared: authenticator.isShared,
                             name: authenticator.name,
                             provisioning: authenticator[ "provisioning" ] as ProvisioningInterface
                         } as any);

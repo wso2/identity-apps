@@ -2118,6 +2118,46 @@ export interface AuthenticationProviderNS {
             };
         };
     };
+    sharedConnection: {
+        label: string;
+    };
+    sharedAccess: {
+        tabName: string;
+        title: string;
+        subTitle: string;
+        shareAllInfo: string;
+        sharingSettingsLabel: string;
+        shareWithFutureChildOrgs: string;
+        selectAnOrganizationToManage: string;
+        toManageOrganizationSelectLeftPanel: string;
+        modes: {
+            doNotShare: string;
+            shareWithAll: string;
+            shareWithSelected: string;
+        };
+        notifications: {
+            noOrganizationsSelected: {
+                message: string;
+                description: string;
+            };
+            fetchOrganizations: {
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            share: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
+    };
     placeHolders: {
         emptyCertificateList: {
             title: string;

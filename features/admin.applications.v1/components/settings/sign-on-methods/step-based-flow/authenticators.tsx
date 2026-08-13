@@ -401,6 +401,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return null;
     };
 
+    /**
+     * Render the status chips shown on an authenticator card (shared connection marker and feature status).
+     *
+     * @param authenticator - Authenticator.
+     *
+     * @returns Authenticator status chips.
+     */
+    const renderAuthenticatorStatusChips = (authenticator: GenericAuthenticatorInterface): ReactElement => (
+        <Fragment>
+            {
+                authenticator?.isShared && (
+                    <Chip
+                        size="small"
+                        label={ t("authenticationProvider:sharedConnection.label") }
+                    />
+                )
+            }
+            { renderFeatureStatusChip(authenticator) }
+        </Fragment>
+    );
+
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
@@ -434,7 +455,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                featureStatus={ renderFeatureStatusChip(authenticator) }
+                                featureStatus={ renderAuthenticatorStatusChips(authenticator) }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
                                     ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator
