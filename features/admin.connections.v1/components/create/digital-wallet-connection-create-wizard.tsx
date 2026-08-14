@@ -17,6 +17,8 @@
  */
 
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -25,8 +27,7 @@ import useRequest, {
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { store } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { HttpMethods } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/forms";
@@ -34,6 +35,8 @@ import {
     DocumentationLink,
     GenericIcon,
     Heading,
+    Hint,
+    Link,
     LinkButton,
     PrimaryButton,
     useWizardAlert
@@ -46,11 +49,10 @@ import React, {
     MutableRefObject,
     ReactElement,
     SyntheticEvent,
-    useEffect,
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid as SemanticGrid } from "semantic-ui-react";
@@ -85,6 +87,8 @@ interface WizardRefInterface {
     gotoNextPage: () => void;
 }
 
+const I18N_PREFIX: string = "authenticationProvider:templates.digitalWallet";
+
 export const DigitalWalletConnectionCreateWizard: FunctionComponent<
     DigitalWalletConnectionCreateWizardPropsInterface
 > = (
@@ -105,23 +109,12 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
     const { UIConfig } = useUIConfig();
 
     const [ selectedPresentationDefinitionId, setSelectedPresentationDefinitionId ] = useState<string>("");
-    const [ selectedSubjectClaimUri, setSelectedSubjectClaimUri ] = useState<string>("");
-    const [ localClaims, setLocalClaims ] = useState<Claim[]>([]);
-    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(true);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const wizardRef: MutableRefObject<WizardRefInterface> = useRef<WizardRefInterface>(null);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    useEffect(() => {
-        setIsClaimsLoading(true);
-        getAllLocalClaims(null)
-            .then((response: Claim[]) => setLocalClaims(response))
-            .catch(() => setLocalClaims([]))
-            .finally(() => setIsClaimsLoading(false));
-    }, []);
 
     const pdRequestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
@@ -135,14 +128,6 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
     }: RequestResultInterface<PresentationDefinitionListInterface, RequestErrorInterface> =
         useRequest<PresentationDefinitionListInterface, RequestErrorInterface>(pdRequestConfig);
 
-    const claimOptions: DropdownItemProps[] = localClaims.map(
-        (claim: Claim): DropdownItemProps => ({
-            key: claim.claimURI,
-            text: claim.displayName || claim.claimURI,
-            value: claim.claimURI
-        })
-    );
-
     const pdOptions: DropdownItemProps[] = (pdListData?.presentationDefinitions ?? []).map(
         (pd: PresentationDefinitionListItemInterface): DropdownItemProps => ({
             description: pd.description,
@@ -154,6 +139,11 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
 
     const initialValues: DigitalWalletWizardFormValuesInterface = {
         name: "Digital Wallet"
+    };
+
+    const navigateToPresentationDefinitions = (): void => {
+        onWizardClose();
+        history.push(AppConstants.getPaths().get("VP_DEFINITIONS"));
     };
 
     const resolveConnectionIcon = (): string => {
@@ -173,13 +163,8 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
             { key: "presentationDefinitionId", value: selectedPresentationDefinitionId },
             { key: "responseMode", value: "direct_post.jwt" },
             { key: "timeout", value: "300" },
-            { key: "clientIdScheme", value: "x509_san_dns" },
-            { key: "clientId", value: "" }
+            { key: "clientIdScheme", value: "x509_san_dns" }
         ];
-
-        connection.claims = {
-            userIdClaim: { uri: selectedSubjectClaimUri }
-        };
 
         if (!isEmpty(UIConfig?.connectionResourcesUrl)) {
             connection.image = UIConfig.connectionResourcesUrl + template.image;
@@ -214,19 +199,9 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
     const handleFormSubmit = async (values: DigitalWalletWizardFormValuesInterface): Promise<void> => {
         if (isEmpty(selectedPresentationDefinitionId)) {
             setAlert({
-                description: "Please select a presentation definition before creating the connection.",
+                description: t(`${ I18N_PREFIX }.notifications.noPresentationDefinition.description`),
                 level: AlertLevels.ERROR,
-                message: "Presentation definition required"
-            });
-
-            return;
-        }
-
-        if (isEmpty(selectedSubjectClaimUri)) {
-            setAlert({
-                description: "Please select a subject attribute before creating the connection.",
-                level: AlertLevels.ERROR,
-                message: "Subject attribute required"
+                message: t(`${ I18N_PREFIX }.notifications.noPresentationDefinition.message`)
             });
 
             return;
@@ -258,78 +233,72 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
 
     const singlePage = (): ReactElement => (
         <WizardPage
-            validate={ (values: DigitalWalletWizardFormValuesInterface) => {
+            validate={(values: DigitalWalletWizardFormValuesInterface) => {
                 const errors: Record<string, string> = {};
 
                 errors.name = composeValidators(required, length({ max: 50, min: 3 }))(values.name);
 
-                setNextShouldBeDisabled(
-                    ifFieldsHave(errors)
-                    || isEmpty(selectedPresentationDefinitionId)
-                    || isEmpty(selectedSubjectClaimUri)
-                );
+                setNextShouldBeDisabled(ifFieldsHave(errors) || isEmpty(selectedPresentationDefinitionId));
 
                 return errors;
-            } }
+            }}
         >
             <Field.Input
                 ariaLabel="Connection name"
                 name="name"
-                label="Name"
+                label={ t(`${ I18N_PREFIX }.form.name.label`) }
                 inputType="resource_name"
                 required={ true }
                 maxLength={ 50 }
                 minLength={ 3 }
                 width={ 15 }
-                placeholder="My Digital Wallet Connection"
+                placeholder={ t(`${ I18N_PREFIX }.form.name.placeholder`) }
             />
             <Form.Field required>
-                <label>Presentation Definition</label>
+                <label>{ t(`${ I18N_PREFIX }.form.presentationDefinition.label`) }</label>
                 <Dropdown
                     placeholder={
                         isPdListLoading
-                            ? "Loading presentation definitions..."
+                            ? t(`${ I18N_PREFIX }.form.presentationDefinition.loadingPlaceholder`)
                             : pdOptions.length === 0
-                                ? "No presentation definitions found — create one under Credential Types first"
-                                : "Select a presentation definition"
+                                ? t(`${ I18N_PREFIX }.form.presentationDefinition.emptyPlaceholder`)
+                                : t(`${ I18N_PREFIX }.form.presentationDefinition.placeholder`)
                     }
                     fluid
                     selection
                     loading={ isPdListLoading }
                     options={ pdOptions }
                     value={ selectedPresentationDefinitionId }
-                    disabled={ isPdListLoading }
+                    disabled={ isPdListLoading || pdOptions.length === 0 }
                     onChange={ (_e: SyntheticEvent, data: DropdownProps): void => {
                         setSelectedPresentationDefinitionId(data.value as string);
                     } }
+                    data-componentid={ `${ componentId }-presentation-definition-dropdown` }
                 />
-                <p style={ { color: "#767676", fontSize: "0.9em", marginTop: "0.4em" } }>
-                    Select an existing presentation definition. You can create and manage them
-                    under <strong>Credential Types</strong> in the sidebar.
-                </p>
-            </Form.Field>
-            <Form.Field required>
-                <label>Subject Attribute</label>
-                <Dropdown
-                    placeholder={
-                        isClaimsLoading
-                            ? "Loading attributes..."
-                            : "Select the subject attribute"
-                    }
-                    fluid
-                    search
-                    selection
-                    loading={ isClaimsLoading }
-                    options={ claimOptions }
-                    value={ selectedSubjectClaimUri }
-                    disabled={ isClaimsLoading }
-                    onChange={ (_e: SyntheticEvent, data: DropdownProps): void => {
-                        setSelectedSubjectClaimUri(data.value as string);
-                    } }
-                />
-                <p style={ { color: "#767676", fontSize: "0.9em", marginTop: "0.4em" } }>
-                    Specifies the attribute that identifies the user at the connection.
-                </p>
+                { !isPdListLoading && pdOptions.length === 0
+                    ? (
+                        <Hint warning>
+                            <Trans
+                                i18nKey={ `${ I18N_PREFIX }.form.presentationDefinition.noneAvailableHint` }
+                            >
+                                No presentation definitions found.{ " " }
+                                <Link
+                                    onClick={ navigateToPresentationDefinitions }
+                                    external={ false }
+                                    data-componentid={ `${ componentId }-create-pd-link` }
+                                >
+                                    Create one
+                                </Link>
+                                { " " }to proceed.
+                            </Trans>
+                        </Hint>
+                    )
+                    : (
+                        <Hint>
+                            { t(`${ I18N_PREFIX }.form.presentationDefinition.hint`) }
+                        </Hint>
+                    )
+                }
             </Form.Field>
         </WizardPage>
     );
@@ -338,41 +307,29 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
-                    <div className="help-panel-header-text">
-                        Help
-                    </div>
+                    <div className="help-panel-header-text">{ t("common:help") }</div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <CreateConnectionWizardHelp
-                        wizardHelp={ {
+                        wizardHelp={{
                             fields: [
                                 {
-                                    fieldName: "Name",
-                                    hint: "Provide a unique name for the connection."
+                                    fieldName: t(`${ I18N_PREFIX }.wizardHelp.name.heading`),
+                                    hint: t(`${ I18N_PREFIX }.wizardHelp.name.hint`)
                                 },
                                 {
-                                    fieldName: "Presentation Definition",
-                                    hint: "Select an existing presentation definition that specifies " +
-                                        "which credentials and claims to request from the user's wallet. " +
-                                        "You can create presentation definitions under Credential Types."
-                                },
-                                {
-                                    fieldName: "Subject Attribute",
-                                    hint: "The user attribute whose value uniquely identifies the " +
-                                        "authenticated user. This is typically the email address or " +
-                                        "another unique identifier from the presented credential."
+                                    fieldName: t(`${ I18N_PREFIX }.wizardHelp.presentationDefinition.heading`),
+                                    hint: t(`${ I18N_PREFIX }.wizardHelp.presentationDefinition.hint`)
                                 }
                             ],
                             message: {
-                                header: "About Digital Wallet Connections",
+                                header: t(`${ I18N_PREFIX }.wizardHelp.heading`),
                                 paragraphs: [
-                                    "A Digital Wallet connection allows users to authenticate " +
-                                        "by presenting a verifiable credential from their wallet app.",
-                                    "The selected presentation definition controls what credentials " +
-                                        "and claims are requested during authentication."
+                                    t(`${ I18N_PREFIX }.wizardHelp.message.paragraph1`),
+                                    t(`${ I18N_PREFIX }.wizardHelp.message.paragraph2`)
                                 ]
                             }
-                        } }
+                        }}
                     />
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
@@ -459,7 +416,7 @@ const ifFieldsHave = (errors: Record<string, string>): boolean => {
 
 const required = (value: string): string => {
     if (!value) {
-        return "This is a required field";
+        return "This is a required field.";
     }
 
     return undefined;
@@ -467,15 +424,15 @@ const required = (value: string): string => {
 
 const length = (minMax: { min: number; max: number }) => (value: string): string => {
     if (!value && minMax.min > 0) {
-        return "You cannot leave this blank";
+        return "This field cannot be left blank.";
     }
 
     if (value?.length > minMax.max) {
-        return `Cannot exceed more than ${ minMax.max } characters.`;
+        return `Must not exceed ${minMax.max} characters.`;
     }
 
     if (value?.length < minMax.min) {
-        return `Should have at least ${ minMax.min } characters.`;
+        return `Must be at least ${minMax.min} characters.`;
     }
 
     return undefined;

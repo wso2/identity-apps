@@ -29,6 +29,7 @@
 
 <%
     String sessionDataKey = request.getParameter("sessionDataKey");
+    String vpPollToken = request.getParameter("pollToken");
     String walletUrl = request.getParameter("walletUrl");
     String vpTenantDomain = request.getParameter("tenantDomain");
     String vpOrgId = request.getParameter("orgId");
@@ -142,14 +143,14 @@
                     <h3 class="ui header text-center">
                         Sign in with Digital Wallet
                     </h3>
-                    <p class="text-center" style="color: #666; font-size: 14px;">
+                    <p id="walletSubtitle" class="text-center" style="color: #666; font-size: 14px;">
                         Scan the QR code below with your digital wallet to verify your identity
                     </p>
                     <div class="ui divider hidden"></div>
 
                     <div class="segment-form">
                         <%-- QR Code --%>
-                        <div class="field text-center">
+                        <div id="qrcodeSection" class="field text-center">
                             <div id="qrcode"></div>
                         </div>
 
@@ -160,17 +161,22 @@
                                 <span class="wallet-spinner"></span>
                                 <span>Waiting for wallet...</span>
                             </div>
+                            <div id="errorActions" style="display: none; margin-top: 16px;">
+                                <button class="ui primary fluid large button" onclick="goBackToSignIn()">
+                                    Go back to sign-in options
+                                </button>
+                            </div>
                         </div>
 
                         <div class="ui divider hidden"></div>
 
                         <%-- Instructions --%>
-                        <div class="ui info message">
+                        <div id="instructionsSection" class="ui info message">
                             <div class="header" style="font-size: 14px; margin-bottom: 10px;">
                                 How to sign in
                             </div>
                             <ol class="wallet-steps">
-                                <li>Open your digital wallet app (Inji, etc.)</li>
+                                <li>Open your digital wallet app (Heidi, etc.)</li>
                                 <li>Scan the QR code above</li>
                                 <li>Review the credential request</li>
                                 <li>Approve to share your credentials</li>
@@ -180,20 +186,16 @@
                         <div class="ui divider hidden"></div>
 
                         <%-- Deep link for mobile --%>
-                        <div class="text-center">
+                        <div id="deepLinkSection" class="text-center">
                             <p style="color: #888; font-size: 13px; margin-bottom: 10px;">
                                 Or tap below if you're on mobile:
                             </p>
                             <a id="walletLink" href="#" class="ui primary fluid large button">
                                 Open in Wallet
                             </a>
+                            <p id="deepLinkMsg" style="display: none; margin-top: 8px; color: #856404; font-size: 13px;"></p>
                         </div>
 
-                        <%-- Error container --%>
-                        <div id="errorContainer" class="ui negative message" style="display: none;">
-                            <div class="header">Authentication Failed</div>
-                            <p id="errorMessage">An error occurred during verification.</p>
-                        </div>
                     </div>
                 </div>
             </layout:component>
@@ -233,10 +235,11 @@
         <script type="text/javascript">
             var CONFIG = {
                 sessionDataKey: '<%=sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : ""%>',
+                pollToken: '<%=vpPollToken != null ? Encode.forJavaScript(vpPollToken) : ""%>',
                 walletUrl: '<%=walletUrl != null ? Encode.forJavaScript(walletUrl) : ""%>',
                 pollInterval: 2000,
                 pollTimeout: 8000,
-                pollEndpoint: '/oid4vp/v1/request/<%=Encode.forUriComponent(sessionDataKey != null ? sessionDataKey : "")%>/status'
+                pollEndpoint: '/openid4vp/v1/status?pollToken=<%=Encode.forUriComponent(vpPollToken != null ? vpPollToken : "")%>'
             };
 
             var pollTimer = null;
@@ -244,10 +247,7 @@
             var pollInFlight = false;
             var networkErrorCount = 0;
             var MAX_NETWORK_ERRORS = 5;
-
-            function logDebugDetails(stage, details) {
-                console.log('[OpenID4VP][wallet_login.jsp][' + stage + ']', details || {});
-            }
+            var currentController = null;
 
             // Initialize QR code
             function initQRCode() {
@@ -255,7 +255,7 @@
                 if (!qrContainer || !CONFIG.walletUrl) return;
 
                 if (typeof QRCode === 'undefined') {
-                    qrContainer.textContent = 'QR code library failed to load. Please refresh the page.';
+                    handleError('Unable to generate QR code. Please restart the login flow.');
                     return;
                 }
 
@@ -269,16 +269,31 @@
                         correctLevel: QRCode.CorrectLevel.M
                     });
                 } catch (e) {
-                    qrContainer.textContent = 'Failed to generate QR code. Please use the link below.';
+                    handleError('Unable to generate QR code. Please restart the login flow.');
                 }
             }
 
             // Set up deep link
             function initDeepLink() {
                 var walletLink = document.getElementById('walletLink');
-                if (walletLink && CONFIG.walletUrl) {
-                    walletLink.href = CONFIG.walletUrl;
-                }
+                if (!walletLink || !CONFIG.walletUrl) return;
+
+                walletLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    var fallbackTimer = setTimeout(function() {
+                        document.getElementById('deepLinkMsg').textContent =
+                            'No wallet app detected. Use the QR code on a mobile device with your wallet installed.';
+                        document.getElementById('deepLinkMsg').style.display = 'block';
+                    }, 1500);
+
+                    window.addEventListener('blur', function() {
+                        clearTimeout(fallbackTimer);
+                        document.getElementById('deepLinkMsg').style.display = 'none';
+                    }, { once: true });
+
+                    window.location.href = CONFIG.walletUrl;
+                });
             }
 
             // Update status display — uses textContent for dynamic parts to avoid XSS
@@ -319,9 +334,9 @@
                 if (submitted || pollInFlight) return;
 
                 pollInFlight = true;
-                logDebugDetails('poll-request', { endpoint: CONFIG.pollEndpoint });
 
                 var controller = new AbortController();
+                currentController = controller;
                 var timeoutId = setTimeout(function() { controller.abort(); }, CONFIG.pollTimeout);
 
                 fetch(CONFIG.pollEndpoint, {
@@ -329,13 +344,29 @@
                     headers: { 'Accept': 'application/json' },
                     signal: controller.signal
                 })
-                .then(function(response) { return response.json(); })
-                .then(function(data) {
+                .then(function(response) {
                     clearTimeout(timeoutId);
+                    var httpStatus = response.status;
+                    return response.json().then(function(data) {
+                        return { httpStatus: httpStatus, data: data };
+                    });
+                })
+                .then(function(result) {
                     pollInFlight = false;
+                    currentController = null;
                     networkErrorCount = 0;
-                    logDebugDetails('poll-response', data);
 
+                    var httpStatus = result.httpStatus;
+                    var data = result.data;
+
+                    // Non-200 responses are unexpected backend errors (servlet always
+                    // returns 200 for the /status path; body is { error, error_description }).
+                    if (httpStatus !== 200) {
+                        handleError('Something went wrong. Please try again.');
+                        return;
+                    }
+
+                    // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"EXPIRED"|"NOT_FOUND" }
                     var status = data.status ? data.status.toUpperCase() : '';
 
                     if (status === 'ACTIVE') {
@@ -344,27 +375,28 @@
                     } else if (status === 'VERIFIED') {
                         handleSuccess();
                     } else if (status === 'FAILED') {
-                        handleFailed(data.message || null);
-                    } else if (status === 'EXPIRED') {
-                        handleFailed('The QR code has expired. Please try again.');
-                    } else if (status === 'NOT_FOUND') {
-                        handleError('The authentication session could not be found. Please restart the login flow.');
-                    } else if (status === 'ERROR' || status === '') {
-                        handleError(data.message || 'Verification failed. Please try again.');
+                        handleFailed(null);
+                    } else if (status === 'EXPIRED' || status === 'NOT_FOUND') {
+                        handleFailed('Your QR code has expired. Please go back and try again.');
                     } else {
-                        handleError('Unexpected status: ' + status);
+                        handleError('Something went wrong. Please try again.');
                     }
                 })
                 .catch(function(error) {
                     clearTimeout(timeoutId);
                     pollInFlight = false;
+                    currentController = null;
                     var isAbort = error && error.name === 'AbortError';
-                    logDebugDetails('poll-error', { message: isAbort ? 'request timed out' : (error && error.message) });
+
+                    if (isAbort) {
+                        if (!submitted) schedulePoll();
+                        return;
+                    }
                     networkErrorCount++;
                     if (!submitted && networkErrorCount < MAX_NETWORK_ERRORS) {
                         schedulePoll();
                     } else if (!submitted) {
-                        handleError('Unable to reach the server. Please check your connection and try again.');
+                        handleError('Unable to reach the server. Please check your connection and try again or go back to try another sign-in method.');
                     }
                 });
             }
@@ -379,51 +411,56 @@
                 setTimeout(function() {
                     document.getElementById('authStatus').value = 'success';
                     document.getElementById('authRequestId').value = CONFIG.sessionDataKey;
-                    logDebugDetails('auth-submit', { status: 'success', sessionDataKey: CONFIG.sessionDataKey });
                     document.getElementById('authForm').submit();
                 }, 1000);
             }
 
-            // Handle terminal failure — shows reason then submits status=failed after a short delay.
+            // Hide stale wallet content and show error state with back button.
+            function showErrorState(reason) {
+                document.getElementById('walletSubtitle').style.display = 'none';
+                document.getElementById('qrcodeSection').style.display = 'none';
+                document.getElementById('instructionsSection').style.display = 'none';
+                document.getElementById('deepLinkSection').style.display = 'none';
+                updateStatus('error', reason);
+                document.getElementById('errorActions').style.display = 'block';
+            }
+
+            // Submit status=failed to commonauth — IS redirects to login page with all sign-in options.
+            function goBackToSignIn() {
+                document.getElementById('authStatus').value = 'failed';
+                document.getElementById('authRequestId').value = CONFIG.sessionDataKey;
+                document.getElementById('authForm').submit();
+            }
+
+            // Handle terminal VP failure (FAILED / EXPIRED / NOT_FOUND).
             function handleFailed(message) {
                 if (submitted) return;
                 submitted = true;
 
-                var reason = message || 'The wallet rejected the credential request or verification failed.';
-                updateStatus('error', reason);
-
-                document.getElementById('errorMessage').textContent = reason;
-                document.getElementById('errorContainer').style.display = 'block';
-
-                setTimeout(function() {
-                    document.getElementById('authStatus').value = 'failed';
-                    document.getElementById('authRequestId').value = CONFIG.sessionDataKey;
-                    document.getElementById('authForm').submit();
-                }, 3000);
+                var reason = message || 'Wallet verification failed. Please try again or use another sign-in method.';
+                showErrorState(reason);
             }
 
-            // Handle terminal errors (session not found, network error) — stops polling, shows error.
+            // Handle terminal errors (network failure, missing config) — stops polling, shows error.
             function handleError(message) {
                 if (submitted) return;
                 submitted = true;
 
-                var reason = message || 'An error occurred during verification.';
-                updateStatus('error', reason);
-
-                document.getElementById('errorMessage').textContent = reason;
-                document.getElementById('errorContainer').style.display = 'block';
+                var reason = message || 'Something went wrong. Please try again.';
+                showErrorState(reason);
             }
 
-            // Initialize
-            document.addEventListener('DOMContentLoaded', function() {
-                logDebugDetails('init-config', {
-                    sessionDataKey: CONFIG.sessionDataKey,
-                    walletUrl: CONFIG.walletUrl,
-                    pollEndpoint: CONFIG.pollEndpoint
-                });
+            // Cancel any in-flight poll when the user navigates away.
+            window.addEventListener('pagehide', function() {
+                submitted = true;
+                if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+                if (currentController) { currentController.abort(); currentController = null; }
+            });
 
-                if (!CONFIG.sessionDataKey) {
-                    handleError('Missing session key. Please restart the login flow.');
+            document.addEventListener('DOMContentLoaded', function() {
+                
+                if (!CONFIG.pollToken) {
+                    handleError('Sign-in session is invalid. Please restart the login flow.');
                     return;
                 }
 
@@ -431,7 +468,7 @@
                     initQRCode();
                     initDeepLink();
                 } else {
-                    handleError('Missing wallet URL for QR generation.');
+                    handleError('Unable to generate QR code. Please restart the login flow.');
                     return;
                 }
 

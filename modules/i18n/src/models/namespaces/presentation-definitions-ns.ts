@@ -48,6 +48,11 @@ export interface PresentationDefinitionsNS {
                 content: string;
                 assertionHint: string;
             };
+            deleteBlockedByConnections: {
+                header: string;
+                message: string;
+                content: string;
+            };
         };
         search: {
             placeholder: string;
@@ -63,7 +68,7 @@ export interface PresentationDefinitionsNS {
         title: string;
         form: {
             name: { label: string; placeholder: string; hint: string };
-            handle: { label: string; placeholder: string; hint: string; validationError: string };
+
             description: { label: string; placeholder: string };
             credentialType: { label: string; placeholder: string; hint: string };
             format: { label: string; hint: string };
@@ -83,9 +88,8 @@ export interface PresentationDefinitionsNS {
             heading: string;
             hint: string;
             definitionId: { label: string; hint: string };
-            handle: { label: string; hint: string };
+
         };
-        settings: { heading: string; hint: string };
         issuerTrust: {
             heading: string;
             hint: string;
@@ -96,18 +100,13 @@ export interface PresentationDefinitionsNS {
                     x5c: string;
                     jwks_uri: string;
                     pem: string;
-                    metadata_discovery: string;
                 };
             };
             enforceTrustedIssuer: {
                 label: string;
                 hint: string;
-                dialogHint: string;
             };
             trustedCas: {
-                heading: string;
-                hint: string;
-                disabledHint: string;
                 addButton: string;
                 emptyPlaceholder: {
                     title: string;
@@ -121,12 +120,14 @@ export interface PresentationDefinitionsNS {
                 hint: string;
             };
             issuerPem: {
-                label: string;
-                placeholder: string;
                 hint: string;
-            };
-            metadataDiscovery: {
-                hint: string;
+                addButton: string;
+                replaceButton: string;
+                modalTitle: string;
+                emptyPlaceholder: {
+                    title: string;
+                    subtitle: string;
+                };
             };
         };
         form: {
@@ -137,17 +138,18 @@ export interface PresentationDefinitionsNS {
                 hint: string;
                 addCredential: { title: string };
                 editCredential: { title: string };
-                credentialId: { label: string; placeholder: string; hint: string };
+
                 type: { label: string; placeholder: string };
                 purpose: { label: string; placeholder: string };
                 claims: {
                     label: string;
                     hint: string;
                     claimPath: { label: string; placeholder: string; hint: string };
-                    mandatory: { label: string; hint: string };
                     required: { label: string; hint: string };
                     allowedValues: { label: string; placeholder: string; hint: string };
                     addClaim: string;
+                    editClaim: string;
+                    emptyPlaceholder: string;
                 };
             };
         };
@@ -165,6 +167,11 @@ export interface PresentationDefinitionsNS {
                 message: string;
                 content: string;
                 assertionHint: string;
+            };
+            deleteBlockedByConnections: {
+                header: string;
+                message: string;
+                content: string;
             };
         };
     };
@@ -187,16 +194,6 @@ export interface PresentationDefinitionsNS {
         deleteDefinition: {
             success: { message: string; description: string };
             error: { message: string; description: string };
-        };
-        addCertificate: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
-            genericError: { message: string; description: string };
-        };
-        deleteCertificate: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
-            genericError: { message: string; description: string };
         };
     };
 }

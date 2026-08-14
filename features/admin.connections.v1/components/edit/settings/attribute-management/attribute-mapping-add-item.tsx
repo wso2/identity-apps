@@ -117,11 +117,19 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
     };
 
     const getAllowedMappedValueOptions = () => {
-        return (allowedMappedValues ?? []).map((claimName: string) => ({
-            key: claimName,
-            text: claimName,
-            value: claimName
-        }));
+        const alreadyMappedSet: Set<string> = new Set(
+            (alreadyMappedAttributesList ?? []).map(
+                (m: ConnectionCommonClaimMappingInterface) => m.mappedValue
+            )
+        );
+
+        return (allowedMappedValues ?? [])
+            .filter((claimName: string) => !alreadyMappedSet.has(claimName))
+            .map((claimName: string) => ({
+                key: claimName,
+                text: claimName,
+                value: claimName
+            }));
     };
 
     /**

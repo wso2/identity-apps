@@ -129,7 +129,7 @@ export const createPresentationDefinition = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ apiServerBaseUrl }/vp/template`
+        url: `${ apiServerBaseUrl }/openid4vp/presentation-definitions`
     };
 
     return httpClient(requestConfig)
@@ -162,7 +162,7 @@ export const getPresentationDefinition = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ apiServerBaseUrl }/vp/template/${ presentationDefinitionId }`
+        url: `${ apiServerBaseUrl }/openid4vp/presentation-definitions/${ presentationDefinitionId }`
     };
 
     return httpClient(requestConfig)
@@ -198,7 +198,7 @@ export const updatePresentationDefinition = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ apiServerBaseUrl }/vp/template/${ presentationDefinitionId }`
+        url: `${ apiServerBaseUrl }/openid4vp/presentation-definitions/${ presentationDefinitionId }`
     };
 
     return httpClient(requestConfig)

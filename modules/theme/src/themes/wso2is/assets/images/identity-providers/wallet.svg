@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <!-- Wallet body -->
+  <rect x="4" y="13" width="32" height="21" rx="3" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Top flap -->
+  <path d="M9 13V9a3 3 0 0 1 3-3h16a3 3 0 0 1 3 3v4" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Coin pocket -->
+  <rect x="23" y="19.5" width="13" height="9" rx="2" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Coin -->
+  <circle cx="29.5" cy="24" r="2.5" stroke="#000" stroke-width="1.8"/>
+</svg>

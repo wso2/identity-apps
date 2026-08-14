@@ -472,12 +472,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
 
             panes.push({
-                "data-tabid": "digital-credentials-settings",
-                menuItem: "Settings",
-                render: AuthenticatorSettingsTabPane
-            });
-
-            panes.push({
                 "data-tabid": "digital-credentials-claim-mapping",
                 menuItem: "Attributes",
                 render: DigitalCredentialsClaimMappingTabPane

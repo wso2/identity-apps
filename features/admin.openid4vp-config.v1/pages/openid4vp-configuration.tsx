@@ -67,7 +67,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isReadOnly: boolean = !useRequiredScopes(
-        featureConfig?.server?.scopes?.update
+        featureConfig?.verifiablePresentationSettings?.scopes?.update
     );
 
     const dispatch: Dispatch<any> = useDispatch();

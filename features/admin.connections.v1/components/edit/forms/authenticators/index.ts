@@ -18,7 +18,6 @@
 
 export * from "./apple-authenticator-form";
 export * from "./common-authenticator-form";
-export * from "./digital-wallet-authenticator-form";
 export * from "./email-otp-authenticator-form";
 export * from "./facebook-authenticator-form";
 export * from "./github-authenticator-form";

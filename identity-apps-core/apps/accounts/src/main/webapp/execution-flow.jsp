@@ -347,9 +347,9 @@
                 useEffect(() => {
                     if (!walletQR) return;
 
-                    const { url, requestId, flowId } = walletQR;
+                    const { url, requestId, pollToken, flowId } = walletQR;
 
-                    if (!requestId) {
+                    if (!pollToken) {
                         setWalletError({
                             message: "Wallet session identifier is missing. Please try again.",
                             flowId: flowId
@@ -364,39 +364,38 @@
                     var vpNetworkErrors = 0;
                     var VP_MAX_NETWORK_ERRORS = 5;
                     var VP_POLL_INTERVAL = 2000;
-                    var VP_POLL_TIMEOUT = 8000;
+                    // Must be shorter than VP_POLL_INTERVAL so a hung request is aborted
+                    // before the next poll fires (avoids the vpPollInFlight early-return
+                    // leaving no reschedule registered).
+                    var VP_POLL_TIMEOUT = 1500;
+
+                    // Status endpoint.
+                    var vpStatusEndpoint = baseUrl + "/openid4vp/v1/status?pollToken="
+                        + encodeURIComponent(pollToken);
+
+                    // Holds the AbortController for the in-flight fetch so the cleanup
+                    // function can cancel it on unmount.
+                    var vpCurrentController = null;
 
                     function schedulePoll() {
                         walletPollRef.current = setTimeout(poll, VP_POLL_INTERVAL);
                     }
 
-                    function poll() {
-                        if (vpSubmitted || vpPollInFlight) return;
-                        vpPollInFlight = true;
-
-                        var controller = new AbortController();
-                        var timeoutId = setTimeout(function() { controller.abort(); }, VP_POLL_TIMEOUT);
-
+                    // Called exactly once when status is VERIFIED — drives the flow engine
+                    // to complete the step and advance to the next one.
+                    function advanceFlow() {
                         fetch(executionFlowApiProxyPath, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            signal: controller.signal,
                             body: JSON.stringify({
                                 flowId: flowId,
                                 actionId: "",
                                 inputs: { vp_request_id: requestId }
                             })
                         })
-                        .then(function(r) {
-                            clearTimeout(timeoutId);
-                            return r.json();
-                        })
+                        .then(function(r) { return r.json(); })
                         .then(function(data) {
-                            vpPollInFlight = false;
-                            vpNetworkErrors = 0;
-
                             if (data.error) {
-                                vpSubmitted = true;
                                 if (data.error.flowType) setFlowType(data.error.flowType);
                                 setError(data.error);
                                 setWalletQR(null);
@@ -405,22 +404,90 @@
                             if (data.flowId) localStorage.setItem("flowId", data.flowId);
                             if (data.flowType) setFlowType(data.flowType);
 
-                            if (data.flowStatus !== "INCOMPLETE") {
+                            var isEnded = handleFlowStatus(data);
+                            if (!isEnded) {
+                                handleStepType(data);
+                                setFlowData(data);
+                            }
+                            setWalletQR(null);
+                        })
+                        .catch(function() {
+                            setError({ code: "NETWORK_ERROR", message: "Unable to complete authentication. Please try again." });
+                            setWalletQR(null);
+                        });
+                    }
+
+                    function poll() {
+                        if (vpSubmitted || vpPollInFlight) return;
+                        vpPollInFlight = true;
+
+                        var controller = new AbortController();
+                        vpCurrentController = controller;
+                        var timeoutId = setTimeout(function() { controller.abort(); }, VP_POLL_TIMEOUT);
+
+                        fetch(vpStatusEndpoint, {
+                            method: "GET",
+                            headers: { "Accept": "application/json" },
+                            signal: controller.signal
+                        })
+                        .then(function(r) {
+                            clearTimeout(timeoutId);
+                            var httpStatus = r.status;
+                            return r.json().then(function(data) {
+                                return { httpStatus: httpStatus, data: data };
+                            });
+                        })
+                        .then(function(result) {
+                            vpPollInFlight = false;
+                            vpCurrentController = null;
+                            vpNetworkErrors = 0;
+
+                            var httpStatus = result.httpStatus;
+                            var data = result.data;
+
+                            // Non-200 responses are unexpected backend errors (servlet always
+                            // returns 200 for the /status path; body is { error, error_description }).
+                            if (httpStatus !== 200) {
                                 vpSubmitted = true;
-                                var isEnded = handleFlowStatus(data);
-                                if (!isEnded) {
-                                    handleStepType(data);
-                                    setFlowData(data);
-                                }
+                                setError({ code: "VP_ERROR" });
+                                setWalletQR(null);
+                                return;
+                            }
+
+                            // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"EXPIRED"|"NOT_FOUND" }
+                            var status = data.status ? data.status.toUpperCase() : "";
+
+                            if (status === "ACTIVE") {
+                                schedulePoll();
+                            } else if (status === "VERIFIED") {
+                                vpSubmitted = true;
+                                advanceFlow();
+                            } else if (status === "FAILED") {
+                                vpSubmitted = true;
+                                setError({ code: "VP_FAILED" });
+                                setWalletQR(null);
+                            } else if (status === "EXPIRED" || status === "NOT_FOUND") {
+                                vpSubmitted = true;
+                                setError({ code: "VP_EXPIRED" });
                                 setWalletQR(null);
                             } else {
-                                schedulePoll();
+                                vpSubmitted = true;
+                                setError({ code: "VP_ERROR" });
+                                setWalletQR(null);
                             }
                         })
                         .catch(function(err) {
                             clearTimeout(timeoutId);
                             vpPollInFlight = false;
+                            vpCurrentController = null;
                             if (vpSubmitted) return;
+
+                            // AbortError means the per-request timeout fired (or cleanup ran).
+                            // Don't count it as a network error — just retry.
+                            if (err.name === "AbortError") {
+                                schedulePoll();
+                                return;
+                            }
 
                             vpNetworkErrors++;
                             if (vpNetworkErrors < VP_MAX_NETWORK_ERRORS) {
@@ -440,6 +507,10 @@
                         if (walletPollRef.current) {
                             clearTimeout(walletPollRef.current);
                             walletPollRef.current = null;
+                        }
+                        if (vpCurrentController) {
+                            vpCurrentController.abort();
+                            vpCurrentController = null;
                         }
                     };
                 }, [ walletQR ]);
@@ -554,7 +625,8 @@
                             var redirectURL = flow.data.redirectURL;
                             if (redirectURL && redirectURL.startsWith("openid4vp://")) {
                                 var requestId = flow.data.additionalData && flow.data.additionalData.vp_request_id;
-                                setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId });
+                                var pollToken = flow.data.additionalData && flow.data.additionalData.vp_poll_token;
+                                setWalletQR({ url: redirectURL, requestId: requestId, pollToken: pollToken, flowId: flow.flowId });
                                 setLoading(false);
                             } else {
                                 setLoading(true);
@@ -614,16 +686,17 @@
                     var qrRef = useRef(null);
                     var [ qrStatus, setQrStatus ] = useState("pending");
                     var [ qrErrorMsg, setQrErrorMsg ] = useState("");
+                    var [ deepLinkMsg, setDeepLinkMsg ] = useState("");
 
                     useEffect(function() {
                         if (!walletQR || !walletQR.url) {
                             setQrStatus("error");
-                            setQrErrorMsg("Missing wallet URL. Please use the link below to open your wallet.");
+                            setQrErrorMsg("Unable to generate QR code. Please restart the registration flow.");
                             return;
                         }
                         if (typeof QRCode === "undefined") {
                             setQrStatus("error");
-                            setQrErrorMsg("QR code library failed to load. Please use the link below or refresh the page.");
+                            setQrErrorMsg("QR code could not be loaded. Please restart the registration flow.");
                             return;
                         }
                         try {
@@ -639,9 +712,21 @@
                             setQrStatus("ok");
                         } catch (e) {
                             setQrStatus("error");
-                            setQrErrorMsg("Failed to generate QR code. Please use the link below to open your wallet.");
+                            setQrErrorMsg("Unable to generate QR code. Please restart the registration flow.");
                         }
                     }, []);
+
+                    function handleWalletLinkClick(e) {
+                        e.preventDefault();
+                        var fallbackTimer = setTimeout(function() {
+                            setDeepLinkMsg("No wallet app detected. Use the QR code on a mobile device with your wallet installed.");
+                        }, 1500);
+                        window.addEventListener("blur", function() {
+                            clearTimeout(fallbackTimer);
+                            setDeepLinkMsg("");
+                        }, { once: true });
+                        window.location.href = walletQR && walletQR.url;
+                    }
 
                     return createElement("div", { className: "segment-form" },
                         createElement("h3", { className: "ui header text-center" }, "Register with Digital Wallet"),
@@ -686,9 +771,10 @@
                             createElement("p", { style: { color: "#888", fontSize: "13px", marginBottom: "10px" } },
                                 "Or tap below if you're on mobile:"
                             ),
-                            createElement("a", { href: walletQR && walletQR.url, className: "ui primary fluid large button" },
+                            createElement("a", { href: walletQR && walletQR.url, className: "ui primary fluid large button", onClick: handleWalletLinkClick },
                                 "Open in Wallet"
-                            )
+                            ),
+                            deepLinkMsg ? createElement("p", { style: { marginTop: "8px", color: "#856404", fontSize: "13px" } }, deepLinkMsg) : null
                         )
                     );
                 };

@@ -722,7 +722,7 @@
         "display": {
             "label": "Continue with Digital Wallet",
             "description": "Registration experience with a digital wallet using verifiable credentials",
-            "image": "assets/images/icons/scan.svg",
+            "image": "assets/images/identity-providers/wallet.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -752,7 +752,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Digital Wallet",
-                                        "image": "assets/images/icons/scan.svg"
+                                        "image": "assets/images/identity-providers/wallet.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -777,7 +777,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "OpenID4VPRegistrationExecutor",
+                                    "name": "VPRegistrationExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }

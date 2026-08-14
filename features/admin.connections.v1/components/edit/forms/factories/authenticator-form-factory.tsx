@@ -34,7 +34,6 @@ import { AuthenticatorSettingsForm } from "../authenticator-settings-form";
 import {
     AppleAuthenticatorForm,
     CommonAuthenticatorForm,
-    DigitalWalletAuthenticatorForm,
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
@@ -152,23 +151,6 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     if (OverriddenForm) {
         return OverriddenForm;
-    }
-
-    if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET) {
-        return (
-            <DigitalWalletAuthenticatorForm
-                mode={mode}
-                initialValues={initialValues}
-                metadata={metadata}
-                onSubmit={onSubmit}
-                triggerSubmit={triggerSubmit}
-                enableSubmitButton={enableSubmitButton}
-                data-testid={testId}
-                showCustomProperties={showCustomProperties}
-                readOnly={isReadOnly}
-                isSubmitting={isSubmitting}
-            />
-        );
     }
 
     // Render the form dynamically for federated authenticators in custom connector.

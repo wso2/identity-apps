@@ -37,6 +37,8 @@ import {
 import { ConnectionInterface, CommonPluggableComponentPropertyInterface } from "../../../models/connection";
 import "./digital-credentials-presentation-definition-claims.scss";
 
+const I18N_PREFIX: string = "authenticationProvider:templates.digitalWallet.claimMapping";
+
 interface DigitalCredentialsPresentationDefinitionClaimsPropsInterface extends TestableComponentInterface {
     identityProvider: ConnectionInterface;
     isReadOnly: boolean;
@@ -62,15 +64,17 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
     const [ definitionDescription, setDefinitionDescription ] = useState<string>("");
     const [ vcType, setVcType ] = useState<string>("");
     const [ vcFormat, setVcFormat ] = useState<string>("dc+sd-jwt");
-
-    const FORMAT_OPTIONS: DropdownItemProps[] = [
-        { key: "dc+sd-jwt", text: "dc+sd-jwt (SD-JWT VC)", value: "dc+sd-jwt" },
-        { key: "mso_mdoc", text: "mso_mdoc (ISO mDL)", value: "mso_mdoc" },
-        { key: "jwt_vc_json", text: "jwt_vc_json (JWT VC)", value: "jwt_vc_json" }
-    ];
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ presentationDefinitionId, setPresentationDefinitionId ] = useState<string>(undefined);
+
+    const FORMAT_OPTIONS: DropdownItemProps[] = [
+        {
+            key: "dc+sd-jwt",
+            text: t(`${ I18N_PREFIX }.form.credentialFormat.options.dcSdJwt`),
+            value: "dc+sd-jwt"
+        }
+    ];
 
     const resolvePresentationDefinitionIdFromIdentityProvider = (): string => {
         const defaultAuthenticatorId: string = identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
@@ -153,13 +157,13 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
             updateFormFromDefinition(response?.data);
         } catch (error) {
             const axiosError: AxiosError = error as AxiosError;
+            const responseData: Record<string, string> = axiosError?.response?.data as Record<string, string>;
 
             dispatch(addAlert({
-                description: axiosError?.response?.data?.description
-                    ? axiosError.response.data.description
-                    : t("authenticationProvider:notifications.addIDP.genericError.description"),
+                description: responseData?.description
+                    ?? t(`${ I18N_PREFIX }.notifications.fetchFailed.description`),
                 level: AlertLevels.ERROR,
-                message: "Failed to fetch presentation definition claims"
+                message: t(`${ I18N_PREFIX }.notifications.fetchFailed.message`)
             }));
         } finally {
             setIsLoading(false);
@@ -189,19 +193,19 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
             await updatePresentationDefinition(presentationDefinitionId, payload);
 
             dispatch(addAlert({
-                description: "Presentation definition updated successfully.",
+                description: t(`${ I18N_PREFIX }.notifications.updateSuccess.description`),
                 level: AlertLevels.SUCCESS,
-                message: "Presentation definition updated"
+                message: t(`${ I18N_PREFIX }.notifications.updateSuccess.message`)
             }));
         } catch (error) {
             const axiosError: AxiosError = error as AxiosError;
+            const responseData: Record<string, string> = axiosError?.response?.data as Record<string, string>;
 
             dispatch(addAlert({
-                description: axiosError?.response?.data?.description
-                    ? axiosError.response.data.description
-                    : t("authenticationProvider:notifications.addIDP.genericError.description"),
+                description: responseData?.description
+                    ?? t(`${ I18N_PREFIX }.notifications.updateFailed.description`),
                 level: AlertLevels.ERROR,
-                message: "Failed to update presentation definition"
+                message: t(`${ I18N_PREFIX }.notifications.updateFailed.message`)
             }));
         } finally {
             setIsSubmitting(false);
@@ -219,9 +223,9 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
     const onSaveChanges = (): void => {
         if (isEmpty(vcType?.trim())) {
             dispatch(addAlert({
-                description: "Credential Type is required.",
+                description: t(`${ I18N_PREFIX }.notifications.missingCredentialType.description`),
                 level: AlertLevels.ERROR,
-                message: "Cannot update with blank required fields"
+                message: t(`${ I18N_PREFIX }.notifications.missingCredentialType.message`)
             }));
 
             return;
@@ -238,7 +242,7 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
         <div data-testid={ testId }>
             <Form className="digital-credentials-pd-claims-form">
                 <Form.Field>
-                    <label>Credential Type</label>
+                    <label>{ t(`${ I18N_PREFIX }.form.credentialType.label`) }</label>
                     <Input
                         value={ vcType }
                         readOnly={ isReadOnly }
@@ -248,14 +252,14 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                     />
                     <p className="ui-hint">
                         <Icon floated="left" aria-hidden="true" className="grey info circle icon" />
-                        This must exactly match the type name defined by the issuer.
+                        { t(`${ I18N_PREFIX }.form.credentialType.hint`) }
                     </p>
                 </Form.Field>
 
                 <Divider hidden />
 
                 <Form.Field>
-                    <label>Credential Format</label>
+                    <label>{ t(`${ I18N_PREFIX }.form.credentialFormat.label`) }</label>
                     <Dropdown
                         fluid
                         selection
@@ -268,17 +272,17 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                     />
                     <p className="ui-hint">
                         <Icon floated="left" aria-hidden="true" className="grey info circle icon" />
-                        Credential format as defined by OID4VP §6.1.
+                        { t(`${ I18N_PREFIX }.form.credentialFormat.hint`) }
                     </p>
                 </Form.Field>
 
                 <Divider hidden />
 
                 <Form.Field>
-                    <label>Requested Attributes</label>
+                    <label>{ t(`${ I18N_PREFIX }.form.requestedAttributes.label`) }</label>
                     <p className="ui-hint">
                         <Icon floated="left" aria-hidden="true" className="grey info circle icon" />
-                        The specific pieces of data from this credential.
+                        { t(`${ I18N_PREFIX }.form.requestedAttributes.hint`) }
                     </p>
                     {
                         claims?.length > 0
@@ -287,7 +291,7 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                                     { claim }
                                 </Label>
                             ))
-                            : <p>No claims found in the selected presentation definition.</p>
+                            : <p>{ t(`${ I18N_PREFIX }.form.requestedAttributes.emptyPlaceholder`) }</p>
                     }
                 </Form.Field>
 
@@ -297,13 +301,10 @@ export const DigitalCredentialsPresentationDefinitionClaims: FunctionComponent<
                             <PrimaryButton
                                 type="button"
                                 loading={ isSubmitting }
-                                disabled={
-                                    isSubmitting
-                                        || isEmpty(vcType?.trim())
-                                }
+                                disabled={ isSubmitting || isEmpty(vcType?.trim()) }
                                 onClick={ onSaveChanges }
                             >
-                                Update
+                                { t("common:update") }
                             </PrimaryButton>
                         </>
                     )

@@ -66,7 +66,7 @@ const DigitalWalletExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <img src={ loadStaticResource("assets/images/icons/scan.svg") } height="20" />
+            <img src={ loadStaticResource("assets/images/identity-providers/wallet.svg") } height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.digitalWallet") }</Typography>
         </Box>
     );

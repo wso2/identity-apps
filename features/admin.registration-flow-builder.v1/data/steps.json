@@ -121,14 +121,14 @@
         "deprecated": false,
         "display": {
             "label": "Digital Wallet",
-            "image": "assets/images/icons/scan.svg",
+            "image": "assets/images/identity-providers/wallet.svg",
             "showOnResourcePanel": true
         },
         "data": {
             "action": {
                 "type": "EXECUTOR",
                 "executor": {
-                    "name": "OpenID4VPRegistrationExecutor",
+                    "name": "VPRegistrationExecutor",
                     "meta": {
                         "idpName": ""
                     }

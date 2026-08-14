@@ -261,7 +261,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 order: 8,
                 path: AppConstants.getPaths().get("OPENID4VP_CONFIG"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             },
             {
                 children: [

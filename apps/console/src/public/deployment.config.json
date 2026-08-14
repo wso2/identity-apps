@@ -2180,20 +2180,19 @@
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                            "internal_vp_template_create"
+                            "internal_presentation_definition_create"
                     ],
                     "delete": [
-                            "internal_vp_template_delete"
+                            "internal_presentation_definition_delete"
                     ],
                     "feature": [
-                            "console:vp_templates"
+                            "console:presentation_definitions"
                     ],
                     "read": [
-                            "internal_application_mgt_view",
-                            "internal_vp_template_view"
+                            "internal_presentation_definition_view"
                     ],
                     "update": [
-                            "internal_vp_template_update"
+                            "internal_presentation_definition_update"
                     ]
                 }
             },

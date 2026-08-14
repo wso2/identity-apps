@@ -26,9 +26,12 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import MuiTextField from "@oxygen-ui/react/TextField";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureAccessConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     AlertInterface,
     AlertLevels,
@@ -39,7 +42,6 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
-    CertFileStrategy,
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
@@ -48,12 +50,10 @@ import {
     DataTable,
     EmptyPlaceholder,
     EmphasizedSegment,
-    FilePicker,
     Heading,
     Hint,
     LinkButton,
     PageLayout,
-    PickerResult,
     PrimaryButton,
     ResourceTab,
     TableActionsInterface,
@@ -72,7 +72,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import {
@@ -99,6 +99,7 @@ import {
     PresentationDefinitionUpdateModel,
     RequestedCredentialModel
 } from "../models/presentation-definitions";
+import { AddIssuerCertificateModal } from "../components/add-issuer-certificate-modal";
 import { AddTrustedCaModal } from "../components/add-trusted-ca-modal";
 import { TrustedCaCertificatesList } from "../components/trusted-ca-certificates-list";
 
@@ -123,6 +124,17 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const definitionId: string = match?.params?.id;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const presentationDefinitionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.presentationDefinitions
+    );
+    const hasUpdatePermission: boolean = useRequiredScopes(
+        presentationDefinitionsFeatureConfig?.scopes?.update
+    );
+    const hasDeletePermission: boolean = useRequiredScopes(
+        presentationDefinitionsFeatureConfig?.scopes?.delete
+    );
+    const isReadOnly: boolean = !hasUpdatePermission;
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
@@ -156,6 +168,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ issuerPem, setIssuerPem ] = useState<string>("");
     const [ trustedCaPems, setTrustedCaPems ] = useState<string[]>([]);
     const [ showAddCertModal, setShowAddCertModal ] = useState<boolean>(false);
+    const [ showAddIssuerCertModal, setShowAddIssuerCertModal ] = useState<boolean>(false);
 
     const [ isFormReady, setIsFormReady ] = useState<boolean>(false);
 
@@ -390,6 +403,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 placeholder={ t("presentationDefinitions:editPage.form.name.placeholder") }
                                 value={ name }
                                 onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value) }
+                                InputProps={ { readOnly: isReadOnly } }
                                 sx={ { mb: 2 } }
                                 data-componentid={ `${componentId}-name-input` }
                             />
@@ -404,6 +418,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                     setDescription(e.target.value)
                                 }
+                                InputProps={ { readOnly: isReadOnly } }
                                 sx={ { mb: 2 } }
                                 data-componentid={ `${componentId}-description-input` }
                             />
@@ -420,6 +435,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                         setCredentialType(e.target.value)
                                     }
+                                    InputProps={ { readOnly: isReadOnly } }
                                     sx={ { mb: 0.5 } }
                                     data-componentid={ `${componentId}-credential-type-input` }
                                 />
@@ -429,15 +445,17 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             </div>
                             <Divider hidden />
 
-                            <PrimaryButton
-                                size="small"
-                                disabled={ isSubmitting || !name.trim() || !credentialType.trim() }
-                                loading={ isSubmitting }
-                                onClick={ handleUpdate }
-                                data-componentid={ `${componentId}-general-update-button` }
-                            >
-                                { t("common:update") }
-                            </PrimaryButton>
+                            { !isReadOnly && (
+                                <PrimaryButton
+                                    size="small"
+                                    disabled={ isSubmitting || !name.trim() || !credentialType.trim() }
+                                    loading={ isSubmitting }
+                                    onClick={ handleUpdate }
+                                    data-componentid={ `${componentId}-general-update-button` }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -445,15 +463,17 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
             <Divider hidden />
 
-            <DangerZoneGroup sectionHeader={ t("presentationDefinitions:editPage.dangerZone.header") }>
-                <DangerZone
-                    actionTitle={ t("presentationDefinitions:editPage.dangerZone.delete.actionTitle") }
-                    header={ t("presentationDefinitions:editPage.dangerZone.delete.header") }
-                    subheader={ t("presentationDefinitions:editPage.dangerZone.delete.subheader") }
-                    onActionClick={ handleDeleteInitiation }
-                    data-componentid={ `${componentId}-danger-zone` }
-                />
-            </DangerZoneGroup>
+            { hasDeletePermission && (
+                <DangerZoneGroup sectionHeader={ t("presentationDefinitions:editPage.dangerZone.header") }>
+                    <DangerZone
+                        actionTitle={ t("presentationDefinitions:editPage.dangerZone.delete.actionTitle") }
+                        header={ t("presentationDefinitions:editPage.dangerZone.delete.header") }
+                        subheader={ t("presentationDefinitions:editPage.dangerZone.delete.subheader") }
+                        onActionClick={ handleDeleteInitiation }
+                        data-componentid={ `${componentId}-danger-zone` }
+                    />
+                </DangerZoneGroup>
+            ) }
         </ResourceTab.Pane>
     );
 
@@ -540,6 +560,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
         const claimTableActions: TableActionsInterface[] = [
             {
+                hidden: (): boolean => isReadOnly,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
                     openEditClaimModal(claims.indexOf(claim));
@@ -548,6 +569,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 renderer: "semantic-icon"
             },
             {
+                hidden: (): boolean => isReadOnly,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
                     removeClaim(claims.indexOf(claim));
@@ -574,28 +596,29 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
                         action={
-                            (<PrimaryButton
-                                size="small"
-                                onClick={ openAddClaimModal }
-                                data-componentid={ `${componentId}-add-claim-button` }
-                            >
-                                <Icon name="add" />
-                                { t(
-                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim",
-                                    "Add Claim"
-                                ) }
-                            </PrimaryButton>)
+                            !isReadOnly
+                                ? (<PrimaryButton
+                                    size="small"
+                                    onClick={ openAddClaimModal }
+                                    data-componentid={ `${componentId}-add-claim-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t(
+                                        "presentationDefinitions:editPage.form.credentials.claims.addClaim"
+                                    ) }
+                                </PrimaryButton>)
+                                : undefined
                         }
                         subtitle={ [
                             t(
-                                "presentationDefinitions:editPage.form.credentials.claims.emptyPlaceholder",
-                                "No claims added yet. Add a claim to specify which credential attributes the wallet must present."
+                                "presentationDefinitions:editPage.form.credentials.claims.emptyPlaceholder"
                             )
                         ] }
                         data-componentid={ `${componentId}-claims-empty-placeholder` }
                     />
                 ) : (
                     <>
+                        { !isReadOnly && (
                         <div style={ { marginBottom: "16px" } }>
                             <PrimaryButton
                                 size="small"
@@ -604,11 +627,11 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             >
                                 <Icon name="add" />
                                 { t(
-                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim",
-                                    "Add Claim"
+                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim"
                                 ) }
                             </PrimaryButton>
                         </div>
+                        ) }
                         <DataTable<ClaimConstraintModel>
                             columns={ claimTableColumns }
                             data={ claims }
@@ -622,15 +645,17 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
                 <Divider hidden />
 
-                <PrimaryButton
-                    size="small"
-                    disabled={ isSubmitting }
-                    loading={ isSubmitting }
-                    onClick={ handleUpdate }
-                    data-componentid={ `${componentId}-claims-update-button` }
-                >
-                    { t("common:update") }
-                </PrimaryButton>
+                { !isReadOnly && (
+                    <PrimaryButton
+                        size="small"
+                        disabled={ isSubmitting }
+                        loading={ isSubmitting }
+                        onClick={ handleUpdate }
+                        data-componentid={ `${componentId}-claims-update-button` }
+                    >
+                        { t("common:update") }
+                    </PrimaryButton>
+                ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -646,12 +671,10 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 <Modal.Header>
                     { claimModalIndex === null
                         ? t(
-                            "presentationDefinitions:editPage.form.credentials.claims.addClaim",
-                            "Add Claim"
+                            "presentationDefinitions:editPage.form.credentials.claims.addClaim"
                         )
                         : t(
-                            "presentationDefinitions:editPage.form.credentials.claims.editClaim",
-                            "Edit Claim"
+                            "presentationDefinitions:editPage.form.credentials.claims.editClaim"
                         )
                     }
                 </Modal.Header>
@@ -663,8 +686,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             size="small"
                             autoFocus
                             label={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.label",
-                                "Claim Path"
+                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.label"
                             ) }
                             placeholder={ t(
                                 "presentationDefinitions:editPage.form.credentials.claims.claimPath.placeholder"
@@ -675,8 +697,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         />
                         <Hint compact>
                             { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint",
-                                "Use dot notation for nested paths, e.g. address.street_address."
+                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint"
                             ) }
                         </Hint>
                     </Box>
@@ -692,14 +713,12 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 />
                             ) }
                             label={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.required.label",
-                                "Required"
+                                "presentationDefinitions:editPage.form.credentials.claims.required.label"
                             ) }
                         />
                         <Hint compact>
                             { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.required.hint",
-                                "When enabled, the wallet must include this claim in the credential presentation."
+                                "presentationDefinitions:editPage.form.credentials.claims.required.hint"
                             ) }
                         </Hint>
                     </Box>
@@ -708,8 +727,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             fullWidth
                             size="small"
                             label={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label",
-                                "Allowed Values"
+                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label"
                             ) }
                             placeholder={ t(
                                 "presentationDefinitions:editPage.form.credentials.claims.allowedValues.placeholder"
@@ -728,8 +746,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         />
                         <Hint compact>
                             { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.hint",
-                                "If set, the claim value must be one of these."
+                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.hint"
                             ) }
                         </Hint>
                     </Box>
@@ -796,15 +813,12 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         />
                     ) }
                     label={ t(
-                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.label",
-                        "Enforce Trusted Issuer"
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.label"
                     ) }
                 />
                 <Hint compact>
                     { t(
-                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.hint",
-                        "Enable this to verify that the credential's certificate chain ends at a " +
-                        "trusted root CA configured in the system."
+                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.hint"
                     ) }
                 </Hint>
 
@@ -827,46 +841,46 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     >
                         <Hint compact>
                             { t(
-                                "presentationDefinitions:editPage.issuerTrust.trustedCas" +
-                                ".emptyPlaceholder.subtitle0",
-                                "No trusted CA certificates added yet."
+                                "presentationDefinitions:editPage.issuerTrust.trustedCas.emptyPlaceholder.subtitle0"
                             ) }
                         </Hint>
-                        <PrimaryButton
-                            size="mini"
-                            onClick={ () => setShowAddCertModal(true) }
-                            type="button"
-                            data-componentid={ `${componentId}-empty-add-cert-button` }
-                        >
-                            <Icon name="add" />
-                            { t(
-                                "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton",
-                                "Add Certificate"
-                            ) }
-                        </PrimaryButton>
+                        { !isReadOnly && (
+                            <PrimaryButton
+                                size="mini"
+                                onClick={ () => setShowAddCertModal(true) }
+                                type="button"
+                                data-componentid={ `${componentId}-empty-add-cert-button` }
+                            >
+                                <Icon name="add" />
+                                { t(
+                                    "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton"
+                                ) }
+                            </PrimaryButton>
+                        ) }
                     </div>
                 ) : (
                     <Segment>
                         <MuiGrid direction="column" container spacing={ 2 }>
-                            <MuiGrid xs={ 12 }>
-                                <PrimaryButton
-                                    floated="right"
-                                    disabled={ !enforceTrustedIssuer }
-                                    onClick={ () => setShowAddCertModal(true) }
-                                    data-componentid={ `${componentId}-add-cert-button` }
-                                >
-                                    <Icon name="add" />
-                                    { t(
-                                        "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton",
-                                        "Add Certificate"
-                                    ) }
-                                </PrimaryButton>
-                            </MuiGrid>
+                            { !isReadOnly && (
+                                <MuiGrid xs={ 12 }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        disabled={ !enforceTrustedIssuer }
+                                        onClick={ () => setShowAddCertModal(true) }
+                                        data-componentid={ `${componentId}-add-cert-button` }
+                                    >
+                                        <Icon name="add" />
+                                        { t(
+                                            "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton"
+                                        ) }
+                                    </PrimaryButton>
+                                </MuiGrid>
+                            ) }
                             <MuiGrid xs={ 12 }>
                                 <TrustedCaCertificatesList
                                     trustedCaPems={ trustedCaPems }
                                     onRemove={ handleRemoveCert }
-                                    isReadOnly={ !enforceTrustedIssuer }
+                                    isReadOnly={ !enforceTrustedIssuer || isReadOnly }
                                     data-componentid={ `${componentId}-trusted-ca-list` }
                                 />
                             </MuiGrid>
@@ -885,8 +899,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     fullWidth
                     size="small"
                     placeholder={ t(
-                        "presentationDefinitions:editPage.issuerTrust.jwksUri.placeholder",
-                        "https://issuer.example.com/.well-known/jwks.json"
+                        "presentationDefinitions:editPage.issuerTrust.jwksUri.placeholder"
                     ) }
                     value={ jwksUri }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setJwksUri(e.target.value) }
@@ -895,9 +908,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 />
                 <Hint compact>
                     { t(
-                        "presentationDefinitions:editPage.issuerTrust.jwksUri.hint",
-                        "The URL of the issuer's JSON Web Key Set (JWKS) endpoint used to fetch " +
-                        "the public key for signature verification."
+                        "presentationDefinitions:editPage.issuerTrust.jwksUri.hint"
                     ) }
                 </Hint>
             </>
@@ -905,28 +916,75 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
         const pemSubSection: ReactNode = (
             <>
-                <div style={ { maxWidth: "500px" } }>
-                    <FilePicker
-                        fileStrategy={ new CertFileStrategy() }
-                        normalizeStateOnRemoveOperations={ true }
-                        onChange={ (result: PickerResult<string | File>) => {
-                            setIssuerPem(result.serialized?.pem ?? "");
-                        } }
-                        uploadButtonText="Upload Certificate File"
-                        dropzoneText="Drag and drop a certificate file here."
-                        pasteAreaPlaceholderText="Paste issuer certificate in PEM format."
-                        icon={ getCertificateIllustrations().uploadPlaceholder }
-                        placeholderIcon={ <Icon name="file alternate" size="huge" /> }
-                        data-componentid={ `${componentId}-issuer-pem-picker` }
+                { issuerPem ? (
+                    <>
+                        <EmphasizedSegment>
+                            <div style={ { alignItems: "center", display: "flex", gap: "12px" } }>
+                                <Icon name="certificate" size="large" color="grey" />
+                                <div style={ { flex: 1 } }>
+                                    <strong>
+                                        { t("presentationDefinitions:editPage.issuerTrust.issuerPem.modalTitle") }
+                                    </strong>
+                                    <Hint compact>
+                                        { t("presentationDefinitions:editPage.issuerTrust.issuerPem.hint") }
+                                    </Hint>
+                                </div>
+                                { !isReadOnly && (
+                                    <div style={ { display: "flex", gap: "8px" } }>
+                                        <PrimaryButton
+                                            size="mini"
+                                            onClick={ () => setShowAddIssuerCertModal(true) }
+                                            data-componentid={ `${componentId}-replace-pem-button` }
+                                        >
+                                            { t(
+                                                "presentationDefinitions:editPage.issuerTrust.issuerPem.replaceButton"
+                                            ) }
+                                        </PrimaryButton>
+                                        <LinkButton
+                                            size="mini"
+                                            onClick={ () => setIssuerPem("") }
+                                            data-componentid={ `${componentId}-remove-pem-button` }
+                                        >
+                                            { t("common:remove") }
+                                        </LinkButton>
+                                    </div>
+                                ) }
+                            </div>
+                        </EmphasizedSegment>
+                    </>
+                ) : (
+                    <EmptyPlaceholder
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        title={ t(
+                            "presentationDefinitions:editPage.issuerTrust.issuerPem.emptyPlaceholder.title"
+                        ) }
+                        subtitle={ [
+                            t(
+                                "presentationDefinitions:editPage.issuerTrust.issuerPem.emptyPlaceholder.subtitle"
+                            )
+                        ] }
+                        action={ !isReadOnly && (
+                            <PrimaryButton
+                                size="small"
+                                onClick={ () => setShowAddIssuerCertModal(true) }
+                                data-componentid={ `${componentId}-add-pem-button` }
+                            >
+                                <Icon name="add" />
+                                { t("presentationDefinitions:editPage.issuerTrust.issuerPem.addButton") }
+                            </PrimaryButton>
+                        ) }
+                        data-componentid={ `${componentId}-issuer-pem-empty-placeholder` }
                     />
-                </div>
-                <Hint compact>
-                    { t(
-                        "presentationDefinitions:editPage.issuerTrust.issuerPem.hint",
-                        "Paste the PEM-encoded X.509 certificate of the credential issuer. " +
-                        "The public key will be extracted from this certificate."
-                    ) }
-                </Hint>
+                ) }
+                { showAddIssuerCertModal && (
+                    <AddIssuerCertificateModal
+                        isOpen={ showAddIssuerCertModal }
+                        onClose={ () => setShowAddIssuerCertModal(false) }
+                        onAdd={ (pem: string) => setIssuerPem(pem) }
+                        data-componentid={ `${componentId}-add-issuer-cert-modal` }
+                    />
+                ) }
             </>
         );
 
@@ -959,8 +1017,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                             control={ <Radio /> }
                                             label={ t(
                                                 "presentationDefinitions:editPage.issuerTrust" +
-                                                ".keyResolutionMethod.options.x5c",
-                                                "X.509 Certificate Chain"
+                                                ".keyResolutionMethod.options.x5c"
                                             ) }
                                             data-componentid={ `${componentId}-krm-x5c` }
                                         />
@@ -983,8 +1040,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                             control={ <Radio /> }
                                             label={ t(
                                                 "presentationDefinitions:editPage.issuerTrust" +
-                                                ".keyResolutionMethod.options.jwks_uri",
-                                                "JWKS URI"
+                                                ".keyResolutionMethod.options.jwks_uri"
                                             ) }
                                             data-componentid={ `${componentId}-krm-jwks-uri` }
                                         />
@@ -1007,8 +1063,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                             control={ <Radio /> }
                                             label={ t(
                                                 "presentationDefinitions:editPage.issuerTrust" +
-                                                ".keyResolutionMethod.options.pem",
-                                                "PEM Certificate"
+                                                ".keyResolutionMethod.options.pem"
                                             ) }
                                             data-componentid={ `${componentId}-krm-pem` }
                                         />
@@ -1030,15 +1085,17 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 </FormControl>
 
                                 <Divider hidden />
-                                <PrimaryButton
-                                    size="small"
-                                    disabled={ isSubmitting }
-                                    loading={ isSubmitting }
-                                    onClick={ handleUpdate }
-                                    data-componentid={ `${componentId}-issuer-trust-update-button` }
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
+                                { !isReadOnly && (
+                                    <PrimaryButton
+                                        size="small"
+                                        disabled={ isSubmitting }
+                                        loading={ isSubmitting }
+                                        onClick={ handleUpdate }
+                                        data-componentid={ `${componentId}-issuer-trust-update-button` }
+                                    >
+                                        { t("common:update") }
+                                    </PrimaryButton>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -1138,8 +1195,9 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid={ `${componentId}-delete-blocked-modal-header` }>
-                        { t("presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.header",
-                            "Unable to Delete") }
+                        { t(
+                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.header"
+                        ) }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
@@ -1147,16 +1205,14 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         data-componentid={ `${componentId}-delete-blocked-modal-message` }
                     >
                         { t(
-                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.message",
-                            "There are connections using this presentation definition."
+                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.message"
                         ) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
                         data-componentid={ `${componentId}-delete-blocked-modal-content` }
                     >
                         { t(
-                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.content",
-                            "Remove the associations from these connections before deleting:"
+                            "presentationDefinitions:editPage.confirmations.deleteBlockedByConnections.content"
                         ) }
                         <Divider hidden />
                         <List ordered className="ml-6">
