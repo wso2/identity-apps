@@ -783,41 +783,39 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     return (
         <>
             <SettingsSection
-                data-testid={ `${testId}-settings-section` }
-                description={ t("myAccount:sections.consentManagement.description") }
-                header={ t("myAccount:sections.consentManagement.heading") }
-                placeholder={
-    !(consentedApps && consentedApps.length && consentedApps.length > 0)
-        ? (
-            <div>
+    data-testid={ `${testId}-settings-section` }
+    description={ t("myAccount:sections.consentManagement.description") }
+    header={ t("myAccount:sections.consentManagement.heading") }
+    showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
+>
+    { !(consentedApps && consentedApps.length && consentedApps.length > 0) && (
+        <div style={{ padding: '20px', textAlign: 'center', marginBottom: '10px' }}>
+            <p style={{ marginBottom: '5px', color: '#555' }}>
                 { t("myAccount:sections.consentManagement.actionTitles.empty") }
-                <br />
-                <a 
-                    href="https://is.docs.wso2.com/en/latest/guides/consent-mgt/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                >
-                    { t("myAccount:sections.consentManagement.actionTitles.learnMore") }
-                </a>
-            </div>
-        )
-        : null
-}
-                showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
+            </p>
+            <a 
+                href="https://is.docs.wso2.com/en/latest/guides/consent-mgt/" 
+                target="_blank" 
+                rel="noopener noreferrer"
             >
-                <AppConsentList
-                    data-testid={ `${testId}-list` }
-                    consentedApps={ consentedApps }
-                    onClaimUpdate={ handleClaimUpdate }
-                    onAppConsentRevoke={ handleAppConsentRevoke }
-                    consentListActiveIndexes={ consentListActiveIndexes }
-                    onConsentDetailClick={ handleConsentDetailClick }
-                    onPIIClaimToggle={ piiClaimToggleHandler }
-                    deniedPIIClaimList={ deniedPIIClaimList }
-                    acceptedPIIClaimList={ acceptedPIIClaimList }
-                />
-                { revokingConsent && consentRevokeModal() }
-            </SettingsSection>
+                { t("myAccount:sections.consentManagement.actionTitles.learnMore") }
+            </a>
+        </div>
+    ) }
+
+    <AppConsentList
+        data-testid={ `${testId}-list` }
+        consentedApps={ consentedApps }
+        onClaimUpdate={ handleClaimUpdate }
+        onAppConsentRevoke={ handleAppConsentRevoke }
+        consentListActiveIndexes={ consentListActiveIndexes }
+        onConsentDetailClick={ handleConsentDetailClick }
+        onPIIClaimToggle={ piiClaimToggleHandler }
+        deniedPIIClaimList={ deniedPIIClaimList }
+        acceptedPIIClaimList={ acceptedPIIClaimList }
+    />
+    { revokingConsent && consentRevokeModal() }
+</SettingsSection>
         </>
     );
 };
