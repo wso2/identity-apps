@@ -24,7 +24,8 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { isFreeTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement,
+    SyntheticEvent, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleAdministrators from "./console-administrators/console-administrators";
@@ -75,6 +76,15 @@ interface ConsoleSettingsTabInterface extends IdentifiableComponentInterface {
      */
     hidden?: boolean;
 }
+/**
+ * Callback type used to subscribe to an external store change.
+ */
+type SubscribeCallback = () => void;
+
+/**
+ * Cleanup function returned by a store subscription.
+ */
+type UnsubscribeFunction = () => void;
 
 /**
  * Tab component for the Console Settings page.
@@ -199,24 +209,23 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
     };
 
-    const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl());
+    
 
     /**
-     * Register a hash change listener to update the active tab.
+     * Subscribe to hash changes on the URL so React can re-render when the active tab changes.
      */
-    useEffect(() => {
-        const handleHashChange = (): void => {
-            setActiveTab(getActiveTabFromUrl());
-        };
+    const subscribeToHashChange: (_callback: SubscribeCallback) => UnsubscribeFunction = useCallback(
+        (callback: SubscribeCallback): UnsubscribeFunction => {
+            window.addEventListener("hashchange", callback);
 
-        // Listen for changes in the URL hash
-        window.addEventListener("hashchange", handleHashChange);
+            return () => {
+                window.removeEventListener("hashchange", callback);
+            };
+        },
+        []
+    );
 
-        return () => {
-            // Clean up the event listener when the component unmounts
-            window.removeEventListener("hashchange", handleHashChange);
-        };
-    }, []);
+    const activeTab: number = useSyncExternalStore<number>(subscribeToHashChange, getActiveTabFromUrl);
 
     /**
      * Callback to handle tab change.
