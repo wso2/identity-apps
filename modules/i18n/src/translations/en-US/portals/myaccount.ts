@@ -1910,6 +1910,9 @@ export const myAccount: MyAccountNS = {
             }
         },
         preferenceManagement: {
+            actionTitles: {
+                learnMore: "Learn more about communication preferences"
+            },
             description: "Review and manage your communication preferences.",
             heading: "Communication Preferences",
             placeholders: {
@@ -1919,6 +1922,9 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
+            actionTitles: {
+                learnMore: "Learn more about policy consents"
+            },
             description: "Review the policies you have agreed to.",
             heading: "Policy Consents",
             placeholders: {

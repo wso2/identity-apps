@@ -38,6 +38,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { ModalComponent, SettingsSection } from "../shared";
+import "../consents/consents.scss";
 
 /**
  * Proptypes for the policy consent component.
@@ -211,18 +212,29 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     return (
         <>
             <SettingsSection
-                data-componentid={ `${componentId}-settings-section` }
-                description={ t("myAccount:sections.policyConsentManagement.description") }
-                header={ t("myAccount:sections.policyConsentManagement.heading") }
-                placeholder={
-                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
-                        ? t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading")
-                        : null
-                }
-                showActionBar={
-                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
-                }
-            >
+            data-componentid={ `${componentId}-settings-section` }
+            description={ t("myAccount:sections.policyConsentManagement.description") }
+            header={ t("myAccount:sections.policyConsentManagement.heading") }
+            showActionBar={
+                !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
+            }
+        >
+            { !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0) && (
+                <div className="empty-placeholder-consent">
+                    <p className="empty-placeholder-message">
+                        { t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading") }
+                    </p>
+                    <a
+                        href="https://wso2.com/identity-platform/docs/guides/consent-management/policy-consent/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="empty-placeholder-link"
+                    >
+                        { t("myAccount:sections.policyConsentManagement.actionTitles.learnMore") }
+                        <span className="empty-placeholder-link-arrow">→</span>
+                    </a>
+                </div>
+            ) }
                 <PolicyConsentList
                     data-componentid={ `${componentId}-policy-consent-list` }
                     items={ policyConsentItems }

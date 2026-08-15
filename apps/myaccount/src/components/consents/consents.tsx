@@ -52,6 +52,7 @@ import {
 import { AppState } from "../../store";
 import { useEndUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
+import "./consents.scss";
 
 /**
  * Proptypes for the user sessions component.
@@ -783,25 +784,27 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     return (
         <>
             <SettingsSection
-    data-testid={ `${testId}-settings-section` }
-    description={ t("myAccount:sections.consentManagement.description") }
-    header={ t("myAccount:sections.consentManagement.heading") }
-    showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
->
-    { !(consentedApps && consentedApps.length && consentedApps.length > 0) && (
-        <div style={{ padding: '20px', textAlign: 'center', marginBottom: '10px' }}>
-            <p style={{ marginBottom: '5px', color: '#555' }}>
-                { t("myAccount:sections.consentManagement.actionTitles.empty") }
-            </p>
-            <a 
-                href="https://is.docs.wso2.com/en/latest/guides/consent-mgt/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                data-testid={ `${testId}-settings-section` }
+                description={ t("myAccount:sections.consentManagement.description") }
+                header={ t("myAccount:sections.consentManagement.heading") }
+                showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
-                { t("myAccount:sections.consentManagement.actionTitles.learnMore") }
-            </a>
-        </div>
-    ) }
+                { !(consentedApps && consentedApps.length && consentedApps.length > 0) && (
+                    <div className="empty-placeholder-consent">
+                        <p className="empty-placeholder-message">
+                            { t("myAccount:sections.consentManagement.actionTitles.empty") }
+                        </p>
+                        <a
+                            href="https://wso2.com/identity-platform/docs/guides/consent-management/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="empty-placeholder-link"
+                        >
+                            { t("myAccount:sections.consentManagement.actionTitles.learnMore") }
+                            <span className="empty-placeholder-link-arrow">→</span>
+                        </a>
+                    </div>
+                ) }
 
     <AppConsentList
         data-testid={ `${testId}-list` }
