@@ -40,7 +40,7 @@ import {
 import { AppState } from "../../store";
 import { ModalComponent, SettingsSection } from "../shared";
 import { PreferenceManagementList } from "./preference-management-list";
-import "../consents/consents.scss";
+import { EmptyConsentPlaceholder } from "../consents/empty-consent-placeholder";
 
 /**
  * Proptypes for the preference management component.
@@ -318,21 +318,15 @@ export const PreferenceManagement: FunctionComponent<PreferenceManagementCompone
             }
         >
             { !(consentItems && consentItems.length && consentItems.length > 0) && (
-    <div className="empty-placeholder-consent">
-        <p className="empty-placeholder-message">
-            { t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading") }
-        </p>
-        <a
-            href="https://wso2.com/identity-platform/docs/guides/consent-management/preference-management-consent/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="empty-placeholder-link"
-        >
-            { t("myAccount:sections.preferenceManagement.actionTitles.learnMore") }
-            <span className="empty-placeholder-link-arrow">→</span>
-        </a>
-    </div>
-) }
+                <EmptyConsentPlaceholder
+                    data-componentid={ `${componentId}-empty-placeholder` }
+                    message={
+                        t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading")
+                    }
+                    linkText={ t("myAccount:sections.preferenceManagement.actionTitles.learnMore") }
+                    linkHref="https://wso2.com/identity-platform/docs/guides/consent-management/preference-management-consent/"
+                />
+            ) }
                 <PreferenceManagementList
                     data-componentid={ `${componentId}-list` }
                     items={ consentItems }
