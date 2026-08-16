@@ -78,6 +78,12 @@ cd apps/myaccount && pnpm start   # My Account at https://localhost:9000/myaccou
 - Uses i18next via `@wso2is/i18n` with namespace-based keys: `"namespace:path.to.key"`
 - Translation interfaces in `modules/i18n/src/models/namespaces/`
 - English values in `modules/i18n/src/translations/en-US/portals/`
+- **Adding a brand-new namespace requires more than `modules/i18n`.** The console app keeps its own
+  copy of the namespace list in `features/admin.core.v1/constants/i18n-constants.ts`
+  (`I18nConstants` + `BUNDLE_NAMESPACE_DIRECTORIES`) and `features/admin.core.v1/configs/app.ts`
+  (the `ns` array in `Config.generateModuleInitOptions()`). Miss this and the UI silently renders
+  raw `namespace:key` strings instead of translated text, even though everything else builds fine.
+  See [CLAUDE.md](./CLAUDE.md#i18n--translations) for the full step-by-step.
 
 ## Full Documentation
 

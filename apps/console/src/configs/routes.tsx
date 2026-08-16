@@ -480,7 +480,48 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/applications-settings")),
+                    children: [
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.applications.v1/pages/applications-settings")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "applicationsSettingsDCR",
+                            name: "Dynamic Client Registration",
+                            path: AppConstants.getPaths().get("APPLICATIONS_SETTINGS_DCR"),
+                            protected: true,
+                            showOnSidePanel: false
+                        },
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.function-libraries.v1/pages/function-libraries")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "applicationsSettingsFunctionLibraries",
+                            name: "Function Libraries",
+                            path: AppConstants.getPaths().get("APPLICATIONS_SETTINGS_FUNCTION_LIBRARIES"),
+                            protected: true,
+                            showOnSidePanel: false
+                        },
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.function-libraries.v1/pages/function-library-edit")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "applicationsSettingsFunctionLibraryEdit",
+                            name: "Edit Function Library",
+                            path: AppConstants.getPaths().get("APPLICATIONS_SETTINGS_FUNCTION_LIBRARY_EDIT"),
+                            protected: true,
+                            showOnSidePanel: false
+                        }
+                    ],
+                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/applications-settings-hub")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon

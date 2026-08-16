@@ -71,6 +71,7 @@ export * from "./remote-user-stores";
 export * from "./rules";
 export * from "./custom-auth-connection";
 export * from "./push-providers";
+export * from "./function-libraries";
 export * from "./external-api-authentication";
 export * from "./webhooks";
 export * from "./approval-workflows";

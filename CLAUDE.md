@@ -450,10 +450,30 @@ const { t } = useTranslation();
 <Typography>{ t("applications:edit.sections.signOnMethod.title") }</Typography>
 ```
 
-**To add new translation keys:**
+**To add new translation keys (existing namespace):**
 1. Add the key to the TypeScript interface in `modules/i18n/src/models/namespaces/<namespace>-ns.ts`
 2. Add the English value in `modules/i18n/src/translations/en-US/portals/<namespace>.ts`
 3. Use the `<namespace>:<key.path>` format in components
+
+**To add a brand-new i18n namespace (e.g. for a new feature package):**
+
+Registering the namespace *only* inside `modules/i18n` is not enough — the console app keeps its
+own separate, hardcoded copy of the namespace list that actually drives what gets loaded at
+runtime. Missing this step is a common mistake: everything type-checks and builds fine, but the
+UI renders raw `namespace:key.path` strings instead of translated text, because the namespace was
+never in the list the app actually initializes i18next with.
+
+1. **`modules/i18n/src/constants.ts`** — add `public static readonly <NAME>_NAMESPACE: string = "<namespaceCamelCase>";` to `I18nModuleConstants`.
+2. **`modules/i18n/src/translations/en-US/meta.ts`** — add `I18nModuleConstants.<NAME>_NAMESPACE` to the `namespaces` array.
+3. **`modules/i18n/src/models/namespaces/<namespace>-ns.ts`** — new file exporting the `<namespace>NS` interface (lowerCamelCase name, mirrors existing files like `pushProvidersNS`).
+4. **`modules/i18n/src/models/namespaces/index.ts`** — add `export * from "./<namespace>-ns";`.
+5. **`modules/i18n/src/translations/en-US/portals/<namespace>.ts`** — new file exporting the translation object, typed as `<namespace>NS`.
+6. **`modules/i18n/src/translations/en-US/portals/index.ts`** — add `export * from "./<namespace>";`.
+7. **`features/admin.core.v1/constants/i18n-constants.ts`** — **(the step this project has previously missed)**:
+   - Add `public static readonly <NAME>_NAMESPACE: string = I18nModuleConstants.<NAME>_NAMESPACE;` to `I18nConstants`.
+   - Add `[ I18nConstants.<NAME>_NAMESPACE, "portals" ]` to the `BUNDLE_NAMESPACE_DIRECTORIES` map.
+8. **`features/admin.core.v1/configs/app.ts`** — add `I18nConstants.<NAME>_NAMESPACE` to the `ns` array inside `Config.generateModuleInitOptions()`. **This is the array that actually gets passed to i18next at app startup for the console app** — it is not derived automatically from `modules/i18n`'s own namespace list, so a namespace absent from here silently never loads, even though every other file is correct.
+9. Rebuild/restart before testing: `pnpm build:modules` (or let the console's own `pnpm start` → `prestart` step regenerate its i18n meta) and **fully reload the browser tab** — i18next's namespace list is computed once at app boot, so Vite HMR alone will not pick up a newly-added namespace in an already-open tab.
 
 ### Cross-Feature Dependencies
 

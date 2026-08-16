@@ -2566,6 +2566,21 @@ export interface ConsoleNS {
                     };
                 };
             };
+            applicationsSettingsHub: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+                cards: {
+                    dcr: {
+                        heading: string;
+                        description: string;
+                    };
+                    functionLibraries: {
+                        heading: string;
+                        description: string;
+                    };
+                };
+            };
             authenticationProvider: {
                 title: string;
                 subTitle: string;

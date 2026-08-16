@@ -295,7 +295,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
      * This handles back button navigation
      */
     const handleBackButtonClick = () => {
-        history.push(AppConstants.getPaths().get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS_SETTINGS"));
     };
 
     if (isGetDCRConfigsRequestLoading) {

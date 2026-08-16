@@ -26,7 +26,7 @@ export class I18nConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
-    /* eslint-disable @typescript-eslint/no-empty-function */
+     
     private constructor() {}
 
     /**
@@ -358,6 +358,9 @@ export class I18nConstants {
     public static readonly FLOW_EXTENSION_NAMESPACE: string =
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
 
+    public static readonly FUNCTION_LIBRARIES_NAMESPACE: string =
+        I18nModuleConstants.FUNCTION_LIBRARIES_NAMESPACE;
+
     /**
      * Locations of the I18n namespaces.
      */
@@ -425,7 +428,8 @@ export class I18nConstants {
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
-        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ],
+        [ I18nConstants.FUNCTION_LIBRARIES_NAMESPACE, "portals"]
     ]);
 
     /**
