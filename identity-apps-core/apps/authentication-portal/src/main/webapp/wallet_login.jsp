@@ -248,6 +248,7 @@
             var networkErrorCount = 0;
             var MAX_NETWORK_ERRORS = 5;
             var currentController = null;
+            var vpRequestId = '';
 
             // Initialize QR code
             function initQRCode() {
@@ -367,6 +368,7 @@
                     }
 
                     // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"EXPIRED"|"NOT_FOUND" }
+                    if (data.requestId) { vpRequestId = data.requestId; }
                     var status = data.status ? data.status.toUpperCase() : '';
 
                     if (status === 'ACTIVE') {
@@ -410,7 +412,7 @@
 
                 setTimeout(function() {
                     document.getElementById('authStatus').value = 'success';
-                    document.getElementById('authRequestId').value = CONFIG.sessionDataKey;
+                    document.getElementById('authRequestId').value = vpRequestId;
                     document.getElementById('authForm').submit();
                 }, 1000);
             }
@@ -428,7 +430,7 @@
             // Submit status=failed to commonauth — IS redirects to login page with all sign-in options.
             function goBackToSignIn() {
                 document.getElementById('authStatus').value = 'failed';
-                document.getElementById('authRequestId').value = CONFIG.sessionDataKey;
+                document.getElementById('authRequestId').value = vpRequestId;
                 document.getElementById('authForm').submit();
             }
 

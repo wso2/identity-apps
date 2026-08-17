@@ -106,6 +106,22 @@ export interface PresentationDefinitionsNS {
                 label: string;
                 hint: string;
             };
+            certificate: {
+                infoUnavailable: string;
+                expiryDate: string;
+                actions: {
+                    change: string;
+                    view: string;
+                    delete: string;
+                    remove: string;
+                };
+                modal: {
+                    title: string;
+                    serialNumber: string;
+                    unsupportedPrefix: string;
+                    unsupportedSuffix: string;
+                };
+            };
             trustedCas: {
                 addButton: string;
                 emptyPlaceholder: {

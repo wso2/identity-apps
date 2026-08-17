@@ -133,6 +133,24 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                        hint:
                            "Enable this to verify that the credential's certificate chain terminates at a trusted root certificate configured in the system."
                    },
+                   certificate: {
+                       infoUnavailable: "Unable to visualize the certificate details",
+                       expiryDate: "Expiry date: {{date}}",
+                       actions: {
+                           change: "Change certificate",
+                           view: "View certificate",
+                           delete: "Delete certificate",
+                           remove: "Remove certificate"
+                       },
+                       modal: {
+                           title: "View Certificate - {{alias}}",
+                           serialNumber: "Serial Number: {{serialNumber}}",
+                           unsupportedPrefix:
+                               "We were unable to read this certificate. Currently we only support" +
+                               " displaying public key information in certificate types of",
+                           unsupportedSuffix: "key algorithms."
+                       }
+                   },
                    trustedCas: {
                        addButton: "Add Certificate",
                        emptyPlaceholder: {

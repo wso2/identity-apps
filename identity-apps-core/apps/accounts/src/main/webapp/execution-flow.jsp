@@ -350,10 +350,7 @@
                     const { url, requestId, pollToken, flowId } = walletQR;
 
                     if (!pollToken) {
-                        setWalletError({
-                            message: "Wallet session identifier is missing. Please try again.",
-                            flowId: flowId
-                        });
+                        setError({ code: "VP_ERROR", message: "Wallet session identifier is missing. Please try again." });
                         setWalletQR(null);
                         return;
                     }

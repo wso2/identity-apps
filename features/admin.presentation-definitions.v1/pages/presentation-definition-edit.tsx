@@ -941,7 +941,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             if (!parsedIssuerCert || parsedIssuerCert.infoUnavailable) {
                 return (
                     <span className="with-muted-list-item-header">
-                        { t("Unable to visualize the certificate details") }
+                        { t("presentationDefinitions:editPage.issuerTrust.certificate.infoUnavailable") }
                     </span>
                 );
             }
@@ -973,7 +973,9 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     { " " }
                     <Popup
                         trigger={ <Icon name={ icon } color={ iconColor } /> }
-                        content={ "Expiry date: " + expiryDate.format("DD/MM/YYYY") }
+                        content={ t("presentationDefinitions:editPage.issuerTrust.certificate.expiryDate", {
+                            date: expiryDate.format("DD/MM/YYYY")
+                        }) }
                         inverted
                         position="top left"
                         size="mini"
@@ -1022,7 +1024,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                                 data-componentid={ `${componentId}-change-cert-button` }
                                             />
                                         }
-                                        content="Change certificate"
+                                        content={ t("presentationDefinitions:editPage.issuerTrust.certificate.actions.change") }
                                         inverted
                                         position="top center"
                                         size="mini"
@@ -1044,7 +1046,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                                 data-componentid={ `${componentId}-view-cert-button` }
                                             />
                                         }
-                                        content="View certificate"
+                                        content={ t("presentationDefinitions:editPage.issuerTrust.certificate.actions.view") }
                                         inverted
                                         position="top center"
                                         size="mini"
@@ -1063,7 +1065,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                                 data-componentid={ `${componentId}-delete-cert-button` }
                                             />
                                         }
-                                        content="Delete certificate"
+                                        content={ t("presentationDefinitions:editPage.issuerTrust.certificate.actions.delete") }
                                         inverted
                                         position="top center"
                                         size="mini"
@@ -1135,18 +1137,24 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                     icon={ getCertificateIllustrations().ribbon }
                                 />
                                 <div className="certificate-alias">
-                                    View Certificate - {
-                                        issuerCertDisplay.alias
-                                            ? issuerCertDisplay.alias
-                                            : issuerCertDisplay.issuerDN && (
-                                                CertificateManagementUtils.searchIssuerDNAlias(
-                                                    issuerCertDisplay.issuerDN)
-                                            )
-                                    }
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.modal.title",
+                                        {
+                                            alias: issuerCertDisplay.alias
+                                                ? issuerCertDisplay.alias
+                                                : issuerCertDisplay.issuerDN
+                                                    ? CertificateManagementUtils.searchIssuerDNAlias(
+                                                        issuerCertDisplay.issuerDN)
+                                                    : CertificateManagementConstants.QUESTION_MARK
+                                        }
+                                    ) }
                                 </div>
                                 <br/>
                                 <div className="certificate-serial">
-                                    Serial Number: { issuerCertDisplay.serialNumber }
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.modal.serialNumber",
+                                        { serialNumber: issuerCertDisplay.serialNumber }
+                                    ) }
                                 </div>
                             </div>
                         </Modal.Header>
@@ -1154,15 +1162,19 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             { issuerCertDisplay.infoUnavailable ? (
                                 <Segment className="certificate">
                                     <p className="certificate-field">
-                                        We were unable to read this certificate. Currently we only
-                                        support displaying public key information in certificate types of {
-                                            CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
-                                                (algo: string, index: number) => (
-                                                    <span key={ `${algo}+${index}` }>
-                                                        <Code>{ algo }</Code>&nbsp;
-                                                    </span>
-                                                ))
-                                        } key algorithms.
+                                        { t(
+                                            "presentationDefinitions:editPage.issuerTrust.certificate.modal.unsupportedPrefix"
+                                        ) }{ " " }
+                                        { CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
+                                            (algo: string, idx: number) => (
+                                                <span key={ `${algo}+${idx}` }>
+                                                    <Code>{ algo }</Code>&nbsp;
+                                                </span>
+                                            ))
+                                        }{ " " }
+                                        { t(
+                                            "presentationDefinitions:editPage.issuerTrust.certificate.modal.unsupportedSuffix"
+                                        ) }
                                     </p>
                                 </Segment>
                             ) : (

@@ -28,11 +28,11 @@ import {
     Popup,
     UserAvatar
 } from "@wso2is/react-components";
-import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, Modal, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
-interface TrustedCaCertificatesListProps extends IdentifiableComponentInterface {
+interface TrustedCaCertificatesListPropsInterfaceInterface extends IdentifiableComponentInterface {
     trustedCaPems: string[];
     onRemove: (index: number) => void;
     onReplace?: (index: number, newPem: string) => void;
@@ -44,8 +44,8 @@ interface TrustedCaCertificatesListProps extends IdentifiableComponentInterface 
  * Calls `onRemove(index)` for deletions — no API calls are made here.
  * The parent commits changes via its Update button.
  */
-export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
-    props: PropsWithChildren<TrustedCaCertificatesListProps>
+export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesListPropsInterface> = (
+    props: PropsWithChildren<TrustedCaCertificatesListPropsInterface>
 ): ReactElement => {
 
     const {
@@ -89,7 +89,7 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
         if (certificate?.infoUnavailable) {
             return (
                 <span className="with-muted-list-item-header">
-                    { t("Unable to visualize the certificate details") }
+                    { t("presentationDefinitions:editPage.issuerTrust.certificate.infoUnavailable") }
                 </span>
             );
         }
@@ -118,7 +118,9 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
 
         const alias: string = CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN);
         const expiryLabel: string = certificate.validTill
-            ? "Expiry date: " + new Date(certificate.validTill).toLocaleDateString("en-GB")
+            ? t("presentationDefinitions:editPage.issuerTrust.certificate.expiryDate", {
+                date: new Date(certificate.validTill).toLocaleDateString("en-GB")
+            })
             : "";
 
         return (
@@ -184,7 +186,9 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                                             data-componentid={ `${testId}-change-cert-${index}-button` }
                                         />
                                     }
-                                    content="Change certificate"
+                                    content={ t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.actions.change"
+                                    ) }
                                     inverted
                                     position="top center"
                                     size="mini"
@@ -203,7 +207,9 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                                             data-componentid={ `${testId}-view-cert-${index}-button` }
                                         />
                                     }
-                                    content="View certificate"
+                                    content={ t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.actions.view"
+                                    ) }
                                     inverted
                                     position="top center"
                                     size="mini"
@@ -222,7 +228,9 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                                             data-componentid={ `${testId}-delete-cert-${index}-button` }
                                         />
                                     }
-                                    content="Remove certificate"
+                                    content={ t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.actions.remove"
+                                    ) }
                                     inverted
                                     position="top center"
                                     size="mini"
@@ -269,18 +277,23 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                                 icon={ getCertificateIllustrations().ribbon }
                             />
                             <div className="certificate-alias">
-                                View Certificate -{ " " }
-                                {
-                                    certificateDisplay.infoUnavailable
-                                        ? CertificateManagementConstants.QUESTION_MARK
-                                        : CertificateManagementUtils.searchIssuerDNAlias(
-                                            certificateDisplay?.issuerDN
-                                        )
-                                }
+                                { t(
+                                    "presentationDefinitions:editPage.issuerTrust.certificate.modal.title",
+                                    {
+                                        alias: certificateDisplay.infoUnavailable
+                                            ? CertificateManagementConstants.QUESTION_MARK
+                                            : CertificateManagementUtils.searchIssuerDNAlias(
+                                                certificateDisplay?.issuerDN
+                                            )
+                                    }
+                                ) }
                             </div>
                             <br />
                             <div className="certificate-serial">
-                                Serial Number: { getSerialNumber(certificateDisplay) }
+                                { t(
+                                    "presentationDefinitions:editPage.issuerTrust.certificate.modal.serialNumber",
+                                    { serialNumber: getSerialNumber(certificateDisplay) }
+                                ) }
                             </div>
                         </div>
                     </Modal.Header>
@@ -288,13 +301,17 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                         { certificateDisplay.infoUnavailable ? (
                             <Segment className="certificate">
                                 <p className="certificate-field">
-                                    We were unable to read this certificate. Currently we only
-                                    support displaying public key information in certificate types of{ " " }
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.modal.unsupportedPrefix"
+                                    ) }{ " " }
                                     { CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
                                         (algorithm: string, algorithmIndex: number) => (
                                             <strong key={ algorithmIndex }>{ algorithm }</strong>
                                         )
-                                    ) }.
+                                    ) }{ " " }
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.certificate.modal.unsupportedSuffix"
+                                    ) }
                                 </p>
                             </Segment>
                         ) : (
