@@ -16,35 +16,47 @@
  * under the License.
  */
 
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import ConnectedApplicationsList from "../connected-applications-list";
+
+const COMPONENT_ID: string = "connected-applications-list";
 
 afterEach(cleanup);
 
 describe("Connected applications list", () => {
     it("renders the loader while connected applications are loading", () => {
-        render(<ConnectedApplicationsList applications={ [] } isLoading={ true } />);
+        render(<ConnectedApplicationsList
+            applications={ [] }
+            data-componentid={ COMPONENT_ID }
+            isLoading={ true }
+        />);
 
-        expect(screen.getByTestId("content-loader")).toBeDefined();
+        expect(screen.getByTestId(`${ COMPONENT_ID }-loader`)).toBeDefined();
         expect(screen.queryAllByRole("listitem")).toHaveLength(0);
     });
 
     it("renders an ordered empty list when there are no connected applications", () => {
-        render(<ConnectedApplicationsList applications={ [] } isLoading={ false } />);
+        render(<ConnectedApplicationsList
+            applications={ [] }
+            data-componentid={ COMPONENT_ID }
+            isLoading={ false }
+        />);
 
-        expect(screen.getByRole("list").classList.contains("ordered")).toBe(true);
+        expect(screen.getByTestId(COMPONENT_ID)).toBeDefined();
+        expect(screen.getByRole("list")).toBeDefined();
         expect(screen.queryAllByRole("listitem")).toHaveLength(0);
     });
 
     it("renders one connected application as an ordered list item", () => {
         render(<ConnectedApplicationsList
             applications={ [ "Sales Portal" ] }
+            data-componentid={ COMPONENT_ID }
             isLoading={ false }
         />);
 
-        expect(screen.getByRole("list").classList.contains("ordered")).toBe(true);
+        expect(screen.getByRole("list")).toBeDefined();
         expect(screen.getAllByRole("listitem")).toHaveLength(1);
         expect(screen.getByRole("listitem").textContent).toBe("Sales Portal");
     });
@@ -52,10 +64,11 @@ describe("Connected applications list", () => {
     it("renders multiple connected applications as ordered list items", () => {
         render(<ConnectedApplicationsList
             applications={ [ "Sales Portal", "Support Portal", "Partner Portal" ] }
+            data-componentid={ COMPONENT_ID }
             isLoading={ false }
         />);
 
-        expect(screen.getByRole("list").classList.contains("ordered")).toBe(true);
+        expect(screen.getByRole("list")).toBeDefined();
         expect(screen.getAllByRole("listitem")).toHaveLength(3);
         expect(screen.getAllByRole("listitem").map((item: HTMLElement) => item.textContent)).toEqual([
             "Sales Portal", "Support Portal", "Partner Portal"

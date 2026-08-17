@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { List } from "semantic-ui-react";
 
-interface ConnectedApplicationsListPropsInterface {
+interface ConnectedApplicationsListPropsInterface extends IdentifiableComponentInterface {
     applications?: string[];
     isLoading: boolean;
 }
@@ -37,14 +38,15 @@ const ConnectedApplicationsList: FunctionComponent<ConnectedApplicationsListProp
 
     const {
         applications,
-        isLoading
+        isLoading,
+        [ "data-componentid" ]: componentId = "connected-applications-list"
     } = props;
 
     return (
-        <List ordered className="ml-6">
+        <List ordered className="ml-6" data-componentid={ componentId }>
             {
                 isLoading ? (
-                    <ContentLoader />
+                    <ContentLoader data-componentid={ `${ componentId }-loader` } />
                 ) : applications?.map((application: string, index: number) => (
                     <List.Item key={ index }>{ application }</List.Item>
                 ))
