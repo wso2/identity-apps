@@ -142,7 +142,6 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                             <button
                                 type="submit"
                                 className="ui primary fluid large button"
-                                role="button"
                                 data-testid="login-page-continue-login-button"
                             >
                                 { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.LOGIN.BUTTON, "Sign In") }
