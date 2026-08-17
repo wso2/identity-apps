@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { PresentationDefinitionList } from "../models/presentation-definitions";
+import { PresentationDefinitionListInterface } from "../models/presentation-definitions";
 
 /**
  * Hook to fetch the list of presentation definitions with cursor-based pagination.
@@ -41,7 +41,7 @@ export const useGetPresentationDefinitions = (
     after?: string,
     filter?: string,
     shouldFetch: boolean = true
-): RequestResultInterface<PresentationDefinitionList, RequestErrorInterface> => {
+): RequestResultInterface<PresentationDefinitionListInterface, RequestErrorInterface> => {
     const params: Record<string, string | number> = {};
 
     if (limit) params.limit = limit;
@@ -57,7 +57,7 @@ export const useGetPresentationDefinitions = (
     };
 
     const { data, error, isLoading, isValidating, mutate } =
-        useRequest<PresentationDefinitionList, RequestErrorInterface>(
+        useRequest<PresentationDefinitionListInterface, RequestErrorInterface>(
             shouldFetch ? requestConfig : null
         );
 

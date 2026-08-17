@@ -1553,10 +1553,20 @@ export interface AuthenticationProviderNS {
             };
         };
         digitalWallet: {
+            tabs: {
+                general: string;
+                attributes: string;
+            };
             form: {
                 name: {
                     label: string;
                     placeholder: string;
+                    defaultValue: string;
+                    validations: {
+                        required: string;
+                        maxLength: string;
+                        minLength: string;
+                    };
                 };
                 presentationDefinition: {
                     label: string;
@@ -1612,6 +1622,14 @@ export interface AuthenticationProviderNS {
                     };
                     missingCredentialType: {
                         message: string;
+                        description: string;
+                    };
+                    noPdLinked: {
+                        header: string;
+                        description: string;
+                    };
+                    noClaimPaths: {
+                        header: string;
                         description: string;
                     };
                 };

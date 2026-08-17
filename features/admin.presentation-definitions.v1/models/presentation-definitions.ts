@@ -24,7 +24,7 @@
  * a single-element path. `allowedValues` maps to the DCQL `values` field and
  * is also enforced server-side.
  */
-export interface ClaimConstraintModel {
+export interface ClaimConstraintModelInterface {
     /** DCQL claim id — used to reference this claim in claim_sets. */
     id?: string;
     /** DCQL path array, e.g. ["address", "street_address"]. */
@@ -39,7 +39,7 @@ export interface ClaimConstraintModel {
 /**
  * Interface for a requested credential in a presentation definition.
  */
-export interface RequestedCredentialModel {
+export interface RequestedCredentialModelInterface {
     /** User-defined alphanumeric identifier (DCQL credential query id). */
     id: string;
     type: string;
@@ -54,13 +54,13 @@ export interface RequestedCredentialModel {
     jwksUri?: string;
     /** PEM-encoded issuer certificate (used when keyResolutionMethod is 'pem'). */
     issuerPem?: string;
-    claims?: ClaimConstraintModel[];
+    claims?: ClaimConstraintModelInterface[];
 }
 
 /**
  * Patch operation for trusted CA certificates.
  */
-interface CertificatePatch {
+interface CertificatePatchInterface {
     operation: "ADD" | "REMOVE" | "REPLACE";
     certificateIndex?: number;
     certificate?: string;
@@ -69,17 +69,17 @@ interface CertificatePatch {
 /**
  * Interface for a Presentation Definition (full object).
  */
-export interface PresentationDefinition {
+export interface PresentationDefinitionInterface {
     id: string;
     name: string;
     description?: string;
-    credentials: RequestedCredentialModel[];
+    credentials: RequestedCredentialModelInterface[];
 }
 
 /**
  * Interface for a Presentation Definition list item (summary view).
  */
-export interface PresentationDefinitionListItem {
+export interface PresentationDefinitionListItemInterface {
     id: string;
     name: string;
     description?: string;
@@ -88,7 +88,7 @@ export interface PresentationDefinitionListItem {
 /**
  * Interface for a pagination link in a list response.
  */
-export interface PaginationLink {
+export interface PaginationLinkInterface {
     rel: string;
     href: string;
 }
@@ -96,28 +96,28 @@ export interface PaginationLink {
 /**
  * Interface for the Presentation Definition list API response.
  */
-export interface PresentationDefinitionList {
+export interface PresentationDefinitionListInterface {
     totalResults?: number;
-    links?: PaginationLink[];
-    presentationDefinitions: PresentationDefinitionListItem[];
+    links?: PaginationLinkInterface[];
+    presentationDefinitions: PresentationDefinitionListItemInterface[];
 }
 
 /**
  * Interface for creating a new Presentation Definition.
  */
-export interface PresentationDefinitionCreationModel {
+export interface PresentationDefinitionCreationModelInterface {
     name: string;
     description?: string;
-    credentials: RequestedCredentialModel[];
+    credentials: RequestedCredentialModelInterface[];
 }
 
 /**
  * Interface for updating an existing Presentation Definition.
  */
-export interface PresentationDefinitionUpdateModel {
+export interface PresentationDefinitionUpdateModelInterface {
     name?: string;
     description?: string;
-    credentials?: RequestedCredentialModel[];
+    credentials?: RequestedCredentialModelInterface[];
 }
 
 /**

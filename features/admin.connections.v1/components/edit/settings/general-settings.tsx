@@ -423,13 +423,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param data - Checkbox props.
      */
     const handleIdentityProviderDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        if (data.checked) {
+            handleFormSubmit({ isEnabled: true });
+            return;
+        }
         setIsAppsLoading(true);
 
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
                     handleFormSubmit({
-                        isEnabled: data.checked
+                        isEnabled: false
                     });
                 } else {
                     dispatch(

@@ -23,9 +23,9 @@ import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models
 import { AxiosError, AxiosResponse } from "axios";
 import {
     ConnectedConnectionsResponseInterface,
-    PresentationDefinition,
-    PresentationDefinitionCreationModel,
-    PresentationDefinitionUpdateModel
+    PresentationDefinitionInterface,
+    PresentationDefinitionCreationModelInterface,
+    PresentationDefinitionUpdateModelInterface
 } from "../models/presentation-definitions";
 
 const httpClient: HttpClientInstance =
@@ -38,8 +38,8 @@ const httpClient: HttpClientInstance =
  * @returns Promise with the created definition.
  */
 export const addPresentationDefinition = (
-    data: PresentationDefinitionCreationModel
-): Promise<PresentationDefinition> => {
+    data: PresentationDefinitionCreationModelInterface
+): Promise<PresentationDefinitionInterface> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: { "Content-Type": "application/json" },
@@ -61,8 +61,8 @@ export const addPresentationDefinition = (
  */
 export const updatePresentationDefinition = (
     definitionId: string,
-    data: PresentationDefinitionUpdateModel
-): Promise<PresentationDefinition> => {
+    data: PresentationDefinitionUpdateModelInterface
+): Promise<PresentationDefinitionInterface> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: { "Content-Type": "application/json" },

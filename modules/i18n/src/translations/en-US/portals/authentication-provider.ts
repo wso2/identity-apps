@@ -1375,10 +1375,20 @@ export const authenticationProvider: AuthenticationProviderNS = {
                    title: "Update attribute selection"
                },
                digitalWallet: {
+                   tabs: {
+                       general: "General",
+                       attributes: "Attributes"
+                   },
                    form: {
                        name: {
                            label: "Name",
-                           placeholder: "My Wallet"
+                           placeholder: "My Wallet",
+                           defaultValue: "Digital Wallet",
+                           validations: {
+                               required: "Connection name is required.",
+                               maxLength: "Connection name cannot exceed {{max}} characters.",
+                               minLength: "Connection name must be at least {{min}} characters."
+                           }
                        },
                        presentationDefinition: {
                            label: "Presentation Definition",
@@ -1433,6 +1443,18 @@ export const authenticationProvider: AuthenticationProviderNS = {
                            missingCredentialType: {
                                message: "Credential Type Required",
                                description: "Enter a credential type before updating the presentation definition."
+                           },
+                           noPdLinked: {
+                               header: "No Presentation Definition Linked",
+                               description:
+                                   "This connection does not have a Presentation Definition linked. " +
+                                   "Configure a Presentation Definition in the General tab to enable attribute mapping."
+                           },
+                           noClaimPaths: {
+                               header: "No Claim Paths Configured",
+                               description:
+                                   "The linked Presentation Definition has no claim paths configured. " +
+                                   "Add claim paths to the Presentation Definition to enable attribute mapping."
                            }
                        }
                    },

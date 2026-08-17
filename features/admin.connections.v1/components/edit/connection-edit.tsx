@@ -24,6 +24,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
@@ -149,6 +150,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         ["data-testid"]: testId
     } = props;
 
+    const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         featureConfig?.identityProviders,
@@ -261,7 +263,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID !==
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
-                data-testid={ `${testId}-attribute-settings` }
+                data-componentid={ `${testId}-attribute-settings` }
                 provisioningAttributesEnabled={
                     !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes") &&
                     (isSaml ||
@@ -380,8 +382,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             <DigitalWalletGeneralSettings
                 editingIDP={ identityProvider }
                 isLoading={ isLoading }
+                onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                data-testid={ `${testId}-digital-wallet-general-settings` }
+                data-componentid={ `${testId}-digital-wallet-general-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
@@ -396,7 +399,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isReadOnly={ isReadOnly }
                 onUpdate={ onUpdate }
                 loader={ Loader }
-                data-testid={ `${ testId }-digital-credentials-claim-mapping` }
+                data-componentid={ `${ testId }-digital-credentials-claim-mapping` }
             />
         </ResourceTab.Pane>
     );
@@ -467,13 +470,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
             panes.push({
                 "data-tabid": "digital-credentials-configuration",
-                menuItem: "General",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.general"),
                 render: DigitalCredentialsConfigurationTabPane
             });
 
             panes.push({
                 "data-tabid": "digital-credentials-claim-mapping",
-                menuItem: "Attributes",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.attributes"),
                 render: DigitalCredentialsClaimMappingTabPane
             });
 

@@ -136,7 +136,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes.filter(
                 (e: ConnectionCommonClaimMappingInterface) =>
-                    e?.claim?.id === mapping?.claim.id
+                    e?.claim?.id !== mapping?.claim.id
             )
         ]);
     };
@@ -158,7 +158,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes.filter(
                 (e: ConnectionCommonClaimMappingInterface) =>
-                    e?.claim?.id === oldMapping?.claim.id
+                    e?.claim?.id !== oldMapping?.claim.id
             ),
             newMapping
         ]);

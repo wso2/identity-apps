@@ -40,6 +40,7 @@ interface AddTrustedCaModalProps extends IdentifiableComponentInterface {
 }
 
 const FORM_ID: string = "add-trusted-ca-modal-form";
+const I18N_PREFIX: string = "presentationDefinitions:editPage.issuerTrust.trustedCas.addModal";
 
 /**
  * Modal for staging a trusted CA certificate to local state.
@@ -48,7 +49,7 @@ const FORM_ID: string = "add-trusted-ca-modal-form";
 export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactElement => {
 
     const {
-        ["data-componentid"]: testId,
+        ["data-componentid"]: componentId = "add-trusted-ca-modal",
         existingCertPems,
         onAdd,
         isOpen,
@@ -62,17 +63,15 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
 
     const onCertificateChange = (result: PickerResult<string | File>): void => {
         try {
-            setPemBase64String(btoa(result.serialized?.pem ?? ""));
-            setSubmitShouldBeDisabled(
-                (!result.pastedContent || !result.file) &&
-                !result.serialized &&
-                !result.valid
-            );
+            const pem: string = result.serialized?.pem ?? "";
+
+            setPemBase64String(pem ? btoa(pem) : "");
+            setSubmitShouldBeDisabled(!pem || !result.valid);
         } catch (error) {
             setAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: "An unknown error occurred."
+                message: t("common:somethingWentWrong")
             });
         }
     };
@@ -80,10 +79,11 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
     const handleAdd = (): void => {
         if (existingCertPems.includes(pemBase64String)) {
             setAlert({
-                description: "This certificate has already been added.",
+                description: t(`${ I18N_PREFIX }.duplicateError.description`),
                 level: AlertLevels.ERROR,
-                message: "Duplicate Certificate"
+                message: t(`${ I18N_PREFIX }.duplicateError.message`)
             });
+
 
             return;
         }
@@ -99,12 +99,12 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
             size="tiny"
             open={ isOpen }
             onClose={ onClose }
-            data-testid={ `${testId}-view-certificate-modal` }
+            data-componentid={ `${ componentId }-view-certificate-modal` }
         >
             <Modal.Header className="wizard-header">
-                Add Trusted CA Certificate
+                { t(`${ I18N_PREFIX }.header`) }
                 <Heading as="h6">
-                    Upload a root CA certificate trusted for x5c chain validation.
+                    { t(`${ I18N_PREFIX }.subheading`) }
                 </Heading>
             </Modal.Header>
 
@@ -116,12 +116,12 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
                         fileStrategy={ new CertFileStrategy() }
                         normalizeStateOnRemoveOperations={ true }
                         onChange={ onCertificateChange }
-                        uploadButtonText="Upload Certificate File"
-                        dropzoneText="Drag and drop a certificate file here."
-                        pasteAreaPlaceholderText="Paste root CA certificate in PEM format."
+                        uploadButtonText={ t(`${ I18N_PREFIX }.uploadButtonText`) }
+                        dropzoneText={ t(`${ I18N_PREFIX }.dropzoneText`) }
+                        pasteAreaPlaceholderText={ t(`${ I18N_PREFIX }.pasteAreaPlaceholderText`) }
                         icon={ getCertificateIllustrations().uploadPlaceholder }
                         placeholderIcon={ <Icon name="file alternate" size="huge" /> }
-                        data-testid={ `${testId}-form-wizard--pem-certificate` }
+                        data-componentid={ `${ componentId }-form-wizard--pem-certificate` }
                     />
                 </Form>
             </Modal.Content>
@@ -133,7 +133,7 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
                             <LinkButton
                                 floated="left"
                                 onClick={ onClose }
-                                data-testid={ `${testId}-cancel-button` }
+                                data-componentid={ `${ componentId }-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -143,7 +143,7 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
                                 disabled={ submitShouldBeDisabled }
                                 floated="right"
                                 onClick={ handleAdd }
-                                data-testid={ `${testId}-finish-button` }
+                                data-componentid={ `${ componentId }-finish-button` }
                             >
                                 { t("common:add") }
                             </PrimaryButton>
@@ -155,6 +155,3 @@ export const AddTrustedCaModal: FC<AddTrustedCaModalProps> = (props): ReactEleme
     );
 };
 
-AddTrustedCaModal.defaultProps = {
-    "data-componentid": "add-trusted-ca-modal"
-};

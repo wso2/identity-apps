@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { PresentationDefinition } from "../models/presentation-definitions";
+import { PresentationDefinitionInterface } from "../models/presentation-definitions";
 
 /**
  * Hook to fetch a single presentation definition by ID.
@@ -35,7 +35,7 @@ import { PresentationDefinition } from "../models/presentation-definitions";
 export const useGetPresentationDefinition = (
     definitionId: string,
     shouldFetch: boolean = true
-): RequestResultInterface<PresentationDefinition, RequestErrorInterface> => {
+): RequestResultInterface<PresentationDefinitionInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
@@ -43,7 +43,7 @@ export const useGetPresentationDefinition = (
     };
 
     const { data, error, isLoading, isValidating, mutate } =
-        useRequest<PresentationDefinition, RequestErrorInterface>(
+        useRequest<PresentationDefinitionInterface, RequestErrorInterface>(
             shouldFetch && definitionId ? requestConfig : null
         );
 

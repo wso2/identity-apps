@@ -37,8 +37,8 @@ import { Dispatch } from "redux";
 import { Modal } from "semantic-ui-react";
 import { addPresentationDefinition } from "../../api/presentation-definitions";
 import {
-    PresentationDefinition,
-    PresentationDefinitionCreationModel
+    PresentationDefinitionInterface,
+    PresentationDefinitionCreationModelInterface
 } from "../../models/presentation-definitions";
 
 interface AddPresentationDefinitionWizardPropsInterface extends IdentifiableComponentInterface {
@@ -100,7 +100,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
 
         setIsSubmitting(true);
 
-        const definitionData: PresentationDefinitionCreationModel = {
+        const definitionData: PresentationDefinitionCreationModelInterface = {
             credentials: [ {
                 id: handle.trim(),
                 type: credentialType.trim()
@@ -110,7 +110,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
         };
 
         addPresentationDefinition(definitionData)
-            .then((response: PresentationDefinition) => {
+            .then((response: PresentationDefinitionInterface) => {
                 dispatch(addAlert<AlertInterface>({
                     description: t(
                         "presentationDefinitions:notifications.createDefinition.success.description"
@@ -123,6 +123,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                 history.push(
                     AppConstants.getPaths().get("VP_DEFINITION_EDIT").replace(":id", response.id)
                 );
+                closeWizard();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.status === 409) {
@@ -149,7 +150,6 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
             })
             .finally(() => {
                 setIsSubmitting(false);
-                closeWizard();
             });
     }, [ name, description, credentialType, handle ]);
 

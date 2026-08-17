@@ -16,8 +16,11 @@
   ~ under the License.
   --%>
 
+<%@ page import="javax.servlet.http.HttpServletResponse" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.net.URI" %>
+<%@ page import="java.net.URISyntaxException" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -34,6 +37,31 @@
     String vpTenantDomain = request.getParameter("tenantDomain");
     String vpOrgId = request.getParameter("orgId");
     String vpRootTenantDomain = request.getParameter("rootTenantDomain");
+
+    // Validate walletUrl: only non-empty openid4vp:// URIs with an authority component are accepted.
+    // Encode.forJavaScript at the render site neutralises quote injection but cannot prevent a
+    // javascript: URI from executing in window.location.href, so scheme validation must happen here.
+    boolean invalidWalletUrl = false;
+    if (walletUrl != null && !walletUrl.isEmpty()) {
+        try {
+            URI walletUri = new URI(walletUrl);
+            invalidWalletUrl = !"openid4vp".equalsIgnoreCase(walletUri.getScheme())
+                    || walletUri.getRawAuthority() == null;
+        } catch (URISyntaxException e) {
+            invalidWalletUrl = true;
+        }
+    }
+
+    // Reject any tenant domain or org ID that contains path separators or other characters outside
+    // the allowed identifier format. Encode.forHtmlAttribute blocks attribute injection but not
+    // path traversal, so we must validate before building the form action URL.
+    if ((vpOrgId != null && !vpOrgId.matches("[a-zA-Z0-9\\-]+"))
+            || (vpTenantDomain != null && !vpTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
+            || (vpRootTenantDomain != null && !vpRootTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
+            || invalidWalletUrl) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        return;
+    }
 
     // Build org/tenant-aware commonauthURL.
     // For sub-org login use /t/{rootTenant}/o/{orgId}/commonauth with the ROOT tenant (e.g. carbon.super).
@@ -77,7 +105,7 @@
             <jsp:include page="includes/analytics.jsp"/>
         <% } %>
 
-        <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+        <script src="${pageContext.request.contextPath}/libs/qrcode.min.js"></script>
 
         <style>
             #qrcode {
@@ -141,10 +169,10 @@
                 <div class="ui segment">
                     <%-- page content --%>
                     <h3 class="ui header text-center">
-                        Sign in with Digital Wallet
+                        <%= i18n(resourceBundle, customText, "wallet.vp.login.heading") %>
                     </h3>
                     <p id="walletSubtitle" class="text-center" style="color: #666; font-size: 14px;">
-                        Scan the QR code below with your digital wallet to verify your identity
+                        <%= i18n(resourceBundle, customText, "wallet.vp.login.subtitle") %>
                     </p>
                     <div class="ui divider hidden"></div>
 
@@ -159,11 +187,11 @@
                         <div class="text-center" id="statusContainer">
                             <div id="status">
                                 <span class="wallet-spinner"></span>
-                                <span>Waiting for wallet...</span>
+                                <span><%= i18n(resourceBundle, customText, "wallet.vp.login.waiting") %></span>
                             </div>
                             <div id="errorActions" style="display: none; margin-top: 16px;">
                                 <button class="ui primary fluid large button" onclick="goBackToSignIn()">
-                                    Go back to sign-in options
+                                    <%= i18n(resourceBundle, customText, "wallet.vp.login.back.button") %>
                                 </button>
                             </div>
                         </div>
@@ -173,13 +201,13 @@
                         <%-- Instructions --%>
                         <div id="instructionsSection" class="ui info message">
                             <div class="header" style="font-size: 14px; margin-bottom: 10px;">
-                                How to sign in
+                                <%= i18n(resourceBundle, customText, "wallet.vp.login.howto.heading") %>
                             </div>
                             <ol class="wallet-steps">
-                                <li>Open your digital wallet app (Heidi, etc.)</li>
-                                <li>Scan the QR code above</li>
-                                <li>Review the credential request</li>
-                                <li>Approve to share your credentials</li>
+                                <li><%= i18n(resourceBundle, customText, "wallet.vp.login.howto.step1") %></li>
+                                <li><%= i18n(resourceBundle, customText, "wallet.vp.login.howto.step2") %></li>
+                                <li><%= i18n(resourceBundle, customText, "wallet.vp.login.howto.step3") %></li>
+                                <li><%= i18n(resourceBundle, customText, "wallet.vp.login.howto.step4") %></li>
                             </ol>
                         </div>
 
@@ -188,10 +216,10 @@
                         <%-- Deep link for mobile --%>
                         <div id="deepLinkSection" class="text-center">
                             <p style="color: #888; font-size: 13px; margin-bottom: 10px;">
-                                Or tap below if you're on mobile:
+                                <%= i18n(resourceBundle, customText, "wallet.vp.login.mobile.cta") %>
                             </p>
                             <a id="walletLink" href="#" class="ui primary fluid large button">
-                                Open in Wallet
+                                <%= i18n(resourceBundle, customText, "wallet.vp.login.mobile.button") %>
                             </a>
                             <p id="deepLinkMsg" style="display: none; margin-top: 8px; color: #856404; font-size: 13px;"></p>
                         </div>
@@ -241,6 +269,15 @@
                 pollTimeout: 8000,
                 pollEndpoint: '/openid4vp/v1/status?pollToken=<%=Encode.forUriComponent(vpPollToken != null ? vpPollToken : "")%>'
             };
+            var I18N = {
+                waiting:        '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
+                verified:       '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.verified"))%>',
+                errorExpired:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.expired"))%>',
+                errorNetwork:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.network"))%>',
+                errorFailed:    '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.failed"))%>',
+                errorGeneric:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.generic"))%>',
+                mobileNoWallet: '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.mobile.no.wallet"))%>'
+            };
 
             var pollTimer = null;
             var submitted = false;
@@ -283,8 +320,7 @@
                     e.preventDefault();
 
                     var fallbackTimer = setTimeout(function() {
-                        document.getElementById('deepLinkMsg').textContent =
-                            'No wallet app detected. Use the QR code on a mobile device with your wallet installed.';
+                        document.getElementById('deepLinkMsg').textContent = I18N.mobileNoWallet;
                         document.getElementById('deepLinkMsg').style.display = 'block';
                     }, 1500);
 
@@ -372,16 +408,20 @@
                     var status = data.status ? data.status.toUpperCase() : '';
 
                     if (status === 'ACTIVE') {
-                        updateStatus('pending', 'Waiting for wallet...');
+                        updateStatus('pending', I18N.waiting);
                         schedulePoll();
                     } else if (status === 'VERIFIED') {
+                        if (!vpRequestId) {
+                            handleError(I18N.errorGeneric);
+                            return;
+                        }
                         handleSuccess();
                     } else if (status === 'FAILED') {
                         handleFailed(null);
                     } else if (status === 'EXPIRED' || status === 'NOT_FOUND') {
-                        handleFailed('Your QR code has expired. Please go back and try again.');
+                        handleFailed(I18N.errorExpired);
                     } else {
-                        handleError('Something went wrong. Please try again.');
+                        handleError(I18N.errorGeneric);
                     }
                 })
                 .catch(function(error) {
@@ -398,7 +438,7 @@
                     if (!submitted && networkErrorCount < MAX_NETWORK_ERRORS) {
                         schedulePoll();
                     } else if (!submitted) {
-                        handleError('Unable to reach the server. Please check your connection and try again or go back to try another sign-in method.');
+                        handleError(I18N.errorNetwork);
                     }
                 });
             }
@@ -408,7 +448,7 @@
                 if (submitted) return;
                 submitted = true;
 
-                updateStatus('success', 'Credentials verified. Completing authentication...');
+                updateStatus('success', I18N.verified);
 
                 setTimeout(function() {
                     document.getElementById('authStatus').value = 'success';
@@ -439,7 +479,7 @@
                 if (submitted) return;
                 submitted = true;
 
-                var reason = message || 'Wallet verification failed. Please try again or use another sign-in method.';
+                var reason = message || I18N.errorFailed;
                 showErrorState(reason);
             }
 
@@ -448,7 +488,7 @@
                 if (submitted) return;
                 submitted = true;
 
-                var reason = message || 'Something went wrong. Please try again.';
+                var reason = message || I18N.errorGeneric;
                 showErrorState(reason);
             }
 

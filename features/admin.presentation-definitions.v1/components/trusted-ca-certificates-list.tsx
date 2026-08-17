@@ -49,14 +49,14 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
 ): ReactElement => {
 
     const {
-        ["data-componentid"]: testId,
+        ["data-componentid"]: componentId = "trusted-ca-certificates-list",
         trustedCaPems,
         onRemove,
         onReplace,
         isReadOnly = false
     } = props;
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [ displayingCertificates, setDisplayingCertificates ] = useState<ReadonlyArray<DisplayCertificate>>([]);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
@@ -119,7 +119,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
         const alias: string = CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN);
         const expiryLabel: string = certificate.validTill
             ? t("presentationDefinitions:editPage.issuerTrust.certificate.expiryDate", {
-                date: new Date(certificate.validTill).toLocaleDateString("en-GB")
+                date: new Date(certificate.validTill).toLocaleDateString(i18n.language)
             })
             : "";
 
@@ -183,7 +183,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
                                                 setReplacingIndex(index);
                                                 setShowReplaceModal(true);
                                             } }
-                                            data-componentid={ `${testId}-change-cert-${index}-button` }
+                                            data-componentid={ `${ componentId }-change-cert-${index}-button` }
                                         />
                                     }
                                     content={ t(
@@ -204,7 +204,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
                                             color="grey"
                                             className="list-icon"
                                             onClick={ () => handleViewCertificate(certificate) }
-                                            data-componentid={ `${testId}-view-cert-${index}-button` }
+                                            data-componentid={ `${ componentId }-view-cert-${index}-button` }
                                         />
                                     }
                                     content={ t(
@@ -225,7 +225,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
                                             color="grey"
                                             className="list-icon"
                                             onClick={ () => onRemove(index) }
-                                            data-componentid={ `${testId}-delete-cert-${index}-button` }
+                                            data-componentid={ `${ componentId }-delete-cert-${index}-button` }
                                         />
                                     }
                                     content={ t(
@@ -255,7 +255,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
                         setShowReplaceModal(false);
                         setReplacingIndex(null);
                     } }
-                    data-componentid={ `${testId}-replace-cert-modal` }
+                    data-componentid={ `${ componentId }-replace-cert-modal` }
                 />
             ) }
             { showCertificateModal && certificateDisplay && (
@@ -266,7 +266,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
                     size="tiny"
                     open={ showCertificateModal }
                     onClose={ () => setShowCertificateModal(false) }
-                    data-componentid={ `${testId}-view-certificate-modal` }
+                    data-componentid={ `${ componentId }-view-certificate-modal` }
                 >
                     <Modal.Header>
                         <div className="certificate-ribbon">
@@ -333,6 +333,3 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
     );
 };
 
-TrustedCaCertificatesList.defaultProps = {
-    "data-componentid": "trusted-ca-certificates-list"
-};

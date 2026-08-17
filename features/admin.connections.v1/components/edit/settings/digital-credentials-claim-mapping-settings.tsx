@@ -21,9 +21,14 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods, TestableComponentInterface } from "@wso2is/core/models";
+import { HttpMethods, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { ConnectionInterface } from "../../../models/connection";
+import { useTranslation } from "react-i18next";
+import { Message } from "semantic-ui-react";
+import {
+    CommonPluggableComponentPropertyInterface,
+    ConnectionInterface
+} from "../../../models/connection";
 import { AttributeSettings } from "./attribute-settings";
 
 /**
@@ -33,7 +38,7 @@ import { AttributeSettings } from "./attribute-settings";
  * so a separate call to /federated-authenticators/{id} is required.
  */
 interface AuthenticatorDetailsInterface {
-    properties?: Array<{ key?: string; value?: string }>;
+    properties?: CommonPluggableComponentPropertyInterface[];
 }
 
 interface PdClaimConstraintInterface {
@@ -48,7 +53,10 @@ interface PdResponseInterface {
     credentials?: PdCredentialInterface[];
 }
 
-interface DigitalCredentialsClaimMappingSettingsPropsInterface extends TestableComponentInterface {
+const I18N_PREFIX: string =
+    "authenticationProvider:templates.digitalWallet.claimMapping.notifications";
+
+interface DigitalCredentialsClaimMappingSettingsPropsInterface extends IdentifiableComponentInterface {
     identityProvider: ConnectionInterface;
     isLoading?: boolean;
     isReadOnly: boolean;
@@ -81,8 +89,10 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
         isReadOnly,
         loader,
         onUpdate,
-        [ "data-testid" ]: testId = "digital-credentials-claim-mapping-settings"
+        [ "data-componentid" ]: componentId = "digital-credentials-claim-mapping-settings"
     } = props;
+
+    const { t } = useTranslation();
 
     const idpId: string | undefined = identityProvider?.id;
     const defaultAuthenticatorId: string | undefined =
@@ -104,13 +114,18 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             }
             : null;
 
-    const { data: authData }: RequestResultInterface<AuthenticatorDetailsInterface> =
+    const {
+        data: authData,
+        isLoading: isAuthLoading
+    }: RequestResultInterface<AuthenticatorDetailsInterface> =
         useRequest<AuthenticatorDetailsInterface>(authRequestConfig);
 
     // Step 2: Extract presentationDefinitionId from the authenticator properties.
     const presentationDefinitionId: string | undefined = useMemo((): string | undefined => {
-        const prop: { key?: string; value?: string } | undefined =
-            (authData?.properties ?? []).find((p: { key?: string }) => p.key === "presentationDefinitionId");
+        const prop: CommonPluggableComponentPropertyInterface | undefined =
+            (authData?.properties ?? []).find(
+                (p: CommonPluggableComponentPropertyInterface) => p.key === "presentationDefinitionId"
+            );
 
         return prop?.value ?? undefined;
     }, [ authData ]);
@@ -125,14 +140,25 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
         }
         : null;
 
-    const { data: pdData }: RequestResultInterface<PdResponseInterface> =
+    const {
+        data: pdData,
+        isLoading: isPdLoading
+    }: RequestResultInterface<PdResponseInterface> =
         useRequest<PdResponseInterface>(pdRequestConfig);
+
+    // Track each request's in-flight state independently of its data value so that
+    // undefined data during loading is never confused with "no paths configured".
+    const isResolvingPd: boolean =
+        (authRequestConfig !== null && isAuthLoading) ||
+        (pdRequestConfig !== null && isPdLoading);
 
     // Flatten credential claim paths to dot-joined strings (e.g. "address.street_address").
     // These match the remote claim URIs stored in IDP_CLAIM by the OpenID4VP authenticator.
-    const allowedMappedValues: string[] | undefined = useMemo((): string[] | undefined => {
+    // Returns an empty array (not undefined) when the PD has no paths, so callers can
+    // distinguish "not yet loaded" from "loaded but empty".
+    const allowedMappedValues: string[] = useMemo((): string[] => {
         if (!pdData?.credentials) {
-            return undefined;
+            return [];
         }
         const paths: string[] = [];
 
@@ -144,8 +170,30 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             }
         }
 
-        return paths.length > 0 ? paths : undefined;
+        return paths;
     }, [ pdData ]);
+
+    if (isLoading || isResolvingPd) {
+        return loader();
+    }
+
+    if (!presentationDefinitionId) {
+        return (
+            <Message warning data-componentid={ `${ componentId }-no-pd-linked` }>
+                <Message.Header>{ t(`${ I18N_PREFIX }.noPdLinked.header`) }</Message.Header>
+                <p>{ t(`${ I18N_PREFIX }.noPdLinked.description`) }</p>
+            </Message>
+        );
+    }
+
+    if (allowedMappedValues.length === 0) {
+        return (
+            <Message warning data-componentid={ `${ componentId }-no-claim-paths` }>
+                <Message.Header>{ t(`${ I18N_PREFIX }.noClaimPaths.header`) }</Message.Header>
+                <p>{ t(`${ I18N_PREFIX }.noClaimPaths.description`) }</p>
+            </Message>
+        );
+    }
 
     return (
         <AttributeSettings
@@ -156,7 +204,7 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             onUpdate={ onUpdate }
             hideIdentityClaimAttributes={ false }
             isRoleMappingsEnabled={ true }
-            data-testid={ `${ testId }-attribute-settings` }
+            data-componentid={ `${ componentId }-attribute-settings` }
             provisioningAttributesEnabled={ true }
             isReadOnly={ isReadOnly }
             loader={ loader }

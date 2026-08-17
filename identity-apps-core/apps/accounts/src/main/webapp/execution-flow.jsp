@@ -126,7 +126,7 @@
         };
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="${pageContext.request.contextPath}/libs/qrcode.min.js"></script>
     <style>
         .wallet-reg-spinner {
             display: inline-block; width: 16px; height: 16px;
@@ -679,21 +679,27 @@
                     );
                 }
 
+                const { useTranslations } = ReactUICore;
+
                 const WalletQRView = function() {
                     var qrRef = useRef(null);
                     var [ qrStatus, setQrStatus ] = useState("pending");
                     var [ qrErrorMsg, setQrErrorMsg ] = useState("");
                     var [ deepLinkMsg, setDeepLinkMsg ] = useState("");
+                    var i18n = useTranslations();
+                    var t = function(key, fallback) {
+                        return (i18n && i18n.translations && i18n.translations[key]) || fallback;
+                    };
 
                     useEffect(function() {
                         if (!walletQR || !walletQR.url) {
                             setQrStatus("error");
-                            setQrErrorMsg("Unable to generate QR code. Please restart the registration flow.");
+                            setQrErrorMsg(t("wallet.vp.qr.error.generate", "Unable to generate QR code. Please restart the registration flow."));
                             return;
                         }
                         if (typeof QRCode === "undefined") {
                             setQrStatus("error");
-                            setQrErrorMsg("QR code could not be loaded. Please restart the registration flow.");
+                            setQrErrorMsg(t("wallet.vp.qr.error.load", "QR code could not be loaded. Please restart the registration flow."));
                             return;
                         }
                         try {
@@ -709,14 +715,14 @@
                             setQrStatus("ok");
                         } catch (e) {
                             setQrStatus("error");
-                            setQrErrorMsg("Unable to generate QR code. Please restart the registration flow.");
+                            setQrErrorMsg(t("wallet.vp.qr.error.generate", "Unable to generate QR code. Please restart the registration flow."));
                         }
                     }, []);
 
                     function handleWalletLinkClick(e) {
                         e.preventDefault();
                         var fallbackTimer = setTimeout(function() {
-                            setDeepLinkMsg("No wallet app detected. Use the QR code on a mobile device with your wallet installed.");
+                            setDeepLinkMsg(t("wallet.vp.qr.mobile.no.wallet", "No wallet app detected. Use the QR code on a mobile device with your wallet installed."));
                         }, 1500);
                         window.addEventListener("blur", function() {
                             clearTimeout(fallbackTimer);
@@ -726,9 +732,9 @@
                     }
 
                     return createElement("div", { className: "segment-form" },
-                        createElement("h3", { className: "ui header text-center" }, "Register with Digital Wallet"),
+                        createElement("h3", { className: "ui header text-center" }, t("wallet.vp.qr.heading", "Register with Digital Wallet")),
                         createElement("p", { className: "text-center", style: { color: "#666", fontSize: "14px" } },
-                            "Scan the QR code below with your digital wallet to share your credentials"
+                            t("wallet.vp.qr.subtitle", "Scan the QR code below with your digital wallet to share your credentials")
                         ),
                         createElement("div", { className: "ui divider hidden" }),
                         createElement("div", { className: "field text-center" },
@@ -752,24 +758,24 @@
                               )
                             : createElement("div", { className: "text-center" },
                                 createElement("span", { className: "wallet-reg-spinner" }),
-                                createElement("span", null, "Waiting for wallet verification...")
+                                createElement("span", null, t("wallet.vp.qr.waiting", "Waiting for wallet verification..."))
                               ),
                         createElement("div", { className: "ui info message", style: { marginTop: "16px" } },
-                            createElement("div", { className: "header", style: { fontSize: "14px", marginBottom: "10px" } }, "How to register"),
+                            createElement("div", { className: "header", style: { fontSize: "14px", marginBottom: "10px" } }, t("wallet.vp.qr.howto.heading", "How to register")),
                             createElement("ol", { className: "wallet-reg-steps" },
-                                createElement("li", null, "Open your digital wallet app (e.g. Inji)"),
-                                createElement("li", null, "Scan the QR code above"),
-                                createElement("li", null, "Review the credential request"),
-                                createElement("li", null, "Approve to share your credentials")
+                                createElement("li", null, t("wallet.vp.qr.howto.step1", "Open your digital wallet app (e.g. Inji)")),
+                                createElement("li", null, t("wallet.vp.qr.howto.step2", "Scan the QR code above")),
+                                createElement("li", null, t("wallet.vp.qr.howto.step3", "Review the credential request")),
+                                createElement("li", null, t("wallet.vp.qr.howto.step4", "Approve to share your credentials"))
                             )
                         ),
                         createElement("div", { className: "ui divider hidden" }),
                         createElement("div", { className: "text-center" },
                             createElement("p", { style: { color: "#888", fontSize: "13px", marginBottom: "10px" } },
-                                "Or tap below if you're on mobile:"
+                                t("wallet.vp.qr.mobile.cta", "Or tap below if you're on mobile:")
                             ),
                             createElement("a", { href: walletQR && walletQR.url, className: "ui primary fluid large button", onClick: handleWalletLinkClick },
-                                "Open in Wallet"
+                                t("wallet.vp.qr.mobile.button", "Open in Wallet")
                             ),
                             deepLinkMsg ? createElement("p", { style: { marginTop: "8px", color: "#856404", fontSize: "13px" } }, deepLinkMsg) : null
                         )

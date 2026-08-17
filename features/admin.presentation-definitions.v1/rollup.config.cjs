@@ -67,7 +67,7 @@ module.exports = [
     },
     {
         cache: false,
-        input: "dist/esm/types/index.d.ts",
+        input: "dist/esm/types/public-api.d.ts",
         output: [ { file: "dist/esm/index.d.ts", format: "esm" } ],
         plugins: [ dts.default() ]
     }

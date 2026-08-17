@@ -41,7 +41,7 @@ import { Button, DropdownProps, Icon, PaginationProps } from "semantic-ui-react"
 import { PresentationDefinitionList } from "../components/presentation-definition-list";
 import AddPresentationDefinitionWizard from "../components/wizard/add-presentation-definition";
 import { useGetPresentationDefinitions } from "../hooks/use-get-presentation-definitions";
-import { PaginationLink, PresentationDefinitionListItem } from "../models/presentation-definitions";
+import { PaginationLinkInterface, PresentationDefinitionListItemInterface } from "../models/presentation-definitions";
 
 type PresentationDefinitionsPageProps = IdentifiableComponentInterface;
 
@@ -87,7 +87,7 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
             setNextBefore(undefined);
 
             if (definitionList.links && definitionList.links.length > 0) {
-                definitionList.links.forEach((link: PaginationLink) => {
+                definitionList.links.forEach((link: PaginationLinkInterface) => {
                     if (link.rel === "next" || link.rel === "after") {
                         const afterMatch: RegExpMatchArray = link.href.match(/after=([^&]*)/);
 
@@ -179,7 +179,7 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
         history.push(AppConstants.getPaths().get("OPENID4VP_CONFIG"));
     };
 
-    const definitions: PresentationDefinitionListItem[] =
+    const definitions: PresentationDefinitionListItemInterface[] =
         definitionList?.presentationDefinitions ?? [];
 
     return (

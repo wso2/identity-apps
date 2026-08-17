@@ -42,12 +42,12 @@ import { Dispatch } from "redux";
 import { deletePresentationDefinition, getConnectedConnections } from "../api/presentation-definitions";
 import {
     ConnectedConnectionsResponseInterface,
-    PresentationDefinitionListItem
+    PresentationDefinitionListItemInterface
 } from "../models/presentation-definitions";
 
 interface PresentationDefinitionListProps extends IdentifiableComponentInterface {
     isLoading: boolean;
-    list: PresentationDefinitionListItem[];
+    list: PresentationDefinitionListItemInterface[];
     mutateList: () => void;
     onAddClick: () => void;
     searchQuery?: string;
@@ -88,11 +88,11 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ showDeleteBlockedModal, setShowDeleteBlockedModal ] = useState<boolean>(false);
-    const [ currentDeletion, setCurrentDeletion ] = useState<PresentationDefinitionListItem>(null);
+    const [ currentDeletion, setCurrentDeletion ] = useState<PresentationDefinitionListItemInterface>(null);
     const [ connectedConnectionNames, setConnectedConnectionNames ] = useState<string[]>(undefined);
     const [ isConnectionsLoading, setIsConnectionsLoading ] = useState<boolean>(false);
 
-    const handleDeleteInitiation = (definition: PresentationDefinitionListItem): void => {
+    const handleDeleteInitiation = (definition: PresentationDefinitionListItemInterface): void => {
         setIsConnectionsLoading(true);
         setCurrentDeletion(definition);
         getConnectedConnections(definition.id)
@@ -118,7 +118,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             .finally(() => setIsConnectionsLoading(false));
     };
 
-    const handleDelete = (definition: PresentationDefinitionListItem): void => {
+    const handleDelete = (definition: PresentationDefinitionListItemInterface): void => {
         deletePresentationDefinition(definition.id)
             .then(() => {
                 dispatch(addAlert({
@@ -142,7 +142,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             "data-componentid": `${componentId}-item-edit-button`,
             hidden: (): boolean => !hasUpdatePermission,
             icon: (): SemanticICONS => "pencil alternate",
-            onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void =>
+            onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItemInterface): void =>
                 history.push(
                     AppConstants.getPaths().get("VP_DEFINITION_EDIT").replace(":id", definition.id)
                 ),
@@ -153,7 +153,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             "data-componentid": `${componentId}-item-delete-button`,
             hidden: (): boolean => !hasDeletePermission,
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void => {
+            onClick: (_e: SyntheticEvent, definition: PresentationDefinitionListItemInterface): void => {
                 handleDeleteInitiation(definition);
             },
             popupText: (): string => t("common:delete"),
@@ -167,7 +167,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             dataIndex: "name",
             id: "name",
             key: "name",
-            render: (definition: PresentationDefinitionListItem): ReactNode => (
+            render: (definition: PresentationDefinitionListItemInterface): ReactNode => (
                 <Header
                     image
                     as="h6"
@@ -196,7 +196,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
             dataIndex: "description",
             id: "description",
             key: "description",
-            render: (definition: PresentationDefinitionListItem): ReactNode => (
+            render: (definition: PresentationDefinitionListItemInterface): ReactNode => (
                 <div>{ definition.description || "-" }</div>
             ),
             title: t("presentationDefinitions:list.columns.description")
@@ -264,13 +264,13 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
 
     return (
         <>
-            <DataTable<PresentationDefinitionListItem>
+            <DataTable<PresentationDefinitionListItemInterface>
                 className="presentation-definitions-table"
                 isLoading={ isLoading }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list }
-                onRowClick={ (_e: SyntheticEvent, definition: PresentationDefinitionListItem): void => {
+                onRowClick={ (_e: SyntheticEvent, definition: PresentationDefinitionListItemInterface): void => {
                     history.push(
                         AppConstants.getPaths().get("VP_DEFINITION_EDIT").replace(":id", definition.id)
                     );

@@ -26,10 +26,9 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import MuiTextField from "@oxygen-ui/react/TextField";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
@@ -103,11 +102,11 @@ import {
 } from "../api/presentation-definitions";
 import { useGetPresentationDefinition } from "../hooks/use-get-presentation-definition";
 import {
-    ClaimConstraintModel,
+    ClaimConstraintModelInterface,
     ConnectedConnectionsResponseInterface,
-    PresentationDefinition,
-    PresentationDefinitionUpdateModel,
-    RequestedCredentialModel
+    PresentationDefinitionInterface,
+    PresentationDefinitionUpdateModelInterface,
+    RequestedCredentialModelInterface
 } from "../models/presentation-definitions";
 import { AddIssuerCertificateModal } from "../components/add-issuer-certificate-modal";
 import { AddTrustedCaModal } from "../components/add-trusted-ca-modal";
@@ -132,7 +131,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 }: PresentationDefinitionEditPagePropsInterface): ReactElement => {
 
     const definitionId: string = match?.params?.id;
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const presentationDefinitionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -163,7 +162,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ credentialType, setCredentialType ] = useState<string>("");
 
     // Claims tab state
-    const [ claims, setClaims ] = useState<ClaimConstraintModel[]>([]);
+    const [ claims, setClaims ] = useState<ClaimConstraintModelInterface[]>([]);
     const [ showClaimModal, setShowClaimModal ] = useState<boolean>(false);
     const [ claimModalIndex, setClaimModalIndex ] = useState<number | null>(null);
     const [ modalPath, setModalPath ] = useState<string>("");
@@ -199,14 +198,14 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     useEffect(() => {
         if (!definition) return;
 
-        const cred: RequestedCredentialModel | undefined = definition.credentials?.[0];
+        const cred: RequestedCredentialModelInterface | undefined = definition.credentials?.[0];
 
         setName(definition.name ?? "");
         setDescription(definition.description ?? "");
         setCredentialId(cred?.id ?? "");
         setCredentialType(cred?.type ?? "");
         setClaims(
-            (cred?.claims ?? []).map((c: ClaimConstraintModel) => ({
+            (cred?.claims ?? []).map((c: ClaimConstraintModelInterface) => ({
                 ...c,
                 path: c.path ?? (c.name ? [ c.name ] : [ "" ])
             }))
@@ -219,20 +218,21 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setIsFormReady(true);
     }, [ definition ]);
 
-    const buildUpdatePayload = useCallback((): PresentationDefinitionUpdateModel => {
-        const validClaims: ClaimConstraintModel[] = claims
-            .map((c: ClaimConstraintModel) => ({
+    const buildUpdatePayload = useCallback((): PresentationDefinitionUpdateModelInterface => {
+        const validClaims: ClaimConstraintModelInterface[] = claims
+            .map((c: ClaimConstraintModelInterface) => ({
                 ...c,
                 path: (c.path ?? []).map((s: string) => s.trim()).filter(Boolean)
             }))
-            .filter((c: ClaimConstraintModel) => (c.path ?? []).length > 0)
-            .map((c: ClaimConstraintModel) => ({
+            .filter((c: ClaimConstraintModelInterface) => (c.path ?? []).length > 0)
+            .map((c: ClaimConstraintModelInterface) => ({
                 allowedValues: (c.allowedValues ?? []).length > 0 ? c.allowedValues : undefined,
+                id: c.id,
                 mandatory: c.mandatory ?? true,
                 path: c.path ?? []
             }));
 
-        const credential: RequestedCredentialModel = {
+        const credential: RequestedCredentialModelInterface = {
             claims: validClaims,
             enforceTrustedIssuer: keyResolutionMethod === "x5c" ? enforceTrustedIssuer : false,
             id: credentialId,
@@ -258,9 +258,9 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setIsSubmitting(true);
 
         updatePresentationDefinition(definitionId, buildUpdatePayload())
-            .then((updated: PresentationDefinition) => {
-                const updatedCred: RequestedCredentialModel | undefined =
-                    updated.credentials?.find((c: RequestedCredentialModel) => c.id === credentialId);
+            .then((updated: PresentationDefinitionInterface) => {
+                const updatedCred: RequestedCredentialModelInterface | undefined =
+                    updated.credentials?.find((c: RequestedCredentialModelInterface) => c.id === credentialId);
 
                 setTrustedCaPems(updatedCred?.trustedCaPems ?? []);
                 dispatch(addAlert<AlertInterface>({
@@ -347,7 +347,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     };
 
     const openEditClaimModal = (index: number): void => {
-        const claim: ClaimConstraintModel = claims[index];
+        const claim: ClaimConstraintModelInterface = claims[index];
 
         setClaimModalIndex(index);
         setModalPath((claim.path ?? []).join("."));
@@ -359,19 +359,19 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
     const saveClaimModal = (): void => {
         if (!modalPath.trim()) return;
-        const updated: ClaimConstraintModel = {
+        const updated: ClaimConstraintModelInterface = {
             allowedValues: modalAllowedValues.length > 0 ? modalAllowedValues : undefined,
             mandatory: modalMandatory,
             path: modalPath.trim().split(".")
         };
 
         if (claimModalIndex === null) {
-            setClaims((prev: ClaimConstraintModel[]) => [ ...prev, updated ]);
+            setClaims((prev: ClaimConstraintModelInterface[]) => [ ...prev, updated ]);
         } else {
-            setClaims((prev: ClaimConstraintModel[]) => {
-                const next: ClaimConstraintModel[] = [ ...prev ];
+            setClaims((prev: ClaimConstraintModelInterface[]) => {
+                const next: ClaimConstraintModelInterface[] = [ ...prev ];
 
-                next[claimModalIndex] = updated;
+                next[claimModalIndex] = { ...prev[claimModalIndex], ...updated };
                 return next;
             });
         }
@@ -385,8 +385,8 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     };
 
     const removeClaim = (index: number): void => {
-        setClaims((prev: ClaimConstraintModel[]) =>
-            prev.filter((_: ClaimConstraintModel, i: number) => i !== index)
+        setClaims((prev: ClaimConstraintModelInterface[]) =>
+            prev.filter((_: ClaimConstraintModelInterface, i: number) => i !== index)
         );
     };
 
@@ -500,7 +500,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 dataIndex: "path",
                 id: "path",
                 key: "path",
-                render: (claim: ClaimConstraintModel): ReactNode => {
+                render: (claim: ClaimConstraintModelInterface): ReactNode => {
                     const pathLabel: string = (claim.path ?? []).join(".") || "—";
 
                     return (
@@ -535,7 +535,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 dataIndex: "mandatory",
                 id: "mandatory",
                 key: "mandatory",
-                render: (claim: ClaimConstraintModel): ReactNode => (
+                render: (claim: ClaimConstraintModelInterface): ReactNode => (
                     <Header as="h6" data-componentid={ `${componentId}-claim-mandatory-heading` }>
                         <Header.Content>
                             { claim.mandatory !== false
@@ -552,7 +552,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 dataIndex: "allowedValues",
                 id: "allowedValues",
                 key: "allowedValues",
-                render: (claim: ClaimConstraintModel): ReactNode => (
+                render: (claim: ClaimConstraintModelInterface): ReactNode => (
                     <div style={ { display: "flex", flexWrap: "wrap", gap: "4px" } }>
                         { (claim.allowedValues ?? []).length > 0
                             ? (claim.allowedValues ?? []).map((v: string, vi: number) => (
@@ -578,7 +578,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             {
                 hidden: (): boolean => isReadOnly,
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
+                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModelInterface): void => {
                     openEditClaimModal(claims.indexOf(claim));
                 },
                 popupText: (): string => t("common:edit"),
@@ -587,7 +587,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             {
                 hidden: (): boolean => isReadOnly,
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModel): void => {
+                onClick: (_e: SyntheticEvent, claim: ClaimConstraintModelInterface): void => {
                     removeClaim(claims.indexOf(claim));
                 },
                 popupText: (): string => t("common:remove"),
@@ -648,7 +648,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             </PrimaryButton>
                         </div>
                         ) }
-                        <DataTable<ClaimConstraintModel>
+                        <DataTable<ClaimConstraintModelInterface>
                             columns={ claimTableColumns }
                             data={ claims }
                             actions={ claimTableActions }
@@ -975,7 +975,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     <Popup
                         trigger={ <Icon name={ icon } color={ iconColor } /> }
                         content={ t("presentationDefinitions:editPage.issuerTrust.certificate.expiryDate", {
-                            date: expiryDate.format("DD/MM/YYYY")
+                            date: expiryDate.toDate().toLocaleDateString(i18n.language)
                         }) }
                         inverted
                         position="top left"
@@ -1329,6 +1329,18 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             </ResourceTab.Pane>
         );
     };
+
+    if (error) {
+        return (
+            <EmptyPlaceholder
+                image={ getEmptyPlaceholderIllustrations().genericError }
+                imageSize="tiny"
+                subtitle={ [ t("presentationDefinitions:notifications.fetchDefinition.error.description") ] }
+                title={ t("presentationDefinitions:notifications.fetchDefinition.error.message") }
+                data-componentid={ `${ componentId }-error-placeholder` }
+            />
+        );
+    }
 
     if (isLoading || !isFormReady) {
         return <ContentLoader />;

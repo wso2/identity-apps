@@ -270,7 +270,7 @@
             "openid",
             "profile"
         ],
-        "serverOrigin": "https://babara-unexclusive-debbi.ngrok-free.dev",
+        "serverOrigin": "https://localhost:9443",
         "storage": "webWorker"
     },
     "loginCallbackPath": "",
@@ -281,7 +281,7 @@
         "login": "",
         "logout": "/logout"
     },
-    "serverOrigin": "https://babara-unexclusive-debbi.ngrok-free.dev",
+    "serverOrigin": "https://localhost:9443",
     "session": {
         "checkSessionInterval": 3.0,
         "sessionRefreshTimeOut": 300.0,

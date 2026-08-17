@@ -27,10 +27,10 @@ import useRequest, {
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { store } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { HttpMethods } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/forms";
+import { Field, Wizard2, WizardPage } from "@wso2is/forms";
 import {
     DocumentationLink,
     GenericIcon,
@@ -138,7 +138,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
     );
 
     const initialValues: DigitalWalletWizardFormValuesInterface = {
-        name: "Digital Wallet"
+        name: t(`${ I18N_PREFIX }.form.name.defaultValue`)
     };
 
     const navigateToPresentationDefinitions = (): void => {
@@ -212,8 +212,9 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
         try {
             await createConnectionFromValues(values);
         } catch (error) {
-            const axiosError: AxiosError = error as AxiosError;
-            const responseData: any = axiosError?.response?.data;
+            const axiosError: AxiosError<HttpErrorResponseDataInterface> =
+                error as AxiosError<HttpErrorResponseDataInterface>;
+            const responseData: HttpErrorResponseDataInterface | undefined = axiosError?.response?.data;
 
             setAlert({
                 description: responseData?.description
@@ -233,15 +234,22 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
 
     const singlePage = (): ReactElement => (
         <WizardPage
-            validate={(values: DigitalWalletWizardFormValuesInterface) => {
+            validate={ (values: DigitalWalletWizardFormValuesInterface) => {
                 const errors: Record<string, string> = {};
+                const name: string = values.name ?? "";
 
-                errors.name = composeValidators(required, length({ max: 50, min: 3 }))(values.name);
+                if (!name) {
+                    errors.name = t(`${ I18N_PREFIX }.form.name.validations.required`);
+                } else if (name.length > 50) {
+                    errors.name = t(`${ I18N_PREFIX }.form.name.validations.maxLength`, { max: 50 });
+                } else if (name.length < 3) {
+                    errors.name = t(`${ I18N_PREFIX }.form.name.validations.minLength`, { min: 3 });
+                }
 
-                setNextShouldBeDisabled(ifFieldsHave(errors) || isEmpty(selectedPresentationDefinitionId));
+                setNextShouldBeDisabled(!!errors.name || isEmpty(selectedPresentationDefinitionId));
 
                 return errors;
-            }}
+            } }
         >
             <Field.Input
                 ariaLabel="Connection name"
@@ -408,32 +416,4 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
             { renderHelpPanel() }
         </ModalWithSidePanel>
     );
-};
-
-const ifFieldsHave = (errors: Record<string, string>): boolean => {
-    return !Object.keys(errors).every((key: string) => !errors[ key ]);
-};
-
-const required = (value: string): string => {
-    if (!value) {
-        return "This is a required field.";
-    }
-
-    return undefined;
-};
-
-const length = (minMax: { min: number; max: number }) => (value: string): string => {
-    if (!value && minMax.min > 0) {
-        return "This field cannot be left blank.";
-    }
-
-    if (value?.length > minMax.max) {
-        return `Must not exceed ${minMax.max} characters.`;
-    }
-
-    if (value?.length < minMax.min) {
-        return `Must be at least ${minMax.min} characters.`;
-    }
-
-    return undefined;
 };

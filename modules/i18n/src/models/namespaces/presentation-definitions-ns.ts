@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface PresentationDefinitionsNS {
+export interface PresentationDefinitionsInterface {
     page: {
         title: string;
         heading: string;
@@ -128,6 +128,17 @@ export interface PresentationDefinitionsNS {
                     title: string;
                     subtitle0: string;
                     subtitle1: string;
+                };
+                addModal: {
+                    header: string;
+                    subheading: string;
+                    uploadButtonText: string;
+                    dropzoneText: string;
+                    pasteAreaPlaceholderText: string;
+                    duplicateError: {
+                        description: string;
+                        message: string;
+                    };
                 };
             };
             jwksUri: {

@@ -61,16 +61,18 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
 
-    const pageContextRef: MutableRefObject<any> = useRef(null);
+    const pageContextRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState): FeatureConfigInterface => state.config.ui.features
+    );
 
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.verifiablePresentationSettings?.scopes?.update
     );
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ formValues, setFormValues ] =
@@ -111,7 +113,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
             clientIdScheme: config.clientIdScheme ?? "",
             responseMode: config.responseMode ?? "direct_post.jwt"
         });
-    }, [ originalConfig ]);
+    }, [ originalConfig, configFetchRequestError ]);
 
     const handleSubmit = (values: OpenID4VPConfigFormValuesInterface): void => {
         setIsSubmitting(true);

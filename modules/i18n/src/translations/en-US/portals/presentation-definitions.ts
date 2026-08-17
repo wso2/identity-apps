@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { PresentationDefinitionsNS } from "../../../models";
+import { PresentationDefinitionsInterface } from "../../../models";
 
 /* eslint-disable max-len */
 /* eslint-disable sort-keys */
 
-export const presentationDefinitions: PresentationDefinitionsNS = {
+export const presentationDefinitions: PresentationDefinitionsInterface = {
            page: {
                title: "Presentation Definitions",
                heading: "Presentation Definitions",
@@ -157,6 +157,17 @@ export const presentationDefinitions: PresentationDefinitionsNS = {
                            title: "No Certificates",
                            subtitle0: "This credential has no trusted CA certificates configured.",
                            subtitle1: "Add a trusted CA certificate to enable issuer verification."
+                       },
+                       addModal: {
+                           header: "Add Trusted CA Certificate",
+                           subheading: "Upload a root CA certificate trusted for x5c chain validation.",
+                           uploadButtonText: "Upload Certificate File",
+                           dropzoneText: "Drag and drop a certificate file here.",
+                           pasteAreaPlaceholderText: "Paste root CA certificate in PEM format.",
+                           duplicateError: {
+                               description: "This certificate has already been added.",
+                               message: "Duplicate Certificate"
+                           }
                        }
                    },
                    jwksUri: {
