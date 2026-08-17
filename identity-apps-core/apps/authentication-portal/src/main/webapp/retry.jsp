@@ -53,6 +53,26 @@
      * Tracked with https://github.com/wso2/product-is/issues/16932
      */
     private static final String UNVERIFIED_EMAIL_IN_MSFT_ERROR_CODE = "17101";
+
+    private static final String I18N_TOKEN_PREFIX = "{{";
+    private static final String I18N_TOKEN_SUFFIX = "}}";
+
+    /**
+     * Checks whether the given value is an i18n token.
+     */
+    private static boolean isI18nToken(String value) {
+        return StringUtils.isNotBlank(value) && value.startsWith(I18N_TOKEN_PREFIX)
+                && value.endsWith(I18N_TOKEN_SUFFIX);
+    }
+
+    /**
+     * Strips the surrounding double curly braces from the given i18n token.
+     */
+    private static String stripBraces(String value) {
+        return isI18nToken(value)
+                ? value.substring(I18N_TOKEN_PREFIX.length(), value.length() - I18N_TOKEN_SUFFIX.length())
+                : value;
+    }
 %>
 <%
     String stat = request.getParameter(Constants.STATUS);
@@ -72,11 +92,21 @@
         statusMsgAuthParam = authRequest.getAuthParameter(Constants.STATUS_MSG);
     }
 
-    // If auth params are available, can skip i18n mapping validations. This is to allow displaying
-    // custom error messages.
+    // Auth params take precedence over the request params. This is to allow displaying custom error messages.
     if (StringUtils.isNotEmpty(statAuthParam) || StringUtils.isNotEmpty(statusMsgAuthParam)) {
         stat = statAuthParam;
         statusMessage = statusMsgAuthParam;
+    }
+
+    if (isI18nToken(stat) || isI18nToken(statusMessage)) {
+        // A dynamically registered executor from a connector can return an i18n token as the error message.
+        stat = isI18nToken(stat)
+                ? i18n(resourceBundle, customText, stripBraces(stat))
+                : AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+        statusMessage = isI18nToken(statusMessage)
+                ? i18n(resourceBundle, customText, stripBraces(statusMessage))
+                : AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.during.authentication");
+    } else if (StringUtils.isNotEmpty(statAuthParam) || StringUtils.isNotEmpty(statusMsgAuthParam)) {
         if (StringUtils.isNotEmpty(stat)) {
             stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
         }

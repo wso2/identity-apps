@@ -29,32 +29,10 @@ function stripBraces(s) {
 }
 
 /**
- * Error code prefixes owned by the flow engine. Every code this file maps to a resource bundle key
- * carries one of them.
+ * Whether a string is an i18n token.
  */
-var FLOW_ENGINE_ERROR_CODE_PREFIXES = [ "FE-", "FEE-" ];
-
-/**
- * Whether an error code was raised by a connector deployed on the server rather than by the flow engine.
- *
- * A connector registers its own codes, which this portal has no build time knowledge of, so anything
- * outside the flow engine's own prefixes is treated as one.
- *
- * @param {string} errorCode - The error code to test.
- * @returns {boolean} True when the code comes from a connector.
- */
-function isConnectorErrorCode(errorCode) {
-    if (!errorCode || errorCode.indexOf("-") < 1) {
-        return false;
-    }
-
-    for (var i = 0; i < FLOW_ENGINE_ERROR_CODE_PREFIXES.length; i++) {
-        if (errorCode.indexOf(FLOW_ENGINE_ERROR_CODE_PREFIXES[i]) === 0) {
-            return false;
-        }
-    }
-
-    return true;
+function isI18nToken(s) {
+    return !!s && s.startsWith("{{") && s.endsWith("}}");
 }
 
 /**
@@ -64,34 +42,6 @@ function isConnectorErrorCode(errorCode) {
  * @returns {object} The i18n keys for the given error code.
  */
 function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
-    // A connector failure carries its own user-facing text, so its codes need no per-code entries here or
-    // in the resource bundle: the connector's error catalogue is the single source of that wording. The
-    // error page renders an unresolvable key verbatim (AuthenticationEndpointUtil.i18n returns the string
-    // when the bundle has no entry), which is what lets the message through untranslated.
-    //
-    // Handled before the switch: a case label cannot match a prefix.
-    if (isConnectorErrorCode(errorCode)) {
-
-        // Codes in the 65xxx band are server-side failures. Their catalogue messages are written for an
-        // administrator ("check the verifier id it references"), and none of them is actionable by the end
-        // user, so nothing specific is shown - both fields stay empty and the page falls back to its
-        // flow-type wording. The specific code is in the server log.
-        var isConnectorServerError = errorCode.indexOf("-65") > 0;
-
-        return {
-            // Left empty so the heading falls back to the flow's own ("Password Reset Unsuccessful" and
-            // friends), which is already localized. The connector text is a full sentence and reads as a
-            // body, not a heading.
-            message: "",
-            // `errorDescription` is deliberately not used: on the flow-exception paths it is the
-            // diagnostic detail, which can name internal configuration. `errorMessage` is the field the
-            // connector populates with user-safe text.
-            description: isConnectorServerError ? "" : (stripBraces(errorMessage) || "")
-            // No portalUrlStatus: by the time a connector reports a failure the flow's confirmation code
-            // has been consumed, so a "try again" button would only fail again.
-        };
-    }
-
     switch (errorCode) {
         case "FE-60001":
 
@@ -290,6 +240,19 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
             };
 
         default:
+
+            // An executor registered by a connector deployed on the server has no case above. Those can be handled through here.
+            if (isI18nToken(errorMessage) || isI18nToken(errorDescription)) {
+                return {
+                    message: isI18nToken(errorMessage)
+                        ? stripBraces(errorMessage)
+                        : "orchestration.flow.error.failed.message",
+                    description: isI18nToken(errorDescription)
+                        ? stripBraces(errorDescription)
+                        : "orchestration.flow.error.failed.description",
+                    portalUrlStatus: "true"
+                };
+            }
 
             return {
                 message: "orchestration.flow.error.failed.message",

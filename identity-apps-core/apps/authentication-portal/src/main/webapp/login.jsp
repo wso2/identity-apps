@@ -549,25 +549,6 @@
 
                 <div class="segment-form">
                     <%
-                        // For federated-only authentication steps the local-auth fragments
-                        // (identifierauth.jsp / basicauth.jsp) that normally render the login-failure banner
-                        // are not included, so a failure returned as authFailure=true&authFailureMsg=...
-                        // would show no message at all. Render the banner here for that case. When local
-                        // basic/identifier auth is present, that fragment renders the banner, so skip it here
-                        // to avoid a duplicate.
-                        boolean localAuthRendersError = localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)
-                                || localAuthenticatorNames.contains(SHARED_USER_IDENTIFIER_EXECUTOR)
-                                || localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR)
-                                || localAuthenticatorNames.contains(BASIC_AUTHENTICATOR);
-                        if ("true".equals(loginFailed) && !localAuthRendersError) {
-                    %>
-                        <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-                            <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
-                        </div>
-                    <%
-                        }
-                    %>
-                    <%
                         if (localAuthenticatorNames.size() > 0) {
                             if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR) ||
                             localAuthenticatorNames.contains(SHARED_USER_IDENTIFIER_EXECUTOR)) {
