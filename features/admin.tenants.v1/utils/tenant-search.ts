@@ -18,13 +18,6 @@
 
 import { TenantInfo } from "../models";
 
-/**
- * Filters associated tenants by their domain.
- *
- * @param tenants - Associated tenants available to the switcher.
- * @param query - Search query entered by the user.
- * @returns Matching tenants, or all tenants when the query is empty.
- */
 export const filterAssociatedTenants: (_tenants: TenantInfo[], _query: string) => TenantInfo[] = (
     tenants: TenantInfo[],
     query: string
@@ -39,16 +32,6 @@ export const filterAssociatedTenants: (_tenants: TenantInfo[], _query: string) =
         tenant.domain?.toLowerCase().includes(normalizedQuery));
 };
 
-/**
- * Determines whether a search must retrieve another associated tenant page.
- *
- * @param query - Search query entered by the user.
- * @param matchingTenants - Matching tenants in the loaded pages.
- * @param hasMoreTenants - Whether the API has more pages.
- * @param isLoading - Whether an associated tenant request is in progress.
- * @param retryCount - Number of retries attempted for the current search page.
- * @returns Whether the next page should be requested.
- */
 export const shouldLoadMoreForTenantSearch: (
     _query: string,
     _matchingTenants: TenantInfo[],
@@ -63,14 +46,6 @@ export const shouldLoadMoreForTenantSearch: (
     retryCount: number
 ): boolean => Boolean(query.trim()) && matchingTenants.length === 0 && hasMoreTenants && !isLoading && retryCount < 2;
 
-/**
- * Determines whether a paginated associated tenant response has a next page.
- *
- * @param totalResults - Total tenant associations reported by the API.
- * @param offset - Offset used for the current request.
- * @param resultCount - Number of tenants returned by the current request.
- * @returns Whether the API has more associated tenant pages.
- */
 export const hasMoreAssociatedTenants: (_totalResults: number, _offset: number, _resultCount: number) => boolean = (
     totalResults: number,
     offset: number,
