@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.2
+
+### Patch Changes
+
+- [#10617](https://github.com/wso2/identity-apps/pull/10617) [`3614e5bd14c654953fa09d189cf88c9211ef07c0`](https://github.com/wso2/identity-apps/commit/3614e5bd14c654953fa09d189cf88c9211ef07c0) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix unhandled IllegalArgumentException on blank username in recovery portal
+
 ## 5.4.1
 
 ### Patch Changes
