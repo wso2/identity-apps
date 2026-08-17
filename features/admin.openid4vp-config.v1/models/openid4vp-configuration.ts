@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface OpenID4VPConfigFormValuesInterface {
+interface OpenID4VPConfigFormValuesInterface {
     clientIdScheme?: string;
     responseMode?: string;
 }

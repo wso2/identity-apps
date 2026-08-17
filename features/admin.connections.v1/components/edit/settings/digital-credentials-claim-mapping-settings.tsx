@@ -167,4 +167,3 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
     );
 };
 
-export default DigitalCredentialsClaimMappingSettings;

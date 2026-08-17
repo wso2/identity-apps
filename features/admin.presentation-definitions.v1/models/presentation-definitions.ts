@@ -60,7 +60,7 @@ export interface RequestedCredentialModel {
 /**
  * Patch operation for trusted CA certificates.
  */
-export interface CertificatePatch {
+interface CertificatePatch {
     operation: "ADD" | "REMOVE" | "REPLACE";
     certificateIndex?: number;
     certificate?: string;
@@ -123,7 +123,7 @@ export interface PresentationDefinitionUpdateModel {
 /**
  * Interface for a single connection (IDP) referencing a presentation definition.
  */
-export interface ConnectedConnectionItemInterface {
+interface ConnectedConnectionItemInterface {
     connectionId: string;
     name: string;
     self: string;
