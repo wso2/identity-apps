@@ -25,7 +25,10 @@ import { TenantInfo } from "../models";
  * @param query - Search query entered by the user.
  * @returns Matching tenants, or all tenants when the query is empty.
  */
-export const filterAssociatedTenants = (tenants: TenantInfo[], query: string): TenantInfo[] => {
+export const filterAssociatedTenants: (_tenants: TenantInfo[], _query: string) => TenantInfo[] = (
+    tenants: TenantInfo[],
+    query: string
+): TenantInfo[] => {
     const normalizedQuery: string = query.trim().toLowerCase();
 
     if (!normalizedQuery) {
@@ -43,14 +46,22 @@ export const filterAssociatedTenants = (tenants: TenantInfo[], query: string): T
  * @param matchingTenants - Matching tenants in the loaded pages.
  * @param hasMoreTenants - Whether the API has more pages.
  * @param isLoading - Whether an associated tenant request is in progress.
+ * @param retryCount - Number of retries attempted for the current search page.
  * @returns Whether the next page should be requested.
  */
-export const shouldLoadMoreForTenantSearch = (
+export const shouldLoadMoreForTenantSearch: (
+    _query: string,
+    _matchingTenants: TenantInfo[],
+    _hasMoreTenants: boolean,
+    _isLoading: boolean,
+    _retryCount: number
+) => boolean = (
     query: string,
     matchingTenants: TenantInfo[],
     hasMoreTenants: boolean,
-    isLoading: boolean
-): boolean => Boolean(query.trim()) && matchingTenants.length === 0 && hasMoreTenants && !isLoading;
+    isLoading: boolean,
+    retryCount: number
+): boolean => Boolean(query.trim()) && matchingTenants.length === 0 && hasMoreTenants && !isLoading && retryCount < 2;
 
 /**
  * Determines whether a paginated associated tenant response has a next page.
@@ -60,5 +71,8 @@ export const shouldLoadMoreForTenantSearch = (
  * @param resultCount - Number of tenants returned by the current request.
  * @returns Whether the API has more associated tenant pages.
  */
-export const hasMoreAssociatedTenants = (totalResults: number, offset: number, resultCount: number): boolean =>
-    totalResults > offset + resultCount;
+export const hasMoreAssociatedTenants: (_totalResults: number, _offset: number, _resultCount: number) => boolean = (
+    totalResults: number,
+    offset: number,
+    resultCount: number
+): boolean => totalResults > offset + resultCount;

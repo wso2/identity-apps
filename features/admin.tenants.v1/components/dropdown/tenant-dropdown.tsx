@@ -48,6 +48,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    HttpErrorResponseDataInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
@@ -219,6 +220,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const isAssociatedTenantsRequestInFlight: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const lastAutomaticTenantSearchRequest: React.MutableRefObject<string> = useRef<string>(undefined);
+    const automaticTenantSearchRetryCounts: React.MutableRefObject<Record<string, number>> =
+        useRef<Record<string, number>>({});
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -228,7 +231,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const associatedTenantsLimit: number = 15;
 
-    useEffect(() => {
+    useEffect((): void => {
         setAssociatedTenantsOffset(0);
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
             isAssociatedTenantsRequestInFlight.current = true;
@@ -329,8 +332,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         setTenantAssociations(association);
     }, [ associatedTenants, currentTenant, defaultTenant, tenantSearchQuery ]);
 
-    useEffect(() => {
+    useEffect((): void => {
         lastAutomaticTenantSearchRequest.current = undefined;
+        automaticTenantSearchRetryCounts.current = {};
     }, [ tenantSearchQuery ]);
 
     const {
@@ -468,7 +472,15 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                         response.associatedTenants.length)
                 );
             })
-            .catch((error: any) => {
+            .catch((error: HttpErrorResponseDataInterface) => {
+                const requestKey: string = `${ tenantSearchQuery }:${ associatedTenantsOffset }`;
+
+                if (lastAutomaticTenantSearchRequest.current === requestKey) {
+                    automaticTenantSearchRetryCounts.current[ requestKey ] =
+                        (automaticTenantSearchRetryCounts.current[ requestKey ] ?? 0) + 1;
+                    lastAutomaticTenantSearchRequest.current = undefined;
+                }
+
                 dispatch(
                     addAlert({
                         description:
@@ -488,13 +500,14 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     }, [ associatedTenants, associatedTenantsOffset, currentTenant, defaultTenant, hasMoreAssociatedTenants,
         isPrivilegedUser, saasFeatureStatus, tenantDomain ]);
 
-    useEffect(() => {
+    useEffect((): void => {
+        const requestKey: string = `${ tenantSearchQuery }:${ associatedTenantsOffset }`;
+        const retryCount: number = automaticTenantSearchRetryCounts.current[ requestKey ] ?? 0;
+
         if (!shouldLoadMoreForTenantSearch(tenantSearchQuery, tempTenantAssociationsList ?? [],
-            hasMoreAssociatedTenants, isAssociatedTenantsLoading)) {
+            hasMoreAssociatedTenants, isAssociatedTenantsLoading, retryCount)) {
             return;
         }
-
-        const requestKey: string = `${ tenantSearchQuery }:${ associatedTenantsOffset }`;
 
         if (lastAutomaticTenantSearchRequest.current === requestKey) {
             return;

@@ -24,7 +24,7 @@ import {
     shouldLoadMoreForTenantSearch
 } from "../tenant-search";
 
-const createTenant = (domain: string): TenantInfo => ({ domain } as TenantInfo);
+const createTenant: (_domain: string) => TenantInfo = (domain: string): TenantInfo => ({ domain } as TenantInfo);
 
 describe("tenant search utilities", (): void => {
     const firstPageTenants: TenantInfo[] = Array.from(
@@ -36,21 +36,21 @@ describe("tenant search utilities", (): void => {
         const matchingTenants: TenantInfo[] = filterAssociatedTenants(firstPageTenants, "tenant-1");
 
         expect(matchingTenants).toHaveLength(7);
-        expect(shouldLoadMoreForTenantSearch("tenant-1", matchingTenants, true, false)).toBe(false);
+        expect(shouldLoadMoreForTenantSearch("tenant-1", matchingTenants, true, false, 0)).toBe(false);
     });
 
     it("loads the next page when a matching tenant is outside the first page", (): void => {
         const nextPageTenants: TenantInfo[] = [ createTenant("target-tenant") ];
         const matchingFirstPageTenants: TenantInfo[] = filterAssociatedTenants(firstPageTenants, "target");
 
-        expect(shouldLoadMoreForTenantSearch("target", matchingFirstPageTenants, true, false)).toBe(true);
+        expect(shouldLoadMoreForTenantSearch("target", matchingFirstPageTenants, true, false, 0)).toBe(true);
         expect(filterAssociatedTenants([ ...firstPageTenants, ...nextPageTenants ], "target"))
             .toEqual(nextPageTenants);
     });
 
     it("continues loading unmatched searches until the final page", (): void => {
-        expect(shouldLoadMoreForTenantSearch("missing", [], true, false)).toBe(true);
-        expect(shouldLoadMoreForTenantSearch("missing", [], false, false)).toBe(false);
+        expect(shouldLoadMoreForTenantSearch("missing", [], true, false, 0)).toBe(true);
+        expect(shouldLoadMoreForTenantSearch("missing", [], false, false, 0)).toBe(false);
     });
 
     it("restores the loaded paginated list when the search query is cleared", (): void => {
@@ -61,7 +61,12 @@ describe("tenant search utilities", (): void => {
     });
 
     it("does not initiate another request while a tenant page is loading", (): void => {
-        expect(shouldLoadMoreForTenantSearch("target", [], true, true)).toBe(false);
+        expect(shouldLoadMoreForTenantSearch("target", [], true, true, 0)).toBe(false);
+    });
+
+    it("stops automatic retries after a second failed request", (): void => {
+        expect(shouldLoadMoreForTenantSearch("target", [], true, false, 1)).toBe(true);
+        expect(shouldLoadMoreForTenantSearch("target", [], true, false, 2)).toBe(false);
     });
 
     it("identifies whether an associated tenant response has another page", (): void => {
