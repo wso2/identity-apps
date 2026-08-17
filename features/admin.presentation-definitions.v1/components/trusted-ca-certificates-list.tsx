@@ -16,29 +16,28 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AddTrustedCaModal } from "./add-trusted-ca-modal";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { CertificateValidity, DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Form } from "@wso2is/forms";
 import {
-    ConfirmationModal,
+    Certificate as CertificateDisplay,
+    EmphasizedSegment,
+    GenericIcon,
     Popup,
-    ResourceList,
-    ResourceListActionInterface,
-    ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Icon, Modal, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
 interface TrustedCaCertificatesListProps extends IdentifiableComponentInterface {
     trustedCaPems: string[];
     onRemove: (index: number) => void;
+    onReplace?: (index: number, newPem: string) => void;
     isReadOnly?: boolean;
 }
-
-const FORM_ID: string = "trusted-ca-certificates-list-form";
 
 /**
  * List of trusted CA certificates managed entirely in local React state.
@@ -53,24 +52,23 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
         ["data-componentid"]: testId,
         trustedCaPems,
         onRemove,
+        onReplace,
         isReadOnly = false
     } = props;
 
     const { t } = useTranslation();
 
-    const [ displayingCertificates, setDisplayingCertificates ] = useState<ReadonlyArray<DisplayCertificate>>();
+    const [ displayingCertificates, setDisplayingCertificates ] = useState<ReadonlyArray<DisplayCertificate>>([]);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const [ showReplaceModal, setShowReplaceModal ] = useState<boolean>(false);
+    const [ replacingIndex, setReplacingIndex ] = useState<number | null>(null);
 
     useEffect(() => {
-        bindCertificatesToState();
-    }, [ trustedCaPems ]);
-
-    const bindCertificatesToState = (): void => {
         if (trustedCaPems.length > 0) {
-            const certificatesList: DisplayCertificate[] = trustedCaPems.map((certificate: string) => {
-                if (CertificateManagementUtils.canSafelyParseCertificate(certificate)) {
-                    return CertificateManagementUtils.displayCertificate(null, certificate);
+            const certificatesList: DisplayCertificate[] = trustedCaPems.map((pem: string) => {
+                if (CertificateManagementUtils.canSafelyParseCertificate(pem)) {
+                    return CertificateManagementUtils.displayCertificate(null, pem);
                 }
 
                 return CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE;
@@ -80,20 +78,28 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
         } else {
             setDisplayingCertificates([]);
         }
-    };
+    }, [ trustedCaPems ]);
 
-    const handleViewCertificate = (certificate: DisplayCertificate) => {
+    const handleViewCertificate = (certificate: DisplayCertificate): void => {
         setCertificateDisplay(certificate);
         setShowCertificateModal(true);
     };
 
-    const createValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
+    const createValidityLabel = (certificate: DisplayCertificate): ReactNode => {
+        if (certificate?.infoUnavailable) {
+            return (
+                <span className="with-muted-list-item-header">
+                    { t("Unable to visualize the certificate details") }
+                </span>
+            );
+        }
+
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
         const validity: CertificateValidity = CertificateManagementUtils.determineCertificateValidityState({
-            from: validFrom,
-            to: validTill
+            from: certificate.validFrom,
+            to: certificate.validTill
         });
 
         switch (validity) {
@@ -110,13 +116,14 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
                 iconColor = "red";
         }
 
-        const expiryLabel: string = validTill
-            ? "Expiry date: " + new Date(validTill).toLocaleDateString("en-GB")
+        const alias: string = CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN);
+        const expiryLabel: string = certificate.validTill
+            ? "Expiry date: " + new Date(certificate.validTill).toLocaleDateString("en-GB")
             : "";
 
         return (
             <React.Fragment>
-                { issuer + CertificateManagementConstants.SPACE_CHARACTER }
+                { alias + CertificateManagementConstants.SPACE_CHARACTER }
                 <Popup
                     trigger={ <Icon name={ icon } color={ iconColor } /> }
                     content={ expiryLabel }
@@ -128,121 +135,184 @@ export const TrustedCaCertificatesList: FC<TrustedCaCertificatesListProps> = (
         );
     };
 
-    const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => (
-        <span className="with-muted-list-item-header">
-            Unable to visualize the certificate details&nbsp;
-            <Popup
-                trigger={
-                    <Icon
-                        onClick={ () => handleViewCertificate(certificate) }
-                        name="info circle"
-                        color="grey"
-                    />
-                }
-                content="Click for more info"
-                inverted
-                position="top left"
-                size="mini"
-            />
-        </span>
-    );
+    const getSerialNumber = (cert: DisplayCertificate): string => {
+        if (!cert || cert.infoUnavailable) return "";
+        const sn: unknown = (cert as Record<string, unknown>)["serialNumber"];
 
-    const createDescription = (validFrom: Date, validTill: Date): string =>
-        CertificateManagementUtils.getValidityPeriodInHumanReadableFormat(validFrom, validTill);
-
-    const createCertificateActions = (certificate: DisplayCertificate, index: number) => ([
-        {
-            "data-componentid": `${testId}-view-cert-${index}-button`,
-            disabled: certificate?.infoUnavailable,
-            hidden: certificate?.infoUnavailable,
-            icon: "eye",
-            onClick: () => handleViewCertificate(certificate),
-            popupText: "Preview",
-            type: "button"
-        },
-        {
-            "data-componentid": `${testId}-delete-cert-${index}-button`,
-            icon: "trash alternate",
-            onClick: () => onRemove(index),
-            popupText: "Remove",
-            type: "button"
-        }
-    ] as (ResourceListActionInterface & IdentifiableComponentInterface)[]);
-
-    const createCertificateResourceAvatar = (certificate: DisplayCertificate): ReactElement => (
-        <UserAvatar
-            name={
-                certificate?.infoUnavailable
-                    ? CertificateManagementConstants.QUESTION_MARK
-                    : CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
-            }
-            size="mini"
-            floated="left"
-        />
-    );
+        return typeof sn === "string" ? sn : "";
+    };
 
     return (
-        <Form id={ FORM_ID } onSubmit={ CertificateManagementConstants.NO_OPERATIONS } uncontrolledForm={ true }>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column>
-                        <ResourceList
-                            fill
-                            relaxed={ false }
-                            className="application-list"
-                            isLoading={ false }
-                            loadingStateOptions={ { count: 2, imageType: "circular" } }
-                            readOnly={ isReadOnly }
-                        >
-                            { displayingCertificates?.map((certificate: DisplayCertificate, index: number) => (
-                                <ResourceListItem
-                                    key={ index }
-                                    actionsColumnWidth={ 3 }
-                                    descriptionColumnWidth={ 9 }
-                                    actions={ createCertificateActions(certificate, index) }
-                                    actionsFloated="right"
-                                    avatar={ createCertificateResourceAvatar(certificate) }
-                                    itemHeader={
-                                        certificate?.infoUnavailable
-                                            ? createDummyValidityLabel(certificate)
-                                            : createValidityLabel(
-                                                certificate.validFrom,
-                                                certificate.validTill,
-                                                CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
-                                            )
+        <>
+            { displayingCertificates.map((certificate: DisplayCertificate, index: number) => (
+                <EmphasizedSegment key={ index } style={ { marginBottom: "0.5em" } }>
+                    <div style={ { alignItems: "center", display: "flex", gap: "1em" } }>
+                        <UserAvatar
+                            name={
+                                certificate?.infoUnavailable
+                                    ? CertificateManagementConstants.QUESTION_MARK
+                                    : CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
+                            }
+                            size="mini"
+                            floated="left"
+                        />
+                        <div style={ { flex: 1 } }>
+                            <div>{ createValidityLabel(certificate) }</div>
+                            { !certificate?.infoUnavailable && (
+                                <div style={ { color: "grey", fontSize: "13px" } }>
+                                    { CertificateManagementUtils.getValidityPeriodInHumanReadableFormat(
+                                        certificate.validFrom,
+                                        certificate.validTill
+                                    ) }
+                                </div>
+                            ) }
+                        </div>
+                        <div style={ { display: "flex", gap: "8px", marginLeft: "1em" } }>
+                            { !isReadOnly && onReplace && (
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            name="pencil"
+                                            size="small"
+                                            color="grey"
+                                            className="list-icon"
+                                            onClick={ () => {
+                                                setReplacingIndex(index);
+                                                setShowReplaceModal(true);
+                                            } }
+                                            data-componentid={ `${testId}-change-cert-${index}-button` }
+                                        />
                                     }
-                                    itemDescription={
-                                        certificate?.infoUnavailable
-                                            ? null
-                                            : createDescription(certificate.validFrom, certificate.validTill)
-                                    }
+                                    content="Change certificate"
+                                    inverted
+                                    position="top center"
+                                    size="mini"
                                 />
-                            )) }
-                        </ResourceList>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            { showCertificateModal && (
-                <ConfirmationModal
-                    type="info"
+                            ) }
+                            { !certificate?.infoUnavailable && (
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            name="eye"
+                                            size="small"
+                                            color="grey"
+                                            className="list-icon"
+                                            onClick={ () => handleViewCertificate(certificate) }
+                                            data-componentid={ `${testId}-view-cert-${index}-button` }
+                                        />
+                                    }
+                                    content="View certificate"
+                                    inverted
+                                    position="top center"
+                                    size="mini"
+                                />
+                            ) }
+                            { !isReadOnly && (
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            name="trash alternate"
+                                            size="small"
+                                            color="grey"
+                                            className="list-icon"
+                                            onClick={ () => onRemove(index) }
+                                            data-componentid={ `${testId}-delete-cert-${index}-button` }
+                                        />
+                                    }
+                                    content="Remove certificate"
+                                    inverted
+                                    position="top center"
+                                    size="mini"
+                                />
+                            ) }
+                        </div>
+                    </div>
+                </EmphasizedSegment>
+            )) }
+            { showReplaceModal && replacingIndex !== null && onReplace && (
+                <AddTrustedCaModal
+                    existingCertPems={ trustedCaPems.filter(
+                        (_: string, i: number) => i !== replacingIndex
+                    ) }
+                    onAdd={ (newPem: string) => {
+                        onReplace(replacingIndex, newPem);
+                        setShowReplaceModal(false);
+                        setReplacingIndex(null);
+                    } }
+                    isOpen={ showReplaceModal }
+                    onClose={ () => {
+                        setShowReplaceModal(false);
+                        setReplacingIndex(null);
+                    } }
+                    data-componentid={ `${testId}-replace-cert-modal` }
+                />
+            ) }
+            { showCertificateModal && certificateDisplay && (
+                <Modal
+                    closeOnDimmerClick
+                    className="certificate-display"
+                    dimmer="blurring"
+                    size="tiny"
                     open={ showCertificateModal }
                     onClose={ () => setShowCertificateModal(false) }
-                    primaryAction={ t("common:close") }
-                    onPrimaryActionClick={ () => setShowCertificateModal(false) }
                     data-componentid={ `${testId}-view-certificate-modal` }
-                    closeOnDimmerClick={ true }
                 >
-                    <ConfirmationModal.Header>Certificate Details</ConfirmationModal.Header>
-                    <ConfirmationModal.Content>
-                        { certificateDisplay && (
-                            <pre style={ { fontSize: "0.8em", overflowX: "auto", whiteSpace: "pre-wrap" } }>
-                                { JSON.stringify(certificateDisplay, null, 2) }
-                            </pre>
+                    <Modal.Header>
+                        <div className="certificate-ribbon">
+                            <GenericIcon
+                                inline
+                                transparent
+                                size="auto"
+                                icon={ getCertificateIllustrations().ribbon }
+                            />
+                            <div className="certificate-alias">
+                                View Certificate -{ " " }
+                                {
+                                    certificateDisplay.infoUnavailable
+                                        ? CertificateManagementConstants.QUESTION_MARK
+                                        : CertificateManagementUtils.searchIssuerDNAlias(
+                                            certificateDisplay?.issuerDN
+                                        )
+                                }
+                            </div>
+                            <br />
+                            <div className="certificate-serial">
+                                Serial Number: { getSerialNumber(certificateDisplay) }
+                            </div>
+                        </div>
+                    </Modal.Header>
+                    <Modal.Content className="certificate-content">
+                        { certificateDisplay.infoUnavailable ? (
+                            <Segment className="certificate">
+                                <p className="certificate-field">
+                                    We were unable to read this certificate. Currently we only
+                                    support displaying public key information in certificate types of{ " " }
+                                    { CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
+                                        (algorithm: string, algorithmIndex: number) => (
+                                            <strong key={ algorithmIndex }>{ algorithm }</strong>
+                                        )
+                                    ) }.
+                                </p>
+                            </Segment>
+                        ) : (
+                            <CertificateDisplay
+                                certificate={ certificateDisplay }
+                                labels={ {
+                                    issuerDN: t("certificates:keystore.summary.issuerDN"),
+                                    subjectDN: t("certificates:keystore.summary.subjectDN"),
+                                    validFrom: t("certificates:keystore.summary.validFrom"),
+                                    validTill: t("certificates:keystore.summary.validTill"),
+                                    version: t("certificates:keystore.summary.version")
+                                } }
+                            />
                         ) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
+                    </Modal.Content>
+                </Modal>
             ) }
-        </Form>
+        </>
     );
 };
 

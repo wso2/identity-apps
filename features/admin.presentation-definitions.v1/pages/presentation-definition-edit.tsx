@@ -31,17 +31,23 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureAccessConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import {
     AlertInterface,
     AlertLevels,
+    CertificateValidity,
+    DisplayCertificate,
     HttpErrorResponseDataInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
+    Certificate as CertificateDisplay,
+    Code,
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
@@ -50,6 +56,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     EmphasizedSegment,
+    GenericIcon,
     Heading,
     Hint,
     LinkButton,
@@ -57,9 +64,11 @@ import {
     PrimaryButton,
     ResourceTab,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import dayjs, { Dayjs } from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import React, {
     FunctionComponent,
@@ -84,6 +93,7 @@ import {
     Modal,
     Popup,
     Segment,
+    SemanticCOLORS,
     SemanticICONS
 } from "semantic-ui-react";
 import {
@@ -169,6 +179,8 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ trustedCaPems, setTrustedCaPems ] = useState<string[]>([]);
     const [ showAddCertModal, setShowAddCertModal ] = useState<boolean>(false);
     const [ showAddIssuerCertModal, setShowAddIssuerCertModal ] = useState<boolean>(false);
+    const [ issuerCertDisplay, setIssuerCertDisplay ] = useState<DisplayCertificate>(null);
+    const [ showIssuerCertModal, setShowIssuerCertModal ] = useState<boolean>(false);
 
     const [ isFormReady, setIsFormReady ] = useState<boolean>(false);
 
@@ -273,6 +285,10 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
     const handleRemoveCert = useCallback((index: number): void => {
         setTrustedCaPems((prev: string[]) => prev.filter((_: string, i: number) => i !== index));
+    }, []);
+
+    const handleReplaceCert = useCallback((index: number, newPem: string): void => {
+        setTrustedCaPems((prev: string[]) => prev.map((p: string, i: number) => i === index ? newPem : p));
     }, []);
 
     const handleDeleteInitiation = useCallback((): void => {
@@ -880,6 +896,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 <TrustedCaCertificatesList
                                     trustedCaPems={ trustedCaPems }
                                     onRemove={ handleRemoveCert }
+                                    onReplace={ handleReplaceCert }
                                     isReadOnly={ !enforceTrustedIssuer || isReadOnly }
                                     data-componentid={ `${componentId}-trusted-ca-list` }
                                 />
@@ -914,68 +931,254 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             </>
         );
 
+        const parsedIssuerCert: DisplayCertificate | null = issuerPem
+            ? (CertificateManagementUtils.canSafelyParseCertificate(issuerPem)
+                ? CertificateManagementUtils.displayCertificate(null, issuerPem)
+                : CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE)
+            : null;
+
+        const issuerCertValidityLabel = (): ReactElement => {
+            if (!parsedIssuerCert || parsedIssuerCert.infoUnavailable) {
+                return (
+                    <span className="with-muted-list-item-header">
+                        { t("Unable to visualize the certificate details") }
+                    </span>
+                );
+            }
+            let icon: SemanticICONS;
+            let iconColor: SemanticCOLORS;
+            const expiryDate: Dayjs = dayjs(parsedIssuerCert.validTill);
+            const validity: CertificateValidity = CertificateManagementUtils.determineCertificateValidityState({
+                from: parsedIssuerCert.validFrom,
+                to: parsedIssuerCert.validTill
+            });
+
+            switch (validity) {
+                case CertificateValidity.VALID:
+                    icon = "check circle";
+                    iconColor = "green";
+                    break;
+                case CertificateValidity.WILL_EXPIRE_SOON:
+                    icon = "exclamation circle";
+                    iconColor = "yellow";
+                    break;
+                default:
+                    icon = "times circle";
+                    iconColor = "red";
+            }
+
+            return (
+                <>
+                    { CertificateManagementUtils.searchIssuerDNAlias(parsedIssuerCert.issuerDN) }
+                    { " " }
+                    <Popup
+                        trigger={ <Icon name={ icon } color={ iconColor } /> }
+                        content={ "Expiry date: " + expiryDate.format("DD/MM/YYYY") }
+                        inverted
+                        position="top left"
+                        size="mini"
+                    />
+                </>
+            );
+        };
+
         const pemSubSection: ReactNode = (
             <>
-                { issuerPem ? (
-                    <>
-                        <EmphasizedSegment>
-                            <div style={ { alignItems: "center", display: "flex", gap: "12px" } }>
-                                <Icon name="certificate" size="large" color="grey" />
-                                <div style={ { flex: 1 } }>
-                                    <strong>
-                                        { t("presentationDefinitions:editPage.issuerTrust.issuerPem.modalTitle") }
-                                    </strong>
-                                    <Hint compact>
-                                        { t("presentationDefinitions:editPage.issuerTrust.issuerPem.hint") }
-                                    </Hint>
-                                </div>
-                                { !isReadOnly && (
-                                    <div style={ { display: "flex", gap: "8px" } }>
-                                        <PrimaryButton
-                                            size="mini"
-                                            onClick={ () => setShowAddIssuerCertModal(true) }
-                                            data-componentid={ `${componentId}-replace-pem-button` }
-                                        >
-                                            { t(
-                                                "presentationDefinitions:editPage.issuerTrust.issuerPem.replaceButton"
-                                            ) }
-                                        </PrimaryButton>
-                                        <LinkButton
-                                            size="mini"
-                                            onClick={ () => setIssuerPem("") }
-                                            data-componentid={ `${componentId}-remove-pem-button` }
-                                        >
-                                            { t("common:remove") }
-                                        </LinkButton>
+                { parsedIssuerCert ? (
+                    <EmphasizedSegment>
+                        <div style={ { alignItems: "center", display: "flex", gap: "1em" } }>
+                            <UserAvatar
+                                name={
+                                    parsedIssuerCert.infoUnavailable
+                                        ? CertificateManagementConstants.QUESTION_MARK
+                                        : CertificateManagementUtils.searchIssuerDNAlias(
+                                            parsedIssuerCert.issuerDN)
+                                }
+                                size="mini"
+                                floated="left"
+                            />
+                            <div style={ { flex: 1 } }>
+                                <div>{ issuerCertValidityLabel() }</div>
+                                { !parsedIssuerCert.infoUnavailable && (
+                                    <div style={ { color: "grey", fontSize: "13px" } }>
+                                        { CertificateManagementUtils.getValidityPeriodInHumanReadableFormat(
+                                            parsedIssuerCert.validFrom,
+                                            parsedIssuerCert.validTill
+                                        ) }
                                     </div>
                                 ) }
                             </div>
-                        </EmphasizedSegment>
-                    </>
+                            <div style={ { display: "flex", gap: "8px", marginLeft: "1em" } }>
+                                { !isReadOnly && (
+                                    <Popup
+                                        trigger={
+                                            <Icon
+                                                link
+                                                name="pencil"
+                                                size="small"
+                                                color="grey"
+                                                className="list-icon"
+                                                onClick={ () => setShowAddIssuerCertModal(true) }
+                                                data-componentid={ `${componentId}-change-cert-button` }
+                                            />
+                                        }
+                                        content="Change certificate"
+                                        inverted
+                                        position="top center"
+                                        size="mini"
+                                    />
+                                ) }
+                                { !parsedIssuerCert.infoUnavailable && (
+                                    <Popup
+                                        trigger={
+                                            <Icon
+                                                link
+                                                name="eye"
+                                                size="small"
+                                                color="grey"
+                                                className="list-icon"
+                                                onClick={ () => {
+                                                    setIssuerCertDisplay(parsedIssuerCert);
+                                                    setShowIssuerCertModal(true);
+                                                } }
+                                                data-componentid={ `${componentId}-view-cert-button` }
+                                            />
+                                        }
+                                        content="View certificate"
+                                        inverted
+                                        position="top center"
+                                        size="mini"
+                                    />
+                                ) }
+                                { !isReadOnly && (
+                                    <Popup
+                                        trigger={
+                                            <Icon
+                                                link
+                                                name="trash alternate"
+                                                size="small"
+                                                color="grey"
+                                                className="list-icon"
+                                                onClick={ () => setIssuerPem("") }
+                                                data-componentid={ `${componentId}-delete-cert-button` }
+                                            />
+                                        }
+                                        content="Delete certificate"
+                                        inverted
+                                        position="top center"
+                                        size="mini"
+                                    />
+                                ) }
+                            </div>
+                        </div>
+                    </EmphasizedSegment>
                 ) : (
-                    <EmptyPlaceholder
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        title={ t(
-                            "presentationDefinitions:editPage.issuerTrust.issuerPem.emptyPlaceholder.title"
-                        ) }
-                        subtitle={ [
-                            t(
-                                "presentationDefinitions:editPage.issuerTrust.issuerPem.emptyPlaceholder.subtitle"
-                            )
-                        ] }
-                        action={ !isReadOnly && (
-                            <PrimaryButton
-                                size="small"
-                                onClick={ () => setShowAddIssuerCertModal(true) }
-                                data-componentid={ `${componentId}-add-pem-button` }
-                            >
-                                <Icon name="add" />
-                                { t("presentationDefinitions:editPage.issuerTrust.issuerPem.addButton") }
-                            </PrimaryButton>
-                        ) }
-                        data-componentid={ `${componentId}-issuer-pem-empty-placeholder` }
-                    />
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <Divider hidden />
+                                <Segment>
+                                    <EmptyPlaceholder
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
+                                        imageSize="tiny"
+                                        title={ t(
+                                            "presentationDefinitions:editPage.issuerTrust." +
+                                            "issuerPem.emptyPlaceholder.title"
+                                        ) }
+                                        subtitle={ [
+                                            t(
+                                                "presentationDefinitions:editPage.issuerTrust." +
+                                                "issuerPem.emptyPlaceholder.subtitle"
+                                            )
+                                        ] }
+                                        action={ !isReadOnly && (
+                                            <PrimaryButton
+                                                size="small"
+                                                onClick={ () => setShowAddIssuerCertModal(true) }
+                                                data-componentid={
+                                                    `${componentId}-add-pem-button`
+                                                }
+                                            >
+                                                <Icon name="add" />
+                                                { t(
+                                                    "presentationDefinitions:editPage.issuerTrust." +
+                                                    "issuerPem.addButton"
+                                                ) }
+                                            </PrimaryButton>
+                                        ) }
+                                        data-componentid={
+                                            `${componentId}-issuer-pem-empty-placeholder`
+                                        }
+                                    />
+                                </Segment>
+                                <Divider hidden />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
+                { showIssuerCertModal && issuerCertDisplay && (
+                    <Modal
+                        closeOnDimmerClick
+                        className="certificate-display"
+                        dimmer="blurring"
+                        size="tiny"
+                        open={ showIssuerCertModal }
+                        onClose={ () => setShowIssuerCertModal(false) }
+                        data-componentid={ `${componentId}-view-cert-modal` }
+                    >
+                        <Modal.Header>
+                            <div className="certificate-ribbon">
+                                <GenericIcon
+                                    inline
+                                    transparent
+                                    size="auto"
+                                    icon={ getCertificateIllustrations().ribbon }
+                                />
+                                <div className="certificate-alias">
+                                    View Certificate - {
+                                        issuerCertDisplay.alias
+                                            ? issuerCertDisplay.alias
+                                            : issuerCertDisplay.issuerDN && (
+                                                CertificateManagementUtils.searchIssuerDNAlias(
+                                                    issuerCertDisplay.issuerDN)
+                                            )
+                                    }
+                                </div>
+                                <br/>
+                                <div className="certificate-serial">
+                                    Serial Number: { issuerCertDisplay.serialNumber }
+                                </div>
+                            </div>
+                        </Modal.Header>
+                        <Modal.Content className="certificate-content">
+                            { issuerCertDisplay.infoUnavailable ? (
+                                <Segment className="certificate">
+                                    <p className="certificate-field">
+                                        We were unable to read this certificate. Currently we only
+                                        support displaying public key information in certificate types of {
+                                            CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
+                                                (algo: string, index: number) => (
+                                                    <span key={ `${algo}+${index}` }>
+                                                        <Code>{ algo }</Code>&nbsp;
+                                                    </span>
+                                                ))
+                                        } key algorithms.
+                                    </p>
+                                </Segment>
+                            ) : (
+                                <CertificateDisplay
+                                    certificate={ issuerCertDisplay }
+                                    labels={ {
+                                        issuerDN: t("certificates:keystore.summary.issuerDN"),
+                                        subjectDN: t("certificates:keystore.summary.subjectDN"),
+                                        validFrom: t("certificates:keystore.summary.validFrom"),
+                                        validTill: t("certificates:keystore.summary.validTill"),
+                                        version: t("certificates:keystore.summary.version")
+                                    } }
+                                />
+                            ) }
+                        </Modal.Content>
+                    </Modal>
                 ) }
                 { showAddIssuerCertModal && (
                     <AddIssuerCertificateModal
