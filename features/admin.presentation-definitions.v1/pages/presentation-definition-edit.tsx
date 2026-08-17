@@ -29,7 +29,7 @@ import MuiTextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureAccessConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
@@ -654,6 +654,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             actions={ claimTableActions }
                             showHeader={ true }
                             isRowSelectable={ () => false }
+                            onRowClick={ () => undefined }
                             data-componentid={ `${componentId}-claims-table` }
                         />
                     </>

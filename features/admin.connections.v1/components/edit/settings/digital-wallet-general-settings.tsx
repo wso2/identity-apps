@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { AxiosError } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, HttpMethods, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
@@ -219,7 +219,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                 }));
                 onUpdate(editingIDP.id);
             })
-            .catch((error: Error) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleConnectionUpdateError(error);
             })
             .finally(() => {

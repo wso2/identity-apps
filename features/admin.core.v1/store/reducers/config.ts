@@ -207,6 +207,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             wellKnown: "",
             workflowAssociations: "",
             workflowInstances: "",
+            vpTemplates: "",
             workflows: ""
         },
         features: {

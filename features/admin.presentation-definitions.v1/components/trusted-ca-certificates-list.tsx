@@ -32,7 +32,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, u
 import { useTranslation } from "react-i18next";
 import { Icon, Modal, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
-interface TrustedCaCertificatesListPropsInterfaceInterface extends IdentifiableComponentInterface {
+interface TrustedCaCertificatesListPropsInterface extends IdentifiableComponentInterface {
     trustedCaPems: string[];
     onRemove: (index: number) => void;
     onReplace?: (index: number, newPem: string) => void;
@@ -139,7 +139,7 @@ export const TrustedCaCertificatesList: FunctionComponent<TrustedCaCertificatesL
 
     const getSerialNumber = (cert: DisplayCertificate): string => {
         if (!cert || cert.infoUnavailable) return "";
-        const sn: unknown = (cert as Record<string, unknown>)["serialNumber"];
+        const sn: unknown = (cert as unknown as Record<string, unknown>)["serialNumber"];
 
         return typeof sn === "string" ? sn : "";
     };
