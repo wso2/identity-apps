@@ -67,6 +67,12 @@
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
         missingClaimList = request.getParameter(Constants.MISSING_CLAIMS).split(",");
     }
+    // The page exists to collect the missing claims listed in this parameter, and iterates the list
+    // unconditionally when rendering. Without it there is nothing to prompt for.
+    if (missingClaimList == null || missingClaimList.length == 0) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
+    }
     if (request.getParameter(Constants.DISPLAY_NAMES) != null) {
         String[] displayNamesParam = request.getParameter(Constants.DISPLAY_NAMES).split(",");
         for (String displayName: displayNamesParam) {
