@@ -482,7 +482,7 @@ AddAdminUserBasicProps> = forwardRef((
                                                     } }
                                                     type="email"
                                                     component={ TextFieldAdapter }
-                                                    tabIndex={ 5 }
+                                                    tabIndex={ 0 }
                                                     maxLength={ 50 }
                                                 />
                                             </Grid.Column>
@@ -501,7 +501,7 @@ AddAdminUserBasicProps> = forwardRef((
                                                     component={ AutocompleteFieldAdapter }
                                                     required={ true }
                                                     value={ userRoleOptions[0]?.value }
-                                                    tabIndex={ 1 }
+                                                    tabIndex={ 0 }
                                                     multipleValues
                                                 />
                                                 <Hint>
