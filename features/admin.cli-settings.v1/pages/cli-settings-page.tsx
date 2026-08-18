@@ -282,8 +282,7 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
                         ) }
                         <Switch
                             checked={ isCLIEnabled }
-                            disabled={ isLoading || isSubmitting }
-                            readOnly={ isReadOnly }
+                            disabled={ isLoading || isSubmitting || isReadOnly }
                             onChange={ handleToggle }
                             inputProps={ { "aria-label": t("cliSettings:enablement.toggleAriaLabel") } }
                             data-componentid={ `${ componentId }-toggle` }

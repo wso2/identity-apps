@@ -344,6 +344,10 @@
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
         "asyncOperationStatusPollingInterval": 5000,
+        "cliSettings": {
+            "applicationName": "Identity Platform CLI",
+            "clientId": "IDENTITY_PLATFORM_CLI"
+        },
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {

@@ -83,7 +83,7 @@ const CLISettingsTabs: FunctionComponent<CLISettingsTabsPropsInterface> = (
                 )
             }
         ],
-        [ componentId, cliApplicationId, t ]
+        [ componentId, cliApplicationId, readonly, t ]
     );
 
     const getActiveTabFromUrl = (): number => {

@@ -93,9 +93,12 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
-    // The CLI tool is only available when its application is configured via `ui.cliSettings`.
+    // The CLI tool is only available when the feature is enabled and its application is
+    // configured (application name and client ID) via `ui.cliSettings`.
     const isCLISettingsConfigured: boolean =
-        !!window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings?.enabled;
+        !!window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings?.enabled
+        && !!window["AppUtils"]?.getConfig()?.ui?.cliSettings?.applicationName
+        && !!window["AppUtils"]?.getConfig()?.ui?.cliSettings?.clientId;
 
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;

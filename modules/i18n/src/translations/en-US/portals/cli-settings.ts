@@ -27,7 +27,7 @@ export const cliSettings: CliSettingsNS = {
         description: "When disabled, all CLI access to this organization is blocked, including for previously assigned users.",
         disableConfirmation: {
             content: "You can re-enable this at any time without losing user assignments.",
-            heading: "Disable CLI access ?",
+            heading: "Disable CLI access?",
             message: "Active CLI sessions will be terminated immediately, and assigned users will not be able to sign in through the CLI. Please proceed with caution."
         },
         notifications: {
