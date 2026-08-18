@@ -204,7 +204,7 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             onUpdate={ onUpdate }
             hideIdentityClaimAttributes={ false }
             isRoleMappingsEnabled={ true }
-            data-componentid={ `${ componentId }-attribute-settings` }
+            data-testid={ `${ componentId }-attribute-settings` }
             provisioningAttributesEnabled={ true }
             isReadOnly={ isReadOnly }
             loader={ loader }

@@ -22,7 +22,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -59,7 +59,7 @@ export interface DropdownOptionsInterface {
     value: string;
 }
 
-interface AttributeSelectionPropsInterface extends IdentifiableComponentInterface {
+interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -141,15 +141,15 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         initialClaims,
         isLoading,
         onUpdate,
-        provisioningAttributesEnabled = true,
-        hideIdentityClaimAttributes = false,
+        provisioningAttributesEnabled,
+        hideIdentityClaimAttributes,
         isReadOnly,
         isRoleMappingsEnabled,
         loader: Loader,
         isOIDC,
         isSaml,
-        allowedMappedValues = undefined,
-        [ "data-componentid" ]: componentId = "idp-edit-attribute-settings"
+        allowedMappedValues,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -434,7 +434,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
                                 updateRole={ setRoleClaimUri }
                                 updateSubject={ setSubjectClaimUri }
-                                data-componentid={ `${ componentId }-uri-attribute-settings` }
+                                data-testid={ `${ testId }-uri-attribute-settings` }
                                 roleError={ isSubmitting && !roleClaimUri }
                                 subjectError={ isSubmitting && !subjectClaimUri }
                                 isReadOnly={ isReadOnly }
@@ -474,7 +474,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             hint: t("authenticationProvider:forms.attributeSettings." +
                                 "attributeProvisioning.hint")
                         } }
-                        data-componentid={ `${ componentId }-provisioning-attribute-selection` }
+                        data-testid={ `${ testId }-provisioning-attribute-selection` }
                         isReadOnly={ isReadOnly }
                     />) }
                     <Divider hidden/>
@@ -487,7 +487,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     loading={ isSubmissionLoading }
                                     disabled={ isSubmissionLoading }
                                     onClick={ handleAttributesUpdate }
-                                    data-componentid={ `${ componentId }-update-button` }
+                                    data-testid={ `${ testId }-update-button` }
                                 >
                                     { t("common:update") }
                                 </Button>
@@ -500,3 +500,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     );
 };
 
+/**
+ * Default proptypes for the IDP attribute settings component.
+ */
+AttributeSettings.defaultProps = {
+    "data-testid": "idp-edit-attribute-settings",
+    hideIdentityClaimAttributes: false,
+    provisioningAttributesEnabled: true
+};

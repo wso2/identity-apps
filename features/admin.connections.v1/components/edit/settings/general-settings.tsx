@@ -101,10 +101,6 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      */
     templateType?: string;
     /**
-     * Show only connection name and description fields.
-     */
-    showOnlyNameAndDescription?: boolean;
-    /**
      * Loading Component.
      */
     loader: () => ReactElement;
@@ -130,7 +126,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isOidc,
         isCustomAuthenticator,
         templateType,
-        showOnlyNameAndDescription,
         loader: Loader,
         ["data-testid"]: testId
     } = props;
@@ -423,17 +418,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param data - Checkbox props.
      */
     const handleIdentityProviderDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        if (data.checked) {
-            handleFormSubmit({ isEnabled: true });
-            return;
-        }
         setIsAppsLoading(true);
 
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
                     handleFormSubmit({
-                        isEnabled: false
+                        isEnabled: data.checked
                     });
                 } else {
                     dispatch(
@@ -517,7 +508,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     data-testid={ `${testId}-form` }
                     isReadOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
-                    showOnlyNameAndDescription={ showOnlyNameAndDescription }
                 />
             ) : (
                 <CustomAuthenticatorGeneralDetailsForm

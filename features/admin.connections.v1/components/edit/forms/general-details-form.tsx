@@ -102,10 +102,6 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
-    /**
-     * Show only connection name and description fields.
-     */
-    showOnlyNameAndDescription?: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -130,7 +126,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isReadOnly,
         isSaml,
         templateType,
-        showOnlyNameAndDescription,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -335,7 +330,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         readOnly={ isReadOnly }
                     />
                     {
-                        !showOnlyNameAndDescription &&
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
@@ -378,7 +372,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             )
                     }
                     {
-                        !showOnlyNameAndDescription &&
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
@@ -433,7 +426,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
-                    { !showOnlyNameAndDescription && !hideIdPLogoEditField && !isOutboundProvisioningConnection && (
+                    { !hideIdPLogoEditField && !isOutboundProvisioningConnection && (
                         <Field.Input
                             name="image"
                             ariaLabel="image"
@@ -473,7 +466,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     ) }
                 </Form>
             </EmphasizedSegment>
-            { !showOnlyNameAndDescription && shouldShowCertificates() && (
+            { shouldShowCertificates() && (
                 <React.Fragment>
                     <Divider hidden/>
                     <IdpCertificates
@@ -507,6 +500,5 @@ GeneralDetailsForm.defaultProps = {
     "data-testid": "idp-edit-general-settings-form",
     enableWizardMode: false,
     hideIdPLogoEditField: false,
-    showOnlyNameAndDescription: false,
     triggerSubmit: false
 };

@@ -263,7 +263,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID !==
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
-                data-componentid={ `${testId}-attribute-settings` }
+                data-testid={ `${testId}-attribute-settings` }
                 provisioningAttributesEnabled={
                     !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes") &&
                     (isSaml ||
