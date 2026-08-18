@@ -3743,8 +3743,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Code withBackground>access_token</Code>
                                     and the
                                     <Code withBackground>refresh_token</Code>
-                                    to the login session and issue a new token per session. When the application
-                                    session ends, the tokens will also be revoked.
+                                    to the productName login session and issue a new token per session. The tokens
+                                    are revoked when that login session is explicitly terminated, either through a
+                                    logout request or through the session management API. Session expiry alone does
+                                    not revoke the tokens.
                                 </Trans>
                             </Hint>
                         </Grid.Column>

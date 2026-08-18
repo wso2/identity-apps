@@ -1903,8 +1903,10 @@ export const applications: ApplicationsNS = {
                             },
                             description: "Select type <1>SSO-session</1> to allow {{productName}} to " +
                                 "bind the <3>access_token</3> and the <5>refresh_token</5> to the "+
-                                "login session and issue a new token per session. When the application " +
-                                "session ends, the tokens will also be revoked.",
+                                "{{productName}} login session and issue a new token per session. The tokens are " +
+                                "revoked when that login session is explicitly terminated, either through a logout " +
+                                "request or through the session management API. Session expiry alone does not " +
+                                "revoke the tokens.",
                             label: "Token binding type",
                             valueDescriptions: {
                                 cookie: "Bind the access token to a cookie with Secure " +

@@ -290,7 +290,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             initialValue={ selectedLocalAttributeInputValue }
                             options={ getListOfAvailableAttributes() }
                             label={ !editingMode && t("idvp:edit.attributeSettings.modal.labels.localClaim") }
-                            aria-Label="Local Claim Attribute"
+                            aria-label="Local Claim Attribute"
                             name="localClaimId"
                             placeholder= { t("idvp:edit.attributeSettings.modal.placeholders.localClaim") }
                             onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
