@@ -1,12 +1,12 @@
 {
     "private": true,
     "name": "@wso2is/admin.cli-settings.v1",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "Console CLI Settings",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@oxygen-ui/react": "^2.4.6",
+        "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.administrators.v1": "workspace:^",
         "@wso2is/admin.applications.v1": "workspace:^",

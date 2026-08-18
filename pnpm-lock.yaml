@@ -3226,7 +3226,7 @@ importers:
   features/admin.cli-settings.v1:
     dependencies:
       '@oxygen-ui/react':
-        specifier: ^2.4.6
+        specifier: 'catalog:'
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
       '@wso2is/access-control':
         specifier: ^3.5.6
@@ -28107,7 +28107,7 @@ snapshots:
 
   '@types/fs-extra@8.1.5':
     dependencies:
-      '@types/node': 13.13.52
+      '@types/node': 18.11.9
 
   '@types/geojson@7946.0.16': {}
 
@@ -28139,7 +28139,7 @@ snapshots:
 
   '@types/http-proxy@1.17.17':
     dependencies:
-      '@types/node': 13.13.52
+      '@types/node': 18.11.9
 
   '@types/i18next@8.4.3': {}
 
@@ -32330,7 +32330,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 13.13.52
+      '@types/node': 18.11.9
       merge-stream: 2.0.0
       supports-color: 8.1.1
 

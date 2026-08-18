@@ -81,14 +81,11 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
-    const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.cliSettings
-    );
     const cliSettingsConfig: CLISettingsUIConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.cliSettings
     );
 
-    const cliApplicationName: string = cliFeatureConfig?.enabled ? cliSettingsConfig?.applicationName : undefined;
+    const cliApplicationName: string = cliSettingsConfig?.applicationName;
 
     /**
      * Filter to resolve the portal applications whose roles are excluded from the listing.
