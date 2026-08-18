@@ -45,8 +45,7 @@
     if (walletUrl != null && !walletUrl.isEmpty()) {
         try {
             URI walletUri = new URI(walletUrl);
-            invalidWalletUrl = !"openid4vp".equalsIgnoreCase(walletUri.getScheme())
-                    || walletUri.getRawAuthority() == null;
+            invalidWalletUrl = !"openid4vp".equalsIgnoreCase(walletUri.getScheme());
         } catch (URISyntaxException e) {
             invalidWalletUrl = true;
         }
@@ -55,9 +54,9 @@
     // Reject any tenant domain or org ID that contains path separators or other characters outside
     // the allowed identifier format. Encode.forHtmlAttribute blocks attribute injection but not
     // path traversal, so we must validate before building the form action URL.
-    if ((vpOrgId != null && !vpOrgId.matches("[a-zA-Z0-9\\-]+"))
-            || (vpTenantDomain != null && !vpTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
-            || (vpRootTenantDomain != null && !vpRootTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
+    if ((vpOrgId != null && !vpOrgId.isEmpty() && !vpOrgId.matches("[a-zA-Z0-9\\-]+"))
+            || (vpTenantDomain != null && !vpTenantDomain.isEmpty() && !vpTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
+            || (vpRootTenantDomain != null && !vpRootTenantDomain.isEmpty() && !vpRootTenantDomain.matches("[a-zA-Z0-9\\.\\-]+"))
             || invalidWalletUrl) {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         return;
@@ -280,10 +279,16 @@
             };
 
             var pollTimer = null;
+            var deepLinkFallbackTimer = null;
+            var deepLinkBlurHandler = null;
             var submitted = false;
             var pollInFlight = false;
             var networkErrorCount = 0;
             var MAX_NETWORK_ERRORS = 5;
+            // Client-side guard: stop polling after 5 min even if the server
+            // never sends a terminal status (e.g. cache expiry bug).
+            var MAX_DURATION_MS = 300000;
+            var pollStart = Date.now();
             var currentController = null;
             var vpRequestId = '';
 
@@ -319,16 +324,29 @@
                 walletLink.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    var fallbackTimer = setTimeout(function() {
+                    if (deepLinkBlurHandler) {
+                        window.removeEventListener('blur', deepLinkBlurHandler);
+                        deepLinkBlurHandler = null;
+                    }
+                    if (deepLinkFallbackTimer) {
+                        clearTimeout(deepLinkFallbackTimer);
+                        deepLinkFallbackTimer = null;
+                    }
+
+                    deepLinkFallbackTimer = setTimeout(function() {
+                        deepLinkFallbackTimer = null;
                         document.getElementById('deepLinkMsg').textContent = I18N.mobileNoWallet;
                         document.getElementById('deepLinkMsg').style.display = 'block';
                     }, 1500);
 
-                    window.addEventListener('blur', function() {
-                        clearTimeout(fallbackTimer);
+                    deepLinkBlurHandler = function() {
+                        clearTimeout(deepLinkFallbackTimer);
+                        deepLinkFallbackTimer = null;
+                        deepLinkBlurHandler = null;
                         document.getElementById('deepLinkMsg').style.display = 'none';
-                    }, { once: true });
+                    };
 
+                    window.addEventListener('blur', deepLinkBlurHandler, { once: true });
                     window.location.href = CONFIG.walletUrl;
                 });
             }
@@ -369,6 +387,10 @@
             // Poll for VP status
             function pollStatus() {
                 if (submitted || pollInFlight) return;
+                if (Date.now() - pollStart > MAX_DURATION_MS) {
+                    handleFailed(I18N.errorExpired);
+                    return;
+                }
 
                 pollInFlight = true;
 
@@ -497,6 +519,8 @@
                 submitted = true;
                 if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
                 if (currentController) { currentController.abort(); currentController = null; }
+                if (deepLinkFallbackTimer) { clearTimeout(deepLinkFallbackTimer); deepLinkFallbackTimer = null; }
+                if (deepLinkBlurHandler) { window.removeEventListener('blur', deepLinkBlurHandler); deepLinkBlurHandler = null; }
             });
 
             document.addEventListener('DOMContentLoaded', function() {

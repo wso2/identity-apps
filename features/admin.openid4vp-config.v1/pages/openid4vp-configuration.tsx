@@ -111,7 +111,7 @@ const OpenID4VPConfigurationPage: FunctionComponent<OpenID4VPConfigurationPageIn
 
         setFormValues({
             clientIdScheme: config.clientIdScheme ?? "",
-            responseMode: config.responseMode ?? "direct_post.jwt"
+            responseMode: config.responseMode ?? ""
         });
     }, [ originalConfig, configFetchRequestError ]);
 

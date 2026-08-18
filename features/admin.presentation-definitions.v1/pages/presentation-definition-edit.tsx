@@ -155,7 +155,6 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ name, setName ] = useState<string>("");
     const [ description, setDescription ] = useState<string>("");
 
-    // Shared identity (read-only, displayed in General tab)
     const [ credentialId, setCredentialId ] = useState<string>("");
 
     // Settings tab state

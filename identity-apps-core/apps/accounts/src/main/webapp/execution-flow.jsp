@@ -365,6 +365,10 @@
                     // before the next poll fires (avoids the vpPollInFlight early-return
                     // leaving no reschedule registered).
                     var VP_POLL_TIMEOUT = 1500;
+                    // Client-side guard: stop polling after 5 min even if the server
+                    // never sends a terminal status (e.g. cache expiry bug).
+                    var VP_MAX_DURATION_MS = 300000;
+                    var vpPollStart = Date.now();
 
                     // Status endpoint.
                     var vpStatusEndpoint = baseUrl + "/openid4vp/v1/status?pollToken="
@@ -380,7 +384,12 @@
 
                     // Called exactly once when status is VERIFIED — drives the flow engine
                     // to complete the step and advance to the next one.
+                    var ADVANCE_FLOW_TIMEOUT = 15000;
+
                     function advanceFlow() {
+                        var controller = new AbortController();
+                        var timeoutId = setTimeout(function() { controller.abort(); }, ADVANCE_FLOW_TIMEOUT);
+
                         fetch(executionFlowApiProxyPath, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -388,9 +397,13 @@
                                 flowId: flowId,
                                 actionId: "",
                                 inputs: { vp_request_id: requestId }
-                            })
+                            }),
+                            signal: controller.signal
                         })
-                        .then(function(r) { return r.json(); })
+                        .then(function(r) {
+                            clearTimeout(timeoutId);
+                            return r.json();
+                        })
                         .then(function(data) {
                             if (data.error) {
                                 if (data.error.flowType) setFlowType(data.error.flowType);
@@ -409,6 +422,7 @@
                             setWalletQR(null);
                         })
                         .catch(function() {
+                            clearTimeout(timeoutId);
                             setError({ code: "NETWORK_ERROR", message: "Unable to complete authentication. Please try again." });
                             setWalletQR(null);
                         });
@@ -416,6 +430,12 @@
 
                     function poll() {
                         if (vpSubmitted || vpPollInFlight) return;
+                        if (Date.now() - vpPollStart > VP_MAX_DURATION_MS) {
+                            vpSubmitted = true;
+                            setError({ code: "VP_EXPIRED" });
+                            setWalletQR(null);
+                            return;
+                        }
                         vpPollInFlight = true;
 
                         var controller = new AbortController();
@@ -683,6 +703,8 @@
 
                 const WalletQRView = function() {
                     var qrRef = useRef(null);
+                    var deepLinkTimerRef = useRef(null);
+                    var deepLinkHandlerRef = useRef(null);
                     var [ qrStatus, setQrStatus ] = useState("pending");
                     var [ qrErrorMsg, setQrErrorMsg ] = useState("");
                     var [ deepLinkMsg, setDeepLinkMsg ] = useState("");
@@ -690,6 +712,13 @@
                     var t = function(key, fallback) {
                         return (i18n && i18n.translations && i18n.translations[key]) || fallback;
                     };
+
+                    useEffect(function() {
+                        return function() {
+                            if (deepLinkTimerRef.current) clearTimeout(deepLinkTimerRef.current);
+                            if (deepLinkHandlerRef.current) window.removeEventListener("blur", deepLinkHandlerRef.current);
+                        };
+                    }, []);
 
                     useEffect(function() {
                         if (!walletQR || !walletQR.url) {
@@ -717,17 +746,29 @@
                             setQrStatus("error");
                             setQrErrorMsg(t("wallet.vp.qr.error.generate", "Unable to generate QR code. Please restart the registration flow."));
                         }
-                    }, []);
+                    }, [walletQR && walletQR.url]);
 
                     function handleWalletLinkClick(e) {
                         e.preventDefault();
-                        var fallbackTimer = setTimeout(function() {
+                        if (deepLinkHandlerRef.current) {
+                            window.removeEventListener("blur", deepLinkHandlerRef.current);
+                            deepLinkHandlerRef.current = null;
+                        }
+                        if (deepLinkTimerRef.current) {
+                            clearTimeout(deepLinkTimerRef.current);
+                            deepLinkTimerRef.current = null;
+                        }
+                        deepLinkTimerRef.current = setTimeout(function() {
+                            deepLinkTimerRef.current = null;
                             setDeepLinkMsg(t("wallet.vp.qr.mobile.no.wallet", "No wallet app detected. Use the QR code on a mobile device with your wallet installed."));
                         }, 1500);
-                        window.addEventListener("blur", function() {
-                            clearTimeout(fallbackTimer);
+                        deepLinkHandlerRef.current = function() {
+                            clearTimeout(deepLinkTimerRef.current);
+                            deepLinkTimerRef.current = null;
+                            deepLinkHandlerRef.current = null;
                             setDeepLinkMsg("");
-                        }, { once: true });
+                        };
+                        window.addEventListener("blur", deepLinkHandlerRef.current, { once: true });
                         window.location.href = walletQR && walletQR.url;
                     }
 
