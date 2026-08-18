@@ -1527,31 +1527,6 @@ export interface AuthenticationProviderNS {
                 };
             };
         };
-    };
-    list: {
-        actions: string;
-        name: string;
-    };
-    modals: {
-        addAuthenticator: {
-            title: string;
-            subTitle: string;
-        };
-        addCertificate: {
-            title: string;
-            subTitle: string;
-        };
-        addProvisioningConnector: {
-            title: string;
-            subTitle: string;
-        };
-        attributeSelection: {
-            title: string;
-            subTitle: string;
-            content: {
-                searchPlaceholder: string;
-            };
-        };
         digitalWallet: {
             tabs: {
                 general: string;
@@ -1649,6 +1624,31 @@ export interface AuthenticationProviderNS {
                     paragraph1: string;
                     paragraph2: string;
                 };
+            };
+        };
+    };
+    list: {
+        actions: string;
+        name: string;
+    };
+    modals: {
+        addAuthenticator: {
+            title: string;
+            subTitle: string;
+        };
+        addCertificate: {
+            title: string;
+            subTitle: string;
+        };
+        addProvisioningConnector: {
+            title: string;
+            subTitle: string;
+        };
+        attributeSelection: {
+            title: string;
+            subTitle: string;
+            content: {
+                searchPlaceholder: string;
             };
         };
     };
