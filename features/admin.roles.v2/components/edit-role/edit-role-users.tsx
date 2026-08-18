@@ -74,7 +74,18 @@ import { RoleConstants, RoleManagementFeatureKeys } from "../../constants/role-c
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
-type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
+interface RoleUsersPropsInterface extends IdentifiableComponentInterface, RoleEditSectionsInterface {
+    /**
+     * Title displayed above the assigned users list.
+     * Defaults to the standard role users heading when not provided.
+     */
+    title?: string;
+    /**
+     * Subtitle displayed below the title.
+     * Defaults to the standard role users sub heading when not provided.
+     */
+    subtitle?: string;
+}
 
 export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     props: RoleUsersPropsInterface
@@ -88,6 +99,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         activeUserStore,
         isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
+        title,
+        subtitle,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
 
@@ -661,10 +674,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
                     <Heading as="h4" data-componentid={ componentId + "-heading" }>
-                        { t(baseI18nKey + "heading") }
+                        { title ?? t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t(baseI18nKey + "subHeading") }
+                        { subtitle ?? t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnlyView && (

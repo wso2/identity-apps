@@ -57,6 +57,9 @@ import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
+import {
+    ReactComponent as CLISettingsIcon
+} from "@wso2is/admin.cli-settings.v1/assets/images/icons/cli-settings-icon.svg";
 import AppLayout from "../layouts/app-layout";
 import AuthLayout from "../layouts/auth-layout";
 import DashboardLayout from "../layouts/dashboard-layout";
@@ -90,6 +93,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+    // The CLI tool is only available when its application is configured via `ui.cliSettings`.
+    const isCLISettingsConfigured: boolean =
+        !!window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings?.enabled;
 
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
@@ -2064,6 +2070,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         }
     ];
+
+    if (isCLISettingsConfigured) {
+        defaultRoutes.push({
+            component: lazy(() => import("@wso2is/admin.cli-settings.v1/pages/cli-settings-page")),
+            exact: true,
+            icon: {
+                icon: <CLISettingsIcon />
+            },
+            id: "cliSettings",
+            name: "cliSettings:page.title",
+            order: 32,
+            path: AppConstants.getPaths().get("CLI_SETTINGS"),
+            protected: true,
+            showOnSidePanel: true
+        });
+    }
 
     if (isMcpServersFeatureEnabled) {
         defaultRoutes.push(

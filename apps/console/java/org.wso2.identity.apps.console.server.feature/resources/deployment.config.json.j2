@@ -232,6 +232,12 @@
         {% if console.ui.application_sharing_status_polling_interval is defined %}
         "asyncOperationStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
         {% endif %}
+        {% if console.ui.cli_settings is defined %}
+        "cliSettings": {
+            "applicationName": "{{ console.ui.cli_settings.application_name }}",
+            "clientId": "{{ console.ui.cli_settings.client_id }}"
+        },
+        {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
@@ -1187,6 +1193,36 @@
                 "scopes": {
                     {% if console.certificates.scopes is defined %}
                     {% for operation, scopes in console.certificates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.cli_settings is defined %}
+            "cliSettings": {
+                "disabledFeatures": [
+                    {% if console.cli_settings.disabled_features is defined %}
+                    {% for feature in console.cli_settings.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.cli_settings.enabled is defined %} {{ console.cli_settings.enabled }},
+                {% else %} false,
+                {% endif %}
+                "scopes": {
+                    {% if console.cli_settings.scopes is defined %}
+                    {% for operation, scopes in console.cli_settings.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}

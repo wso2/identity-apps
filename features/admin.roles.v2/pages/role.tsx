@@ -16,23 +16,23 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CLISettingsUIConfigInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AlertLevels,
-    FeatureAccessConfigInterface,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface,
-    RolesInterface,
-    HttpErrorResponseDataInterface
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
@@ -81,7 +81,33 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
-    const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
+    const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.cliSettings
+    );
+    const cliSettingsConfig: CLISettingsUIConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.cliSettings
+    );
+
+    const cliApplicationName: string = cliFeatureConfig?.enabled ? cliSettingsConfig?.applicationName : undefined;
+
+    /**
+     * Filter to resolve the portal applications whose roles are excluded from the listing.
+     *
+     * The Console is always fetched. The CLI application is only appended when it is configured
+     * (e.g. it is typically not available in the Identity Server), so both applications are
+     * resolved in a single call.
+     */
+    const portalApplicationListFilter: string = useMemo(() => {
+        const filters: string[] = [ "name eq Console" ];
+
+        if (cliApplicationName) {
+            filters.push(`name eq ${ cliApplicationName }`);
+        }
+
+        return filters.join(" or ");
+    }, [ cliApplicationName ]);
+
+    const { data: portalApplicationList } = useApplicationList(null, null, null, portalApplicationListFilter);
 
     const roleCreationScope: string[] = useMemo(() => {
         return userRolesV3FeatureEnabled
@@ -90,16 +116,40 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const consoleId: string = useMemo(() => {
-        return consoleApplicationFilter?.applications[0]?.id;
-    }, [ consoleApplicationFilter ]);
+        return portalApplicationList?.applications?.find(
+            (application: ApplicationListItemInterface) => application.name === "Console"
+        )?.id;
+    }, [ portalApplicationList ]);
+
+    const cliApplicationId: string = useMemo(() => {
+        if (!cliApplicationName) {
+            return undefined;
+        }
+
+        return portalApplicationList?.applications?.find(
+            (application: ApplicationListItemInterface) => application.name === cliApplicationName
+        )?.id;
+    }, [ portalApplicationList, cliApplicationName ]);
 
     /**
      * Generates the final filter string to obtain the filtered roles list.
      *
+     * Roles belonging to the Console and the CLI applications are internal to the portal,
+     * hence they are excluded from the listing. The CLI application is optional, so its
+     * audience is only excluded once the application has been resolved.
+     *
      * @param filterBy - filter string.
      */
     const useRolesListFilterBy = (filterBy: string) => {
-        return `audience.value ne ${consoleId}${ filterBy ? ` and ${ filterBy }` : "" }`;
+        const filters: string[] = [ consoleId, cliApplicationId ]
+            .filter(Boolean)
+            .map((applicationId: string) => `audience.value ne ${ applicationId }`);
+
+        if (filterBy) {
+            filters.push(filterBy);
+        }
+
+        return filters.length > 0 ? filters.join(" and ") : undefined;
     };
 
     const {

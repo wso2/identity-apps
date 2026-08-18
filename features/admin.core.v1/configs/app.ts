@@ -333,7 +333,8 @@ export class Config {
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
                 I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
                 I18nConstants.CONSENTS_NAMESPACE,
-                I18nConstants.FLOW_EXTENSION_NAMESPACE
+                I18nConstants.FLOW_EXTENSION_NAMESPACE,
+                I18nConstants.CLI_SETTINGS_NAMESPACE
             ],
             preload: []
         };
@@ -449,6 +450,7 @@ export class Config {
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
+            cliSettings: window[ "AppUtils" ]?.getConfig()?.ui?.cliSettings,
             apiResourceManagement: {
                 blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
                     ?.blocked_api_resources ?? []

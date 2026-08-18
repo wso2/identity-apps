@@ -304,6 +304,10 @@ interface BrandingDocumentationLinksInterface {
     learnMore: string;
 }
 
+interface CLISettingsDocumentationLinksInterface {
+    learnMore: string;
+}
+
 interface ConnectionsDocumentationLinksInterface {
     learnMore: string;
     newConnection: {
@@ -523,6 +527,7 @@ export interface DocumentationLinksInterface {
         apiResources: APIResourcesDocumentationLinksInterface
         applications: ApplicationsDocumentationLinksInterface;
         branding: BrandingDocumentationLinksInterface;
+        cliSettings: CLISettingsDocumentationLinksInterface;
         connections: ConnectionsDocumentationLinksInterface;
         eventPublishing: EventPublishingDocumentationLinksInterface;
         emailCustomization: EmailCustomizationLinksInterface;

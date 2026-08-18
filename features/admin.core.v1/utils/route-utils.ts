@@ -605,8 +605,14 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "server",
+                id: "cliSettings",
                 order: 2,
+                selected: history.location.pathname.includes("/cli-settings")
+            },
+            {
+                category: settings,
+                id: "server",
+                order: 3,
                 selected: history.location.pathname.includes("server")
             },
             {

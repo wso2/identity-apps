@@ -355,6 +355,9 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.3
         version: link:../../features/admin.claims.v1
+      '@wso2is/admin.cli-settings.v1':
+        specifier: workspace:^
+        version: link:../../features/admin.cli-settings.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.39.0
         version: link:../../features/admin.connections.v1
@@ -3155,6 +3158,124 @@ importers:
       semantic-ui-react:
         specifier: ^2.1.3
         version: 2.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.60.2)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.60.2)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.60.2)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.60.2)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.60.2)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.60.2)(tslib@2.8.1)(typescript@5.9.3)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@testing-library/jest-dom':
+        specifier: ^5.11.9
+        version: 5.17.0
+      '@types/lodash-es':
+        specifier: ^4.17.4
+        version: 4.17.12
+      '@types/node':
+        specifier: ^13.9.2
+        version: 13.13.52
+      '@types/react':
+        specifier: 18.0.18
+        version: 18.0.18
+      '@types/react-dom':
+        specifier: ^18.0.6
+        version: 18.3.7(@types/react@18.0.18)
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.34
+      '@types/react-router-dom':
+        specifier: ^5.1.3
+        version: 5.3.3
+      '@types/webpack-env':
+        specifier: ^1.16.0
+        version: 1.18.8
+      rollup:
+        specifier: ^4.17.2
+        version: 4.60.2
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.4.1(rollup@4.60.2)(typescript@5.9.3)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.60.2)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.3
+
+  features/admin.cli-settings.v1:
+    dependencies:
+      '@oxygen-ui/react':
+        specifier: ^2.4.6
+        version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
+      '@wso2is/access-control':
+        specifier: ^3.5.6
+        version: link:../../modules/access-control
+      '@wso2is/admin.administrators.v1':
+        specifier: ^2.29.209
+        version: link:../admin.administrators.v1
+      '@wso2is/admin.applications.v1':
+        specifier: ^2.42.23
+        version: link:../admin.applications.v1
+      '@wso2is/admin.core.v1':
+        specifier: ^2.58.0
+        version: link:../admin.core.v1
+      '@wso2is/admin.extensions.v1':
+        specifier: ^2.43.3
+        version: link:../admin.extensions.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.9.6
+        version: link:../admin.feature-gate.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: ^2.28.4
+        version: link:../admin.organizations.v1
+      '@wso2is/admin.roles.v2':
+        specifier: ^2.27.380
+        version: link:../admin.roles.v2
+      '@wso2is/core':
+        specifier: ^2.13.0
+        version: link:../../modules/core
+      '@wso2is/react-components':
+        specifier: ^2.10.0
+        version: link:../../modules/react-components
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom:
+        specifier: ^4.3.1
+        version: 4.3.1(react@18.3.1)
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -27989,7 +28110,7 @@ snapshots:
 
   '@types/fs-extra@8.1.5':
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 13.13.52
 
   '@types/geojson@7946.0.16': {}
 
@@ -28021,7 +28142,7 @@ snapshots:
 
   '@types/http-proxy@1.17.17':
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 13.13.52
 
   '@types/i18next@8.4.3': {}
 
@@ -32212,7 +32333,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 13.13.52
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
