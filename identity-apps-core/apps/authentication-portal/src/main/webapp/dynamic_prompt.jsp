@@ -58,8 +58,8 @@
 
 <%-- Data for the layout from the page --%>
 <%
-        String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
-        layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
+    String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
+    layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
     layoutData.put("isDynamicPrompt", true);
 %>
 
