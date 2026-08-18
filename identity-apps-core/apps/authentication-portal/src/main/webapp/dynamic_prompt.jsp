@@ -58,10 +58,8 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    if (StringUtils.isNotBlank(templateId)) {
         String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
         layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
-    }
     layoutData.put("isDynamicPrompt", true);
 %>
 
@@ -93,7 +91,7 @@
         </layout:component>
         <layout:component componentName="MainSection">
             <%
-                if (templatePath != null && StringUtils.isNotBlank(promptId)) {
+                if (templatePath != null) {
             %>
                 <div class="ui segment">
                     <c:set var="data" value="<%=data%>" scope="request"/>
