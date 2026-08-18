@@ -58,12 +58,29 @@ export interface CliSettingsNS {
         users: string;
     };
     users: {
+        heading: string;
+        list: {
+            emptyPlaceholder: {
+                action: string;
+                subtitles: string;
+                title: string;
+            };
+        };
+        notifications: {
+            pendingApproval: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
+            };
+        };
         roleNotFound: {
             description: string;
             subtitle: string;
             title: string;
         };
-        subtitle: string;
-        title: string;
+        subHeading: string;
     };
 }

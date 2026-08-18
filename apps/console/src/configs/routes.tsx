@@ -34,6 +34,7 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ReactComponent as ProfileAttributesIcon
 } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
@@ -94,11 +95,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
     // The CLI tool is only available when the feature is enabled and its application is
-    // configured (application name and client ID) via `ui.cliSettings`.
-    const isCLISettingsConfigured: boolean =
-        !!window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings?.enabled
-        && !!window["AppUtils"]?.getConfig()?.ui?.cliSettings?.applicationName
-        && !!window["AppUtils"]?.getConfig()?.ui?.cliSettings?.clientId;
+    // configured (application name and client ID) via the `cliSettings` feature properties.
+    const cliSettingsFeatureConfig: FeatureAccessConfigInterface =
+        window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings;
+    const isCLISettingsConfigurable: boolean =
+        !!cliSettingsFeatureConfig?.enabled
+        && !!cliSettingsFeatureConfig?.properties?.applicationName
+        && !!cliSettingsFeatureConfig?.properties?.clientId;
 
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
@@ -2074,7 +2077,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         }
     ];
 
-    if (isCLISettingsConfigured) {
+    if (isCLISettingsConfigurable) {
         defaultRoutes.push({
             component: lazy(() => import("@wso2is/admin.cli-settings.v1/pages/cli-settings-page")),
             exact: true,

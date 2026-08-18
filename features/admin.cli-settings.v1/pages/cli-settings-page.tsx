@@ -31,7 +31,7 @@ import {
     ApplicationListInterface,
     ApplicationListItemInterface
 } from "@wso2is/admin.applications.v1/models/application";
-import { CLISettingsUIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CLISettingsPropertiesInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -75,19 +75,20 @@ type CLISettingsPageInterface = IdentifiableComponentInterface;
 const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
     props: CLISettingsPageInterface
 ): ReactElement => {
-    const { [ "data-componentid" ]: componentId } = props;
+    const { [ "data-componentid" ]: componentId = "cli-settings-page" } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
 
-    const cliSettingsConfig: CLISettingsUIConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.cliSettings
-    );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.cliSettings
     );
+
+    const cliSettingsProperties: CLISettingsPropertiesInterface =
+        cliFeatureConfig?.properties as CLISettingsPropertiesInterface;
 
     const hasCreatePermission: boolean = useRequiredScopes(cliFeatureConfig?.scopes?.create);
     const hasUpdatePermission: boolean = useRequiredScopes(cliFeatureConfig?.scopes?.update);
@@ -102,8 +103,8 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
 
-    const cliApplicationName: string = cliSettingsConfig?.applicationName;
-    const cliClientId: string = cliSettingsConfig?.clientId;
+    const cliApplicationName: string = cliSettingsProperties?.applicationName;
+    const cliClientId: string = cliSettingsProperties?.clientId;
 
     const pageDescription: ReactElement = (
         <>
@@ -122,7 +123,7 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
      * configured via `ui.cliSettings` in deployment.config.json. When absent (e.g. on
      * Identity Server) the CLI functionality is disabled.
      */
-    const isCLISettingsConfigured: boolean = cliFeatureConfig?.enabled && !!cliApplicationName && !!cliClientId;
+    const isCLISettingsConfigurable: boolean = cliFeatureConfig?.enabled && !!cliApplicationName && !!cliClientId;
 
     const {
         data,
@@ -132,8 +133,8 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
         "applicationEnabled",
         10,
         0,
-        isCLISettingsConfigured ? CLISettingsConstants.getCLIApplicationListFilter(cliApplicationName) : undefined,
-        isCLISettingsConfigured
+        isCLISettingsConfigurable ? CLISettingsConstants.getCLIApplicationListFilter(cliApplicationName) : undefined,
+        isCLISettingsConfigurable
     );
 
     const cliApplication: ApplicationListItemInterface | undefined = useMemo(
@@ -220,7 +221,7 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
         [ isReadOnly, updateCLIStatus ]
     );
 
-    if (!isCLISettingsConfigured) {
+    if (!isCLISettingsConfigurable) {
         return (
             <PageLayout
                 pageTitle={ t("cliSettings:page.title") }
@@ -230,8 +231,8 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
             >
                 <EmphasizedSegment padded="very">
                     <EmptyPlaceholder
-                        title={ t("cliSettings:notConfigured.title") }
-                        subtitle={ [ t("cliSettings:notConfigured.subtitle") ] }
+                        title={ t("cliSettings:notConfigured.title", { productName }) }
+                        subtitle={ [ t("cliSettings:notConfigured.subtitle", { productName }) ] }
                         data-componentid={ `${ componentId }-not-configured-placeholder` }
                     />
                 </EmphasizedSegment>
@@ -337,10 +338,6 @@ const CLISettingsPage: FunctionComponent<CLISettingsPageInterface> = (
             ) }
         </PageLayout>
     );
-};
-
-CLISettingsPage.defaultProps = {
-    "data-componentid": "cli-settings-page"
 };
 
 export default CLISettingsPage;

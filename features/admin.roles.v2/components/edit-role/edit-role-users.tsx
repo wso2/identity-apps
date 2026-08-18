@@ -35,9 +35,9 @@ import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstor
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface,
-    RolesMemberInterface,
-    HttpErrorResponseDataInterface
+    RolesMemberInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -76,15 +76,11 @@ import "./edit-role.scss";
 
 interface RoleUsersPropsInterface extends IdentifiableComponentInterface, RoleEditSectionsInterface {
     /**
-     * Title displayed above the assigned users list.
-     * Defaults to the standard role users heading when not provided.
+     * Base i18n key used to resolve the section labels (heading, sub heading, empty
+     * placeholders) and the user assignment notifications. Defaults to the standard 
+     * role users (or agents) keys when not provided.
      */
-    title?: string;
-    /**
-     * Subtitle displayed below the title.
-     * Defaults to the standard role users sub heading when not provided.
-     */
-    subtitle?: string;
+    baseI18nKey?: string;
 }
 
 export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
@@ -99,8 +95,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         activeUserStore,
         isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
-        title,
-        subtitle,
+        baseI18nKey: baseI18nKeyOverride,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
 
@@ -117,7 +112,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isForNonHumanUser
     );
 
-    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+    const baseI18nKey: string = baseI18nKeyOverride
+        ?? (isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.");
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
@@ -674,10 +670,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
                     <Heading as="h4" data-componentid={ componentId + "-heading" }>
-                        { title ?? t(baseI18nKey + "heading") }
+                        { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { subtitle ?? t(baseI18nKey + "subHeading") }
+                        { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnlyView && (

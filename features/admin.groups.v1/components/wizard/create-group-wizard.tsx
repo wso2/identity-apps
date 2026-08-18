@@ -24,7 +24,7 @@ import { AssignRoles } from "@wso2is/admin.core.v1/components/roles";
 import { RolePermissions } from "@wso2is/admin.core.v1/components/roles/role-permissions";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { CLISettingsUIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CLISettingsPropertiesInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -158,11 +158,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const cliSettingsConfig: CLISettingsUIConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.cliSettings
+    const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.cliSettings
     );
 
-    const cliApplicationName: string = cliSettingsConfig?.applicationName;
+    const cliApplicationName: string =
+        (cliFeatureConfig?.properties as CLISettingsPropertiesInterface)?.applicationName;
 
     /**
      * Filter to resolve the portal applications whose roles are excluded from the listing.

@@ -450,7 +450,6 @@ export class Config {
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
-            cliSettings: window[ "AppUtils" ]?.getConfig()?.ui?.cliSettings,
             apiResourceManagement: {
                 blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
                     ?.blocked_api_resources ?? []

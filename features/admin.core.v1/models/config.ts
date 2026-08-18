@@ -482,9 +482,13 @@ interface ActionsUIConfigInterface {
 }
 
 /**
- * CLI tool related UI configurations.
+ * CLI settings feature-specific properties.
+ *
+ * Configured under `cliSettings.properties` in the feature config. The CLI application
+ * name and client ID differ between Identity Server and Asgardeo, hence they are
+ * configurable per deployment.
  */
-export interface CLISettingsUIConfigInterface {
+export interface CLISettingsPropertiesInterface {
     /**
      * Name of the application that backs the CLI tool.
      */
@@ -510,11 +514,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         enabled: boolean;
         plannedRollOutDate: string;
     };
-    /**
-     * CLI tool related configurations. The CLI application name and client ID differ
-     * between Identity Server and Asgardeo, hence they are configurable per deployment.
-     */
-    cliSettings?: CLISettingsUIConfigInterface;
     /**
      * Path to the favicon of the application.
      */

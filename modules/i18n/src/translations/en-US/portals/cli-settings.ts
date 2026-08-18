@@ -24,11 +24,11 @@ import { CliSettingsNS } from "../../../models";
  */
 export const cliSettings: CliSettingsNS = {
     enablement: {
-        description: "When disabled, all CLI access to this organization is blocked, including for previously assigned users.",
+        description: "When disabled, all CLI access to this organization is blocked.",
         disableConfirmation: {
-            content: "You can re-enable this at any time without losing user assignments.",
+            content: "You can re-enable this at any time without losing existing user access.",
             heading: "Disable CLI access?",
-            message: "Active CLI sessions will be terminated immediately, and assigned users will not be able to sign in through the CLI. Please proceed with caution."
+            message: "Active CLI sessions will be terminated immediately, and users will no longer be able to sign in through the CLI. Please proceed with caution."
         },
         notifications: {
             disabled: {
@@ -53,8 +53,8 @@ export const cliSettings: CliSettingsNS = {
         toggleAriaLabel: "Enable CLI"
     },
     notConfigured: {
-        subtitle: "The CLI is not configured for this deployment.",
-        title: "CLI is not available"
+        subtitle: "The {{productName}} CLI is not configured for this deployment.",
+        title: "{{productName}} CLI is not available"
     },
     page: {
         description: "Enable the CLI to manage your organization from the command line.",
@@ -64,12 +64,29 @@ export const cliSettings: CliSettingsNS = {
         users: "Users"
     },
     users: {
+        heading: "Users with CLI Access",
+        list: {
+            emptyPlaceholder: {
+                action: "Assign Users",
+                subtitles: "There are no users with CLI access yet.",
+                title: "No users with CLI access"
+            }
+        },
+        notifications: {
+            pendingApproval: {
+                description: "The CLI access update was accepted and is pending approval.",
+                message: "CLI access update accepted for approval"
+            },
+            success: {
+                description: "CLI access has been successfully updated for the users.",
+                message: "CLI access updated"
+            }
+        },
         roleNotFound: {
             description: "A role named \"{{roleName}}\" could not be found.",
             subtitle: "Create the role to manage CLI access.",
             title: "CLI Administrator role not found"
         },
-        subtitle: "Manage the users who can access the CLI.",
-        title: "Users with CLI Access"
+        subHeading: "Add or remove users who can access the CLI."
     }
 };

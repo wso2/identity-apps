@@ -74,7 +74,7 @@ const CLIUserAssignment: FunctionComponent<CLIUserAssignmentPropsInterface> = (
     const {
         cliApplicationId,
         readonly,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "cli-user-assignment"
     } = props;
 
     const { t } = useTranslation();
@@ -198,8 +198,7 @@ const CLIUserAssignment: FunctionComponent<CLIUserAssignmentPropsInterface> = (
             ) }
 
             <RoleUsersList
-                title={ t("cliSettings:users.title") }
-                subtitle={ t("cliSettings:users.subtitle") }
+                baseI18nKey={ "cliSettings:users." }
                 isPrivilegedUsersToggleVisible={ isPrivilegedUsersToggleVisible }
                 isReadOnly={ readonly || !hasRolesUpdatePermissions }
                 role={ cliAdministratorRole }
@@ -217,10 +216,6 @@ const CLIUserAssignment: FunctionComponent<CLIUserAssignmentPropsInterface> = (
             />
         </div>
     );
-};
-
-CLIUserAssignment.defaultProps = {
-    "data-componentid": "cli-user-assignment"
 };
 
 export default CLIUserAssignment;

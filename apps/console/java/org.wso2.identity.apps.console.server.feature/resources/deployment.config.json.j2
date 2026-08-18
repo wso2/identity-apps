@@ -232,12 +232,6 @@
         {% if console.ui.application_sharing_status_polling_interval is defined %}
         "asyncOperationStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
         {% endif %}
-        {% if console.ui.cli_settings is defined %}
-        "cliSettings": {
-            "applicationName": "{{ console.ui.cli_settings.application_name }}",
-            "clientId": "{{ console.ui.cli_settings.client_id }}"
-        },
-        {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
@@ -1220,6 +1214,14 @@
                 "enabled": {% if console.cli_settings.enabled is defined %} {{ console.cli_settings.enabled }},
                 {% else %} false,
                 {% endif %}
+                "properties": {
+                    {% if console.cli_settings.application_name is defined %}
+                    "applicationName": {{ console.cli_settings.application_name | tojson }}{{ "," if console.cli_settings.client_id is defined }}
+                    {% endif %}
+                    {% if console.cli_settings.client_id is defined %}
+                    "clientId": {{ console.cli_settings.client_id | tojson }}
+                    {% endif %}
+                },
                 "scopes": {
                     {% if console.cli_settings.scopes is defined %}
                     {% for operation, scopes in console.cli_settings.scopes.items() %}

@@ -64,7 +64,7 @@ interface CLISettingsTabInterface extends IdentifiableComponentInterface {
 const CLISettingsTabs: FunctionComponent<CLISettingsTabsPropsInterface> = (
     props: CLISettingsTabsPropsInterface
 ): ReactElement => {
-    const { cliApplicationId, readonly, [ "data-componentid" ]: componentId } = props;
+    const { cliApplicationId, readonly, [ "data-componentid" ]: componentId = "cli-settings-tabs" } = props;
 
     const { t } = useTranslation();
 
@@ -131,10 +131,6 @@ const CLISettingsTabs: FunctionComponent<CLISettingsTabsPropsInterface> = (
             )) }
         </div>
     );
-};
-
-CLISettingsTabs.defaultProps = {
-    "data-componentid": "cli-settings-tabs"
 };
 
 export default CLISettingsTabs;

@@ -24,7 +24,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { CLISettingsUIConfigInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CLISettingsPropertiesInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
@@ -81,11 +81,12 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
-    const cliSettingsConfig: CLISettingsUIConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.cliSettings
+    const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.cliSettings
     );
 
-    const cliApplicationName: string = cliSettingsConfig?.applicationName;
+    const cliApplicationName: string =
+        (cliFeatureConfig?.properties as CLISettingsPropertiesInterface)?.applicationName;
 
     /**
      * Filter to resolve the portal applications whose roles are excluded from the listing.
