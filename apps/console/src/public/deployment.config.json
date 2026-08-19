@@ -881,6 +881,10 @@
                 "disabledFeatures": [],
                 "enabled": false,
                 "featureFlags": [],
+                "properties": {
+                    "applicationName": "",
+                    "clientId": ""
+                },
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create"
