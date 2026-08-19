@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.45.0
+
+### Minor Changes
+
+- [#10598](https://github.com/wso2/identity-apps/pull/10598) [`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add Password Credential authentication option to SMS and Email provider forms
+
 ## 2.44.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.3
+
+### Patch Changes
+
+- [#10624](https://github.com/wso2/identity-apps/pull/10624) [`274ac741303a1deeececf324250aa31bd98e949d`](https://github.com/wso2/identity-apps/commit/274ac741303a1deeececf324250aa31bd98e949d) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix unhandled ClassCastException in authentication portal pages when accessed without prompt context
+
 ## 5.4.2
 
 ### Patch Changes
