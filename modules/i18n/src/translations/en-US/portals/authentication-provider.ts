@@ -2368,7 +2368,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     loadingPlaceholder: "Loading presentation definitions...",
                     emptyPlaceholder: "No presentation definitions available",
                     hint: "Specifies the credentials and claims to request from the user's wallet.",
-                    noneAvailableHint: "No presentation definitions found. <1>Create one</1> to continue."
+                    noneAvailableHint: "No presentation definitions found. <1>Create one</1> to proceed."
                 },
                 timeout: {
                     label: "Timeout (seconds)",

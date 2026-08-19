@@ -289,15 +289,16 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
                             <Trans
                                 i18nKey={ `${ I18N_PREFIX }.form.presentationDefinition.noneAvailableHint` }
                             >
-                                No presentation definitions found.{ " " }
+                                { "No presentation definitions found. " }
                                 <Link
+                                    link="#"
                                     onClick={ navigateToPresentationDefinitions }
                                     external={ false }
                                     data-componentid={ `${ componentId }-create-pd-link` }
                                 >
                                     Create one
                                 </Link>
-                                { " " }to proceed.
+                                { " to proceed." }
                             </Trans>
                         </Hint>
                     )
