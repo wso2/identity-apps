@@ -358,7 +358,6 @@ export class AppConstants {
             [ "IDVP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/:id` ],
             [ "FLOW_EXTENSION_EDIT",
                 `${ AppConstants.getDeveloperViewBasePath() }/flow-extensions/:id` ],
-            [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],

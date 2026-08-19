@@ -620,11 +620,6 @@ export class RouteUtils {
                 id: "webhooks",
                 order: 1,
                 selected: history.location.pathname.includes("/webhooks")
-            },
-            {
-                category: extensions,
-                id: "events",
-                order: 2
             }
         ];
 
