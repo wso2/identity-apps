@@ -32,7 +32,7 @@
 
 <%
     String sessionDataKey = request.getParameter("sessionDataKey");
-    String vpPollToken = request.getParameter("pollToken");
+    String vpRequestId = request.getParameter("requestId");
     String walletUrl = request.getParameter("walletUrl");
     String vpTenantDomain = request.getParameter("tenantDomain");
     String vpOrgId = request.getParameter("orgId");
@@ -262,11 +262,11 @@
         <script type="text/javascript">
             var CONFIG = {
                 sessionDataKey: '<%=sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : ""%>',
-                pollToken: '<%=vpPollToken != null ? Encode.forJavaScript(vpPollToken) : ""%>',
+                requestId: '<%=vpRequestId != null ? Encode.forJavaScript(vpRequestId) : ""%>',
                 walletUrl: '<%=walletUrl != null ? Encode.forJavaScript(walletUrl) : ""%>',
                 pollInterval: 2000,
                 pollTimeout: 8000,
-                pollEndpoint: '/openid4vp/v1/status?pollToken=<%=Encode.forUriComponent(vpPollToken != null ? vpPollToken : "")%>'
+                pollEndpoint: '/openid4vp/v1/status?requestId=<%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>'
             };
             var I18N = {
                 waiting:        '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
@@ -525,7 +525,7 @@
 
             document.addEventListener('DOMContentLoaded', function() {
                 
-                if (!CONFIG.pollToken) {
+                if (!CONFIG.requestId) {
                     handleError('Sign-in session is invalid. Please restart the login flow.');
                     return;
                 }

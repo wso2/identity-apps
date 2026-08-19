@@ -347,9 +347,9 @@
                 useEffect(() => {
                     if (!walletQR) return;
 
-                    const { url, requestId, pollToken, flowId } = walletQR;
+                    const { url, requestId, flowId } = walletQR;
 
-                    if (!pollToken) {
+                    if (!requestId) {
                         setError({ code: "VP_ERROR", message: "Wallet session identifier is missing. Please try again." });
                         setWalletQR(null);
                         return;
@@ -371,8 +371,8 @@
                     var vpPollStart = Date.now();
 
                     // Status endpoint.
-                    var vpStatusEndpoint = baseUrl + "/openid4vp/v1/status?pollToken="
-                        + encodeURIComponent(pollToken);
+                    var vpStatusEndpoint = baseUrl + "/openid4vp/v1/status?requestId="
+                        + encodeURIComponent(requestId);
 
                     // Holds the AbortController for the in-flight fetch so the cleanup
                     // function can cancel it on unmount.
@@ -642,8 +642,7 @@
                             var redirectURL = flow.data.redirectURL;
                             if (redirectURL && redirectURL.startsWith("openid4vp://")) {
                                 var requestId = flow.data.additionalData && flow.data.additionalData.vp_request_id;
-                                var pollToken = flow.data.additionalData && flow.data.additionalData.vp_poll_token;
-                                setWalletQR({ url: redirectURL, requestId: requestId, pollToken: pollToken, flowId: flow.flowId });
+                                setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId });
                                 setLoading(false);
                             } else {
                                 setLoading(true);
