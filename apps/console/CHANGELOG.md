@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.14.10
+
+### Patch Changes
+
+- [#10626](https://github.com/wso2/identity-apps/pull/10626) [`04937d70b493cb2c79745854b5df809c0763f7e8`](https://github.com/wso2/identity-apps/commit/04937d70b493cb2c79745854b5df809c0763f7e8) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Release the Console with the clarified SSO-session token binding type description
+
 ## 4.14.9
 
 ### Patch Changes
