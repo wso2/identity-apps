@@ -81,9 +81,6 @@ export class CLISettingsConstants {
                         "refresh_token",
                         "organization_switch"
                     ],
-                    pkce: {
-                        mandatory: false
-                    },
                     publicClient: true
                 }
             },
