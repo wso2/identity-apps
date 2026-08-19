@@ -68,6 +68,53 @@ export interface ExternalAPIAuthenticationNS {
                         };
                     };
                 };
+                passwordCredential: {
+                    name: string;
+                    properties: {
+                        tokenEndpoint: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        clientID: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        clientSecret: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        password: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        scopes: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                    };
+                };
                 basic: {
                     name: string;
                     properties: {
