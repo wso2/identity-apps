@@ -359,7 +359,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.cli-settings.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.39.0
+        specifier: ^2.39.1
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
