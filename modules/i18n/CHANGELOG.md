@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.45.1
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add CLI configuration UI
+
 ## 2.45.0
 
 ### Minor Changes
