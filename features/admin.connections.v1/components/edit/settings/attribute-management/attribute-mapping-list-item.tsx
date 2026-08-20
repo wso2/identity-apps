@@ -16,10 +16,20 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { Field, FieldConstants, Form, FormPropsInterface } from "@wso2is/forms";
 import { Code, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { 
@@ -111,28 +121,24 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }
     }, [ availableAttributeList ]);
 
-    const getAllowedMappedValueOptions = () => {
-        return (allowedMappedValues ?? []).map((claimName: string) => ({
-            key: claimName,
-            text: claimName,
-            value: claimName
-        }));
-    };
-
     /**
      * Form submission handler.
      * @param values - Form values.
      * @param form - Form.
      */
     const onFormSub = (values: Record<string, any>) => {
-        // Find the claim by id and create a instance of
-        // ConnectionCommonClaimMappingInterface
-        // with the mapping value.
+        const useAutocomplete: boolean = Array.isArray(allowedMappedValues) && allowedMappedValues.length > 0;
+
+        if (useAutocomplete && !mappedInputValue) {
+            setMappingHasError(true);
+            return;
+        }
+
         const newMapping: ConnectionCommonClaimMappingInterface = {
             claim: copyOfAttrs.find(
                 (claim: ConnectionClaimInterface) => claim.id === values.localClaimId
             ),
-            mappedValue: values.mappedValue
+            mappedValue: useAutocomplete ? mappedInputValue : values.mappedValue
         } as ConnectionCommonClaimMappingInterface;
 
         onSubmit(newMapping);
@@ -155,44 +161,45 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                         {
                             Array.isArray(allowedMappedValues) && allowedMappedValues.length > 0
                                 ? (
-                                    <Field.Dropdown
-                                        required
-                                        search
-                                        clearable
-                                        name="mappedValue"
-                                        options={ getAllowedMappedValueOptions() }
-                                        placeholder={
-                                            t("idp:forms.attributeSettings.attributeMapping." +
-                                                "externalAttributeInput.placeHolder")
-                                        }
-                                        ariaLabel="External IdP Attribute Mapping Value"
-                                        validation={ (value: string) => {
-                                            if (!value || !value.trim()) {
+                                    <Autocomplete
+                                        fullWidth
+                                        size="small"
+                                        options={ allowedMappedValues }
+                                        value={ mappedInputValue ?? null }
+                                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                                            <TextField
+                                                { ...params }
+                                                required
+                                                error={ mappingHasError }
+                                                helperText={ mappingHasError
+                                                    ? (!mappedInputValue
+                                                        ? FieldConstants.FIELD_REQUIRED_ERROR
+                                                        : t("idp:forms.attributeSettings.attributeMapping." +
+                                                            "externalAttributeInput.existingErrorMessage"))
+                                                    : undefined
+                                                }
+                                                placeholder={
+                                                    t("idp:forms.attributeSettings.attributeMapping." +
+                                                        "externalAttributeInput.placeHolder")
+                                                }
+                                            />
+                                        ) }
+                                        onChange={ (event: SyntheticEvent, value: string | null) => {
+                                            const selected: string | undefined = value ?? undefined;
+                                            setMappedInputValue(selected);
+                                            if (!selected) {
                                                 setMappingHasError(true);
-
-                                                return FieldConstants.FIELD_REQUIRED_ERROR;
+                                                return;
                                             }
-
-                                            const mappedValues: Set<string> = new Set(
+                                            const alreadyMapped: Set<string> = new Set(
                                                 alreadyMappedAttributesList.map(
-                                                    (attributeMapping: ConnectionCommonClaimMappingInterface) =>
-                                                        attributeMapping.mappedValue
+                                                    (m: ConnectionCommonClaimMappingInterface) => m.mappedValue
                                                 )
                                             );
-
-                                            if (mappedValues.has(value) && mapping?.mappedValue !== value) {
-                                                setMappingHasError(true);
-
-                                                return t("idp:forms.attributeSettings.attributeMapping." +
-                                                    "externalAttributeInput.existingErrorMessage");
-                                            }
-
-                                            setMappingHasError(false);
-
-                                            return undefined;
+                                            setMappingHasError(
+                                                alreadyMapped.has(selected) && mapping?.mappedValue !== selected
+                                            );
                                         } }
-                                        listen={ (value: string) => setMappedInputValue(value) }
-                                        width={ 16 }
                                     />
                                 )
                                 : (
