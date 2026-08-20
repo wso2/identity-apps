@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.4
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`5da5284d994e71fa95f680aac67b6f27b4a7cd63`](https://github.com/wso2/identity-apps/commit/5da5284d994e71fa95f680aac67b6f27b4a7cd63) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix jsp message spacing issue
+
 ## 5.4.3
 
 ### Patch Changes
