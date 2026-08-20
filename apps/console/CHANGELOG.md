@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.14.12
+
+### Patch Changes
+
+- [#10605](https://github.com/wso2/identity-apps/pull/10605) [`dc2994e920cf3bd309356322075ee07575127f36`](https://github.com/wso2/identity-apps/commit/dc2994e920cf3bd309356322075ee07575127f36) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Remove logo gradient backdrop in connection edit pages
+
+- Updated dependencies [[`dc2994e920cf3bd309356322075ee07575127f36`](https://github.com/wso2/identity-apps/commit/dc2994e920cf3bd309356322075ee07575127f36)]:
+  - @wso2is/admin.connections.v1@2.39.1
+
 ## 4.14.11
 
 ### Patch Changes
