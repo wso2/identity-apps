@@ -877,6 +877,34 @@
                     ]
                 }
             },
+            "cliSettings": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "properties": {
+                    "applicationName": "",
+                    "clientId": ""
+                },
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:cliSettings"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_user_mgt_list"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update",
+                        "internal_role_mgt_update",
+                        "internal_role_mgt_users_update"
+                    ]
+                }
+            },
             "consents": {
                 "disabledFeatures": [],
                 "enabled": true,

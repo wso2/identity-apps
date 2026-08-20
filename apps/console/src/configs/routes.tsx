@@ -34,6 +34,7 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ReactComponent as ProfileAttributesIcon
 } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
@@ -57,6 +58,9 @@ import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
+import {
+    ReactComponent as CLISettingsIcon
+} from "@wso2is/admin.cli-settings.v1/assets/images/icons/cli-settings-icon.svg";
 import AppLayout from "../layouts/app-layout";
 import AuthLayout from "../layouts/auth-layout";
 import DashboardLayout from "../layouts/dashboard-layout";
@@ -90,6 +94,14 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+    // The CLI tool is only available when the feature is enabled and its application is
+    // configured (application name and client ID) via the `cliSettings` feature properties.
+    const cliSettingsFeatureConfig: FeatureAccessConfigInterface =
+        window["AppUtils"]?.getConfig()?.ui?.features?.cliSettings;
+    const isCLISettingsConfigurable: boolean =
+        !!cliSettingsFeatureConfig?.enabled
+        && !!cliSettingsFeatureConfig?.properties?.applicationName
+        && !!cliSettingsFeatureConfig?.properties?.clientId;
 
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
@@ -2064,6 +2076,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         }
     ];
+
+    if (isCLISettingsConfigurable) {
+        defaultRoutes.push({
+            component: lazy(() => import("@wso2is/admin.cli-settings.v1/pages/cli-settings-page")),
+            exact: true,
+            icon: {
+                icon: <CLISettingsIcon />
+            },
+            id: "cliSettings",
+            name: "cliSettings:page.title",
+            order: 32,
+            path: AppConstants.getPaths().get("CLI_SETTINGS"),
+            protected: true,
+            showOnSidePanel: true
+        });
+    }
 
     if (isMcpServersFeatureEnabled) {
         defaultRoutes.push(

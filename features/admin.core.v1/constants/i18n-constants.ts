@@ -359,6 +359,11 @@ export class I18nConstants {
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
 
     /**
+     * CLI settings namespace.
+     */
+    public static readonly CLI_SETTINGS_NAMESPACE: string = I18nModuleConstants.CLI_SETTINGS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -425,7 +430,8 @@ export class I18nConstants {
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
-        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ],
+        [ I18nConstants.CLI_SETTINGS_NAMESPACE, "portals" ]
     ]);
 
     /**

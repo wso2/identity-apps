@@ -302,6 +302,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             learnMore: documentationBaseUrl + "/guides/branding/"
         },
+        cliSettings: {
+            learnMore: undefined
+        },
         connections: {
             edit: {
                 advancedSettings: {

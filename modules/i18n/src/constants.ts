@@ -250,6 +250,12 @@ export class I18nModuleConstants {
     public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
 
     /**
+     * CLI settings namespace.
+     * @constant
+     */
+    public static readonly CLI_SETTINGS_NAMESPACE: string = "cliSettings";
+
+    /**
      * Secrets namespace.
      * @constant
      */

@@ -47,6 +47,7 @@ export * from "./email-locale-ns";
 export * from "./help-panel-ns";
 export * from "./suborganizations-ns";
 export * from "./console-settings-ns";
+export * from "./cli-settings-ns";
 export * from "./secrets-ns";
 export * from "./branding-ns";
 export * from "./email-templates-ns";

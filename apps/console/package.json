@@ -61,6 +61,7 @@
         "@wso2is/admin.cds.v1": "^1.6.9",
         "@wso2is/admin.certificates.v1": "^2.25.206",
         "@wso2is/admin.claims.v1": "^2.31.3",
+        "@wso2is/admin.cli-settings.v1": "workspace:^",
         "@wso2is/admin.connections.v1": "^2.39.0",
         "@wso2is/admin.consents.v1": "workspace:^",
         "@wso2is/admin.console-settings.v1": "^2.26.47",

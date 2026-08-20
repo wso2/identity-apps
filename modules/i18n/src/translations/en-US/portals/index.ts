@@ -49,6 +49,7 @@ export * from "./email-locale";
 export * from "./help-panel";
 export * from "./suborganizations";
 export * from "./console-settings";
+export * from "./cli-settings";
 export * from "./secrets";
 export * from "./branding";
 export * from "./email-templates";
