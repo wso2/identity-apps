@@ -683,6 +683,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
                 authenticationSequence={ application.authenticationSequence }
+                inboundProtocols={ application?.inboundProtocols }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
