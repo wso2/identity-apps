@@ -17,11 +17,14 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Code from "@oxygen-ui/react/Code/Code";
 import Typography from "@oxygen-ui/react/Typography";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "../../../../../hooks/use-authentication-flow-builder-core-context";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { ExtensionExecutorInterface } from "../../../../../models/metadata";
 import { DEFAULT_EXTENSION_EXECUTOR_ICON } from "../../../../../utils/build-extension-executor-steps";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
@@ -38,6 +41,7 @@ const ExtensionExecution = ({
     resource,
     "data-componentid": componentId = "extension-execution"
 }: ExtensionExecutionPropsInterface): ReactElement => {
+    const { t } = useTranslation();
     const { metadata } = useAuthenticationFlowBuilderCore();
     const [ hasIconFailed, setHasIconFailed ] = useState<boolean>(false);
 
@@ -52,6 +56,39 @@ const ExtensionExecution = ({
             (candidate: ExtensionExecutorInterface) => candidate.name === executorName
         ) || null;
     }, [ executorName, metadata?.extensionExecutors ]);
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.input.general"
+                values={ { id: resource?.id } }
+            >
+                Required fields are not properly configured for the input field with ID <Code>{ resource?.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    /**
+     * An executor that needs a connection is only valid once one has been selected for the step.
+     */
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        if (!executor?.requiresConnection) {
+            return [];
+        }
+
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.input.idpName"),
+                name: "data.action.executor.meta.idpName"
+            }
+        ];
+    }, [ executor?.requiresConnection, t ]);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
 
     const isDefaultIcon: boolean = hasIconFailed || !executor?.icon;
     const iconSrc: string = isDefaultIcon
