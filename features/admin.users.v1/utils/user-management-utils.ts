@@ -486,8 +486,10 @@ export const resolveUserSearchAttributes = (
 ): DropdownChild[] => {
     const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
         .filter((schema: ProfileSchemaInterface) => {
-            // `userName` is already added as a hardcoded option by the consumers of this function.
-            // Exclude it here to avoid rendering a duplicate entry.
+            /*
+             * `userName` is already added as a hardcoded option by the consumers of this function.
+             * Exclude it here to avoid rendering a duplicate entry.
+             */
             if (schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
                 return false;
             }
@@ -510,11 +512,13 @@ export const resolveUserSearchAttributes = (
             return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
-    // Migrated tenants can end up with the same attribute (e.g. `country`, `preferredMFAOption`) exposed under
-    // both the enterprise dialect and the system schema. Both map to the same local claim and carry the same
-    // display name but different schema-qualified values, so de-duplicating by option value would not work.
-    // De-duplicate by attribute name instead, preferring the system schema variant as it is the canonical
-    // location in 7.x.
+    /*
+     * Migrated tenants can end up with the same attribute (e.g. `country`, `preferredMFAOption`) exposed under
+     * both the enterprise dialect and the system schema. Both map to the same local claim and carry the same
+     * display name but different schema-qualified values, so de-duplicating by option value would not work.
+     * De-duplicate by attribute name instead, preferring the system schema variant as it is the canonical
+     * location in 7.x.
+     */
     const deduplicatedSchemasByName: Map<string, ProfileSchemaInterface> = new Map();
 
     sortedSchemas?.forEach((schema: ProfileSchemaInterface) => {
