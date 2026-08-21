@@ -17,8 +17,6 @@
  */
 
 import Divider from "@oxygen-ui/react/Divider";
-import List from "@oxygen-ui/react/List";
-import ListItem from "@oxygen-ui/react/ListItem";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import {
@@ -41,7 +39,6 @@ import { AlertLevels, LoadableComponentInterface, TestableComponentInterface,
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
-    ContentLoader,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
@@ -84,6 +81,7 @@ import {
     ConnectionTypes
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
+import ConnectedApplicationsList from "./connected-applications-list";
 
 /**
  * Proptypes for the Authenticators Grid component.
@@ -721,18 +719,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             { t("authenticationProvider:confirmations." +
                                 "deleteIDPWithConnectedApps.content") }
                             <Divider hidden />
-                            <List className="ml-6">
-                                {
-                                    isConnectedAppsLoading ? (
-                                        <ContentLoader/>
-                                    ) :
-                                        connectedApps?.map((app: string, index: number) => {
-                                            return (
-                                                <ListItem key={ index }>{ app }</ListItem>
-                                            );
-                                        })
-                                }
-                            </List>
+                            <ConnectedApplicationsList
+                                applications={ connectedApps }
+                                isLoading={ isConnectedAppsLoading }
+                            />
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
