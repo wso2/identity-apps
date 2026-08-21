@@ -52,7 +52,9 @@ describe("useTrialDetails", () => {
     it("returns the trial state provided via TrialContext", () => {
         const contextValue: TrialContextPropsInterface = {
             daysRemaining: 7,
+            dismissTrialExpiryNotice: jest.fn(),
             isLoading: false,
+            showTrialExpiryNotice: false,
             tenantHasTrial: true
         };
 
