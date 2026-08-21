@@ -14,5 +14,6 @@ export type { DynamicFieldProps } from "./dynamic-form-field";
 export * from "./dynamic-wizard";
 export * from "./dynamic-wizard-page";
 export * from "./field-input";
+export * from "./field-select";
 export * from "./field";
 export * from "./utils";

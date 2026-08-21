@@ -255,6 +255,11 @@ export interface AuthenticationProviderNS {
                     };
                 };
             };
+            dynamicOptions: {
+                empty: string;
+                loading: string;
+                unavailable: string;
+            };
             emailOTP: {
                 enableBackupCodes: {
                     hint: string;
