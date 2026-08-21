@@ -67,7 +67,7 @@ import {
     PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -111,7 +111,10 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         ];
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
-    const [ pendingFormValues, setPendingFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(null);
+    // Holds form values awaiting user consent in the confirmation modal. Only written and read inside
+    // handlers (never rendered), so a ref avoids an unnecessary re-render on each update.
+    const pendingFormValuesRef: MutableRefObject<AlternativeLoginIdentifierFormInterface> =
+        useRef<AlternativeLoginIdentifierFormInterface>(null);
 
     const {
         data: validationData
@@ -518,7 +521,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
 
         // Show confirmation modal if uniqueness scope update is required and no consent received yet.
         if (!hasUserConsent && requiresUniquenessScopeUpdate) {
-            setPendingFormValues(formValues);
+            pendingFormValuesRef.current = formValues;
             setShowConfirmationModal(true);
 
             return;
@@ -538,11 +541,11 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
      * Handles the form submission after user consents to uniqueness scope update.
      */
     const handleConsentedSubmit = (): void => {
-        if (!pendingFormValues) {
+        if (!pendingFormValuesRef.current) {
             return;
         }
 
-        processFormSubmission(pendingFormValues, true);
+        processFormSubmission(pendingFormValuesRef.current, true);
         setShowConfirmationModal(false);
     };
 
