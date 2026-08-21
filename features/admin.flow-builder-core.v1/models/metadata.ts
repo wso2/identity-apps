@@ -135,9 +135,9 @@ export interface ExtensionExecutorInterface {
      */
     description?: string;
     /**
-     * Reserved behavior flags declared by the executor. Interpreted in API layer.
+     * Whether the executor authenticates the user.
      */
-    behaviorFlags?: string[];
+    isAuthenticationExecutor?: boolean;
     /**
      * Icon for the executor.
      */

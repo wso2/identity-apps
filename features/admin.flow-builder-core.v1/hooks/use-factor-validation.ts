@@ -24,7 +24,6 @@ import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "./use-authentication-flow-builder-core-context";
 import useValidationStatus from "./use-validation-status";
-import ValidationConstants from "../constants/validation-constants";
 import { Action, Element } from "../models/elements";
 import { ExtensionExecutorInterface } from "../models/metadata";
 import Notification, { NotificationType } from "../models/notification";
@@ -81,7 +80,7 @@ const useRecoveryFactorValidation = (node: Node): void => {
 
     /**
      * Executors that satisfy the recovery factor requirement. Covers the built-in factors and any
-     * executor contributed by a deployed extension that declares the RECOVERY_FACTOR behavior flag.
+     * executor contributed by a deployed extension that authenticates the user.
      */
     const recoveryFactorExecutors: Set<string> = useMemo(() => {
         const factors: Set<string> = new Set<string>([
@@ -91,8 +90,7 @@ const useRecoveryFactorValidation = (node: Node): void => {
         ]);
 
         metadata?.extensionExecutors?.forEach((executor: ExtensionExecutorInterface) => {
-            if (executor?.name
-                && executor?.behaviorFlags?.includes(ValidationConstants.RECOVERY_FACTOR_BEHAVIOR_FLAG)) {
+            if (executor?.name && executor?.isAuthenticationExecutor) {
                 factors.add(executor.name);
             }
         });

@@ -23,11 +23,6 @@ class ValidationConstants {
     private constructor() {}
 
     public static readonly REQUIRED_FIELD_ERROR_CODE: string = "REQUIRED_FIELD_ERROR";
-
-    /**
-     * Behavior flag an executor declares to quality as a password recovery factor.
-     */
-    public static readonly RECOVERY_FACTOR_BEHAVIOR_FLAG: string = "RECOVERY_FACTOR";
 }
 
 export default ValidationConstants;
