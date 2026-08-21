@@ -1604,8 +1604,10 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 platformSettings: {
+                    clientAttestationOnlySubTitle: "The following platform specific configurations are needed when enabling client-attestation related features.",
                     heading: "Platform Settings",
                     subTitle: "The following platform specific configurations are needed when enabling client-attestation or trusted app related features.",
+                    trustedAppsOnlySubTitle: "The following platform specific configurations are needed when enabling trusted app related features.",
                     fields: {
                         android: {
                             heading: "Android",

@@ -1353,8 +1353,10 @@ export interface ApplicationsNS {
                     }
                 };
                 platformSettings: {
+                    clientAttestationOnlySubTitle: string;
                     heading: string;
                     subTitle: string;
+                    trustedAppsOnlySubTitle: string;
                     fields: {
                         android: {
                             heading: string;
