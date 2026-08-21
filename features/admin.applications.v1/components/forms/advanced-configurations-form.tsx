@@ -54,8 +54,10 @@ import { useApiAuthCompatibility } from "../../hooks/use-api-auth-compatibility"
 import {
     AdvancedConfigurationsInterface,
     ApplicationTemplateListItemInterface,
-    AuthenticationSequenceInterface
+    AuthenticationSequenceInterface,
+    InboundProtocolListItemInterface
 } from "../../models/application";
+import { SupportedAuthProtocolTypes } from "../../models/application-inbound";
 import "./advanced-configurations-form.scss";
 
 /**
@@ -71,6 +73,10 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
      * Current advanced configuration values.
      */
     config: AdvancedConfigurationsInterface;
+    /**
+     * Inbound protocols configured for the application.
+     */
+    inboundProtocols?: InboundProtocolListItemInterface[];
     /**
      * Callback for form submission.
      */
@@ -108,6 +114,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const {
         authenticationSequence,
         config,
+        inboundProtocols,
         onSubmit,
         readOnly,
         template,
@@ -127,6 +134,78 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const isTrustedAppsFeatureEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("TRUSTED_APPS"));
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    /**
+     * Whether an OIDC/OAuth2 inbound protocol is configured for the application.
+     *
+     * The standard based application template is protocol agnostic, hence the configured inbound
+     * protocol is the only reliable way to tell an OIDC application apart from a SAML or a
+     * WS-Federation one.
+     */
+    const isOIDCInboundProtocolConfigured: boolean = !!inboundProtocols?.some(
+        (protocol: InboundProtocolListItemInterface) => protocol?.type === SupportedAuthProtocolTypes.OAUTH2);
+
+    /**
+     * Whether the application template is inherently OIDC based.
+     */
+    const isOIDCBasedTemplate: boolean =
+        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+        template?.id === ApplicationManagementConstants.MOBILE ||
+        template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
+
+    /**
+     * Whether the application is OIDC based.
+     */
+    const isOIDCApplication: boolean = isOIDCBasedTemplate ||
+        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION && isOIDCInboundProtocolConfigured);
+
+    /**
+     * App native authentication is only supported for OIDC/OAuth2 based applications, hence the section
+     * should not be rendered for the other inbound protocols such as SAML and WS-Federation.
+     */
+    const isApplicationNativeAuthenticationSupported: boolean =
+        isApplicationNativeAuthenticationEnabled && isOIDCApplication;
+
+    /**
+     * Client attestation is only applicable when app native authentication is available, and it is not
+     * offered for the OIDC web application template.
+     */
+    const isClientAttestationSupported: boolean = isApplicationNativeAuthenticationEnabled && isOIDCApplication &&
+        template?.id !== ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
+
+    /**
+     * FIDO trusted app settings are protocol agnostic, hence they are offered for the standard based,
+     * OIDC standard based and mobile application templates regardless of the inbound protocol.
+     */
+    const isTrustedAppsSupported: boolean = isTrustedAppsFeatureEnabled &&
+        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+        template?.id === ApplicationManagementConstants.MOBILE);
+
+    /**
+     * Platform settings only carry the platform specific details required by client attestation and the
+     * FIDO trusted app features, hence the section is only rendered when at least one of them is offered.
+     */
+    const isPlatformSettingsSupported: boolean = isClientAttestationSupported || isTrustedAppsSupported;
+
+    /**
+     * Resolves the platform settings sub title so that it only references the features that are
+     * actually rendered for the current application.
+     *
+     * @returns The platform settings sub title.
+     */
+    const resolvePlatformSettingsSubTitle = (): string => {
+        if (isClientAttestationSupported && isTrustedAppsSupported) {
+            return t("applications:forms.advancedConfig.sections.platformSettings.subTitle");
+        }
+
+        if (isClientAttestationSupported) {
+            return t("applications:forms.advancedConfig.sections.platformSettings." +
+                "clientAttestationOnlySubTitle");
+        }
+
+        return t("applications:forms.advancedConfig.sections.platformSettings.trustedAppsOnlySubTitle");
+    };
 
     const [ isEnableAPIBasedAuthentication, setIsEnableAPIBasedAuthentication ] = useState<boolean>(
         config?.enableAPIBasedAuthentication
@@ -204,6 +283,15 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 }
             }
         };
+
+        // App native authentication, client attestation and trusted app settings are only rendered for the
+        // application types that support them. The fields of a section that is not rendered are never
+        // mounted, hence they are omitted from the payload so that the stored configuration is preserved
+        // instead of being overwritten with empty values.
+        !isApplicationNativeAuthenticationSupported &&
+            delete data.advancedConfigurations.enableAPIBasedAuthentication;
+        !isClientAttestationSupported && delete data.advancedConfigurations.attestationMetaData;
+        !isTrustedAppsSupported && delete data.advancedConfigurations.trustedAppConfiguration;
 
         !applicationConfig.advancedConfigurations.showSaaS && delete data.advancedConfigurations.saas;
         !applicationConfig.advancedConfigurations.showEnableAuthorization &&
@@ -439,13 +527,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         )
                     }
                     {
-                        (
-                            isApplicationNativeAuthenticationEnabled &&
-                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                            template?.id === ApplicationManagementConstants.MOBILE ||
-                            template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
-                        ) && (
+                        isApplicationNativeAuthenticationSupported && (
                             <Grid data-componentid={ `${ testId }-application-native-authentication` }>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -501,12 +583,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         )
                     }
                     {
-                        (
-                            isApplicationNativeAuthenticationEnabled &&
-                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                            template?.id === ApplicationManagementConstants.MOBILE)
-                        ) && (
+                        isClientAttestationSupported && (
                             <Grid data-componentid={ `${ testId }-client-attestation` }>
                                 <Grid.Row
                                     columns={ 1 }
@@ -620,12 +697,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         )
                     }
                     {
-                        (
-                            isTrustedAppsFeatureEnabled &&
-                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                            template?.id === ApplicationManagementConstants.MOBILE)
-                        ) && (
+                        isTrustedAppsSupported && (
                             <Grid data-componentid={ `${ testId }-trusted-apps` }>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -694,11 +766,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         )
                     }
                     {
-                        (
-                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                            template?.id === ApplicationManagementConstants.MOBILE
-                        ) && (
+                        isPlatformSettingsSupported && (
                             <Grid data-componentid={ `${ testId }-platform-settings` }>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -708,8 +776,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                 "sections.platformSettings.heading") }
                                         </Heading>
                                         <Heading subHeading as="h6">
-                                            { t("applications:forms.advancedConfig." +
-                                                "sections.platformSettings.subTitle") }
+                                            { resolvePlatformSettingsSubTitle() }
                                         </Heading>
                                     </Grid.Column>
                                 </Grid.Row>
