@@ -48,7 +48,6 @@ interface AuthenticatorSettingsFormPropsInterface extends TestableComponentInter
     connectorSettings: any;
     /**
      * Resource id of the connection being edited.
-     * Used to resolve settings fields that reference other connections.
      */
     connectionId?: string;
     /**
@@ -153,9 +152,6 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
     const [ initialValues, setInitialValues ] = useState<any>(undefined);
     const [ settings, setSettings ] = useState<any>(undefined);
 
-    /**
-     * Resolves the options of the settings fields that source them from another resource.
-     */
     const { fields: resolvedSettingsFields } = useDynamicFieldOptions(
         settings?.edit?.tabs?.settings,
         {

@@ -31,36 +31,17 @@ import {
  * Supported option sources of a dynamic `select` field.
  */
 enum DynamicFieldOptionsSourceTypes {
-    /**
-     * Options are the connections of the organization, optionally narrowed down by the
-     * authenticator they use and the template they were created from.
-     */
-    CONNECTIONS = "connections"
+    IDENTITY_PROVIDERS = "identity-providers"
 }
 
 /**
  * Declaration of where the options of a dynamic `select` field come from.
  */
 interface DynamicFieldOptionsSourceInterface {
-    /**
-     * Type of the source. Only `connections` is supported at the moment.
-     */
     type: DynamicFieldOptionsSourceTypes | string;
-    /**
-     * Only list connections having a federated authenticator with this id.
-     */
     authenticatorId?: string;
-    /**
-     * Only list connections created from this connection template.
-     */
     templateId?: string;
-    /**
-     * Attribute of a connection persisted as the value of the field. Defaults to `id`.
-     */
     valueField?: string;
-    /**
-     * Attribute of a connection displayed as the label of an option. Defaults to `name`.
-     */
     labelField?: string;
 }
 
@@ -68,25 +49,10 @@ interface DynamicFieldOptionsSourceInterface {
  * Attributes of a dynamic form field this hook reads or rewrites.
  */
 interface DynamicFieldInterface {
-    /**
-     * Name of the field, also the key its value is persisted under.
-     */
     name?: string;
-    /**
-     * Placeholder of the field, replaced while the options are being resolved.
-     */
     placeholder?: string;
-    /**
-     * Whether the field is read only.
-     */
     readOnly?: boolean;
-    /**
-     * Declaration of where the options of the field come from, if any.
-     */
     optionsSource?: DynamicFieldOptionsSourceInterface;
-    /**
-     * Renderer specific attributes declared by the connector metadata.
-     */
     [ key: string ]: unknown;
 }
 
@@ -94,13 +60,7 @@ interface DynamicFieldInterface {
  * Context of the form the fields are rendered in.
  */
 interface DynamicFieldOptionsContextInterface {
-    /**
-     * Resource id of the connection being edited, if any.
-     */
     currentConnectionId?: string;
-    /**
-     * Values the form was initialized with, keyed by field name.
-     */
     currentValues?: Record<string, unknown>;
 }
 
@@ -108,13 +68,7 @@ interface DynamicFieldOptionsContextInterface {
  * Return type of {@link useDynamicFieldOptions}.
  */
 interface DynamicFieldOptionsResultInterface {
-    /**
-     * The given fields, with the options of every `optionsSource` backed field resolved.
-     */
     fields: DynamicFieldInterface[];
-    /**
-     * Whether the options are still being resolved.
-     */
     isLoading: boolean;
 }
 
@@ -132,7 +86,7 @@ const useDynamicFieldOptions = (
     const [ isResolvingTemplateIds, setIsResolvingTemplateIds ] = useState<boolean>(false);
 
     /**
-     * Sources declared by the given fields. Empty for every form that does not use the feature.
+     * Sources declared by the given fields.
      */
     const sources: DynamicFieldOptionsSourceInterface[] = useMemo(() => {
         if (!Array.isArray(fields)) {
@@ -142,7 +96,7 @@ const useDynamicFieldOptions = (
         return fields
             .map((field: DynamicFieldInterface) => field?.optionsSource)
             .filter((source: DynamicFieldOptionsSourceInterface) =>
-                source?.type === DynamicFieldOptionsSourceTypes.CONNECTIONS);
+                source?.type === DynamicFieldOptionsSourceTypes.IDENTITY_PROVIDERS);
     }, [ fields ]);
 
     const shouldFetchConnections: boolean = sources.length > 0;
@@ -169,11 +123,10 @@ const useDynamicFieldOptions = (
     );
 
     /**
-     * Connections that satisfy every filter of a source that can be evaluated on the list response.
+     * Connections that satisfy every filter of a source.
      */
     const getCandidates = (source: DynamicFieldOptionsSourceInterface): StrictConnectionInterface[] => {
         return connections.filter((connection: StrictConnectionInterface) => {
-            // The connection being edited is never a valid option for itself.
             if (connection?.id === context?.currentConnectionId) {
                 return false;
             }
@@ -193,8 +146,7 @@ const useDynamicFieldOptions = (
     };
 
     /**
-     * Ids of the candidates whose template id has to be looked up, since the connections list
-     * response does not carry it.
+     * Ids of the candidates whose template id has to be looked up.
      */
     const idsRequiringTemplateId: string[] = useMemo(() => {
         const ids: Set<string> = new Set<string>();
@@ -264,7 +216,7 @@ const useDynamicFieldOptions = (
         return fields.map((field: DynamicFieldInterface) => {
             const source: DynamicFieldOptionsSourceInterface = field?.optionsSource;
 
-            if (source?.type !== DynamicFieldOptionsSourceTypes.CONNECTIONS) {
+            if (source?.type !== DynamicFieldOptionsSourceTypes.IDENTITY_PROVIDERS) {
                 return field;
             }
 

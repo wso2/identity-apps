@@ -17,7 +17,7 @@
  */
 
 import FormGroup from "@oxygen-ui/react/FormGroup";
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import { FieldState } from "final-form";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
@@ -29,48 +29,25 @@ import { getValidation } from "../utils/validate";
  * Option of a dynamic select field.
  */
 interface DynamicFieldOptionInterface {
-    /**
-     * Text displayed for the option.
-     */
+
     text: ReactNode;
-    /**
-     * Value persisted when the option is selected.
-     */
     value: string;
 }
 
 /**
- * Value a dynamic select field holds. Multiple selection is not supported.
+ * Value a dynamic select field holds.
  */
 type DynamicSelectFieldValueType = string;
 
 interface FieldSelectPropsInterface
     extends Omit<FieldProps<DynamicSelectFieldValueType, FieldRenderProps<DynamicSelectFieldValueType>>, "component">,
-    IdentifiableComponentInterface, TestableComponentInterface {
+    IdentifiableComponentInterface {
 
-    /**
-     * Name of the select field.
-     */
     name: string;
-    /**
-     * Options of the select field.
-     */
     options?: DynamicFieldOptionInterface[];
-    /**
-     * Label of the select field.
-     */
     label?: string;
-    /**
-     * Hint of the form field.
-     */
     hint?: string | ReactElement;
-    /**
-     * Whether the field is read only.
-     */
     readOnly?: boolean;
-    /**
-     * Validation of the field. Resolves to the error message, or to `undefined` when the value is valid.
-     */
     validation?: (
         value: DynamicSelectFieldValueType,
         allValues: Record<string, unknown>
@@ -79,8 +56,6 @@ interface FieldSelectPropsInterface
 
 /**
  * Implementation of the Select Field component of the dynamic form.
- *
- * @param props - Props injected to the component.
  */
 export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
     props: FieldSelectPropsInterface
@@ -96,8 +71,7 @@ export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
         readOnly,
         required,
         validation,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     return (
@@ -120,7 +94,7 @@ export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
                         placeholder={ placeholder }
                         required={ required }
                         readOnly={ readOnly }
-                        data-componentid={ componentId ?? testId ?? `${ name }-select-field` }
+                        data-componentid={ componentId ?? `${ name }-select-field` }
                     />
                 ) }
             />
