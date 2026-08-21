@@ -25,6 +25,7 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
+    useCallback,
     useEffect,
     useMemo,
     useRef,
@@ -32,10 +33,13 @@ import React, {
 } from "react";
 import { useSelector } from "react-redux";
 import { activateTrial } from "../api/activate-trial";
+import { dismissTrialExpiryNotice } from "../api/dismiss-trial-expiry-notice";
 import { useGetTrialDetails } from "../api/get-trial-details";
 import useGetTenantTier from "../api/use-get-tenant-tier";
+import { useGetTrialExpiryNotice } from "../api/use-get-trial-expiry-notice";
 import TrialContext, { TrialContextPropsInterface } from "../contexts/trial-context";
 import { useTrialStatus } from "../hooks/use-trial-status";
+import { TenantTierRequestResponse, isFreeTier } from "../models/tenant-tier";
 import { TrialStatus } from "../models/trial";
 
 /**
@@ -48,6 +52,9 @@ type TrialProviderPropsInterface = PropsWithChildren<unknown>;
  * activates the trial when it is not yet enabled, and only then fetches the
  * tenant trial details. Sequencing the details fetch behind the activation
  * decision prevents consumers from caching stale "no trial" data.
+ *
+ * It also resolves whether the post trial expiry notice must be shown, and owns the
+ * dismissal of that notice.
  *
  * @param props - Wrap content/elements.
  * @returns TrialContext Provider.
@@ -66,6 +73,7 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
             (state.config.deployment.extensions as Record<string, Record<string, unknown>>)
                 ?.trial?.enabled === true
     );
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const {
         trialStatus,
@@ -74,7 +82,7 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
         error: trialStatusError
     } = useTrialStatus();
 
-    const { mutate: mutateTenantTier } = useGetTenantTier();
+    const { data: tenantTierData, mutate: mutateTenantTier } = useGetTenantTier<TenantTierRequestResponse>();
     const { mutate: mutateAllFeatures } = useGetAllFeatures();
 
     const trialActivationAttempted: React.MutableRefObject<boolean> = useRef<boolean>(false);
@@ -161,13 +169,82 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
 
     const isLoading: boolean = isTrialPipelineEnabled && (!isActivationSettled || isTrialDetailsLoading);
 
+    /**
+     * The notice only applies to a root organization that has landed back on a free tier, so the
+     * tier has to have resolved before asking for it. Reading the tier off the SWR cache rather
+     * than the subscription context matters here: the context falls back to the free tier while
+     * the tier request is in flight, which would let the notice be requested for a paid tenant.
+     *
+     * Privileged users are excluded too, so support staff signed into a customer organization are
+     * neither blocked by the notice nor able to dismiss it on the organization's behalf.
+     */
+    const isOnFreeTier: boolean = !!tenantTierData?.tierName && isFreeTier(tenantTierData.tierName);
+
+    const shouldFetchExpiryNotice: boolean = shouldFetchDetails && isOnFreeTier && !isPrivilegedUser;
+
+    const {
+        data: expiryNoticeData,
+        isLoading: isExpiryNoticeLoading,
+        error: expiryNoticeError,
+        mutate: mutateExpiryNotice
+    } = useGetTrialExpiryNotice(shouldFetchExpiryNotice);
+
+    const [ isExpiryNoticeDismissed, setIsExpiryNoticeDismissed ] = useState<boolean>(false);
+    const expiryNoticeDismissalAttempted: React.MutableRefObject<boolean> = useRef<boolean>(false);
+
+    const showTrialExpiryNotice: boolean = useMemo((): boolean => {
+        if (!shouldFetchExpiryNotice || isExpiryNoticeLoading || isExpiryNoticeDismissed) {
+            return false;
+        }
+
+        if (expiryNoticeError) {
+            return false;
+        }
+
+        return expiryNoticeData?.showNotice === true;
+    }, [
+        shouldFetchExpiryNotice,
+        isExpiryNoticeLoading,
+        isExpiryNoticeDismissed,
+        expiryNoticeError,
+        expiryNoticeData
+    ]);
+
+    /**
+     * Hides the notice immediately and records the dismissal in the background. The dismissal is
+     * a secondary call, so a failure only keeps the notice hidden for the session instead of
+     * surfacing an error on what the user experienced as a close action.
+     */
+    const handleTrialExpiryNoticeDismiss: () => void = useCallback((): void => {
+        setIsExpiryNoticeDismissed(true);
+
+        const trialId: number = expiryNoticeData?.trialId;
+
+        if (trialId === undefined || trialId === null || expiryNoticeDismissalAttempted.current) {
+            return;
+        }
+
+        expiryNoticeDismissalAttempted.current = true;
+
+        dismissTrialExpiryNotice(trialId)
+            .then(() => {
+                mutateExpiryNotice();
+            })
+            .catch(() => {
+                // eslint-disable-next-line no-console
+                console.warn("Trial expiry notice dismissal failed.");
+            });
+    }, [ expiryNoticeData, mutateExpiryNotice ]);
+
     const contextValue: TrialContextPropsInterface = useMemo(
         (): TrialContextPropsInterface => ({
             daysRemaining,
+            dismissTrialExpiryNotice: handleTrialExpiryNoticeDismiss,
             isLoading,
+            showTrialExpiryNotice,
             tenantHasTrial
         }),
-        [ daysRemaining, isLoading, tenantHasTrial ]
+        [ daysRemaining, handleTrialExpiryNoticeDismiss, isLoading, showTrialExpiryNotice, tenantHasTrial ]
     );
 
     return (

@@ -43,6 +43,7 @@ import {
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import TrialExpiryWizard from "@wso2is/admin.extensions.v1/components/subscription/trial-expiry/trial-expiry-wizard";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
 import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
@@ -506,6 +507,7 @@ const App = ({
                                     organizationType={ organizationType }
                                 >
                                     <TrialProvider>
+                                        <TrialExpiryWizard />
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
