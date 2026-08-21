@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.14.13
+
+### Patch Changes
+
+- [#10634](https://github.com/wso2/identity-apps/pull/10634) [`23177fb4312dc31459ec988dbba368436600dacc`](https://github.com/wso2/identity-apps/commit/23177fb4312dc31459ec988dbba368436600dacc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix duplicate user attributes being listed in the user attribute dropdown in the user filtering view
+
+- Updated dependencies [[`23177fb4312dc31459ec988dbba368436600dacc`](https://github.com/wso2/identity-apps/commit/23177fb4312dc31459ec988dbba368436600dacc)]:
+  - @wso2is/admin.users.v1@2.38.51
+
 ## 4.14.12
 
 ### Patch Changes
