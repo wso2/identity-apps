@@ -69,11 +69,11 @@ const TrialProvider: FunctionComponent<TrialProviderPropsInterface> = (
     const isFirstLevelOrg: boolean = isFirstLevelOrganization();
 
     const isTrialFeatureEnabled: boolean = useSelector(
-        (state: AppState) =>
+        (state: AppState): boolean =>
             (state.config.deployment.extensions as Record<string, Record<string, unknown>>)
                 ?.trial?.enabled === true
     );
-    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const isPrivilegedUser: boolean = useSelector((state: AppState): boolean => state.auth.isPrivilegedUser);
 
     const {
         trialStatus,

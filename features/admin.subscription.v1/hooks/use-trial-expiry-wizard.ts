@@ -26,7 +26,7 @@ import { useTrialDetails } from "./use-trial-details";
 /**
  * Return type for the useTrialExpiryWizard hook.
  */
-interface UseTrialExpiryWizardReturn {
+interface UseTrialExpiryWizardReturnInterface {
     /**
      * Closes the wizard and records the dismissal for the organization, so the wizard is not
      * shown again.
@@ -36,6 +36,12 @@ interface UseTrialExpiryWizardReturn {
     goToNextStep: () => void;
     goToPreviousStep: () => void;
     isOpen: boolean;
+    /**
+     * Whether the upgrade can be completed self-serve. False when self-serve upgrades are
+     * disabled for the deployment, or while the billing URL is still resolving, in which case
+     * `upgradeUrl` points at the contact-us page instead.
+     */
+    isSelfServeUpgrade: boolean;
     /**
      * Public pricing page, opened by the "View Plans" action.
      */
@@ -58,22 +64,22 @@ interface UseTrialExpiryWizardReturn {
  *
  * @returns Wizard state, step navigation callbacks and the resolved upgrade URL.
  */
-export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturn => {
+export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturnInterface => {
     const { showTrialExpiryNotice, dismissTrialExpiryNotice } = useTrialDetails();
 
     const [ currentStep, setCurrentStep ] = useState<TrialExpiryStep>(TrialExpiryStep.CHANGES);
     const [ billingUpgradeUrl, setBillingUpgradeUrl ] = useState<string>(undefined);
 
-    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const tenantDomain: string = useSelector((state: AppState): string => state?.auth?.tenantDomain);
     const associatedTenants: Record<string, unknown>[] = useSelector(
-        (state: AppState) => state?.auth?.tenants
+        (state: AppState): Record<string, unknown>[] => state?.auth?.tenants
     );
     const pricingUrl: string = useSelector(
         (state: AppState): string =>
             (state?.config?.deployment?.extensions as { pricingURL?: string })?.pricingURL ?? "https://wso2.com"
     );
     const tierName: string = useSelector(
-        (state: AppState) =>
+        (state: AppState): string =>
             ((state?.config?.deployment?.extensions?.trial as { tierName?: string })?.tierName) ?? "Paid"
     );
     const upgradeButtonEnabled: boolean = useSelector(
@@ -105,7 +111,9 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturn => {
         setCurrentStep(TrialExpiryStep.CHANGES);
     }, []);
 
-    const upgradeUrl: string = upgradeButtonEnabled && billingUpgradeUrl
+    const isSelfServeUpgrade: boolean = upgradeButtonEnabled && !!billingUpgradeUrl;
+
+    const upgradeUrl: string = isSelfServeUpgrade
         ? billingUpgradeUrl
         : contactUsUrl;
 
@@ -115,6 +123,7 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturn => {
         goToNextStep,
         goToPreviousStep,
         isOpen: showTrialExpiryNotice,
+        isSelfServeUpgrade,
         pricingUrl,
         tierName,
         upgradeUrl
