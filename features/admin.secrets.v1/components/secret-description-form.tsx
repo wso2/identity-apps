@@ -105,10 +105,10 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 secretType: copyOfEditingSecret?.type
             }
         }).then(({ data }: { data: SecretModel }): void => {
-            setCopyOfEditingSecret({
-                ...copyOfEditingSecret,
+            setCopyOfEditingSecret((prevCopyOfEditingSecret: SecretModel) => ({
+                ...prevCopyOfEditingSecret,
                 description: data?.description
-            });
+            }));
             dispatch(addAlert({
                 description: t("secrets:alerts.updatedSecret.description", {
                     secretName: copyOfEditingSecret?.secretName,
