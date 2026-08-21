@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
 import {
     ContextPathOutputInterface,
     ContextTreeNodeMetadataInterface,
@@ -186,16 +187,11 @@ export const mapMetadataToStateWithAccessConfig = (
     options: {
         /** Whether the active flow type permits MODIFY on read-only nodes. Defaults to true. */
         allowReadOnlyClaimsModification?: boolean;
-        /** claimURI → readOnly map; used when synthesising claim leaves to inherit per-claim
-         *  read-only status from the Claims API. Without this every synthesised claim is
-         *  treated as not-readOnly and the modify-drop rule below cannot fire on it. */
-        claimReadOnlyMap?: Map<string, boolean>;
     } = {}
 ): TreeNodeStateInterface[] => {
 
     const allowReadOnlyClaimsModification: boolean =
         options.allowReadOnlyClaimsModification !== false;
-    const claimReadOnlyMap: Map<string, boolean> = options.claimReadOnlyMap ?? new Map();
     // path → encrypted flag. The encrypted bit round-trips the per-field encryption
     // marks saved on the access config.
     const exposePaths: Map<string, boolean> = new Map();
@@ -359,18 +355,21 @@ export const mapMetadataToStateWithAccessConfig = (
                     let isModify: boolean = modifyPaths.has(synthPath);
                     let synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
                     const displayName: string = claimDisplayNames?.get(key) ?? key;
-                    // For dynamic entries under a claims map, prefer the per-claim readOnly
-                    // status (from the Claims API) over the parent container's flag. Falls
-                    // back to the parent's flag if the map doesn't carry the URI.
-                    const claimReadOnly: boolean | undefined = claimReadOnlyMap.get(key);
-                    const synthReadOnly: boolean = claimReadOnly ?? (node.readOnly ?? false);
+                    
+                    // For dynamic entries under a claims map, read-only status comes from the
+                    // fixed READ_ONLY_CLAIM_URIS list. Other containers fall back to the
+                    // parent's flag.
+                    const synthReadOnly: boolean = containerPrefix === "/user/claims/"
+                        ? FlowExtensionConstants.isReadOnlyClaim(key)
+                        : (node.readOnly ?? false);
 
-                    // Drop a previously-saved MODIFY when this flow type forbids modifying
-                    // read-only nodes (e.g., PASSWORD_RECOVERY). The saved access config still
-                    // carries it; the cleanup commits on the next save.
-                    if (synthReadOnly && !allowReadOnlyClaimsModification) {
+                    if (synthReadOnly) {
                         isModify = false;
                         synthModEnc = false;
+                    }
+
+                    if (!isExposed && !isModify) {
+                        return;
                     }
 
                     const isUnderClaims: boolean = containerPrefix === "/user/claims/";

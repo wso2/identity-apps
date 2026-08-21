@@ -1204,6 +1204,12 @@
                         "flag": ""
                     }
                 ],
+                "properties": {
+                    "nonModifiablePaths": [
+                        "/user/claims[uri=http://wso2.org/claims/userid]",
+                        "/user/claims[uri=http://wso2.org/claims/created]"
+                    ]
+                },
                 "scopes": {
                     "create": [
                         "internal_flow_extension_create"
