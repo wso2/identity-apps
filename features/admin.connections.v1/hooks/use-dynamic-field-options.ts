@@ -55,10 +55,6 @@ interface DynamicFieldOptionsSourceInterface {
      */
     templateId?: string;
     /**
-     * Exclude the connection that is currently being edited from the list.
-     */
-    excludeCurrent?: boolean;
-    /**
      * Attribute of a connection persisted as the value of the field. Defaults to `id`.
      */
     valueField?: string;
@@ -177,7 +173,12 @@ const useDynamicFieldOptions = (
      */
     const getCandidates = (source: DynamicFieldOptionsSourceInterface): StrictConnectionInterface[] => {
         return connections.filter((connection: StrictConnectionInterface) => {
-            if (source?.excludeCurrent && connection?.id === context?.currentConnectionId) {
+            // The connection being edited is never a valid option for itself.
+            if (connection?.id === context?.currentConnectionId) {
+                return false;
+            }
+
+            if (connection?.isEnabled === false) {
                 return false;
             }
 
@@ -297,12 +298,19 @@ const useDynamicFieldOptions = (
 
             if (!isEmpty(persistedValue)
                 && !options.some((option: { value: string }) => option.value === persistedValue)) {
+                const persistedConnection: StrictConnectionInterface = connections.find(
+                    (connection: StrictConnectionInterface) => get(connection, valueField) === persistedValue);
+
                 options.push({
                     text: isLoading
                         ? persistedValue
-                        : t("authenticationProvider:forms.authenticatorSettings.dynamicOptions.unavailable", {
-                            value: persistedValue
-                        }),
+                        : (persistedConnection?.isEnabled === false
+                            ? t("authenticationProvider:forms.authenticatorSettings.dynamicOptions.disabled", {
+                                value: get(persistedConnection, labelField) ?? persistedValue
+                            })
+                            : t("authenticationProvider:forms.authenticatorSettings.dynamicOptions.unavailable", {
+                                value: persistedValue
+                            })),
                     value: persistedValue
                 });
             }
