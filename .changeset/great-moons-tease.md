@@ -1,0 +1,10 @@
+---
+"@wso2is/admin.connections.v1": patch
+"@wso2is/admin.extensions.v1": patch
+"@wso2is/console": patch
+"@wso2is/myaccount": patch
+---
+
+Add console support for the Daon TrustX connection templates: hide the tabs the templates do not use,
+resolve the registration and recovery redirect URIs in the create wizard help panel, and ship the
+connection logo

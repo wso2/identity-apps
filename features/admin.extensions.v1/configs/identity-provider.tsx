@@ -144,6 +144,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_AUTHENTICATOR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_IDV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
@@ -163,6 +165,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_AUTHENTICATOR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_IDV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
@@ -170,6 +174,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_AUTHENTICATOR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DAON_IDV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
