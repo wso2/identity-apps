@@ -38,7 +38,7 @@ import {
     LinkButton,
     PrimaryButton
 } from "@wso2is/react-components";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -313,11 +313,12 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
                                 />
                             )
                         }
-                        <AnimatePresence mode="wait">
+                        <LazyMotion features={ domAnimation }>
+                            <AnimatePresence mode="wait">
                             {
                                 shareType === ShareType.SHARE_SELECTED
                                 && (
-                                    <motion.div
+                                    <m.div
                                         key="selected-orgs-block"
                                         initial={ { height: 0, opacity: 0 } }
                                         animate={ { height: "auto", opacity: 1 } }
@@ -336,21 +337,23 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
                                                 setRemovedOrgs={ setRemovedOrgIds }
                                             />
                                         </Grid>
-                                    </motion.div>
+                                    </m.div>
                                 )
                             }
                         </AnimatePresence>
+</LazyMotion>
                         <FormControlLabel
                             value={ ShareType.SHARE_ALL }
                             label={ t("organizations:shareApplicationRadio") }
                             control={ <Radio /> }
                             data-componentid={ `${ componentId }-share-with-all-orgs-checkbox` }
                         />
-                        <AnimatePresence mode="wait">
+                        <LazyMotion features={ domAnimation }>
+                            <AnimatePresence mode="wait">
                             {
                                 shareType === ShareType.SHARE_ALL
                                 && (
-                                    <motion.div
+                                    <m.div
                                         key="selected-orgs-block"
                                         initial={ { height: 0, opacity: 0 } }
                                         animate={ { height: "auto", opacity: 1 } }
@@ -391,10 +394,11 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
                                                     </Alert>
                                                 )
                                         }
-                                    </motion.div>
+                                    </m.div>
                                 )
                             }
                         </AnimatePresence>
+</LazyMotion>
                     </RadioGroup>
                 </FormControl>
             </Modal.Content>

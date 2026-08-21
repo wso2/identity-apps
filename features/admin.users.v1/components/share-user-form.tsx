@@ -50,7 +50,7 @@ import {
     Heading,
     Hint
 } from "@wso2is/react-components";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -1482,11 +1482,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 disabled={ readOnly }
                                 data-componentid={ `${ componentId }-share-with-all-orgs-checkbox` }
                             />
+                            <LazyMotion features={ domAnimation }>
                             <AnimatePresence mode="wait">
                                 {
                                     shareType === ShareType.SHARE_ALL
                                     && (
-                                        <motion.div
+                                        <m.div
                                             key="selected-orgs-block"
                                             initial={ { height: 0, opacity: 0 } }
                                             animate={ { height: "auto", opacity: 1 } }
@@ -1506,10 +1507,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                     enableConsoleAdminRole={ enableConsoleAdminRole }
                                                 />
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     )
                                 }
                             </AnimatePresence>
+</LazyMotion>
                             <FormControlLabel
                                 value={ ShareType.SHARE_SELECTED }
                                 label={
@@ -1529,11 +1531,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 disabled={ readOnly || !isOrganizationsAvailable }
                                 data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
                             />
+                            <LazyMotion features={ domAnimation }>
                             <AnimatePresence mode="wait">
                                 {
                                     shareType === ShareType.SHARE_SELECTED
                                     && (
-                                        <motion.div
+                                        <m.div
                                             key="selected-orgs-block"
                                             initial={ { height: 0, opacity: 0 } }
                                             animate={ { height: "auto", opacity: 1 } }
@@ -1591,10 +1594,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                     }
                                                 />
                                             </Grid>
-                                        </motion.div>
+                                        </m.div>
                                     )
                                 }
                             </AnimatePresence>
+</LazyMotion>
                         </RadioGroup>
                     </FormControl>
                 </Grid>

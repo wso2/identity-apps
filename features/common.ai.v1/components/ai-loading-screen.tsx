@@ -24,7 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Variants, motion } from "framer-motion";
+import { LazyMotion, Variants, domAnimation, m } from "framer-motion";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import "./ai-loading-screen.scss";
@@ -74,7 +74,8 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
     };
 
     return (
-        <motion.div animate="botAnimation">
+        <LazyMotion features={ domAnimation }>
+        <div>
             <Box
                 className="ai-loading-screen-container"
                 data-componentid={ `${dataComponentId}-container` }
@@ -100,7 +101,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                         >
                             { t("branding:ai.screens.loading.didYouKnow") }
                         </Typography>
-                        <motion.div
+                        <m.div
                             key={ fact }
                             initial="hidden"
                             animate="visible"
@@ -111,7 +112,7 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                             <Typography className="ai-loading-screen-sub-heading">
                                 { fact }
                             </Typography>
-                        </motion.div>
+                        </m.div>
                     </Box>
                     <Box sx={ { width: 1 } }>
                         <Box className="ai-loading-screen-loading-container">
@@ -137,7 +138,8 @@ const AILoadingScreen = (props: AILoadingScreenProps): ReactElement => {
                     </Box>
                 </Box>
             </Box>
-        </motion.div>
+        </div>
+        </LazyMotion>
     );
 };
 

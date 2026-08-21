@@ -23,7 +23,7 @@ import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon }from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { AnimationProps, Variants, motion } from "framer-motion";
+import { AnimationProps, LazyMotion, Variants, domAnimation, m } from "framer-motion";
 import React, { PropsWithChildren, ReactElement, useState } from "react";
 import AIText from "./ai-text";
 import AIBannerBackgroundTall
@@ -75,7 +75,8 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
     };
 
     return (
-        <motion.div
+	<LazyMotion features={ domAnimation }>
+        <m.div
             className="ai-banner-motion-container"
             style={ {
                 backgroundImage: `url(${ AIBot }), url(${ AIBannerBackgroundTall })`
@@ -132,7 +133,8 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
                     { children }
                 </Box>
             </Accordion>
-        </motion.div>
+        </m.div>
+	</LazyMotion>
     );
 };
 

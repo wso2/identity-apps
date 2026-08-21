@@ -49,7 +49,7 @@ import { AlertLevels,
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, Text } from "@wso2is/react-components";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import differenceBy from "lodash-es/differenceBy";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -512,11 +512,12 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                 disabled={ isReadOnly }
                                 data-componentid={ `${componentId}-share-with-all-orgs-radio-btn` }
                             />
+                            <LazyMotion features={ domAnimation }>
                             <AnimatePresence mode="wait">
                                 {
                                     sharedAccessMode === RoleSharingModes.SELECTED
                                     && (
-                                        <motion.div
+                                        <m.div
                                             key="selected-orgs-block"
                                             initial={ { height: 0, opacity: 0 } }
                                             animate={ { height: "auto", opacity: 1 } }
@@ -530,10 +531,11 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                                 onRoleChange={
                                                     updateRoleSelectionForAllOrganizations }
                                             />
-                                        </motion.div>
+                                        </m.div>
                                     )
                                 }
                             </AnimatePresence>
+</LazyMotion>
                             <Alert
                                 severity="info"
                                 className="mt-1 mb-2"
