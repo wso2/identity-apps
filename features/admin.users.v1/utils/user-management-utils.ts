@@ -486,6 +486,12 @@ export const resolveUserSearchAttributes = (
 ): DropdownChild[] => {
     const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
         .filter((schema: ProfileSchemaInterface) => {
+            // `userName` is already added as a hardcoded option by the consumers of this function.
+            // Exclude it here to avoid rendering a duplicate entry.
+            if (schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+                return false;
+            }
+
             // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
             let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
 
@@ -504,20 +510,36 @@ export const resolveUserSearchAttributes = (
             return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
-    let searchAttributes:DropdownChild[] = [];
+    // Migrated tenants can end up with the same attribute (e.g. `country`, `preferredMFAOption`) exposed under
+    // both the enterprise dialect and the system schema. Both map to the same local claim and carry the same
+    // display name but different schema-qualified values, so de-duplicating by option value would not work.
+    // De-duplicate by attribute name instead, preferring the system schema variant as it is the canonical
+    // location in 7.x.
+    const deduplicatedSchemasByName: Map<string, ProfileSchemaInterface> = new Map();
 
-    if (sortedSchemas) {
-        searchAttributes = sortedSchemas.map((schema: ProfileSchemaInterface, index: number) => {
-            const extendedSchemaSupportedName:string = schema?.schemaId
-                ? schema.schemaId + ":" + schema.name
-                : schema.name;
+    sortedSchemas?.forEach((schema: ProfileSchemaInterface) => {
+        const existingSchema: ProfileSchemaInterface = deduplicatedSchemasByName.get(schema.name);
 
-            return {
-                key: index,
-                text: schema.displayName,
-                value: extendedSchemaSupportedName
-            };
-        });
+        if (!existingSchema || schema.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA) {
+            deduplicatedSchemasByName.set(schema.name, schema);
+        }
+    });
+
+    let searchAttributes: DropdownChild[] = [];
+
+    if (deduplicatedSchemasByName.size > 0) {
+        searchAttributes = Array.from(deduplicatedSchemasByName.values())
+            .map((schema: ProfileSchemaInterface, index: number) => {
+                const extendedSchemaSupportedName: string = schema?.schemaId
+                    ? schema.schemaId + ":" + schema.name
+                    : schema.name;
+
+                return {
+                    key: index,
+                    text: schema.displayName,
+                    value: extendedSchemaSupportedName
+                };
+            });
     }
 
     return searchAttributes;
