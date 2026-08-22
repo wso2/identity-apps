@@ -22,7 +22,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
-    ConnectedConnectionsResponseInterface,
+    ConnectedIdpsResponseInterface,
     PresentationDefinitionInterface,
     PresentationDefinitionCreationModelInterface,
     PresentationDefinitionUpdateModelInterface
@@ -99,13 +99,34 @@ export const deletePresentationDefinition = (definitionId: string): Promise<Axio
  * @param definitionId - The ID of the presentation definition.
  * @returns Promise with the connected connections response.
  */
-export const getConnectedConnections = (
+export const getConnectedIdps = (
     definitionId: string
-): Promise<ConnectedConnectionsResponseInterface> => {
+): Promise<ConnectedIdpsResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: { "Accept": "application/json" },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.vpTemplates}/${definitionId}/connected-connections`
+        url: `${store.getState().config.endpoints.vpTemplates}/${definitionId}/connected-idps`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response?.data))
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => Promise.reject(error));
+};
+
+/**
+ * Fetch the claim mappings configured for a specific identity provider (connection).
+ * Used to determine whether a PD claim is already in use before allowing edits or deletion.
+ *
+ * @param idpId - The UUID of the identity provider.
+ * @returns Promise resolving to the IDP's claim configuration.
+ */
+export const fetchConnectionClaimMappings = (
+    idpId: string
+): Promise<{ mappings: Array<{ idpClaim: string; localClaim: { uri: string } }> }> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Accept": "application/json" },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.identityProviders}/${idpId}/claims`
     };
 
     return httpClient(requestConfig)

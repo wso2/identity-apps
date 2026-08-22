@@ -21,7 +21,8 @@ import { FormValidation } from "@wso2is/validation";
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Header } from "semantic-ui-react";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { Grid, Header, Icon } from "semantic-ui-react";
 import { 
     ConnectionClaimInterface,
     ConnectionCommonClaimMappingInterface 
@@ -42,6 +43,8 @@ interface AttributeMappingAddItemProps {
      */
     alreadyMappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
     allowedMappedValues?: string[];
+    externalAttributeLabel?: string;
+    externalAttributeTooltip?: string;
     onSubmit: (mapping: ConnectionCommonClaimMappingInterface) => void;
 }
 
@@ -78,7 +81,9 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
         onSubmit,
         availableAttributeList,
         alreadyMappedAttributesList,
-        allowedMappedValues
+        allowedMappedValues,
+        externalAttributeLabel,
+        externalAttributeTooltip
     } = props;
 
     const { t } = useTranslation();
@@ -181,14 +186,42 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                                         clearable
                                         width={ 16 }
                                         options={ getAllowedMappedValueOptions() }
-                                        label={ t("idp:forms.attributeSettings.attributeMapping." +
-                                            "externalAttributeInput.label")
-                                        }
+                                        label={ (
+                                            <label>
+                                                { externalAttributeLabel ??
+                                                    t("idp:forms.attributeSettings.attributeMapping." +
+                                                    "externalAttributeInput.label")
+                                                }
+                                                { externalAttributeTooltip && (
+                                                    <Tooltip
+                                                        title={ externalAttributeTooltip }
+                                                        placement="top"
+                                                        arrow
+                                                        PopperProps={ { disablePortal: true } }
+                                                        componentsProps={ {
+                                                            tooltip: {
+                                                                sx: { fontSize: "0.9rem" }
+                                                            }
+                                                        } }
+                                                    >
+                                                        <span style={ { cursor: "pointer", marginLeft: "6px" } }>
+                                                            <Icon
+                                                                name="eye"
+                                                                size="small"
+                                                                color="grey"
+                                                            />
+                                                        </span>
+                                                    </Tooltip>
+                                                ) }
+                                            </label>
+                                        ) }
                                         ariaLabel="External IdP Attribute Mapping Value"
                                         name="mappedValue"
                                         placeholder={
-                                            t("idp:forms.attributeSettings.attributeMapping." +
-                                                "externalAttributeInput.placeHolder")
+                                            externalAttributeLabel
+                                                ? `Select ${ externalAttributeLabel }`
+                                                : t("idp:forms.attributeSettings.attributeMapping." +
+                                                    "externalAttributeInput.placeHolder")
                                         }
                                         listen={ (value: string) => setMappedInputValue(value) }
                                         validation={ (value: string) => {

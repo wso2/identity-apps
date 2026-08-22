@@ -2356,33 +2356,38 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Name",
                     placeholder: "My Wallet",
                     defaultValue: "Digital Wallet",
+                    hint: "A unique name for this digital wallet connection.",
                     validations: {
                         required: "Connection name is required.",
                         maxLength: "Connection name cannot exceed {{max}} characters.",
                         minLength: "Connection name must be at least {{min}} characters."
                     }
                 },
+                description: {
+                    hint: "Briefly describe the purpose of this digital wallet connection."
+                },
                 presentationDefinition: {
                     label: "Presentation Definition",
                     placeholder: "Select a presentation definition",
                     loadingPlaceholder: "Loading presentation definitions...",
                     emptyPlaceholder: "No presentation definitions available",
-                    hint: "Specifies the credentials and claims to request from the user's wallet.",
+                    hint: "Defines the credentials and claims to request from the user's digital wallet.",
                     noneAvailableHint: "No presentation definitions found. <1>Create one</1> to proceed."
                 },
                 timeout: {
-                    label: "Timeout (seconds)",
+                    label: "Presentation Time Limit (seconds)",
                     hint:
-                        "Specifies how long the wallet has to submit the presentation. The maximum is 3600 seconds.",
-                    validationError: "Timeout must be between 30 and 3600 seconds."
+                    "Specifies how long to wait for the requested presentation from the user's digital wallet. " +
+                    "Must be between 1 and 180 seconds.",
+                    validationError: "Presentation time limit must be a number between 1 and 180 seconds."
                 }
             },
             claimMapping: {
                 form: {
                     credentialType: {
                         label: "Credential Type",
-                        hint:
-                            "The credential type value defined by the issuer. This must exactly match the credential type in the presentation definition."
+                        hint: "The credential type defined by the issuer. This must exactly match the credential type " +
+                        "specified in the presentation definition."
                     },
                     credentialFormat: {
                         label: "Credential Format",
@@ -2393,14 +2398,14 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     },
                     requestedAttributes: {
                         label: "Requested Attributes",
-                        hint: "The specific attributes to map from this credential.",
+                        hint: "Select the credential attributes to map to local user attributes.",
                         emptyPlaceholder: "No claims found in the selected presentation definition."
                     }
                 },
                 notifications: {
                     fetchFailed: {
                         message: "Failed to Load Claims",
-                        description: "An error occurred while loading the presentation definition claims."
+                        description: "An error occurred while loading the claims from the presentation definition."
                     },
                     updateSuccess: {
                         message: "Presentation Definition Updated",
@@ -2426,6 +2431,13 @@ export const authenticationProvider:AuthenticationProviderNS = {
                             "The linked Presentation Definition has no claim paths configured. " +
                             "Add claim paths to the Presentation Definition to enable attribute mapping."
                     }
+                },
+                heading: "Credential Attribute Mappings",
+                subheading: "Map the claims from the linked Presentation Definition to local user attributes.",
+                pdClaimAttribute: {
+                    label: "Presentation Definition Claim",
+                    tooltip: "Claims requested in the Presentation Definition. " +
+                    "Map them to the corresponding user attributes."
                 }
             },
             notifications: {
@@ -2439,7 +2451,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 subHeading: "Learn more about this connection",
                 name: {
                     heading: "Name",
-                    hint: "Provide a unique name for the connection."
+                    hint: "Provide a unique name for the digital wallet connection."
                 },
                 presentationDefinition: {
                     heading: "Presentation Definition",

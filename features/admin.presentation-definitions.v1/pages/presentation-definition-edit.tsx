@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
@@ -97,13 +98,15 @@ import {
 } from "semantic-ui-react";
 import {
     deletePresentationDefinition,
-    getConnectedConnections,
+    fetchConnectionClaimMappings,
+    getConnectedIdps,
     updatePresentationDefinition
 } from "../api/presentation-definitions";
 import { useGetPresentationDefinition } from "../hooks/use-get-presentation-definition";
 import {
     ClaimConstraintModelInterface,
-    ConnectedConnectionsResponseInterface,
+    ConnectedIdpItemInterface,
+    ConnectedIdpsResponseInterface,
     PresentationDefinitionInterface,
     PresentationDefinitionUpdateModelInterface,
     RequestedCredentialModelInterface
@@ -152,7 +155,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ isConnectionsLoading, setIsConnectionsLoading ] = useState<boolean>(false);
 
     // General tab state
-    const [ name, setName ] = useState<string>("");
+    const [ displayName, setDisplayName ] = useState<string>("");
     const [ description, setDescription ] = useState<string>("");
 
     const [ credentialId, setCredentialId ] = useState<string>("");
@@ -167,7 +170,14 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const [ modalPath, setModalPath ] = useState<string>("");
     const [ modalMandatory, setModalMandatory ] = useState<boolean>(true);
     const [ modalAllowedValues, setModalAllowedValues ] = useState<string[]>([]);
-    const [ modalAllowedValueInput, setModalAllowedValueInput ] = useState<string>("");
+
+    // Claim-blocked-by-mapping modal state
+    const [ claimMappingConnections, setClaimMappingConnections ] =
+        useState<Map<string, string[]>>(new Map());
+    const [ showClaimMappedModal, setShowClaimMappedModal ] = useState<boolean>(false);
+    const [ blockedClaimAction, setBlockedClaimAction ] = useState<"delete" | "edit">("edit");
+    const [ blockedClaimConnections, setBlockedClaimConnections ] = useState<string[]>([]);
+    const [ blockedClaimPath, setBlockedClaimPath ] = useState<string>("");
 
     // Issuer Trust tab state
     const [ keyResolutionMethod, setKeyResolutionMethod ] = useState<string>("x5c");
@@ -199,7 +209,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
         const cred: RequestedCredentialModelInterface | undefined = definition.credentials?.[0];
 
-        setName(definition.name ?? "");
+        setDisplayName(definition.displayName ?? "");
         setDescription(definition.description ?? "");
         setCredentialId(cred?.id ?? "");
         setCredentialType(cred?.type ?? "");
@@ -217,8 +227,44 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setIsFormReady(true);
     }, [ definition ]);
 
-    const buildUpdatePayload = useCallback((): PresentationDefinitionUpdateModelInterface => {
-        const validClaims: ClaimConstraintModelInterface[] = claims
+    useEffect(() => {
+        if (!definitionId) return;
+
+        getConnectedIdps(definitionId)
+            .then((response: ConnectedIdpsResponseInterface) => {
+                const idps: ConnectedIdpItemInterface[] = response?.connectedIdps ?? [];
+
+                if (idps.length === 0) {
+                    setClaimMappingConnections(new Map());
+                    return;
+                }
+
+                Promise.all(
+                    idps.map((idp: ConnectedIdpItemInterface) =>
+                        fetchConnectionClaimMappings(idp.idpId)
+                            .then((data) => ({ idp, mappings: data?.mappings ?? [] }))
+                            .catch(() => ({ idp, mappings: [] }))
+                    )
+                ).then((results) => {
+                    const map: Map<string, string[]> = new Map();
+
+                    for (const { idp, mappings } of results) {
+                        for (const mapping of mappings) {
+                            if (mapping.idpClaim) {
+                                const existing: string[] = map.get(mapping.idpClaim) ?? [];
+
+                                map.set(mapping.idpClaim, [ ...existing, idp.name ]);
+                            }
+                        }
+                    }
+                    setClaimMappingConnections(map);
+                });
+            })
+            .catch(() => setClaimMappingConnections(new Map()));
+    }, [ definitionId ]);
+
+    const buildUpdatePayload = useCallback((claimsOverride?: ClaimConstraintModelInterface[]): PresentationDefinitionUpdateModelInterface => {
+        const validClaims: ClaimConstraintModelInterface[] = (claimsOverride ?? claims)
             .map((c: ClaimConstraintModelInterface) => ({
                 ...c,
                 path: (c.path ?? []).map((s: string) => s.trim()).filter(Boolean)
@@ -247,13 +293,13 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         return {
             credentials: [ credential ],
             description: description.trim() || undefined,
-            name: name.trim()
+            displayName: displayName.trim()
         };
-    }, [ name, description, credentialId, credentialType, claims, enforceTrustedIssuer,
+    }, [ displayName, description, credentialId, credentialType, claims, enforceTrustedIssuer,
         keyResolutionMethod, jwksUri, issuerPem, trustedCaPems ]);
 
     const handleUpdate = useCallback((): void => {
-        if (!name.trim()) return;
+        if (!displayName.trim()) return;
         setIsSubmitting(true);
 
         updatePresentationDefinition(definitionId, buildUpdatePayload())
@@ -276,7 +322,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 }));
             })
             .finally(() => setIsSubmitting(false));
-    }, [ buildUpdatePayload, name ]);
+    }, [ buildUpdatePayload, displayName ]);
 
     const handleAddCert = useCallback((pem: string): void => {
         setTrustedCaPems((prev: string[]) => [ ...prev, pem ]);
@@ -292,13 +338,13 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
     const handleDeleteInitiation = useCallback((): void => {
         setIsConnectionsLoading(true);
-        getConnectedConnections(definitionId)
-            .then((response: ConnectedConnectionsResponseInterface) => {
+        getConnectedIdps(definitionId)
+            .then((response: ConnectedIdpsResponseInterface) => {
                 if (response?.count === 0) {
                     setShowDeleteModal(true);
                 } else {
                     setConnectedConnectionNames(
-                        (response?.connectedConnections ?? []).map((c) => c.name)
+                        (response?.connectedIdps ?? []).map((c) => c.name)
                     );
                     setShowDeleteBlockedModal(true);
                 }
@@ -314,6 +360,15 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             })
             .finally(() => setIsConnectionsLoading(false));
     }, [ definitionId ]);
+
+    const getClaimMappingBlock = useCallback(
+        (claimPath: string[]): string[] | null => {
+            const names: string[] | undefined = claimMappingConnections.get((claimPath ?? []).join("."));
+
+            return names && names.length > 0 ? names : null;
+        },
+        [ claimMappingConnections ]
+    );
 
     const handleDeleteDefinition = useCallback((): void => {
         deletePresentationDefinition(definitionId)
@@ -341,52 +396,112 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setModalPath("");
         setModalMandatory(true);
         setModalAllowedValues([]);
-        setModalAllowedValueInput("");
         setShowClaimModal(true);
     };
 
     const openEditClaimModal = (index: number): void => {
         const claim: ClaimConstraintModelInterface = claims[index];
+        const claimPath: string = (claim.path ?? []).join(".");
+        const mapped: string[] | null = getClaimMappingBlock(claim.path ?? []);
+
+        if (mapped) {
+            setBlockedClaimAction("edit");
+            setBlockedClaimConnections(mapped);
+            setBlockedClaimPath(claimPath);
+            setShowClaimMappedModal(true);
+            return;
+        }
 
         setClaimModalIndex(index);
-        setModalPath((claim.path ?? []).join("."));
+        setModalPath(claimPath);
         setModalMandatory(claim.mandatory ?? true);
         setModalAllowedValues(claim.allowedValues ?? []);
-        setModalAllowedValueInput("");
         setShowClaimModal(true);
     };
 
     const saveClaimModal = (): void => {
         if (!modalPath.trim()) return;
-        const updated: ClaimConstraintModelInterface = {
+        const updatedClaim: ClaimConstraintModelInterface = {
             allowedValues: modalAllowedValues.length > 0 ? modalAllowedValues : undefined,
             mandatory: modalMandatory,
             path: modalPath.trim().split(".")
         };
 
-        if (claimModalIndex === null) {
-            setClaims((prev: ClaimConstraintModelInterface[]) => [ ...prev, updated ]);
-        } else {
-            setClaims((prev: ClaimConstraintModelInterface[]) => {
-                const next: ClaimConstraintModelInterface[] = [ ...prev ];
+        const newClaims: ClaimConstraintModelInterface[] = claimModalIndex === null
+            ? [ ...claims, updatedClaim ]
+            : claims.map((c: ClaimConstraintModelInterface, i: number) =>
+                i === claimModalIndex ? { ...c, ...updatedClaim } : c
+            );
 
-                next[claimModalIndex] = { ...prev[claimModalIndex], ...updated };
-                return next;
-            });
-        }
-        setShowClaimModal(false);
-    };
+        setIsSubmitting(true);
 
-    const addModalAllowedValue = (): void => {
-        if (!modalAllowedValueInput.trim()) return;
-        setModalAllowedValues((prev: string[]) => [ ...prev, modalAllowedValueInput.trim() ]);
-        setModalAllowedValueInput("");
+        updatePresentationDefinition(definitionId, buildUpdatePayload(newClaims))
+            .then((savedDefinition: PresentationDefinitionInterface) => {
+                const savedCred: RequestedCredentialModelInterface | undefined =
+                    savedDefinition.credentials?.find(
+                        (c: RequestedCredentialModelInterface) => c.id === credentialId
+                    );
+
+                setClaims(newClaims);
+                setTrustedCaPems(savedCred?.trustedCaPems ?? []);
+                setShowClaimModal(false);
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.updateDefinition.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("presentationDefinitions:notifications.updateDefinition.success.message")
+                }));
+            })
+            .catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.updateDefinition.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("presentationDefinitions:notifications.updateDefinition.error.message")
+                }));
+            })
+            .finally(() => setIsSubmitting(false));
     };
 
     const removeClaim = (index: number): void => {
-        setClaims((prev: ClaimConstraintModelInterface[]) =>
-            prev.filter((_: ClaimConstraintModelInterface, i: number) => i !== index)
+        const claim: ClaimConstraintModelInterface = claims[index];
+        const mapped: string[] | null = getClaimMappingBlock(claim.path ?? []);
+
+        if (mapped) {
+            setBlockedClaimAction("delete");
+            setBlockedClaimConnections(mapped);
+            setBlockedClaimPath((claim.path ?? []).join("."));
+            setShowClaimMappedModal(true);
+            return;
+        }
+
+        const newClaims: ClaimConstraintModelInterface[] = claims.filter(
+            (_: ClaimConstraintModelInterface, i: number) => i !== index
         );
+
+        setClaims(newClaims);
+        setIsSubmitting(true);
+
+        updatePresentationDefinition(definitionId, buildUpdatePayload(newClaims))
+            .then((savedDefinition: PresentationDefinitionInterface) => {
+                const savedCred: RequestedCredentialModelInterface | undefined =
+                    savedDefinition.credentials?.find(
+                        (c: RequestedCredentialModelInterface) => c.id === credentialId
+                    );
+
+                setTrustedCaPems(savedCred?.trustedCaPems ?? []);
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.updateDefinition.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("presentationDefinitions:notifications.updateDefinition.success.message")
+                }));
+            })
+            .catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("presentationDefinitions:notifications.updateDefinition.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("presentationDefinitions:notifications.updateDefinition.error.message")
+                }));
+            })
+            .finally(() => setIsSubmitting(false));
     };
 
     // ── Tab pane renderers ────────────────────────────────────────────────────
@@ -398,35 +513,37 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <label className="form-label">
-                                { t("presentationDefinitions:editPage.quickCopy.definitionId.label") }
+                                { t("presentationDefinitions:editPage.quickCopy.identifier.label") }
                             </label>
-                            <CopyInputField
-                                value={ definitionId }
-                                data-componentid={ `${componentId}-definition-id-copy` }
-                            />
-                            <Hint compact>
-                                { t("presentationDefinitions:editPage.quickCopy.definitionId.hint") }
-                            </Hint>
-
-                            <Divider hidden />
+                            <div style={ { marginTop: "4px", marginBottom: "16px" } }>
+                                <CopyInputField
+                                    value={ definition?.identifier ?? "" }
+                                    data-componentid={ `${componentId}-identifier-copy` }
+                                />
+                            </div>
 
                             <MuiTextField
                                 fullWidth
                                 required
                                 size="small"
-                                label={ t("presentationDefinitions:editPage.form.name.label") }
-                                placeholder={ t("presentationDefinitions:editPage.form.name.placeholder") }
-                                value={ name }
-                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value) }
+                                margin="dense"
+                                label={ t("presentationDefinitions:editPage.form.displayName.label") }
+                                placeholder={ t("presentationDefinitions:editPage.form.displayName.placeholder") }
+                                value={ displayName }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setDisplayName(e.target.value)
+                                }
                                 InputProps={ { readOnly: isReadOnly } }
+                                InputLabelProps={ { required: true } }
                                 sx={ { mb: 2 } }
-                                data-componentid={ `${componentId}-name-input` }
+                                data-componentid={ `${componentId}-display-name-input` }
                             />
                             <MuiTextField
                                 fullWidth
                                 multiline
                                 rows={ 3 }
                                 size="small"
+                                margin="dense"
                                 label={ t("presentationDefinitions:editPage.form.description.label") }
                                 placeholder={ t("presentationDefinitions:editPage.form.description.placeholder") }
                                 value={ description }
@@ -437,33 +554,30 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 sx={ { mb: 2 } }
                                 data-componentid={ `${componentId}-description-input` }
                             />
-                            <div style={ { marginBottom: "16px" } }>
-                                <MuiTextField
-                                    fullWidth
-                                    required
-                                    size="small"
-                                    label={ t("presentationDefinitions:editPage.form.credentials.type.label") }
-                                    placeholder={ t(
-                                        "presentationDefinitions:editPage.form.credentials.type.placeholder"
-                                    ) }
-                                    value={ credentialType }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                        setCredentialType(e.target.value)
-                                    }
-                                    InputProps={ { readOnly: isReadOnly } }
-                                    sx={ { mb: 0.5 } }
-                                    data-componentid={ `${componentId}-credential-type-input` }
-                                />
-                                <Hint compact>
-                                    { t("presentationDefinitions:wizard.form.credentialType.hint") }
-                                </Hint>
-                            </div>
+                            <MuiTextField
+                                fullWidth
+                                required
+                                size="small"
+                                margin="dense"
+                                label={ t("presentationDefinitions:editPage.form.credentials.type.label") }
+                                placeholder={ t(
+                                    "presentationDefinitions:editPage.form.credentials.type.placeholder"
+                                ) }
+                                value={ credentialType }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setCredentialType(e.target.value)
+                                }
+                                InputProps={ { readOnly: isReadOnly } }
+                                InputLabelProps={ { required: true } }
+                                sx={ { mb: 2 } }
+                                data-componentid={ `${componentId}-credential-type-input` }
+                            />
                             <Divider hidden />
 
                             { !isReadOnly && (
                                 <PrimaryButton
                                     size="small"
-                                    disabled={ isSubmitting || !name.trim() || !credentialType.trim() }
+                                    disabled={ isSubmitting || !displayName.trim() || !credentialType.trim() }
                                     loading={ isSubmitting }
                                     onClick={ handleUpdate }
                                     data-componentid={ `${componentId}-general-update-button` }
@@ -600,9 +714,29 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                <Heading as="h4">
-                    { t("presentationDefinitions:editPage.form.credentials.claims.label") }
-                </Heading>
+                { claims.length > 0
+                    ? (
+                        <div style={ { alignItems: "center", display: "flex", justifyContent: "space-between" } }>
+                            <Heading as="h4" style={ { marginBottom: 0 } }>
+                                { t("presentationDefinitions:editPage.form.credentials.claims.label") }
+                            </Heading>
+                            { !isReadOnly && (
+                                <PrimaryButton
+                                    size="small"
+                                    onClick={ openAddClaimModal }
+                                    data-componentid={ `${componentId}-add-claim-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t("presentationDefinitions:editPage.form.credentials.claims.addClaim") }
+                                </PrimaryButton>
+                            ) }
+                        </div>
+                    ) : (
+                        <Heading as="h4">
+                            { t("presentationDefinitions:editPage.form.credentials.claims.label") }
+                        </Heading>
+                    )
+                }
                 <Heading subHeading ellipsis as="h6">
                     { t("presentationDefinitions:editPage.form.credentials.claims.hint") }
                 </Heading>
@@ -612,16 +746,18 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         imageSize="tiny"
                         action={
                             !isReadOnly
-                                ? (<PrimaryButton
-                                    size="small"
-                                    onClick={ openAddClaimModal }
-                                    data-componentid={ `${componentId}-add-claim-button` }
-                                >
-                                    <Icon name="add" />
-                                    { t(
-                                        "presentationDefinitions:editPage.form.credentials.claims.addClaim"
-                                    ) }
-                                </PrimaryButton>)
+                                ? (
+                                    <PrimaryButton
+                                        size="small"
+                                        onClick={ openAddClaimModal }
+                                        data-componentid={ `${componentId}-add-claim-button` }
+                                    >
+                                        <Icon name="add" />
+                                        { t(
+                                            "presentationDefinitions:editPage.form.credentials.claims.addClaim"
+                                        ) }
+                                    </PrimaryButton>
+                                )
                                 : undefined
                         }
                         subtitle={ [
@@ -633,24 +769,28 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     />
                 ) : (
                     <>
-                        { !isReadOnly && (
-                        <div style={ { marginBottom: "16px" } }>
-                            <PrimaryButton
-                                size="small"
-                                onClick={ openAddClaimModal }
-                                data-componentid={ `${componentId}-add-claim-button` }
-                            >
-                                <Icon name="add" />
-                                { t(
-                                    "presentationDefinitions:editPage.form.credentials.claims.addClaim"
-                                ) }
-                            </PrimaryButton>
-                        </div>
-                        ) }
+                        <style>{ `
+                            .pd-claims-table.ui.table thead th {
+                                background: none;
+                                border-bottom: 1px solid rgba(34,36,38,.15);
+                                padding: 13px 8px !important;
+                            }
+                            .pd-claims-table.ui.table.data-table .data-table-row:hover {
+                                background: transparent !important;
+                                box-shadow: none !important;
+                                cursor: default !important;
+                            }
+                            .pd-claims-table.ui.table.data-table .data-table-row:hover .data-table-cell {
+                                border-color: transparent !important;
+                                transition: none !important;
+                            }
+                        ` }</style>
                         <DataTable<ClaimConstraintModelInterface>
+                            className="pd-claims-table"
                             columns={ claimTableColumns }
                             data={ claims }
                             actions={ claimTableActions }
+                            selectable={ false }
                             showHeader={ true }
                             isRowSelectable={ () => false }
                             onRowClick={ () => undefined }
@@ -659,19 +799,6 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     </>
                 ) }
 
-                <Divider hidden />
-
-                { !isReadOnly && (
-                    <PrimaryButton
-                        size="small"
-                        disabled={ isSubmitting }
-                        loading={ isSubmitting }
-                        onClick={ handleUpdate }
-                        data-componentid={ `${componentId}-claims-update-button` }
-                    >
-                        { t("common:update") }
-                    </PrimaryButton>
-                ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -679,7 +806,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
             <Modal
                 open={ showClaimModal }
-                size="small"
+                size="tiny"
                 dimmer="blurring"
                 onClose={ () => setShowClaimModal(false) }
                 data-componentid={ `${componentId}-claim-modal` }
@@ -697,10 +824,12 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 <Modal.Content>
                     <Box sx={ { mb: 2 } }>
                         <MuiTextField
-                            fullWidth
                             required
                             size="small"
                             autoFocus
+                            margin="dense"
+                            sx={ { width: "90%" } }
+                            InputLabelProps={ { required: true } }
                             label={ t(
                                 "presentationDefinitions:editPage.form.credentials.claims.claimPath.label"
                             ) }
@@ -711,20 +840,24 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setModalPath(e.target.value) }
                             data-componentid={ `${componentId}-modal-claim-path` }
                         />
-                        <Hint compact>
-                            { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint"
-                            ) }
-                        </Hint>
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint compact>
+                                { t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint"
+                                ) }
+                            </Hint>
+                        </div>
                     </Box>
                     <Box sx={ { mb: 2 } }>
                         <FormControlLabel
+                            sx={ { ml: "-4px" } }
                             control={ (
                                 <Checkbox
                                     checked={ modalMandatory }
                                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                         setModalMandatory(e.target.checked)
                                     }
+                                    sx={ { p: "2px" } }
                                     data-componentid={ `${componentId}-modal-claim-mandatory` }
                                 />
                             ) }
@@ -732,56 +865,63 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 "presentationDefinitions:editPage.form.credentials.claims.required.label"
                             ) }
                         />
-                        <Hint compact>
-                            { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.required.hint"
-                            ) }
-                        </Hint>
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint compact>
+                                { t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.required.hint"
+                                ) }
+                            </Hint>
+                        </div>
                     </Box>
                     <Box>
-                        <MuiTextField
-                            fullWidth
+                        <Autocomplete
+                            multiple
+                            freeSolo
                             size="small"
-                            label={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label"
-                            ) }
-                            placeholder={ t(
-                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.placeholder"
-                            ) }
-                            value={ modalAllowedValueInput }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                setModalAllowedValueInput(e.target.value)
+                            sx={ { width: "90%" } }
+                            options={ [] }
+                            value={ modalAllowedValues }
+                            onChange={ (
+                                _e: React.SyntheticEvent,
+                                newValue: string[]
+                            ) => setModalAllowedValues(newValue) }
+                            renderTags={ (value: string[], getTagProps) =>
+                                value.map((option: string, index: number) => (
+                                    <Chip
+                                        { ...getTagProps({ index }) }
+                                        key={ index }
+                                        label={ option }
+                                        size="small"
+                                    />
+                                ))
                             }
-                            onKeyDown={ (e: KeyboardEvent<HTMLInputElement>) => {
-                                if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    addModalAllowedValue();
-                                }
-                            } }
-                            data-componentid={ `${componentId}-modal-allowed-value-input` }
-                        />
-                        <Hint compact>
-                            { t(
-                                "presentationDefinitions:editPage.form.credentials.claims.allowedValues.hint"
-                            ) }
-                        </Hint>
-                    </Box>
-                    { modalAllowedValues.length > 0 && (
-                        <div style={ { display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "8px" } }>
-                            { modalAllowedValues.map((val: string, vi: number) => (
-                                <Chip
-                                    key={ vi }
-                                    label={ val }
+                            renderInput={ (params: AutocompleteRenderInputParams) => (
+                                <MuiTextField
+                                    { ...params }
                                     size="small"
-                                    onDelete={ () =>
-                                        setModalAllowedValues((prev: string[]) =>
-                                            prev.filter((_: string, i: number) => i !== vi)
+                                    margin="dense"
+                                    label={ t(
+                                        "presentationDefinitions:editPage.form.credentials.claims.allowedValues.label"
+                                    ) }
+                                    placeholder={ modalAllowedValues.length === 0
+                                        ? t(
+                                            "presentationDefinitions:editPage.form.credentials.claims.allowedValues.placeholder"
                                         )
+                                        : undefined
                                     }
+                                    data-componentid={ `${componentId}-modal-allowed-value-input` }
                                 />
-                            )) }
+                            ) }
+                            data-componentid={ `${componentId}-modal-allowed-values` }
+                        />
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint compact>
+                                { t(
+                                    "presentationDefinitions:editPage.form.credentials.claims.allowedValues.hint"
+                                ) }
+                            </Hint>
                         </div>
-                    ) }
+                    </Box>
                 </Modal.Content>
                 <Modal.Actions>
                     <Grid>
@@ -798,11 +938,12 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 } textAlign="right">
                                 <PrimaryButton
                                     floated="right"
-                                    disabled={ !modalPath.trim() }
+                                    disabled={ !modalPath.trim() || isSubmitting }
+                                    loading={ isSubmitting }
                                     onClick={ saveClaimModal }
                                     data-componentid={ `${componentId}-modal-save-button` }
                                 >
-                                    { t("common:save") }
+                                    { claimModalIndex === null ? t("common:add") : t("common:update") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -832,11 +973,13 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.label"
                     ) }
                 />
-                <Hint compact>
-                    { t(
-                        "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.hint"
-                    ) }
-                </Hint>
+                <div style={ { marginTop: "6px" } }>
+                    <Hint compact>
+                        { t(
+                            "presentationDefinitions:editPage.issuerTrust.enforceTrustedIssuer.hint"
+                        ) }
+                    </Hint>
+                </div>
 
                 <AnimatePresence>
                 { enforceTrustedIssuer && (
@@ -851,29 +994,37 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 <Divider hidden />
 
                 { trustedCaPems.length === 0 ? (
-                    <div
-                        style={ { alignItems: "center", display: "flex", gap: "12px" } }
-                        data-componentid={ `${componentId}-trusted-ca-empty-placeholder` }
-                    >
-                        <Hint compact>
-                            { t(
-                                "presentationDefinitions:editPage.issuerTrust.trustedCas.emptyPlaceholder.subtitle0"
+                    <Segment>
+                        <EmptyPlaceholder
+                            image={ getEmptyPlaceholderIllustrations().emptyList }
+                            imageSize="tiny"
+                            title={ t(
+                                "presentationDefinitions:editPage.issuerTrust.trustedCas.emptyPlaceholder.title"
                             ) }
-                        </Hint>
-                        { !isReadOnly && (
-                            <PrimaryButton
-                                size="mini"
-                                onClick={ () => setShowAddCertModal(true) }
-                                type="button"
-                                data-componentid={ `${componentId}-empty-add-cert-button` }
-                            >
-                                <Icon name="add" />
-                                { t(
-                                    "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton"
-                                ) }
-                            </PrimaryButton>
-                        ) }
-                    </div>
+                            subtitle={ [
+                                t(
+                                    "presentationDefinitions:editPage.issuerTrust.trustedCas.emptyPlaceholder.subtitle0"
+                                ),
+                                t(
+                                    "presentationDefinitions:editPage.issuerTrust.trustedCas.emptyPlaceholder.subtitle1"
+                                )
+                            ] }
+                            action={ !isReadOnly && (
+                                <PrimaryButton
+                                    size="small"
+                                    onClick={ () => setShowAddCertModal(true) }
+                                    type="button"
+                                    data-componentid={ `${componentId}-empty-add-cert-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust.trustedCas.addButton"
+                                    ) }
+                                </PrimaryButton>
+                            ) }
+                            data-componentid={ `${componentId}-trusted-ca-empty-placeholder` }
+                        />
+                    </Segment>
                 ) : (
                     <Segment>
                         <MuiGrid direction="column" container spacing={ 2 }>
@@ -1075,48 +1226,40 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         </div>
                     </EmphasizedSegment>
                 ) : (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 16 }>
-                                <Divider hidden />
-                                <Segment>
-                                    <EmptyPlaceholder
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
-                                        imageSize="tiny"
-                                        title={ t(
-                                            "presentationDefinitions:editPage.issuerTrust." +
-                                            "issuerPem.emptyPlaceholder.title"
-                                        ) }
-                                        subtitle={ [
-                                            t(
-                                                "presentationDefinitions:editPage.issuerTrust." +
-                                                "issuerPem.emptyPlaceholder.subtitle"
-                                            )
-                                        ] }
-                                        action={ !isReadOnly && (
-                                            <PrimaryButton
-                                                size="small"
-                                                onClick={ () => setShowAddIssuerCertModal(true) }
-                                                data-componentid={
-                                                    `${componentId}-add-pem-button`
-                                                }
-                                            >
-                                                <Icon name="add" />
-                                                { t(
-                                                    "presentationDefinitions:editPage.issuerTrust." +
-                                                    "issuerPem.addButton"
-                                                ) }
-                                            </PrimaryButton>
-                                        ) }
-                                        data-componentid={
-                                            `${componentId}-issuer-pem-empty-placeholder`
-                                        }
-                                    />
-                                </Segment>
-                                <Divider hidden />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
+                    <Segment>
+                        <EmptyPlaceholder
+                            image={ getEmptyPlaceholderIllustrations().emptyList }
+                            imageSize="tiny"
+                            title={ t(
+                                "presentationDefinitions:editPage.issuerTrust." +
+                                "issuerPem.emptyPlaceholder.title"
+                            ) }
+                            subtitle={ [
+                                t(
+                                    "presentationDefinitions:editPage.issuerTrust." +
+                                    "issuerPem.emptyPlaceholder.subtitle"
+                                )
+                            ] }
+                            action={ !isReadOnly && (
+                                <PrimaryButton
+                                    size="small"
+                                    onClick={ () => setShowAddIssuerCertModal(true) }
+                                    data-componentid={
+                                        `${componentId}-add-pem-button`
+                                    }
+                                >
+                                    <Icon name="add" />
+                                    { t(
+                                        "presentationDefinitions:editPage.issuerTrust." +
+                                        "issuerPem.addButton"
+                                    ) }
+                                </PrimaryButton>
+                            ) }
+                            data-componentid={
+                                `${componentId}-issuer-pem-empty-placeholder`
+                            }
+                        />
+                    </Segment>
                 ) }
                 { showIssuerCertModal && issuerCertDisplay && (
                     <Modal
@@ -1218,7 +1361,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
                                 <Divider hidden />
 
-                                <FormControl>
+                                <FormControl fullWidth>
                                     <RadioGroup
                                         name="key-resolution-method"
                                         value={ keyResolutionMethod }
@@ -1366,8 +1509,15 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     return (
         <PageLayout
             pageTitle={ t("presentationDefinitions:editPage.title") }
-            title={ definition?.name ?? t("presentationDefinitions:editPage.title") }
+            title={ definition?.displayName ?? t("presentationDefinitions:editPage.title") }
             description={ definition?.description }
+            image={
+                <AnimatedAvatar
+                    name={ definition?.displayName ?? "P" }
+                    size="tiny"
+                    floated="left"
+                />
+            }
             data-componentid={ `${componentId}-page-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -1408,6 +1558,53 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
                         { t("presentationDefinitions:editPage.confirmations.deleteDefinition.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showClaimMappedModal && (
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-claim-mapped-modal` }
+                    onClose={ () => setShowClaimMappedModal(false) }
+                    type="negative"
+                    open={ showClaimMappedModal }
+                    secondaryAction={ t("common:close") }
+                    onSecondaryActionClick={ () => setShowClaimMappedModal(false) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${componentId}-claim-mapped-modal-header` }
+                    >
+                        { blockedClaimAction === "edit"
+                            ? t("presentationDefinitions:editPage.confirmations" +
+                                ".claimMappedInConnection.editHeader")
+                            : t("presentationDefinitions:editPage.confirmations" +
+                                ".claimMappedInConnection.deleteHeader")
+                        }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${componentId}-claim-mapped-modal-message` }
+                    >
+                        { t("presentationDefinitions:editPage.confirmations" +
+                            ".claimMappedInConnection.message"
+                        ) }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${componentId}-claim-mapped-modal-content` }
+                    >
+                        { t("presentationDefinitions:editPage.confirmations" +
+                            ".claimMappedInConnection.content",
+                            {
+                                action: blockedClaimAction === "edit" ? "editing" : "deleting"
+                            }
+                        ) }
+                        <Divider hidden />
+                        <List ordered className="ml-6">
+                            { blockedClaimConnections.map((name: string, index: number) => (
+                                <List.Item key={ index }>{ name }</List.Item>
+                            )) }
+                        </List>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

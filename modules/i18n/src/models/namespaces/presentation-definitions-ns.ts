@@ -33,6 +33,7 @@ export interface PresentationDefinitionsInterface {
             title: string;
             subtitle1: string;
             subtitle2: string;
+            action: string;
         };
     };
     list: {
@@ -67,8 +68,8 @@ export interface PresentationDefinitionsInterface {
     wizard: {
         title: string;
         form: {
-            name: { label: string; placeholder: string; hint: string };
-
+            displayName: { label: string; placeholder: string; hint: string };
+            identifier: { label: string; placeholder: string; hint: string; validationError: string };
             description: { label: string; placeholder: string };
             credentialType: { label: string; placeholder: string; hint: string };
             format: { label: string; hint: string };
@@ -87,8 +88,7 @@ export interface PresentationDefinitionsInterface {
         quickCopy: {
             heading: string;
             hint: string;
-            definitionId: { label: string; hint: string };
-
+            identifier: { label: string; hint: string };
         };
         issuerTrust: {
             heading: string;
@@ -158,7 +158,7 @@ export interface PresentationDefinitionsInterface {
             };
         };
         form: {
-            name: { label: string; placeholder: string; requiredError: string };
+            displayName: { label: string; placeholder: string; requiredError: string };
             description: { label: string; placeholder: string };
             credentials: {
                 label: string;
@@ -189,6 +189,12 @@ export interface PresentationDefinitionsInterface {
             };
         };
         confirmations: {
+            claimMappedInConnection: {
+                editHeader: string;
+                deleteHeader: string;
+                message: string;
+                content: string;
+            };
             deleteDefinition: {
                 header: string;
                 message: string;

@@ -18,11 +18,6 @@
 
 /**
  * Interface for a single claim constraint within a requested credential.
- *
- * `id` and `path` map directly to the DCQL spec fields. `name` is kept for
- * backward compatibility: when `path` is absent the backend treats `name` as
- * a single-element path. `allowedValues` maps to the DCQL `values` field and
- * is also enforced server-side.
  */
 export interface ClaimConstraintModelInterface {
     /** DCQL claim id — used to reference this claim in claim_sets. */
@@ -70,8 +65,12 @@ interface CertificatePatchInterface {
  * Interface for a Presentation Definition (full object).
  */
 export interface PresentationDefinitionInterface {
+    /** Server-generated UUID. Used for internal API path operations. */
     id: string;
-    name: string;
+    /** Stable, user-facing slug. Immutable after creation. */
+    identifier: string;
+    /** Human-readable label. */
+    displayName: string;
     description?: string;
     credentials: RequestedCredentialModelInterface[];
 }
@@ -80,8 +79,12 @@ export interface PresentationDefinitionInterface {
  * Interface for a Presentation Definition list item (summary view).
  */
 export interface PresentationDefinitionListItemInterface {
+    /** Server-generated UUID. Used for internal API path operations. */
     id: string;
-    name: string;
+    /** Stable, user-facing slug. */
+    identifier: string;
+    /** Human-readable label. */
+    displayName: string;
     description?: string;
 }
 
@@ -106,35 +109,39 @@ export interface PresentationDefinitionListInterface {
  * Interface for creating a new Presentation Definition.
  */
 export interface PresentationDefinitionCreationModelInterface {
-    name: string;
+    /** Stable slug: alphanumeric, underscores, hyphens only. Immutable after creation. */
+    identifier: string;
+    /** Human-readable label. */
+    displayName: string;
     description?: string;
     credentials: RequestedCredentialModelInterface[];
 }
 
 /**
  * Interface for updating an existing Presentation Definition.
+ * identifier is intentionally omitted — it is immutable after creation.
  */
 export interface PresentationDefinitionUpdateModelInterface {
-    name?: string;
+    displayName?: string;
     description?: string;
     credentials?: RequestedCredentialModelInterface[];
 }
 
 /**
- * Interface for a single connection (IDP) referencing a presentation definition.
+ * Interface for a single IDP referencing a presentation definition.
  */
-interface ConnectedConnectionItemInterface {
-    connectionId: string;
+export interface ConnectedIdpItemInterface {
+    idpId: string;
     name: string;
     self: string;
 }
 
 /**
- * Interface for the connected connections API response.
+ * Interface for the connected IDPs API response.
  */
-export interface ConnectedConnectionsResponseInterface {
+export interface ConnectedIdpsResponseInterface {
     totalResults: number;
     startIndex: number;
     count: number;
-    connectedConnections: ConnectedConnectionItemInterface[];
+    connectedIdps: ConnectedIdpItemInterface[];
 }

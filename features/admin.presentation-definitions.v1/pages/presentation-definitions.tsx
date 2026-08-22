@@ -239,7 +239,7 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
                             {
                                 key: 0,
                                 text: t("presentationDefinitions:list.search.attributes.name"),
-                                value: "name"
+                                value: "displayName"
                             }
                         ] }
                         filterAttributePlaceholder={
@@ -253,7 +253,7 @@ const PresentationDefinitions: FunctionComponent<PresentationDefinitionsPageProp
                         }
                         placeholder={ t("presentationDefinitions:list.search.placeholder") }
                         style={ { minWidth: "425px" } }
-                        defaultSearchAttribute="name"
+                        defaultSearchAttribute="displayName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ false }
                         data-componentid={ `${componentId}-list-advanced-search` }

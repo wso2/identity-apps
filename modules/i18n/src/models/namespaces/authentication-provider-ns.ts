@@ -1537,11 +1537,15 @@ export interface AuthenticationProviderNS {
                     label: string;
                     placeholder: string;
                     defaultValue: string;
+                    hint: string;
                     validations: {
                         required: string;
                         maxLength: string;
                         minLength: string;
                     };
+                };
+                description: {
+                    hint: string;
                 };
                 presentationDefinition: {
                     label: string;
@@ -1607,6 +1611,12 @@ export interface AuthenticationProviderNS {
                         header: string;
                         description: string;
                     };
+                };
+                heading: string;
+                subheading: string;
+                pdClaimAttribute: {
+                    label: string;
+                    tooltip: string;
                 };
             };
             wizardHelp: {

@@ -77,7 +77,7 @@ const MANAGED_KEYS: string[] = [ "presentationDefinitionId", "timeout" ];
 
 interface PresentationDefinitionListItemInterface {
     id: string;
-    name: string;
+    displayName: string;
     description?: string;
 }
 
@@ -162,7 +162,13 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                 };
 
                 setPresentationDefinitionId(getPropertyValue("presentationDefinitionId"));
-                setTimeoutSeconds(getPropertyValue("timeout"));
+                const loadedTimeout: string = getPropertyValue("timeout") || "120";
+                const loadedVal: number = parseInt(loadedTimeout, 10);
+
+                setTimeoutSeconds(loadedTimeout);
+                if (isNaN(loadedVal) || loadedVal < 1 || loadedVal > 180) {
+                    setTimeoutError(t(`${ I18N_PREFIX }.form.timeout.validationError`));
+                }
             })
             .catch(() => {
                 // values stay empty if fetch fails
@@ -176,7 +182,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
         (pd: PresentationDefinitionListItemInterface): DropdownItemProps => ({
             description: pd.description,
             key: pd.id,
-            text: pd.name,
+            text: pd.displayName,
             value: pd.id
         })
     );
@@ -422,7 +428,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                     maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
                     minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                     data-componentid={ `${ componentId }-idp-name` }
-                    hint={ t("authenticationProvider:forms.generalDetails.name.hint") }
+                    hint={ t(`${ I18N_PREFIX }.form.name.hint`) }
                     readOnly={ isReadOnly }
                 />
                 <Field.Textarea
@@ -435,7 +441,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                     data-componentid={ `${ componentId }-idp-description` }
                     maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
                     minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
-                    hint={ t("authenticationProvider:forms.generalDetails.description.hint") }
+                    hint={ t(`${ I18N_PREFIX }.form.description.hint`) }
                     readOnly={ isReadOnly }
                 />
                 { isAuthenticatorLoading || isPdListLoading
@@ -469,8 +475,8 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                                 <label>{ t(`${ I18N_PREFIX }.form.timeout.label`) }</label>
                                 <Input
                                     type="number"
-                                    min="30"
-                                    max="3600"
+                                    min="1"
+                                    max="180"
                                     value={ timeoutSeconds }
                                     readOnly={ isReadOnly }
                                     error={ !!timeoutError }
@@ -480,7 +486,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                                     ): void => {
                                         const val: number = parseInt(data.value, 10);
 
-                                        if (data.value !== "" && (isNaN(val) || val < 30 || val > 3600)) {
+                                        if (data.value === "" || isNaN(val) || val < 1 || val > 180) {
                                             setTimeoutError(
                                                 t(`${ I18N_PREFIX }.form.timeout.validationError`)
                                             );
@@ -517,7 +523,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                         label={ t("common:update") }
                         name="submit"
                         disabled={ isSubmitting || isAuthenticatorLoading || isEmpty(presentationDefinitionId)
-                            || !!timeoutError }
+                            || isEmpty(timeoutSeconds) || !!timeoutError }
                         loading={ isSubmitting }
                     />
                 ) }

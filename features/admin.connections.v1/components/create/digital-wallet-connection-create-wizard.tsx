@@ -66,7 +66,7 @@ import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 interface PresentationDefinitionListItemInterface {
     id: string;
-    name: string;
+    displayName: string;
     description?: string;
 }
 
@@ -132,7 +132,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
         (pd: PresentationDefinitionListItemInterface): DropdownItemProps => ({
             description: pd.description,
             key: pd.id,
-            text: pd.name,
+            text: pd.displayName,
             value: pd.id
         })
     );
@@ -162,7 +162,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
         connection.federatedAuthenticators.authenticators[ 0 ].properties = [
             { key: "presentationDefinitionId", value: selectedPresentationDefinitionId },
             { key: "responseMode", value: "direct_post.jwt" },
-            { key: "timeout", value: "300" },
+            { key: "timeout", value: "120" },
             { key: "clientIdScheme", value: "x509_san_dns" }
         ];
 

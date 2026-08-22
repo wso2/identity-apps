@@ -36,6 +36,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    subtitle: "There are no presentation definitions configured yet. Click the button to create one."
                },
                emptySearch: {
+                   action: "Clear search",
                    title: "No results found",
                    subtitle1: "We couldn't find any presentation definitions matching your search.",
                    subtitle2: "Try a different search term."
@@ -43,7 +44,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
            },
            list: {
                columns: {
-                   name: "Name",
+                   name: "Display Name",
                    description: "Description",
                    actions: "Actions"
                },
@@ -62,22 +63,28 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    }
                },
                search: {
-                   placeholder: "Search by name",
+                   placeholder: "Search by display name",
                    filterAttributePlaceholder: "Filter by",
                    filterConditionsPlaceholder: "Condition",
                    filterValuePlaceholder: "Enter value",
                    attributes: {
-                       name: "Name"
+                       name: "Display Name"
                    }
                }
            },
            wizard: {
                title: "Create Presentation Definition",
                form: {
-                   name: {
-                       label: "Name",
-                       placeholder: "Enter a name for this presentation definition",
-                       hint: "A descriptive name used to identify this presentation definition."
+                   displayName: {
+                       label: "Display Name",
+                       placeholder: "Enter a display name for this presentation definition",
+                       hint: "A descriptive label used to identify this presentation definition in the UI."
+                   },
+                   identifier: {
+                       label: "Identifier",
+                       placeholder: "e.g. employee-id-verification",
+                       hint: "A unique identifier for the presentation definition.",
+                       validationError: "Only letters, numbers, hyphens (-), and underscores (_) are allowed."
                    },
 
                    description: {
@@ -109,10 +116,9 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                quickCopy: {
                    heading: "Quick Copy",
                    hint: "Copy these identifiers for use in API calls.",
-                   definitionId: {
-                       label: "Definition ID",
-                       hint:
-                           "The unique identifier for this presentation definition. Use this ID when referencing it in API calls."
+                   identifier: {
+                       label: "Identifier",
+                       hint: "The stable, user-facing identifier for this presentation definition. Use this when referencing it in API calls or connections."
                    }
                },
 
@@ -189,10 +195,10 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    }
                },
                form: {
-                   name: {
-                       label: "Name",
-                       placeholder: "Enter a name",
-                       requiredError: "Name is required."
+                   displayName: {
+                       label: "Display Name",
+                       placeholder: "Enter a display name",
+                       requiredError: "Display Name is required."
                    },
                    description: {
                        label: "Description",
@@ -220,9 +226,9 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                            label: "Claims",
                            hint: "Specify the claims to request from the credential.",
                            claimPath: {
-                               label: "Claim Path",
+                               label: "Claim Name",
                                placeholder: "given_name",
-                               hint: "Use dot notation to specify nested claims, such as address.street_address."
+                               hint: "Name of the claim to request from the credential. Use dot notation to specify nested claims, such as address.street_address."
                            },
                            editClaim: "Edit Claim",
                            emptyPlaceholder:
@@ -249,6 +255,13 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    }
                },
                confirmations: {
+                   claimMappedInConnection: {
+                       editHeader: "Unable to Edit Claim",
+                       deleteHeader: "Unable to Delete Claim",
+                       message: "This attribute is mapped in one or more connections.",
+                       content: "Remove the attribute mapping from the following connection(s)" +
+                           " before {{action}} this claim:"
+                   },
                    deleteDefinition: {
                        header: "Delete Presentation Definition?",
                        message: "This action is permanent and cannot be undone.",
@@ -287,9 +300,9 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    },
 
                    duplicateError: {
-                       message: "Name Already Exists",
+                       message: "Identifier Already Exists",
                        description:
-                           "A presentation definition with this name already exists. Please choose a different name."
+                           "A presentation definition with this identifier already exists. Please choose a different identifier."
                    }
                },
                updateDefinition: {

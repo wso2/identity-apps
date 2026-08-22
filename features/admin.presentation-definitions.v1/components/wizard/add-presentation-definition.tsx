@@ -45,19 +45,27 @@ interface AddPresentationDefinitionWizardPropsInterface extends IdentifiableComp
     closeWizard: () => void;
 }
 
-const generateHandle = (name: string): string => {
-    return name
+/** Allowed identifier characters: alphanumeric, underscore, hyphen. */
+const IDENTIFIER_PATTERN: RegExp = /^[A-Za-z0-9_-]+$/;
+
+/**
+ * Derives a valid identifier slug from a display name.
+ * Lowercases, replaces invalid chars with hyphens, collapses consecutive hyphens,
+ * trims leading/trailing hyphens, and caps at 100 characters.
+ */
+const deriveIdentifier = (displayName: string): string => {
+    return displayName
         .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .trim()
-        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9_-]/g, "-")
         .replace(/-+/g, "-")
-        .slice(0, 255);
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 100);
 };
 
 /**
  * Single-page modal for creating a new Presentation Definition.
- * Collects name, handle, description, and credential type in one form.
+ * Collects displayName, identifier (auto-derived from displayName, manually overridable),
+ * description, and credential type.
  *
  * @param props - Props injected to the component.
  * @returns React element.
@@ -71,25 +79,55 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
     const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ name, setName ] = useState<string>("");
-    const [ handle, setHandle ] = useState<string>("");
+    const [ displayName, setDisplayName ] = useState<string>("");
+    const [ identifier, setIdentifier ] = useState<string>("");
+    const [ isIdentifierManuallySet, setIsIdentifierManuallySet ] = useState<boolean>(false);
     const [ description, setDescription ] = useState<string>("");
     const [ credentialType, setCredentialType ] = useState<string>("");
 
-    const [ nameError, setNameError ] = useState<string>("");
+    const [ displayNameError, setDisplayNameError ] = useState<string>("");
+    const [ identifierError, setIdentifierError ] = useState<string>("");
     const [ credentialTypeError, setCredentialTypeError ] = useState<string>("");
 
-    const handleNameChange = useCallback((newName: string): void => {
-        setName(newName);
-        setNameError("");
-        setHandle(generateHandle(newName));
-    }, []);
+    const validateIdentifier = useCallback((value: string): string => {
+        if (!value.trim()) {
+            return t("common:required");
+        }
+        if (!IDENTIFIER_PATTERN.test(value)) {
+            return t("presentationDefinitions:wizard.form.identifier.validationError");
+        }
+        return "";
+    }, [ t ]);
+
+    const handleDisplayNameChange = useCallback((newDisplayName: string): void => {
+        setDisplayName(newDisplayName);
+        setDisplayNameError("");
+        if (!isIdentifierManuallySet) {
+            const derived: string = deriveIdentifier(newDisplayName);
+            setIdentifier(derived);
+            if (derived) {
+                setIdentifierError(validateIdentifier(derived));
+            }
+        }
+    }, [ isIdentifierManuallySet, validateIdentifier ]);
+
+    const handleIdentifierChange = useCallback((newIdentifier: string): void => {
+        setIsIdentifierManuallySet(true);
+        setIdentifier(newIdentifier);
+        setIdentifierError(validateIdentifier(newIdentifier));
+    }, [ validateIdentifier ]);
 
     const handleCreate = useCallback((): void => {
         let hasError: boolean = false;
 
-        if (!name.trim()) {
-            setNameError(t("common:required"));
+        if (!displayName.trim()) {
+            setDisplayNameError(t("common:required"));
+            hasError = true;
+        }
+        const idError: string = validateIdentifier(identifier);
+
+        if (idError) {
+            setIdentifierError(idError);
             hasError = true;
         }
         if (!credentialType.trim()) {
@@ -102,11 +140,12 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
 
         const definitionData: PresentationDefinitionCreationModelInterface = {
             credentials: [ {
-                id: handle.trim(),
+                id: identifier.trim(),
                 type: credentialType.trim()
             } ],
             description: description.trim() || undefined,
-            name: name.trim()
+            displayName: displayName.trim(),
+            identifier: identifier.trim()
         };
 
         addPresentationDefinition(definitionData)
@@ -151,7 +190,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
             .finally(() => {
                 setIsSubmitting(false);
             });
-    }, [ name, description, credentialType, handle ]);
+    }, [ displayName, identifier, description, credentialType, validateIdentifier ]);
 
     return (
         <Modal
@@ -172,23 +211,52 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                             fullWidth
                             required
                             size="small"
-                            label={ t("presentationDefinitions:wizard.form.name.label") }
-                            placeholder={ t("presentationDefinitions:wizard.form.name.placeholder") }
-                            value={ name }
+                            margin="dense"
+                            label={ t("presentationDefinitions:wizard.form.displayName.label") }
+                            placeholder={ t("presentationDefinitions:wizard.form.displayName.placeholder") }
+                            value={ displayName }
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                handleNameChange(e.target.value)
+                                handleDisplayNameChange(e.target.value)
                             }
-                            error={ !!nameError }
-                            helperText={ nameError || undefined }
-                            data-componentid={ `${componentId}-name-field` }
+                            error={ !!displayNameError }
+                            helperText={ displayNameError || undefined }
+                            InputLabelProps={ { required: true } }
+                            data-componentid={ `${componentId}-display-name-field` }
                         />
-                        <Hint className="hint" compact>
-                            { t("presentationDefinitions:wizard.form.name.hint") }
-                        </Hint>
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint className="hint" compact>
+                                { t("presentationDefinitions:wizard.form.displayName.hint") }
+                            </Hint>
+                        </div>
+                    </div>
+                    <div>
+                        <MuiTextField
+                            fullWidth
+                            required
+                            size="small"
+                            margin="dense"
+                            label={ t("presentationDefinitions:wizard.form.identifier.label") }
+                            placeholder={ t("presentationDefinitions:wizard.form.identifier.placeholder") }
+                            value={ identifier }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                handleIdentifierChange(e.target.value)
+                            }
+                            error={ !!identifierError }
+                            helperText={ identifierError || undefined }
+                            inputProps={ { maxLength: 100 } }
+                            InputLabelProps={ { required: true } }
+                            data-componentid={ `${componentId}-identifier-field` }
+                        />
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint className="hint" compact>
+                                { t("presentationDefinitions:wizard.form.identifier.hint") }
+                            </Hint>
+                        </div>
                     </div>
                     <MuiTextField
                         fullWidth
                         size="small"
+                        margin="dense"
                         label={ t("presentationDefinitions:wizard.form.description.label") }
                         placeholder={ t("presentationDefinitions:wizard.form.description.placeholder") }
                         value={ description }
@@ -204,6 +272,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                             fullWidth
                             required
                             size="small"
+                            margin="dense"
                             label={ t("presentationDefinitions:wizard.form.credentialType.label") }
                             placeholder={ t(
                                 "presentationDefinitions:wizard.form.credentialType.placeholder"
@@ -215,26 +284,32 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                             } }
                             error={ !!credentialTypeError }
                             helperText={ credentialTypeError || undefined }
+                            InputLabelProps={ { required: true } }
                             data-componentid={ `${componentId}-credential-type-field` }
                         />
-                        <Hint className="hint" compact>
-                            { t("presentationDefinitions:wizard.form.credentialType.hint") }
-                        </Hint>
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint className="hint" compact>
+                                { t("presentationDefinitions:wizard.form.credentialType.hint") }
+                            </Hint>
+                        </div>
                     </div>
                     <div>
                         <MuiTextField
                             select
                             fullWidth
                             size="small"
+                            margin="dense"
                             label={ t("presentationDefinitions:wizard.form.format.label") }
                             value="dc+sd-jwt"
                             data-componentid={ `${componentId}-format-field` }
                         >
                             <MenuItem value="dc+sd-jwt">dc+sd-jwt</MenuItem>
                         </MuiTextField>
-                        <Hint className="hint" compact>
-                            { t("presentationDefinitions:wizard.form.format.hint") }
-                        </Hint>
+                        <div style={ { marginTop: "6px" } }>
+                            <Hint className="hint" compact>
+                                { t("presentationDefinitions:wizard.form.format.hint") }
+                            </Hint>
+                        </div>
                     </div>
                 </Stack>
             </Modal.Content>

@@ -128,6 +128,10 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * If provided, users can only map to these values.
      */
     allowedMappedValues?: string[];
+    externalAttributeLabel?: string;
+    externalAttributeTooltip?: string;
+    attributeMappingHeading?: string;
+    attributeMappingSubheading?: string;
 }
 
 const LocalDialectURI: string = "http://wso2.org/claims";
@@ -149,6 +153,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         isOIDC,
         isSaml,
         allowedMappedValues,
+        externalAttributeLabel,
+        externalAttributeTooltip,
+        attributeMappingHeading,
+        attributeMappingSubheading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -432,6 +440,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     }
                                 }
                                 allowedMappedValues={ allowedMappedValues }
+                                externalAttributeLabel={ externalAttributeLabel }
+                                externalAttributeTooltip={ externalAttributeTooltip }
+                                attributeMappingHeading={ attributeMappingHeading }
+                                attributeMappingSubheading={ attributeMappingSubheading }
                                 attributeList={
                                     hideIdentityClaimAttributes
                                         ? availableLocalClaims.filter(

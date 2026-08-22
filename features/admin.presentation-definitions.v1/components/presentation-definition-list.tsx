@@ -39,9 +39,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { Dispatch } from "redux";
-import { deletePresentationDefinition, getConnectedConnections } from "../api/presentation-definitions";
+import { deletePresentationDefinition, getConnectedIdps } from "../api/presentation-definitions";
 import {
-    ConnectedConnectionsResponseInterface,
+    ConnectedIdpsResponseInterface,
     PresentationDefinitionListItemInterface
 } from "../models/presentation-definitions";
 
@@ -95,13 +95,13 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
     const handleDeleteInitiation = (definition: PresentationDefinitionListItemInterface): void => {
         setIsConnectionsLoading(true);
         setCurrentDeletion(definition);
-        getConnectedConnections(definition.id)
-            .then((response: ConnectedConnectionsResponseInterface) => {
+        getConnectedIdps(definition.id)
+            .then((response: ConnectedIdpsResponseInterface) => {
                 if (response?.count === 0) {
                     setShowDeleteConfirmation(true);
                 } else {
                     setConnectedConnectionNames(
-                        (response?.connectedConnections ?? []).map((c) => c.name)
+                        (response?.connectedIdps ?? []).map((c) => c.name)
                     );
                     setShowDeleteBlockedModal(true);
                 }
@@ -177,7 +177,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
                     <AppAvatar
                         image={
                             (<AnimatedAvatar
-                                name={ definition.name }
+                                name={ definition.displayName }
                                 size="mini"
                                 data-componentid={ `${componentId}-item-avatar` }
                             />)
@@ -186,7 +186,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
                         spaced="right"
                         data-componentid={ `${componentId}-item-image` }
                     />
-                    <Header.Content>{ definition.name }</Header.Content>
+                    <Header.Content>{ definition.displayName }</Header.Content>
                 </Header>
             ),
             title: t("presentationDefinitions:list.columns.name")
@@ -222,7 +222,7 @@ export const PresentationDefinitionList: FunctionComponent<PresentationDefinitio
                                 data-componentid={ `${componentId}-empty-search-placeholder-clear-button` }
                                 onClick={ onSearchQueryClear }
                             >
-                                { t("common:clearSearch") }
+                                { t("presentationDefinitions:placeholders.emptySearch.action") }
                             </PrimaryButton>)
                         }
                         image={ getEmptyPlaceholderIllustrations().emptySearch }

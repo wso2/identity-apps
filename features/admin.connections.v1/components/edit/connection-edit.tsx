@@ -122,6 +122,10 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      * Connection setting section meta data.
      */
     connectionSettingsMetaData?: any;
+    /**
+     * When true, the Advanced tab is hidden for this connection.
+     */
+    hideAdvancedTab?: boolean;
 }
 
 /**
@@ -147,6 +151,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isAutomaticTabRedirectionEnabled,
         setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
+        hideAdvancedTab,
         ["data-testid"]: testId
     } = props;
 
@@ -503,6 +508,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             }
 
             if (
+                !hideAdvancedTab &&
                 shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
                 identityProviderConfig.editIdentityProvider.showAdvancedSettings
             ) {
@@ -614,6 +620,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
 
         if (
+            !hideAdvancedTab &&
             shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
             identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
             !isOrganizationEnterpriseAuthenticator &&

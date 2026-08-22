@@ -205,12 +205,24 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
             hideIdentityClaimAttributes={ false }
             isRoleMappingsEnabled={ true }
             data-testid={ `${ componentId }-attribute-settings` }
-            provisioningAttributesEnabled={ true }
+            provisioningAttributesEnabled={ false }
             isReadOnly={ isReadOnly }
             loader={ loader }
             isOIDC={ false }
             isSaml={ false }
             allowedMappedValues={ allowedMappedValues }
+            attributeMappingHeading={ t(
+                "authenticationProvider:templates.digitalWallet.claimMapping.heading"
+            ) }
+            attributeMappingSubheading={ t(
+                "authenticationProvider:templates.digitalWallet.claimMapping.subheading"
+            ) }
+            externalAttributeLabel={ t(
+                "authenticationProvider:templates.digitalWallet.claimMapping.pdClaimAttribute.label"
+            ) }
+            externalAttributeTooltip={ t(
+                "authenticationProvider:templates.digitalWallet.claimMapping.pdClaimAttribute.tooltip"
+            ) }
         />
     );
 };
