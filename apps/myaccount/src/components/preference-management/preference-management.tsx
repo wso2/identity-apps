@@ -40,6 +40,7 @@ import {
 import { AppState } from "../../store";
 import { ModalComponent, SettingsSection } from "../shared";
 import { PreferenceManagementList } from "./preference-management-list";
+import { EmptyConsentPlaceholder } from "../consents/empty-consent-placeholder";
 
 /**
  * Proptypes for the preference management component.
@@ -309,18 +310,23 @@ export const PreferenceManagement: FunctionComponent<PreferenceManagementCompone
     return (
         <>
             <SettingsSection
-                data-componentid={ `${componentId}-settings-section` }
-                description={ t("myAccount:sections.preferenceManagement.description") }
-                header={ t("myAccount:sections.preferenceManagement.heading") }
-                placeholder={
-                    !(consentItems && consentItems.length && consentItems.length > 0)
-                        ? t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading")
-                        : null
-                }
-                showActionBar={
-                    !(consentItems && consentItems.length && consentItems.length > 0)
-                }
-            >
+            data-componentid={ `${componentId}-settings-section` }
+            description={ t("myAccount:sections.preferenceManagement.description") }
+            header={ t("myAccount:sections.preferenceManagement.heading") }
+            showActionBar={
+                !(consentItems && consentItems.length && consentItems.length > 0)
+            }
+        >
+            { !(consentItems && consentItems.length && consentItems.length > 0) && (
+                <EmptyConsentPlaceholder
+                    data-componentid={ `${componentId}-empty-placeholder` }
+                    message={
+                        t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading")
+                    }
+                    linkText={ t("myAccount:sections.preferenceManagement.actionTitles.learnMore") }
+                    linkHref="https://wso2.com/identity-platform/docs/guides/consent-management/preference-management-consent/"
+                />
+            ) }
                 <PreferenceManagementList
                     data-componentid={ `${componentId}-list` }
                     items={ consentItems }

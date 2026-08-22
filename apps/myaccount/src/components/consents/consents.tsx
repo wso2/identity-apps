@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
+import { Link } from "react-router-dom";
 import {
     fetchAllPurposes,
     fetchConsentReceipt,
@@ -51,6 +52,7 @@ import {
 import { AppState } from "../../store";
 import { useEndUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
+import { EmptyConsentPlaceholder } from "../consents/empty-consent-placeholder";
 
 /**
  * Proptypes for the user sessions component.
@@ -782,29 +784,33 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     return (
         <>
             <SettingsSection
-                data-testid={ `${testId}-settings-section` }
-                description={ t("myAccount:sections.consentManagement.description") }
-                header={ t("myAccount:sections.consentManagement.heading") }
-                placeholder={
-                    !(consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? t("myAccount:sections.consentManagement.actionTitles.empty")
-                        : null
-                }
-                showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
-            >
-                <AppConsentList
-                    data-testid={ `${testId}-list` }
-                    consentedApps={ consentedApps }
-                    onClaimUpdate={ handleClaimUpdate }
-                    onAppConsentRevoke={ handleAppConsentRevoke }
-                    consentListActiveIndexes={ consentListActiveIndexes }
-                    onConsentDetailClick={ handleConsentDetailClick }
-                    onPIIClaimToggle={ piiClaimToggleHandler }
-                    deniedPIIClaimList={ deniedPIIClaimList }
-                    acceptedPIIClaimList={ acceptedPIIClaimList }
+            data-testid={ `${testId}-settings-section` }
+            description={ t("myAccount:sections.consentManagement.description") }
+            header={ t("myAccount:sections.consentManagement.heading") }
+            showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
+        >
+            { !(consentedApps && consentedApps.length && consentedApps.length > 0) && (
+                <EmptyConsentPlaceholder
+                    data-componentid={ `${testId}-empty-placeholder` }
+                    message={ t("myAccount:sections.consentManagement.actionTitles.empty") }
+                    linkText={ t("myAccount:sections.consentManagement.actionTitles.learnMore") }
+                    linkHref="https://wso2.com/identity-platform/docs/guides/consent-management/"
                 />
-                { revokingConsent && consentRevokeModal() }
-            </SettingsSection>
+            ) }
+
+    <AppConsentList
+        data-testid={ `${testId}-list` }
+        consentedApps={ consentedApps }
+        onClaimUpdate={ handleClaimUpdate }
+        onAppConsentRevoke={ handleAppConsentRevoke }
+        consentListActiveIndexes={ consentListActiveIndexes }
+        onConsentDetailClick={ handleConsentDetailClick }
+        onPIIClaimToggle={ piiClaimToggleHandler }
+        deniedPIIClaimList={ deniedPIIClaimList }
+        acceptedPIIClaimList={ acceptedPIIClaimList }
+    />
+    { revokingConsent && consentRevokeModal() }
+</SettingsSection>
         </>
     );
 };
