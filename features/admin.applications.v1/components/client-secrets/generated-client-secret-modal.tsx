@@ -36,6 +36,10 @@ interface GeneratedClientSecretModalPropsInterface extends IdentifiableComponent
      */
     secret: ClientSecretInterface;
     /**
+     * Client ID of the application, displayed alongside the generated secret.
+     */
+    clientId?: string;
+    /**
      * Callback fired when the modal is dismissed.
      */
     onClose: () => void;
@@ -54,6 +58,7 @@ const GeneratedClientSecretModal: FunctionComponent<GeneratedClientSecretModalPr
     const {
         open,
         secret,
+        clientId,
         onClose,
         [ "data-componentid" ]: componentId = "generated-client-secret-modal"
     } = props;
@@ -81,6 +86,18 @@ const GeneratedClientSecretModal: FunctionComponent<GeneratedClientSecretModalPr
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${ componentId }-content` }>
                 <Form>
+                    { clientId && (
+                        <Form.Field>
+                            <label>
+                                { t("applications:confirmations.clientSecretHashDisclaimer.forms." +
+                                    "clientIdSecretForm.clientId.label") }
+                            </label>
+                            <CopyInputField
+                                value={ clientId }
+                                data-componentid={ `${ componentId }-client-id` }
+                            />
+                        </Form.Field>
+                    ) }
                     <Form.Field>
                         <label>
                             { t("applications:confirmations.clientSecretHashDisclaimer.forms." +

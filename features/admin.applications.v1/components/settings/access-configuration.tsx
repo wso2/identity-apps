@@ -73,6 +73,7 @@ import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import CustomProtocolApplicationTemplate from
     "../../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -247,8 +248,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
-    const isMultipleClientSecretsEnabled: boolean = useSelector((state: AppState) =>
-        Boolean(state?.config?.ui?.features?.applications?.properties?.isMultipleClientSecretsEnabled));
+    const { maxSecretCount } = useClientSecretManagement();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -1040,11 +1040,20 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         const oidcConfig: OIDCDataInterface = inboundProtocolConfig?.[ SupportedAuthProtocolTypes.OIDC ];
 
         /*
-         * Public clients (SPAs, mobile apps) authenticate without a client secret, so there is
-         * nothing to revoke or regenerate for them. System and default applications are excluded
-         * as well, to mirror the client secrets listing.
+         * The multi-protocol layout renders every configured protocol at once, so OIDC just needs to
+         * be one of them; the single-protocol view shows only the selected protocol.
          */
-        if (!isMultipleClientSecretsEnabled
+        const isOIDCProtocolInView: boolean = inboundProtocolList.length > 1
+            ? inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
+            : [ SupportedAuthProtocolTypes.OIDC, SupportedAuthProtocolTypes.OAUTH2_OIDC ]
+                .includes(selectedProtocol as SupportedAuthProtocolTypes);
+
+        /*
+         * Hidden unless multiple secrets are enabled and OIDC is in view; also skipped for public
+         * clients, system/default applications, and revoked configurations.
+         */
+        if (!(maxSecretCount > 1)
+            || !isOIDCProtocolInView
             || isSystemApplication
             || isDefaultApplication
             || !oidcConfig?.clientId

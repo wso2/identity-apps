@@ -17,12 +17,23 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Popup } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Label, SemanticCOLORS } from "semantic-ui-react";
 import { ClientSecretExpiryState, resolveClientSecretExpiry } from "./client-secret-utils";
 import "./client-secret-status.scss";
 import { ClientSecretInterface } from "../../models/application-inbound";
+
+/**
+ * Status text class name of each expiry state.
+ */
+const STATE_CLASS_NAMES: Record<ClientSecretExpiryState, string> = {
+    [ ClientSecretExpiryState.ACTIVE ]: "client-secret-status-active",
+    [ ClientSecretExpiryState.NEVER ]: "client-secret-status-active",
+    [ ClientSecretExpiryState.EXPIRING ]: "client-secret-status-expiring",
+    [ ClientSecretExpiryState.EXPIRED ]: "client-secret-status-expired"
+};
 
 /**
  * Props for the client secret status line.
@@ -35,7 +46,7 @@ interface ClientSecretStatusPropsInterface extends IdentifiableComponentInterfac
 }
 
 /**
- * Renders the coloured status line of a client secret — e.g. "● Active : Expires on Sat, Sep 1 2026".
+ * Renders the expiry status of a client secret as coloured text; hovering reveals the exact date.
  *
  * @param props - Props injected to the component.
  * @returns Client secret status line.
@@ -51,51 +62,50 @@ const ClientSecretStatus: FunctionComponent<ClientSecretStatusPropsInterface> = 
 
     const { t } = useTranslation();
 
-    const { state, formattedDate } = resolveClientSecretExpiry(secret);
+    const { state, humanizedExpiry, formattedDate } = resolveClientSecretExpiry(secret);
 
-    const resolveLabel = (): string => {
-        switch (state) {
-            case ClientSecretExpiryState.EXPIRED:
-                return t("applications:clientSecrets.status.expired");
-            case ClientSecretExpiryState.EXPIRING_WARNING:
-            case ClientSecretExpiryState.EXPIRING_CRITICAL:
-                return t("applications:clientSecrets.status.expiresSoon");
-            default:
-                return t("applications:clientSecrets.status.active");
-        }
-    };
+    let statusMessage: string;
 
-    const resolveExpiryText = (): string => {
-        switch (state) {
-            case ClientSecretExpiryState.NEVER:
-                return t("applications:clientSecrets.expiry.neverExpires");
-            case ClientSecretExpiryState.EXPIRED:
-                return t("applications:clientSecrets.expiry.expiredOn", { date: formattedDate });
-            default:
-                return t("applications:clientSecrets.expiry.expiresOn", { date: formattedDate });
-        }
-    };
+    if (state === ClientSecretExpiryState.NEVER) {
+        statusMessage = t("applications:clientSecrets.expiry.neverExpires");
+    } else if (state === ClientSecretExpiryState.EXPIRED) {
+        statusMessage = humanizedExpiry
+            ? t("applications:clientSecrets.expiry.expiredAgo", { duration: humanizedExpiry })
+            : t("applications:clientSecrets.expiry.expired");
+    } else {
+        statusMessage = t("applications:clientSecrets.expiry.expiresIn", { duration: humanizedExpiry });
+    }
 
-    /* Colours match the connection status dot (LabelWithPopup) used across the console. */
-    const resolveColor = (): SemanticCOLORS => {
-        switch (state) {
-            case ClientSecretExpiryState.EXPIRED:
-                return "grey";
-            case ClientSecretExpiryState.EXPIRING_CRITICAL:
-                return "red";
-            case ClientSecretExpiryState.EXPIRING_WARNING:
-                return "yellow";
-            default:
-                return "green";
-        }
-    };
+    let tooltipMessage: string | null = null;
+
+    if (formattedDate) {
+        tooltipMessage = state === ClientSecretExpiryState.EXPIRED
+            ? t("applications:clientSecrets.expiry.expiredOn", { date: formattedDate })
+            : t("applications:clientSecrets.expiry.expiresOn", { date: formattedDate });
+    }
+
+    const statusElement: ReactElement = (
+        <span
+            className={ classNames("client-secret-status-text", STATE_CLASS_NAMES[ state ]) }
+            data-componentid={ `${ componentId }-text` }
+        >
+            { statusMessage }
+        </span>
+    );
 
     return (
         <div className="client-secret-status" data-componentid={ componentId }>
-            <Label circular empty size="mini" color={ resolveColor() } className="client-secret-status-dot" />
-            <span className="client-secret-status-text">
-                { `${ resolveLabel() } : ${ resolveExpiryText() }` }
-            </span>
+            { tooltipMessage
+                ? (
+                    <Popup
+                        trigger={ statusElement }
+                        content={ tooltipMessage }
+                        position="right center"
+                        size="mini"
+                        inverted
+                    />
+                )
+                : statusElement }
         </div>
     );
 };

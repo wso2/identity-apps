@@ -196,8 +196,9 @@ export const applications: ApplicationsNS = {
         confirmations: {
             deleteSecret: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this client secret, the application will no longer be able to " +
-                    "authenticate. However, active tokens and authorization codes will not be revoked.",
+                content: "If you delete this client secret, clients using it will no longer be able to " +
+                    "authenticate with it. Any other client secrets of the application remain valid, and " +
+                    "active tokens will not be revoked.",
                 header: "Are you sure?",
                 message: "This action is irreversible and permanently deletes the client secret. " +
                     "Please proceed with caution."
@@ -207,31 +208,36 @@ export const applications: ApplicationsNS = {
             revokeAll: {
                 actionTitle: "Revoke All",
                 confirmation: {
-                    assertionHint: "Please confirm your action.",
-                    content: "If you revoke all client secrets, all associated access tokens, refresh tokens, " +
-                        "and authorization codes will also be revoked, and active authentication flows will " +
-                        "fail. Please ensure you update your application with the new client secret.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and permanently revokes all the client secrets. " +
-                        "Please proceed with caution."
+                    assertionHint: "I understand this action is irreversible.",
+                    content: "Every tokens issued with the old secrets will also be revoked, and active " +
+                        "authentication flows will fail. Be sure to update your application with the " +
+                        "new client secret.",
+                    header: "Revoke all client secrets and generate a new one?",
+                    message: "This action is irreversible. All existing client secrets are permanently revoked " +
+                        "and replaced with a single new client secret."
                 },
-                header: "Revoke All Client Secrets",
-                subheader: "Once the existing secrets are revoked, they cannot be recovered. A new secret will " +
-                    "be generated, and authentication flows using the old secrets will no longer work."
+                header: "Revoke all & generate a new client secret",
+                subheader: "Permanently revokes every existing client secret and generates a single new one. " +
+                    "Authentication flows still using the old secrets will fail until you update your application."
             }
         },
         expiry: {
+            expired: "Expired",
+            expiredAgo: "Expired {{duration}} ago",
             expiredOn: "Expired on {{date}}",
+            expiresIn: "Expires in {{duration}}",
             expiresOn: "Expires on {{date}}",
             neverExpires: "Never expires"
         },
         expiryBanner: {
-            description: "One or more client secrets are expiring soon. Please rotate them to prevent " +
-                "authentication failures and application downtime.",
-            title: "Client Secrets Expiring Soon",
-            viewSecrets: "View secrets"
+            description: "At least one client secret is expiring soon. Rotate your secret to " +
+                "prevent authentication failures and application downtime.",
+            title: "Client Secret Expiring Soon",
+            viewSecrets: "View secret"
         },
         generateButton: "Generate New Secret",
+        hashedDisclaimer: "Client secret is hashed and cannot be viewed. If you need a new value, " +
+            "generate a new client secret.",
         hidePreviousSecret: "Hide Previous Client Secret",
         hidePreviousSecrets: "Hide Previous Client Secrets",
         maxCountReachedHint: "You have reached the maximum of {{count}} client secrets. Delete an existing " +
@@ -277,13 +283,9 @@ export const applications: ApplicationsNS = {
                 }
             }
         },
-        rotationInfo: "Use multiple secrets for seamless rotation. Generate a new secret, update your " +
-            "application, and delete the old one or allow it to expire.",
-        status: {
-            active: "Active",
-            expired: "Expired",
-            expiresSoon: "Expires Soon"
-        },
+        rotationWarning: "Multiple client secrets enable seamless rotation, but keeping old secrets " +
+            "active longer than necessary increases security exposure. Remove old secrets once rotation " +
+            "is complete.",
         viewPreviousSecret: "View Previous Client Secret",
         viewPreviousSecrets: "View Previous Client Secrets",
         wizard: {
@@ -360,7 +362,7 @@ export const applications: ApplicationsNS = {
                 assertionHint: "",
                 content: "",
                 header: "OAuth Application Credentials",
-                message: "The consumer secret value will be displayed in plain text only once. " +
+                message: "The client secret value will be displayed in plain text only once. " +
                     "Please make sure to copy and save it somewhere safe."
             }
         },

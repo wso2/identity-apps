@@ -19,17 +19,15 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { TAB_URL_HASH_FRAGMENT } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import useGetOAuthClientSecrets from "../../api/use-get-oauth-client-secrets";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import { ClientSecretListInterface } from "../../models/application-inbound";
-import { hasCriticallyExpiringSecret } from "../client-secrets/client-secret-utils";
+import { hasSecretsAboutToExpire } from "../client-secrets/client-secret-utils";
 
 /**
  * Props for the secret expiry banner component.
@@ -47,10 +45,18 @@ interface SecretExpiryBannerPropsInterface extends IdentifiableComponentInterfac
      * Whether the application is a public client (SPA/mobile), which has no client secret.
      */
     isPublicClient?: boolean;
+    /**
+     * Expiry of the latest client secret as Unix epoch seconds (0 when it does not expire).
+     */
+    latestClientSecretExpiresAt?: number;
+    /**
+     * Whether the application has more than one client secret configured.
+     */
+    multipleClientSecretsConfigured?: boolean;
 }
 
 /**
- * Banner that warns when a client secret is about to expire or has already expired.
+ * Banner that warns when a client secret is about to expire.
  *
  * @param props - Props injected to the component.
  * @returns Secret expiry banner or null when no secret needs attention.
@@ -63,34 +69,54 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
         appId,
         isOIDCApplication,
         isPublicClient,
+        latestClientSecretExpiresAt,
+        multipleClientSecretsConfigured,
         [ "data-componentid" ]: componentId = "secret-expiry-banner"
     } = props;
 
     const { t } = useTranslation();
 
-    const isMultipleClientSecretsEnabled: boolean = useSelector((state: AppState) =>
-        Boolean(state?.config?.ui?.features?.applications?.properties?.isMultipleClientSecretsEnabled));
-    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications);
-
-    const hasClientSecretViewPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read ?? []);
+    const {
+        hasClientSecretReadPermission,
+        isEnforceClientSecretPermissionEnabled,
+        maxSecretCount
+    } = useClientSecretManagement();
 
     /*
-     * The banner only applies when multiple client secrets is enabled, so the GET /secrets view scope
-     * is always required (the skip-enforce flag governs only the legacy single-secret path).
+     * The latest secret's expiry is known from the loaded OIDC configuration regardless of the secret
+     * capacity, so the banner applies to single-secret deployments as well. Its visibility mirrors the
+     * protocol tab's latest secret display gate.
      */
-    const shouldFetch: boolean = isMultipleClientSecretsEnabled && isOIDCApplication && !isPublicClient
-        && hasClientSecretViewPermission && !!appId;
+    const isBannerApplicable: boolean = Boolean(
+        isOIDCApplication &&
+        !isPublicClient &&
+        appId &&
+        (!isEnforceClientSecretPermissionEnabled || hasClientSecretReadPermission)
+    );
+
+    const isLatestSecretAboutToExpire: boolean = isBannerApplicable && hasSecretsAboutToExpire([
+        { expiresAt: latestClientSecretExpiresAt }
+    ]);
+
+    const shouldFetch: boolean = isBannerApplicable
+        && (maxSecretCount > 1 && hasClientSecretReadPermission)
+        && Boolean(multipleClientSecretsConfigured)
+        && !isLatestSecretAboutToExpire;
 
     const { data: clientSecretList } = useGetOAuthClientSecrets<ClientSecretListInterface>(appId, shouldFetch);
 
-    if (!shouldFetch) {
+    const handleViewSecrets: () => void = useCallback((): void => {
+        window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
+    }, []);
+
+    if (!isBannerApplicable) {
         return null;
     }
 
-    /* Show a single generic banner when at least one secret is within the critical expiry window. */
-    if (!hasCriticallyExpiringSecret(clientSecretList?.list ?? [])) {
+    const isPreviousSecretAboutToExpire: boolean =
+        !isLatestSecretAboutToExpire && hasSecretsAboutToExpire(clientSecretList?.list ?? []);
+
+    if (!isLatestSecretAboutToExpire && !isPreviousSecretAboutToExpire) {
         return null;
     }
 
@@ -101,9 +127,7 @@ const SecretExpiryBanner: FunctionComponent<SecretExpiryBannerPropsInterface> = 
             action={ (
                 <Button
                     className="banner-view-hide-details"
-                    onClick={ (): void => {
-                        window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
-                    } }
+                    onClick={ handleViewSecrets }
                     data-componentid={ `${ componentId }-view-secrets-button` }
                 >
                     { t("applications:clientSecrets.expiryBanner.viewSecrets") }

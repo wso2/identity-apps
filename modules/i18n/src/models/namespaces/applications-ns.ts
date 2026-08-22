@@ -171,21 +171,20 @@ export interface ApplicationsNS {
         placeholder: string;
     };
     clientSecrets: {
-        rotationInfo: string;
+        rotationWarning: string;
         generateButton: string;
+        hashedDisclaimer: string;
         viewPreviousSecret: string;
         viewPreviousSecrets: string;
         hidePreviousSecret: string;
         hidePreviousSecrets: string;
         maxCountReachedHint: string;
-        status: {
-            active: string;
-            expiresSoon: string;
-            expired: string;
-        };
         expiry: {
-            expiresOn: string;
+            expired: string;
+            expiredAgo: string;
             expiredOn: string;
+            expiresIn: string;
+            expiresOn: string;
             neverExpires: string;
         };
         confirmations: {

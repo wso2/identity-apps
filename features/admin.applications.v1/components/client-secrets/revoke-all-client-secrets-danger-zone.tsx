@@ -16,19 +16,12 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import {
-    ApplicationFeatureDictionaryKeys,
-    ApplicationManagementConstants
-} from "../../constants/application-management";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 
 /**
  * Props for the revoke all client secrets danger zone component.
@@ -62,27 +55,15 @@ const RevokeAllClientSecretsDangerZone: FunctionComponent<RevokeAllClientSecrets
 
     const { t } = useTranslation();
 
-    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications);
-
-    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
-        applicationFeatureConfig,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission) ?? ""
-    );
-    /* Regenerating a secret maps to the update level of the client secret management resource. */
-    const hasClientSecretRegeneratePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.update ?? []);
+    const { isEnforceClientSecretPermissionEnabled, hasClientSecretCreatePermission } = useClientSecretManagement();
 
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
 
     /*
-     * Mirrors the pre-feature regenerate gate: the app must be editable, and when client secret
-     * permission enforcement is on, the dedicated regenerate scope is additionally required. With
-     * enforcement off, the regenerate-secret endpoint falls back to broad application management,
-     * which the readOnly gate already covers.
+     * The regenerate-secret endpoint reuses the create scope when permission enforcement is on;
+     * with enforcement off it only needs application update access, which readOnly covers.
      */
-    if (readOnly || (isEnforceClientSecretPermissionEnabled && !hasClientSecretRegeneratePermission)) {
+    if (readOnly || (isEnforceClientSecretPermissionEnabled && !hasClientSecretCreatePermission)) {
         return null;
     }
 

@@ -1098,12 +1098,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             } }
             alertBanner={ (
                 <>
-                    <SecretExpiryBanner
-                        appId={ applicationId }
-                        isOIDCApplication={ inboundProtocolList?.includes(SupportedAuthProtocolTypes.OIDC) }
-                        isPublicClient={ applicationInboundConfigs?.publicClient }
-                        data-componentid={ `${ componentId }-secret-expiry-banner` }
-                    />
+                    { applicationInboundConfigs && (
+                        <SecretExpiryBanner
+                            appId={ applicationId }
+                            isOIDCApplication={ inboundProtocolList?.includes(SupportedAuthProtocolTypes.OIDC) }
+                            isPublicClient={ applicationInboundConfigs.publicClient }
+                            latestClientSecretExpiresAt={ applicationInboundConfigs.clientSecretExpiresAt }
+                            multipleClientSecretsConfigured={
+                                applicationInboundConfigs.multipleClientSecretsConfigured
+                            }
+                            data-componentid={ `${ componentId }-secret-expiry-banner` }
+                        />
+                    ) }
                     { resolveAlertBanner() }
                 </>
             ) }

@@ -589,7 +589,6 @@
                 ],
                 "enabled": true,
                 "properties": {
-                    "isMultipleClientSecretsEnabled": true,
                     "maxGracefulRefreshTokenReuseLimit": 5,
                     "maxGracefulRefreshTokenRotationValidityPeriod": 60,
                     "multipleClientSecretsMaxCount": 2
@@ -668,8 +667,7 @@
                             "create": [ "internal_application_mgt_client_secret_create" ],
                             "delete": [ "internal_application_mgt_client_secret_delete" ],
                             "feature": [],
-                            "read": [ "internal_application_mgt_client_secret_view" ],
-                            "update": [ "internal_application_mgt_client_secret_regenerate" ]
+                            "read": [ "internal_application_mgt_client_secret_view" ]
                         }
                     },
                     "applicationInternalAPIAuthorization": {

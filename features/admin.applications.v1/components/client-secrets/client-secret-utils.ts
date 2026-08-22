@@ -16,94 +16,93 @@
  * under the License.
  */
 
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { ClientSecretInterface, ClientSecretStatus } from "../../models/application-inbound";
 
+dayjs.extend(relativeTime);
+
 /**
- * Expiry thresholds (in days) used to classify how soon a client secret expires. Hardcoded in the
- * console (not deployment configurable).
+ * Number of days before expiry at which a client secret is considered about to expire. Hardcoded in
+ * the console (not deployment configurable).
  */
-const EXPIRY_WARNING_DAYS: number = 20;
-const EXPIRY_CRITICAL_DAYS: number = 10;
-
-const MILLISECONDS_PER_DAY: number = 24 * 60 * 60 * 1000;
+const EXPIRY_THRESHOLD_DAYS: number = 14;
 
 /**
- * Expiry state of a client secret, mapped to the status dot colour.
+ * Expiry state of a client secret.
  */
 export enum ClientSecretExpiryState {
-    /** Green — not expiring anytime soon. */
+    // Not expiring anytime soon.
     ACTIVE = "active",
-    /** Green — never expires. */
+    // Never expires.
     NEVER = "never",
-    /** Yellow — expiring within the warning window. */
-    EXPIRING_WARNING = "expiringWarning",
-    /** Red — expiring within the critical window. */
-    EXPIRING_CRITICAL = "expiringCritical",
-    /** Grey — already expired. */
+    // Within the expiry threshold window; also drives the expiry banner.
+    EXPIRING = "expiring",
+    // Already expired.
     EXPIRED = "expired"
 }
 
 /**
- * Resolves the expiry state and a human-readable expiry date of a client secret.
+ * Resolves the expiry state, humanized expiry duration, and exact expiry date of a client secret.
  *
  * @param secret - Client secret metadata.
  * @param referenceTime - Epoch milliseconds to evaluate the expiry against.
- * @returns Resolved expiry details.
+ * @returns Resolved expiry details. `humanizedExpiry` is the duration to/from expiry without a suffix
+ * (e.g. "20 days", "a month"); both it and `formattedDate` are null when there is no expiry timestamp.
  */
 export const resolveClientSecretExpiry = (
     secret: ClientSecretInterface,
     referenceTime: number = Date.now()
-): { state: ClientSecretExpiryState; formattedDate: string | null } => {
+): { state: ClientSecretExpiryState; humanizedExpiry: string | null; formattedDate: string | null } => {
 
-    const formatDate = (epochSeconds: number): string => dayjs.unix(epochSeconds).format("ddd, MMM D, YYYY");
+    const expiresAt: number | undefined = secret?.expiresAt;
 
-    if (secret?.status === ClientSecretStatus.EXPIRED) {
-        return {
-            formattedDate: secret?.expiresAt ? formatDate(secret.expiresAt) : null,
-            state: ClientSecretExpiryState.EXPIRED
-        };
-    }
-
-    if (!secret?.expiresAt) {
+    if (!expiresAt) {
+        /* No expiry timestamp: trust an API-stamped EXPIRED status; otherwise the secret never expires. */
         return {
             formattedDate: null,
-            state: ClientSecretExpiryState.NEVER
+            humanizedExpiry: null,
+            state: secret?.status === ClientSecretStatus.EXPIRED
+                ? ClientSecretExpiryState.EXPIRED
+                : ClientSecretExpiryState.NEVER
         };
     }
 
-    const daysRemaining: number = Math.ceil((secret.expiresAt * 1000 - referenceTime) / MILLISECONDS_PER_DAY);
-    const formattedDate: string = formatDate(secret.expiresAt);
+    const expiryDate: Dayjs = dayjs.unix(expiresAt);
+    const refDate: Dayjs = dayjs(referenceTime);
 
-    /* The secret is active here (EXPIRED is trusted from the API above); classify how soon it expires. */
-    let state: ClientSecretExpiryState;
+    const formattedDate: string = expiryDate.format("ddd, MMM D, YYYY");
+    const humanizedExpiry: string = expiryDate.from(refDate, true);
 
-    if (daysRemaining <= EXPIRY_CRITICAL_DAYS) {
-        state = ClientSecretExpiryState.EXPIRING_CRITICAL;
-    } else if (daysRemaining <= EXPIRY_WARNING_DAYS) {
-        state = ClientSecretExpiryState.EXPIRING_WARNING;
-    } else {
-        state = ClientSecretExpiryState.ACTIVE;
+    /*
+     * A secret is expired when the API says so, or when its expiry timestamp is already in the past —
+     * the latest secret is built from the OIDC configuration without an API status.
+     */
+    if (secret?.status === ClientSecretStatus.EXPIRED || expiresAt * 1000 <= referenceTime) {
+        return { formattedDate, humanizedExpiry, state: ClientSecretExpiryState.EXPIRED };
     }
 
-    return { formattedDate, state };
+    const daysRemaining: number = expiryDate.diff(refDate, "day");
+    const state: ClientSecretExpiryState = daysRemaining <= EXPIRY_THRESHOLD_DAYS
+        ? ClientSecretExpiryState.EXPIRING
+        : ClientSecretExpiryState.ACTIVE;
+
+    return { formattedDate, humanizedExpiry, state };
 };
 
 /**
- * Whether at least one active client secret is within the critical expiry window.
+ * Whether at least one client secret is about to expire.
  *
  * @param secrets - List of client secrets.
  * @param referenceTime - Epoch milliseconds to evaluate the expiry against.
- * @returns True when any active secret is critically close to expiry.
+ * @returns True when any secret is within the expiry threshold window.
  */
-export const hasCriticallyExpiringSecret = (
+export const hasSecretsAboutToExpire = (
     secrets: ClientSecretInterface[],
     referenceTime: number = Date.now()
 ): boolean => {
 
-    /* Consider active secrets only; stop at the first one in the critical window. */
-    return (secrets ?? [])
-        .filter((secret: ClientSecretInterface) => secret?.status === ClientSecretStatus.ACTIVE)
-        .some((secret: ClientSecretInterface) =>
-            resolveClientSecretExpiry(secret, referenceTime).state === ClientSecretExpiryState.EXPIRING_CRITICAL);
+    return (secrets ?? []).some((secret: ClientSecretInterface) =>
+        resolveClientSecretExpiry(secret, referenceTime).state === ClientSecretExpiryState.EXPIRING
+    );
 };

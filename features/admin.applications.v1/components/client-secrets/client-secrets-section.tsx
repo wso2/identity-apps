@@ -17,11 +17,10 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LinkButton, Popup } from "@wso2is/react-components";
+import { LinkButton, Message, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,6 +35,7 @@ import GeneratedClientSecretModal from "./generated-client-secret-modal";
 import PreviousClientSecrets from "./previous-client-secrets";
 import { deleteClientSecretById } from "../../api/application";
 import useGetOAuthClientSecrets from "../../api/use-get-oauth-client-secrets";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import { ClientSecretInterface, ClientSecretStatus } from "../../models/application-inbound";
 
 /**
@@ -46,6 +46,10 @@ interface ClientSecretsSectionPropsInterface extends IdentifiableComponentInterf
      * ID of the application.
      */
     appId: string;
+    /**
+     * Client ID of the application.
+     */
+    clientId?: string;
     /**
      * Value of the current (latest) client secret, from the OIDC configuration.
      */
@@ -86,6 +90,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
 
     const {
         appId,
+        clientId,
         clientSecret,
         clientSecretExpiresAt,
         multipleClientSecretsConfigured,
@@ -98,12 +103,8 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const maxCount: number = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications?.properties?.multipleClientSecretsMaxCount as number);
     const isClientSecretHashEnabled: boolean = useSelector(
         (state: AppState) => state.config.ui.isClientSecretHashEnabled);
-    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications);
 
     const [ showPreviousSecrets, setShowPreviousSecrets ] = useState<boolean>(false);
     const [ showGenerateModal, setShowGenerateModal ] = useState<boolean>(false);
@@ -111,29 +112,28 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
     const [ secretToDelete, setSecretToDelete ] = useState<ClientSecretInterface | null>(null);
 
     /*
-     * Generating and deleting secrets are both disabled while the app is read-only (view mode). When
-     * editable, each is gated on its own dedicated client secret scope, which the /secrets endpoints
-     * always enforce (the skip-enforce flag applies only to the legacy single-secret path).
+     * The /secrets endpoints always enforce their dedicated scopes (skip-enforce covers only the
+     * application OIDC protocol GET); generating/deleting also require the app to be editable.
      */
-    const hasGeneratePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create ?? []);
-    const hasDeletePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.delete ?? []);
-    const canGenerate: boolean = !readOnly && hasGeneratePermission;
-    const canDelete: boolean = !readOnly && hasDeletePermission;
+    const {
+        hasClientSecretReadPermission,
+        hasClientSecretCreatePermission,
+        hasClientSecretDeletePermission,
+        maxSecretCount: maxCount
+    } = useClientSecretManagement();
+    const canGenerate: boolean = !readOnly && hasClientSecretCreatePermission;
+    const canDelete: boolean = !readOnly && hasClientSecretDeletePermission;
 
     /*
-     * The list is fetched up front only for users who can generate, since they are the ones who need
-     * the total count to know whether the limit is reached (which disables the button). Other viewers
-     * fetch lazily when they expand the previous secrets dropdown. Either way the dropdown is a pure
-     * show/hide toggle over this same data.
+     * Fetched eagerly only for generate-capable users, who need the count for the limit check;
+     * others fetch lazily when expanding the previous secrets dropdown.
      */
     const {
         data: clientSecretList,
         isLoading: isClientSecretListLoading,
         error: clientSecretListError,
         mutate: mutateClientSecretList
-    } = useGetOAuthClientSecrets(appId, canGenerate || showPreviousSecrets);
+    } = useGetOAuthClientSecrets(appId, hasClientSecretReadPermission && (canGenerate || showPreviousSecrets));
 
     useEffect(() => {
         if (!clientSecretListError) {
@@ -158,27 +158,20 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
         .filter((secret: ClientSecretInterface) => !secret?.latest);
 
     /*
-     * The previous secrets dropdown is shown when the app has previous secrets. Before the list is
-     * fetched we rely on the OIDC config flag; once fetched, the list is the source of truth, so
-     * deleting the last previous secret removes the dropdown.
+     * Before the list is fetched, the OIDC config flag decides whether previous secrets exist;
+     * once fetched, the list is the source of truth.
      */
     const hasPreviousSecrets: boolean = clientSecretList
         ? previousSecrets.length > 0
         : Boolean(multipleClientSecretsConfigured);
 
     /*
-     * Proactively block generation once the app is at the secret limit. This is knowable only after
-     * the list resolves; while it is unknown (still loading, or the fetch failed) the button stays
-     * enabled and the create endpoint's 409 is the authoritative backstop, surfaced as a notification.
+     * Knowable only after the list resolves; until then the button stays enabled and the create
+     * endpoint's 409 is the authoritative backstop.
      */
     const isMaxCountReached: boolean = Boolean(clientSecretList)
         && maxCount !== undefined
         && (clientSecretList?.list?.length ?? 0) >= maxCount;
-
-    const resolveErrorDescription = (
-        error: AxiosError<HttpErrorResponseDataInterface>,
-        fallback: string
-    ): string => error?.response?.data?.description ?? fallback;
 
     const handleGenerated = (secret: ClientSecretInterface): void => {
         dispatch(addAlert({
@@ -187,11 +180,18 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
             message: t("applications:clientSecrets.notifications.generateSecret.success.message")
         }));
         setShowGenerateModal(false);
-        /* Surface the plaintext value only when hashing hides it from the secret cards. */
+        mutateClientSecretList();
+
+        /*
+         * With hashing enabled, the parent refresh is deferred until the reveal modal is dismissed —
+         * refreshing would unmount the modal before the user sees the one-time value.
+         */
         if (isClientSecretHashEnabled) {
             setGeneratedSecret(secret);
+
+            return;
         }
-        mutateClientSecretList();
+
         onUpdate(appId);
     };
 
@@ -212,10 +212,8 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
-                    description: resolveErrorDescription(
-                        error,
-                        t("applications:clientSecrets.notifications.deleteSecret.genericError.description")
-                    ),
+                    description: error?.response?.data?.description
+                        ?? t("applications:clientSecrets.notifications.deleteSecret.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("applications:clientSecrets.notifications.deleteSecret.genericError.message")
                 }));
@@ -223,27 +221,24 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
             });
     };
 
-    /*
-     * Pluralize the toggle by how many previous secrets the app can hold (the max total minus the
-     * current secret), which is known from configuration up front — unlike the actual count, which is
-     * unavailable until the list is fetched (e.g. before a viewer without generate access expands it).
-     */
-    const resolvePreviousSecretsToggleLabel = (): string => {
-        const maxPreviousSecrets: number = maxCount - 1;
-
-        if (showPreviousSecrets) {
-            return maxPreviousSecrets === 1
-                ? t("applications:clientSecrets.hidePreviousSecret")
-                : t("applications:clientSecrets.hidePreviousSecrets");
-        }
-
-        return maxPreviousSecrets === 1
-            ? t("applications:clientSecrets.viewPreviousSecret")
-            : t("applications:clientSecrets.viewPreviousSecrets");
-    };
+    const hasSinglePreviousSecret: boolean = maxCount - 1 === 1;
+    const previousSecretsToggleLabel: string = showPreviousSecrets
+        ? t(hasSinglePreviousSecret
+            ? "applications:clientSecrets.hidePreviousSecret"
+            : "applications:clientSecrets.hidePreviousSecrets")
+        : t(hasSinglePreviousSecret
+            ? "applications:clientSecrets.viewPreviousSecret"
+            : "applications:clientSecrets.viewPreviousSecrets");
 
     return (
         <div className="client-secrets-section" data-componentid={ componentId }>
+            { hideSecretValue && (
+                <Message
+                    type="info"
+                    content={ t("applications:clientSecrets.hashedDisclaimer") }
+                    data-componentid={ `${ componentId }-hashed-disclaimer` }
+                />
+            ) }
             <ClientSecretRow
                 secret={ currentSecret }
                 hideSecretValue={ hideSecretValue }
@@ -271,8 +266,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                 ) }
                 data-componentid={ `${ componentId }-current` }
             />
-            { /* The previous secrets dropdown appears only while the app has previous secrets. */ }
-            { hasPreviousSecrets && (
+            { hasClientSecretReadPermission && hasPreviousSecrets && (
                 <>
                     <LinkButton
                         type="button"
@@ -281,7 +275,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                         data-componentid={ `${ componentId }-toggle` }
                     >
                         <Icon name={ showPreviousSecrets ? "chevron up" : "chevron down" } />
-                        { resolvePreviousSecretsToggleLabel() }
+                        { previousSecretsToggleLabel }
                     </LinkButton>
                     { showPreviousSecrets && (
                         <PreviousClientSecrets
@@ -301,7 +295,7 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                     appId={ appId }
                     maxCount={ maxCount }
                     onGenerated={ handleGenerated }
-                    onCancel={ (): void => setShowGenerateModal(false) }
+                    onClose={ (): void => setShowGenerateModal(false) }
                     data-componentid={ `${ componentId }-generate-modal` }
                 />
             ) }
@@ -318,7 +312,11 @@ const ClientSecretsSection: FunctionComponent<ClientSecretsSectionPropsInterface
                 <GeneratedClientSecretModal
                     open={ Boolean(generatedSecret) }
                     secret={ generatedSecret }
-                    onClose={ (): void => setGeneratedSecret(null) }
+                    clientId={ clientId }
+                    onClose={ (): void => {
+                        setGeneratedSecret(null);
+                        onUpdate(appId);
+                    } }
                     data-componentid={ `${ componentId }-generated-modal` }
                 />
             ) }

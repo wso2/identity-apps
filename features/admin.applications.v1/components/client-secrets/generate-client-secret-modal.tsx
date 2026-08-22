@@ -17,19 +17,22 @@
  */
 
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/forms";
-import { Heading, LinkButton, Message, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { addAlert } from "@wso2is/core/store";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
+import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { createClientSecret } from "../../api/application";
 import { ClientSecretExpirationOption, ClientSecretInterface } from "../../models/application-inbound";
 
 const FORM_ID: string = "generate-client-secret-form";
-const SECONDS_PER_DAY: number = 24 * 60 * 60;
 const CUSTOM_EXPIRY_MIN_DAYS: number = 1;
-const CUSTOM_EXPIRY_MAX_DAYS: number = 3650;
+const CUSTOM_EXPIRY_MAX_DAYS: number = 9999;
 
 /**
  * Shape of the generate client secret form values.
@@ -60,10 +63,27 @@ interface GenerateClientSecretModalPropsInterface extends IdentifiableComponentI
      */
     onGenerated: (secret: ClientSecretInterface) => void;
     /**
-     * Callback fired when the modal is dismissed.
+     * Callback fired when the modal is closed.
      */
-    onCancel: () => void;
+    onClose: () => void;
 }
+
+/**
+ * Resolves the absolute expiry of the selected expiration option in epoch seconds.
+ *
+ * @param values - Submitted form values.
+ * @returns Expiry as epoch seconds, or undefined for a non-expiring secret.
+ */
+const resolveExpiresAt = (values: GenerateClientSecretFormValues): number | undefined => {
+    switch (values.expiration) {
+        case ClientSecretExpirationOption.NO_EXPIRATION:
+            return undefined;
+        case ClientSecretExpirationOption.CUSTOM:
+            return dayjs().add(Number(values.customExpiryDays), "day").unix();
+        default:
+            return dayjs().add(Number(values.expiration), "day").unix();
+    }
+};
 
 /**
  * Modal to generate a new OAuth2/OIDC client secret.
@@ -80,15 +100,14 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
         appId,
         maxCount,
         onGenerated,
-        onCancel,
+        onClose,
         [ "data-componentid" ]: componentId = "generate-client-secret-modal"
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-    const formRef: React.MutableRefObject<any> = useRef(null);
+    const formRef: React.MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const [ selectedExpiration, setSelectedExpiration ] = useState<ClientSecretExpirationOption>(
         ClientSecretExpirationOption.THIRTY_DAYS
@@ -128,19 +147,6 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
         }
     ];
 
-    const resolveExpiresAt = (values: GenerateClientSecretFormValues): number | undefined => {
-        const nowInSeconds: number = Math.floor(Date.now() / 1000);
-
-        switch (values.expiration) {
-            case ClientSecretExpirationOption.NO_EXPIRATION:
-                return undefined;
-            case ClientSecretExpirationOption.CUSTOM:
-                return nowInSeconds + Number(values.customExpiryDays) * SECONDS_PER_DAY;
-            default:
-                return nowInSeconds + Number(values.expiration) * SECONDS_PER_DAY;
-        }
-    };
-
     const handleSubmit = (values: GenerateClientSecretFormValues): void => {
         setIsSubmitting(true);
 
@@ -149,31 +155,34 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
                 onGenerated(response.data);
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                onClose();
+
                 if (error?.response?.status === 409) {
-                    setAlert({
+                    dispatch(addAlert({
                         description: t("applications:clientSecrets.maxCountReachedHint", { count: maxCount }),
                         level: AlertLevels.ERROR,
-                        message: null
-                    });
+                        message: t("applications:clientSecrets.notifications.generateSecret.error.message")
+                    }));
 
                     return;
                 }
 
                 if (error?.response?.data?.description) {
-                    setAlert({
+                    dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("applications:clientSecrets.notifications.generateSecret.error.message")
-                    });
+                    }));
 
                     return;
                 }
 
-                setAlert({
-                    description: t("applications:clientSecrets.notifications.generateSecret.genericError.description"),
+                dispatch(addAlert({
+                    description:
+                        t("applications:clientSecrets.notifications.generateSecret.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("applications:clientSecrets.notifications.generateSecret.genericError.message")
-                });
+                }));
             })
             .finally(() => setIsSubmitting(false));
     };
@@ -194,7 +203,7 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
             if (!values.customExpiryDays) {
                 errors.customExpiryDays =
                     t("applications:clientSecrets.wizard.customExpiry.validations.required");
-            } else if (isNaN(days) || days < CUSTOM_EXPIRY_MIN_DAYS || days > CUSTOM_EXPIRY_MAX_DAYS) {
+            } else if (!Number.isInteger(days) || days < CUSTOM_EXPIRY_MIN_DAYS || days > CUSTOM_EXPIRY_MAX_DAYS) {
                 errors.customExpiryDays =
                     t("applications:clientSecrets.wizard.customExpiry.validations.invalid");
             }
@@ -209,7 +218,7 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
             dimmer="blurring"
             size="small"
             open={ open }
-            onClose={ onCancel }
+            onClose={ onClose }
             onKeyPress={ (event: React.KeyboardEvent) => {
                 if (event.key === "Enter" && open) {
                     formRef?.current?.triggerSubmit();
@@ -224,7 +233,6 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container">
-                { alert && alertComponent }
                 <Form
                     id={ FORM_ID }
                     ref={ formRef }
@@ -240,7 +248,7 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
                         ariaLabel={ t("applications:clientSecrets.wizard.expiration.label") }
                         options={ expirationOptions }
                         value={ selectedExpiration }
-                        listen={ (value: ClientSecretExpirationOption) => setSelectedExpiration(value) }
+                        listen={ setSelectedExpiration }
                         data-componentid={ `${ componentId }-expiration` }
                     />
                     { selectedExpiration === ClientSecretExpirationOption.CUSTOM && (
@@ -271,7 +279,7 @@ const GenerateClientSecretModal: FunctionComponent<GenerateClientSecretModalProp
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
                                 floated="left"
-                                onClick={ onCancel }
+                                onClick={ onClose }
                                 data-componentid={ `${ componentId }-cancel-button` }
                             >
                                 { t("common:cancel") }

@@ -85,13 +85,12 @@ const PreviousClientSecrets: FunctionComponent<PreviousClientSecretsPropsInterfa
 
     return (
         <div className="previous-client-secrets" data-componentid={ componentId }>
-            { /* The rotation hint guides generating/deleting secrets, so hide it in read-only mode. */ }
             { !readOnly && (
                 <div className="previous-client-secrets-info">
                     <Message
-                        type="info"
-                        content={ t("applications:clientSecrets.rotationInfo") }
-                        data-componentid={ `${ componentId }-info` }
+                        type="warning"
+                        content={ t("applications:clientSecrets.rotationWarning") }
+                        data-componentid={ `${ componentId }-warning` }
                     />
                 </div>
             ) }
