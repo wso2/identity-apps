@@ -150,11 +150,9 @@ export class SharedUserStoreUtils {
         // Repetitive character check.
         if(passwordConfig.consecutiveCharacterValidatorEnabled &&
             inputValue.match(consecutiveChrPattern)) {
-            const long: string = inputValue.match(consecutiveChrPattern).sort(
-                function(a: string, b: string) {
-                    return b.length - a.length;
-                }
-            ) [0];
+            const long: string = inputValue.match(consecutiveChrPattern).reduce(
+                (a: string, b: string) => (a.length >= b.length ? a : b)
+            );
 
             if (long.length > Number(passwordConfig.maxConsecutiveCharacters)) {
                 return false;
