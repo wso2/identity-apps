@@ -82,11 +82,11 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
 
     const open: boolean = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleMoreMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = (): void => {
+    const handleMoreMenuClose = (): void => {
         setAnchorEl(null);
     };
 
@@ -185,7 +185,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
                                 aria-controls={ open ? "more-menu" : undefined }
                                 aria-expanded={ open ? "true" : undefined }
                                 aria-haspopup="true"
-                                onClick={ handleClick }
+                                onClick={ handleMoreMenuOpen }
                             >
                                 <EllipsisVerticalIcon />
                             </IconButton>
@@ -197,7 +197,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
                             } }
                             anchorEl={ anchorEl }
                             open={ open }
-                            onClose={ handleClose }
+                            onClose={ handleMoreMenuClose }
                             className="tenant-card-footer-dropdown"
                         >
                             <MenuItem

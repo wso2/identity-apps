@@ -110,17 +110,17 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
     const [ isRestoring, setIsRestoring ] = useState<boolean>(false);
     const open: boolean = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = (): void => {
+    const handleMenuClose = (): void => {
         setAnchorEl(null);
     };
 
     const handleRestoreClick = (): void => {
-        handleClose();
+        handleMenuClose();
         setShowRestoreDialog(true);
     };
 
@@ -292,7 +292,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                                 }` : undefined }
                                                 aria-expanded={ open ? "true" : undefined }
                                                 aria-haspopup="true"
-                                                onClick={ handleClick }
+                                                onClick={ handleMenuOpen }
                                                 size="small"
                                                 sx={ {
                                                     "&:hover": {
@@ -312,7 +312,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                             } }
                                             anchorEl={ anchorEl }
                                             open={ open }
-                                            onClose={ handleClose }
+                                            onClose={ handleMenuClose }
                                             className="version-history-dropdown"
                                         >
                                             { menuActions.map((action: MenuActionInterface) => (

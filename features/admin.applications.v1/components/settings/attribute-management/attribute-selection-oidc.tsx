@@ -412,7 +412,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      *
      * @param event - Change event.
      */
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const changeValue: string = event.target.value;
 
         setSearchValue(changeValue);
@@ -781,7 +781,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                     <Input
                                                         icon={ <Icon name="search" /> }
                                                         iconPosition="left"
-                                                        onChange={ handleChange }
+                                                        onChange={ handleSearchInputChange }
                                                         placeholder={
                                                             t("applications:edit" +
                                                                     ".sections.attributes.selection.mappingTable" +

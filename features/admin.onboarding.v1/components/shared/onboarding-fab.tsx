@@ -124,7 +124,7 @@ const OnboardingFab: FunctionComponent<OnboardingFabPropsInterface> = (
 
     const { isVisible } = useOnboardingFabVisibility();
 
-    const handleClick: () => void = useCallback((): void => {
+    const handleNavigateToOnboarding: () => void = useCallback((): void => {
         history.push(`${AppConstants.getPaths().get("ONBOARDING")}?source=fab`);
     }, []);
 
@@ -137,7 +137,7 @@ const OnboardingFab: FunctionComponent<OnboardingFabPropsInterface> = (
             aria-label="Setup Guide"
             color="primary"
             data-componentid={ componentId }
-            onClick={ handleClick }
+            onClick={ handleNavigateToOnboarding }
             variant="extended"
         >
             <Rocket fill="white" height={ 24 } width={ 24 } />

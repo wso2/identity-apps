@@ -55,11 +55,11 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
     const open: boolean = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
+    const handleDropdownOpen = (event: React.MouseEvent<HTMLElement>): void => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = (): void => {
+    const handleDropdownClose = (): void => {
         setAnchorEl(null);
     };
 
@@ -78,7 +78,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
                 aria-controls={ open ? "consent-version-menu" : undefined }
                 aria-haspopup="true"
                 aria-expanded={ open ? "true" : undefined }
-                onClick={ handleClick }
+                onClick={ handleDropdownOpen }
                 variant="text"
                 endIcon={ <ChevronDownIcon /> }
             >
@@ -88,7 +88,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
                 id="consent-version-menu"
                 anchorEl={ anchorEl }
                 open={ open }
-                onClose={ handleClose }
+                onClose={ handleDropdownClose }
                 anchorOrigin={ {
                     vertical: "top",
                     horizontal: "right"
@@ -106,7 +106,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
                                 selected={ version.version === currentVersion }
                                 onClick={ (): void => {
                                     onVersionChange?.(version.version);
-                                    handleClose();
+                                    handleDropdownClose();
                                 } }
                             >
                                 {
