@@ -448,6 +448,8 @@ export class AppConstants {
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "OPENID4VP_CONFIG",
+                `${AppConstants.getAdminViewBasePath()}/verifier-settings` ],
             [ "ISSUER_USAGE_SCOPE",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
             [ "FAPI_SECURITY_POLICY",
@@ -480,7 +482,9 @@ export class AppConstants {
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
-            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
+            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ],
+            [ "VP_DEFINITIONS", `${AppConstants.getAdminViewBasePath()}/presentation-definitions` ],
+            [ "VP_DEFINITION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/presentation-definitions/:id` ]
         ]);
 
         return paths;
@@ -560,6 +564,7 @@ export class AppConstants {
         "oidcScopes": "v0.0.0",
         "organizations": "v0.0.0",
         "password-recovery": "v1.0.0",
+        "presentationDefinitions": "v0.0.0",
         "residentOutboundProvisioning": "v0.0.0",
         "roles": "v0.0.0",
         "self-registration-connector": "v1.0.0",

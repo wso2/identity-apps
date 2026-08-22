@@ -94,7 +94,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         (state: AppState) => state?.config?.ui?.features?.organizations);
     const isFapiFeatureEnabled: boolean = useSelector(
         (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
-    
+
+
     /**
      * Combine the connectors and dynamic connectors and group them by category.
      */

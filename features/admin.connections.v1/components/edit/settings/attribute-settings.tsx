@@ -26,7 +26,7 @@ import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/mod
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -123,6 +123,15 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Is the IdP type SAML
      */
     isSaml: boolean;
+    /**
+     * Restricts external claim values that can be mapped.
+     * If provided, users can only map to these values.
+     */
+    allowedMappedValues?: string[];
+    externalAttributeLabel?: string;
+    externalAttributeTooltip?: string;
+    attributeMappingHeading?: string;
+    attributeMappingSubheading?: string;
 }
 
 const LocalDialectURI: string = "http://wso2.org/claims";
@@ -143,6 +152,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         loader: Loader,
         isOIDC,
         isSaml,
+        allowedMappedValues,
+        externalAttributeLabel,
+        externalAttributeTooltip,
+        attributeMappingHeading,
+        attributeMappingSubheading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -185,6 +199,29 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * and `!isLoading` will load the form.
      */
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
+
+    // Tracks which allowedMappedValues reference was last used to remove stale mappings.
+    // Prevents the filter effect from looping when setSelectedClaimsWithMapping triggers a re-render.
+    const lastFilteredAllowedValues: React.MutableRefObject<string[] | undefined> =
+        useRef<string[] | undefined>(undefined);
+
+    useEffect(() => {
+        if (isEmpty(allowedMappedValues) || isEmpty(selectedClaimsWithMapping)) {
+            return;
+        }
+        if (lastFilteredAllowedValues.current === allowedMappedValues) {
+            return;
+        }
+        const allowedSet: Set<string> = new Set(allowedMappedValues);
+        const filtered: ConnectionCommonClaimMappingInterface[] = selectedClaimsWithMapping.filter(
+            (entry: ConnectionCommonClaimMappingInterface) =>
+                isEmpty(entry.mappedValue) || allowedSet.has(entry.mappedValue)
+        );
+        lastFilteredAllowedValues.current = allowedMappedValues;
+        if (filtered.length !== selectedClaimsWithMapping.length) {
+            setSelectedClaimsWithMapping(filtered);
+        }
+    }, [ allowedMappedValues, selectedClaimsWithMapping ]);
 
     useEffect(() => {
         setIsLocalClaimsLoading(true);
@@ -280,6 +317,17 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         ) {
             canSubmit = false;
         }
+
+        if (!isEmpty(allowedMappedValues)) {
+            const allowedValuesSet: Set<string> = new Set(allowedMappedValues);
+
+            if (!isEmpty(selectedClaimsWithMapping?.filter(
+                (element: ConnectionCommonClaimMappingInterface) => !allowedValuesSet.has(element.mappedValue)
+            ))) {
+                canSubmit = false;
+            }
+        }
+
         claimConfigurations["mappings"] = selectedClaimsWithMapping.map(
             (element: ConnectionCommonClaimMappingInterface) => {
                 return {
@@ -335,6 +383,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     setIsSubmissionLoading(false);
                 });
         } else {
+            setIsSubmitting(false);
             dispatch(addAlert(
                 {
                     description: t("idp:notifications." +
@@ -390,6 +439,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
                                     }
                                 }
+                                allowedMappedValues={ allowedMappedValues }
+                                externalAttributeLabel={ externalAttributeLabel }
+                                externalAttributeTooltip={ externalAttributeTooltip }
+                                attributeMappingHeading={ attributeMappingHeading }
+                                attributeMappingSubheading={ attributeMappingSubheading }
                                 attributeList={
                                     hideIdentityClaimAttributes
                                         ? availableLocalClaims.filter(

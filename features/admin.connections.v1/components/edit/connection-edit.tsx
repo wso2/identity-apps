@@ -24,6 +24,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
@@ -31,6 +32,8 @@ import {
     AttributeSettings,
     AuthenticatorSettings,
     ConnectedApps,
+    DigitalCredentialsClaimMappingSettings,
+    DigitalWalletGeneralSettings,
     GeneralSettings,
     IdentityProviderGroupsTab,
     OutboundProvisioningSettings
@@ -119,6 +122,10 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      * Connection setting section meta data.
      */
     connectionSettingsMetaData?: any;
+    /**
+     * When true, the Advanced tab is hidden for this connection.
+     */
+    hideAdvancedTab?: boolean;
 }
 
 /**
@@ -144,9 +151,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isAutomaticTabRedirectionEnabled,
         setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
+        hideAdvancedTab,
         ["data-testid"]: testId
     } = props;
 
+    const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         featureConfig?.identityProviders,
@@ -175,6 +184,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+    const isDigitalCredentialsConnection: boolean =
+        identityProvider?.templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET;
     const isEnterpriseConnection: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
             FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
@@ -371,6 +382,33 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         </ResourceTab.Pane>
     );
 
+    const DigitalCredentialsConfigurationTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <DigitalWalletGeneralSettings
+                editingIDP={ identityProvider }
+                isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ onUpdate }
+                data-componentid={ `${testId}-digital-wallet-general-settings` }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const DigitalCredentialsClaimMappingTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <DigitalCredentialsClaimMappingSettings
+                identityProvider={ identityProvider }
+                isLoading={ isLoading }
+                isReadOnly={ isReadOnly }
+                onUpdate={ onUpdate }
+                loader={ Loader }
+                data-componentid={ `${ testId }-digital-credentials-claim-mapping` }
+            />
+        </ResourceTab.Pane>
+    );
+
     useEffect(() => {
         setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
@@ -429,6 +467,60 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
+
+        if (isDigitalCredentialsConnection) {
+            if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+                panes.push(...tabPaneExtensions);
+            }
+
+            panes.push({
+                "data-tabid": "digital-credentials-configuration",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.general"),
+                render: DigitalCredentialsConfigurationTabPane
+            });
+
+            panes.push({
+                "data-tabid": "digital-credentials-claim-mapping",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.attributes"),
+                render: DigitalCredentialsClaimMappingTabPane
+            });
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) &&
+                hasApplicationReadPermissions
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
+                    menuItem: "Connected Apps",
+                    render: ConnectedAppsTabPane
+                });
+            }
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
+                identityProviderConfig.editIdentityProvider.showJitProvisioning
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
+                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                    render: JITProvisioningSettingsTabPane
+                });
+            }
+
+            if (
+                !hideAdvancedTab &&
+                shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
+                identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
+                    menuItem: "Advanced",
+                    render: AdvancedSettingsTabPane
+                });
+            }
+
+            return panes;
+        }
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
@@ -528,6 +620,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
 
         if (
+            !hideAdvancedTab &&
             shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
             identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
             !isOrganizationEnterpriseAuthenticator &&
@@ -586,6 +679,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             !isExpertMode &&
             !isCustomAuthenticator &&
             !isOutboundProvisioningConnection &&
+            !isDigitalCredentialsConnection &&
             !tabPaneExtensions)
     ) {
         return <Loader />;

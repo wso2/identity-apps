@@ -1425,6 +1425,10 @@
                         "flag": ""
                     },
                     {
+                        "feature": "loginAndRegistration.verifiableCredentials.openid4vp",
+                        "flag": ""
+                    },
+                    {
                         "feature": "consents.policyConsents",
                         "flag": ""
                     },
@@ -2170,6 +2174,46 @@
                     }
                 }
             },
+            "presentationDefinitions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                            "internal_presentation_definition_create"
+                    ],
+                    "delete": [
+                            "internal_presentation_definition_delete"
+                    ],
+                    "feature": [
+                            "console:presentation_definitions"
+                    ],
+                    "read": [
+                            "internal_presentation_definition_view"
+                    ],
+                    "update": [
+                            "internal_presentation_definition_update"
+                    ]
+                }
+            },
+            "verifiablePresentationSettings": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:verifiablePresentationSettings"
+                    ],
+                    "read": [
+                        "internal_config_view"
+                    ],
+                    "update": [
+                        "internal_config_update"
+                    ]
+                }
+            },
             "verifiableCredentials": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -2362,6 +2406,7 @@
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",
+                "presentationDefinitions": "v0.0.0",
                 "residentOutboundProvisioning": "v0.0.0",
                 "roles": "v0.0.0",
                 "self-registration-connector": "v1.0.0",

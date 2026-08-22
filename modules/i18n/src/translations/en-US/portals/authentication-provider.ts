@@ -2345,6 +2345,131 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     general: "General Settings"
                 }
             }
+        },
+        digitalWallet: {
+            tabs: {
+                general: "General",
+                attributes: "Attributes"
+            },
+            form: {
+                name: {
+                    label: "Name",
+                    placeholder: "My Wallet",
+                    defaultValue: "Digital Wallet",
+                    hint: "A unique name for this digital wallet connection.",
+                    validations: {
+                        required: "Connection name is required.",
+                        maxLength: "Connection name cannot exceed {{max}} characters.",
+                        minLength: "Connection name must be at least {{min}} characters."
+                    }
+                },
+                description: {
+                    hint: "Briefly describe the purpose of this digital wallet connection."
+                },
+                presentationDefinition: {
+                    label: "Presentation Definition",
+                    placeholder: "Select a presentation definition",
+                    loadingPlaceholder: "Loading presentation definitions...",
+                    emptyPlaceholder: "No presentation definitions available",
+                    hint: "Defines the credentials and claims to request from the user's digital wallet.",
+                    noneAvailableHint: "No presentation definitions found. <1>Create one</1> to proceed."
+                },
+                timeout: {
+                    label: "Presentation Time Limit (seconds)",
+                    hint:
+                    "Specifies how long to wait for the requested presentation from the user's digital wallet. " +
+                    "Must be between 1 and 180 seconds.",
+                    validationError: "Presentation time limit must be a number between 1 and 180 seconds."
+                }
+            },
+            claimMapping: {
+                form: {
+                    credentialType: {
+                        label: "Credential Type",
+                        hint: "The credential type defined by the issuer. This must exactly match the credential type " +
+                        "specified in the presentation definition."
+                    },
+                    credentialFormat: {
+                        label: "Credential Format",
+                        hint: "Specifies the format of the verifiable credential to be requested.",
+                        options: {
+                            dcSdJwt: "dc+sd-jwt"
+                        }
+                    },
+                    requestedAttributes: {
+                        label: "Requested Attributes",
+                        hint: "Select the credential attributes to map to local user attributes.",
+                        emptyPlaceholder: "No claims found in the selected presentation definition."
+                    }
+                },
+                notifications: {
+                    fetchFailed: {
+                        message: "Failed to Load Claims",
+                        description: "An error occurred while loading the claims from the presentation definition."
+                    },
+                    updateSuccess: {
+                        message: "Presentation Definition Updated",
+                        description: "The presentation definition was updated successfully."
+                    },
+                    updateFailed: {
+                        message: "Update Failed",
+                        description: "An error occurred while updating the presentation definition."
+                    },
+                    missingCredentialType: {
+                        message: "Credential Type Required",
+                        description: "Enter a credential type before updating the presentation definition."
+                    },
+                    noPdLinked: {
+                        header: "No Presentation Definition Linked",
+                        description:
+                            "This connection does not have a Presentation Definition linked. " +
+                            "Configure a Presentation Definition in the General tab to enable attribute mapping."
+                    },
+                    noClaimPaths: {
+                        header: "No Claim Paths Configured",
+                        description:
+                            "The linked Presentation Definition has no claim paths configured. " +
+                            "Add claim paths to the Presentation Definition to enable attribute mapping."
+                    }
+                },
+                heading: "Credential Attribute Mappings",
+                subheading: "Map the claims from the linked Presentation Definition to local user attributes.",
+                pdClaimAttribute: {
+                    label: "Presentation Definition Claim",
+                    tooltip: "Claims requested in the Presentation Definition. " +
+                    "Map them to the corresponding user attributes."
+                }
+            },
+            notifications: {
+                noPresentationDefinition: {
+                    message: "Presentation Definition Required",
+                    description: "Select a presentation definition before creating the connection."
+                }
+            },
+            wizardHelp: {
+                heading: "About Digital Wallet Connections",
+                subHeading: "Learn more about this connection",
+                name: {
+                    heading: "Name",
+                    hint: "Provide a unique name for the digital wallet connection."
+                },
+                presentationDefinition: {
+                    heading: "Presentation Definition",
+                    hint:
+                        "Select a presentation definition that specifies the credentials and claims " +
+                        "to request from the user's digital wallet."
+                },
+                message: {
+                    paragraph1:
+                        "A Digital Wallet connection allows users to interact with your application " +
+                        "by presenting verifiable credentials from a compatible digital wallet. " +
+                        "It can be used to sign in existing users or register new users based on " +
+                        "verified credential information.",
+                    paragraph2:
+                        "The selected presentation definition determines which credentials and claims " +
+                        "are requested from the user's wallet during the interaction."
+                }
+            }
         }
     },
     wizards: {
