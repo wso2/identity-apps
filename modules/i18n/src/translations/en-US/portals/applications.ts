@@ -192,6 +192,126 @@ export const applications: ApplicationsNS = {
         },
         placeholder: "Search applications by name, client ID, or issuer"
     },
+    clientSecrets: {
+        confirmations: {
+            deleteSecret: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this client secret, clients using it will no longer be able to " +
+                    "authenticate with it. Any other client secrets of the application remain valid, and " +
+                    "active tokens will not be revoked.",
+                header: "Are you sure?",
+                message: "This action is irreversible and permanently deletes the client secret. " +
+                    "Please proceed with caution."
+            }
+        },
+        dangerZone: {
+            revokeAll: {
+                actionTitle: "Revoke All",
+                confirmation: {
+                    assertionHint: "I understand this action is irreversible.",
+                    content: "Every tokens issued with the old secrets will also be revoked, and active " +
+                        "authentication flows will fail. Be sure to update your application with the " +
+                        "new client secret.",
+                    header: "Revoke all client secrets and generate a new one?",
+                    message: "This action is irreversible. All existing client secrets are permanently revoked " +
+                        "and replaced with a single new client secret."
+                },
+                header: "Revoke all & generate a new client secret",
+                subheader: "Permanently revokes every existing client secret and generates a single new one. " +
+                    "Authentication flows still using the old secrets will fail until you update your application."
+            }
+        },
+        expiry: {
+            expired: "Expired",
+            expiredAgo: "Expired {{duration}} ago",
+            expiredOn: "Expired on {{date}}",
+            expiresIn: "Expires in {{duration}}",
+            expiresOn: "Expires on {{date}}",
+            neverExpires: "Never expires"
+        },
+        expiryBanner: {
+            description: "At least one client secret is expiring soon. Rotate your secret to " +
+                "prevent authentication failures and application downtime.",
+            title: "Client Secret Expiring Soon",
+            viewSecrets: "View secret"
+        },
+        generateButton: "Generate New Secret",
+        hashedDisclaimer: "Client secret is hashed and cannot be viewed. If you need a new value, " +
+            "generate a new client secret.",
+        hidePreviousSecret: "Hide Previous Client Secret",
+        hidePreviousSecrets: "Hide Previous Client Secrets",
+        maxCountReachedHint: "You have reached the maximum of {{count}} client secrets. Delete an existing " +
+            "secret to generate a new one.",
+        notifications: {
+            deleteSecret: {
+                genericError: {
+                    description: "An error occurred while deleting the client secret.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The client secret was deleted successfully.",
+                    message: "Client secret deleted"
+                }
+            },
+            generateSecret: {
+                error: {
+                    message: "Generation error"
+                },
+                genericError: {
+                    description: "An error occurred while generating the client secret.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "A new client secret was generated successfully.",
+                    message: "Client secret generated"
+                }
+            },
+            getSecrets: {
+                genericError: {
+                    description: "An error occurred while retrieving the client secrets.",
+                    message: "Something went wrong"
+                }
+            },
+            revokeAll: {
+                genericError: {
+                    description: "An error occurred while revoking the client secrets.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "All client secrets were revoked and a new secret was generated.",
+                    message: "Client secrets revoked"
+                }
+            }
+        },
+        rotationWarning: "Multiple client secrets enable seamless rotation, but keeping old secrets " +
+            "active longer than necessary increases security exposure. Remove old secrets once rotation " +
+            "is complete.",
+        viewPreviousSecret: "View Previous Client Secret",
+        viewPreviousSecrets: "View Previous Client Secrets",
+        wizard: {
+            customExpiry: {
+                label: "Custom Expiry Time (days)",
+                placeholder: "Enter the number of days",
+                validations: {
+                    invalid: "Enter a valid number of days.",
+                    required: "Enter the number of days until the secret expires."
+                }
+            },
+            expiration: {
+                label: "Expiration",
+                options: {
+                    custom: "Custom",
+                    days: "{{count}} days",
+                    neverExpire: "Never expires"
+                }
+            },
+            expiryWarning: "You can't change a client secret's expiry time after it's generated, so choose the " +
+                "expiration carefully.",
+            generateButton: "Generate",
+            heading: "Generate Client Secret",
+            subHeading: "Generate a new client secret for this application. Existing secrets remain valid."
+        }
+    },
     confirmations: {
         addSocialLogin: {
             content : "To add a new social login, we will need to route you to a different page and " +
@@ -242,7 +362,7 @@ export const applications: ApplicationsNS = {
                 assertionHint: "",
                 content: "",
                 header: "OAuth Application Credentials",
-                message: "The consumer secret value will be displayed in plain text only once. " +
+                message: "The client secret value will be displayed in plain text only once. " +
                     "Please make sure to copy and save it somewhere safe."
             }
         },

@@ -23,7 +23,7 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
 } from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
@@ -92,10 +92,7 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Icon, Label, List, Radio, Table } from "semantic-ui-react";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
-import {
-    ApplicationFeatureDictionaryKeys,
-    ApplicationManagementConstants
-} from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
 import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
@@ -105,6 +102,7 @@ import OIDCWebApplicationTemplate from
 import SinglePageApplicationTemplate from
     "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import useAllowedIssuers from "../../hooks/use-allowed-issuers";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import { useFapiProfileConstraints } from "@wso2is/admin.fapi-security-policy.v1";
 import {
     ApplicationInterface,
@@ -130,6 +128,7 @@ import {
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
+import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 import "./inbound-oidc-form.scss";
 
@@ -258,20 +257,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
     );
-    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
-        applicationFeatureConfig,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
-    );
     const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
         organizationsFeatureConfig,
         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION")
     );
 
-    const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
-    const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
+    const {
+        isEnforceClientSecretPermissionEnabled,
+        hasClientSecretReadPermission,
+        hasClientSecretCreatePermission,
+        maxSecretCount
+    } = useClientSecretManagement();
 
     const { isFAPIApplication, fapiProfile: initialFapiProfile } = initialValues;
     const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
@@ -5653,14 +5649,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
-                                                {
-                                                    t("applications:forms.inboundOIDC.fields" +
-                                                        ".clientSecret.label")
-                                                }
+                                                { t("applications:forms.inboundOIDC.fields.clientSecret.label") }
                                             </label>
                                             {
-                                                isClientSecretHashEnabled
+                                                maxSecretCount > 1
                                                     ? (
+                                                        <ClientSecretsSection
+                                                            appId={ application?.id }
+                                                            clientId={ initialValues?.clientId }
+                                                            clientSecret={ initialValues?.clientSecret }
+                                                            clientSecretExpiresAt={
+                                                                initialValues?.clientSecretExpiresAt
+                                                            }
+                                                            multipleClientSecretsConfigured={
+                                                                initialValues?.multipleClientSecretsConfigured
+                                                            }
+                                                            hideSecretValue={ isClientSecretHashEnabled }
+                                                            onUpdate={ onUpdate }
+                                                            readOnly={ readOnly }
+                                                            data-componentid={
+                                                                `${ componentId }-client-secrets-section`
+                                                            }
+                                                        />
+                                                    )
+                                                    : isClientSecretHashEnabled
+                                                        ? (
                                                         <>
                                                             <Message
                                                                 visible

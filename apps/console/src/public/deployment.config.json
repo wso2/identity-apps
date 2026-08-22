@@ -590,7 +590,8 @@
                 "enabled": true,
                 "properties": {
                     "maxGracefulRefreshTokenReuseLimit": 5,
-                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60,
+                    "multipleClientSecretsMaxCount": 2
                 },
                 "featureFlags": [
                     {
@@ -664,10 +665,9 @@
                         "featureFlags": [],
                         "scopes": {
                             "create": [ "internal_application_mgt_client_secret_create" ],
-                            "delete": [],
+                            "delete": [ "internal_application_mgt_client_secret_delete" ],
                             "feature": [],
-                            "read": [ "internal_application_mgt_client_secret_view" ],
-                            "update": []
+                            "read": [ "internal_application_mgt_client_secret_view" ]
                         }
                     },
                     "applicationInternalAPIAuthorization": {
