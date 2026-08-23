@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.45.2
+
+### Patch Changes
+
+- [#10587](https://github.com/wso2/identity-apps/pull/10587) [`6185b49b267390c79cc3bf7fa7d51de6ccaa813d`](https://github.com/wso2/identity-apps/commit/6185b49b267390c79cc3bf7fa7d51de6ccaa813d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multiple client secrets support for OAuth/OIDC application
+
 ## 2.45.1
 
 ### Patch Changes
