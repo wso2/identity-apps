@@ -1543,7 +1543,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                         >
                                             <Grid xs={ 12 }>
                                                 <SelectiveOrgShareWithSelectiveRoles
-                                                    userId={ user?.id }
+                                                    restrictToImmediateChildOrgs={ true }
                                                     applicationRolesList={ userRolesList }
                                                     selectedItems={ selectedOrgIds }
                                                     setSelectedItems={ setSelectedOrgIds }
