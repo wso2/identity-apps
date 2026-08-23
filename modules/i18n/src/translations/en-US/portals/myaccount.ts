@@ -1897,12 +1897,11 @@ export const myAccount: MyAccountNS = {
         },
         consentManagement: {
             actionTitles: {
-                empty: "You have not granted consent to any application",
-                learnMore: "Learn more about consent management"
+                empty: "You have not granted consent to any application"
             },
             description:
                 "Review consents granted to each application and revoke them as needed.",
-            heading: "Consent Management",
+            heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
@@ -1910,9 +1909,6 @@ export const myAccount: MyAccountNS = {
             }
         },
         preferenceManagement: {
-            actionTitles: {
-                learnMore: "Learn more about communication preferences"
-            },
             description: "Review and manage your communication preferences.",
             heading: "Communication Preferences",
             placeholders: {
@@ -1922,9 +1918,6 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            actionTitles: {
-                learnMore: "Learn more about policy consents"
-            },
             description: "Review the policies you have agreed to.",
             heading: "Policy Consents",
             placeholders: {

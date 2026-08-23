@@ -38,7 +38,6 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { ModalComponent, SettingsSection } from "../shared";
-import { EmptyConsentPlaceholder } from "../consents/empty-consent-placeholder";
 
 /**
  * Proptypes for the policy consent component.
@@ -212,23 +211,17 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     return (
         <>
             <SettingsSection
-        data-componentid={ `${componentId}-settings-section` }
-        description={ t("myAccount:sections.policyConsentManagement.description") }
-        header={ t("myAccount:sections.policyConsentManagement.heading") }
-        showActionBar={
-            !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
-        }
-    >
-        { !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0) && (
-            <EmptyConsentPlaceholder
-                data-componentid={ `${componentId}-empty-placeholder` }
-                message={
-                    t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading")
+                data-componentid={ `${componentId}-settings-section` }
+                description={ t("myAccount:sections.policyConsentManagement.description") }
+                header={ t("myAccount:sections.policyConsentManagement.heading") }
+                showActionBar={
+                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
                 }
-                linkText={ t("myAccount:sections.policyConsentManagement.actionTitles.learnMore") }
-                linkHref="https://wso2.com/identity-platform/docs/guides/consent-management/policy-consent/"
-            />
-        ) }
+            >
+                { !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0) && (
+                    <div style={{ textAlign: "center", padding: "20px" }}>{ t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading") }</div>
+                    
+                ) }
                 <PolicyConsentList
                     data-componentid={ `${componentId}-policy-consent-list` }
                     items={ policyConsentItems }

@@ -1134,7 +1134,6 @@ export interface MyAccountNS {
         consentManagement: {
             actionTitles: {
                 empty: string;
-                learnMore?: string;
             };
             description: string;
             heading: string;
@@ -1145,9 +1144,6 @@ export interface MyAccountNS {
             };
         };
         preferenceManagement: {
-            actionTitles?: {
-                learnMore?: string;
-            };
             description: string;
             heading: string;
             placeholders: {
@@ -1157,9 +1153,6 @@ export interface MyAccountNS {
             };
         };
         policyConsentManagement: {
-            actionTitles?: {
-                learnMore?: string;
-            };
             description: string;
             heading: string;
             placeholders: {
