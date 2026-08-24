@@ -4767,6 +4767,9 @@ importers:
       '@oxygen-ui/react':
         specifier: ^2.4.6
         version: 2.4.6(68d5af65e266984a0e5c55056d1c3c66)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/access-control':
         specifier: ^3.5.8
         version: link:../../modules/access-control
@@ -4803,6 +4806,9 @@ importers:
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.38.52
         version: link:../admin.server-configurations.v1
+      '@wso2is/admin.subscription.v1':
+        specifier: workspace:^
+        version: link:../admin.subscription.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.38.40
         version: link:../admin.users.v1
