@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.16
+
+### Patch Changes
+
+- [#10636](https://github.com/wso2/identity-apps/pull/10636) [`787918ac3a885ee9d0b49c883558bb1f1fcbc5b8`](https://github.com/wso2/identity-apps/commit/787918ac3a885ee9d0b49c883558bb1f1fcbc5b8) Thanks [@Malith-19](https://github.com/Malith-19)! - Hide app native authentication and client attestation settings for non-OIDC applications in the application advanced settings tab
+
+- Updated dependencies [[`787918ac3a885ee9d0b49c883558bb1f1fcbc5b8`](https://github.com/wso2/identity-apps/commit/787918ac3a885ee9d0b49c883558bb1f1fcbc5b8)]:
+  - @wso2is/i18n@2.45.4
+
 ## 2.43.15
 
 ### Patch Changes
