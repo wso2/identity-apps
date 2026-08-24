@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.45.3
+
+### Patch Changes
+
+- [#10567](https://github.com/wso2/identity-apps/pull/10567) [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8) Thanks [@KD23243](https://github.com/KD23243)! - Resolve flow extension read-only claims from server configuration and list identity claims in the claim picker
+
 ## 2.45.2
 
 ### Patch Changes
