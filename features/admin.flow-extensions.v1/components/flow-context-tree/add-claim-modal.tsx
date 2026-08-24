@@ -41,6 +41,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
 import { TreeNodeStateInterface } from "./models";
 
 interface AddClaimModalProps {
@@ -48,11 +49,6 @@ interface AddClaimModalProps {
     parentNode: TreeNodeStateInterface | null;
     existingClaimURIs: string[];
     externalClaims?: Claim[];
-    /**
-     * Whether the active flow type permits MODIFY on read-only claims. Drives the
-     * informational badge per claim row. Defaults to true.
-     */
-    allowReadOnlyClaimsModification?: boolean;
     onClose: () => void;
     onSubmit: (claims: Claim[]) => void;
     "data-componentid"?: string;
@@ -71,7 +67,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
     parentNode: _parentNode,
     existingClaimURIs,
     externalClaims,
-    allowReadOnlyClaimsModification = true,
     onClose,
     onSubmit,
     "data-componentid": componentId = "add-claim-modal"
@@ -99,7 +94,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
 
         const params: ClaimsGetParams = {
             "exclude-hidden-claims": true,
-            "exclude-identity-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -192,7 +186,7 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                     <Typography variant="body2" sx={ { fontWeight: 500 } }>
                                         { claim.displayName }
                                     </Typography>
-                                    { claim.readOnly && !allowReadOnlyClaimsModification && (
+                                    { FlowExtensionConstants.isReadOnlyClaim(claim.claimURI) && (
                                         <Typography
                                             variant="caption"
                                             sx={ {

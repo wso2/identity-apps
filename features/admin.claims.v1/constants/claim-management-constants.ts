@@ -172,6 +172,8 @@ export class ClaimManagementConstants {
         "http://wso2.org/vc/claim"
     ];
 
+    public static readonly IDENTITY_CLAIM_URI_PREFIX: string = "http://wso2.org/claims/identity/";
+
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
 
     public static readonly OIDC: string = "oidc";
