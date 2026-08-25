@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 5.4.5
+
+### Patch Changes
+
+- [#10632](https://github.com/wso2/identity-apps/pull/10632) [`355488702c9ba13fef484a252dbe19704f045e0c`](https://github.com/wso2/identity-apps/commit/355488702c9ba13fef484a252dbe19704f045e0c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Allow a date of birth validation error to be corrected on the missing claims page during federated login, instead of forwarding the user to a generic error page.
+
+* [#10631](https://github.com/wso2/identity-apps/pull/10631) [`720d3fbefa134ce14e02b3c13163fdb4ea78a621`](https://github.com/wso2/identity-apps/commit/720d3fbefa134ce14e02b3c13163fdb4ea78a621) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix the registration form being unmounted when the date field holds a future date. The date input no longer caps the calendar at today, which was making a crash in the underlying picker reachable.
+
 ## 5.4.4
 
 ### Patch Changes
