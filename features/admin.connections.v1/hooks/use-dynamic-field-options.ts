@@ -52,6 +52,8 @@ interface DynamicFieldInterface {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
+    searchable?: boolean;
+    loading?: boolean;
     optionsSource?: DynamicFieldOptionsSourceInterface;
     [ key: string ]: unknown;
 }
@@ -267,17 +269,18 @@ const useDynamicFieldOptions = (
                 });
             }
 
-            const isUnusable: boolean = isLoading || isEmpty(options);
-
             return {
                 ...field,
+                loading: isLoading,
                 options,
                 placeholder: isLoading
                     ? t("authenticationProvider:forms.authenticatorSettings.dynamicOptions.loading")
                     : (isEmpty(options)
                         ? t("authenticationProvider:forms.authenticatorSettings.dynamicOptions.empty")
                         : field?.placeholder),
-                readOnly: field?.readOnly || isUnusable
+                // Options that are resolved from another resource are always searchable.
+                readOnly: field?.readOnly || (!isLoading && isEmpty(options)),
+                searchable: true
             };
         });
     }, [ fields, connections, templateIdsByConnection, isLoading, context?.currentValues ]);

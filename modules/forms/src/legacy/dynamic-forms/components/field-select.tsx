@@ -22,6 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import { FieldState } from "final-form";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldProps, FieldRenderProps, Field as FinalFormField } from "react-final-form";
+import SearchableSelectFieldAdapter from "../../../components/adapters/searchable-select-field-adapter";
 import SelectFieldAdapter from "../../../components/adapters/select-field-adapter";
 import { getValidation } from "../utils/validate";
 
@@ -48,6 +49,8 @@ interface FieldSelectPropsInterface
     label?: string;
     hint?: string | ReactElement;
     readOnly?: boolean;
+    searchable?: boolean;
+    loading?: boolean;
     validation?: (
         value: DynamicSelectFieldValueType,
         allValues: Record<string, unknown>
@@ -65,11 +68,13 @@ export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
         hint,
         initialValue,
         label,
+        loading,
         name,
         options,
         placeholder,
         readOnly,
         required,
+        searchable,
         validation,
         [ "data-componentid" ]: componentId
     } = props;
@@ -86,16 +91,32 @@ export const FieldSelect: FunctionComponent<FieldSelectPropsInterface> = (
                     meta: FieldState<DynamicSelectFieldValueType>
                 ) => getValidation(value, allValues, meta, required, validation) }
                 render={ ({ input, meta }: FieldRenderProps<DynamicSelectFieldValueType>) => (
-                    <SelectFieldAdapter
-                        input={ input }
-                        meta={ meta }
-                        label={ label }
-                        options={ options ?? [] }
-                        placeholder={ placeholder }
-                        required={ required }
-                        readOnly={ readOnly }
-                        data-componentid={ componentId ?? `${ name }-select-field` }
-                    />
+                    searchable
+                        ? (
+                            <SearchableSelectFieldAdapter
+                                input={ input }
+                                meta={ meta }
+                                label={ label }
+                                options={ options ?? [] }
+                                placeholder={ placeholder }
+                                required={ required }
+                                readOnly={ readOnly }
+                                loading={ loading }
+                                data-componentid={ componentId ?? `${ name }-select-field` }
+                            />
+                        )
+                        : (
+                            <SelectFieldAdapter
+                                input={ input }
+                                meta={ meta }
+                                label={ label }
+                                options={ options ?? [] }
+                                placeholder={ placeholder }
+                                required={ required }
+                                readOnly={ readOnly }
+                                data-componentid={ componentId ?? `${ name }-select-field` }
+                            />
+                        )
                 ) }
             />
             {
