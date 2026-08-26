@@ -411,6 +411,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             learnMore: documentationBaseUrl + "/references/email-templates/"
         },
+        emailProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-email-provider/"
+        },
         eventPublishing: {
             learnMore: documentationBaseUrl + "/guides/asgardeo-events/"
         },
@@ -423,6 +426,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: undefined
             }
         },
+        pushProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-push-provider/"
+        },
         smsCustomization: {
             form: {
                 smsBody: {
@@ -430,6 +436,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 }
             },
             learnMore: undefined
+        },
+        smsProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-sms-provider/"
         },
         webhooks: {
             learnMore: documentationBaseUrl + "/guides/webhooks/understanding-webhooks/"
@@ -439,7 +448,21 @@ export const DocumentationLinks: DocumentationLinksInterface = {
         accountDisable: {
             learnMore: documentationBaseUrl + "/guides/account-configurations/account-disabling/"
         },
+        accountLogin: {
+            alternativeLoginIdentifiers: {
+                learnMore: documentationBaseUrl
+                    + "/guides/user-accounts/account-login/configure-login-identifiers/"
+            },
+            usernameValidation: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/account-login/username-validation/"
+            }
+        },
         accountRecovery: {
+            adminInitiatedPasswordReset: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/account-recovery/admin-initiated-password-reset/"
+            },
             passwordRecovery: {
                 learnMore: documentationBaseUrl + "/guides/user-accounts/password-recovery/"
             }
@@ -458,14 +481,34 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl + "/guides/users/attributes/manage-scim2-attribute-mappings/"
             }
         },
+        consentManagement: {
+            policyManagement: {
+                learnMore: documentationBaseUrl + "/guides/consent-management/policy-consent/"
+            },
+            preferenceManagement: {
+                learnMore: documentationBaseUrl + "/guides/consent-management/preference-management-consent/"
+            }
+        },
         groups: {
             learnMore: documentationBaseUrl + "/guides/users/manage-groups/",
             roles: {
                 learnMore: documentationBaseUrl + "/guides/users/manage-groups/#assign-roles-to-groups"
             }
         },
+        impersonation: {
+            learnMore: documentationBaseUrl + "/guides/authorization/user-impersonation/"
+        },
         insights: {
             learnMore: documentationBaseUrl + "/guides/organization-insights/"
+        },
+        internalNotificationSending: {
+            // TODO: Update once the internal notification sending guide is published on the Asgardeo doc site.
+            learnMore: undefined
+        },
+        issuerUsageScope: {
+            learnMore: documentationBaseUrl + "/guides/organization-management/"
+                + "select-token-issuer-for-organization-apps/"
+                + "#control-root-token-issuer-access-for-child-organizations"
         },
         loginSecurity: {
             botDetection: {
@@ -475,6 +518,10 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl
                     + "/guides/user-accounts/account-security/login-attempts-security/"
             },
+            sessionManagement: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/login-security/session-management/"
+            },
             siftConnector: {
                 learnMore: documentationBaseUrl + "/guides/account-configurations/login-security/"
                     + "sift-fraud-detection/"
@@ -483,11 +530,21 @@ export const DocumentationLinks: DocumentationLinksInterface = {
         logs: {
             learnMore: documentationBaseUrl + "/guides/asgardeo-logs/"
         },
+        organizationDiscovery: {
+            learnMore: documentationBaseUrl + "/guides/organization-management/organization-discovery/"
+                + "email-domain-based-organization-discovery/"
+        },
         organizations: {
             learnMore: documentationBaseUrl + "/guides/organization-management/"
         },
+        outboundProvisioning: {
+            learnMore: documentationBaseUrl + "/guides/users/outbound-provisioning/setup-outbound-provisioning/"
+        },
         privateKeyJWT: {
             learnMore: documentationBaseUrl + "/guides/authentication/oidc/private-key-jwt-client-auth"
+        },
+        saml2WebSso: {
+            learnMore: documentationBaseUrl + "/guides/authentication/saml/"
         },
         selfRegistration: {
             learnMore: documentationBaseUrl + "/guides/user-self-service/self-register/"

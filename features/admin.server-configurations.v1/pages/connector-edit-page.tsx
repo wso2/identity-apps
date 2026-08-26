@@ -576,8 +576,24 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 return "Enable self-service username recovery for users on the login page." +
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Configure alternative login identifiers and allow users to use username or configured" +
-                    " login identifier in login and recovery flows.";
+                return (<>
+                    Configure alternative login identifiers and allow users to use username or configured
+                    login identifier in login and recovery flows.
+                    <DocumentationLink
+                        link={ getLink("manage.accountLogin.alternativeLoginIdentifiers.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
+            case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
+                return (<>
+                    Enable administrators to initiate password reset process for users.
+                    <DocumentationLink
+                        link={ getLink("manage.accountRecovery.adminInitiatedPasswordReset.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";

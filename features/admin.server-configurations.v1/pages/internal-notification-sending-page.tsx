@@ -23,7 +23,15 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
+import {
+    DangerZone,
+    DangerZoneGroup,
+    DocumentationLink,
+    EmphasizedSegment,
+    Hint,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FC, FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -60,6 +68,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
     const { [ "data-componentid" ]: componentId = "internal-notification-sending" } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -458,8 +467,17 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
 
     return (
         <PageLayout
-            title={ "Internal Notification Sending" }
-            pageTitle={ "Internal Notification Sending" }
+            title={ t("governanceConnectors:connectorCategories.internalNotificationSending.connector.title") }
+            pageTitle={ t("governanceConnectors:connectorCategories.internalNotificationSending.connector.title") }
+            description={ (
+                <>
+                    { t("governanceConnectors:connectorCategories.internalNotificationSending" +
+                        ".connector.description") }
+                    <DocumentationLink link={ getLink("manage.internalNotificationSending.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
