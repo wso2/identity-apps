@@ -78,8 +78,10 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
     setSAMLConfigureMode?: (mode: string) => void;
     issuerRef?: any;
     metaUrlRef?: any;
+    assertionConsumerUrlsRef?: any;
     issuerError?: boolean;
     metaUrlError?: boolean;
+    onRequiredFieldMissing?: (field: string, message: string) => void;
     /**
      * Check whether the protocol form changed.
      * @param state - Protocol changed state
@@ -108,8 +110,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         setSAMLConfigureMode,
         issuerRef,
         metaUrlRef,
+        assertionConsumerUrlsRef,
         issuerError,
         metaUrlError,
+        onRequiredFieldMissing,
         handleProtocolValueChange,
         ["data-testid"]: testId
     } = props;
@@ -408,7 +412,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     ) }
                     { (!fields || fields.includes("assertionConsumerURLs")) && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field" ref={ assertionConsumerUrlsRef}>
                                 <URLInput
                                     urlState={ assertionConsumerUrls }
                                     setURLState={ updateAssertionConsumerUrls }
@@ -636,6 +640,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 // Check whether assertionConsumer url is empty or not.
                                 if (isEmpty(assertionConsumerUrls) && isEmpty(url)) {
                                     setAssertionConsumerUrlError(true);
+                                    onRequiredFieldMissing?.(
+                                        "assertionConsumerUrls",
+                                        t("applications:forms.inboundSAML.fields.assertionURLs.validations.empty")
+                                    );
                                 } else {
                                     onSubmit(getFormValues(values, url));
                                 }
@@ -643,6 +651,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         } else {
                             if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
                                 setEmptyFileError(true);
+                                onRequiredFieldMissing?.(
+                                    "metadataFile",
+                                    t("applications:forms.inboundSAML.fields.metadataFile.validations.empty")
+                                );
                             } else {
                                 onSubmit(getFormValues(values));
                             }

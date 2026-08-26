@@ -267,6 +267,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const nameRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const issuerRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const metaUrlRef: MutableRefObject<HTMLDivElement>  = useRef<HTMLDivElement>();
+    const assertionConsumerUrlsRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
     const [ samlConfigureMode, setSAMLConfigureMode ] = useState<string>(undefined);
@@ -778,6 +779,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
                 break;
             }
+            case "assertionConsumerUrls":
+            {
+                assertionConsumerUrlsRef.current?.scrollIntoView(options);
+                break;
+            }           
         }
     };
 
@@ -868,6 +874,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     issuerError={ issuerError }
                     metaUrlRef={ metaUrlRef }
                     metaUrlError={ metaUrlError }
+                    assertionConsumerUrlsRef={ assertionConsumerUrlsRef }
+                    onRequiredFieldMissing={ handleSAMLRequiredFieldMissing }
                     handleProtocolValueChange={ handleProtocolValueChange }
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }
@@ -964,6 +972,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     "fetchApplications.genericError.message")
             }));
         }
+    };
+
+    const handleSAMLRequiredFieldMissing = (field: string, message: string): void => {
+    setAlert({
+        description: message,
+        level: AlertLevels.ERROR,
+        message: t("applications:notifications.addApplication.error.message")
+    });
+    scrollToInValidField(field);
     };
 
     /**
