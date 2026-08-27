@@ -1,5 +1,21 @@
 # @wso2is/admin.claims.v1
 
+## 2.31.4
+
+### Patch Changes
+
+- [#10567](https://github.com/wso2/identity-apps/pull/10567) [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8) Thanks [@KD23243](https://github.com/KD23243)! - Resolve flow extension read-only claims from server configuration and list identity claims in the claim picker
+
+- Updated dependencies [[`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9), [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8)]:
+  - @wso2is/admin.extensions.v1@2.43.10
+  - @wso2is/i18n@2.45.3
+
+## 2.31.3
+
+### Patch Changes
+
+- [#10588](https://github.com/wso2/identity-apps/pull/10588) [`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the search of the "User Attribute to map to" dropdown in the external attribute mapping edit form always returning "No results found."
+
 ## 2.31.2
 
 ### Patch Changes

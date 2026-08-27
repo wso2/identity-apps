@@ -91,6 +91,18 @@
     }
 %>
 
+<%
+    String anonymousProfileTracker = null;
+    if (cookies != null) {
+        for (javax.servlet.http.Cookie cookie : cookies) {
+            if ("cds_profile".equals(cookie.getName())) {
+                anonymousProfileTracker = cookie.getValue();
+                break;
+            }
+        }
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -193,6 +205,20 @@
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
+                const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
+                const extendedInputResolvers = [
+                    (initiatingFlowType) => initiatingFlowType === "REGISTRATION" && anonymousProfileTracker !== "null"
+                        ? { anonymous_profile_tracker: anonymousProfileTracker }
+                        : {}
+                ];
+                const getExtendedFlowInputs = (initiatingFlowType) => {
+                    const inputs = extendedInputResolvers.reduce(
+                        (collected, resolveInputs) => ({ ...collected, ...resolveInputs(initiatingFlowType) }),
+                        {}
+                    );
+                    return Object.keys(inputs).length > 0 ? { inputs } : {};
+                };
+
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -247,9 +273,9 @@
 
                 useEffect(() => {
                     if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
-                        setPostBody({ applicationId: spId, flowType: "REGISTRATION" });
+                        setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
                     } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
-                        setPostBody({ applicationId: spId, flowType: flowType });
+                        setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);
 

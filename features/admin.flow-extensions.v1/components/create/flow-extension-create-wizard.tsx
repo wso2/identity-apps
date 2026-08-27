@@ -16,18 +16,24 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
+import Divider from "@oxygen-ui/react/Divider";
+import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
 import {
     AuthenticationType,
     EndpointConfigFormPropertyInterface
 } from "@wso2is/admin.actions.v1/models/actions";
 import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
+import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard, WizardPage } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import {
     GenericIcon,
     Heading,
@@ -40,7 +46,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, SVGProps, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
@@ -116,6 +122,18 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(AuthenticationType.NONE);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
+
+    // Certificate state — staged on the endpoint configuration step. The stored value is the
+    // base64-encoded PEM, ready for the API body.
+    const [ encodedCertificate, setEncodedCertificate ] = useState<string>("");
+    const [ userHasStagedCert, setUserHasStagedCert ] = useState<boolean>(false);
+    const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
+
+    // Mirrors encodedCertificate so handleFormSubmit reads the value captured synchronously by
+    // handleCertificateSubmit (state updates are async). pendingSubmit defers the wizard submit
+    // until the staged cert has been extracted.
+    const encodedCertificateRef: MutableRefObject<string> = useRef<string>("");
+    const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect(() => {
         setWizardSteps([
@@ -220,6 +238,8 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
             description: values.description?.trim()
                 ? values.description
                 : FlowExtensionConstants.FLOW_EXTENSION_DEFAULT_DESCRIPTION,
+            // Read from the ref so the value captured synchronously by handleCertificateSubmit is used.
+            ...(encodedCertificateRef.current ? { encryption: { certificate: encodedCertificateRef.current } } : {}),
             ...(values.iconUrl ? { iconUrl: values.iconUrl } : {}),
             endpoint: {
                 authentication: {
@@ -248,6 +268,27 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>): void => handleCreateError(error))
             .finally((): void => setIsSubmitting(false));
+    };
+
+    /**
+     * Called by AddCertificateFormComponent once the staged certificate has been extracted. Stores
+     * it on state (for the UI) and a ref (for the submit closure), and resumes a deferred wizard submit.
+     *
+     * @param value - Base64-encoded PEM certificate string.
+     */
+    const handleCertificateSubmit = (value: string): void => {
+        setEncodedCertificate(value);
+        encodedCertificateRef.current = value;
+        if (pendingSubmit.current) {
+            pendingSubmit.current = false;
+            submitForm.current?.();
+        }
+    };
+
+    const handleClearCertificate = (): void => {
+        setEncodedCertificate("");
+        encodedCertificateRef.current = "";
+        setUserHasStagedCert(false);
     };
 
     const generalSettingsPage = (): ReactElement => (
@@ -295,14 +336,51 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
 
     const endpointConfigPage = (): ReactElement => (
         <WizardPage validate={ validateEndpointConfigs }>
-            <ActionEndpointConfigForm
-                initialValues={ null }
-                isCreateFormState={ true }
-                isReadOnly={ false }
-                showHeadersAndParams={ false }
-                authenticationTypes={ FlowExtensionConstants.FLOW_EXTENSION_AUTH_TYPES }
-                onAuthenticationTypeChange={ (type: AuthenticationType): void => setEndpointAuthType(type) }
-                data-componentid={ `${componentId}-endpoint-config-form` }
+            <Box sx={ { "& .secondary-button": { mt: 2 } } }>
+                <ActionEndpointConfigForm
+                    initialValues={ null }
+                    isCreateFormState={ true }
+                    isReadOnly={ false }
+                    showHeadersAndParams={ false }
+                    authenticationTypes={ FlowExtensionConstants.FLOW_EXTENSION_AUTH_TYPES }
+                    onAuthenticationTypeChange={ (type: AuthenticationType): void => setEndpointAuthType(type) }
+                    data-componentid={ `${componentId}-endpoint-config-form` }
+                />
+            </Box>
+            <Divider sx={ { my: 3 } } />
+            <Heading as="h5">
+                { t("flowExtension:createWizard.steps.endpointConfig.certificate.title") }
+            </Heading>
+            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
+                { t("flowExtension:createWizard.steps.endpointConfig.certificate.hint") }
+            </Typography>
+            { encodedCertificate && (
+                <Alert
+                    severity="success"
+                    sx={ { mb: 2 } }
+                    action={ (
+                        <LinkButton
+                            onClick={ handleClearCertificate }
+                            data-componentid={ `${componentId}-clear-certificate` }
+                        >
+                            { t("common:clear") }
+                        </LinkButton>
+                    ) }
+                    data-componentid={ `${componentId}-certificate-status` }
+                >
+                    <Trans
+                        i18nKey={ "flowExtension:createWizard.steps.endpointConfig" +
+                            ".certificate.uploaded" }
+                    >
+                        Certificate configured. You can re-upload to replace it or clear it.
+                    </Trans>
+                </Alert>
+            ) }
+            <AddCertificateFormComponent
+                triggerCertificateUpload={ triggerCertUpload }
+                onSubmit={ handleCertificateSubmit }
+                setShowFinishButton={ setUserHasStagedCert }
+                data-componentid={ `${componentId}-certificate-upload` }
             />
         </WizardPage>
     );
@@ -399,7 +477,16 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
                                         disabled={ nextShouldBeDisabled || isSubmitting }
                                         floated="right"
                                         loading={ isSubmitting }
-                                        onClick={ (): void => submitForm.current?.() }
+                                        onClick={ (): void => {
+                                            if (userHasStagedCert) {
+                                                // Two-phase: extract the staged cert first; handleCertificateSubmit
+                                                // resumes the wizard submit once the PEM is captured.
+                                                pendingSubmit.current = true;
+                                                setTriggerCertUpload();
+                                            } else {
+                                                submitForm.current?.();
+                                            }
+                                        } }
                                         data-componentid={ `${componentId}-submit-button` }
                                     >
                                         { t("authenticationProvider:wizards.buttons.finish") }

@@ -16,15 +16,19 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import CountryFlag from "@oxygen-ui/react/CountryFlag";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import TextField from "@oxygen-ui/react/TextField";
+import { CommonUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/forms";
 import { LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo } from "react";
+import { FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
@@ -33,6 +37,17 @@ import { LocaleJoiningSymbol, ProfileConstants } from "../../../constants";
 import { LocaleFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
 import { EditSection } from "../../shared/edit-section";
+
+/**
+ * Interface for the locale list item.
+ */
+interface LocaleListItemInterface {
+    flag: string;
+    key: string;
+    text: string;
+    value: string;
+    "data-componentId": string;
+};
 
 const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
     fieldSchema: schema,
@@ -51,9 +66,24 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 
+    const enableLegacyLocaleDropdown: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableLegacyLocaleDropdown
+    );
+
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+
+    const allSupportedLocales: { [ key: string ]: LocaleMeta } = CommonUtils.getLocaleList();
+
+    /**
+     * Locale metadata used to populate the dropdown options. Limited to the languages bundled
+     * with the product UI when `enableLegacyLocaleDropdown` is enabled, otherwise the full
+     * locale catalog from `@wso2is/core`.
+     */
+    const localeOptionsSource: { [ key: string ]: LocaleMeta } = enableLegacyLocaleDropdown
+        ? supportedI18nLanguages
+        : allSupportedLocales;
 
     const validateField = (value: unknown): string | undefined => {
         // Validate the required field.
@@ -73,29 +103,43 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
     };
 
     /**
-     * Returns the options for the dropdown.
+     * Prepares the locale options for the dropdown.
+     */
+    const localeOptionsArray: LocaleListItemInterface[] = useMemo(() => {
+        return localeOptionsSource
+            ? Object.keys(localeOptionsSource).map((key: string) => ({
+                "data-componentId": `${ componentId }-profile-form-locale-dropdown-${
+                    localeOptionsSource[key].code }`,
+                flag: (localeOptionsSource[key].flag ?? ProfileConstants.GLOBE) as string,
+                key: localeOptionsSource[key].code,
+                text:
+                    localeOptionsSource[key].name === ProfileConstants.GLOBE
+                        ? localeOptionsSource[key].code
+                        : `${localeOptionsSource[key].name}, ${localeOptionsSource[key].code}`,
+                value: localeOptionsSource[key].code
+            }))
+            : [];
+    }, [ localeOptionsSource ]);
+
+    /**
+     * Returns the options for the legacy dropdown.
      */
     const getLocaleOptions = (): {text: ReactNode, value: string}[] => {
-        return Object.entries(supportedI18nLanguages ?? {}).map(([ key, localMeta ]: [string, LocaleMeta]) => {
-            const localeDisplayText: string = localMeta.name === ProfileConstants.GLOBE
-                ? localMeta.code : `${localMeta.name}, ${localMeta.code}`;
-
+        return localeOptionsArray.map(({ key, flag, text: localeDisplayText, value }: LocaleListItemInterface) => {
             return {
                 text: (
                     <ListItem
                         key={ key }
                         className="p-0"
-                        data-componentid={ `${componentId}-profile-form-locale-dropdown-${localMeta.code}` }
+                        data-componentid={ `${componentId}-profile-form-locale-dropdown-${value}` }
                     >
                         <ListItemIcon>
-                            <CountryFlag
-                                countryCode={ (localMeta.flag ?? ProfileConstants.GLOBE) as string }
-                            />
+                            <CountryFlag countryCode={ flag } />
                         </ListItemIcon>
                         <ListItemText>{ localeDisplayText }</ListItemText>
                     </ListItem>
                 ),
-                value: localMeta.code
+                value
             };
         });
     };
@@ -128,8 +172,8 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
             normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
         }
 
-        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
-            supportedI18nLanguages[normalizedLocale] = {
+        if (updateSupportedLanguage && !localeOptionsSource[normalizedLocale]) {
+            localeOptionsSource[normalizedLocale] = {
                 code: normalizedLocale,
                 name: ProfileConstants.GLOBE,
                 namespaces: []
@@ -145,6 +189,109 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
     const normalizedInitialValue: string = useMemo(() => {
         return normalizeLocaleFormat(initialValue, LocaleJoiningSymbol.HYPHEN, true);
     }, [ initialValue ]);
+
+    const selectedLocale: LocaleListItemInterface = localeOptionsArray.find(
+        (locale: LocaleListItemInterface) =>
+            locale.value === normalizedInitialValue
+    );
+
+    /**
+     * Renders the locale input field. The full locale catalog is too large for a plain dropdown
+     * to be searchable, so it's rendered with an Autocomplete instead when the legacy dropdown
+     * is disabled.
+     */
+    const renderLocaleInputField = (): ReactElement => {
+        if (!enableLegacyLocaleDropdown) {
+            return (
+                <FinalFormField
+                    name={ schema.name }
+                    initialValue={ selectedLocale?.value as string }
+                    validate={ validateField }
+                >
+                    { ({ input, meta }: FieldRenderProps<string>): ReactElement => {
+                        const isError: boolean = (meta.error || meta.submitError) && meta.touched;
+                        const selectedOption: LocaleListItemInterface = localeOptionsArray.find(
+                            (locale: LocaleListItemInterface) => locale.value === input.value
+                        ) ?? null;
+
+                        return (
+                            <Autocomplete
+                                disablePortal
+                                fullWidth
+                                size="small"
+                                disabled={ !isEditable || isUpdating }
+                                disableClearable={ isRequired }
+                                options={ localeOptionsArray }
+                                value={ selectedOption }
+                                isOptionEqualToValue={
+                                    (option: LocaleListItemInterface, value: LocaleListItemInterface) =>
+                                        option.value === value.value
+                                }
+                                getOptionLabel={ (option: LocaleListItemInterface) => option.text ?? "" }
+                                onChange={ (_event: SyntheticEvent, option: LocaleListItemInterface | null) => {
+                                    input.onChange(option?.value ?? "");
+                                } }
+                                onBlur={ input.onBlur }
+                                renderOption={ (props: React.ComponentProps<"li">, option: LocaleListItemInterface) => (
+                                    <li { ...props } key={ option.key }>
+                                        <ListItem
+                                            className="p-0"
+                                            data-componentid={
+                                                `${componentId}-profile-form-locale-dropdown-${option.value}`
+                                            }
+                                        >
+                                            <ListItemIcon>
+                                                <CountryFlag countryCode={ option.flag } />
+                                            </ListItemIcon>
+                                            <ListItemText>{ option.text }</ListItemText>
+                                        </ListItem>
+                                    </li>
+                                ) }
+                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                    <TextField
+                                        { ...params }
+                                        required={ isRequired }
+                                        error={ isError }
+                                        helperText={ isError ? (meta.error || meta.submitError) : undefined }
+                                        placeholder={ t(
+                                            "myAccount:components.profile.forms." +
+                                            "generic.dropdown.placeholder",
+                                            { fieldName: fieldLabel.toLowerCase() }
+                                        ) }
+                                        size="small"
+                                        variant="outlined"
+                                    />
+                                ) }
+                                data-componentid={
+                                    `${componentId}-${schema.name.replace(".", "-")}-select-field` }
+                            />
+                        );
+                    } }
+                </FinalFormField>
+            );
+        }
+
+        return (
+            <FinalFormField
+                component={ SelectFieldAdapter }
+                initialValue={ normalizedInitialValue }
+                isClearable={ !isRequired }
+                ariaLabel={ fieldLabel }
+                name={ schema.name }
+                validate={ validateField }
+                placeholder={ t(
+                    "myAccount:components.profile.forms." +
+                    "generic.dropdown.placeholder",
+                    { fieldName: fieldLabel.toLowerCase() }
+                ) }
+                options={ getLocaleOptions() }
+                readOnly={ !isEditable || isUpdating }
+                disableClearable={ isRequired }
+                data-testid={ `${componentId}-${schema.name.replace(".", "-")}-select-field` }
+                data-componentid={ `${componentId}-${schema.name.replace(".", "-")}-select-field` }
+            />
+        );
+    };
 
     if (isActive) {
         return (
@@ -172,28 +319,7 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
                                             <Grid verticalAlign="middle">
                                                 <Grid.Row columns={ 2 }>
                                                     <Grid.Column width={ 10 }>
-                                                        <FinalFormField
-                                                            component={ SelectFieldAdapter }
-                                                            initialValue={ normalizedInitialValue }
-                                                            isClearable={ !isRequired }
-                                                            ariaLabel={ fieldLabel }
-                                                            name={ schema.name }
-                                                            validate={ validateField }
-                                                            placeholder={ t(
-                                                                "myAccount:components.profile.forms." +
-                                                                "generic.dropdown.placeholder",
-                                                                { fieldName: fieldLabel.toLowerCase() }
-                                                            ) }
-                                                            options={ getLocaleOptions() }
-                                                            readOnly={ !isEditable || isUpdating }
-                                                            disableClearable={ isRequired }
-                                                            data-testid={
-                                                                `${componentId}-${
-                                                                    schema.name.replace(".", "-")}-select-field` }
-                                                            data-componentid={
-                                                                `${componentId}-${
-                                                                    schema.name.replace(".", "-")}-select-field` }
-                                                        />
+                                                        { renderLocaleInputField() }
                                                     </Grid.Column>
                                                     <Grid.Column
                                                         width={ 6 }

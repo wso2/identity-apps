@@ -48,7 +48,16 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    Fragment,
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -72,6 +81,12 @@ import {
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
+
+/**
+ * Clears the gradient backdrop `AppAvatar` renders behind square avatars, so the connector
+ * logo on this page is shown on its own.
+ */
+const CONNECTOR_LOGO_STYLES: CSSProperties = { background: "transparent" };
 
 /**
  * Proptypes for the IDP edit page component.
@@ -588,6 +603,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             connector?.image
                         ) }
                         size="tiny"
+                        style={ CONNECTOR_LOGO_STYLES }
                     />
                 );
             }
@@ -607,6 +623,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         )
                 }
                 size="tiny"
+                style={ CONNECTOR_LOGO_STYLES }
             />
         );
     };

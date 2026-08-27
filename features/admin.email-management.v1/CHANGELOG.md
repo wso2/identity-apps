@@ -1,5 +1,16 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.376
+
+### Patch Changes
+
+- [#10518](https://github.com/wso2/identity-apps/pull/10518) [`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show all languages in the locale dropdown, grouped into default-supported and other languages, in the email and SMS template edit views.
+
+- Updated dependencies [[`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779), [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c)]:
+  - @wso2is/admin.core.v1@2.57.28
+  - @wso2is/core@2.13.5
+  - @wso2is/i18n@2.43.11
+
 ## 2.25.375
 
 ### Patch Changes

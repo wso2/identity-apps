@@ -67,24 +67,57 @@
       "sort_order": 3
     },
     {
+      "_id": "6a5e2cd7e57d307b8ba6d537",
+      "name": "Agent",
+      "dashboard_ids": [],
+      "workspace_ids": [
+        [
+          "6a5e36ee8473bc558cd9b196",
+          "6a5e2d4ce57d307b8ba6d53e",
+          "6a5e2d30e57d307b8ba6d53a",
+          "6a70ad034006641071c04ad6"
+        ],
+        [
+          "6a70ab0487769f0271938e8e",
+          "6a70a9de87769f0271938e7d"
+        ],
+        [
+          "6a5e45698473bc558cd9b202"
+        ],
+        [
+          "6a5e435a8473bc558cd9b1de"
+        ]
+      ],
+      "parent": "6a0d5af342390139f7ac4a07",
+      "sort_order": 4
+    },
+    {
       "_id": "6a0d5af342390139f7ac4a07",
       "name": "Overview",
       "dashboard_ids": [
         "6a0d5b2842390139f7ac4a23",
         "6a0d5b3042390139f7ac4a26",
-        "6a1ea1475bc7c56efa5ea476"
+        "6a1ea1475bc7c56efa5ea476",
+        "6a5e2cd7e57d307b8ba6d537"
       ],
       "workspace_ids": [
         [
           "6a0db96342390139f7ac83e7",
+          "6a1e8f049ab5707f95230c0a",
+          "6a1e90c39ab5707f95230d67",
           "6a1ea2257f7e1a2185865daf",
           "6a1ea3e67f7e1a2185865dbb",
-          "6a1e8f049ab5707f95230c0a",
-          "6a1e90c39ab5707f95230d67"
+          "6a5e2e79e57d307b8ba6d549",
+          "6a5e2d748473bc558cd9b16d"
         ],
         [
-          "6a0db9f004a4ee1e28288627",
+          "6a0db9f004a4ee1e28288627"
+        ],
+        [
           "6a1e8fa55bc7c56efa5e9e89"
+        ],
+        [
+          "6a5e45698473bc558cd9b202"
         ]
       ],
       "parent": null,
@@ -92,834 +125,6 @@
     }
   ],
   "workspaces": [
-    {
-      "_id": "6a1fac5668f9b5457fabcabb",
-      "type": "events",
-      "name": "Active Users",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "bool": {
-            "must": [
-              {
-                "terms": {
-                  "action_name.raw": [
-                    "User-Authentication"
-                  ]
-                }
-              },
-              {
-                "terms": {
-                  "metadata.eventType.raw": [
-                    "overall"
-                  ]
-                }
-              },
-              {
-                "bool": {
-                  "must_not": {
-                    "terms": {
-                      "metadata.serviceProvider.raw": [
-                        "Console"
-                      ]
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "seg": {
-            "filter": {
-              "bool": {
-                "must": [
-                  {
-                    "terms": {
-                      "action_name.raw": [
-                        "User-Authentication"
-                      ]
-                    }
-                  },
-                  {
-                    "terms": {
-                      "metadata.eventType.raw": [
-                        "overall"
-                      ]
-                    }
-                  },
-                  {
-                    "bool": {
-                      "must_not": {
-                        "terms": {
-                          "metadata.serviceProvider.raw": [
-                            "Console"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "aggs": {
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-12w",
-        "to": "now"
-      },
-      "view": "segment",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
-      "analyticType": "seg",
-      "chartType": "bar",
-      "settings": {
-        "singleValueSettings": {
-          "chartHeight": "80",
-          "hideLabel": "true",
-          "trendIndicator": {
-            "isIncreasementGreen": "true"
-          }
-        },
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1fac9168f9b5457fabcabc",
-      "type": "events",
-      "name": "M2M Tokens",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "bool": {
-            "must": [
-              {
-                "terms": {
-                  "action_name.raw": [
-                    "OAuth-Token-Issuance"
-                  ]
-                }
-              },
-              {
-                "terms": {
-                  "metadata.userType.raw": [
-                    "APPLICATION"
-                  ]
-                }
-              },
-              {
-                "terms": {
-                  "metadata.existingTokenUsed": [
-                    "false"
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "seg": {
-            "filter": {
-              "bool": {
-                "must": [
-                  {
-                    "terms": {
-                      "action_name.raw": [
-                        "OAuth-Token-Issuance"
-                      ]
-                    }
-                  },
-                  {
-                    "terms": {
-                      "metadata.userType.raw": [
-                        "APPLICATION"
-                      ]
-                    }
-                  },
-                  {
-                    "terms": {
-                      "metadata.existingTokenUsed": [
-                        "false"
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            "aggs": {
-              "_id|cardinality": {
-                "cardinality": {
-                  "field": "_id"
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-12w",
-        "to": "now"
-      },
-      "view": "segment",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
-      "analyticType": "seg",
-      "chartType": "bar",
-      "settings": {
-        "singleValueSettings": {
-          "chartHeight": "80",
-          "hideLabel": "true",
-          "trendIndicator": {
-            "isIncreasementGreen": "true"
-          }
-        },
-        "metrics": [
-          {
-            "metricName": "count(event_id)"
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1face868f9b5457fabcac4",
-      "type": "events",
-      "name": "Total Tokens",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "bool": {
-            "must": [
-              {
-                "terms": {
-                  "action_name.raw": [
-                    "OAuth-Token-Issuance"
-                  ]
-                }
-              },
-              {
-                "bool": {
-                  "must_not": {
-                    "terms": {
-                      "metadata.clientId.raw": [
-                        "CONSOLE"
-                      ]
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "seg": {
-            "filter": {
-              "bool": {
-                "must": [
-                  {
-                    "terms": {
-                      "action_name.raw": [
-                        "OAuth-Token-Issuance"
-                      ]
-                    }
-                  },
-                  {
-                    "bool": {
-                      "must_not": {
-                        "terms": {
-                          "metadata.clientId.raw": [
-                            "CONSOLE"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "aggs": {
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-12w",
-        "to": "now"
-      },
-      "view": "segment",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=b3c2d767&evtcf[filtersGroups][0][filters][1][field]=metadata.clientId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=CONSOLE&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
-      "analyticType": "seg",
-      "chartType": "bar",
-      "settings": {
-        "singleValueSettings": {
-          "chartHeight": "80",
-          "hideLabel": "true",
-          "trendIndicator": {
-            "isIncreasementGreen": "true"
-          }
-        },
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1faccf8507014e56ac4629",
-      "type": "events",
-      "name": "Self Sign-Ups",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "bool": {
-            "must": [
-              {
-                "terms": {
-                  "action_name.raw": [
-                    "User-Registration"
-                  ]
-                }
-              },
-              {
-                "terms": {
-                  "metadata.userOnboardedMethod.raw": [
-                    "SELF_SIGNUP"
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "seg": {
-            "filter": {
-              "bool": {
-                "must": [
-                  {
-                    "terms": {
-                      "action_name.raw": [
-                        "User-Registration"
-                      ]
-                    }
-                  },
-                  {
-                    "terms": {
-                      "metadata.userOnboardedMethod.raw": [
-                        "SELF_SIGNUP"
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            "aggs": {
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-52w",
-        "to": "now"
-      },
-      "view": "segment",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=17e73a23&evtcf[filtersGroups][0][filters][1][field]=metadata.userOnboardedMethod.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=SELF_SIGNUP&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
-      "analyticType": "seg",
-      "chartType": "bar",
-      "settings": {
-        "singleValueSettings": {
-          "chartHeight": "80",
-          "hideLabel": "true",
-          "trendIndicator": {
-            "isIncreasementGreen": "true"
-          }
-        },
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1facb78507014e56ac4628",
-      "type": "events",
-      "name": "New Users",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "terms": {
-            "action_name.raw": [
-              "User-Registration"
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "seg": {
-            "filter": {
-              "terms": {
-                "action_name.raw": [
-                  "User-Registration"
-                ]
-              }
-            },
-            "aggs": {
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-52w",
-        "to": "now"
-      },
-      "view": "segment",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
-      "analyticType": "seg",
-      "chartType": "bar",
-      "settings": {
-        "singleValueSettings": {
-          "chartHeight": "80",
-          "hideLabel": "true",
-          "trendIndicator": {
-            "isIncreasementGreen": "true"
-          }
-        },
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1fad0868f9b5457fabcac5",
-      "type": "events",
-      "name": "Login Success vs Failure Over Time",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "bool": {
-            "should": [
-              {
-                "bool": {
-                  "must": [
-                    {
-                      "terms": {
-                        "action_name.raw": [
-                          "User-Authentication"
-                        ]
-                      }
-                    },
-                    {
-                      "terms": {
-                        "metadata.eventType.raw": [
-                          "overall"
-                        ]
-                      }
-                    },
-                    {
-                      "bool": {
-                        "must_not": {
-                          "terms": {
-                            "metadata.serviceProvider.raw": [
-                              "Console"
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "bool": {
-                  "must": [
-                    {
-                      "terms": {
-                        "action_name.raw": [
-                          "User-Authentication"
-                        ]
-                      }
-                    },
-                    {
-                      "terms": {
-                        "metadata.eventType.raw": [
-                          "step"
-                        ]
-                      }
-                    },
-                    {
-                      "terms": {
-                        "metadata.authStepSuccess": [
-                          "false"
-                        ]
-                      }
-                    },
-                    {
-                      "bool": {
-                        "must_not": {
-                          "terms": {
-                            "metadata.serviceProvider.raw": [
-                              "Console"
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "entTmSrs": {
-            "filter": {
-              "bool": {
-                "should": [
-                  {
-                    "bool": {
-                      "must": [
-                        {
-                          "terms": {
-                            "action_name.raw": [
-                              "User-Authentication"
-                            ]
-                          }
-                        },
-                        {
-                          "terms": {
-                            "metadata.eventType.raw": [
-                              "overall"
-                            ]
-                          }
-                        },
-                        {
-                          "bool": {
-                            "must_not": {
-                              "terms": {
-                                "metadata.serviceProvider.raw": [
-                                  "Console"
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "bool": {
-                      "must": [
-                        {
-                          "terms": {
-                            "action_name.raw": [
-                              "User-Authentication"
-                            ]
-                          }
-                        },
-                        {
-                          "terms": {
-                            "metadata.eventType.raw": [
-                              "step"
-                            ]
-                          }
-                        },
-                        {
-                          "terms": {
-                            "metadata.authStepSuccess": [
-                              "false"
-                            ]
-                          }
-                        },
-                        {
-                          "bool": {
-                            "must_not": {
-                              "terms": {
-                                "metadata.serviceProvider.raw": [
-                                  "Console"
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            "aggs": {
-              "segment__Login Success": {
-                "filter": {
-                  "terms": {
-                    "metadata.eventType.raw": [
-                      "overall"
-                    ]
-                  }
-                },
-                "aggs": {
-                  "request.time": {
-                    "date_histogram": {
-                      "field": "request.time",
-                      "interval": "24h",
-                      "time_zone": "Asia/Colombo"
-                    },
-                    "aggs": {
-                      "weight|sum": {
-                        "sum": {
-                          "field": "weight",
-                          "missing": 1
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "segment__Login Failure": {
-                "filter": {
-                  "bool": {
-                    "must": [
-                      {
-                        "terms": {
-                          "metadata.eventType.raw": [
-                            "step"
-                          ]
-                        }
-                      },
-                      {
-                        "terms": {
-                          "metadata.authStepSuccess": [
-                            "false"
-                          ]
-                        }
-                      }
-                    ]
-                  }
-                },
-                "aggs": {
-                  "request.time": {
-                    "date_histogram": {
-                      "field": "request.time",
-                      "interval": "24h",
-                      "time_zone": "Asia/Colombo"
-                    },
-                    "aggs": {
-                      "weight|sum": {
-                        "sum": {
-                          "field": "weight",
-                          "missing": 1
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-52w",
-        "to": "now"
-      },
-      "view": "time",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
-      "analyticType": "entTmSrs",
-      "chartType": "line",
-      "settings": {
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-          }
-        ],
-        "interval": "24h",
-        "segments": [
-          {
-            "name": "Login Success",
-            "filterGroups": [
-              {
-                "id": "bf054cca",
-                "filters": [
-                  {
-                    "id": "2e2dc3c1",
-                    "field": "metadata.eventType.raw",
-                    "name": "",
-                    "op": "contains",
-                    "value": [
-                      "overall"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Login Failure",
-            "filterGroups": [
-              {
-                "id": "bb97e258",
-                "filters": [
-                  {
-                    "id": "52cd10d0",
-                    "field": "metadata.eventType.raw",
-                    "name": "",
-                    "op": "contains",
-                    "value": [
-                      "step"
-                    ]
-                  },
-                  {
-                    "id": "ab18b766",
-                    "field": "metadata.authStepSuccess",
-                    "name": "",
-                    "op": "eq",
-                    "value": [
-                      "false"
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "_id": "6a1fad328507014e56ac462e",
-      "type": "events",
-      "name": "Registrations Over Time",
-      "args": "",
-      "es_query": {
-        "post_filter": {
-          "terms": {
-            "action_name.raw": [
-              "User-Registration"
-            ]
-          }
-        },
-        "size": 0,
-        "aggs": {
-          "entTmSrs": {
-            "filter": {
-              "terms": {
-                "action_name.raw": [
-                  "User-Registration"
-                ]
-              }
-            },
-            "aggs": {
-              "metadata.userOnboardedMethod.raw": {
-                "terms": {
-                  "field": "metadata.userOnboardedMethod.raw",
-                  "size": 5,
-                  "min_doc_count": 1,
-                  "order": {
-                    "weight|sum": "desc"
-                  },
-                  "missing": "(none)"
-                },
-                "aggs": {
-                  "request.time": {
-                    "date_histogram": {
-                      "field": "request.time",
-                      "interval": "1d",
-                      "time_zone": "Asia/Colombo"
-                    },
-                    "aggs": {
-                      "weight|sum": {
-                        "sum": {
-                          "field": "weight",
-                          "missing": 1
-                        }
-                      }
-                    }
-                  },
-                  "weight|sum": {
-                    "sum": {
-                      "field": "weight",
-                      "missing": 1
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "track_total_hits": false
-      },
-      "dateRange": {
-        "from": "-12w",
-        "to": "now"
-      },
-      "view": "time",
-      "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
-      "analyticType": "entTmSrs",
-      "chartType": "line",
-      "settings": {
-        "metrics": [
-          {
-            "metricName": "sum(events)"
-          }
-        ],
-        "interval": "1d",
-        "groups": [
-          {
-            "field": "metadata.userOnboardedMethod.raw",
-            "func": "terms",
-            "by": "metric"
-          }
-        ]
-      }
-    },
     {
       "_id": "6a0db96342390139f7ac83e7",
       "type": "events",
@@ -953,6 +158,17 @@
                     }
                   }
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -987,15 +203,25 @@
                         }
                       }
                     }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
                   }
                 ]
               }
             },
             "aggs": {
-              "weight|sum": {
-                "sum": {
-                  "field": "weight",
-                  "missing": 1
+              "user_id|cardinality": {
+                "cardinality": {
+                  "field": "user_id.raw"
                 }
               }
             }
@@ -1008,7 +234,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=8517df45&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=count%28distinct%28user_id%29%29&seg[metrics][0][customName]=%20",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -1021,7 +247,7 @@
         },
         "metrics": [
           {
-            "metricName": "sum(events)"
+            "metricName": "count(distinct(user_id))"
           }
         ]
       }
@@ -1051,6 +277,17 @@
                           "overall"
                         ]
                       }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1077,6 +314,17 @@
                         "metadata.authStepSuccess": [
                           "false"
                         ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
                       }
                     }
                   ]
@@ -1107,6 +355,17 @@
                               "overall"
                             ]
                           }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.userStoreDomain.raw": [
+                                  "AGENT"
+                                ]
+                              }
+                            }
+                          }
                         }
                       ]
                     }
@@ -1133,6 +392,17 @@
                             "metadata.authStepSuccess": [
                               "false"
                             ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.userStoreDomain.raw": [
+                                  "AGENT"
+                                ]
+                              }
+                            }
                           }
                         }
                       ]
@@ -1205,7 +475,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][1][filters][0][id]=f44a8a2b&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=a1e663e3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=096cebdf&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20&seg[segments][0][name]=Login%20Success&seg[segments][0][filterGroups][0][id]=b73479b1&seg[segments][0][filterGroups][0][filters][0][id]=7939db5c&seg[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=overall&seg[segments][1][name]=Login%20Failure&seg[segments][1][filterGroups][0][id]=f45279f3&seg[segments][1][filterGroups][0][filters][0][id]=377b153b&seg[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=step&seg[segments][1][filterGroups][0][filters][1][id]=13c4b817&seg[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[chartType]=pie",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=3e4fa960&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=f44a8a2b&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=a1e663e3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=096cebdf&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=ee672ec4&evtcf[filtersGroups][1][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20&seg[segments][0][name]=Login%20Success&seg[segments][0][filterGroups][0][id]=b73479b1&seg[segments][0][filterGroups][0][filters][0][id]=7939db5c&seg[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=overall&seg[segments][1][name]=Login%20Failure&seg[segments][1][filterGroups][0][id]=f45279f3&seg[segments][1][filterGroups][0][filters][0][id]=377b153b&seg[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=step&seg[segments][1][filterGroups][0][filters][1][id]=13c4b817&seg[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[chartType]=pie",
       "analyticType": "seg",
       "chartType": "pie",
       "settings": {
@@ -1310,6 +580,17 @@
                     }
                   }
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -1355,6 +636,17 @@
                         }
                       }
                     }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
                   }
                 ]
               }
@@ -1395,7 +687,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=4b9d6fd9&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=3c6d0e27&evtcf[filtersGroups][0][filters][2][field]=metadata.authenticators.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=NOT_AVAILABLE&evtcf[filtersGroups][0][filters][3][id]=bf4b88a7&evtcf[filtersGroups][0][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=Console&seg[groups][0][field]=metadata.authenticators.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=4b9d6fd9&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=3c6d0e27&evtcf[filtersGroups][0][filters][2][field]=metadata.authenticators.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=NOT_AVAILABLE&evtcf[filtersGroups][0][filters][3][id]=bf4b88a7&evtcf[filtersGroups][0][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=Console&evtcf[filtersGroups][0][filters][4][id]=ee2b5fd5&evtcf[filtersGroups][0][filters][4][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][4][op]=not_contain&evtcf[filtersGroups][0][filters][4][value][0]=AGENT&seg[groups][0][field]=metadata.authenticators.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
       "analyticType": "seg",
       "chartType": "pie",
       "settings": {
@@ -1450,6 +742,17 @@
                           }
                         }
                       }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -1484,6 +787,17 @@
                           "terms": {
                             "metadata.serviceProvider.raw": [
                               "Console"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
                             ]
                           }
                         }
@@ -1528,6 +842,17 @@
                               }
                             }
                           }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.userStoreDomain.raw": [
+                                  "AGENT"
+                                ]
+                              }
+                            }
+                          }
                         }
                       ]
                     }
@@ -1562,6 +887,17 @@
                               "terms": {
                                 "metadata.serviceProvider.raw": [
                                   "Console"
+                                ]
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.userStoreDomain.raw": [
+                                  "AGENT"
                                 ]
                               }
                             }
@@ -1649,7 +985,7 @@
       },
       "view": "time",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=e4fa5862&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evtcf[filtersGroups][1][filters][4][id]=3f074353&evtcf[filtersGroups][1][filters][4][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][1][filters][4][op]=not_contain&evtcf[filtersGroups][1][filters][4][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
       "analyticType": "entTmSrs",
       "chartType": "line",
       "settings": {
@@ -1732,6 +1068,17 @@
                     "overall"
                   ]
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -1754,6 +1101,17 @@
                       "metadata.eventType.raw": [
                         "overall"
                       ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
                     }
                   }
                 ]
@@ -1790,7 +1148,7 @@
       },
       "view": "time",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=%20Total%20Succesfull%20Login&evt_ts[metrics][1][i]=641d37f2&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Total%20Unique%20Users&evt_ts[interval]=24h",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=269fd28b&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=%20Total%20Succesfull%20Login&evt_ts[metrics][1][i]=641d37f2&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Total%20Unique%20Users&evt_ts[interval]=24h",
       "analyticType": "entTmSrs",
       "chartType": "line",
       "settings": {
@@ -1846,6 +1204,17 @@
                     }
                   ]
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -1884,6 +1253,17 @@
                           }
                         }
                       ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
                     }
                   }
                 ]
@@ -1925,7 +1305,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=564bd5af&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=106390bd&evtcf[filtersGroups][0][filters][2][field]=request.user_agent.device.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Logins%20By%20Device&seg[groups][0][field]=request.user_agent.device.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=564bd5af&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=106390bd&evtcf[filtersGroups][0][filters][2][field]=request.user_agent.device.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&evtcf[filtersGroups][0][filters][3][id]=fd8e816d&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Logins%20By%20Device&seg[groups][0][field]=request.user_agent.device.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -1977,6 +1357,17 @@
                     }
                   }
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -2007,6 +1398,17 @@
                         "terms": {
                           "metadata.serviceProvider.raw": [
                             "Console"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
                           ]
                         }
                       }
@@ -2051,7 +1453,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=228de34f&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Login%20By%20Application&seg[groups][0][field]=metadata.serviceProvider.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=228de34f&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=1f11a71d&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Login%20By%20Application&seg[groups][0][field]=metadata.serviceProvider.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -2091,6 +1493,17 @@
                   "metadata.eventType.raw": [
                     "overall"
                   ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
                 }
               }
             ]
@@ -2133,6 +1546,17 @@
                         "overall"
                       ]
                     }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
                   }
                 ]
               }
@@ -2172,7 +1596,7 @@
       },
       "view": "map",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=cc5e6918&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&mp[metrics][0][metricName]=sum%28events%29&mp[area][top_left][lat]=69.54987728327795&mp[area][top_left][lon]=-96.37207031250001&mp[area][bottom_right][lat]=53.14677033085084&mp[area][bottom_right][lon]=-38.49609375000001&mp[viewport][center][0]=62.44834907791381&mp[viewport][center][1]=-67.45056152343751&mp[viewport][zoom]=5"
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=cc5e6918&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=14da6720&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&mp[metrics][0][metricName]=sum%28events%29&mp[area][top_left][lat]=69.54987728327795&mp[area][top_left][lon]=-96.37207031250001&mp[area][bottom_right][lat]=53.14677033085084&mp[area][bottom_right][lon]=-38.49609375000001&mp[viewport][center][0]=62.44834907791381&mp[viewport][center][1]=-67.45056152343751&mp[viewport][zoom]=5"
     },
     {
       "_id": "6a1e90c39ab5707f95230d67",
@@ -2181,9 +1605,26 @@
       "args": "",
       "es_query": {
         "post_filter": {
-          "terms": {
-            "action_name.raw": [
-              "User-Registration"
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
+              }
             ]
           }
         },
@@ -2191,9 +1632,26 @@
         "aggs": {
           "seg": {
             "filter": {
-              "terms": {
-                "action_name.raw": [
-                  "User-Registration"
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userstoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
+                  }
                 ]
               }
             },
@@ -2214,7 +1672,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=5d1d436a&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -2254,6 +1712,17 @@
                     "SELF_SIGNUP"
                   ]
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -2277,6 +1746,17 @@
                         "SELF_SIGNUP"
                       ]
                     }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userstoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
                   }
                 ]
               }
@@ -2298,7 +1778,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=17e73a23&evtcf[filtersGroups][0][filters][1][field]=metadata.userOnboardedMethod.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=SELF_SIGNUP&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=17e73a23&evtcf[filtersGroups][0][filters][1][field]=metadata.userOnboardedMethod.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=SELF_SIGNUP&evtcf[filtersGroups][0][filters][2][id]=f706448d&evtcf[filtersGroups][0][filters][2][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=%20",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -2323,9 +1803,26 @@
       "args": "",
       "es_query": {
         "post_filter": {
-          "terms": {
-            "action_name.raw": [
-              "User-Registration"
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
+              }
             ]
           }
         },
@@ -2333,9 +1830,26 @@
         "aggs": {
           "seg": {
             "filter": {
-              "terms": {
-                "action_name.raw": [
-                  "User-Registration"
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userstoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
+                  }
                 ]
               }
             },
@@ -2375,7 +1889,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&seg[groups][0][field]=metadata.userOnboardedMethod.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=c1838bf7&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[groups][0][field]=metadata.userOnboardedMethod.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[chartType]=pie",
       "analyticType": "seg",
       "chartType": "pie",
       "settings": {
@@ -2401,9 +1915,26 @@
       "args": "",
       "es_query": {
         "post_filter": {
-          "terms": {
-            "action_name.raw": [
-              "User-Registration"
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
+              }
             ]
           }
         },
@@ -2411,9 +1942,26 @@
         "aggs": {
           "entTmSrs": {
             "filter": {
-              "terms": {
-                "action_name.raw": [
-                  "User-Registration"
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userstoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
+                  }
                 ]
               }
             },
@@ -2462,7 +2010,7 @@
       },
       "view": "time",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=e092b4de&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
       "analyticType": "entTmSrs",
       "chartType": "line",
       "settings": {
@@ -2503,6 +2051,17 @@
                     "END"
                   ]
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -2525,6 +2084,17 @@
                       "metadata.currentNodeId.raw": [
                         "END"
                       ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
                     }
                   }
                 ]
@@ -2566,7 +2136,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration-Flow&evtcf[filtersGroups][0][filters][1][id]=0480937e&evtcf[filtersGroups][0][filters][1][field]=metadata.currentNodeId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=END&seg[groups][0][field]=metadata.applicationId.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Registrations%20By%20Application&seg[chartType]=bar",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration-Flow&evtcf[filtersGroups][0][filters][1][id]=0480937e&evtcf[filtersGroups][0][filters][1][field]=metadata.currentNodeId.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=END&evtcf[filtersGroups][0][filters][2][id]=192589e3&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&seg[groups][0][field]=metadata.applicationId.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[metrics][0][metricName]=sum%28events%29&seg[metrics][0][customName]=Registrations%20By%20Application&seg[chartType]=bar",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -2615,6 +2185,17 @@
                     "false"
                   ]
                 }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -2645,6 +2226,17 @@
                         "false"
                       ]
                     }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    }
                   }
                 ]
               }
@@ -2665,7 +2257,7 @@
       },
       "view": "segment",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&evtcf[filtersGroups][0][filters][3][id]=9adf4672&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
       "analyticType": "seg",
       "chartType": "bar",
       "settings": {
@@ -3271,6 +2863,1961 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "_id": "6a5e2e79e57d307b8ba6d549",
+      "type": "events",
+      "name": "New Agents",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userstoreDomain.raw": [
+                    "AGENT"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=a2892735&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e2d748473bc558cd9b16d",
+      "type": "events",
+      "name": "Agent Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "exists": {
+                              "field": "metadata.actor.raw"
+                            }
+                          },
+                          {
+                            "exists": {
+                              "field": "metadata.actor"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.actor.raw": [
+                              "NOT_AVAILABLE"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "should": [
+                              {
+                                "exists": {
+                                  "field": "metadata.actor.raw"
+                                }
+                              },
+                              {
+                                "exists": {
+                                  "field": "metadata.actor"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.actor.raw": [
+                                  "NOT_AVAILABLE"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        },
+        "track_total_hits": false
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=32fc6113&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=83cacaad&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e45698473bc558cd9b202",
+      "type": "events",
+      "name": "Agent Tokens Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "exists": {
+                              "field": "metadata.actor.raw"
+                            }
+                          },
+                          {
+                            "exists": {
+                              "field": "metadata.actor"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.actor.raw": [
+                              "NOT_AVAILABLE"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "should": [
+                              {
+                                "exists": {
+                                  "field": "metadata.actor.raw"
+                                }
+                              },
+                              {
+                                "exists": {
+                                  "field": "metadata.actor"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.actor.raw": [
+                                  "NOT_AVAILABLE"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Direct Agent Logins": {
+                "filter": {
+                  "terms": {
+                    "metadata.userStoreDomain.raw": [
+                      "AGENT"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "_id|cardinality": {
+                        "cardinality": {
+                          "field": "_id"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "segment__Agent On Behalf of User": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "bool": {
+                          "should": [
+                            {
+                              "exists": {
+                                "field": "metadata.actor.raw"
+                              }
+                            },
+                            {
+                              "exists": {
+                                "field": "metadata.actor"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "bool": {
+                          "must_not": {
+                            "terms": {
+                              "metadata.actor.raw": [
+                                "NOT_AVAILABLE"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "_id|cardinality": {
+                        "cardinality": {
+                          "field": "_id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&evt_ts[metrics][0][metricName]=count%28event_id%29&evt_ts[metrics][0][customName]=%20&evt_ts[segments][0][name]=Direct%20Agent%20Logins&evt_ts[segments][0][filterGroups][0][id]=d306199d&evt_ts[segments][0][filterGroups][0][filters][0][id]=12a24629&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.userStoreDomain.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=AGENT&evt_ts[segments][1][name]=Agent%20On%20Behalf%20of%20User&evt_ts[segments][1][filterGroups][0][id]=ec24a1bf&evt_ts[segments][1][filterGroups][0][filters][0][id]=b140ce64&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.actor.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=exists&evt_ts[segments][1][filterGroups][0][filters][0][value]=&evt_ts[segments][1][filterGroups][0][filters][1][id]=ec5b72df&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.actor.raw&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=not_contain&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=NOT_AVAILABLE",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "count(event_id)",
+            "customName": " "
+          }
+        ],
+        "segments": [
+          {
+            "name": "Direct Agent Logins",
+            "filterGroups": [
+              {
+                "id": "d306199d",
+                "filters": [
+                  {
+                    "id": "12a24629",
+                    "field": "metadata.userStoreDomain.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "AGENT"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Agent On Behalf of User",
+            "filterGroups": [
+              {
+                "id": "ec24a1bf",
+                "filters": [
+                  {
+                    "id": "b140ce64",
+                    "field": "metadata.actor.raw",
+                    "name": "",
+                    "op": "exists",
+                    "value": ""
+                  },
+                  {
+                    "id": "ec5b72df",
+                    "field": "metadata.actor.raw",
+                    "name": "",
+                    "op": "not_contain",
+                    "value": [
+                      "NOT_AVAILABLE"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e435a8473bc558cd9b1de",
+      "type": "events",
+      "name": "Agent Logins Over Time",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "overall"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "User-Authentication"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.eventType.raw": [
+                          "step"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.authStepSuccess": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "entTmSrs": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "overall"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "User-Authentication"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.eventType.raw": [
+                              "step"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.authStepSuccess": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Login Success": {
+                "filter": {
+                  "terms": {
+                    "metadata.eventType.raw": [
+                      "overall"
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      },
+                      "user_id|cardinality": {
+                        "cardinality": {
+                          "field": "user_id.raw"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "segment__Login Fail": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "metadata.eventType.raw": [
+                            "step"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.authStepSuccess": [
+                            "false"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "request.time": {
+                    "date_histogram": {
+                      "field": "request.time",
+                      "interval": "1d",
+                      "time_zone": "Asia/Colombo"
+                    },
+                    "aggs": {
+                      "weight|sum": {
+                        "sum": {
+                          "field": "weight",
+                          "missing": 1
+                        }
+                      },
+                      "user_id|cardinality": {
+                        "cardinality": {
+                          "field": "user_id.raw"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-7d",
+        "to": "now"
+      },
+      "view": "time",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=59753cd6&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=f44a8a2b&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=a1e663e3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=096cebdf&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=02faa08b&evtcf[filtersGroups][1][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=contains&evtcf[filtersGroups][1][filters][3][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=Total%20Agents&evt_ts[metrics][1][i]=d12efaf0&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Unique%20Agents&evt_ts[interval]=1d&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=70dbdc13&evt_ts[segments][0][filterGroups][0][filters][0][id]=1d0d6468&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Fail&evt_ts[segments][1][filterGroups][0][id]=b0bf4013&evt_ts[segments][1][filterGroups][0][filters][0][id]=52a2bfd5&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=190d2f42&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
+      "analyticType": "entTmSrs",
+      "chartType": "line",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "sum(events)",
+            "customName": "Total Agents"
+          },
+          {
+            "i": "d12efaf0",
+            "metricName": "count(distinct(user_id))",
+            "customName": "Unique Agents"
+          }
+        ],
+        "interval": "1d",
+        "segments": [
+          {
+            "name": "Login Success",
+            "filterGroups": [
+              {
+                "id": "70dbdc13",
+                "filters": [
+                  {
+                    "id": "1d0d6468",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "overall"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Login Fail",
+            "filterGroups": [
+              {
+                "id": "b0bf4013",
+                "filters": [
+                  {
+                    "id": "52a2bfd5",
+                    "field": "metadata.eventType.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "step"
+                    ]
+                  },
+                  {
+                    "id": "190d2f42",
+                    "field": "metadata.authStepSuccess",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e36ee8473bc558cd9b196",
+      "type": "events",
+      "name": "Agent Tokens",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "exists": {
+                              "field": "metadata.actor.raw"
+                            }
+                          },
+                          {
+                            "exists": {
+                              "field": "metadata.actor"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.actor.raw": [
+                              "NOT_AVAILABLE"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "should": [
+                              {
+                                "exists": {
+                                  "field": "metadata.actor.raw"
+                                }
+                              },
+                              {
+                                "exists": {
+                                  "field": "metadata.actor"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.actor.raw": [
+                                  "NOT_AVAILABLE"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e2d4ce57d307b8ba6d53e",
+      "type": "events",
+      "name": "Active Agents",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Authentication"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.eventType.raw": [
+                    "overall"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.serviceProvider.raw": [
+                        "Console"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userStoreDomain.raw": [
+                    "AGENT"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Authentication"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.eventType.raw": [
+                        "overall"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.serviceProvider.raw": [
+                            "Console"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "user_id|cardinality": {
+                "cardinality": {
+                  "field": "user_id.raw"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-12w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=7a68f6a5&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=contains&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=count%28distinct%28user_id%29%29&seg[metrics][0][customName]=%20&seg[segments]=",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "metricName": "count(distinct(user_id))"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a5e2d30e57d307b8ba6d53a",
+      "type": "events",
+      "name": "New Agents",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Registration"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userstoreDomain.raw": [
+                    "AGENT"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Registration"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userstoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=a2892735&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a70ad034006641071c04ad6",
+      "type": "events",
+      "name": "Active Agent Sessions",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "User-Session"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.userStoreDomain.raw": [
+                    "AGENT"
+                  ]
+                }
+              },
+              {
+                "range": {
+                  "metadata.terminationTimestamp": {
+                    "gt": "now-0m/m",
+                    "time_zone": "Asia/Colombo"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "User-Session"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.userStoreDomain.raw": [
+                        "AGENT"
+                      ]
+                    }
+                  },
+                  {
+                    "range": {
+                      "metadata.terminationTimestamp": {
+                        "gt": "now-0m/m",
+                        "time_zone": "Asia/Colombo"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata__sessionId|cardinality": {
+                "cardinality": {
+                  "field": "metadata.sessionId.raw"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-7d",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Session&evtcf[filtersGroups][0][filters][1][id]=33b2c176&evtcf[filtersGroups][0][filters][1][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&evtcf[filtersGroups][0][filters][2][id]=9522531d&evtcf[filtersGroups][0][filters][2][field]=metadata.terminationTimestamp&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=after&evtcf[filtersGroups][0][filters][2][value]=-0m&seg[metrics][0][field]=metadata.sessionId.raw&seg[metrics][0][func]=cardinality&seg[metrics][0][customName]=%20",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "singleValueSettings": {
+          "chartHeight": "80",
+          "hideLabel": "true",
+          "trendIndicator": {
+            "isIncreasementGreen": "true"
+          }
+        },
+        "metrics": [
+          {
+            "field": "metadata.sessionId.raw",
+            "func": "cardinality"
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a70ab0487769f0271938e8e",
+      "type": "events",
+      "name": "Agent Token Distribution",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.userStoreDomain.raw": [
+                          "AGENT"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "terms": {
+                        "action_name.raw": [
+                          "OAuth-Token-Issuance"
+                        ]
+                      }
+                    },
+                    {
+                      "terms": {
+                        "metadata.existingTokenUsed": [
+                          "false"
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "exists": {
+                              "field": "metadata.actor.raw"
+                            }
+                          },
+                          {
+                            "exists": {
+                              "field": "metadata.actor"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "must_not": {
+                          "terms": {
+                            "metadata.actor.raw": [
+                              "NOT_AVAILABLE"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.userStoreDomain.raw": [
+                              "AGENT"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must": [
+                        {
+                          "terms": {
+                            "action_name.raw": [
+                              "OAuth-Token-Issuance"
+                            ]
+                          }
+                        },
+                        {
+                          "terms": {
+                            "metadata.existingTokenUsed": [
+                              "false"
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "should": [
+                              {
+                                "exists": {
+                                  "field": "metadata.actor.raw"
+                                }
+                              },
+                              {
+                                "exists": {
+                                  "field": "metadata.actor"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "bool": {
+                            "must_not": {
+                              "terms": {
+                                "metadata.actor.raw": [
+                                  "NOT_AVAILABLE"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "segment__Agent Tokens": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "action_name.raw": [
+                            "OAuth-Token-Issuance"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.existingTokenUsed": [
+                            "false"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
+                    }
+                  }
+                }
+              },
+              "segment__Agent Tokens  as Actors": {
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "terms": {
+                          "action_name.raw": [
+                            "OAuth-Token-Issuance"
+                          ]
+                        }
+                      },
+                      {
+                        "terms": {
+                          "metadata.existingTokenUsed": [
+                            "false"
+                          ]
+                        }
+                      },
+                      {
+                        "bool": {
+                          "should": [
+                            {
+                              "exists": {
+                                "field": "metadata.actor.raw"
+                              }
+                            },
+                            {
+                              "exists": {
+                                "field": "metadata.actor"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "bool": {
+                          "must_not": {
+                            "terms": {
+                              "metadata.actor.raw": [
+                                "NOT_AVAILABLE"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "aggs": {
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
+                    }
+                  }
+                }
+              },
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=count%28event_id%29&seg[chartType]=pie&seg[segments][0][name]=Agent%20Tokens&seg[segments][0][filterGroups][0][id]=f78dc78f&seg[segments][0][filterGroups][0][filters][0][id]=f2a252dc&seg[segments][0][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][0][filterGroups][0][filters][0][name]=&seg[segments][0][filterGroups][0][filters][0][op]=contains&seg[segments][0][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][0][filterGroups][0][filters][1][id]=ed20a788&seg[segments][0][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][0][filterGroups][0][filters][1][name]=&seg[segments][0][filterGroups][0][filters][1][op]=eq&seg[segments][0][filterGroups][0][filters][1][value][0]=false&seg[segments][0][filterGroups][0][filters][2][id]=f6996751&seg[segments][0][filterGroups][0][filters][2][field]=metadata.userStoreDomain.raw&seg[segments][0][filterGroups][0][filters][2][name]=&seg[segments][0][filterGroups][0][filters][2][op]=contains&seg[segments][0][filterGroups][0][filters][2][value][0]=AGENT&seg[segments][1][name]=Agent%20Tokens%20%20as%20Actors&seg[segments][1][filterGroups][0][id]=af80a108&seg[segments][1][filterGroups][0][filters][0][id]=4c082064&seg[segments][1][filterGroups][0][filters][0][field]=action_name.raw&seg[segments][1][filterGroups][0][filters][0][name]=&seg[segments][1][filterGroups][0][filters][0][op]=contains&seg[segments][1][filterGroups][0][filters][0][value][0]=OAuth-Token-Issuance&seg[segments][1][filterGroups][0][filters][1][id]=c6abf3f9&seg[segments][1][filterGroups][0][filters][1][field]=metadata.existingTokenUsed&seg[segments][1][filterGroups][0][filters][1][name]=&seg[segments][1][filterGroups][0][filters][1][op]=eq&seg[segments][1][filterGroups][0][filters][1][value][0]=false&seg[segments][1][filterGroups][0][filters][2][id]=4c43859d&seg[segments][1][filterGroups][0][filters][2][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][2][name]=&seg[segments][1][filterGroups][0][filters][2][op]=exists&seg[segments][1][filterGroups][0][filters][2][value]=&seg[segments][1][filterGroups][0][filters][3][id]=46a2fb34&seg[segments][1][filterGroups][0][filters][3][field]=metadata.actor.raw&seg[segments][1][filterGroups][0][filters][3][name]=&seg[segments][1][filterGroups][0][filters][3][op]=not_contain&seg[segments][1][filterGroups][0][filters][3][value][0]=NOT_AVAILABLE",
+      "analyticType": "seg",
+      "chartType": "pie",
+      "settings": {
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ],
+        "chartType": "pie",
+        "segments": [
+          {
+            "name": "Agent Tokens",
+            "filterGroups": [
+              {
+                "id": "f78dc78f",
+                "filters": [
+                  {
+                    "id": "f2a252dc",
+                    "field": "action_name.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "OAuth-Token-Issuance"
+                    ]
+                  },
+                  {
+                    "id": "ed20a788",
+                    "field": "metadata.existingTokenUsed",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  },
+                  {
+                    "id": "f6996751",
+                    "field": "metadata.userStoreDomain.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "AGENT"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Agent Tokens  as Actors",
+            "filterGroups": [
+              {
+                "id": "af80a108",
+                "filters": [
+                  {
+                    "id": "4c082064",
+                    "field": "action_name.raw",
+                    "name": "",
+                    "op": "contains",
+                    "value": [
+                      "OAuth-Token-Issuance"
+                    ]
+                  },
+                  {
+                    "id": "c6abf3f9",
+                    "field": "metadata.existingTokenUsed",
+                    "name": "",
+                    "op": "eq",
+                    "value": [
+                      "false"
+                    ]
+                  },
+                  {
+                    "id": "4c43859d",
+                    "field": "metadata.actor.raw",
+                    "name": "",
+                    "op": "exists",
+                    "value": ""
+                  },
+                  {
+                    "id": "46a2fb34",
+                    "field": "metadata.actor.raw",
+                    "name": "",
+                    "op": "not_contain",
+                    "value": [
+                      "NOT_AVAILABLE"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6a70a9de87769f0271938e7d",
+      "type": "events",
+      "name": "Agent Usage by Users",
+      "args": "",
+      "es_query": {
+        "post_filter": {
+          "bool": {
+            "must": [
+              {
+                "terms": {
+                  "action_name.raw": [
+                    "OAuth-Token-Issuance"
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "metadata.existingTokenUsed": [
+                    "false"
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "should": [
+                    {
+                      "exists": {
+                        "field": "metadata.actor.raw"
+                      }
+                    },
+                    {
+                      "exists": {
+                        "field": "metadata.actor"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must_not": {
+                    "terms": {
+                      "metadata.actor.raw": [
+                        "NOT_AVAILABLE"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "seg": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "terms": {
+                      "action_name.raw": [
+                        "OAuth-Token-Issuance"
+                      ]
+                    }
+                  },
+                  {
+                    "terms": {
+                      "metadata.existingTokenUsed": [
+                        "false"
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "should": [
+                        {
+                          "exists": {
+                            "field": "metadata.actor.raw"
+                          }
+                        },
+                        {
+                          "exists": {
+                            "field": "metadata.actor"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "terms": {
+                          "metadata.actor.raw": [
+                            "NOT_AVAILABLE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "aggs": {
+              "metadata.actor.raw": {
+                "terms": {
+                  "field": "metadata.actor.raw",
+                  "size": 5,
+                  "min_doc_count": 1,
+                  "order": {
+                    "_id|cardinality": "desc"
+                  },
+                  "missing": "(none)"
+                },
+                "aggs": {
+                  "metadata.userId.raw": {
+                    "terms": {
+                      "field": "metadata.userId.raw",
+                      "size": 5,
+                      "min_doc_count": 1,
+                      "order": {
+                        "_id|cardinality": "desc"
+                      },
+                      "missing": "(none)"
+                    },
+                    "aggs": {
+                      "_id|cardinality": {
+                        "cardinality": {
+                          "field": "_id"
+                        }
+                      }
+                    }
+                  },
+                  "_id|cardinality": {
+                    "cardinality": {
+                      "field": "_id"
+                    }
+                  }
+                }
+              },
+              "_id|cardinality": {
+                "cardinality": {
+                  "field": "_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dateRange": {
+        "from": "-52w",
+        "to": "now"
+      },
+      "view": "segment",
+      "funnel_query": {},
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=804033d6&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=4558e4e7&evtcf[filtersGroups][0][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=exists&evtcf[filtersGroups][0][filters][2][value]=&evtcf[filtersGroups][0][filters][3][id]=09a65a7e&evtcf[filtersGroups][0][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][0][filters][3][name]=&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=NOT_AVAILABLE&seg[groups][0][field]=metadata.actor.raw&seg[groups][0][func]=terms&seg[groups][0][by]=metric&seg[groups][1][field]=metadata.userId.raw&seg[groups][1][func]=terms&seg[groups][1][by]=metric&seg[metrics][0][metricName]=count%28event_id%29&seg[chartType]=bar",
+      "analyticType": "seg",
+      "chartType": "bar",
+      "settings": {
+        "groups": [
+          {
+            "field": "metadata.actor.raw",
+            "func": "terms",
+            "by": "metric"
+          },
+          {
+            "field": "metadata.userId.raw",
+            "func": "terms",
+            "by": "metric"
+          }
+        ],
+        "metrics": [
+          {
+            "metricName": "count(event_id)"
+          }
+        ],
+        "chartType": "bar"
       }
     }
   ]

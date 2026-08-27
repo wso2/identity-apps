@@ -223,15 +223,6 @@ export interface PolicyConsentSummaryInterface {
 }
 
 /**
- * Paginated list response for user consent records.
- */
-export interface PolicyConsentListResponseInterface {
-    Consents: PolicyConsentSummaryInterface[];
-    links?: Array<{ rel: "next" | "previous"; href: string }>;
-    totalResults: number;
-}
-
-/**
  * A data element within a consented purpose.
  */
 interface ConsentedElementInterface {

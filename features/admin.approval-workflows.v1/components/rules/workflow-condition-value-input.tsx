@@ -26,6 +26,7 @@ import {
     ListDataInterface
 } from "@wso2is/admin.rules.v1/models/meta";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { Dispatch, FunctionComponent } from "react";
 import RoleAudienceValueSelector from "./role-audience-value-selector";
@@ -66,8 +67,8 @@ const WorkflowConditionValueInput: FunctionComponent<WorkflowConditionValueInput
     expressionValue: _expressionValue,
     metaValue,
     setIsResourceMissing,
-    hiddenResources: _hiddenResources = [],
-    hiddenValues: _hiddenValues = [],
+    hiddenResources: _hiddenResources = EMPTY_ARRAY,
+    hiddenValues: _hiddenValues = EMPTY_ARRAY,
     readonly: isReadonly,
     showValidationError = false
 }: WorkflowConditionValueInputPropsInterface) => {

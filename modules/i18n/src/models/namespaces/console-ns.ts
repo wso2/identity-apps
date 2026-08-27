@@ -395,7 +395,12 @@ export interface ConsoleNS {
         featureLockedBanner: {
             prefix: string;
             action: string;
+            contactAction: string;
             suffix: string;
+        };
+        freeTrialBanner: {
+            upgradeAction: string;
+            contactAction: string;
         };
         upgrade: string;
     };

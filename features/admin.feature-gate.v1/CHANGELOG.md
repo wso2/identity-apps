@@ -1,5 +1,17 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.9.10
+
+### Patch Changes
+
+- [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+## 1.9.9
+
+### Patch Changes
+
+- [#10497](https://github.com/wso2/identity-apps/pull/10497) [`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67) Thanks [@hwupathum](https://github.com/hwupathum)! - Add status flag for consent features
+
 ## 1.9.8
 
 ### Patch Changes

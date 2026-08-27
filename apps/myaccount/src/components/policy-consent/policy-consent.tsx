@@ -20,12 +20,11 @@ import {
     ConsentedPurposeInterface,
     PolicyConsentDetailInterface,
     PolicyConsentItemInterface,
-    PolicyConsentListResponseInterface,
     PolicyConsentSummaryInterface
 } from "../../models/consents";
 import {
     getConsentById,
-    getConsentsBySubject,
+    getMeConsents,
     revokeConsentById
 } from "../../api/consents";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -60,21 +59,19 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     const [ isPolicyRevokeModalVisible, setPolicyRevokeModalVisible ] = useState<boolean>(false);
     const [ isRevoking, setIsRevoking ] = useState<boolean>(false);
 
-    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.profileInfo.userName);
     const consentsBaseUrl: string = useSelector(
         (state: AppState) => state?.config?.endpoints?.consentMgtV2?.consents
     );
     const { t } = useTranslation();
 
     const loadPolicyConsents: () => Promise<void> = useCallback(async (): Promise<void> => {
-        if (!userName || !consentsBaseUrl) {
+        if (!consentsBaseUrl) {
             return;
         }
 
         try {
-            const listResponse: PolicyConsentListResponseInterface =
-                await getConsentsBySubject(consentsBaseUrl, userName, "ACTIVE");
-            const summaries: PolicyConsentSummaryInterface[] = listResponse.Consents ?? [];
+            const summaries: PolicyConsentSummaryInterface[] =
+                await getMeConsents(consentsBaseUrl, "ACTIVE") ?? [];
 
             if (summaries.length === 0) {
                 setPolicyConsentItems([]);
@@ -130,7 +127,7 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 )
             });
         }
-    }, [ userName, consentsBaseUrl, t, onAlertFired ]);
+    }, [ consentsBaseUrl, t, onAlertFired ]);
 
     useEffect(() => {
         loadPolicyConsents();

@@ -111,17 +111,22 @@ export class AuthenticateUtils {
     public static resolveBaseUrls(): string[] {
         let baseUrls: string[] = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
         const serverOrigin: string = window["AppUtils"]?.getConfig()?.serverOrigin;
+        const cdsHost: string = window["AppUtils"]?.getConfig()?.extensions?.cdsHost as string;
 
         if (baseUrls) {
             // If the server origin is not specified in the overridden config, append it.
             if (!baseUrls.includes(serverOrigin)) {
                 baseUrls = [ ...baseUrls, serverOrigin ];
             }
-
-            return baseUrls;
+        } else {
+            baseUrls = [ serverOrigin ];
         }
 
-        return [ serverOrigin ];
+        if (cdsHost && !baseUrls.includes(cdsHost)) {
+            baseUrls = [ ...baseUrls, cdsHost ];
+        }
+
+        return baseUrls;
     }
 
     /**

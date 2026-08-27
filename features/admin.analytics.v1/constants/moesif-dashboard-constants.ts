@@ -22,6 +22,16 @@ import freeDashboardTemplate from "../assets/moesif-dashboard-free.json";
 import premiumDashboardTemplate from "../assets/moesif-dashboard-premium.json";
 
 /**
+ * Plan identifier passed to the Moesif Embedded Portal in the canvas URL.
+ * Mirrors the three tier-aware dashboard templates.
+ */
+export enum MoesifDashboardPlan {
+    FREE = "free",
+    ESSENTIALS = "essentials",
+    PREMIUM = "premium"
+}
+
+/**
  * Constants for the tier-aware Moesif Canvas dashboard templates.
  */
 export class MoesifDashboardConstants {
@@ -62,5 +72,32 @@ export class MoesifDashboardConstants {
     public static getTemplate(tierName: TenantTier): Record<string, unknown> {
         return MoesifDashboardConstants.TEMPLATES[tierName]
             ?? MoesifDashboardConstants.TEMPLATES[TenantTier.FREE];
+    }
+
+    /**
+     * Plan identifier per subscription tier. Mirrors the tier-to-template
+     * mapping in {@link TEMPLATES} so the same tier resolves to a consistent
+     * dashboard template and plan.
+     */
+    public static readonly PLANS: Record<TenantTier, MoesifDashboardPlan> = {
+        [ TenantTier.ENTERPRISE ]: MoesifDashboardPlan.PREMIUM,
+        [ TenantTier.ESSENTIALS ]: MoesifDashboardPlan.ESSENTIALS,
+        [ TenantTier.FREE ]: MoesifDashboardPlan.FREE,
+        [ TenantTier.FREE_V2 ]: MoesifDashboardPlan.FREE,
+        [ TenantTier.PROFESSIONAL ]: MoesifDashboardPlan.PREMIUM,
+        [ TenantTier.PYG ]: MoesifDashboardPlan.PREMIUM,
+        [ TenantTier.PYG_TRIAL ]: MoesifDashboardPlan.PREMIUM
+    };
+
+    /**
+     * Resolves the plan identifier for a given subscription tier.
+     *
+     * @param tierName - Subscription tier of the tenant.
+     * @returns The plan identifier. Falls back to the Free plan when the
+     *          tier is unknown.
+     */
+    public static getPlan(tierName: TenantTier): MoesifDashboardPlan {
+        return MoesifDashboardConstants.PLANS[tierName]
+            ?? MoesifDashboardConstants.PLANS[TenantTier.FREE];
     }
 }

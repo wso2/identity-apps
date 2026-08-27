@@ -19,18 +19,44 @@
 import { SelectChangeEvent } from "@mui/material";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Hint, PageLayout, useDocumentation } from "@wso2is/react-components";
 import dayjs from "dayjs";
-import React, { FunctionComponent, useMemo, useState } from "react";
+import React, { FunctionComponent, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Tab, TabProps } from "semantic-ui-react";
+import { enableAdvancedAnalytics } from "../api/enable-advanced-analytics";
+import AdvancedAnalyticsUpgradeCard from "../components/advanced-analytics-upgrade-card";
 import { InsightsView } from "../components/insights-view";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ActivityType, DurationDropdownOption } from "../models/insights";
 import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 
-const OrgInsightsPage: FunctionComponent = () => {
+interface OrgInsightsPagePropsInterface {
+    moesifTermsOfServiceUrl?: string;
+    /**
+     * Invoked once advanced analytics has been successfully enabled, so the host can switch
+     * over to the embedded dashboard view.
+     */
+    onAdvancedAnalyticsEnabled?: () => void;
+    showUpgradeCard?: boolean;
+    termsOfServiceUrl?: string;
+}
+
+const OrgInsightsPage: FunctionComponent<OrgInsightsPagePropsInterface> = (
+    {
+        moesifTermsOfServiceUrl = "",
+        onAdvancedAnalyticsEnabled,
+        showUpgradeCard = false,
+        termsOfServiceUrl = ""
+    }: OrgInsightsPagePropsInterface
+) => {
+    const dispatch: Dispatch = useDispatch();
+    const [ isEnablingAdvanced, setIsEnablingAdvanced ] = useState<boolean>(false);
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
     const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(dayjs().format("HH:mm:ss"));
@@ -38,6 +64,36 @@ const OrgInsightsPage: FunctionComponent = () => {
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const handleEnableAdvancedAnalytics: () => Promise<void> = useCallback(async (): Promise<void> => {
+        setIsEnablingAdvanced(true);
+
+        try {
+            await enableAdvancedAnalytics();
+
+            dispatch(addAlert({
+                description: t("insights:advancedAnalytics.notifications.enableSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("insights:advancedAnalytics.notifications.enableSuccess.message")
+            }));
+
+            // Hand control back to the host so it can move the user to the embedded dashboard.
+            onAdvancedAnalyticsEnabled?.();
+        } catch (error: unknown) {
+            const serverDescription: string | undefined =
+                (error as { response?: { data?: { description?: string } } })?.response?.data?.description;
+
+            dispatch(addAlert({
+                description: serverDescription
+                    ?? t("insights:advancedAnalytics.notifications.enableError.description"),
+                level: AlertLevels.ERROR,
+                message: t("insights:advancedAnalytics.notifications.enableError.message")
+            }));
+        } finally {
+            setIsEnablingAdvanced(false);
+        }
+    }, [ dispatch, t, onAdvancedAnalyticsEnabled ]);
+
 
     const handleDurationChange = (event: SelectChangeEvent) => {
         setDuration(Number(event.target.value));
@@ -142,6 +198,15 @@ const OrgInsightsPage: FunctionComponent = () => {
                 </>)
             }
         >
+            { showUpgradeCard && (
+                <AdvancedAnalyticsUpgradeCard
+                    data-componentid="org-insights-upgrade-card"
+                    isEnabling={ isEnablingAdvanced }
+                    onEnable={ handleEnableAdvancedAnalytics }
+                    termsOfServiceUrl={ termsOfServiceUrl }
+                    moesifTermsOfServiceUrl={ moesifTermsOfServiceUrl }
+                />
+            ) }
             <OrgInsightsContext.Provider
                 value={ {
                     duration,

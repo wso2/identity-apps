@@ -74,6 +74,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setReverting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
     const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(undefined);
@@ -299,7 +300,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
     };
 
     const onConfigRevert = (): void => {
-        setSubmitting(true);
+        setReverting(true);
 
         revertValidationConfigData([ ValidationConfigurationFields.USERNAME ])
             .then(() => {
@@ -310,7 +311,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
                 handleRevertError();
             })
             .finally(() => {
-                setSubmitting(false);
+                setReverting(false);
             });
     };
 
@@ -642,6 +643,8 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
                                     header= { t("governanceConnectors:dangerZone.heading") }
                                     subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                     onActionClick={ () => onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-componentid={ `${ componentId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

@@ -102,6 +102,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(undefined);
     const availiableLoginIdentifierAttributes: string[] =
         [
@@ -354,7 +355,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         const revertRequest: RevertGovernanceConnectorConfigInterface = {
             properties: connector?.properties?.map((property: ConnectorPropertyInterface) => property.name)
         };
@@ -368,7 +369,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                 handleRevertError();
             })
             .finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
             });
     };
 
@@ -710,6 +711,8 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting }
                                         data-testid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>

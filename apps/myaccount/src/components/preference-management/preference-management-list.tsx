@@ -213,7 +213,7 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
                                                                                             .get(item.consentId)
                                                                                             ?.has(element.id)
                                                                                     }
-                                                                                    label={ element.displayName }
+                                                                                    label={ element.displayName || element.name }
                                                                                     onChange={ () =>
                                                                                         onElementToggle(
                                                                                             item.consentId,

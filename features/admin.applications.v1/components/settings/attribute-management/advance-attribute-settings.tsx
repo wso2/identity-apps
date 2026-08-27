@@ -119,6 +119,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         useState<boolean>(initialSubject?.useMappedLocalSubject);
     const [ mandateLinkedLocalAccount, setMandateLinkedLocalAccount ] =
         useState<boolean>(initialSubject?.mappedLocalSubjectMandatory);
+    const [ subjectIncludeUserDomain, setSubjectIncludeUserDomain ] =
+        useState<boolean>(initialSubject?.includeUserDomain);
+    const [ subjectIncludeTenantDomain, setSubjectIncludeTenantDomain ] =
+        useState<boolean>(initialSubject?.includeTenantDomain);
 
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
@@ -260,8 +264,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             },
             subject: {
                 claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
-                includeTenantDomain: !!values.subjectIncludeTenantDomain,
-                includeUserDomain: !!values.subjectIncludeUserDomain,
+                includeTenantDomain: !!subjectIncludeTenantDomain,
+                includeUserDomain: !!subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
                 useMappedLocalSubject: validateLinkedLocalAccount
             }
@@ -290,6 +294,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         // Ref: https://github.com/wso2/product-is/issues/19054
         if (!settingValues?.subject?.claim || settingValues?.subject?.claim === "") {
             settingValues.subject.claim = claimConfigurations.subject.claim.uri;
+        }
+
+        // Preserve the configured role claim URI when the resolved value is empty, as the User Attributes tab does
+        // not expose a control to manage it and sending an empty value overwrites the persisted configuration.
+        if ((!settingValues?.role?.claim || settingValues?.role?.claim === "")
+            && claimConfigurations?.role?.claim?.uri
+            && claimConfigurations?.role?.claim?.uri !== "http://wso2.org/claims/role") {
+            settingValues.role.claim = claimConfigurations.role.claim.uri;
+        }
+
+        // Preserve the configured role userstore-domain flag when its checkbox is not rendered,
+        // as the tab exposes no control to manage it and sending false overwrites the persisted value.
+        if ((!config.showIncludeUserstoreDomainRole || !UIConfig?.legacyMode?.roleMapping)
+            && settingValues?.role?.includeUserDomain === false
+            && claimConfigurations?.role?.includeUserDomain !== undefined) {
+            settingValues.role.includeUserDomain = claimConfigurations.role.includeUserDomain;
         }
 
         setSubmissionValues(settingValues);
@@ -335,6 +355,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const mandateLinkedAccountCheckboxHandler = (value: boolean) => {
         setMandateLinkedLocalAccount(value);
+    };
+
+    const subjectIncludeUserDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeUserDomain(value);
+    };
+
+    const subjectIncludeTenantDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeTenantDomain(value);
     };
 
     /**
@@ -527,13 +555,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeUserDomainChangeHandler }
                                                 ariaLabel="Subject include user domain"
                                                 name="subjectIncludeUserDomain"
                                                 label={ t("applications:forms.advancedAttributeSettings." +
                                                     "sections.subject.fields.subjectIncludeUserDomain.label") }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                                    subjectIncludeUserDomain ? [ "includeUserDomain" ] : [] }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
                                                 hint={
@@ -554,6 +583,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeTenantDomainChangeHandler }
                                                 ariaLabel="Subject include tenant domain"
                                                 name="subjectIncludeTenantDomain"
                                                 label={
@@ -562,7 +592,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeTenantDomain
+                                                    subjectIncludeTenantDomain
                                                         ? [ "includeTenantDomain" ]
                                                         : []
                                                 }

@@ -34,10 +34,16 @@
                 "settingsEnabled": false
             },
             "moesif": {
+                "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
-                "embeddedPortalUrl": ""
+                "embeddedPortalUrl": "",
+                "moesifTermsOfServiceUrl": "https://www.moesif.com/terms/",
+                "termsOfServiceUrl": ""
             }
         },
+        "cdsApplicationIdentifierType": "client_id",
+        "cdsHost": "",
+        "cdsUnifiedProfileView": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
             {
@@ -584,7 +590,8 @@
                 "enabled": true,
                 "properties": {
                     "maxGracefulRefreshTokenReuseLimit": 5,
-                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60,
+                    "multipleClientSecretsMaxCount": 2
                 },
                 "featureFlags": [
                     {
@@ -658,10 +665,9 @@
                         "featureFlags": [],
                         "scopes": {
                             "create": [ "internal_application_mgt_client_secret_create" ],
-                            "delete": [],
+                            "delete": [ "internal_application_mgt_client_secret_delete" ],
                             "feature": [],
-                            "read": [ "internal_application_mgt_client_secret_view" ],
-                            "update": []
+                            "read": [ "internal_application_mgt_client_secret_view" ]
                         }
                     },
                     "applicationInternalAPIAuthorization": {
@@ -871,6 +877,34 @@
                     ]
                 }
             },
+            "cliSettings": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "properties": {
+                    "applicationName": "",
+                    "clientId": ""
+                },
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:cliSettings"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_user_mgt_list"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update",
+                        "internal_role_mgt_update",
+                        "internal_role_mgt_users_update"
+                    ]
+                }
+            },
             "consents": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -887,10 +921,16 @@
                         "console:consents"
                     ],
                     "read": [
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
                         "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_app_view",
                         "internal_consent_mgt_purpose_view"
                     ],
                     "update": [
+                        "internal_branding_preference_policy_update",
+                        "internal_consent_mgt_purpose_app_create",
+                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_update"
                     ]
                 }
@@ -898,7 +938,8 @@
             "consoleSettings": {
                 "disabledFeatures": [
                     "consoleSettings.invitedExternalAdmins",
-                    "consoleSettings.privilegedUsers"
+                    "consoleSettings.privilegedUsers",
+                    "consoleSettings.useGranularConsolePermissions"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1163,6 +1204,12 @@
                         "flag": ""
                     }
                 ],
+                "properties": {
+                    "nonModifiablePaths": [
+                        "/user/claims[uri=http://wso2.org/claims/userid]",
+                        "/user/claims[uri=http://wso2.org/claims/created]"
+                    ]
+                },
                 "scopes": {
                     "create": [
                         "internal_flow_extension_create"
@@ -1282,6 +1329,11 @@
                 ],
                 "enabled": true,
                 "featureFlags": [],
+                "properties": {
+                    "maxPushDeviceLimitPerUser": 10,
+                    "multiplePushDeviceSupportEnabled": true,
+                    "pushDeviceRegistrationNotificationsEnabled": true
+                },
                 "scopes": {
                     "create": [
                         "internal_idp_create"
@@ -1376,6 +1428,14 @@
                     },
                     {
                         "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "consents.policyConsents",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "consents.preferenceManagement",
                         "flag": ""
                     }
                 ],
@@ -2174,6 +2234,17 @@
                 }
             },
             "wsFedConfiguration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
+            "fapi": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],

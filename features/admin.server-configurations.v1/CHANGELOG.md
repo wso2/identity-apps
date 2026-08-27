@@ -1,5 +1,42 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.58
+
+### Patch Changes
+
+- [#10516](https://github.com/wso2/identity-apps/pull/10516) [`9cc45fcf5a8a84f1204797f0080bab89e94b397c`](https://github.com/wso2/identity-apps/commit/9cc45fcf5a8a84f1204797f0080bab89e94b397c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add feature flag support to show/hide FAPI Security Policy tile in Login & Registration
+
+- Updated dependencies [[`9cc45fcf5a8a84f1204797f0080bab89e94b397c`](https://github.com/wso2/identity-apps/commit/9cc45fcf5a8a84f1204797f0080bab89e94b397c)]:
+  - @wso2is/admin.core.v1@2.57.27
+
+## 2.38.57
+
+### Patch Changes
+
+- [#10290](https://github.com/wso2/identity-apps/pull/10290) [`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add FAPI 2 Support
+
+- Updated dependencies [[`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c)]:
+  - @wso2is/admin.core.v1@2.57.26
+  - @wso2is/i18n@2.43.10
+
+## 2.38.56
+
+### Patch Changes
+
+- [#10497](https://github.com/wso2/identity-apps/pull/10497) [`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67) Thanks [@hwupathum](https://github.com/hwupathum)! - Add status flag for consent features
+
+- Updated dependencies [[`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67)]:
+  - @wso2is/admin.feature-gate.v1@1.9.9
+
+## 2.38.55
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+- Updated dependencies [[`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3)]:
+  - @wso2is/admin.validation.v1@2.28.5
+
 ## 2.38.54
 
 ### Patch Changes

@@ -22,6 +22,11 @@ export const flowExtension: flowExtensionNS = {
     createWizard: {
         steps: {
             endpointConfig: {
+                certificate: {
+                    hint: "Upload a certificate to encrypt field values exchanged with the extension endpoint.",
+                    title: "Encryption Certificate",
+                    uploaded: "Certificate configured. Clear it to upload a different certificate."
+                },
                 title: "Endpoint Configuration"
             },
             generalSettings: {
@@ -57,6 +62,9 @@ export const flowExtension: flowExtensionNS = {
         accessConfig: {
             emptyInfo: "No access configuration has been set. The extension will not send any data and "
                 + "will not allow any modifications until you configure access here.",
+            noCertificateInfo: "No encryption certificate provided. Fields sent to the extension (read) "
+                + "cannot be marked as encrypted until you upload a certificate in the Settings tab. "
+                + "Values returned by the extension (write) can still be encrypted.",
             resetButton: "Reset",
             treeLoadError: "Failed to load the Flow Extension context tree from the server. Refresh the "
                 + "page to retry. If the problem persists, ensure the flow-management API is reachable."
@@ -211,8 +219,28 @@ export const flowExtension: flowExtensionNS = {
             editTooltip: "Edit",
             emptyHint: "Select a leaf field from the tree to configure it.",
             emptyTitle: "No field selected",
+            encryption: {
+                formReadOnly: "This form is read-only.",
+                read: {
+                    enabledDescription: "This field will be sent to the extension encrypted.",
+                    markFirst: "Mark this field as READ in the tree to enable encryption.",
+                    needCertificate: "Add a certificate to enable encryption.",
+                    notAllowed: "Read is not allowed for this field.",
+                    title: "Read encrypted"
+                },
+                title: "Encryption",
+                write: {
+                    enabledDescription: "The extension will return this field's value encrypted.",
+                    markFirst: "Mark this field as WRITE in the tree to enable encryption.",
+                    notAllowed: "Write is not allowed for this field.",
+                    title: "Write encrypted"
+                }
+            },
+            identityClaimWriteWarning: "Modifying this system maintained attribute may cause unexpected behavior.",
             readOnlyBadge: "Read-Only",
-            title: "Field Configuration"
+            title: "Field Configuration",
+            usernameWriteWarning: "Write access to the username is only applied in the Self Registration " +
+                "flow."
         },
         node: {
             addEntryChip: "+ ADD ENTRY",

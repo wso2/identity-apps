@@ -18,7 +18,7 @@
 
 export { default as FlowContextTree } from "./flow-context-tree";
 export type {
-    AccessConfigOutputInterface,
+    FlowExtensionAccessConfigInterface,
     FlowExtensionContextTreeResponseInterface,
     InitialAccessConfigInterface
 } from "./models";

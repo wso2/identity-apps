@@ -51,6 +51,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { SWRResponse } from "swr";
+import { useCDSApplications } from "../hooks/use-cds-applications";
 import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
 import { AND_OPERATOR, APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../models/constants";
 import { FilterAttributeOption, ProfileSchemaScopeResponse } from "../models/profile-attributes";
@@ -148,6 +149,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const appDataResult: ProfileSchemaDropdownResult = useProfileSchemaDropdownOptions(
         activeScopesSet.has("application_data") ? "application_data" : null
     );
+
+    const { getApplicationDisplayName } = useCDSApplications(activeScopesSet.has("application_data"));
 
     // Combine results into a lookup map
     const optionsByScope: Record<string, FilterAttributeOption[]> = useMemo(() => {
@@ -307,7 +310,10 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             .filter((o: FilterAttributeOption) => o.applicationId)
             .map((o: FilterAttributeOption) => o.applicationId as string);
 
-        return Array.from(new Set(ids)).sort();
+        return Array.from(new Set(ids)).sort(
+            (a: string, b: string): number =>
+                getApplicationDisplayName(a).localeCompare(getApplicationDisplayName(b))
+        );
     };
 
     const getAttributesForRow = (row: FilterGroup): FilterAttributeOption[] => {
@@ -522,7 +528,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     type="dropdown"
                                                                     children={ apps.map((id: string) => ({
                                                                         key: id,
-                                                                        text: id,
+                                                                        text: getApplicationDisplayName(id),
                                                                         value: id
                                                                     })) }
                                                                     value={ row.applicationId }

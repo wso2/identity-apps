@@ -227,9 +227,9 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                         type="button"
                         fullWidth
                         variant="contained"
+                        color={ secondaryColor ? "inherit" : "secondary" }
                         sx={ {
                             ...(secondaryColor && { background: secondaryColor }),
-                            ...(buttonFontColor && { color: buttonFontColor }),
                             mb: 1
                         } }
                     >

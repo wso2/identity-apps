@@ -59,6 +59,9 @@ import ElementPropertiesPanel from "../resource-property-panel/resource-property
 import ValidationPanel from "../validation-panel/validation-panel";
 import VersionHistoryPanel from "../version-history-panel/version-history-panel";
 
+const EMPTY_NODES: Node[] = [];
+const EMPTY_EDGES: Edge[] = [];
+
 /**
  * Props interface of {@link DecoratedVisualFlow}
  */
@@ -91,8 +94,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     "data-componentid": componentId = "authentication-flow-visual-editor",
     aiGeneratedFlow,
     resources,
-    initialNodes = [],
-    initialEdges = [],
+    initialNodes = EMPTY_NODES,
+    initialEdges = EMPTY_EDGES,
     setNodes,
     setEdges,
     edges,

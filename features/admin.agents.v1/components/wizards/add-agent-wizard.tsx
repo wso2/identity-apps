@@ -28,6 +28,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
+import { AxiosError } from "axios";
 import {
     CheckboxFieldAdapter,
     CheckboxGroupFieldAdapter,
@@ -44,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
+import { AGENT_APP_LIMIT_REACHED_SCIM_TYPE } from "../../constants/agents";
 import { AgentScimSchema, AgentType } from "../../models/agents";
 import "./add-agent-wizard.scss";
 
@@ -168,18 +170,33 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
             setCreationResult(result);
             setIsShowingSuccessScreen(true);
             setIsSubmitting(false);
-        } catch (_err: unknown) {
+        } catch (error: unknown) {
             // On error, stay on form with the user's values.
             setIsShowingSuccessScreen(false);
             setCreationResult(null);
             setSubmittedValues(null);
-            dispatch(
-                addAlert({
-                    description: t("agents:wizard.alerts.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("agents:wizard.alerts.error.message")
-                })
-            );
+
+            const errorResponse: AxiosError<{ scimType?: string }>["response"] =
+                (error as AxiosError<{ scimType?: string }>)?.response;
+
+            if (errorResponse?.status === 403
+                && errorResponse?.data?.scimType === AGENT_APP_LIMIT_REACHED_SCIM_TYPE) {
+                dispatch(
+                    addAlert({
+                        description: t("agents:wizard.alerts.limitReached.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("agents:wizard.alerts.limitReached.message")
+                    })
+                );
+            } else {
+                dispatch(
+                    addAlert({
+                        description: t("agents:wizard.alerts.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("agents:wizard.alerts.error.message")
+                    })
+                );
+            }
             setIsSubmitting(false);
         }
     };

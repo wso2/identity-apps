@@ -1,5 +1,157 @@
 # @wso2is/admin.core.v1
 
+## 2.59.1
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add CLI configuration UI
+
+- Updated dependencies [[`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac)]:
+  - @wso2is/admin.groups.v1@2.27.130
+  - @wso2is/admin.roles.v2@2.27.386
+  - @wso2is/i18n@2.45.1
+
+## 2.59.0
+
+### Minor Changes
+
+- [#10598](https://github.com/wso2/identity-apps/pull/10598) [`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add Password Credential authentication option to SMS and Email provider forms
+
+### Patch Changes
+
+- Updated dependencies [[`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198)]:
+  - @wso2is/i18n@2.45.0
+
+## 2.58.1
+
+### Patch Changes
+
+- [#10478](https://github.com/wso2/identity-apps/pull/10478) [`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532) Thanks [@NethmikaKekuu](https://github.com/NethmikaKekuu)! - Rename LOGO_IMAGE component to LogoImage to follow JSX PascalCase naming convention.
+
+* [#10566](https://github.com/wso2/identity-apps/pull/10566) [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Honor the configured `console.ui.app_favicon_path` in the Console application. The favicon is now applied from the runtime config via react-helmet instead of the hardcoded build-time default.
+
+* Updated dependencies [[`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee)]:
+  - @wso2is/admin.users.v1@2.38.47
+
+## 2.58.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/admin.agents.v1@1.2.1
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.identity-providers.v1@2.29.0
+  - @wso2is/admin.connections.v1@2.39.0
+  - @wso2is/admin.users.v1@2.38.45
+
+## 2.57.31
+
+### Patch Changes
+
+- [#10543](https://github.com/wso2/identity-apps/pull/10543) [`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix Customer Data Service navigation issues in the unified Customer Data view. The Feature Preview menu no longer appears empty when there are no accessible preview features, the home-page CDS banner routes to the Customer Data page, and the profile details page returns to the Customer Data page.
+
+- Updated dependencies [[`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19), [`68f2289f4500b32f9f65e2e0988a791a5d63be79`](https://github.com/wso2/identity-apps/commit/68f2289f4500b32f9f65e2e0988a791a5d63be79)]:
+  - @wso2is/admin.cds.v1@1.6.9
+  - @wso2is/admin.applications.v1@2.43.11
+  - @wso2is/admin.users.v1@2.38.44
+
+## 2.57.30
+
+### Patch Changes
+
+- [#10534](https://github.com/wso2/identity-apps/pull/10534) [`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add a config-switchable unified Customer Data page for the Customer Data Service
+
+- Updated dependencies [[`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf), [`7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09`](https://github.com/wso2/identity-apps/commit/7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09)]:
+  - @wso2is/admin.cds.v1@1.6.8
+  - @wso2is/i18n@2.43.13
+  - @wso2is/common.consents.v1@1.0.5
+  - @wso2is/admin.users.v1@2.38.43
+
+## 2.57.29
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+- Updated dependencies [[`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b), [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12)]:
+  - @wso2is/admin.applications.v1@2.43.10
+  - @wso2is/admin.cds.v1@1.6.7
+  - @wso2is/i18n@2.43.12
+  - @wso2is/admin.users.v1@2.38.42
+
+## 2.57.28
+
+### Patch Changes
+
+- [#10518](https://github.com/wso2/identity-apps/pull/10518) [`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show all languages in the locale dropdown, grouped into default-supported and other languages, in the email and SMS template edit views.
+
+* [#10505](https://github.com/wso2/identity-apps/pull/10505) [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c) Thanks [@KD23243](https://github.com/KD23243)! - Add encryption support for flow extensions
+
+* Updated dependencies [[`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779), [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c), [`e5375c123ed807c87bc5b606c4d7fbb904d3bb91`](https://github.com/wso2/identity-apps/commit/e5375c123ed807c87bc5b606c4d7fbb904d3bb91)]:
+  - @wso2is/admin.sms-templates.v1@1.0.213
+  - @wso2is/core@2.13.5
+  - @wso2is/i18n@2.43.11
+  - @wso2is/admin.connections.v1@2.38.4
+  - @wso2is/admin.applications.v1@2.43.9
+
+## 2.57.27
+
+### Patch Changes
+
+- [#10516](https://github.com/wso2/identity-apps/pull/10516) [`9cc45fcf5a8a84f1204797f0080bab89e94b397c`](https://github.com/wso2/identity-apps/commit/9cc45fcf5a8a84f1204797f0080bab89e94b397c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add feature flag support to show/hide FAPI Security Policy tile in Login & Registration
+
+- Updated dependencies [[`9cc45fcf5a8a84f1204797f0080bab89e94b397c`](https://github.com/wso2/identity-apps/commit/9cc45fcf5a8a84f1204797f0080bab89e94b397c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.58
+
+## 2.57.26
+
+### Patch Changes
+
+- [#10290](https://github.com/wso2/identity-apps/pull/10290) [`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Add FAPI 2 Support
+
+- Updated dependencies [[`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c), [`0fbc996a7dee8a8af24f3cb52d62ed7478e92e49`](https://github.com/wso2/identity-apps/commit/0fbc996a7dee8a8af24f3cb52d62ed7478e92e49)]:
+  - @wso2is/admin.applications.v1@2.43.8
+  - @wso2is/admin.server-configurations.v1@2.38.57
+  - @wso2is/i18n@2.43.10
+  - @wso2is/admin.org-insights.v1@2.26.6
+
+## 2.57.25
+
+### Patch Changes
+
+- [#10492](https://github.com/wso2/identity-apps/pull/10492) [`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add seperate host support for CDS
+
+- Updated dependencies [[`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4)]:
+  - @wso2is/admin.authentication.v1@2.25.211
+  - @wso2is/admin.cds.v1@1.6.6
+  - @wso2is/admin.users.v1@2.38.41
+
+## 2.57.24
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.tenants.v1@2.29.32
+  - @wso2is/admin.org-insights.v1@2.26.5
+
+## 2.57.23
+
+### Patch Changes
+
+- [#10422](https://github.com/wso2/identity-apps/pull/10422) [`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671) Thanks [@hwupathum](https://github.com/hwupathum)! - Add application assignment UI for policies
+
+- Updated dependencies [[`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671)]:
+  - @wso2is/common.consents.v1@1.0.4
+  - @wso2is/i18n@2.43.9
+
 ## 2.57.22
 
 ### Patch Changes

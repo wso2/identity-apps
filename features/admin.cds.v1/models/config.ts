@@ -17,6 +17,20 @@
  */
 
 /**
+ * Application identifier types used when communicating with CDS APIs.
+ */
+export enum CDSApplicationIdentifierType {
+    /**
+     * Applications are identified by the Identity Server application UUID.
+     */
+    APP_ID = "app_id",
+    /**
+     * Applications are identified by the OAuth client ID (legacy behavior).
+     */
+    CLIENT_ID = "client_id"
+}
+
+/**
  * CDS Configuration response interface.
  */
 export interface CDSConfig {

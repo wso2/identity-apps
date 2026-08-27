@@ -1,5 +1,48 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.15
+
+### Patch Changes
+
+- [#10591](https://github.com/wso2/identity-apps/pull/10591) [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add Active Agent Sessions, Agent Token Distribution and Agent Usage by Users widgets to the Moesif agent dashboard
+
+## 0.0.14
+
+### Patch Changes
+
+- [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+- Updated dependencies [[`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4), [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2)]:
+  - @wso2is/admin.subscription.v1@1.5.229
+  - @wso2is/admin.org-insights.v1@2.26.7
+
+## 0.0.13
+
+### Patch Changes
+
+- [#10512](https://github.com/wso2/identity-apps/pull/10512) [`503da6fb142a3a6db47e3014fe68c7bdf4d2aae3`](https://github.com/wso2/identity-apps/commit/503da6fb142a3a6db47e3014fe68c7bdf4d2aae3) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Pass the product name and subscription plan to the Moesif embedded canvas URL
+
+## 0.0.12
+
+### Patch Changes
+
+- [#10506](https://github.com/wso2/identity-apps/pull/10506) [`0fbc996a7dee8a8af24f3cb52d62ed7478e92e49`](https://github.com/wso2/identity-apps/commit/0fbc996a7dee8a8af24f3cb52d62ed7478e92e49) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Improve the Moesif advanced analytics experience: deduplicate and align the embedded dashboard templates, count distinct users for the Active Users widget, show a skeleton loader while the embedded dashboard loads, and open the dashboard automatically after advanced analytics is enabled.
+
+- Updated dependencies [[`03ad6b05794a2e9a784e78818d15a99bd9e7ac9c`](https://github.com/wso2/identity-apps/commit/03ad6b05794a2e9a784e78818d15a99bd9e7ac9c), [`0fbc996a7dee8a8af24f3cb52d62ed7478e92e49`](https://github.com/wso2/identity-apps/commit/0fbc996a7dee8a8af24f3cb52d62ed7478e92e49)]:
+  - @wso2is/admin.core.v1@2.57.26
+  - @wso2is/admin.org-insights.v1@2.26.6
+
+## 0.0.11
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.tenants.v1@2.29.32
+  - @wso2is/admin.org-insights.v1@2.26.5
+  - @wso2is/admin.core.v1@2.57.24
+
 ## 0.0.10
 
 ### Patch Changes

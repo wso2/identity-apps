@@ -1,5 +1,47 @@
 # @wso2is/admin.connections.v1
 
+## 2.39.1
+
+### Patch Changes
+
+- [#10605](https://github.com/wso2/identity-apps/pull/10605) [`dc2994e920cf3bd309356322075ee07575127f36`](https://github.com/wso2/identity-apps/commit/dc2994e920cf3bd309356322075ee07575127f36) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Remove logo gradient backdrop in connection edit pages
+
+## 2.39.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.identity-providers.v1@2.29.0
+  - @wso2is/admin.core.v1@2.58.0
+  - @wso2is/admin.console-settings.v1@2.26.47
+
+## 2.38.4
+
+### Patch Changes
+
+- [#10505](https://github.com/wso2/identity-apps/pull/10505) [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c) Thanks [@KD23243](https://github.com/KD23243)! - Add encryption support for flow extensions
+
+- Updated dependencies [[`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779), [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c), [`e5375c123ed807c87bc5b606c4d7fbb904d3bb91`](https://github.com/wso2/identity-apps/commit/e5375c123ed807c87bc5b606c4d7fbb904d3bb91)]:
+  - @wso2is/admin.core.v1@2.57.28
+  - @wso2is/core@2.13.5
+  - @wso2is/i18n@2.43.11
+  - @wso2is/admin.flow-extensions.v1@0.1.1
+  - @wso2is/admin.applications.v1@2.43.9
+
+## 2.38.3
+
+### Patch Changes
+
+- [#10449](https://github.com/wso2/identity-apps/pull/10449) [`4bf6a52297f1833ca69804f52ea4c2b866f3c9b7`](https://github.com/wso2/identity-apps/commit/4bf6a52297f1833ca69804f52ea4c2b866f3c9b7) Thanks [@savindi7](https://github.com/savindi7)! - Add support to update Microsoft tenant ID from settings.
+
+- Updated dependencies [[`4bf6a52297f1833ca69804f52ea4c2b866f3c9b7`](https://github.com/wso2/identity-apps/commit/4bf6a52297f1833ca69804f52ea4c2b866f3c9b7)]:
+  - @wso2is/i18n@2.43.8
+
 ## 2.38.2
 
 ### Patch Changes

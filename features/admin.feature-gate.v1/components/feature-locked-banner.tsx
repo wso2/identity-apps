@@ -47,15 +47,27 @@ const FeatureLockedBanner: FunctionComponent<FeatureLockedBannerPropsInterface> 
 
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const associatedTenants: unknown[] = useSelector((state: AppState) => state?.auth?.tenants);
+    const upgradeButtonEnabled: boolean = useSelector(
+        (state: AppState): boolean =>
+            state?.config?.deployment?.extensions?.upgradeButtonEnabled === true
+    );
+    const contactUsURL: string = useSelector(
+        (state: AppState): string =>
+            (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
+    );
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>("");
 
     useEffect(() => {
+        if (!upgradeButtonEnabled) {
+            return;
+        }
+
         CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
             ({ upgradeButtonURL }: { upgradeButtonURL: string }) => {
                 setUpgradeButtonURL(upgradeButtonURL);
             }
         );
-    }, [ tenantDomain, associatedTenants ]);
+    }, [ tenantDomain, associatedTenants, upgradeButtonEnabled ]);
 
     return (
         <Alert
@@ -77,11 +89,13 @@ const FeatureLockedBanner: FunctionComponent<FeatureLockedBannerPropsInterface> 
             { t("console:common.featureLockedBanner.prefix") }
             { " " }
             <Link
-                href={ upgradeButtonURL }
+                href={ upgradeButtonEnabled ? upgradeButtonURL : contactUsURL }
                 target="_blank"
                 rel="noreferrer"
             >
-                { t("console:common.featureLockedBanner.action") }
+                { upgradeButtonEnabled
+                    ? t("console:common.featureLockedBanner.action")
+                    : t("console:common.featureLockedBanner.contactAction") }
             </Link>
             { " " }
             { t("console:common.featureLockedBanner.suffix") }

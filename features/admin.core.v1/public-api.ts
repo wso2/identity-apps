@@ -33,6 +33,7 @@ export * from "./components/quick-start-tab";
 export * from "./components/modals/help-panel-modal";
 export * from "./components/vertical-stepper/vertical-stepper";
 export * from "./components/vertical-stepper/step";
+export * from "./components/grouped-locale-autocomplete";
 
 /**
  * Export constants.

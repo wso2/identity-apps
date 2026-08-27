@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,6 +49,7 @@ export * from "./email-locale";
 export * from "./help-panel";
 export * from "./suborganizations";
 export * from "./console-settings";
+export * from "./cli-settings";
 export * from "./secrets";
 export * from "./branding";
 export * from "./email-templates";
@@ -62,6 +63,7 @@ export * from "./template-core";
 export * from "./application-templates";
 export * from "./impersonation";
 export * from "./issuer-usage-scope";
+export * from "./fapi-security-policy";
 export * from "./actions";
 export * from "./tenants";
 export * from "./sms-templates";

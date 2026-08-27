@@ -22,6 +22,11 @@
  */
 interface ContextPathInterface {
     path: string;
+    /**
+     * Whether this field's value is encrypted in transit to/from the extension. Round-trips the
+     * per-field encryption mark; gated UI until certificate-based encryption ships end-to-end.
+     */
+    encrypted?: boolean;
 }
 
 /**
@@ -30,6 +35,15 @@ interface ContextPathInterface {
 export interface ClaimAccessConfigInterface {
     expose: ContextPathInterface[];
     modify: ContextPathInterface[];
+}
+
+/**
+ * Encryption configuration for a Flow Extension — the PEM certificate used to encrypt
+ * per-field values. The backend never returns the certificate value (security); the mere
+ * presence of this object on a response indicates a certificate is configured.
+ */
+interface EncryptionInterface {
+    certificate?: string;
 }
 
 /**
@@ -54,6 +68,7 @@ export interface FlowExtensionCreateRequestInterface {
     iconUrl?: string;
     endpoint: FlowExtensionEndpointInterface;
     accessConfig?: ClaimAccessConfigInterface;
+    encryption?: EncryptionInterface;
 }
 
 /**
@@ -78,3 +93,11 @@ export type FlowExtensionListResponseInterface = Pick<
     FlowExtensionResponseInterface,
     "id" | "name" | "description" | "iconUrl"
 >;
+
+/**
+ * Filter tags used to surface Flow Extensions in listing views (e.g. the Connections page).
+ * Flow Extensions have no server-side tag concept; this is a client-side synthetic tag.
+ */
+export enum FlowExtensionTags {
+    FLOW_EXTENSION = "Flow-Extension"
+}

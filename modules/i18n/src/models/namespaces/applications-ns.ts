@@ -170,6 +170,113 @@ export interface ApplicationsNS {
         };
         placeholder: string;
     };
+    clientSecrets: {
+        rotationWarning: string;
+        generateButton: string;
+        hashedDisclaimer: string;
+        viewPreviousSecret: string;
+        viewPreviousSecrets: string;
+        hidePreviousSecret: string;
+        hidePreviousSecrets: string;
+        maxCountReachedHint: string;
+        expiry: {
+            expired: string;
+            expiredAgo: string;
+            expiredOn: string;
+            expiresIn: string;
+            expiresOn: string;
+            neverExpires: string;
+        };
+        confirmations: {
+            deleteSecret: {
+                assertionHint: string;
+                header: string;
+                message: string;
+                content: string;
+            };
+        };
+        wizard: {
+            heading: string;
+            subHeading: string;
+            expiration: {
+                label: string;
+                options: {
+                    days: string;
+                    neverExpire: string;
+                    custom: string;
+                };
+            };
+            customExpiry: {
+                label: string;
+                placeholder: string;
+                validations: {
+                    required: string;
+                    invalid: string;
+                };
+            };
+            expiryWarning: string;
+            generateButton: string;
+        };
+        dangerZone: {
+            revokeAll: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+                confirmation: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                };
+            };
+        };
+        expiryBanner: {
+            title: string;
+            description: string;
+            viewSecrets: string;
+        };
+        notifications: {
+            generateSecret: {
+                error: {
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            deleteSecret: {
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            revokeAll: {
+                success: {
+                    description: string;
+                    message: string;
+                };
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            getSecrets: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+    };
     confirmations: {
         addSocialLogin: {
             content: string;
@@ -1246,8 +1353,10 @@ export interface ApplicationsNS {
                     }
                 };
                 platformSettings: {
+                    clientAttestationOnlySubTitle: string;
                     heading: string;
                     subTitle: string;
+                    trustedAppsOnlySubTitle: string;
                     fields: {
                         android: {
                             heading: string;
@@ -1832,6 +1941,11 @@ export interface ApplicationsNS {
                             label: string;
                         };
                     };
+                };
+                fapiProfile: {
+                    heading: string;
+                    hint: string;
+                    unsupportedProfile: string;
                 };
                 requestObject: {
                     heading: string;
@@ -2716,6 +2830,12 @@ export interface ApplicationsNS {
                 description: string;
             };
             success: {
+                message: string;
+                description: string;
+            };
+        };
+        fetchFapiConfig: {
+            genericError: {
                 message: string;
                 description: string;
             };

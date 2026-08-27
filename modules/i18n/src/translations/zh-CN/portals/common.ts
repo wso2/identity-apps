@@ -231,6 +231,21 @@ export const common: CommonNS = {
     "lessThanOrEqual": "小于或等于",
     "lightMode": "光模式",
     "loading": "加载",
+    "localeDropdown": {
+        "groups": {
+            "default": {
+                "heading": "内置语言",
+                "hint": "这些语言在所有面向用户的身份验证和帐户恢复界面以及“我的帐户”门户中均受支持。",
+                "subHeading": "默认支持的语言"
+            },
+            "other": {
+                "heading": "其他语言",
+                "subHeading": "此模板可用的其他语言"
+            }
+        },
+        "label": "语言",
+        "placeholder": "选择语言"
+    },
     "loginTime": "登录时间",
     "logout": "登出",
     "makePrimary": "使主要",

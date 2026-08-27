@@ -1,5 +1,16 @@
 # @wso2is/admin.extensions.v1
 
+## 2.43.10
+
+### Patch Changes
+
+- [#10637](https://github.com/wso2/identity-apps/pull/10637) [`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add trial expiry wizard functionality
+
+- Updated dependencies [[`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9), [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8)]:
+  - @wso2is/admin.subscription.v1@1.5.230
+  - @wso2is/admin.claims.v1@2.31.4
+  - @wso2is/i18n@2.45.3
+
 ## 2.43.9
 
 ### Patch Changes

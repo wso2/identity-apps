@@ -1,5 +1,34 @@
 # @wso2is/myaccount
 
+## 4.4.1
+
+### Patch Changes
+
+- [#10599](https://github.com/wso2/identity-apps/pull/10599) [`4b360cbb7575caa5fb184b07a67de613f031997a`](https://github.com/wso2/identity-apps/commit/4b360cbb7575caa5fb184b07a67de613f031997a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve locale field in myaccount app to list all locales
+
+## 4.4.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+
+## 4.3.11
+
+### Patch Changes
+
+- [#10494](https://github.com/wso2/identity-apps/pull/10494) [`0d0af7d35586a9280d7a1a99e35148cdf837ab9f`](https://github.com/wso2/identity-apps/commit/0d0af7d35586a9280d7a1a99e35148cdf837ab9f) Thanks [@hwupathum](https://github.com/hwupathum)! - Update consent API uri
+
+## 4.3.10
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
 ## 4.3.9
 
 ### Patch Changes

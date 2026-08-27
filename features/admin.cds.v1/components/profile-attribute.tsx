@@ -47,6 +47,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid, Icon, Image, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteSchemaAttributeById, updateSchemaAttributeById } from "../api/profile-attributes";
+import { useCDSApplications } from "../hooks/use-cds-applications";
 import { useSchemaAttributeById } from "../hooks/use-profile-attributes";
 import { useSearchSubAttributes } from "../hooks/use-search-sub-attributes";
 import { SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
@@ -109,6 +110,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const [ attribute, setAttribute ] = useState<ProfileSchemaAttribute>(null);
     const [ subAttributes, setSubAttributes ] = useState<ProfileSchemaSubAttributeRef[]>([]);
     const [ currentValueType, setCurrentValueType ] = useState<ValueType>(null);
+
+    const { getApplicationDisplayName } = useCDSApplications(scope === "application_data");
 
     // Canonical values editor
     const [ canonicalValues, setCanonicalValues ] = useState<CanonicalValues[]>([]);
@@ -478,27 +481,50 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
 
                             { /* Application identifier (application_data only) */ }
                             { scope === "application_data" && attribute.application_identifier && (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Field.Input
-                                            ariaLabel="Application identifier"
-                                            inputType="default"
-                                            name="application_identifier_display"
-                                            label={ t("customerDataService:profileAttributes.edit."+
-                                                "fields.applicationIdentifier.label") }
-                                            value={ attribute.application_identifier }
-                                            readOnly
-                                            maxLength={ 200 }
-                                            minLength={ 3 }
-                                            data-componentid={ `${componentId}-application-identifier-input` }
-                                            width={ 16 }
-                                        />
-                                        <Hint>
-                                            { t("customerDataService:profileAttributes.edit."+
-                                            "fields.applicationIdentifier.hint") }
-                                        </Hint>
-                                    </Grid.Column>
-                                </Grid.Row>
+                                <>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.Input
+                                                ariaLabel="Application identifier"
+                                                inputType="default"
+                                                name="application_identifier"
+                                                label={ t("customerDataService:profileAttributes.edit."+
+                                                    "fields.applicationIdentifier.label") }
+                                                value={ attribute.application_identifier }
+                                                readOnly
+                                                maxLength={ 200 }
+                                                minLength={ 3 }
+                                                data-componentid={ `${componentId}-application-identifier-input` }
+                                                width={ 16 }
+                                            />
+                                            <Hint>
+                                                { t("customerDataService:profileAttributes.edit."+
+                                                "fields.applicationIdentifier.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.Input
+                                                ariaLabel="Application name"
+                                                inputType="default"
+                                                name="application_name_display"
+                                                label={ t("customerDataService:profileAttributes.edit."+
+                                                    "fields.applicationName.label") }
+                                                value={ getApplicationDisplayName(attribute.application_identifier) }
+                                                readOnly
+                                                maxLength={ 200 }
+                                                minLength={ 3 }
+                                                data-componentid={ `${componentId}-application-name-input` }
+                                                width={ 16 }
+                                            />
+                                            <Hint>
+                                                { t("customerDataService:profileAttributes.edit."+
+                                                "fields.applicationName.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </>
                             ) }
 
                             { /* Value type */ }
@@ -777,7 +803,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             isUpdating,
             isDeleting,
             isLoadingSubAttrs,
-            currentValueType
+            currentValueType,
+            getApplicationDisplayName
         ]
     );
 

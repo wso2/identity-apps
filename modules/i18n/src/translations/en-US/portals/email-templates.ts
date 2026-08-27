@@ -243,7 +243,7 @@ export const emailTemplates: emailTemplatesNS = {
     updateTemplate: {
         tags: {
             premium: {
-                info: "Unlock email template customization with our Paid plans. <1>Contact Us</1> to upgrade."
+                info: "Email template customization is only available for organizations in the enterprise plan. <1>Contact Us</1> to upgrade."
             }
         }
     },

@@ -23,6 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ReactComponent as LockIcon } from "../../resources/assets/images/icons/lock.svg";
 import { NodeType, TreeNodeStateInterface } from "./models";
 
 const INDENT: number = 18;
@@ -79,7 +80,19 @@ const OpChips = ({
         >
             { canExpose && (
                 <Chip
-                    label={ t("flowExtension:contextTree.node.readChip") }
+                    label={ (
+                        <Box component="span">
+                            { node.exposed && node.exposeEncrypted && (
+                                <LockIcon
+                                    width={ 8 }
+                                    height={ 8 }
+                                    strokeWidth={ 2.5 }
+                                    style={ { marginRight: 3, verticalAlign: "middle" } }
+                                />
+                            ) }
+                            { t("flowExtension:contextTree.node.readChip") }
+                        </Box>
+                    ) }
                     size="small"
                     onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
                         e.stopPropagation();
@@ -111,7 +124,19 @@ const OpChips = ({
             ) }
             { canModify && (
                 <Chip
-                    label={ t("flowExtension:contextTree.node.writeChip") }
+                    label={ (
+                        <Box component="span">
+                            { node.modify && node.modifyEncrypted && (
+                                <LockIcon
+                                    width={ 8 }
+                                    height={ 8 }
+                                    strokeWidth={ 2.5 }
+                                    style={ { marginRight: 3, verticalAlign: "middle" } }
+                                />
+                            ) }
+                            { t("flowExtension:contextTree.node.writeChip") }
+                        </Box>
+                    ) }
                     size="small"
                     onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
                         e.stopPropagation();

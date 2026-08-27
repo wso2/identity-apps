@@ -107,7 +107,7 @@ export class Config {
                 }
             },
             consentMgtV2: {
-                consents: `${this.getDeploymentConfig()?.serverHost}/api/identity/consent-mgt/v2.0/consents`
+                consents: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/consents`
             },
             federatedAssociations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn/finish-registration`,
@@ -131,6 +131,7 @@ export class Config {
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
+            serverConfigPreferences: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/configs/preferences`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
@@ -166,6 +167,7 @@ export class Config {
                 .replace("${year}", new Date().getFullYear()),
             disableMFAForFederatedUsers: window["AppUtils"]?.getConfig()?.ui?.disableMFAForFederatedUsers,
             disableMFAforSuperTenantUser: window["AppUtils"]?.getConfig()?.ui?.disableMFAforSuperTenantUser,
+            enableLegacyLocaleDropdown: window["AppUtils"]?.getConfig()?.ui?.enableLegacyLocaleDropdown ?? false,
             enableMFAUserWise: window["AppUtils"]?.getConfig()?.ui?.enableMFAUserWise,
             features: window["AppUtils"]?.getConfig()?.ui?.features,
             forceBackupCode: window["AppUtils"]?.getConfig()?.ui?.forceBackupCode,

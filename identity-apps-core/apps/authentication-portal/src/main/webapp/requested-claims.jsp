@@ -46,6 +46,17 @@
 
 <%!
     private Log log = LogFactory.getLog(this.getClass());
+
+    /*
+     * Claim value validation failures that the user can correct by editing the form. For these the page is
+     * re-rendered with the message shown inline, instead of forwarding to the generic error page.
+     *
+     * SUO-10001 - claim value does not match the configured regex.
+     * SUO-10003 - date of birth is not an existing calendar date, or is a future date.
+     *
+     * SUO-10000 (user attribute update is not allowed) is deliberately absent: retrying cannot fix it.
+     */
+    private static final List<String> CORRECTABLE_CLAIM_ERROR_CODES = Arrays.asList("SUO-10001", "SUO-10003");
 %>
 
 <%
@@ -55,8 +66,7 @@
     Boolean isFederated = false;
     String errorCode = request.getParameter("errorCode");
     String errorMsg = request.getParameter("errorMessage");
-    // "SUO-10001" error code is thrown when claim value doesn't match with regex pattern.
-    if (!"SUO-10001".equals(errorCode) && StringUtils.isNotBlank(errorMsg)) {
+    if (!CORRECTABLE_CLAIM_ERROR_CODES.contains(errorCode) && StringUtils.isNotBlank(errorMsg)) {
         request.setAttribute(STATUS_MSG, errorMsg);
         if (!StringUtils.equals(errorMsg, "User attribute update is not allowed")) {
             request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, CONFIGURATION_ERROR));
@@ -64,8 +74,18 @@
         request.getRequestDispatcher("error.do").forward(request, response);
         return;
     }
-    if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
-        missingClaimList = request.getParameter(Constants.MISSING_CLAIMS).split(",");
+    // The page exists to collect the missing claims listed in this parameter, and iterates the list
+    // unconditionally when rendering, taking the first character of each entry. Without the
+    // parameter there is nothing to prompt for, and a blank entry would break that rendering.
+    String missingClaims = request.getParameter(Constants.MISSING_CLAIMS);
+    if (StringUtils.isBlank(missingClaims)) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
+    }
+    missingClaimList = missingClaims.split(",", -1);
+    if (Arrays.stream(missingClaimList).anyMatch(StringUtils::isBlank)) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
     }
     if (request.getParameter(Constants.DISPLAY_NAMES) != null) {
         String[] displayNamesParam = request.getParameter(Constants.DISPLAY_NAMES).split(",");

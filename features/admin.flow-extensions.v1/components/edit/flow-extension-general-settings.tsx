@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -215,9 +216,11 @@ const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGeneralSettin
                                 label={ t("flowExtension:edit.general.name.label") }
                                 placeholder={ t("flowExtension:edit.general.name.placeholder") }
                                 helperText={
-                                    (<Hint className="hint" compact>
-                                        { t("flowExtension:edit.general.name.hint") }
-                                    </Hint>)
+                                    (<Box sx={ { mb: 1.5 } }>
+                                        <Hint className="hint" compact>
+                                            { t("flowExtension:edit.general.name.hint") }
+                                        </Hint>
+                                    </Box>)
                                 }
                                 component={ TextFieldAdapter }
                                 maxLength={ 255 }
@@ -254,9 +257,11 @@ const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGeneralSettin
                                 label={ t("flowExtension:edit.general.iconUrl.label") }
                                 placeholder={ t("flowExtension:edit.general.iconUrl.placeholder") }
                                 helperText={
-                                    (<Hint className="hint" compact>
-                                        { t("flowExtension:edit.general.iconUrl.hint") }
-                                    </Hint>)
+                                    (<Box sx={ { mb: 1.5 } }>
+                                        <Hint className="hint" compact>
+                                            { t("flowExtension:edit.general.iconUrl.hint") }
+                                        </Hint>
+                                    </Box>)
                                 }
                                 component={ TextFieldAdapter }
                                 maxLength={ 2048 }

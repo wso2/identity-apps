@@ -2684,10 +2684,6 @@ export const extensions: Extensions = {
                         placeholder: "Select the email template",
                         hint: "Select the email template"
                     },
-                    locale: {
-                        label: "Locale",
-                        placeholder: "Select Locale"
-                    },
                     subject: {
                         label: "Subject",
                         placeholder: "Enter the email subject",
@@ -2876,7 +2872,7 @@ export const extensions: Extensions = {
                                             "<3><0>be unique</0><1>contain more than {{ minLength }} and less than" +
                                             " {{ maxLength }} characters</1><2>consist of only lowercase" +
                                             " alphanumeric characters</2><3>begin with an alphabetic character</3>" +
-                                            "</3s>"
+                                            "</3>"
                                     }
                                 }
                             },

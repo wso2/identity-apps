@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.13.6
+
+### Patch Changes
+
+- [#10440](https://github.com/wso2/identity-apps/pull/10440) [`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8) Thanks [@dannguyen24](https://github.com/dannguyen24)! - Replace inline array default props with module-level constants to prevent unnecessary re-renders
+
+## 2.13.5
+
+### Patch Changes
+
+- [#10518](https://github.com/wso2/identity-apps/pull/10518) [`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show all languages in the locale dropdown, grouped into default-supported and other languages, in the email and SMS template edit views.
+
+## 2.13.4
+
+### Patch Changes
+
+- [#10489](https://github.com/wso2/identity-apps/pull/10489) [`4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0`](https://github.com/wso2/identity-apps/commit/4ca1f91ed483a4d95dd8e63dc4bd42e32ea2cbc0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid locale codes
+
 ## 2.13.3
 
 ### Patch Changes

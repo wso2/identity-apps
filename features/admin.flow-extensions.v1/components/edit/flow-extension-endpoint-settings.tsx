@@ -16,23 +16,29 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Divider from "@oxygen-ui/react/Divider";
+import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
 import {
     AuthenticationType,
     EndpointConfigFormPropertyInterface
 } from "@wso2is/admin.actions.v1/models/actions";
 import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
+import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import {
     AlertLevels,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
-import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import { useTrigger } from "@wso2is/forms/legacy";
+import { ContentLoader, EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowExtension from "../../api/update-flow-extension";
@@ -63,6 +69,22 @@ interface FlowExtensionEndpointSettingsPropsInterface extends IdentifiableCompon
      * Callback to refresh the Flow Extension after an update.
      */
     mutateFlowExtension: () => void;
+}
+
+/**
+ * Endpoint form values, extended with the certificate fields that are carried in form state rather
+ * than rendered as visible inputs. Keeping them in the form (instead of component state) lets a submit
+ * resumed synchronously from the certificate-extraction callback read fresh values without stale closures.
+ */
+interface FlowExtensionEndpointFormValues extends EndpointConfigFormPropertyInterface {
+    /**
+     * Base64-encoded PEM certificate staged for encryption. `undefined` means untouched, `""` means cleared.
+     */
+    encodedCertificate?: string;
+    /**
+     * Whether the certificate was staged or cleared since the last successful save.
+     */
+    certificateModified?: boolean;
 }
 
 /**
@@ -134,6 +156,12 @@ const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpointSett
     );
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
 
+    // The user staged a certificate in the add-certificate form (entered but not yet extracted). Gates
+    // the two-phase submit: extract the staged cert first, then submit. The staged value itself and the
+    // "modified" gate live in form state (see FlowExtensionEndpointFormValues).
+    const [ userHasStagedCert, setUserHasStagedCert ] = useState<boolean>(false);
+    const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
+
     // Memoized so the reference is stable across renders. ActionEndpointConfigForm resets its
     // authentication state in a useEffect keyed on initialValues — a fresh object each render would
     // continually revert the auth-type selection.
@@ -177,31 +205,42 @@ const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpointSett
         });
 
     const handleSubmit = (
-        values: EndpointConfigFormPropertyInterface,
-        changedFields: Record<string, boolean>
+        values: FlowExtensionEndpointFormValues,
+        form: FormApi
     ): void => {
-        setIsSubmitting(true);
+        const changedFields: Record<string, boolean> = form.getState().dirtyFields;
         const isEndpointChanged: boolean = isAuthenticationUpdateFormState
             || Boolean(changedFields?.endpointUri)
             || Boolean(changedFields?.allowedHeaders);
 
-        if (!isEndpointChanged) {
+        const body: FlowExtensionUpdateRequestInterface = {};
+
+        if (isEndpointChanged) {
+            body.endpoint = {
+                ...(changedFields?.allowedHeaders && { allowedHeaders: values.allowedHeaders }),
+                ...(isAuthenticationUpdateFormState && {
+                    authentication: {
+                        properties: resolveAuthProperties(values),
+                        type: endpointAuthType
+                    }
+                }),
+                ...(changedFields?.endpointUri && { uri: values.endpointUri })
+            };
+        }
+
+        // Include the encryption update only when the certificate was explicitly changed (staged or
+        // cleared). `certificateModified` is carried in form state, so this reads a fresh value even when
+        // the submit is resumed synchronously from the certificate-extraction callback.
+        if (values.certificateModified) {
+            body.encryption = { certificate: values.encodedCertificate || "" };
+        }
+
+        // Nothing changed — skip the API call.
+        if (!body.endpoint && !body.encryption) {
             return;
         }
 
-        const endpoint: Partial<FlowExtensionEndpointInterface> = {
-            ...(changedFields?.allowedHeaders && { allowedHeaders: values.allowedHeaders }),
-            ...(isAuthenticationUpdateFormState && {
-                authentication: {
-                    properties: resolveAuthProperties(values),
-                    type: endpointAuthType
-                }
-            }),
-            ...(changedFields?.endpointUri && { uri: values.endpointUri })
-        };
-
-        const body: FlowExtensionUpdateRequestInterface = { endpoint };
-
+        setIsSubmitting(true);
         updateFlowExtension(flowExtension.id, body)
             .then((): void => {
                 dispatch(addAlert({
@@ -210,6 +249,10 @@ const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpointSett
                     message: t("flowExtension:notifications.updateSuccess.message")
                 }));
                 setIsAuthenticationUpdateFormState(false);
+                // Reset the modified gate so a subsequent unrelated update doesn't re-send `encryption`.
+                // The staged certificate value is intentionally kept so the "configured" alert persists.
+                form.change("certificateModified", false);
+                setUserHasStagedCert(false);
                 mutateFlowExtension();
             })
             .catch((): void => {
@@ -232,36 +275,104 @@ const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpointSett
                 initialValues={ initialValues }
                 validate={ validateForm }
                 onSubmit={ (
-                    values: EndpointConfigFormPropertyInterface,
+                    values: FlowExtensionEndpointFormValues,
                     form: FormApi
-                ): void => handleSubmit(values, form.getState().dirtyFields) }
-                render={ ({ handleSubmit }: FormRenderProps): ReactElement => (
-                    <form onSubmit={ handleSubmit } className="form-container with-max-width">
-                        <ActionEndpointConfigForm
-                            initialValues={ initialValues }
-                            isCreateFormState={ false }
-                            isReadOnly={ isReadOnly }
-                            showHeadersAndParams={ false }
-                            authenticationTypes={ FlowExtensionConstants.FLOW_EXTENSION_AUTH_TYPES }
-                            onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean): void => {
-                                setEndpointAuthType(updatedValue);
-                                setIsAuthenticationUpdateFormState(change);
-                            } }
-                            data-componentid={ `${componentId}-endpoint-config-form` }
-                        />
-                        <Button
-                            size="medium"
-                            variant="contained"
-                            type="submit"
-                            sx={ { marginTop: 3.75 } }
-                            data-componentid={ `${componentId}-update-button` }
-                            loading={ isSubmitting }
-                            disabled={ isReadOnly || isSubmitting }
-                        >
-                            { t("common:update") }
-                        </Button>
-                    </form>
-                ) }
+                ): void => handleSubmit(values, form) }
+                render={ ({ handleSubmit, form, values }: FormRenderProps): ReactElement => {
+                    const stagedCertificate: string | undefined = values.encodedCertificate;
+                    const hasCertificate: boolean = stagedCertificate === undefined
+                        ? Boolean(flowExtension?.encryption)
+                        : stagedCertificate !== "";
+
+                    const handleCertificateSubmit = (value: string): void => {
+                        if (value) {
+                            form.change("encodedCertificate", value);
+                            form.change("certificateModified", true);
+                        }
+                        handleSubmit();
+                    };
+
+                    const handleClearCertificate = (): void => {
+                        form.change("encodedCertificate", "");
+                        form.change("certificateModified", true);
+                    };
+
+                    return (
+                        <form onSubmit={ handleSubmit } className="form-container with-max-width">
+                            <Box sx={ { "& .secondary-button": { mt: 2 } } }>
+                                <ActionEndpointConfigForm
+                                    initialValues={ initialValues }
+                                    isCreateFormState={ false }
+                                    isReadOnly={ isReadOnly }
+                                    showHeadersAndParams={ false }
+                                    authenticationTypes={ FlowExtensionConstants.FLOW_EXTENSION_AUTH_TYPES }
+                                    onAuthenticationTypeChange={
+                                        (updatedValue: AuthenticationType, change: boolean): void => {
+                                            setEndpointAuthType(updatedValue);
+                                            setIsAuthenticationUpdateFormState(change);
+                                        }
+                                    }
+                                    data-componentid={ `${componentId}-endpoint-config-form` }
+                                />
+                            </Box>
+                            <Divider sx={ { my: 3 } } />
+                            <Heading as="h5">
+                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.title") }
+                            </Heading>
+                            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
+                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.hint") }
+                            </Typography>
+                            { hasCertificate && (
+                                <Alert
+                                    severity="success"
+                                    sx={ { alignItems: "center", mb: 2 } }
+                                    action={ (
+                                        <LinkButton
+                                            onClick={ handleClearCertificate }
+                                            data-componentid={ `${componentId}-clear-certificate` }
+                                        >
+                                            { t("common:clear") }
+                                        </LinkButton>
+                                    ) }
+                                    data-componentid={ `${componentId}-certificate-status` }
+                                >
+                                    <Trans
+                                        i18nKey={ "flowExtension:createWizard.steps.endpointConfig" +
+                                        ".certificate.uploaded" }
+                                    >
+                                    Certificate configured. Clear it to upload a different certificate.
+                                    </Trans>
+                                </Alert>
+                            ) }
+                            { !hasCertificate && (
+                                <AddCertificateFormComponent
+                                    triggerCertificateUpload={ triggerCertUpload }
+                                    onSubmit={ handleCertificateSubmit }
+                                    setShowFinishButton={ setUserHasStagedCert }
+                                    data-componentid={ `${componentId}-certificate-upload` }
+                                />
+                            ) }
+                            <Button
+                                size="medium"
+                                variant="contained"
+                                onClick={ (): void => {
+                                    if (userHasStagedCert) {
+                                    // Two-phase: extract the staged cert first, then submit.
+                                        setTriggerCertUpload();
+                                    } else {
+                                        handleSubmit();
+                                    }
+                                } }
+                                sx={ { marginTop: 3.75 } }
+                                data-componentid={ `${componentId}-update-button` }
+                                loading={ isSubmitting }
+                                disabled={ isReadOnly || isSubmitting }
+                            >
+                                { t("common:update") }
+                            </Button>
+                        </form>
+                    );
+                } }
             />
         </EmphasizedSegment>
     );

@@ -447,7 +447,12 @@ export const console: ConsoleNS = {
         featureLockedBanner: {
             prefix: "This feature is only available on higher-tier plans.",
             action: "Upgrade your plan",
+            contactAction: "Contact us",
             suffix: "to get access."
+        },
+        freeTrialBanner: {
+            upgradeAction: "upgrade",
+            contactAction: "contact us"
         },
         upgrade: "Upgrade",
         validations: {

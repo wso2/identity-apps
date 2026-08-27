@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
 import {
-    AccessConfigOutputInterface,
     ContextPathOutputInterface,
     ContextTreeNodeMetadataInterface,
+    FlowExtensionAccessConfigInterface,
     InitialAccessConfigInterface,
     NodeType,
     TreeNodeStateInterface
@@ -41,6 +42,9 @@ const isContainer = (node: TreeNodeStateInterface): boolean =>
 //   runtime entries in the map rather than only the ones the user configured.
 //
 // modify: LEAF-ONLY, no propagation.
+//
+// exposeEncrypted: LEAF-ONLY, no propagation.
+// modifyEncrypted: LEAF-ONLY, no propagation.
 
 // ── Tree Mutation Helpers ─────────────────────────────────────────────────────
 
@@ -110,12 +114,14 @@ export const mapMetadataToState = (
         dataType: node.dataType,
         dynamicEntryAllowed: node.dynamicEntryAllowed ?? false,
         dynamicEntryType: node.dynamicEntryType ?? "",
+        exposeEncrypted: false,
         exposed: false,
         // Path-derived key — backend metadata reuses bare names like "id" across
         // siblings (user.id, organization.id, application.id). Using node.key
         // verbatim makes updateNode match all of them at once.
         key: `node:${normalisePath(node.path)}`,
         modify: false,
+        modifyEncrypted: false,
         nodeType: node.nodeType,
         path: node.path,
         readOnly: node.readOnly ?? false,
@@ -164,9 +170,9 @@ const decodeClaimPath = (path: string): string =>
  * by the GET action API.
  *
  * For each node the algorithm:
- *   1. Checks if the node's path appears in `expose[]` → set exposed.
+ *   1. Checks if the node's path appears in `expose[]` → set exposed + exposeEncrypted.
  *   2. Checks if a *parent* path in `expose[]` covers this node → cascade exposed.
- *   3. Checks if the node's path appears in `modify[]` → set modify.
+ *   3. Checks if the node's path appears in `modify[]` → set modify + modifyEncrypted.
  *
  * Dynamic entries (e.g. claim keys under /user/claims/) that exist in the
  * access config but NOT in the metadata are synthesised as children.
@@ -181,34 +187,31 @@ export const mapMetadataToStateWithAccessConfig = (
     options: {
         /** Whether the active flow type permits MODIFY on read-only nodes. Defaults to true. */
         allowReadOnlyClaimsModification?: boolean;
-        /** claimURI → readOnly map; used when synthesising claim leaves to inherit per-claim
-         *  read-only status from the Claims API. Without this every synthesised claim is
-         *  treated as not-readOnly and the modify-drop rule below cannot fire on it. */
-        claimReadOnlyMap?: Map<string, boolean>;
     } = {}
 ): TreeNodeStateInterface[] => {
 
     const allowReadOnlyClaimsModification: boolean =
         options.allowReadOnlyClaimsModification !== false;
-    const claimReadOnlyMap: Map<string, boolean> = options.claimReadOnlyMap ?? new Map();
-    const exposePaths: Set<string> = new Set();
-    const modifyPaths: Set<string> = new Set();
+    // path → encrypted flag. The encrypted bit round-trips the per-field encryption
+    // marks saved on the access config.
+    const exposePaths: Map<string, boolean> = new Map();
+    const modifyPaths: Map<string, boolean> = new Map();
     // Preserve the type-hint string ("Integer", "[String]", "risk: String, …") keyed
     // by clean path so synthesised properties children get the correct dataType on
     // reload. Without this, the round-trip collapses every dynamic entry's type back
     // to the container's `dynamicEntryType` ("Object").
     const modifyTypeHints: Map<string, string> = new Map();
 
-    (accessConfig.expose ?? []).forEach((e: { path: string }) => {
-        exposePaths.add(normalisePath(decodeClaimPath(e.path)));
+    (accessConfig.expose ?? []).forEach((e: { path: string; encrypted?: boolean }) => {
+        exposePaths.set(normalisePath(decodeClaimPath(e.path)), !!e.encrypted);
     });
-    (accessConfig.modify ?? []).forEach((m: { path: string }) => {
+    (accessConfig.modify ?? []).forEach((m: { path: string; encrypted?: boolean }) => {
         const decoded: string = decodeClaimPath(m.path);
         const typeHintMatch: RegExpMatchArray | null = decoded.match(/\{([^}]+)\}$/);
         const cleanPath: string = decoded.replace(/\{[^}]+\}$/, "");
         const norm: string = normalisePath(cleanPath);
 
-        modifyPaths.add(norm);
+        modifyPaths.set(norm, !!m.encrypted);
         if (typeHintMatch) {
             modifyTypeHints.set(norm, typeHintMatch[1]);
         }
@@ -217,7 +220,7 @@ export const mapMetadataToStateWithAccessConfig = (
     /**
      * Check if a path is covered by an ancestor path in the expose set.
      */
-    const isCoveredByAncestor = (path: string): boolean => {
+    const isCoveredByAncestor = (path: string): { covered: boolean; encrypted: boolean } => {
         const normalised: string = normalisePath(path);
         const parts: string[] = normalised.split("/").filter(Boolean);
         let current: string = "";
@@ -225,16 +228,17 @@ export const mapMetadataToStateWithAccessConfig = (
         for (const part of parts) {
             current += "/" + part;
             if (current !== normalised && exposePaths.has(current)) {
-                return true;
+                return { covered: true, encrypted: !!exposePaths.get(current) };
             }
         }
 
-        return false;
+        return { covered: false, encrypted: false };
     };
 
     const convert = (
         metaNodes: ContextTreeNodeMetadataInterface[],
-        parentExposed: boolean
+        parentExposed: boolean,
+        parentEncrypted: boolean
     ): TreeNodeStateInterface[] => {
         const result: TreeNodeStateInterface[] = [];
 
@@ -246,31 +250,46 @@ export const mapMetadataToStateWithAccessConfig = (
 
             // Direct match in expose (only meaningful for leaf nodes)
             const directExpose: boolean = exposePaths.has(np);
+            const directExposeEnc: boolean = directExpose ? !!exposePaths.get(np) : false;
 
             // For leaf nodes: exposed if directly in expose paths or covered by ancestor
             // For container nodes: never exposed (expose is leaf-only)
-            const ancestorCovered: boolean = isCoveredByAncestor(np);
+            const ancestor: { covered: boolean; encrypted: boolean } = isCoveredByAncestor(np);
             const exposed: boolean = nodeIsContainer
                 ? false
-                : (directExpose || ancestorCovered || parentExposed);
+                : (directExpose || ancestor.covered || parentExposed);
+            const exposeEncrypted: boolean = nodeIsContainer
+                ? false
+                : (directExpose
+                    ? directExposeEnc
+                    : ancestor.covered
+                        ? ancestor.encrypted
+                        : parentEncrypted);
 
             // Modify (leaf-only in practice). When the flow type forbids modifying read-only
             // nodes, drop a previously-saved MODIFY mark on render. The cleanup commits on
             // the next save — the saved access config remains untouched until then.
             const nodeReadOnly: boolean = node.readOnly ?? false;
             let directModify: boolean = modifyPaths.has(np);
+            let modifyEncrypted: boolean = directModify ? !!modifyPaths.get(np) : false;
 
             if (nodeReadOnly && !allowReadOnlyClaimsModification) {
                 directModify = false;
+                modifyEncrypted = false;
             }
 
             let children: TreeNodeStateInterface[] | undefined;
 
             if (node.children) {
                 // Pass parent exposed state down so child leaves inherit coverage
-                const childExposed: boolean = directExpose || ancestorCovered || parentExposed;
+                const childExposed: boolean = directExpose || ancestor.covered || parentExposed;
+                const childEncrypted: boolean = directExpose
+                    ? directExposeEnc
+                    : ancestor.covered
+                        ? ancestor.encrypted
+                        : parentEncrypted;
 
-                children = convert(node.children, childExposed);
+                children = convert(node.children, childExposed, childEncrypted);
             }
 
             // Synthesise dynamic entries that exist in accessConfig but not in metadata
@@ -286,7 +305,7 @@ export const mapMetadataToStateWithAccessConfig = (
                 // because claim URIs contain slashes (e.g. http://wso2.org/claims/displayName).
                 const dynamicKeys: Set<string> = new Set<string>();
 
-                exposePaths.forEach((ePath: string) => {
+                exposePaths.forEach((_enc: boolean, ePath: string) => {
                     if (ePath.startsWith(containerPrefix)) {
                         const key: string = ePath.slice(containerPrefix.length);
 
@@ -296,7 +315,7 @@ export const mapMetadataToStateWithAccessConfig = (
                     }
                 });
 
-                modifyPaths.forEach((mPath: string) => {
+                modifyPaths.forEach((_enc: boolean, mPath: string) => {
                     if (mPath.startsWith(containerPrefix)) {
                         const key: string = mPath.slice(containerPrefix.length);
 
@@ -321,8 +340,10 @@ export const mapMetadataToStateWithAccessConfig = (
                             // node when the flow type forbids it.
                             if (existingChild.readOnly && !allowReadOnlyClaimsModification) {
                                 existingChild.modify = false;
+                                existingChild.modifyEncrypted = false;
                             } else {
                                 existingChild.modify = true;
+                                existingChild.modifyEncrypted = modifyPaths.get(synthPath) ?? false;
                             }
                         }
 
@@ -330,19 +351,25 @@ export const mapMetadataToStateWithAccessConfig = (
                     }
 
                     const isExposed: boolean = exposePaths.has(synthPath);
+                    const synthExEnc: boolean = exposePaths.get(synthPath) ?? false;
                     let isModify: boolean = modifyPaths.has(synthPath);
+                    let synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
                     const displayName: string = claimDisplayNames?.get(key) ?? key;
-                    // For dynamic entries under a claims map, prefer the per-claim readOnly
-                    // status (from the Claims API) over the parent container's flag. Falls
-                    // back to the parent's flag if the map doesn't carry the URI.
-                    const claimReadOnly: boolean | undefined = claimReadOnlyMap.get(key);
-                    const synthReadOnly: boolean = claimReadOnly ?? (node.readOnly ?? false);
+                    
+                    // For dynamic entries under a claims map, read-only status comes from the
+                    // fixed READ_ONLY_CLAIM_URIS list. Other containers fall back to the
+                    // parent's flag.
+                    const synthReadOnly: boolean = containerPrefix === "/user/claims/"
+                        ? FlowExtensionConstants.isReadOnlyClaim(key)
+                        : (node.readOnly ?? false);
 
-                    // Drop a previously-saved MODIFY when this flow type forbids modifying
-                    // read-only nodes (e.g., PASSWORD_RECOVERY). The saved access config still
-                    // carries it; the cleanup commits on the next save.
-                    if (synthReadOnly && !allowReadOnlyClaimsModification) {
+                    if (synthReadOnly) {
                         isModify = false;
+                        synthModEnc = false;
+                    }
+
+                    if (!isExposed && !isModify) {
+                        return;
                     }
 
                     const isUnderClaims: boolean = containerPrefix === "/user/claims/";
@@ -362,12 +389,14 @@ export const mapMetadataToStateWithAccessConfig = (
                         dataType: synthDataType,
                         dynamicEntryAllowed: false,
                         dynamicEntryType: "",
+                        exposeEncrypted: synthExEnc,
                         exposed: isExposed,
                         isClaim: isUnderClaims,
                         // Path-derived key so two synthesised entries in different containers
                         // never collide (Date.now() collisions caused dual-row highlighting).
                         key: `synth:${synthPath}`,
                         modify: isModify,
+                        modifyEncrypted: synthModEnc,
                         nodeType: NodeType.LEAF,
                         path: synthPath,
                         readOnly: synthReadOnly,
@@ -385,12 +414,14 @@ export const mapMetadataToStateWithAccessConfig = (
                 dataType: node.dataType,
                 dynamicEntryAllowed: node.dynamicEntryAllowed ?? false,
                 dynamicEntryType: node.dynamicEntryType ?? "",
+                exposeEncrypted,
                 exposed,
                 // Path-derived key — backend metadata reuses bare names like "id"
                 // across siblings, which caused updateNode to toggle every node
                 // sharing the same key at once.
                 key: `node:${np}`,
                 modify: directModify,
+                modifyEncrypted,
                 nodeType: node.nodeType,
                 path: node.path,
                 readOnly: node.readOnly ?? false,
@@ -402,15 +433,17 @@ export const mapMetadataToStateWithAccessConfig = (
         return result;
     };
 
-    return convert(nodes, false);
+    return convert(nodes, false, false);
 };
 
 // ── Access Config Builder ────────────────────────────────────────────────────
 //
 // expose[]:  LEAF nodes with exposed=true.
 //            Container nodes are never exposed; only individual leaf paths appear.
+//            If exposeEncrypted → { path, encrypted: true }, else { path, encrypted: false }.
 //
 // modify[]:  LEAF nodes with modify=true.
+//            If modifyEncrypted → { path, encrypted: true }, else { path, encrypted: false }.
 
 // ── Selection Helpers ────────────────────────────────────────────────────────
 
@@ -461,10 +494,11 @@ export const findNode = (
 /**
  * Build the access config output from the current tree state.
  * Only leaf nodes contribute to the output — containers are never exposed.
+ * The per-field `encrypted` flag travels on each expose/modify entry.
  */
 export const buildAccessConfig = (
     nodes: TreeNodeStateInterface[]
-): AccessConfigOutputInterface => {
+): FlowExtensionAccessConfigInterface => {
 
     const expose: ContextPathOutputInterface[] = [];
     const modify: ContextPathOutputInterface[] = [];
@@ -476,7 +510,7 @@ export const buildAccessConfig = (
             if (isLeaf) {
                 // Expose: leaf-only
                 if (node.exposed) {
-                    expose.push({ path: encodeClaimPath(node.path) });
+                    expose.push({ encrypted: !!node.exposeEncrypted, path: encodeClaimPath(node.path) });
                 }
 
                 // Modify: leaf-only
@@ -487,7 +521,7 @@ export const buildAccessConfig = (
                         ? `${node.path}{${node.dataType}}`
                         : node.path;
 
-                    modify.push({ path: encodeClaimPath(modifyPath) });
+                    modify.push({ encrypted: !!node.modifyEncrypted, path: encodeClaimPath(modifyPath) });
                 }
             }
 

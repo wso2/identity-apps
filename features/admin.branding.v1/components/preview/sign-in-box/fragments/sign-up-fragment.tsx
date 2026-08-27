@@ -436,7 +436,7 @@ const SignUpFragment: FunctionComponent<SignUpFragmentInterface> = (props: SignU
                             >
                                 <input type="hidden" id="country" name="http://wso2.org/claims/country" />
                                 <i className="dropdown icon"></i>
-                                <input className="search" autoComplete="off" tabIndex={ 0 } role="presentation" />
+                                <input className="search" autoComplete="off" tabIndex={ -1 } role="presentation" />
                                 <div className="default text">Enter Country</div>
                             </div>
 

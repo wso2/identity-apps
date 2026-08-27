@@ -70,6 +70,12 @@ export interface AuthenticationProviderNS {
             content: string;
             assertionHint: string;
         };
+        enableMultipleDeviceProgressiveEnrollment: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        };
     };
     dangerZoneGroup: {
         header: string;
@@ -427,6 +433,45 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                enableDeviceRegistrationNotification: {
+                    hint: string;
+                    label: string;
+                };
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: string;
+                        push: string;
+                    };
+                };
+                enableMultipleDeviceEnrollment: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                maximumDeviceLimit: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                deviceManagementSettings: {
+                    label: string;
+                };
+                enableMultipleDeviceProgressiveEnrollment: {
+                    hint: string;
+                    label: string;
+                    securityWarning: string;
+                    validations: {
+                        required: string;
+                    };
+                };
             };
             fido2: {
                 allowProgressiveEnrollment: {
@@ -668,6 +713,10 @@ export interface AuthenticationProviderNS {
                     info: string;
                     label: string;
                     placeholder: string;
+                    validations: {
+                        invalid: string;
+                        required: string;
+                    };
                 };
             };
             hypr: {
@@ -1966,6 +2015,20 @@ export interface AuthenticationProviderNS {
             };
         };
         updateSMSOTPAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updatePushAuthenticator: {
             error: {
                 message: string;
                 description: string;

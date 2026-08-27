@@ -53,6 +53,42 @@ export const customerDataService: CustomerDataServiceNS = {
             notAllowed: "Not allowed"
         }
     },
+    landing: {
+        backButton: "Go back to Customer Data",
+        configuration: {
+            profileAttributes: {
+                description: "Manage the attributes that make up the customer profiles",
+                title: "Profile Attributes"
+            },
+            unificationRules: {
+                description: "Manage profile unification rules",
+                title: "Unification Rules"
+            }
+        },
+        enable: {
+            label: "Enable Customer Data Service"
+        },
+        notifications: {
+            update: {
+                error: {
+                    description: "Failed to update Customer Data Service settings. Please try again.",
+                    message: "Update error"
+                },
+                success: {
+                    description: "Customer Data Service configuration updated successfully.",
+                    message: "Update successful"
+                }
+            }
+        },
+        page: {
+            description: "Collect and unify customer data across your applications",
+            title: "Customer Data"
+        },
+        profiles: {
+            description: "Manage customer profiles which have identity, behavioural and application data.",
+            heading: "Profiles"
+        }
+    },
     profileAttributes: {
         create: {
             forms: {
@@ -96,11 +132,12 @@ export const customerDataService: CustomerDataServiceNS = {
                     fields: {
                         // NEW: application identifier field (application_data scope)
                         applicationIdentifier: {
-                            label: "Application Identifier",
+                            label: "Application",
                             loading: "Loading applications…",
                             noOptions: "No applications found.",
+                            placeholder: "Select an application",
                             validations: {
-                                empty: "Application identifier is required."
+                                empty: "An application is required."
                             }
                         },
                         // NEW: compound attribute row
@@ -258,8 +295,12 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             fields: {
                 applicationIdentifier: {
-                    hint: "The application this attribute belongs to.",
+                    hint: "The application identifier this attribute belongs to, as stored in the customer data service.",
                     label: "Application Identifier"
+                },
+                applicationName: {
+                    hint: "The name of the application this attribute belongs to.",
+                    label: "Application Name"
                 },
                 attribute: {
                     hint: "The name of this attribute.",
@@ -593,7 +634,8 @@ export const customerDataService: CustomerDataServiceNS = {
     sidePanel: {
         ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
-        UnificationRules: "Unification Rules"
+        UnificationRules: "Unification Rules",
+        customerDataProfile: "Customer Data"
     },
     unificationRules: {
         common: {

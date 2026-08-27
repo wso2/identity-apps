@@ -116,6 +116,30 @@ export class Config {
     }
 
     /**
+     * Resolves the server host with the super tenant path mandated.
+     *
+     * Behaves like {@link resolveServerHost} (and therefore honours the tenant-qualified URLs
+     * flag) but additionally guarantees a tenant segment for the super tenant: by default the
+     * super tenant resolves to the bare origin with no `/<tenant-prefix>/<super-tenant>` path,
+     * and this method appends it. Regular tenants and sub-organizations are returned unchanged.
+     *
+     * @returns Server host with the super tenant path always present.
+     */
+    public static resolveServerHostWithSuperTenant(): string {
+        const serverHost: string = this.resolveServerHost();
+
+        // Only the super tenant resolves to the bare origin (no /<tenant-prefix>/ or /o/ path).
+        if (this.isTenantQualifiedURLsEnabled() && serverHost === this.getDeploymentConfig()?.serverOrigin) {
+            const tenantPrefix: string = window[ "AppUtils" ]?.getTenantPrefix();
+            const superTenant: string = window[ "AppUtils" ]?.getSuperTenant();
+
+            return `${ serverHost }/${ tenantPrefix }/${ superTenant }`;
+        }
+
+        return serverHost;
+    }
+
+    /**
      * This method resolves the server host without checking whether tenant-qualified URLs are enabled.
      * This is for paths that require the tenanted path regardless of whether tenant-qualified URLS
      * are enabled.
@@ -292,6 +316,7 @@ export class Config {
                 I18nConstants.AI_NAMESPACE,
                 I18nConstants.TEMPLATE_CORE_NAMESPACE,
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
+                I18nConstants.FAPI_SECURITY_POLICY_NAMESPACE,
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
                 I18nConstants.CUSTOM_AUTHENTICATOR_NAMESPACE,
@@ -308,7 +333,8 @@ export class Config {
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
                 I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
                 I18nConstants.CONSENTS_NAMESPACE,
-                I18nConstants.FLOW_EXTENSION_NAMESPACE
+                I18nConstants.FLOW_EXTENSION_NAMESPACE,
+                I18nConstants.CLI_SETTINGS_NAMESPACE
             ],
             preload: []
         };
@@ -386,7 +412,7 @@ export class Config {
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
-            ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
+            ...getCustomerDataServiceEndpoints(this.resolveServerHostWithSuperTenant(), this.getDeploymentConfig()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
@@ -431,6 +457,7 @@ export class Config {
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            appFaviconPath: window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath,
             appLogo: {
                 defaultLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath,

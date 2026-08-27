@@ -1,5 +1,30 @@
 # @wso2is/admin.subscription.v1
 
+## 1.5.230
+
+### Patch Changes
+
+- [#10637](https://github.com/wso2/identity-apps/pull/10637) [`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add trial expiry wizard functionality
+
+## 1.5.229
+
+### Patch Changes
+
+- [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+- Updated dependencies [[`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063), [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4)]:
+  - @wso2is/admin.users.v1@2.38.46
+  - @wso2is/admin.feature-gate.v1@1.9.10
+
+## 1.5.228
+
+### Patch Changes
+
+- [#10499](https://github.com/wso2/identity-apps/pull/10499) [`4cdd2c14deade286fbc92181988b9d67d54ff61b`](https://github.com/wso2/identity-apps/commit/4cdd2c14deade286fbc92181988b9d67d54ff61b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Refine the free trial banner wording and reduce the size of the View Plans button
+
+- Updated dependencies [[`ed176d6111f53770ea21609c5d11b25e3060bd67`](https://github.com/wso2/identity-apps/commit/ed176d6111f53770ea21609c5d11b25e3060bd67)]:
+  - @wso2is/admin.feature-gate.v1@1.9.9
+
 ## 1.5.227
 
 ### Patch Changes

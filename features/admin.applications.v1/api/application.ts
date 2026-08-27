@@ -46,6 +46,7 @@ import {
 } from "../models/application";
 import {
     AuthProtocolMetaListItemInterface,
+    ClientSecretCreationRequestInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
@@ -215,6 +216,8 @@ export const updateApplicationDetails = (
  * @param limit - Maximum Limit of the application List.
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
+ * @param excludeSystemPortals - Whether to exclude system portal applications.
+ * @param attributes - Additional attributes to include in the response (comma-separated).
  *
  * @returns A promise containing the response.
  */
@@ -222,7 +225,8 @@ export const getApplicationList = (
     limit: number,
     offset: number,
     filter: string,
-    excludeSystemPortals:boolean = false
+    excludeSystemPortals:boolean = false,
+    attributes?: string
 ): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -232,6 +236,7 @@ export const getApplicationList = (
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             excludeSystemPortals,
             filter,
             limit,
@@ -867,6 +872,72 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
 };
 
 /**
+ * Creates a new client secret for the application.
+ * Used only in the OIDC multiple client secrets flow.
+ *
+ * @param appId - Application ID.
+ * @param secret - Client secret creation request payload.
+ * @returns Response as a promise.
+ */
+export const createClientSecret = (
+    appId: string,
+    secret: ClientSecretCreationRequestInterface
+): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: secret,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/" + appId +
+            "/inbound-protocols/oidc/secrets"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to create the client secret."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Deletes a specific client secret of the application.
+ * Used only in the OIDC multiple client secrets flow.
+ *
+ * @param appId - Application ID.
+ * @param secretId - ID of the client secret to delete.
+ * @returns Response as a promise.
+ */
+export const deleteClientSecretById = (appId: string, secretId: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.applications + "/" + appId +
+            "/inbound-protocols/oidc/secrets/" + secretId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the client secret."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Get all the sample adaptive authentication templates.
  *
  * @returns Response as a promise.
@@ -1104,7 +1175,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 userEndpoint: response.data.userinfo_endpoint,
                 webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: state.config.deployment.tenantContext?.enableTenantQualifiedUrls === false ?
-                    requestConfig.url : `${ response.data.token_endpoint }/.well-known/openid-configuration`
+                    requestConfig.url : `${ response.data.issuer }/.well-known/openid-configuration`
             };
 
             return Promise.resolve(oidcConfigs);

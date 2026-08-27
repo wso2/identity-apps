@@ -18,6 +18,7 @@
 
 import "./webhook-channel-config-form.scss";
 import { Box, FormGroup, Grid, Typography } from "@mui/material";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField } from "@wso2is/forms";
 import CheckboxAdapter from "@wso2is/forms/src/components/adapters/checkbox-field-adapter";
@@ -45,7 +46,7 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
 const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterface> = ({
     channelConfigs,
     isReadOnly,
-    channelSubscriptions = [],
+    channelSubscriptions = EMPTY_ARRAY,
     ["data-componentid"]: _componentId = "webhook-channel-config-form"
 }: WebhookChannelConfigFormInterface): ReactElement => {
     const defaultChannels: WebhookChannelConfigInterface[] = channelConfigs;

@@ -231,6 +231,21 @@ export const common: CommonNS = {
     "lessThanOrEqual": "以下",
     "lightMode": "ライトモード",
     "loading": "読み込み",
+    "localeDropdown": {
+        "groups": {
+            "default": {
+                "heading": "組み込み言語",
+                "hint": "これらの言語は、すべてのユーザー向け認証画面およびアカウント復旧画面、My Account ポータルでサポートされています。",
+                "subHeading": "デフォルトでサポートされている言語"
+            },
+            "other": {
+                "heading": "追加の言語",
+                "subHeading": "このテンプレートで利用できるその他の言語"
+            }
+        },
+        "label": "言語",
+        "placeholder": "言語を選択"
+    },
     "loginTime": "ログイン時間",
     "logout": "ログアウト",
     "makePrimary": "プライマリを作成します",

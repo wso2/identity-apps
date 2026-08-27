@@ -55,6 +55,8 @@ class FeatureFlagConstants {
         CONNECTIONS_CUSTOM_AUTHENTICATOR: "console.connections.templates.customAuthenticator",
         CONNECTIONS_ENTERPRISE: "console.connections.templates.enterprise",
         CONNECTIONS_IDVP: "console.connections.templates.idvp",
+        CONSENTS_POLICY_CONSENTS: "consents.policyConsents",
+        CONSENTS_PREFERENCE_MANAGEMENT: "consents.preferenceManagement",
         CONSOLE_SETTINGS: "console.consoleSettings",
         CUSTOMER_DATA_PROFILES: "customerDataProfiles",
         CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",
@@ -71,6 +73,8 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
         LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE:
             "loginAndRegistration.organizationSettings.issuerUsageScope",
+        LOGIN_AND_REGISTRATION_ORGANIZATION_FAPI_SECURITY_POLICY:
+            "loginAndRegistration.organizationSettings.fapiSecurityPolicy",
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
         LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT: "console.loginAndRegistration.sessionManagement",

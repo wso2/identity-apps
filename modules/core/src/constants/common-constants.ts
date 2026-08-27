@@ -17,6 +17,13 @@
  */
 
 /**
+ * A frozen empty array assignable to any typed array prop default.
+ * Use this instead of inline `= []` to avoid creating a new array reference on every render,
+ * which would defeat React.memo and useMemo optimizations.
+ */
+export const EMPTY_ARRAY: never[] = Object.freeze([]) as unknown as never[];
+
+/**
  * Class containing common constants which can be used across several applications.
  */
 export class CommonConstants {

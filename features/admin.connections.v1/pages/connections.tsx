@@ -24,6 +24,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { FlowExtensionTags } from "@wso2is/admin.flow-extensions.v1/models/flow-extension";
 import {
     IdVPTemplateTags
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
@@ -188,8 +189,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             return AuthenticatorMeta.getAllowedFilterTags().includes(tag);
         });
 
+        if (hasFlowExtensionReadPermissions) {
+            _filteredTags.push(FlowExtensionTags.FLOW_EXTENSION);
+        }
+
         return _filteredTags;
-    }, [ isAuthenticatorTagsFetchRequestLoading ]);
+    }, [ isAuthenticatorTagsFetchRequestLoading, hasFlowExtensionReadPermissions ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.

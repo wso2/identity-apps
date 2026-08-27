@@ -19,7 +19,7 @@
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import useGetFlowExtension from "@wso2is/admin.flow-extensions.v1/api/use-get-flow-extension";
-import { FlowExtensionListResponseInterface } from "@wso2is/admin.flow-extensions.v1/models/flow-extension";
+import { FlowExtensionListResponseInterface, FlowExtensionTags } from "@wso2is/admin.flow-extensions.v1/models/flow-extension";
 import {
     useGetIdentityVerificationProviderList
 } from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-list";
@@ -108,6 +108,9 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
+    const shouldIncludeFlowExtensions: boolean = !searchInputs?.filterTags || searchInputs.filterTags.length === 0
+        || searchInputs.filterTags.includes(FlowExtensionTags.FLOW_EXTENSION);
+
     const {
         data: fetchedFlowExtensionList,
         isLoading: isFlowExtensionListFetchRequestLoading,
@@ -115,7 +118,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         error: flowExtensionListFetchRequestError,
         mutate: mutateFlowExtensionListFetchRequest
     } = useGetFlowExtension<FlowExtensionListResponseInterface[], RequestErrorInterface>(
-        shouldFetchFlowExtensions
+        shouldFetchFlowExtensions && shouldIncludeFlowExtensions
     );
 
     const combinedData: ConnectionInterface[] = [];
@@ -190,6 +193,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                     id: flowExtension.id,
                     image: flowExtension.iconUrl,
                     name: flowExtension.name,
+                    tags: [ FlowExtensionTags.FLOW_EXTENSION ],
                     type: ConnectionTypes.FLOW_EXTENSION
                 } as ConnectionInterface);
             }

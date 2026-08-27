@@ -231,6 +231,22 @@ export const common: CommonNS = {
     lessThanOrEqual: "Less than or equal",
     lightMode: "Light mode",
     loading: "Loading",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "Built-in Languages",
+                hint: "These languages are supported across all user-facing authentication, " +
+                    "account recovery screens and My Account portal.",
+                subHeading: "Languages supported by default"
+            },
+            other: {
+                heading: "Additional Languages",
+                subHeading: "Other languages available for this template"
+            }
+        },
+        label: "Locale",
+        placeholder: "Select Locale"
+    },
     loginTime: "Login time",
     logout: "Logout",
     makePrimary: "Make primary",

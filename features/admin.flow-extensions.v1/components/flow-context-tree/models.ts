@@ -85,6 +85,10 @@ export interface TreeNodeStateInterface {
     dynamicEntryType: string;
     exposed: boolean;
     modify: boolean;
+    /** Whether the exposed (read) value of this field is sent to the extension encrypted. */
+    exposeEncrypted: boolean;
+    /** Whether the extension returns this field's modified (write) value encrypted. */
+    modifyEncrypted: boolean;
     isClaim?: boolean;
     children?: TreeNodeStateInterface[];
 }
@@ -94,8 +98,13 @@ export interface TreeNodeStateInterface {
  */
 export interface FlowContextTreePropsInterface extends IdentifiableComponentInterface {
     contextTree: ContextTreeNodeMetadataInterface[];
-    onChange: (accessConfig: AccessConfigOutputInterface) => void;
+    onChange: (accessConfig: FlowExtensionAccessConfigInterface) => void;
     initialAccessConfig?: InitialAccessConfigInterface;
+    /**
+     * Whether an encryption certificate is configured for the extension. When false, the
+     * per-field encryption toggles are disabled (a certificate is required to encrypt).
+     */
+    hasCertificate?: boolean;
     readOnly?: boolean;
     /**
      * Whether the active flow type permits MODIFY on read-only claims (and other read-only
@@ -123,18 +132,19 @@ export interface InitialAccessConfigInterface {
 }
 
 /**
- * Access config output shape — matches the existing AccessConfigInterface.
+ * Access config emitted by the flow context tree — matches the existing AccessConfigInterface.
  */
-export interface AccessConfigOutputInterface {
+export interface FlowExtensionAccessConfigInterface {
     expose: ContextPathOutputInterface[];
     modify: ContextPathOutputInterface[];
 }
 
 /**
- * A single path entry.
+ * A single path entry with encryption flag.
  */
 export interface ContextPathOutputInterface {
     path: string;
+    encrypted?: boolean;
 }
 
 /**

@@ -18,11 +18,13 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { AssignRoles } from "@wso2is/admin.core.v1/components/roles";
 import { RolePermissions } from "@wso2is/admin.core.v1/components/roles/role-permissions";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { CLISettingsPropertiesInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -156,12 +158,50 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const {
-        data: filteredApplicationList,
-        error: applicationListError
-    } = useApplicationList(null, null, null, "name eq Console");
+    const cliFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.cliSettings
+    );
 
-    const consoleId: string = filteredApplicationList?.applications[0]?.id;
+    const cliApplicationName: string =
+        (cliFeatureConfig?.properties as CLISettingsPropertiesInterface)?.applicationName;
+
+    /**
+     * Filter to resolve the portal applications whose roles are excluded from the listing.
+     *
+     * The Console is always fetched. The CLI application is only appended when it is configured
+     * (e.g. it is typically not available in the Identity Server), so both applications are
+     * resolved in a single call.
+     */
+    const portalApplicationListFilter: string = useMemo(() => {
+        const filters: string[] = [ "name eq Console" ];
+
+        if (cliApplicationName) {
+            filters.push(`name eq ${ cliApplicationName }`);
+        }
+
+        return filters.join(" or ");
+    }, [ cliApplicationName ]);
+
+    const {
+        data: portalApplicationList,
+        error: applicationListError
+    } = useApplicationList(null, null, null, portalApplicationListFilter);
+
+    const consoleId: string = useMemo(() => {
+        return portalApplicationList?.applications?.find(
+            (application: ApplicationListItemInterface) => application.name === "Console"
+        )?.id;
+    }, [ portalApplicationList ]);
+
+    const cliApplicationId: string = useMemo(() => {
+        if (!cliApplicationName) {
+            return undefined;
+        }
+
+        return portalApplicationList?.applications?.find(
+            (application: ApplicationListItemInterface) => application.name === cliApplicationName
+        )?.id;
+    }, [ portalApplicationList, cliApplicationName ]);
 
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
@@ -170,13 +210,23 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? assignGroupstoRoles : updateRoleDetails;
 
+    /**
+     * Roles belonging to the Console and the CLI applications are internal to the portal,
+     * hence they are excluded from the listing. The CLI application is optional, so its
+     * audience is only excluded once the application has been resolved.
+     */
+    const rolesListFilter: string = [ consoleId, cliApplicationId ]
+        .filter(Boolean)
+        .map((applicationId: string) => `audience.value ne ${ applicationId }`)
+        .join(" and ");
+
     const {
         data: fetchedRoleList,
         error: rolesListError
     } = useGetRolesList(
         100,
         null,
-        `audience.value ne ${consoleId}`,
+        rolesListFilter,
         "users,groups,permissions,associatedApplications",
         !isEmpty(consoleId)
     );

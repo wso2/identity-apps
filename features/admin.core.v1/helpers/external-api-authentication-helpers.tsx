@@ -104,6 +104,8 @@ const resolveAuthTypeDisplayName = (
             return t("externalApiAuthentication:fields.authentication.types.bearer.name");
         case "API_KEY":
             return t("externalApiAuthentication:fields.authentication.types.apiKey.name");
+        case "PASSWORD_CREDENTIAL":
+            return t("externalApiAuthentication:fields.authentication.types.passwordCredential.name");
         default:
             return "";
     }
@@ -270,6 +272,137 @@ export const renderEndpointAuthPropertyFields = (
                         maxLength={ 100 }
                         minLength={ 0 }
                         data-componentid={ `${componentId}-endpoint-authentication-property-clientSecret` }
+                        width={ 16 }
+                    />
+                    <Field.Input
+                        ariaLabel="tokenEndpoint"
+                        name="tokenEndpoint"
+                        inputType="text"
+                        type={ "text" }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "tokenEndpoint.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "tokenEndpoint.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-tokenEndpoint` }
+                        width={ 16 }
+                    />
+                    <Field.Input
+                        ariaLabel="scopes"
+                        name="scopes"
+                        inputType="text"
+                        type={ "text" }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.scopes.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "scopes.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-scopes` }
+                        width={ 16 }
+                    />
+                </>
+            );
+        case AuthenticationType.PASSWORD_CREDENTIAL:
+            return (
+                <>
+                    <Field.Input
+                        ariaLabel="clientId"
+                        className="addon-field-wrapper"
+                        name="clientId"
+                        inputType="password"
+                        type={ showPrimarySecret ? "text" : "password" }
+                        InputProps={ {
+                            endAdornment: renderInputAdornmentOfSecret(
+                                showPrimarySecret,
+                                () => setShowPrimarySecret(!showPrimarySecret),
+                                componentId
+                            )
+                        } }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.clientID.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "clientID.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-clientId` }
+                        width={ 16 }
+                    />
+                    <Field.Input
+                        ariaLabel="clientSecret"
+                        className="addon-field-wrapper"
+                        name="clientSecret"
+                        inputType="password"
+                        type={ showSecondarySecret ? "text" : "password" }
+                        InputProps={ {
+                            endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                setShowSecondarySecret(!showSecondarySecret), componentId
+                            )
+                        } }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "clientSecret.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "clientSecret.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-clientSecret` }
+                        width={ 16 }
+                    />
+                    <Field.Input
+                        ariaLabel="userName"
+                        className="addon-field-wrapper"
+                        name="userName"
+                        inputType="text"
+                        type={ "text" }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.username.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "username.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-username` }
+                        width={ 16 }
+                    />
+                    <Field.Input
+                        ariaLabel="password"
+                        className="addon-field-wrapper"
+                        name="password"
+                        inputType="password"
+                        type={ "password" }
+                        label={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.password.label"
+                        ) }
+                        placeholder={ t(
+                            "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                            "password.placeholder"
+                        ) }
+                        required={ true }
+                        maxLength={ 100 }
+                        minLength={ 0 }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-password` }
                         width={ 16 }
                     />
                     <Field.Input

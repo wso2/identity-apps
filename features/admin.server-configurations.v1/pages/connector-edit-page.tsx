@@ -112,6 +112,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
     const [ connectorId, setConnectorId ] = useState<string>(undefined);
     const [ enableForm, setEnableForm ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -330,7 +331,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         const revertRequest: RevertGovernanceConnectorConfigInterface = {
             properties: []
         };
@@ -347,12 +348,13 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 handleRevertError();
             })
             .finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
                 loadConnectorDetails();
             });
     };
 
     const onBotDetectionRevert = async () => {
+        setIsReverting(true);
         const ssoPropertiesToRevert: RevertGovernanceConnectorConfigInterface = {
             properties: [
                 serverConfigurationConfig.connectorToggleName[ connector?.name ] ?? connector?.name,
@@ -395,6 +397,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 handleRevertError();
             })
             .finally(() => {
+                setIsReverting(false);
                 loadConnectorDetails();
             });
     };
@@ -867,6 +870,8 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                                     onActionClick={ () => connectorId ===
                                         ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ?
                                         onBotDetectionRevert() : onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-testid={ `${ testId }-${ connectorId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

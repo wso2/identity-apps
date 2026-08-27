@@ -1,5 +1,23 @@
 # @wso2is/react-components
 
+## 2.10.5
+
+### Patch Changes
+
+- [#10577](https://github.com/wso2/identity-apps/pull/10577) [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use vite events to gracefully handle chunkload errors
+
+## 2.10.4
+
+### Patch Changes
+
+- [#10568](https://github.com/wso2/identity-apps/pull/10568) [`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Preserve complex regex callback URLs in migrated applications. A single `regexp=(...)` callback whose pattern contains a literal comma (e.g. a `{0,4}` quantifier) is now kept as one atomic value across display, edit and save instead of being split as a comma-separated list. Adding across syntaxes combines all alternatives into one de-duplicated `regexp=(...)`, and an input mixing both syntaxes is rejected.
+
+## 2.10.3
+
+### Patch Changes
+
+- [#10451](https://github.com/wso2/identity-apps/pull/10451) [`3d5172bf2d942be94ea69ce72b15552cb7bd7d71`](https://github.com/wso2/identity-apps/commit/3d5172bf2d942be94ea69ce72b15552cb7bd7d71) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Update certificate preview to display correct subjectDN
+
 ## 2.10.2
 
 ### Patch Changes

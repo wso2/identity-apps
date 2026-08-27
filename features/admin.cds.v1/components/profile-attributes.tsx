@@ -43,6 +43,7 @@ import { Dispatch } from "redux";
 import { Header, Label, SemanticICONS, SemanticWIDTHS } from "semantic-ui-react";
 
 import { deleteSchemaAttributeById } from "../api/profile-attributes";
+import { useCDSApplications } from "../hooks/use-cds-applications";
 import { ProfileSchemaListingRow, SCOPE_CONFIG } from "../models/profile-attribute-listing";
 
 const COL_WIDTH_ATTRIBUTE: SemanticWIDTHS = 7;
@@ -67,6 +68,16 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
 
     const [ deleting, setDeleting ] = useState<ProfileSchemaListingRow | null>(null);
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
+
+    const hasApplicationDataRows: boolean = useMemo(
+        (): boolean => rows.some(
+            (row: ProfileSchemaListingRow): boolean =>
+                row.scope === "application_data" && Boolean(row.belongs_to)
+        ),
+        [ rows ]
+    );
+
+    const { getApplicationDisplayName } = useCDSApplications(hasApplicationDataRows);
 
     const columns: TableColumnInterface[] = useMemo(() => ([
         {
@@ -118,7 +129,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
                         />
                         { row.scope === "application_data" && row.belongs_to && (
                             <Label pointing="left" size="small">
-                                { row.belongs_to }
+                                { getApplicationDisplayName(row.belongs_to) }
                             </Label>
                         ) }
                     </>
@@ -137,7 +148,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
             title: "",
             width: COL_WIDTH_ACTIONS
         }
-    ]), [ componentId, t ]);
+    ]), [ componentId, t, getApplicationDisplayName ]);
 
     const actions: TableActionsInterface[] = useMemo(() => ([
         {

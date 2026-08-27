@@ -231,6 +231,21 @@ export const common: CommonNS = {
     lessThanOrEqual: "Menor que ou igual a",
     lightMode: "Modo Claro",
     loading: "Carregando",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "Idiomas integrados",
+                hint: "Esses idiomas são compatíveis em todas as telas de autenticação e recuperação de conta voltadas para o usuário, bem como no portal Minha Conta.",
+                subHeading: "Idiomas compatíveis por padrão"
+            },
+            other: {
+                heading: "Idiomas adicionais",
+                subHeading: "Outros idiomas disponíveis para este modelo"
+            }
+        },
+        label: "Idioma",
+        placeholder: "Selecionar idioma"
+    },
     loginTime: "Tempo de login",
     logout: "Logout",
     makePrimary: "Tornar primário",

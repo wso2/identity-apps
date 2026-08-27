@@ -70,10 +70,6 @@ export interface SMSTemplatesNS {
                 placeholder: string;
                 hint: string;
             };
-            locale: {
-                label: string;
-                placeholder: string;
-            };
             body: {
                 label: string;
                 hint: string;

@@ -31,13 +31,17 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import Tab from "@oxygen-ui/react/Tab";
+import TabPanel from "@oxygen-ui/react/TabPanel";
+import Tabs from "@oxygen-ui/react/Tabs";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+import { PolicyConsentApplications } from "../components/policy-consent-applications";
 import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
@@ -76,6 +80,17 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+    const [ activeTab, setActiveTab ] = useState<number>(0);
+
+    const handleTabChange = (_: SyntheticEvent, newValue: number): void => {
+        setActiveTab(newValue);
+    };
+
+    useEffect((): void => {
+        if (isDefaultPolicy) {
+            setActiveTab(0);
+        }
+    }, [ isDefaultPolicy ]);
 
     // Only fetch from the API when the id is a real UUID, not a default-policy slug.
     const { data: consent, isLoading: isConsentLoading } = useGetPurpose(isDefaultPolicy ? "" : id);
@@ -193,23 +208,37 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         >
             { (isDefaultPolicy || consent) && (
                 <>
-                    <EditPolicyConsent
-                        purposeId={ isDefaultPolicy ? undefined : consent?.id }
-                        readOnly={ isCrossTenant }
-                        isDefault={ isDefaultPolicy }
-                        defaultName={ isDefaultPolicy ? defaultPolicyName : undefined }
-                    />
-                    { hasDeletePermission && !isCrossTenant && !isDefaultPolicy && (
-                        <DangerZoneGroup
-                            sectionHeader={ t("common:dangerZone") }
-                        >
-                            <DangerZone
-                                actionTitle={ t("consents:policyConsents.pages.edit.dangerZone.actionTitle") }
-                                header={ t("consents:policyConsents.pages.edit.dangerZone.header") }
-                                subheader={ t("consents:policyConsents.pages.edit.dangerZone.subheader") }
-                                onActionClick={ () => setShowDeleteConfirmation(true) }
+                    <Tabs value={ activeTab } onChange={ handleTabChange }>
+                        <Tab label={ t("consents:tabs.general.label") } />
+                        { !isDefaultPolicy && <Tab label={ t("consents:tabs.applications.label") } /> }
+                    </Tabs>
+                    <TabPanel value={ activeTab } index={ 0 }>
+                        <EditPolicyConsent
+                            purposeId={ isDefaultPolicy ? undefined : consent?.id }
+                            readOnly={ isCrossTenant }
+                            isDefault={ isDefaultPolicy }
+                            defaultName={ isDefaultPolicy ? defaultPolicyName : undefined }
+                        />
+                        { hasDeletePermission && !isCrossTenant && !isDefaultPolicy && (
+                            <DangerZoneGroup
+                                sectionHeader={ t("common:dangerZone") }
+                            >
+                                <DangerZone
+                                    actionTitle={ t("consents:policyConsents.pages.edit.dangerZone.actionTitle") }
+                                    header={ t("consents:policyConsents.pages.edit.dangerZone.header") }
+                                    subheader={ t("consents:policyConsents.pages.edit.dangerZone.subheader") }
+                                    onActionClick={ () => setShowDeleteConfirmation(true) }
+                                />
+                            </DangerZoneGroup>
+                        ) }
+                    </TabPanel>
+                    { !isDefaultPolicy && (
+                        <TabPanel value={ activeTab } index={ 1 }>
+                            <PolicyConsentApplications
+                                purposeId={ consent?.id }
+                                data-componentid={ `${componentId}-prompt-scope` }
                             />
-                        </DangerZoneGroup>
+                        </TabPanel>
                     ) }
                     <ConfirmationModal
                         onClose={ () => setShowDeleteConfirmation(false) }

@@ -1,5 +1,30 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.29.1
+
+### Patch Changes
+
+- [#10555](https://github.com/wso2/identity-apps/pull/10555) [`128ed8b644ed228e04633b8c645f87da76c688e0`](https://github.com/wso2/identity-apps/commit/128ed8b644ed228e04633b8c645f87da76c688e0) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Gate push device management config fetch and update on enabled features
+
+## 2.29.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.connections.v1@2.39.0
+  - @wso2is/admin.core.v1@2.58.0
+
+## 2.28.1
+
+### Patch Changes
+
+- [#10472](https://github.com/wso2/identity-apps/pull/10472) [`db9957ba59a90fd5cbf6d9da659c857d78ab0f82`](https://github.com/wso2/identity-apps/commit/db9957ba59a90fd5cbf6d9da659c857d78ab0f82) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix custom authenticator creation issue
+
 ## 2.28.0
 
 ### Minor Changes

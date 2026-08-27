@@ -43,6 +43,7 @@ import {
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import TrialExpiryWizard from "@wso2is/admin.extensions.v1/components/subscription/trial-expiry/trial-expiry-wizard";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
 import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
@@ -53,7 +54,12 @@ import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-store
 import UserStoresProvider from "@wso2is/admin.userstores.v1/providers/user-stores-provider";
 import { AppConstants as CommonAppConstants, CommonConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
+import {
+    CommonHelpers,
+    isPortalAccessGranted,
+    resolveAppLogoFilePath,
+    shouldResolveAppLogoFilePath
+} from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
@@ -186,6 +192,7 @@ const App = ({
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const appFaviconPath: string = useSelector((state: AppState) => state?.config?.ui?.appFaviconPath);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
@@ -195,6 +202,29 @@ const App = ({
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
     const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
+
+    const faviconHref: string | undefined = useMemo(() => {
+        if (!appFaviconPath) {
+            return undefined;
+        }
+
+        if (!shouldResolveAppLogoFilePath(appFaviconPath)) {
+            return appFaviconPath;
+        }
+
+        if (!theme) {
+            return undefined;
+        }
+
+        // Resolve relative paths against the runtime clientOrigin/appBase (populated by AppUtils),
+        // mirroring how the branding subsystem builds its theme asset prefix. Avoids depending on
+        // window.publicPath, which is not set in the Console runtime.
+        const clientOrigin: string = (window[ "AppUtils" ]?.getConfig()?.clientOrigin ?? "").replace(/\/+$/, "");
+        const appBase: string = (window[ "AppUtils" ]?.getConfig()?.appBase ?? "").replace(/^\/+|\/+$/g, "");
+        const themePrefix: string = `${ clientOrigin }${ appBase ? "/" + appBase : "" }/libs/themes/${ theme }`;
+
+        return resolveAppLogoFilePath(appFaviconPath, themePrefix);
+    }, [ appFaviconPath, theme ]);
 
     const {
         data: allFeatures,
@@ -477,6 +507,7 @@ const App = ({
                                     organizationType={ organizationType }
                                 >
                                     <TrialProvider>
+                                        <TrialExpiryWizard />
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
@@ -560,6 +591,11 @@ const App = ({
                                                                     type="text/css"
                                                                 />
                                                             )
+                                                            : null
+                                                    }
+                                                    {
+                                                        faviconHref
+                                                            ? <link rel="shortcut icon" href={ faviconHref } />
                                                             : null
                                                     }
                                                 </Helmet>

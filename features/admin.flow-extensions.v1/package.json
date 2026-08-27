@@ -1,12 +1,13 @@
 {
     "private": true,
     "name": "@wso2is/admin.flow-extensions.v1",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "UI components, APIs and utilities for WSO2 Identity Server Flow Extensions",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
+        "@mui/material": "catalog:",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "workspace:^",
         "@wso2is/admin.actions.v1": "workspace:^",
@@ -17,6 +18,7 @@
         "@wso2is/react-components": "workspace:^",
         "@wso2is/validation": "^2.4.1",
         "axios": "^1.7.0",
+        "classnames": "^2.2.6",
         "final-form": "^4.20.10",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",

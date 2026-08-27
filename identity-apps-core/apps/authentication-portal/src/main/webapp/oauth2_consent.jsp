@@ -51,6 +51,7 @@
 <%
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
+    String requestedActorName = request.getParameter("requestedActorName");
 
     boolean isConsentPageRedirectParamsAllowed = AuthenticationEndpointUtil.isConsentPageRedirectParamsAllowed();
 
@@ -260,18 +261,33 @@
                     <div class="field light-font">
                         <div>
                             <h4 class="app-name-container">
-                                <strong id="app-name"
-                                        class="text-capitalize text-typography primary login-portal-app-font"
-                                        data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
-                                    <%=Encode.forHtml(request.getParameter("application"))%>
-                                </strong>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
+                                <% if (StringUtils.isNotBlank(requestedActorName)) { %>
+                                    <strong id="agent-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(requestedActorName)%>">
+                                        <%=Encode.forHtml(requestedActorName)%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.via")%>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.suffix")%>
+                                <% } else { %>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.profile")%>
+                                <% } %>
                             </h4>
                         </div>
                     </div>
 
                         <p class="login-portal-app-consent-request larger-font">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.allow.application.to")%>:
+                            <%=i18n(resourceBundle, customText, "this.will.provide.access.to")%>:
                         </p>
 
                     <div class="segment-form">
@@ -313,7 +329,7 @@
                                                 <% } %>
                                                 <div class="border-gray margin-bottom-double">
                                                     <div>
-                                                        <div class="mt-3 mb-3 claim-list">
+                                                        <div class="mb-3 claim-list">
                                                             <% for (String claim : mandatoryClaimList) {
                                                                 String[] mandatoryClaimData = claim.split("_", 2);
                                                                 if (mandatoryClaimData.length == 2) {
@@ -413,16 +429,32 @@
                                                 if (CollectionUtils.isNotEmpty(scopeEntries)) {
                                                     for (Map.Entry<String, List<String>> scopeEntry : scopeEntries) {
                                                 %>
-                                                    <% for (String permission : scopeEntry.getValue()) { %>
-                                                        <div class="required mandatoryClaim mb-2 consentItem">
-                                                            <div class="ui" style="display: flex">
-                                                                <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scopeEntry.getKey()%>")></i>
-                                                                <div class="header light-font">
-                                                                    <%=Encode.forHtml(permission)%>
+                                                    <div class="item mt-2">
+                                                        <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scopeEntry.getKey()%>")></i>
+                                                        <div class="content mt-2">
+                                                            <div class="header light-font">
+                                                                <%=Encode.forHtml(StringUtils.capitalize(scopeEntry.getKey()))%>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content light-font">
+                                                            <div class="border-gray margin-bottom-double">
+                                                                <div>
+                                                                    <div class="claim-list">
+                                                                        <% for (String permission : scopeEntry.getValue()) { %>
+                                                                            <div class="mt-1 pl-2">
+                                                                                <div class="ui checkbox" style="display: flex">
+                                                                                    <i class="circle notch tiny icon primary consent-item-bullet" id=("<%=permission%>")></i>
+                                                                                    <span>
+                                                                                        <%=Encode.forHtml(permission)%>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        <% } %>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    <% } %>
+                                                    </div>
                                                     <%
                                                     }
                                                 }
@@ -468,9 +500,7 @@
                             </div>
                         <div class="ui divider hidden"></div>
                         <div class="field mt-4 text-center login-portal-app-des-font">
-                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.giving.consent.you.agree.to.share.data")%> <span class="break-all-words">
-                                <%=Encode.forHtml(request.getParameter("application"))%></span>.
-                            </p>
+                            <p><%=i18n(resourceBundle, customText, "click.allow.to.authorize.request")%></p>
                         </div>
                         <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>

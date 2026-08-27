@@ -41,10 +41,6 @@ export const smsTemplates: SMSTemplatesNS = {
                 label: "SMS Body",
                 placeholder: "Enter the SMS content"
             },
-            locale: {
-                label: "Locale",
-                placeholder: "Select Locale"
-            },
             template: {
                 hint: "Select the SMS template",
                 label: "SMS Template",

@@ -246,7 +246,8 @@
                                         {
                                             "category": "DISPLAY",
                                             "config": {
-                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>",
+                                                "linkTarget": "_self"
                                             },
                                             "id": "{{ID}}",
                                             "type": "RICH_TEXT"

@@ -3094,6 +3094,34 @@
 
                     return false;
                 }
+
+                var dobParts = birthOfDate.value.split("-");
+                var dobDate = new Date(parseInt(dobParts[0], 10), parseInt(dobParts[1], 10) - 1,
+                    parseInt(dobParts[2], 10));
+                var isExistingDate = dobDate.getFullYear() === parseInt(dobParts[0], 10)
+                    && (dobDate.getMonth() + 1) === parseInt(dobParts[1], 10)
+                    && dobDate.getDate() === parseInt(dobParts[2], 10);
+
+                if (!isExistingDate) {
+                    dob_error_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "dob.must.in.correct.format")%>")
+                    dob_error_msg.show();
+                    dob_field.addClass("error");
+                    $("html, body").animate({scrollTop: dob_error_text.offset().top}, 'slow');
+
+                    return false;
+                }
+
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (dobDate > today) {
+                    dob_error_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "dob.cannot.be.future.date")%>")
+                    dob_error_msg.show();
+                    dob_field.addClass("error");
+                    $("html, body").animate({scrollTop: dob_error_text.offset().top}, 'slow');
+
+                    return false;
+                }
             } else if (birthOfDate != null && birthOfDate.required && birthOfDate.value.trim() == "") {
                 dob_error_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "For.required.fields.cannot.be.empty")%>")
                 dob_error_msg.show();

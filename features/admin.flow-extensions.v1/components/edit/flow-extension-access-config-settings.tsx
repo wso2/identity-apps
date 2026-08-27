@@ -37,12 +37,11 @@ import {
     FlowExtensionUpdateRequestInterface
 } from "../../models/flow-extension";
 import {
-    AccessConfigOutputInterface,
     FlowContextTree,
+    FlowExtensionAccessConfigInterface,
     FlowExtensionContextTreeResponseInterface,
     InitialAccessConfigInterface
 } from "../flow-context-tree";
-
 
 /**
  * Props for the Flow Extension access config settings tab.
@@ -94,6 +93,10 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
 
     const [ accessConfig, setAccessConfig ] = useState<ClaimAccessConfigInterface>({ expose: [], modify: [] });
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    // Backend does not return the certificate value (security); presence of the
+    // `encryption` object indicates a certificate is configured for this extension.
+    const hasCertificate: boolean = !!flowExtension?.encryption;
     const [ showResetConfirmation, setShowResetConfirmation ] = useState<boolean>(false);
     const [ resetKey, setResetKey ] = useState<number>(0);
 
@@ -112,7 +115,7 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
     );
 
     const handleAccessConfigChange = (
-        newAccessConfig: AccessConfigOutputInterface
+        newAccessConfig: FlowExtensionAccessConfigInterface
     ): void => {
         setAccessConfig(newAccessConfig as ClaimAccessConfigInterface);
     };
@@ -197,12 +200,22 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
                         { t("flowExtension:edit.accessConfig.emptyInfo") }
                     </Alert>
                 ) }
+                { !hasCertificate && (
+                    <Alert
+                        severity="warning"
+                        sx={ { mb: 2 } }
+                        data-componentid={ `${componentId}-no-certificate-info` }
+                    >
+                        { t("flowExtension:edit.accessConfig.noCertificateInfo") }
+                    </Alert>
+                ) }
                 <FlowContextTree
                     key={ resetKey }
                     contextTree={ contextTreeData.context }
                     onChange={ handleAccessConfigChange }
                     initialAccessConfig={ initialAccessConfig }
                     readOnly={ isReadOnly }
+                    hasCertificate={ hasCertificate }
                     allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
                     redirectionEnabled={ contextTreeData.redirectionEnabled }
                     data-componentid={ `${componentId}-tree` }

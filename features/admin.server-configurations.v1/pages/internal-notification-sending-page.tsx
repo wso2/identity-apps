@@ -63,6 +63,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
     const dispatch: Dispatch = useDispatch();
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [
         isNotificationInternallyManaged,
         setIsNotificationInternallyManaged
@@ -293,6 +294,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
     };
 
     const onConfigRevert = async (): Promise<void> => {
+        setIsReverting(true);
         const selfSignupRevertData: RevertGovernanceConnectorConfigInterface = {
             properties: [
                 ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
@@ -374,6 +376,8 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
                     )
                 })
             );
+        } finally {
+            setIsReverting(false);
         }
     };
 
@@ -501,6 +505,8 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
                             header= { t("governanceConnectors:dangerZone.heading") }
                             subheader= { t("governanceConnectors:dangerZone.subHeading") }
                             onActionClick={ () => onConfigRevert() }
+                            isButtonLoading={ isReverting }
+                            isButtonDisabled={ isReverting }
                             data-testid={ `${ componentId }-danger-zone` }
                         />
                     </DangerZoneGroup>

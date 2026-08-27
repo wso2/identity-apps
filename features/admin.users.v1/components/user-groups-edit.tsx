@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -85,6 +86,19 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const groupsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.groups);
+
+    const groupUpdateScopes: string[] = groupsFeatureConfig?.scopes?.update ?? [];
+    const hasGroupsUpdatePermission: boolean = useRequiredScopes(groupUpdateScopes);
+
+    /**
+     * Group memberships are updated through the SCIM2 Groups PATCH API, which requires
+     * group update permission. Hence, the section is read only if the user lacks that
+     * permission, in addition to the read only state passed down by the parent.
+     */
+    const isGroupsReadOnly: boolean = isReadOnly || !hasGroupsUpdatePermission;
 
     const { t } = useTranslation();
 
@@ -208,11 +222,13 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     const handleOpenAddNewGroupModal = () => {
+        setSearchQuery(null);
         setAddNewRoleModalView(true);
     };
 
     const handleCloseAddNewGroupModal = () => {
         setIsSelectAllGroupsChecked(false);
+        setSearchQuery(null);
         setAddNewRoleModalView(false);
     };
 
@@ -226,6 +242,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             setSearchQuery(processedQuery);
         }
     }, 1000), []);
+
+    useEffect(() => {
+        return () => {
+            handleUnselectedListSearch.cancel();
+        };
+    }, [ handleUnselectedListSearch ]);
 
     /**
      * This function handles assigning the roles to the user.
@@ -458,7 +480,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 handleOpenAddNewGroupModal={ handleOpenAddNewGroupModal }
                 handleUserUpdate={ handleUserUpdate }
                 isLoading={ isLoading }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isGroupsReadOnly }
                 user={ user }
             />
             { addNewGroupModal() }

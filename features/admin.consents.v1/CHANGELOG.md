@@ -1,5 +1,22 @@
 # @wso2is/admin.consents.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#10510](https://github.com/wso2/identity-apps/pull/10510) [`bf190fa121109406797185168bb6a7bce6a027d5`](https://github.com/wso2/identity-apps/commit/bf190fa121109406797185168bb6a7bce6a027d5) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix form reset on name field when claims load in create mode
+
+## 1.0.4
+
+### Patch Changes
+
+- [#10422](https://github.com/wso2/identity-apps/pull/10422) [`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671) Thanks [@hwupathum](https://github.com/hwupathum)! - Add application assignment UI for policies
+
+- Updated dependencies [[`185d2af506f4e72b4bc85e0bb1b5f901ffd1f671`](https://github.com/wso2/identity-apps/commit/185d2af506f4e72b4bc85e0bb1b5f901ffd1f671)]:
+  - @wso2is/admin.core.v1@2.57.23
+  - @wso2is/common.consents.v1@1.0.4
+  - @wso2is/i18n@2.43.9
+
 ## 1.0.3
 
 ### Patch Changes

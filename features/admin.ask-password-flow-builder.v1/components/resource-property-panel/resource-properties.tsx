@@ -21,6 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
@@ -195,6 +196,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.FlowExtension) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <FlowExtensionProperties
+                            resource={ resource }
+                            data-componentid="flow-extension-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
             if (resource.type === StepTypes.Execution
                 && resource?.data?.action?.executor?.name === ExecutionTypes.ConfirmationCode) {
                 return (

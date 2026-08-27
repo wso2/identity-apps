@@ -96,6 +96,10 @@ export const pages: pagesNS = {
         subTitle: "Configure issuer usage scope settings for organization.",
         title: "Issuer Usage Scope"
     },
+    fapiSecurityPolicy: {
+        subTitle: "Configure the FAPI security profile enforced across your organization's applications.",
+        title: "FAPI Security Policy"
+    },
     oidcScopes: {
         subTitle: "Create and manage OpenID Connect (OIDC) scopes and the attributes bound to the scopes.",
         title: "OpenID Connect Scopes"

@@ -1,5 +1,91 @@
 # @wso2is/identity-apps-core
 
+## 5.4.5
+
+### Patch Changes
+
+- [#10632](https://github.com/wso2/identity-apps/pull/10632) [`355488702c9ba13fef484a252dbe19704f045e0c`](https://github.com/wso2/identity-apps/commit/355488702c9ba13fef484a252dbe19704f045e0c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Allow a date of birth validation error to be corrected on the missing claims page during federated login, instead of forwarding the user to a generic error page.
+
+* [#10631](https://github.com/wso2/identity-apps/pull/10631) [`720d3fbefa134ce14e02b3c13163fdb4ea78a621`](https://github.com/wso2/identity-apps/commit/720d3fbefa134ce14e02b3c13163fdb4ea78a621) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix the registration form being unmounted when the date field holds a future date. The date input no longer caps the calendar at today, which was making a crash in the underlying picker reachable.
+
+## 5.4.4
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`5da5284d994e71fa95f680aac67b6f27b4a7cd63`](https://github.com/wso2/identity-apps/commit/5da5284d994e71fa95f680aac67b6f27b4a7cd63) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix jsp message spacing issue
+
+## 5.4.3
+
+### Patch Changes
+
+- [#10624](https://github.com/wso2/identity-apps/pull/10624) [`274ac741303a1deeececf324250aa31bd98e949d`](https://github.com/wso2/identity-apps/commit/274ac741303a1deeececf324250aa31bd98e949d) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix unhandled ClassCastException in authentication portal pages when accessed without prompt context
+
+## 5.4.2
+
+### Patch Changes
+
+- [#10617](https://github.com/wso2/identity-apps/pull/10617) [`3614e5bd14c654953fa09d189cf88c9211ef07c0`](https://github.com/wso2/identity-apps/commit/3614e5bd14c654953fa09d189cf88c9211ef07c0) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix unhandled IllegalArgumentException on blank username in recovery portal
+
+## 5.4.1
+
+### Patch Changes
+
+- [#10558](https://github.com/wso2/identity-apps/pull/10558) [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Prevent future dates from being accepted for the Date of Birth attribute in the self-registration page, the dynamic registration flow date field, and the Console user profile and add-user forms.
+
+## 5.4.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+## 5.3.8
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+## 5.3.7
+
+### Patch Changes
+
+- [#10454](https://github.com/wso2/identity-apps/pull/10454) [`c8c20a49d099d63791bfee33584e3621cb703376`](https://github.com/wso2/identity-apps/commit/c8c20a49d099d63791bfee33584e3621cb703376) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support the `anonymous_profile_tracker` query param as a fallback to track the CDS profile in the registration orchestration flow
+
+## 5.3.6
+
+### Patch Changes
+
+- [#10522](https://github.com/wso2/identity-apps/pull/10522) [`00357f88d4cb04d5eae05d35592ebccb6a909b46`](https://github.com/wso2/identity-apps/commit/00357f88d4cb04d5eae05d35592ebccb6a909b46) Thanks [@hwupathum](https://github.com/hwupathum)! - Add dutch translations
+
+## 5.3.5
+
+### Patch Changes
+
+- [#10469](https://github.com/wso2/identity-apps/pull/10469) [`64032696c123ec874e9e564a39c974156040726e`](https://github.com/wso2/identity-apps/commit/64032696c123ec874e9e564a39c974156040726e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Improve OIDC/OAuth2 consent screens to surface agent identity in OBO flows and refine consent UI
+
+- [#10460](https://github.com/wso2/identity-apps/pull/10460) [`ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae`](https://github.com/wso2/identity-apps/commit/ea5c2a2b7abf5fbe18ad5625c901540b9f9523ae) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Handle passing anonymous_profile_tracker parameter to flow engine during registration
+
+## 5.3.4
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+## 5.3.3
+
+### Patch Changes
+
+- [#10457](https://github.com/wso2/identity-apps/pull/10457) [`521e4218e1a6f814930e7f35ccdc7bfbf081e3f6`](https://github.com/wso2/identity-apps/commit/521e4218e1a6f814930e7f35ccdc7bfbf081e3f6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add logic to disable captcha prompting for console application logic
+
+## 5.3.2
+
+### Patch Changes
+
+- [#10455](https://github.com/wso2/identity-apps/pull/10455) [`09983a3bc71da637500f30a53ca852ec7fba42b9`](https://github.com/wso2/identity-apps/commit/09983a3bc71da637500f30a53ca852ec7fba42b9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop displaying the resend success message when the resend operation fails
+
 ## 5.3.1
 
 ### Patch Changes

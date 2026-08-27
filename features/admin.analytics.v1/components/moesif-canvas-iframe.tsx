@@ -19,8 +19,9 @@
 import { amber, blue, deepOrange, green, indigo, orange, purple, teal } from "@mui/material/colors";
 import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import React, {
     FunctionComponent,
@@ -32,8 +33,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { getMoesifDashboardInfo } from "../api/get-moesif-dashboard-info";
-import { MoesifDashboardConstants } from "../constants/moesif-dashboard-constants";
+import { MoesifDashboardConstants, MoesifDashboardPlan } from "../constants/moesif-dashboard-constants";
 import { MoesifDashboardInfoInterface } from "../models/moesif-analytics";
 
 /**
@@ -104,17 +106,34 @@ const CanvasContainer: typeof Box = styled(Box)(() => ({
 }));
 
 const LoaderOverlay: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
     backgroundColor: theme.palette.background.paper,
-    display: "flex",
     height: "100%",
-    justifyContent: "center",
     left: 0,
+    overflow: "hidden",
+    padding: theme.spacing(2),
     position: "absolute",
     top: 0,
     width: "100%",
     zIndex: 10
 }));
+
+const SkeletonGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    display: "grid",
+    gap: theme.spacing(2),
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    marginTop: theme.spacing(2)
+}));
+
+const SkeletonCard: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.divider }`,
+    borderRadius: `${ theme.shape.borderRadius }px`,
+    padding: theme.spacing(2)
+}));
+
+/**
+ * Number of placeholder chart cards rendered while the embedded dashboard loads.
+ */
+const SKELETON_CARD_COUNT: number = 6;
 
 /**
  * Props for the MoesifCanvasIframe component.
@@ -126,7 +145,8 @@ interface MoesifCanvasIframePropsInterface {
     "data-componentid"?: string;
     /**
      * Base URL of the Moesif Embedded Portal, e.g. `https://www.moesif.com`.
-     * The iframe is loaded at `{embeddingDomain}/wrap/app/{orgId}-{appId}/canvas#auth=post`.
+     * The iframe is loaded at
+     * `{embeddingDomain}/wrap/app/{orgId}-{appId}/canvas?product={product}&plan={plan}#auth=post`.
      */
     embeddingDomain: string;
 }
@@ -152,6 +172,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     const { t } = useTranslation();
     const theme: Theme = useTheme();
     const { tierName }: UseSubscriptionInterface = useSubscription();
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName) ?? "";
 
     const [ dashboardInfo, setDashboardInfo ] = useState<MoesifDashboardInfoInterface | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -172,6 +193,13 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     // and swaps the dashboards live.
     const template: Record<string, unknown> = useMemo(
         () => MoesifDashboardConstants.getTemplate(tierName),
+        [ tierName ]
+    );
+
+    // Plan identifier for the canvas URL, resolved from the subscription tier
+    // with the same tier-to-template mapping used to pick the dashboard set.
+    const plan: MoesifDashboardPlan = useMemo(
+        () => MoesifDashboardConstants.getPlan(tierName),
         [ tierName ]
     );
 
@@ -336,15 +364,31 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
         );
     }
 
+    // The product name can contain spaces (e.g. "WSO2 Identity Platform"), so
+    // it is URL-encoded before being placed in the canvas URL.
     const iframeSrc: string = dashboardInfo
-        ? `${ embeddingDomain }/wrap/app/${ dashboardInfo.moesifOrgId }-${ dashboardInfo.moesifAppId }/canvas#auth=post`
+        ? `${ embeddingDomain }/wrap/app/${ dashboardInfo.moesifOrgId }-${ dashboardInfo.moesifAppId }`
+            + `/canvas?product=${ encodeURIComponent(productName) }&plan=${ plan }#auth=post`
         : "";
 
     return (
         <CanvasContainer data-componentid={ componentId }>
             { (isLoading || !dashboardInfo) && (
                 <LoaderOverlay data-componentid={ `${ componentId }-loader` }>
-                    <CircularProgress size={ 40 } />
+                    <Skeleton variant="text" animation="wave" width={ 200 } height={ 32 } />
+                    <SkeletonGrid>
+                        { Array.from({ length: SKELETON_CARD_COUNT }).map((_: unknown, index: number) => (
+                            <SkeletonCard key={ `canvas-skeleton-card-${ index }` }>
+                                <Skeleton variant="text" animation="wave" width="40%" />
+                                <Skeleton
+                                    variant="rectangular"
+                                    animation="wave"
+                                    height={ 180 }
+                                    sx={ { borderRadius: 1, mt: 1 } }
+                                />
+                            </SkeletonCard>
+                        )) }
+                    </SkeletonGrid>
                 </LoaderOverlay>
             ) }
             { dashboardInfo && (

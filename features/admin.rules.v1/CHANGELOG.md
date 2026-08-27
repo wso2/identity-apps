@@ -1,5 +1,14 @@
 # @wso2is/admin.rules.v1
 
+## 0.7.51
+
+### Patch Changes
+
+- [#10440](https://github.com/wso2/identity-apps/pull/10440) [`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8) Thanks [@dannguyen24](https://github.com/dannguyen24)! - Replace inline array default props with module-level constants to prevent unnecessary re-renders
+
+- Updated dependencies [[`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8)]:
+  - @wso2is/core@2.13.6
+
 ## 0.7.50
 
 ### Patch Changes

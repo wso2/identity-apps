@@ -26,6 +26,9 @@ import Hint from "../hint";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
+const DATE_VALIDATOR = "DateValidator";
+const ISO_DATE_FORMAT = "YYYY-MM-DD";
+
 const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
     const { identifier, required, label, placeholder, validations, hint } = component.config;
@@ -34,6 +37,19 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
     const { fieldErrors, validate } = useFieldValidation(validations);
 
     const [ value, setValue ] = useState("");
+
+    // Note: do not pass `maxDate` to DateInput. semantic-ui-calendar-react 0.15.3 crashes when the
+    // picker mounts on a month in which every day is disabled: getInitialDatePosition falls through
+    // to `selectable[0].position` without guarding the empty case, and the throw happens inside
+    // componentDidMount, which unmounts the whole form. Capping at today made that state reachable
+    // whenever the field already held a later date. Future dates are rejected by the DateValidator
+    // rule below and by the user store operation listener on submit.
+
+    // Derive the date format from the configured DateValidator rule, so the input parses the
+    // same format the validation rule expects (no field-specific logic here).
+    const dateValidatorRule = Array.isArray(validations)
+        ? validations.find((rule) => rule?.name === DATE_VALIDATOR)
+        : undefined;
 
     useEffect(() => {
         formStateHandler(component.config.identifier, value);
@@ -58,6 +74,7 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 } }
                 value={ value }
                 required={ required }
+                dateFormat={ dateValidatorRule ? ISO_DATE_FORMAT : undefined }
                 clearable
                 closeOnMouseLeave
                 closable

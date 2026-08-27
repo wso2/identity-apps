@@ -321,6 +321,20 @@ export const consents: ConsentsNS = {
                 title: "Create Policy"
             }
         },
+        promptScope: {
+            assignButton: "Assign Application",
+            assignModal: {
+                header: "Assign Applications",
+                noApps: "All applications are already assigned.",
+                subHeading: "Assign applications to this consent policy."
+            },
+            header: "Assign Applications",
+            noApplications: "No applications assigned.",
+            noApplicationsSubtitle: "Assign applications to prompt users to review and accept this consent policy.",
+            searchPlaceholder: "Search by application name",
+            selectAll: "Select All Applications",
+            subHeading: "Select which applications will prompt users to review and accept this consent policy."
+        },
         wizard: {
             create: {
                 form: {
@@ -365,7 +379,8 @@ export const consents: ConsentsNS = {
                         insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
                         insertPolicyLinkShort: "Policy Link",
                         insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                        labelRoleHint: "The checkbox label shown to users. Leave empty to use the default. Highlight text and click \"Policy Link\" to add the hyperlink."
+                        labelRoleHint: "The checkbox label shown to users. Leave empty to use the default. Highlight text and click \"Policy Link\" to add the hyperlink.",
+                        removePolicyLink: "Remove the policy link from the selected text."
                     }
                 },
                 preview: {
@@ -401,7 +416,9 @@ export const consents: ConsentsNS = {
         termsOfService: "Terms of Service"
     },
     tabs: {
+        applications: { label: "Applications" },
         content: { label: "Content" },
+        general: { label: "General" },
         preview: { label: "Preview" }
     }
 };

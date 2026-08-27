@@ -141,6 +141,16 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * CLI settings feature. Gates the CLI Settings page which manages the CLI
+     * application and its user assignments.
+     */
+    cliSettings?: FeatureAccessConfigInterface;
+    /**
+     * Console settings feature. Currently the only consumer is the console-roles permissions UI,
+     * which reads the granular-console-permissions flag from its `disabledFeatures` list.
+     */
+    consoleSettings?: FeatureAccessConfigInterface;
+    /**
      * Copilot AI assistant feature.
      */
     copilot?: FeatureAccessConfigInterface;
@@ -204,6 +214,10 @@ export interface FeatureConfigInterface {
      * Identity provider groups feature.
      */
     identityProviderGroups?: FeatureAccessConfigInterface;
+    /**
+     * FAPI Security Policy feature.
+     */
+    fapi?: FeatureAccessConfigInterface;
     /**
      * Identity verification provider management feature.
      */
@@ -468,6 +482,24 @@ interface ActionsUIConfigInterface {
 }
 
 /**
+ * CLI settings feature-specific properties.
+ *
+ * Configured under `cliSettings.properties` in the feature config. The CLI application
+ * name and client ID differ between Identity Server and Asgardeo, hence they are
+ * configurable per deployment.
+ */
+export interface CLISettingsPropertiesInterface {
+    /**
+     * Name of the application that backs the CLI tool.
+     */
+    applicationName?: string;
+    /**
+     * OAuth client ID of the CLI application.
+     */
+    clientId?: string;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
@@ -482,6 +514,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         enabled: boolean;
         plannedRollOutDate: string;
     };
+    /**
+     * Path to the favicon of the application.
+     */
+    appFaviconPath?: string;
     /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.

@@ -2,28 +2,18 @@
 
 End-user apps in WSO2 Identity Server
 
-[![Stackoverflow](https://img.shields.io/badge/Ask%20for%20help%20on-Stackoverflow-orange)](https://stackoverflow.com/questions/tagged/wso2is)
 [![Discord](https://img.shields.io/badge/Join%20us%20on-Discord-%23e01563.svg)](https://discord.gg/wso2)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wso2/product-is/blob/master/LICENSE)
-[![Twitter](https://img.shields.io/twitter/follow/wso2.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=wso2)
+[![X](https://img.shields.io/twitter/follow/wso2.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=wso2)
 
 ---
 
 ## Table of Content
 
-<!-- Execute: `node scripts/generate-markdown-toc.js README.md` -->
-<!-- TOC:START - Do not remove or modify this section -->
-
 - [Prerequisite](#prerequisite)
   * [Setup Development Environment](#setup-development-environment)
   * [Download WSO2 Identity Server](#download-wso2-identity-server)
   * [Setup WSO2 Identity Server](#setup-wso2-identity-server)
-    + [Allow CORS Origins](#allow-cors-origins)
-    + [Configure FIDO2 origins](#configure-fido2-origins)
-    + [Make Applications Editable](#make-applications-editable)
-    + [Configure Callback URLs for System Applications (for WSO2 IS v7.0 and above)](#configure-callback-urls-for-system-applications-for-wso2-is-v70-and-above)
-    + [Start the Identity Server](#start-the-identity-server)
-    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
 - [Build & Run](#build--run)
   * [Build](#build)
     + [For Console & My Account](#for-console--my-account)
@@ -68,11 +58,10 @@ We recommend you to download the [latest release](https://github.com/wso2/produc
 
 ### Setup WSO2 Identity Server
 
-#### Allow CORS Origins
-
-Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS for local deployment URLs.
+Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack.
 
 ```toml
+# allow CORS for local deployment URLs.
 [cors]
 allowed_origins = [
     "https://localhost:9000",
@@ -90,20 +79,12 @@ supported_methods = [
     "PATCH"
 ]
 exposed_headers = [ "Location" ]
-```
 
-#### Configure FIDO2 origins
-
-Add your hostname and port as a trusted FIDO2 origin to the `deployment.toml` file as given below.
-
-```toml
+# Configure local development URLs as trusted FIDO2 origins
 [fido.trusted]
 origins=["https://localhost:9000"]
-```
 
-#### Configure Callback URLs for System Applications
-
-```toml
+# Configure Callback URLs for System Applications
 [console]
 callback_url = "regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login|https://localhost:9443/o/(.*)/console|https://localhost:9001/o/(.*)/console|https://localhost:9001/o/(.*)/console/login)"
 
@@ -207,4 +188,4 @@ We encourage you to report issues, improvements and feature requests regarding t
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
 
 ---------------------------------------------------------------------------
-(c) Copyright 2022 WSO2 LLC.
+(c) Copyright 2026 WSO2 LLC.
