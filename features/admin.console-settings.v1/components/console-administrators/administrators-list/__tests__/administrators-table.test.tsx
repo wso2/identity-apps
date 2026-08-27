@@ -77,20 +77,42 @@ const administrators: UserListInterface = {
     totalResults: 2
 } as UserListInterface;
 
-const renderTable = (signedInUserId: string): RenderResult =>
+const renderTable = (signedInUserId: string, showListItemActions: boolean = false): RenderResult =>
     render(
         <AdministratorsTable
             administrators={ administrators }
             data-componentid="administrators-table"
             isLoading={ false }
+            showListItemActions={ showListItemActions }
         />,
         {
+            allowedScopes: "internal_login internal_user_mgt_delete",
             initialState: {
                 ...ReduxStoreStateMock,
                 auth: {
                     ...ReduxStoreStateMock.auth,
+                    isPrivilegedUser: false,
                     // Both accounts share this username, so a username based comparison matches both rows.
                     providedUsername: "alex@example.com"
+                },
+                config: {
+                    ...ReduxStoreStateMock.config,
+                    ui: {
+                        ...ReduxStoreStateMock.config.ui,
+                        features: {
+                            ...ReduxStoreStateMock.config.ui.features,
+                            users: {
+                                disabledFeatures: [],
+                                enabled: true,
+                                scopes: {
+                                    create: [ "internal_user_mgt_create" ],
+                                    delete: [ "internal_user_mgt_delete" ],
+                                    read: [ "internal_user_mgt_list" ],
+                                    update: [ "internal_user_mgt_update" ]
+                                }
+                            }
+                        }
+                    }
                 },
                 profile: {
                     ...ReduxStoreStateMock.profile,
@@ -109,7 +131,7 @@ const renderTable = (signedInUserId: string): RenderResult =>
  *
  * @returns Display name of the labelled row, or null when no row is labelled.
  */
-const resolveLabelledRowName = (): string => {
+const resolveLabelledRowName = (): string | null => {
     const labels: HTMLElement[] = screen.queryAllByText("Me");
 
     if (labels.length !== 1) {
@@ -142,5 +164,15 @@ describe("AdministratorsTable - \"Me\" label", () => {
         renderTable(UNLISTED_USER_ID);
 
         expect(screen.queryByText("Me")).not.toBeInTheDocument();
+    });
+
+    it("hides the delete action only on the signed-in user's row", () => {
+        renderTable(CONSOLE_ADMINISTRATOR_ID, true);
+
+        const deleteButtons: HTMLElement[] = screen.getAllByTestId("administrators-list-item-delete-button");
+        const labelledRow: HTMLElement = screen.getByText("Me").closest("tr");
+
+        expect(deleteButtons).toHaveLength(1);
+        expect(labelledRow).not.toContainElement(deleteButtons[0]);
     });
 });
