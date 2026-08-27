@@ -34,6 +34,7 @@ import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
+    ProfileInfoInterface,
     RolesInterface,
     SBACInterface
 } from "@wso2is/core/models";
@@ -181,13 +182,26 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state?.config?.ui?.features?.users;
     });
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state?.profile?.profileInfo);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
     const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
+
+    /**
+     * Checks whether the given administrator is the user of the current session.
+     *
+     * The same table renders both the console administrators list and the organization users list, so
+     * a single email address can appear in both as two distinct accounts. Comparing usernames marks
+     * both rows as the current user; the user id identifies the session's account unambiguously.
+     *
+     * @param user - The administrator listed in a row of the table.
+     * @returns Whether the given administrator is the user of the current session.
+     */
+    const isAuthenticatedUser = (user: UserBasicInterface): boolean =>
+        !!user?.id && !!profileInfo?.id && user.id === profileInfo.id;
 
     /**
      * Returns a locked icon if the account is locked.
@@ -453,7 +467,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())
-                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
+                    || isAuthenticatedUser(user);
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
@@ -474,7 +488,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns the label indication of your own account.
      */
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
-        if (authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))) {
+        if (isAuthenticatedUser(user)) {
             return (
                 <Label size="small">
                     Me
