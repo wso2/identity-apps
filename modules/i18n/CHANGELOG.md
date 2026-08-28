@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.45.5
+
+### Patch Changes
+
+- [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
 ## 2.45.4
 
 ### Patch Changes

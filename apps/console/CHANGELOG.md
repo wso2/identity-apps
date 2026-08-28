@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.14.17
+
+### Patch Changes
+
+- [#10642](https://github.com/wso2/identity-apps/pull/10642) [`3dcf7d5529691811eb7f67037b125dd43e61ebe2`](https://github.com/wso2/identity-apps/commit/3dcf7d5529691811eb7f67037b125dd43e61ebe2) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Release the Console so the date field fix from #10631 ships in a Console distribution. That PR's changeset only covered `@wso2is/identity-apps-core`, so the release workflow did not cut a Console release.
+
+* [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
+* Updated dependencies [[`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.218
+  - @wso2is/admin.registration-flow-builder.v1@0.10.178
+  - @wso2is/i18n@2.45.5
+
 ## 4.14.16
 
 ### Patch Changes

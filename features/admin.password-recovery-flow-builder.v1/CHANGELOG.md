@@ -1,5 +1,14 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.2.2
+
+### Patch Changes
+
+- [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
+- Updated dependencies [[`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.224
+
 ## 1.2.1
 
 ### Patch Changes

@@ -503,7 +503,7 @@ importers:
         specifier: ^2.13.6
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.45.4
+        specifier: ^2.45.5
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.5
@@ -8056,7 +8056,7 @@ importers:
         specifier: ^1.9.5
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.10.222
+        specifier: ^0.10.224
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
