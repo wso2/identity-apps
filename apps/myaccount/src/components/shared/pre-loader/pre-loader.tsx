@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,11 +81,11 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
             }/` +
             `${ StringUtils.removeSlashesFromPath(
                 window[ "AppUtils" ].getConfig()
-                    .appBase
+                    .appBaseWithProxy
             ) !== ""
                 ? StringUtils.removeSlashesFromPath(
                     window[ "AppUtils" ].getConfig()
-                        .appBase
+                        .appBaseWithProxy
                 ) + "/"
                 : ""
             }libs/themes/wso2is`

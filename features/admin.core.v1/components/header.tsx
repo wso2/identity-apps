@@ -556,8 +556,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                         window["AppUtils"].getConfig().ui.appLogoPath,
                     `${window["AppUtils"].getConfig().clientOrigin}/` +
                         `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
+                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) !== ""
+                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) + "/"
                                 : ""
                         }libs/themes/` +
                         config.ui.theme.name

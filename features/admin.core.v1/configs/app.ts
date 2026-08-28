@@ -211,7 +211,7 @@ export class Config {
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
             appBaseName: window[ "AppUtils" ]?.getConfig()?.appBaseWithTenant,
-            appBaseNameWithoutTenant: window[ "AppUtils" ]?.getConfig()?.appBase,
+            appBaseNameWithoutTenant: window[ "AppUtils" ]?.getConfig()?.appBaseWithProxy,
             appHomePath: window[ "AppUtils" ]?.getConfig()?.routes?.home,
             appLoginPath: window[ "AppUtils" ]?.getConfig()?.routes?.login,
             appLogoutPath: window[ "AppUtils" ]?.getConfig()?.routes?.logout,
@@ -256,7 +256,7 @@ export class Config {
                 loadPath: (language: string[], namespace: string[]) => generateBackendPaths(
                     language,
                     namespace,
-                    window[ "AppUtils" ]?.getConfig()?.appBase,
+                    window[ "AppUtils" ]?.getConfig()?.appBaseWithProxy,
                     Config.getI18nConfig() ?? {
                         langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                         namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
