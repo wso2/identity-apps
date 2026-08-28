@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "4.14.17",
+    "version": "4.14.18",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -64,7 +64,7 @@
         "@wso2is/admin.cli-settings.v1": "workspace:^",
         "@wso2is/admin.connections.v1": "^2.39.1",
         "@wso2is/admin.consents.v1": "workspace:^",
-        "@wso2is/admin.console-settings.v1": "^2.26.47",
+        "@wso2is/admin.console-settings.v1": "^2.26.48",
         "@wso2is/admin.copilot.v1": "workspace:^",
         "@wso2is/admin.core.v1": "^2.59.1",
         "@wso2is/admin.email-and-sms.v1": "^2.25.209",
