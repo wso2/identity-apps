@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.14.18
+
+### Patch Changes
+
+- [#10646](https://github.com/wso2/identity-apps/pull/10646) [`7981d90f5cb5876522cad0672b6f07d43bc2f95c`](https://github.com/wso2/identity-apps/commit/7981d90f5cb5876522cad0672b6f07d43bc2f95c) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Reuse an existing deployment unit session when handing off from the central region in central deployments, instead of forcing a re-authentication on every Console load.
+
+* [#10645](https://github.com/wso2/identity-apps/pull/10645) [`ed7687425a1fcb1e232c3f25ddf0926d83ae5fef`](https://github.com/wso2/identity-apps/commit/ed7687425a1fcb1e232c3f25ddf0926d83ae5fef) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Resolve the "Me" label in Console Settings > Administrators by user id instead of username
+
+* Updated dependencies [[`bdad49bc49c8552fed266305b66690bffefe1bac`](https://github.com/wso2/identity-apps/commit/bdad49bc49c8552fed266305b66690bffefe1bac)]:
+  - @wso2is/admin.console-settings.v1@2.26.48
+
 ## 4.14.17
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.48
+
+### Patch Changes
+
+- [#10645](https://github.com/wso2/identity-apps/pull/10645) [`bdad49bc49c8552fed266305b66690bffefe1bac`](https://github.com/wso2/identity-apps/commit/bdad49bc49c8552fed266305b66690bffefe1bac) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Resolve the "Me" label in Console Settings > Administrators by user id instead of username
+
 ## 2.26.47
 
 ### Patch Changes
