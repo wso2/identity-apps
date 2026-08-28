@@ -35,7 +35,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState, MutableRefObject } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
@@ -76,9 +76,10 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
      * @param mode - configuration mode
      */
     setSAMLConfigureMode?: (mode: string) => void;
-    issuerRef?: any;
-    metaUrlRef?: any;
-    assertionConsumerUrlsRef?: any;
+    issuerRef?: MutableRefObject<HTMLDivElement>;
+    metaUrlRef?: MutableRefObject<HTMLDivElement>;
+    assertionConsumerUrlsRef?: MutableRefObject<HTMLDivElement>;
+    metaFileRef?: MutableRefObject<HTMLDivElement>;
     issuerError?: boolean;
     metaUrlError?: boolean;
     onRequiredFieldMissing?: (field: string, message: string) => void;
@@ -111,6 +112,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         issuerRef,
         metaUrlRef,
         assertionConsumerUrlsRef,
+        metaFileRef,
         issuerError,
         metaUrlError,
         onRequiredFieldMissing,
@@ -598,7 +600,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         } else if (configureMode === SAMLConfigModes.META_FILE) {
             return (
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } ref={ metaFileRef }>
                         <FilePicker
                             key={ 1 }
                             fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
