@@ -120,13 +120,22 @@ const renderTable = (signedInUserSubject: string, showListItemActions: boolean =
         }
     );
 
+const MYSELF_LABEL_COMPONENT_ID: string = "administrators-table-item-myself-label";
+
+/**
+ * Resolves the rows that carry the "Me" label.
+ *
+ * @returns The labels rendered on the table.
+ */
+const queryMyselfLabels = (): HTMLElement[] => screen.queryAllByTestId(MYSELF_LABEL_COMPONENT_ID);
+
 /**
  * Resolves the display name of the row that carries the "Me" label.
  *
  * @returns Display name of the labelled row, or null when no row is labelled.
  */
 const resolveLabelledRowName = (): string | null => {
-    const labels: HTMLElement[] = screen.queryAllByText("Me");
+    const labels: HTMLElement[] = queryMyselfLabels();
 
     if (labels.length !== 1) {
         return null;
@@ -143,35 +152,43 @@ describe("AdministratorsTable - \"Me\" label", () => {
     it("labels only the row whose user id matches the signed-in user", () => {
         renderTable(CONSOLE_ADMINISTRATOR_ID);
 
-        expect(screen.queryAllByText("Me")).toHaveLength(1);
+        expect(queryMyselfLabels()).toHaveLength(1);
+        expect(queryMyselfLabels()[0]).toHaveTextContent("Me");
         expect(resolveLabelledRowName()).toContain("Console Administrator");
     });
 
     it("labels the other account when it is the one signed in", () => {
         renderTable(ORGANIZATION_USER_ID);
 
-        expect(screen.queryAllByText("Me")).toHaveLength(1);
+        expect(queryMyselfLabels()).toHaveLength(1);
         expect(resolveLabelledRowName()).toContain("Organization User");
     });
 
     it("labels the signed-in user's row when the subject is qualified with the domains", () => {
         renderTable(`PRIMARY/${ORGANIZATION_USER_ID}@carbon.super`);
 
-        expect(screen.queryAllByText("Me")).toHaveLength(1);
+        expect(queryMyselfLabels()).toHaveLength(1);
         expect(resolveLabelledRowName()).toContain("Organization User");
+    });
+
+    it("labels no row when the subject is not a user id", () => {
+        // A deployment that leaves `useUserIdForDefaultSubject` off puts the username in the subject.
+        renderTable("PRIMARY/alex@example.com@carbon.super");
+
+        expect(queryMyselfLabels()).toHaveLength(0);
     });
 
     it("labels no row when the signed-in user is not listed", () => {
         renderTable(UNLISTED_USER_ID);
 
-        expect(screen.queryByText("Me")).not.toBeInTheDocument();
+        expect(queryMyselfLabels()).toHaveLength(0);
     });
 
     it("hides the delete action only on the signed-in user's row", () => {
         renderTable(CONSOLE_ADMINISTRATOR_ID, true);
 
         const deleteButtons: HTMLElement[] = screen.getAllByTestId("administrators-list-item-delete-button");
-        const labelledRow: HTMLElement = screen.getByText("Me").closest("tr");
+        const labelledRow: HTMLElement = queryMyselfLabels()[0].closest("tr");
 
         expect(deleteButtons).toHaveLength(1);
         expect(labelledRow).not.toContainElement(deleteButtons[0]);

@@ -182,7 +182,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const authenticatedUserSubject: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUserSubject: string = useSelector((state: AppState): string => state?.auth?.username);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -193,7 +193,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * User id of the current session, resolved from the `sub` claim of the ID token.
      */
     const authenticatedUserId: string = useMemo(
-        () => UserManagementUtils.resolveUserIdFromSubject(authenticatedUserSubject),
+        (): string => UserManagementUtils.resolveUserIdFromSubject(authenticatedUserSubject),
         [ authenticatedUserSubject ]
     );
 
@@ -497,7 +497,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
         if (isAuthenticatedUser(user)) {
             return (
-                <Label size="small">
+                <Label data-componentid={ `${ componentId }-item-myself-label` } size="small">
                     Me
                 </Label>
             );

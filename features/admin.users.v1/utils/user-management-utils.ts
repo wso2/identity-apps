@@ -74,7 +74,9 @@ export class UserManagementUtils {
      * claim carries the user id rather than the username. Depending on the application's subject
      * identifier settings, that id can be qualified with the userstore domain and the tenant
      * domain — `PRIMARY/<user-id>@carbon.super`. A user id contains neither `/` nor `@`, so
-     * dropping both qualifiers leaves the bare id.
+     * dropping both qualifiers leaves the bare id. The tenant domain is taken off the last `@` so
+     * that a subject that is not a user id — an email form username, say — is left with its own
+     * `@` intact and simply fails to match any id.
      *
      * Deriving the id from the ID token keeps the caller independent of the `scim2/Me` response,
      * which is not fetched in organizations or in deployments that read the profile from the
@@ -89,7 +91,7 @@ export class UserManagementUtils {
         }
 
         const withoutUserStoreDomain: string = subject.substring(subject.lastIndexOf("/") + 1);
-        const tenantDomainSeparatorIndex: number = withoutUserStoreDomain.indexOf("@");
+        const tenantDomainSeparatorIndex: number = withoutUserStoreDomain.lastIndexOf("@");
 
         return tenantDomainSeparatorIndex === -1
             ? withoutUserStoreDomain
