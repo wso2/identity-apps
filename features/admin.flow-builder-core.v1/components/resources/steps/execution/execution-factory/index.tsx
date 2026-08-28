@@ -22,11 +22,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import AppleExecution from "./apple-execution";
+import ExtensionExecution from "./extension-execution";
 import FacebookExecution from "./facebook-execution";
 import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
 import FlowExtensionExecution from "./flow-extension-execution";
 import MicrosoftExecution from "./microsoft-execution";
+import useAuthenticationFlowBuilderCore from "../../../../../hooks/use-authentication-flow-builder-core-context";
+import { ExtensionExecutorInterface } from "../../../../../models/metadata";
 import { ExecutionTypes } from "../../../../../models/steps";
 import "./execution-factory.scss";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
@@ -48,6 +51,7 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     "data-componentid": componentId = "execution-factory"
 }: ExecutionFactoryPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const { metadata } = useAuthenticationFlowBuilderCore();
 
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
         return (
@@ -125,6 +129,20 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.FlowExtension) {
         return (
             <FlowExtensionExecution resource={ resource } />
+        );
+    }
+
+    /*
+     * Flow metadata describes how to render executors that are dynamically registered.
+     */
+    const isContributedByExtension: boolean = !!metadata?.extensionExecutors?.some(
+        (executor: ExtensionExecutorInterface) =>
+            executor.name === (resource.data?.action as any)?.executor?.name
+    );
+
+    if (isContributedByExtension) {
+        return (
+            <ExtensionExecution resource={ resource } />
         );
     }
 

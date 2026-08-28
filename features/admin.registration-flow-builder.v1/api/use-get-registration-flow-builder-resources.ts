@@ -20,9 +20,13 @@ import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useGetExtensionExecutorSteps
+    from "@wso2is/admin.flow-builder-core.v1/api/use-get-extension-executor-steps";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import elements from "../data/elements.json";
@@ -46,6 +50,9 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
 ): RequestResultInterface<Data, Error> => {
     const { data: coreResources } = useGetFlowBuilderCoreResources();
 
+    // Executors contributed by extensions deployed on the server. Appended to the palette at runtime.
+    const extensionExecutorSteps: Step[] = useGetExtensionExecutorSteps(FlowTypes.REGISTRATION);
+
     const aiFeature: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.ai
     );
@@ -66,7 +73,8 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
             ],
             steps: [
                 ...coreResources?.steps,
-                ...steps
+                ...steps,
+                ...extensionExecutorSteps
             ],
             templates: [
                 ...coreResources?.templates,
@@ -77,7 +85,7 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
                 ...widgets
             ]
         };
-    }, [ coreResources, aiFeature ]);
+    }, [ coreResources, aiFeature, extensionExecutorSteps ]);
 
     return {
         data: data as Data,
