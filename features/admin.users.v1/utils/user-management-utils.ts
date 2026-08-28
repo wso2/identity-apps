@@ -68,6 +68,35 @@ export class UserManagementUtils {
     };
 
     /**
+     * Resolves the user id of the current session from the `sub` claim of the ID token.
+     *
+     * The Console application is created with `useUserIdForDefaultSubject` enabled, so its `sub`
+     * claim carries the user id rather than the username. Depending on the application's subject
+     * identifier settings, that id can be qualified with the userstore domain and the tenant
+     * domain — `PRIMARY/<user-id>@carbon.super`. A user id contains neither `/` nor `@`, so
+     * dropping both qualifiers leaves the bare id.
+     *
+     * Deriving the id from the ID token keeps the caller independent of the `scim2/Me` response,
+     * which is not fetched in organizations or in deployments that read the profile from the
+     * ID token.
+     *
+     * @param subject - `sub` claim of the ID token, i.e. `state.auth.username`.
+     * @returns The user id of the current session, or an empty string when it cannot be resolved.
+     */
+    public static resolveUserIdFromSubject = (subject: string): string => {
+        if (!subject) {
+            return "";
+        }
+
+        const withoutUserStoreDomain: string = subject.substring(subject.lastIndexOf("/") + 1);
+        const tenantDomainSeparatorIndex: number = withoutUserStoreDomain.indexOf("@");
+
+        return tenantDomainSeparatorIndex === -1
+            ? withoutUserStoreDomain
+            : withoutUserStoreDomain.substring(0, tenantDomainSeparatorIndex);
+    };
+
+    /**
      * Checks whether administrator role is present in the user roles.
      */
     public static isAdminUser = (roles: UserRoleInterface[]): boolean => {

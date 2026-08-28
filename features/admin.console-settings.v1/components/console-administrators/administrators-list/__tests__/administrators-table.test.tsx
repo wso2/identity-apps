@@ -77,7 +77,7 @@ const administrators: UserListInterface = {
     totalResults: 2
 } as UserListInterface;
 
-const renderTable = (signedInUserId: string, showListItemActions: boolean = false): RenderResult =>
+const renderTable = (signedInUserSubject: string, showListItemActions: boolean = false): RenderResult =>
     render(
         <AdministratorsTable
             administrators={ administrators }
@@ -93,7 +93,9 @@ const renderTable = (signedInUserId: string, showListItemActions: boolean = fals
                     ...ReduxStoreStateMock.auth,
                     isPrivilegedUser: false,
                     // Both accounts share this username, so a username based comparison matches both rows.
-                    providedUsername: "alex@example.com"
+                    providedUsername: "alex@example.com",
+                    // `sub` of the ID token. The Console resolves the subject to the user id.
+                    username: signedInUserSubject
                 },
                 config: {
                     ...ReduxStoreStateMock.config,
@@ -112,14 +114,6 @@ const renderTable = (signedInUserId: string, showListItemActions: boolean = fals
                                 }
                             }
                         }
-                    }
-                },
-                profile: {
-                    ...ReduxStoreStateMock.profile,
-                    profileInfo: {
-                        ...ReduxStoreStateMock.profile.profileInfo,
-                        id: signedInUserId,
-                        userName: SHARED_USERNAME
                     }
                 }
             }
@@ -155,6 +149,13 @@ describe("AdministratorsTable - \"Me\" label", () => {
 
     it("labels the other account when it is the one signed in", () => {
         renderTable(ORGANIZATION_USER_ID);
+
+        expect(screen.queryAllByText("Me")).toHaveLength(1);
+        expect(resolveLabelledRowName()).toContain("Organization User");
+    });
+
+    it("labels the signed-in user's row when the subject is qualified with the domains", () => {
+        renderTable(`PRIMARY/${ORGANIZATION_USER_ID}@carbon.super`);
 
         expect(screen.queryAllByText("Me")).toHaveLength(1);
         expect(resolveLabelledRowName()).toContain("Organization User");
