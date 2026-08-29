@@ -344,7 +344,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      *
      * @param event - Change event.
      */
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const changeValue: string = event.target.value;
 
         if (changeValue.length > 0) {
@@ -751,7 +751,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             <Input
                                                                 icon={ <Icon name="search" /> }
                                                                 iconPosition="left"
-                                                                onChange={ handleChange }
+                                                                onChange={ handleSearchInputChange }
                                                                 placeholder={
                                                                     t("applications:edit" +
                                                                     ".sections.attributes.selection.mappingTable" +

@@ -100,7 +100,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setActiveIndex([ -1 ]);
     }, [ logs ]);
 
-    const handleClick = (e: React.MouseEvent<HTMLElement>, titleProps: any) => {
+    const handleAccordionTitleClick = (e: React.MouseEvent<HTMLElement>, titleProps: any) => {
         const { index } = titleProps;
         let tempIndexArr: number[];
 
@@ -391,7 +391,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                             <Accordion.Title
                                 active={ activeIndex.includes(key) }
                                 index={ key }
-                                onClick={ handleClick }
+                                onClick={ handleAccordionTitleClick }
                                 style={ { padding: "0px" } }
                             >
                                 <div className="log-row">
