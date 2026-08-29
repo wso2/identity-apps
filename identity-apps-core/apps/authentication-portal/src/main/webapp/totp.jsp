@@ -46,6 +46,7 @@
 
 <%
     request.getSession().invalidate();
+    int otpLength = 6;
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
@@ -121,9 +122,19 @@
             // Handle form submission through a single guarded path.
             $(document).ready(function(){
                 $('#totpForm').on('submit', function (e) {
-                    e.preventDefault();
-                    handleSubmit();
-                    return false;
+                    if (isTOTPSubmitting) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    var totpInput = document.getElementById('totpOTPInput');
+                    var tokenField = document.getElementById('token');
+                    if (totpInput && tokenField) tokenField.value = totpInput.value;
+                    isTOTPSubmitting = true;
+                    $('#subButton').attr('disabled', true);
+                    $('#subButton').addClass('loading');
+                    trackEvent("authentication-portal-totp-click-continue", {
+                        "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
+                    });
                 });
             });
         </script>
@@ -185,86 +196,25 @@
                                 <input hidden type="text"  id="token" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                             </div>
 
-                            <div class="equal width fields">
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-1"
-                                            name="pincode-1"
-                                            tabindex="1"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-2', null)"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric"
-                                            autofocus>
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-2"
-                                            name="pincode-2"
-                                            tabindex="2"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-3"
-                                            name="pincode-3"
-                                            tabindex="3"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-4"
-                                            name="pincode-4"
-                                            tabindex="4"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-5"
-                                            name="pincode-5"
-                                            tabindex="5"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input
-                                            class="text-center p-1 pb-3 pt-3"
-                                            id="pincode-6"
-                                            name="pincode-6"
-                                            tabindex="6"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, null, 'pincode-5')"
-                                            autocomplete="off"
-                                            type="text"
-                                            inputmode="numeric">
-                                    </div>
+                            <div class="equal width fields segmented-otp-field">
+                                <input
+                                    type="text"
+                                    id="totpOTPInput"
+                                    class="segmented-otp-input"
+                                    maxlength="<%= otpLength %>"
+                                    autocomplete="one-time-code"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"
+                                    inputmode="numeric"
+                                    autofocus
+                                    aria-label="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
+                                >
+                                <% for (int i = 1; i <= otpLength; i++) { %>
+                                <div class="field mt-5">
+                                    <div class="text-center p-1 pb-3 pt-3" id="pincode-<%=i%>" aria-hidden="true">·</div>
+                                </div>
+                                <% } %>
                             </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
@@ -360,82 +310,68 @@
 
         <script type="text/javascript">
             var insightsTenantIdentifier = "<%=userTenant%>";
-            function movetoNext(current, nextFieldID, previousID) {
-                var key = event.keyCode || event.charCode;
-                if (nextFieldID != null && current.value.length >= current.maxLength) {
-                    document.getElementById(nextFieldID).focus();
-                }
-                if( key == 8 || key == 46 ) {
-                    if ( previousID != null) {
-                        document.getElementById(previousID).focus();
-                    }
+
+            function updateTotpDigitBoxes(value) {
+                for (var i = 1; i <= <%= otpLength %>; i++) {
+                    var box = document.getElementById('pincode-' + i);
+                    if (box) box.textContent = (value.length >= i) ? value[i - 1] : '·';
                 }
             }
-            function handleSubmit() {
-                if (isTOTPSubmitting) {
-                    return false;
-                }
 
-                var pin1 = document.getElementById("pincode-1").value;
-                var pin2 = document.getElementById("pincode-2").value;
-                var pin3 = document.getElementById("pincode-3").value;
-                var pin4 = document.getElementById("pincode-4").value;
-                var pin5 = document.getElementById("pincode-5").value;
-                var pin6 = document.getElementById("pincode-6").value;
-                var token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
-                document.getElementById('token').value = token;
-                var isValidToken = pin1 !== "" && pin2 !== "" && pin3 !== "" && pin4 !== "" && pin5 !== "" && pin6 !== "";
-                if (isValidToken) {
-                    isTOTPSubmitting = true;
-                    $('#subButton').attr('disabled', true);
-                    $('#subButton').addClass('loading');
-                    trackEvent("authentication-portal-totp-click-continue", {
-                        "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
-                    });
-                    document.getElementById("totpForm").submit();
-                }
+            var totpInput = document.getElementById('totpOTPInput');
+            var tokenField = document.getElementById('token');
+            var submitBtn = document.getElementById('subButton');
 
-                return false;
+            function updateTotpCursor(value) {
+                for (var i = 1; i <= <%= otpLength %>; i++) {
+                    var box = document.getElementById('pincode-' + i);
+                    if (box) box.classList.remove('active-pincode');
+                }
+                if (value.length < <%= otpLength %>) {
+                    var activeBox = document.getElementById('pincode-' + (value.length + 1));
+                    if (activeBox) activeBox.classList.add('active-pincode');
+                }
             }
-            // Handle paste events
+
             function handlePaste(e) {
-                var clipboardData, value;
-                // Stop data actually being pasted into element
-                e.stopPropagation();
                 e.preventDefault();
-                // Get pasted data via clipboard API
-                clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text').trim();
-                const reg = new RegExp(/^\d+$/);
-                if (reg.test(value)) {
-                    value = value.substring(0, 6);
-
-                    for (let n = 0; n < value.length && n < 6; ++n) {
-                        $("#pincode-" + (n+1)).val(value[n]);
-                    }
-
-                    if (value.length < 6) {
-                        $("#pincode-" + (value.length + 1)).focus();
-                    } else {
-                        $("#pincode-6").focus();
-                        $('#subButton').attr('disabled', false);
-                    }
-                }
+                var pasted = (e.clipboardData || window.clipboardData).getData('Text').replace(/\s/g, '');
+                if (!/^\d+$/.test(pasted)) return;
+                totpInput.value = pasted.slice(0, <%= otpLength %>);
+                totpInput.dispatchEvent(new InputEvent('input', { bubbles: true }));
             }
 
-            // Add paste event listener to all input fields
-            for (let i = 1; i <= 6; i++) {
-                document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+            function handleKeypress(e) {
+                var char = String.fromCharCode(e.which);
+                if (!/\d/.test(char)) e.preventDefault();
             }
-            $('#subButton').attr('disabled', true);
-            $('#pincode-6').on('keyup', function() {
-                if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''
-                && $('#pincode-3').val() != '' && $('#pincode-4').val() != '' && $('#pincode-5').val() != ''  && $('#pincode-6').val() != '') {
-                    $('#subButton').attr('disabled', false);
-                } else {
-                    $('#subButton').attr('disabled', true);
-                }
-            });
+
+            function handleInput() {
+                var sanitized = totpInput.value.replace(/\D/g, '');
+                if (sanitized !== totpInput.value) totpInput.value = sanitized;
+                tokenField.value = sanitized;
+                updateTotpDigitBoxes(sanitized);
+                updateTotpCursor(sanitized);
+                submitBtn.disabled = sanitized.length !== <%= otpLength %>;
+            }
+
+            if (totpInput) {
+                document.addEventListener('selectionchange', function () {
+                    if (document.activeElement === totpInput) {
+                        totpInput.selectionStart = totpInput.selectionEnd = totpInput.value.length;
+                    }
+                });
+                totpInput.addEventListener('copy', function (e) { e.preventDefault(); });
+                totpInput.addEventListener('cut', function (e) { e.preventDefault(); });
+                totpInput.addEventListener('focus', function () { updateTotpCursor(this.value); });
+                totpInput.addEventListener('blur', function () { updateTotpCursor('x'.repeat(<%= otpLength %>)); });
+                totpInput.addEventListener('keypress', handleKeypress);
+                totpInput.addEventListener('paste', handlePaste);
+                totpInput.addEventListener('input', handleInput);
+                updateTotpCursor(totpInput.value);
+            }
+
+            submitBtn.disabled = true;
         </script>
     </body>
 </html>
