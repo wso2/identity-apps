@@ -47,6 +47,7 @@ export const getServerConfigurationsResourceEndpoints = (
         fapiConfigurations: `${ serverHost }/api/server/v1/configs/fapi`,
         governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
         impersonationConfigurations: `${ serverHost }/api/server/v1/configs/impersonation`,
+        openid4vpConfigurations: `${ serverHost }/api/server/v1/configs/openid4vp`,
         issuerUsageScope: `${ serverHost }/api/server/v1/configs/authentication/inbound/oauth2/issuer/usage-scope`,
         loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID

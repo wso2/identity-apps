@@ -660,6 +660,68 @@ export interface TemplateConfigInterface<T = Record<string, unknown>> {
 }
 
 /**
+ * Represents a single presentation definition list item.
+ */
+export interface PresentationDefinitionListItemInterface {
+    /**
+     * Unique identifier of the presentation definition.
+     */
+    id: string;
+    /**
+     * Human-readable display name of the presentation definition.
+     */
+    displayName: string;
+    /**
+     * Optional description of the presentation definition.
+     */
+    description?: string;
+}
+
+/**
+ * Represents the paginated list response for presentation definitions.
+ */
+export interface PresentationDefinitionListInterface {
+    /**
+     * Total number of presentation definitions available.
+     */
+    totalResults?: number;
+    /**
+     * Array of presentation definition list items.
+     */
+    presentationDefinitions: PresentationDefinitionListItemInterface[];
+}
+
+/**
+ * Props for the digital wallet connection create wizard.
+ */
+export type DigitalWalletConnectionCreateWizardPropsInterface =
+    GenericConnectionCreateWizardPropsInterface & IdentifiableComponentInterface;
+
+/**
+ * Form values for the digital wallet connection create wizard.
+ */
+export interface DigitalWalletWizardFormValuesInterface {
+    /**
+     * Display name of the connection being created.
+     */
+    name: string;
+    /**
+     * Optional description of the connection being created.
+     */
+    description?: string;
+}
+
+/**
+ * Ref interface for the wizard component, exposing imperative navigation.
+ */
+export interface WizardRefInterface {
+    /**
+     * Navigates the wizard to the next page.
+     */
+    gotoNextPage: () => void;
+}
+
+/**
  * Enum for the supported auth protocol types.
  *
  * @readonly
@@ -1008,4 +1070,137 @@ export type FormErrors = { [key: string]: string };
 enum CustomLocalAuthenticationType {
     IDENTIFICATION = "IDENTIFICATION",
     VERIFICATION = "VERIFICATION"
+}
+
+/**
+ * Props for the DigitalCredentialsClaimMappingSettings component.
+ */
+export interface DigitalCredentialsClaimMappingSettingsPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The identity provider (connection) being edited.
+     */
+    identityProvider: ConnectionInterface;
+    /**
+     * Whether the parent is in a loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * Whether the settings are in read-only mode.
+     */
+    isReadOnly: boolean;
+    /**
+     * Renders the loading skeleton while data is being fetched.
+     */
+    loader: () => ReactElement;
+    /**
+     * Callback triggered after a successful update.
+     */
+    onUpdate: (id: string) => void;
+}
+
+/**
+ * Minimal shape of the federated authenticator details API response.
+ * Only the properties array is needed to extract the presentationDefinitionId.
+ */
+export interface FederatedAuthenticatorDetailsInterface {
+    /**
+     * Authenticator configuration properties.
+     */
+    properties?: CommonPluggableComponentPropertyInterface[];
+}
+
+/**
+ * Attribute constraint defined within a Presentation Definition credential.
+ */
+export interface PresentationDefinitionAttributeConstraintInterface {
+    /**
+     * Dot-notation path of the attribute to request (e.g. "address.street_address").
+     */
+    path?: string;
+}
+
+/**
+ * Credential entry within a Presentation Definition.
+ */
+export interface PresentationDefinitionCredentialInterface {
+    /**
+     * Attribute constraints that the credential must satisfy.
+     */
+    claims?: PresentationDefinitionAttributeConstraintInterface[];
+}
+
+/**
+ * Presentation Definition API response shape.
+ */
+export interface PresentationDefinitionResponseInterface {
+    /**
+     * List of credential configurations defined in this presentation definition.
+     */
+    credentials?: PresentationDefinitionCredentialInterface[];
+}
+
+/**
+ * Shape of a single option in the Presentation Definition dropdown.
+ */
+export interface PresentationDefinitionOptionInterface {
+    /**
+     * Unique identifier used as the React key and the submitted value.
+     */
+    key: string;
+    /**
+     * Display label shown in the dropdown.
+     */
+    text: string;
+    /**
+     * Value bound to the select input when this option is chosen.
+     */
+    value: string;
+    /**
+     * Optional description of the presentation definition.
+     */
+    description?: string;
+}
+
+/**
+ * Props for the DigitalWalletGeneralSettings component.
+ */
+export interface DigitalWalletGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The identity provider connection being edited.
+     */
+    editingIDP: ConnectionInterface;
+    /**
+     * Whether the parent page is in a loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * Called after the connection is successfully deleted.
+     */
+    onDelete: () => void;
+    /**
+     * Called after a successful update, passing the IDP ID.
+     */
+    onUpdate: (id: string) => void;
+    /**
+     * Whether the form should be rendered in read-only mode.
+     */
+    isReadOnly: boolean;
+    /**
+     * Renders the loading indicator used by the parent page.
+     */
+    loader: () => ReactElement;
+}
+
+/**
+ * Form values managed by react-final-form in the Digital Wallet general settings form.
+ */
+export interface DigitalWalletGeneralSettingsFormValuesInterface {
+    /**
+     * Display name of the connection.
+     */
+    name: string;
+    /**
+     * Optional human-readable description of the connection.
+     */
+    description?: string;
 }

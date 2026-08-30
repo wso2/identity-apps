@@ -1527,6 +1527,119 @@ export interface AuthenticationProviderNS {
                 };
             };
         };
+        digitalWallet: {
+            title: string;
+            subTitle: string;
+            tabs: {
+                general: string;
+                attributes: string;
+            };
+            form: {
+                name: {
+                    label: string;
+                    placeholder: string;
+                    defaultValue: string;
+                    hint: string;
+                    validations: {
+                        required: string;
+                        maxLength: string;
+                        minLength: string;
+                    };
+                };
+                description: {
+                    hint: string;
+                };
+                presentationDefinition: {
+                    label: string;
+                    placeholder: string;
+                    loadingPlaceholder: string;
+                    emptyPlaceholder: string;
+                    hint: string;
+                    noneAvailableHint: string;
+                };
+                timeout: {
+                    label: string;
+                    hint: string;
+                    validationError: string;
+                };
+            };
+            notifications: {
+                noPresentationDefinition: {
+                    message: string;
+                    description: string;
+                };
+            };
+            claimMapping: {
+                form: {
+                    credentialType: {
+                        label: string;
+                        hint: string;
+                    };
+                    credentialFormat: {
+                        label: string;
+                        hint: string;
+                        options: {
+                            dcSdJwt: string;
+                        };
+                    };
+                    requestedAttributes: {
+                        label: string;
+                        hint: string;
+                        emptyPlaceholder: string;
+                    };
+                };
+                notifications: {
+                    fetchFailed: {
+                        message: string;
+                        description: string;
+                    };
+                    updateSuccess: {
+                        message: string;
+                        description: string;
+                    };
+                    updateFailed: {
+                        message: string;
+                        description: string;
+                    };
+                    missingCredentialType: {
+                        message: string;
+                        description: string;
+                    };
+                    noClaimPaths: {
+                        header: string;
+                        description: string;
+                        action: string;
+                    };
+                };
+                heading: string;
+                subheading: string;
+                pdClaimAttribute: {
+                    label: string;
+                    tooltip: string;
+                };
+            };
+            noPdModal: {
+                heading: string;
+                subHeading: string;
+                description: string;
+            };
+            wizardHelp: {
+                heading: string;
+                subHeading: string;
+                name: {
+                    heading: string;
+                    hint: string;
+                };
+                presentationDefinition: {
+                    heading: string;
+                    hint: string;
+                };
+                message: {
+                    paragraph1: string;
+                    paragraph2: string;
+                };
+            };
+        };
     };
     list: {
         actions: string;

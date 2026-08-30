@@ -256,6 +256,22 @@ export class ConnectionUIConstants {
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
     ];
 
+    /**
+     * Digital Wallet Authenticator Settings Form element constraints.
+     */
+    public static readonly DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<
+        string,
+        number
+    > = {
+            IDP_DESCRIPTION_MAX_LENGTH: 100,
+            IDP_DESCRIPTION_MIN_LENGTH: 3,
+            IDP_NAME_MAX_LENGTH: 50,
+            IDP_NAME_MIN_LENGTH: 3,
+            TIMEOUT_DEFAULT_VALUE: 120,
+            TIMEOUT_MAX_VALUE: 180,
+            TIMEOUT_MIN_VALUE: 30
+        };
+
     /* eslint-disable max-len */
     // TODO: These error messages need to be localized.
     public static readonly ERROR_MESSAGES: {

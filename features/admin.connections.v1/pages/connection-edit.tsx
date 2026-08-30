@@ -760,6 +760,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                         setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
                         tabIdentifier={ tabIdentifier }
+                        hideAdvancedTab={
+                            identityProviderTemplate?.id ===
+                                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET
+                        }
                     />
                 ) : (
                     <EditMultiFactorAuthenticator

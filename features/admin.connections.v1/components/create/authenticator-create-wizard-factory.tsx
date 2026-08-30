@@ -16,18 +16,23 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ConfirmationModal, Link } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import CustomAuthenticatorCreateWizard from "./custom-authenticator-create-wizard";
+import { DigitalWalletConnectionCreateWizard } from "./digital-wallet-connection-create-wizard";
 import { EnterpriseConnectionCreateWizard } from "./enterprise-connection-create-wizard";
 import { OutboundProvisioningConnectionCreateWizard } from "./outbound-provisioning-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
+import { useGetPresentationDefinitionList } from "../../hooks/use-get-presentation-definition-list";
 import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -107,6 +112,15 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     const { t } = useTranslation();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const isOpenID4VPEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.presentationDefinitions?.enabled ?? false);
+
+    const {
+        data: pdListData,
+        isLoading: isPdListLoading
+    } = useGetPresentationDefinitionList(
+        type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET && isOpenID4VPEnabled
+    );
 
     const {
         data: connectionsResponse,
@@ -376,6 +390,79 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                         { ...rest }
                     />
                 );
+
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET: {
+                if (!isOpenID4VPEnabled) {
+                    return null;
+                }
+
+                if (isPdListLoading) {
+                    return null;
+                }
+
+                const closeDigitalWalletModal = (): void => {
+                    setSelectedTemplateWithUniqueName(undefined);
+                    setSelectedTemplate(undefined);
+                    handleModalVisibility(false);
+                    onWizardClose();
+                };
+
+                const hasPresentationDefinitions: boolean =
+                    (pdListData?.presentationDefinitions?.length ?? 0) > 0;
+
+                if (!hasPresentationDefinitions) {
+                    return (
+                        <ConfirmationModal
+                            open
+                            type="warning"
+                            onClose={ closeDigitalWalletModal }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ closeDigitalWalletModal }
+                            data-componentid={ `${ selectedTemplate?.templateId }-no-pd-modal` }
+                        >
+                            <ConfirmationModal.Header>
+                                { t("authenticationProvider:templates.digitalWallet.noPdModal.heading") }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message attached warning>
+                                { t("authenticationProvider:templates.digitalWallet.noPdModal.subHeading") }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                <Trans
+                                    i18nKey={
+                                        "authenticationProvider:templates.digitalWallet.noPdModal.description"
+                                    }
+                                >
+                                    { "You don't have any presentation definitions yet. " }
+                                    <Link
+                                        external={ false }
+                                        link="#"
+                                        onClick={ (): void => {
+                                            closeDigitalWalletModal();
+                                            history.push(AppConstants.getPaths().get("VP_DEFINITIONS"));
+                                        } }
+                                        data-componentid={
+                                            `${ selectedTemplate?.templateId }-no-pd-modal-create-link`
+                                        }
+                                    >
+                                        Create one
+                                    </Link>
+                                    { " to use this Digital Wallet connection." }
+                                </Trans>
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    );
+                }
+
+                return (
+                    <DigitalWalletConnectionCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        onWizardClose={ closeDigitalWalletModal }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                );
+            }
 
             default:
                 return (
