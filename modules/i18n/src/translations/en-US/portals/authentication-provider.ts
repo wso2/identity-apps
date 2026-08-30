@@ -1937,11 +1937,39 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     description: "The shared access of the connection was updated successfully.",
                     message: "Shared access updated"
                 }
+            },
+            unshare: {
+                genericError: {
+                    description: "An error occurred while unsharing the connection from organizations.",
+                    message: "Couldn't unshare connection"
+                },
+                success: {
+                    description: "The connection was unshared from all organizations successfully.",
+                    message: "Connection unshared"
+                }
             }
         },
         selectAnOrganizationToManage: "Select an organization to manage its sharing settings.",
         shareAllInfo: "This connection will be shared with all existing organizations and any " +
             "organizations created in the future.",
+        shareAllWarningModal: {
+            assertionHint: "Please confirm your action.",
+            description: "This will share the connection across ALL existing and future organizations. " +
+                "This action will affect all current and future organizations in your system.",
+            header: "Share with all organizations",
+            message: "You are about to share this connection across all organizations."
+        },
+        shareTypeSwitchModal: {
+            description: "Choose how you want to proceed:",
+            header: "Switch to selective sharing",
+            message: "You are about to switch from sharing with all organizations to selective sharing.",
+            preserveStateLabel1: "Preserve current sharing",
+            preserveStateLabel2: "Keep the connection shared with existing organizations and switch to " +
+                "selective mode.",
+            resetToDefaultLabel1: "Reset to default",
+            resetToDefaultLabel2: "Unshare the connection from all organizations and start fresh with " +
+                "selective sharing."
+        },
         shareWithFutureChildOrgs: "Share with future child organizations",
         sharingSettingsLabel: "Sharing settings for ",
         subTitle: "Share this connection with organizations so that they can use it for authentication.",

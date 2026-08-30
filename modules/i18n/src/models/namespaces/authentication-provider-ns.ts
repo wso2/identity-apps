@@ -2198,6 +2198,21 @@ export interface AuthenticationProviderNS {
             shareWithAll: string;
             shareWithSelected: string;
         };
+        shareAllWarningModal: {
+            assertionHint: string;
+            description: string;
+            header: string;
+            message: string;
+        };
+        shareTypeSwitchModal: {
+            description: string;
+            header: string;
+            message: string;
+            preserveStateLabel1: string;
+            preserveStateLabel2: string;
+            resetToDefaultLabel1: string;
+            resetToDefaultLabel2: string;
+        };
         notifications: {
             noOrganizationsSelected: {
                 message: string;
@@ -2210,6 +2225,16 @@ export interface AuthenticationProviderNS {
                 };
             };
             share: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            unshare: {
                 success: {
                     message: string;
                     description: string;

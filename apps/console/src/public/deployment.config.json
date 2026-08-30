@@ -905,6 +905,29 @@
                     ]
                 }
             },
+            "connectionSharing": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_idp_share"
+                    ],
+                    "delete": [
+                        "internal_idp_unshare"
+                    ],
+                    "feature": [
+                        "console:connectionSharing"
+                    ],
+                    "read": [
+                        "internal_idp_shared_access_view",
+                        "internal_organization_view"
+                    ],
+                    "update": [
+                        "internal_idp_share",
+                        "internal_idp_unshare"
+                    ]
+                }
+            },
             "consents": {
                 "disabledFeatures": [],
                 "enabled": true,

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -178,6 +178,17 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isOutboundProvisioningConnection, setIsOutboundProvisioningConnection ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
+
+    // Connection sharing is governed by the top-level `connectionSharing` feature so it can be reused
+    // across connection types (identity providers, custom authenticators, flow extensions, etc.).
+    const connectionSharingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.connectionSharing;
+    const isConnectionSharingEnabled: boolean = connectionSharingFeatureConfig?.enabled ?? false;
+    const hasConnectionSharingReadPermissions: boolean = useRequiredScopes(
+        connectionSharingFeatureConfig?.scopes?.read
+    );
+    const hasConnectionSharingUpdatePermissions: boolean = useRequiredScopes(
+        connectionSharingFeatureConfig?.scopes?.update
+    );
 
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
@@ -384,7 +395,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <IdentityProviderSharedAccess
                 identityProvider={ identityProvider }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isReadOnly || !hasConnectionSharingUpdatePermissions }
                 data-componentid={ `${testId}-shared-access` }
             />
         </ResourceTab.Pane>
@@ -521,25 +532,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        // Shared Access tab is shown for real identity provider connections (not shared ones,
-        // trusted token issuers, custom authenticators or the organization enterprise authenticator)
-        // when organization management is enabled. Trusted token issuers are not allowed to be shared.
-        if (
-            shouldShowTab(type, ConnectionTabTypes.SHARED_ACCESS) &&
-            isOrganizationManagementEnabled &&
-            !isSharedConnection &&
-            !isTrustedTokenIssuer &&
-            !isOrganizationEnterpriseAuthenticator &&
-            !isCustomAuthenticator &&
-            !isCustomLocalAuthenticator
-        ) {
-            panes.push({
-                "data-tabid": ConnectionUIConstants.TabIds.SHARED_ACCESS,
-                menuItem: "Shared Access",
-                render: SharedAccessTabPane
-            });
-        }
-
         if (
             shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
             shouldShowOutboundProvisioningTab() &&
@@ -563,6 +555,28 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
+            });
+        }
+
+        // Shared Access tab is shown for real identity provider connections (not shared ones,
+        // trusted token issuers, custom authenticators or the organization enterprise authenticator)
+        // when organization management is enabled and the connection sharing sub-feature is enabled
+        // and the user has read access to it. Trusted token issuers are not allowed to be shared.
+        if (
+            shouldShowTab(type, ConnectionTabTypes.SHARED_ACCESS) &&
+            isOrganizationManagementEnabled &&
+            isConnectionSharingEnabled &&
+            hasConnectionSharingReadPermissions &&
+            !isSharedConnection &&
+            !isTrustedTokenIssuer &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator &&
+            !isCustomLocalAuthenticator
+        ) {
+            panes.push({
+                "data-tabid": ConnectionUIConstants.TabIds.SHARED_ACCESS,
+                menuItem: "Shared Access",
+                render: SharedAccessTabPane
             });
         }
 

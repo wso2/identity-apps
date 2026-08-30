@@ -35,6 +35,21 @@ export enum IdPShareType {
 }
 
 /**
+ * Approaches offered when switching from sharing with all organizations to selective sharing.
+ */
+export enum IdPShareTypeSwitchApproach {
+    /**
+     * Keep the connection shared with the organizations it is currently shared with and switch to
+     * selective mode without unsharing.
+     */
+    WITHOUT_UNSHARE = "withoutUnshare",
+    /**
+     * Unshare the connection from all organizations and start fresh with selective sharing.
+     */
+    WITH_UNSHARE = "withUnshare"
+}
+
+/**
  * Sharing policies supported by the identity provider sharing APIs.
  *
  * Unlike application/user sharing, identity provider sharing does not support role sharing.

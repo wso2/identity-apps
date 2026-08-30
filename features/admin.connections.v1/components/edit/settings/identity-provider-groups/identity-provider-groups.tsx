@@ -95,6 +95,9 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
+    // Shared connections expose the groups inherited from the parent organization in a read-only view.
+    const isSharedConnection: boolean = !!editingIDP?.isShared;
+
     const [ groupAttribute, setGroupAttribute ] = useState<string>("");
 
     const {
@@ -317,6 +320,16 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         !isClaimConfigsFetchRequestLoading
             ? (
                 <>
+                    {
+                        isSharedConnection && (
+                            <Message
+                                header={ t("idp:identityProviderGroups.sharedGroupsInfo.header") }
+                                content={ t("idp:identityProviderGroups.sharedGroupsInfo.description") }
+                                data-componentid={ `${ componentId }-shared-groups-info-message` }
+                                info
+                            />
+                        )
+                    }
                     { renderGroupAttributeSection() }
                     <Divider hidden/>
 

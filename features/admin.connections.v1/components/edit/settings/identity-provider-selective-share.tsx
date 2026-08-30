@@ -65,6 +65,11 @@ interface IdentityProviderSelectiveShareProps extends IdentifiableComponentInter
      */
     identityProviderId: string;
     /**
+     * The organizations the identity provider is already shared with, fetched once by the parent.
+     * Used to pre-tick the tree — passed down to avoid a duplicate `/{id}/share` request.
+     */
+    sharedOrganizations: OrganizationListInterface;
+    /**
      * IDs of the organizations currently selected (checked) for sharing.
      */
     selectedItems: string[];
@@ -85,6 +90,11 @@ interface IdentityProviderSelectiveShareProps extends IdentifiableComponentInter
      */
     shouldShareWithFutureChildOrgsMap: Record<string, boolean>;
     setShouldShareWithFutureChildOrgsMap: ReactDispatch<SetStateAction<Record<string, boolean>>>;
+    /**
+     * Whether to pre-select the organizations the identity provider is already shared with.
+     * Set to false to start with an empty selection (e.g. after choosing to reset sharing).
+     */
+    preselectSharedOrgs?: boolean;
 }
 
 type TreeViewBaseItemWithParent = TreeViewBaseItem & { parentId?: string };
@@ -104,6 +114,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
     const {
         [ "data-componentid" ]: componentId = "identity-provider-selective-share",
         identityProviderId,
+        sharedOrganizations,
         selectedItems,
         setSelectedItems,
         addedOrgs,
@@ -111,7 +122,8 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
         removedOrgs,
         setRemovedOrgs,
         shouldShareWithFutureChildOrgsMap,
-        setShouldShareWithFutureChildOrgsMap
+        setShouldShareWithFutureChildOrgsMap,
+        preselectSharedOrgs = true
     } = props;
 
     const { t } = useTranslation();
@@ -129,21 +141,10 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ hideLeftPanel, setHideLeftPanel ] = useState<boolean>(false);
 
-    // Fetch all the organizations the identity provider is already shared with (to pre-tick).
-    const {
-        data: sharedOrganizations,
-        isLoading: isSharedOrganizationsFetchRequestLoading,
-        error: sharedOrganizationsFetchRequestError
-    } = useGetIdVPShare(
-        identityProviderId,
-        !isEmpty(identityProviderId),
-        true,
-        null
-    );
-
     // Fetch the top-level organizations of the current organization.
     const {
         data: topLevelOrganizations,
+        isLoading: isTopLevelOrganizationsFetchRequestLoading,
         error: topLevelOrganizationsFetchRequestError
     } = useGetOrganizations(
         isOrganizationManagementEnabled,
@@ -183,7 +184,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
         "sharingMode"
     );
 
-    const isLoading: boolean = isSharedOrganizationsFetchRequestLoading;
+    const isLoading: boolean = isTopLevelOrganizationsFetchRequestLoading;
 
     /**
      * Build a tree from a flat list of organizations, updating the flat organization map.
@@ -260,8 +261,12 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
 
     // Pre-tick the organizations that the identity provider is already shared with.
     useEffect(() => {
-        if ((sharedOrganizations as OrganizationListInterface)?.organizations?.length > 0) {
-            const sharedOrgIds: string[] = (sharedOrganizations as OrganizationListInterface).organizations.map(
+        if (!preselectSharedOrgs) {
+            return;
+        }
+
+        if (sharedOrganizations?.organizations?.length > 0) {
+            const sharedOrgIds: string[] = sharedOrganizations.organizations.map(
                 (org: OrganizationInterface) => org.id
             );
 
@@ -269,7 +274,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
                 setSelectedItems(sharedOrgIds);
             }
         }
-    }, [ sharedOrganizations ]);
+    }, [ sharedOrganizations, preselectSharedOrgs ]);
 
     // Build the first level of the organization tree.
     useEffect(() => {
@@ -303,10 +308,22 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
             setFlatOrganizationMap((prev: Record<string, OrganizationInterface>) => ({ ...prev, ...initialFlatMap }));
             setSelectedOrgId((prev: string) => prev ?? topLevelOrganizations.organizations[0].id);
 
-            setHideLeftPanel(
+            const isSingleShareableOrg: boolean =
                 topLevelOrganizations.organizations.length === 1 &&
-                !topLevelOrganizations.organizations[0].hasChildren
-            );
+                !topLevelOrganizations.organizations[0].hasChildren;
+
+            setHideLeftPanel(isSingleShareableOrg);
+
+            // When the selection tree is hidden because there is a single shareable organization,
+            // auto-select it so it is actually shared on save (there is no checkbox to select it).
+            if (isSingleShareableOrg) {
+                const singleOrgId: string = topLevelOrganizations.organizations[0].id;
+
+                setSelectedItems((prev: string[]) =>
+                    prev.includes(singleOrgId) ? prev : [ ...prev, singleOrgId ]);
+                setAddedOrgs((prev: string[]) =>
+                    prev.includes(singleOrgId) ? prev : [ ...prev, singleOrgId ]);
+            }
         }
     }, [ topLevelOrganizations ]);
 
@@ -348,7 +365,6 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
     // Surface any fetch errors.
     useEffect(() => {
         if (
-            sharedOrganizationsFetchRequestError ||
             topLevelOrganizationsFetchRequestError ||
             childOrganizationsFetchRequestError
         ) {
@@ -361,7 +377,6 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
             }));
         }
     }, [
-        sharedOrganizationsFetchRequestError,
         topLevelOrganizationsFetchRequestError,
         childOrganizationsFetchRequestError
     ]);

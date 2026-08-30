@@ -491,6 +491,11 @@ export const idp: IdpNS = {
                 }
             },
             searchByName: "Search by name"
+        },
+        sharedGroupsInfo: {
+            description: "Groups for this connection are inherited from the parent organization and " +
+                "cannot be modified at the sub-organization level.",
+            header: "Groups are inherited from the parent organization"
         }
     },
     helpPanel: {

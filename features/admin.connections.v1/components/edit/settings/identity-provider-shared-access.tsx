@@ -22,10 +22,11 @@ import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import Typography from "@oxygen-ui/react/Typography";
 import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import uniq from "lodash-es/uniq";
@@ -52,6 +53,7 @@ import { ConnectionInterface } from "../../../models/connection";
 import {
     IdPSelectiveShareOrganizationInterface,
     IdPShareType,
+    IdPShareTypeSwitchApproach,
     IdPSharingPolicy
 } from "../../../models/identity-provider-sharing";
 
@@ -100,6 +102,11 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
     const [ shouldShareWithFutureChildOrgsMap, setShouldShareWithFutureChildOrgsMap ] =
         useState<Record<string, boolean>>({});
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ showShareTypeSwitchModal, setShowShareTypeSwitchModal ] = useState<boolean>(false);
+    const [ shareTypeSwitchApproach, setShareTypeSwitchApproach ] = useState<IdPShareTypeSwitchApproach>(
+        IdPShareTypeSwitchApproach.WITHOUT_UNSHARE);
+    const [ preselectSharedOrgs, setPreselectSharedOrgs ] = useState<boolean>(true);
+    const [ showShareAllWarningModal, setShowShareAllWarningModal ] = useState<boolean>(false);
 
     const {
         data: shareData,
@@ -165,6 +172,23 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
         }));
     };
 
+    const handleUnshareError = (error: AxiosError): void => {
+        dispatch(addAlert({
+            description: (error?.response?.data as { description?: string })?.description
+                || t("authenticationProvider:sharedAccess.notifications.unshare.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("authenticationProvider:sharedAccess.notifications.unshare.genericError.message")
+        }));
+    };
+
+    const handleUnshareSuccess = (): void => {
+        dispatch(addAlert({
+            description: t("authenticationProvider:sharedAccess.notifications.unshare.success.description"),
+            level: AlertLevels.SUCCESS,
+            message: t("authenticationProvider:sharedAccess.notifications.unshare.success.message")
+        }));
+    };
+
     const handleUnshareAll = async (): Promise<void> => {
         await unshareIdPWithAllOrganizations({ identityProviderId });
     };
@@ -199,6 +223,40 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
         }
     };
 
+    const submitShare = async (): Promise<void> => {
+        setIsSubmitting(true);
+
+        const isUnshareOperation: boolean = shareType === IdPShareType.UNSHARE;
+
+        try {
+            if (isUnshareOperation) {
+                await handleUnshareAll();
+            } else if (shareType === IdPShareType.SHARE_ALL) {
+                await handleShareWithAll();
+            } else {
+                await handleShareWithSelected();
+            }
+
+            if (isUnshareOperation) {
+                handleUnshareSuccess();
+            } else {
+                handleShareSuccess();
+            }
+            setSavedShareType(shareType);
+            setAddedOrgs([]);
+            setRemovedOrgs([]);
+            mutateShareData();
+        } catch (error) {
+            if (isUnshareOperation) {
+                handleUnshareError(error as AxiosError);
+            } else {
+                handleShareError(error as AxiosError);
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const handleSave = async (): Promise<void> => {
         if (shareType === IdPShareType.SHARE_SELECTED && isEmpty(selectedItems)) {
             dispatch(addAlert({
@@ -211,32 +269,154 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
             return;
         }
 
-        setIsSubmitting(true);
+        // Sharing with all organizations is a wide-reaching action, so require an explicit confirmation.
+        if (shareType === IdPShareType.SHARE_ALL) {
+            setShowShareAllWarningModal(true);
 
-        try {
-            if (shareType === IdPShareType.UNSHARE) {
-                await handleUnshareAll();
-            } else if (shareType === IdPShareType.SHARE_ALL) {
-                await handleShareWithAll();
-            } else {
-                await handleShareWithSelected();
-            }
-
-            handleShareSuccess();
-            setSavedShareType(shareType);
-            setAddedOrgs([]);
-            setRemovedOrgs([]);
-            mutateShareData();
-        } catch (error) {
-            handleShareError(error as AxiosError);
-        } finally {
-            setIsSubmitting(false);
+            return;
         }
+
+        await submitShare();
     };
 
     const handleShareTypeChange = (_event: ChangeEvent<HTMLInputElement>, value: string): void => {
-        setShareType(value as IdPShareType);
+        const selectedShareType: IdPShareType = value as IdPShareType;
+
+        // Prompt the user to choose a switching approach when moving from "share with all"
+        // to selective sharing, so they can decide whether to keep the existing shares.
+        if (savedShareType === IdPShareType.SHARE_ALL && selectedShareType === IdPShareType.SHARE_SELECTED) {
+            setShowShareTypeSwitchModal(true);
+
+            return;
+        }
+
+        setShareType(selectedShareType);
     };
+
+    const handleShareTypeSwitchConfirm = async (): Promise<void> => {
+        if (shareTypeSwitchApproach === IdPShareTypeSwitchApproach.WITH_UNSHARE) {
+            // Reset to default: unshare from all organizations immediately, then start fresh with an
+            // empty selection. The unshare must not wait until the user selects and saves organizations.
+            setIsSubmitting(true);
+
+            try {
+                await handleUnshareAll();
+                handleUnshareSuccess();
+                // The connection is now unshared on the server, so a subsequent selective save must
+                // not attempt to unshare from all again.
+                setSavedShareType(IdPShareType.UNSHARE);
+                setSelectedItems([]);
+                setAddedOrgs([]);
+                setRemovedOrgs([]);
+                setShouldShareWithFutureChildOrgsMap({});
+                setPreselectSharedOrgs(false);
+                setShareType(IdPShareType.SHARE_SELECTED);
+            } catch (error) {
+                handleUnshareError(error as AxiosError);
+            } finally {
+                setIsSubmitting(false);
+            }
+        } else {
+            // Preserve current sharing: keep the organizations already shared pre-selected.
+            setPreselectSharedOrgs(true);
+            setShareType(IdPShareType.SHARE_SELECTED);
+        }
+
+        setShowShareTypeSwitchModal(false);
+    };
+
+    const renderShareTypeSwitchModal = (): ReactElement => (
+        <ConfirmationModal
+            data-componentid={ `${ componentId }-share-type-switch-modal` }
+            type="negative"
+            open={ showShareTypeSwitchModal }
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onPrimaryActionClick={ handleShareTypeSwitchConfirm }
+            onSecondaryActionClick={ (): void => setShowShareTypeSwitchModal(false) }
+            onClose={ (): void => setShowShareTypeSwitchModal(false) }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header>
+                { t("authenticationProvider:sharedAccess.shareTypeSwitchModal.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message attached negative>
+                { t("authenticationProvider:sharedAccess.shareTypeSwitchModal.message") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                { t("authenticationProvider:sharedAccess.shareTypeSwitchModal.description") }
+                <RadioGroup
+                    className="mt-3"
+                    value={ shareTypeSwitchApproach }
+                    onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                        setShareTypeSwitchApproach(event.target.value as IdPShareTypeSwitchApproach)
+                    }
+                    data-componentid={ `${ componentId }-share-type-switch-group` }
+                >
+                    <FormControlLabel
+                        className="mb-3"
+                        value={ IdPShareTypeSwitchApproach.WITHOUT_UNSHARE }
+                        control={ <Radio /> }
+                        disabled={ isReadOnly }
+                        data-componentid={ `${ componentId }-share-type-switch-without-unshare` }
+                        label={ (
+                            <Typography variant="body1">
+                                <b>
+                                    { t("authenticationProvider:sharedAccess.shareTypeSwitchModal." +
+                                        "preserveStateLabel1") }:{ " " }
+                                </b>
+                                { t("authenticationProvider:sharedAccess.shareTypeSwitchModal.preserveStateLabel2") }
+                            </Typography>
+                        ) }
+                    />
+                    <FormControlLabel
+                        value={ IdPShareTypeSwitchApproach.WITH_UNSHARE }
+                        control={ <Radio /> }
+                        disabled={ isReadOnly }
+                        data-componentid={ `${ componentId }-share-type-switch-with-unshare` }
+                        label={ (
+                            <Typography variant="body1">
+                                <b>
+                                    { t("authenticationProvider:sharedAccess.shareTypeSwitchModal." +
+                                        "resetToDefaultLabel1") }:{ " " }
+                                </b>
+                                { t("authenticationProvider:sharedAccess.shareTypeSwitchModal.resetToDefaultLabel2") }
+                            </Typography>
+                        ) }
+                    />
+                </RadioGroup>
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
+    const renderShareAllWarningModal = (): ReactElement => (
+        <ConfirmationModal
+            data-componentid={ `${ componentId }-share-all-warning-modal` }
+            type="warning"
+            open={ showShareAllWarningModal }
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onPrimaryActionClick={ (): void => {
+                setShowShareAllWarningModal(false);
+                submitShare();
+            } }
+            onSecondaryActionClick={ (): void => setShowShareAllWarningModal(false) }
+            onClose={ (): void => setShowShareAllWarningModal(false) }
+            assertionType="checkbox"
+            assertionHint={ t("authenticationProvider:sharedAccess.shareAllWarningModal.assertionHint") }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header>
+                { t("authenticationProvider:sharedAccess.shareAllWarningModal.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message attached warning>
+                { t("authenticationProvider:sharedAccess.shareAllWarningModal.message") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                { t("authenticationProvider:sharedAccess.shareAllWarningModal.description") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     const isLoading: boolean = useMemo(() => isShareDataLoading, [ isShareDataLoading ]);
 
@@ -290,6 +470,7 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
                         <IdentityProviderSelectiveShare
                             data-componentid={ `${ componentId }-selective-share` }
                             identityProviderId={ identityProviderId }
+                            sharedOrganizations={ shareData as OrganizationListInterface }
                             selectedItems={ selectedItems }
                             setSelectedItems={ setSelectedItems }
                             addedOrgs={ addedOrgs }
@@ -298,6 +479,7 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
                             setRemovedOrgs={ setRemovedOrgs }
                             shouldShareWithFutureChildOrgsMap={ shouldShareWithFutureChildOrgsMap }
                             setShouldShareWithFutureChildOrgsMap={ setShouldShareWithFutureChildOrgsMap }
+                            preselectSharedOrgs={ preselectSharedOrgs }
                         />
                     </Box>
                 )
@@ -316,6 +498,8 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
                     </Box>
                 )
             }
+            { showShareTypeSwitchModal && renderShareTypeSwitchModal() }
+            { showShareAllWarningModal && renderShareAllWarningModal() }
         </EmphasizedSegment>
     );
 };

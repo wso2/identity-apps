@@ -435,6 +435,10 @@ export interface IdpNS {
             };
             searchByName: string;
         };
+        sharedGroupsInfo: {
+            description: string;
+            header: string;
+        };
     };
     templates: {
         manualSetup: {
