@@ -70,20 +70,19 @@ export class UserManagementUtils {
     /**
      * Resolves the user id of the current session from the `sub` claim of the ID token.
      *
-     * The Console application is created with `useUserIdForDefaultSubject` enabled, so its `sub`
-     * claim carries the user id rather than the username. Depending on the application's subject
-     * identifier settings, that id can be qualified with the userstore domain and the tenant
-     * domain — `PRIMARY/<user-id>@carbon.super`. A user id contains neither `/` nor `@`, so
-     * dropping both qualifiers leaves the bare id. The tenant domain is taken off the last `@` so
-     * that a subject that is not a user id — an email form username, say — is left with its own
-     * `@` intact and simply fails to match any id.
+     * The Console application resolves its subject from the `http://wso2.org/claims/userid`
+     * claim, so `sub` carries the user id rather than the username. The application also includes
+     * the userstore and the tenant domains in the subject, so the id arrives qualified —
+     * `<userstore>/<user-id>@<tenant>`. The userstore prefix is omitted for `PRIMARY`. A user id
+     * contains neither `/` nor `@`, so dropping both qualifiers leaves the bare id.
      *
-     * Deriving the id from the ID token keeps the caller independent of the `scim2/Me` response,
-     * which is not fetched in organizations or in deployments that read the profile from the
-     * ID token.
+     * The tenant domain is taken off the last `@` so that a subject that is not a user id — a
+     * username, in a deployment that resolves the subject from the username claim — keeps its own
+     * `@` intact and simply fails to match any id, rather than being truncated into a value that
+     * could match the wrong row.
      *
-     * @param subject - `sub` claim of the ID token, i.e. `state.auth.username`.
-     * @returns The user id of the current session, or an empty string when it cannot be resolved.
+     * @param subject - The `sub` claim of the ID token.
+     * @returns The user id, or an empty string when it cannot be resolved.
      */
     public static resolveUserIdFromSubject = (subject: string): string => {
         if (!subject) {
