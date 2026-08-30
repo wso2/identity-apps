@@ -884,14 +884,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED template case
-        if (template.type === TemplateTypes.BasicFederated) {
-            const googleExecutionStep: Node | undefined = templateSteps.find(
+        // Handle BASIC_FEDERATED and BASIC_WALLET template cases — auto-select the execution step
+        // so the IdP name property panel opens immediately after the template loads.
+        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet) {
+            const executionStep: Node | undefined = templateSteps.find(
                 (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleExecutionStep) {
-                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
+            if (executionStep) {
+                return [ templateSteps, templateEdges, executionStep as Resource, executionStep.id ];
             }
         }
 

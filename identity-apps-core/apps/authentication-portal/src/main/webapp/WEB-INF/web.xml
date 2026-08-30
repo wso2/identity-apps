@@ -353,6 +353,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>wallet_login.do</servlet-name>
+        <jsp-file>/wallet_login.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>magic_link_notification.do</servlet-name>
         <jsp-file>/magic_link_notification.jsp</jsp-file>
     </servlet>
@@ -445,6 +450,11 @@
     <servlet-mapping>
         <servlet-name>sms_otp_error.do</servlet-name>
         <url-pattern>/sms_otp_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>wallet_login.do</servlet-name>
+        <url-pattern>/wallet_login.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
