@@ -199,7 +199,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
     };
 
-    const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl());
+    const [ activeTab, setActiveTab ] = useState<number>(() => getActiveTabFromUrl());
 
     /**
      * Register a hash change listener to update the active tab.
