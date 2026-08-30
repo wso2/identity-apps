@@ -70,16 +70,6 @@ export class UserManagementUtils {
     /**
      * Resolves the user id of the current session from the `sub` claim of the ID token.
      *
-     * The Console application resolves its subject from the `http://wso2.org/claims/userid`
-     * claim, so `sub` carries the user id rather than the username. The application also includes
-     * the userstore and the tenant domains in the subject, so the id arrives qualified —
-     * `<userstore>/<user-id>@<tenant>`. The userstore prefix is omitted for `PRIMARY`. A user id
-     * contains neither `/` nor `@`, so dropping both qualifiers leaves the bare id.
-     *
-     * The tenant domain is taken off the last `@` so that a subject that is not a user id — a
-     * username, in a deployment that resolves the subject from the username claim — keeps its own
-     * `@` intact and simply fails to match any id, rather than being truncated into a value that
-     * could match the wrong row.
      *
      * @param subject - The `sub` claim of the ID token.
      * @returns The user id, or an empty string when it cannot be resolved.
