@@ -34,7 +34,6 @@ import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
-    ProfileInfoInterface,
     RolesInterface,
     SBACInterface
 } from "@wso2is/core/models";
@@ -53,7 +52,7 @@ import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
@@ -183,12 +182,20 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state?.profile?.profileInfo);
+    const authenticatedUserSubject: string = useSelector((state: AppState): string => state?.auth?.username);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
     const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
+
+    /**
+     * User id of the current session, resolved from the `sub` claim of the ID token.
+     */
+    const authenticatedUserId: string = useMemo(
+        (): string => UserManagementUtils.resolveUserIdFromSubject(authenticatedUserSubject),
+        [ authenticatedUserSubject ]
+    );
 
     /**
      * Checks whether the given administrator is the user of the current session.
@@ -201,7 +208,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns Whether the given administrator is the user of the current session.
      */
     const isAuthenticatedUser = (user: UserBasicInterface): boolean =>
-        !!user?.id && !!profileInfo?.id && user.id === profileInfo.id;
+        !!user?.id && !!authenticatedUserId && user.id === authenticatedUserId;
 
     /**
      * Returns a locked icon if the account is locked.
@@ -490,7 +497,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
         if (isAuthenticatedUser(user)) {
             return (
-                <Label size="small">
+                <Label data-componentid={ `${ componentId }-item-myself-label` } size="small">
                     Me
                 </Label>
             );
