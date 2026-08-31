@@ -221,7 +221,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                                                 }
                                                 <Text>Next, we will create the Try It application in your organization.
                                                     You can later change the login flow of this application and
-                                                    try different login flows with Asgardeo. Click { " " }
+                                                    try different login flows with { productName }. Click { " " }
                                                 <Text weight="bold" inline> Continue</Text>
                                                 { " " }to proceed. </Text>
                                                 <List className="add-user-step-list">
@@ -231,7 +231,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                                             ) :
                                             (
                                                 <>
-                                                    <Text>You are about to experience user login with Asgardeo.
+                                                    <Text>You are about to experience user login with { productName }.
                                                         <br />
                                                         Start by { " " }
                                                         <a
