@@ -72,6 +72,7 @@
     String flowType = request.getParameter("flowType");
     String mlt = request.getParameter("mlt");
     String flowId = request.getParameter("flowId");
+    String sessionDataKey = request.getParameter("sessionDataKey");
 
     final String REGISTRATION = "REGISTRATION";
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
@@ -217,6 +218,7 @@
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
+                const pageSessionDataKey = "<%= sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : null %>";
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
                 const extendedInputResolvers = [
@@ -355,6 +357,22 @@
                         return;
                     }
 
+                    function submitPostForm(action, fields) {
+                        var form = document.createElement("form");
+                        form.method = "POST";
+                        form.action = action;
+                        form.style.display = "none";
+                        Object.keys(fields).forEach(function(name) {
+                            var input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = name;
+                            input.value = fields[name];
+                            form.appendChild(input);
+                        });
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+
                     // VP-scoped polling guards — local to this effect invocation.
                     var vpPollInFlight = false;
                     var vpSubmitted = false;
@@ -413,6 +431,12 @@
                             }
                             if (data.flowId) localStorage.setItem("flowId", data.flowId);
                             if (data.flowType) setFlowType(data.flowType);
+
+                            var vpUserAssertion = data.data && data.data.additionalData && data.data.additionalData.userAssertion;
+                            if (data.flowStatus === "COMPLETE" && vpUserAssertion && pageSessionDataKey && pageSessionDataKey !== "null") {
+                                submitPostForm(baseUrl + "/commonauth", { sessionDataKey: pageSessionDataKey, userAssertion: vpUserAssertion });
+                                return;
+                            }
 
                             var isEnded = handleFlowStatus(data);
                             if (!isEnded) {
@@ -778,7 +802,7 @@
                                 style: {
                                     display: "block",
                                     width: "280px",
-                                    margin: "0 auto",
+                                    marginLeft: "calc(50% - 122px)",
                                     borderRadius: "8px",
                                     visibility: qrStatus === "error" ? "hidden" : "visible"
                                 }
