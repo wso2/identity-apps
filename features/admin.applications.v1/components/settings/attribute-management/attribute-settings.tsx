@@ -1151,8 +1151,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             claim: {
                                 uri: claimMappingURI
                             },
-                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString())
-                                ? applicationConfig.attributeSettings.makeSubjectMandatory
+                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString()
+                                && applicationConfig.attributeSettings.makeSubjectMandatory)
+                                ? true
                                 : claim.mandatory
                         };
 
@@ -1163,8 +1164,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         claim: {
                             uri: claim.claimURI
                         },
-                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString())
-                            ? applicationConfig.attributeSettings.makeSubjectMandatory
+                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString()
+                            && applicationConfig.attributeSettings.makeSubjectMandatory)
+                            ? true
                             : claim.mandatory
                     };
 
