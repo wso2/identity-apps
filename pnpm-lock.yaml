@@ -365,7 +365,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.consents.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.48
+        specifier: ^2.26.49
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.copilot.v1':
         specifier: workspace:^
@@ -473,7 +473,7 @@ importers:
         specifier: ^1.5.206
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.51
+        specifier: ^2.38.52
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -3696,7 +3696,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.subscription.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.45
+        specifier: ^2.38.52
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
