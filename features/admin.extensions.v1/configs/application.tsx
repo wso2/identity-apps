@@ -178,7 +178,10 @@ export const applicationConfig: ApplicationConfig = {
             }
         },
         get makeSubjectMandatory(): boolean {
-            return window[ "AppUtils" ]?.getConfig()?.ui?.makeSubjectMandatory ?? true;
+            return Boolean(
+                window[ "AppUtils" ]?.getConfig()?.ui?.features?.applications?.properties
+                    ?.makeSubjectMandatory ?? true
+            );
         },
         roleMapping: true
     },

@@ -615,10 +615,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableIdentityClaims?: boolean;
     /**
-     * Flag to check whether the subject claim of an application should always be enforced as mandatory.
-     */
-    makeSubjectMandatory?: boolean;
-    /**
      * Flag to check whether email as a username feature is enabled.
      */
     enableEmailDomain?: boolean;

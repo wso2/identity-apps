@@ -589,6 +589,7 @@
                 ],
                 "enabled": true,
                 "properties": {
+                    "makeSubjectMandatory": true,
                     "maxGracefulRefreshTokenReuseLimit": 5,
                     "maxGracefulRefreshTokenRotationValidityPeriod": 60,
                     "multipleClientSecretsMaxCount": 2
@@ -2329,7 +2330,6 @@
         "listAllAttributeDialects": true,
         "loginFlowCustomFirstFactorAuthenticators": [],
         "loginFlowCustomSecondFactorAuthenticators": [],
-        "makeSubjectMandatory": true,
         "multiTenancy": {
             "isTenantDomainDotExtensionMandatory": true,
             "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
