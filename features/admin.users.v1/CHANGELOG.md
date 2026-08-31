@@ -1,5 +1,11 @@
 # @wso2is/admin.users.v1
 
+## 2.38.52
+
+### Patch Changes
+
+- [#10649](https://github.com/wso2/identity-apps/pull/10649) [`eeeb0cdfe1f691260db1e7ace820bc044505be0c`](https://github.com/wso2/identity-apps/commit/eeeb0cdfe1f691260db1e7ace820bc044505be0c) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Resolve the signed-in user id for the "Me" label from the ID token subject instead of the `scim2/Me` profile
+
 ## 2.38.51
 
 ### Patch Changes
