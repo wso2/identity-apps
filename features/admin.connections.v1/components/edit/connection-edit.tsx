@@ -17,6 +17,9 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    GlobalVariablesContextInterface
+} from "@wso2is/admin.core.v1/context/global-variables-context";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -150,7 +153,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const { isOrganizationManagementEnabled } = useGlobalVariables();
+    const { isOrganizationManagementEnabled }: GlobalVariablesContextInterface = useGlobalVariables();
 
     // Shared identity providers (flagged via the `isShared` attribute) expose a limited set of editable options.
     const isSharedConnection: boolean = !!identityProvider?.isShared;
@@ -284,7 +287,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                             identityProvider.federatedAuthenticators.defaultAuthenticatorId
                         ))
                 }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isReadOnly || isSharedConnection }
                 loader={ Loader }
                 isOIDC={ isOidc }
                 isSaml={ isSaml }
@@ -344,7 +347,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-jit-provisioning-settings` }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isReadOnly || isSharedConnection }
                 loader={ Loader }
             />
         </ResourceTab.Pane>

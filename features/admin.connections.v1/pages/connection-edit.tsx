@@ -648,6 +648,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     { connector.name }
                     { isSharedConnection && (
                         <Chip
+                            data-componentid={ `${ testId }-shared-connection-chip` }
                             label={ t("authenticationProvider:sharedConnection.label") }
                             size="small"
                         />

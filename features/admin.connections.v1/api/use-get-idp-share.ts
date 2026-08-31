@@ -22,8 +22,8 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models";
 import { HttpMethods } from "@wso2is/core/models";
+import { IdPShareListResponseInterface } from "../models/identity-provider-sharing";
 
 /**
  * Hook to get the list of organizations which the identity provider is shared with.
@@ -43,7 +43,7 @@ import { HttpMethods } from "@wso2is/core/models";
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
 const useGetIdVPShare = <
-    Data = OrganizationListInterface,
+    Data = IdPShareListResponseInterface,
     Error = RequestErrorInterface>(
         identityProviderId: string,
         shouldFetch: boolean,

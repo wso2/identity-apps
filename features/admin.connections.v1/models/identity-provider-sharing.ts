@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { OrganizationInterface, OrganizationListInterface } from "@wso2is/admin.organizations.v1/models";
+
 /**
  * The high level sharing mode selected in the Shared Access tab.
  */
@@ -110,4 +112,30 @@ export interface UnshareIdPFromSelectedOrganizationsPayloadInterface {
  */
 export interface UnshareIdPWithAllOrganizationsPayloadInterface {
     identityProviderId: string;
+}
+
+/**
+ * A single organization entry in the identity provider share response.
+ *
+ * Mirrors {@link OrganizationInterface} but types the sharing policy with {@link IdPSharingPolicy},
+ * since identity provider sharing uses its own policies and does not support role sharing.
+ */
+export interface IdPSharedOrganizationInterface extends Omit<OrganizationInterface, "sharingMode"> {
+    sharingMode?: {
+        policy?: IdPSharingPolicy;
+    };
+}
+
+/**
+ * Response of the identity provider share GET endpoint (`identity-providers/{id}/share`).
+ *
+ * - `sharingMode.policy` is present when the identity provider is shared with all organizations.
+ * - `organizations` holds the selectively shared organizations (each with its own `sharingMode.policy`).
+ */
+export interface IdPShareListResponseInterface
+    extends Omit<OrganizationListInterface, "organizations" | "sharingMode"> {
+    organizations: IdPSharedOrganizationInterface[];
+    sharingMode?: {
+        policy?: IdPSharingPolicy;
+    };
 }

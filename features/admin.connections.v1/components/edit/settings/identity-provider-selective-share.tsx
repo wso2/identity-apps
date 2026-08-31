@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Box from "@oxygen-ui/react/Box";
@@ -26,13 +27,15 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import {
+    GlobalVariablesContextInterface
+} from "@wso2is/admin.core.v1/context/global-variables-context";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
-    OrganizationLinkInterface,
-    OrganizationListInterface
+    OrganizationLinkInterface
 } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,8 +56,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetIdVPShare from "../../../api/use-get-idp-share";
-import { IdPSharingPolicy } from "../../../models/identity-provider-sharing";
-import "./identity-provider-selective-share.scss";
+import {
+    IdPShareListResponseInterface,
+    IdPSharedOrganizationInterface,
+    IdPSharingPolicy
+} from "../../../models/identity-provider-sharing";
 
 /**
  * Proptypes for the identity provider selective share component.
@@ -68,7 +74,7 @@ interface IdentityProviderSelectiveShareProps extends IdentifiableComponentInter
      * The organizations the identity provider is already shared with, fetched once by the parent.
      * Used to pre-tick the tree — passed down to avoid a duplicate `/{id}/share` request.
      */
-    sharedOrganizations: OrganizationListInterface;
+    sharedOrganizations: IdPShareListResponseInterface;
     /**
      * IDs of the organizations currently selected (checked) for sharing.
      */
@@ -100,6 +106,51 @@ interface IdentityProviderSelectiveShareProps extends IdentifiableComponentInter
 type TreeViewBaseItemWithParent = TreeViewBaseItem & { parentId?: string };
 
 /**
+ * Fixed height of the scrollable organization panels.
+ */
+const PANEL_HEIGHT: string = "300px";
+
+const SelectiveShareContainer: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.divider }`,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1.25)
+}));
+
+const SelectiveShareLeftPanel: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    borderRadius: `${ theme.shape.borderRadius }px 0 0 ${ theme.shape.borderRadius }px`,
+    borderRight: `1px solid ${ theme.palette.divider }`,
+    height: PANEL_HEIGHT,
+    overflow: "auto"
+}));
+
+const SelectiveShareRightPanel: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    borderRadius: `0 ${ theme.shape.borderRadius }px ${ theme.shape.borderRadius }px 0`,
+    height: PANEL_HEIGHT,
+    overflowX: "hidden",
+    overflowY: "auto"
+}));
+
+const SelectiveShareEmpty: typeof Grid = styled(Grid)(() => ({
+    height: PANEL_HEIGHT,
+    overflow: "auto"
+}));
+
+const ShareSettingsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    "&.center": {
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    alignContent: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "nowrap",
+    gap: theme.spacing(1.5),
+    minHeight: theme.spacing(35),
+    width: "100%"
+}));
+
+/**
  * Component that renders an organization tree for selectively sharing an identity provider.
  *
  * This mirrors the organization selection experience of user/application sharing but omits all
@@ -128,7 +179,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isOrganizationManagementEnabled } = useGlobalVariables();
+    const { isOrganizationManagementEnabled }: GlobalVariablesContextInterface = useGlobalVariables();
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
 
@@ -344,8 +395,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
             return;
         }
 
-        const selectedOrg: OrganizationInterface = (selectedSharedOrganization as OrganizationListInterface)
-            ?.organizations?.[0];
+        const selectedOrg: IdPSharedOrganizationInterface = selectedSharedOrganization?.organizations?.[0];
 
         if (selectedOrg?.sharingMode?.policy) {
             setShouldShareWithFutureChildOrgsMap((prev: Record<string, boolean>) => {
@@ -494,25 +544,25 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
     const resolveShareSettingsPane = (): ReactElement => {
         if (!hideLeftPanel && isEmpty(selectedOrgId)) {
             return (
-                <Box className="idp-share-settings-container center">
+                <ShareSettingsContainer className="center">
                     { t("authenticationProvider:sharedAccess.selectAnOrganizationToManage") }
-                </Box>
+                </ShareSettingsContainer>
             );
         }
 
         if (!hideLeftPanel && !selectedItems.includes(selectedOrgId)) {
             return (
-                <Box className="idp-share-settings-container center">
+                <ShareSettingsContainer className="center">
                     { t("authenticationProvider:sharedAccess.toManageOrganizationSelectLeftPanel") }
-                </Box>
+                </ShareSettingsContainer>
             );
         }
 
         return (
-            <Box className="idp-share-settings-container">
+            <ShareSettingsContainer>
                 <Typography variant="h5">
                     { t("authenticationProvider:sharedAccess.sharingSettingsLabel") }
-                    <Code sx={ { marginLeft: "5px" } }>{ flatOrganizationMap[selectedOrgId]?.name }</Code>
+                    <Code sx={ { ml: 0.5 } }>{ flatOrganizationMap[selectedOrgId]?.name }</Code>
                 </Typography>
                 <FormControlLabel
                     control={ <Checkbox /> }
@@ -523,34 +573,32 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
                         updateChildSharingPolicy(checked)
                     }
                 />
-            </Box>
+            </ShareSettingsContainer>
         );
     };
 
     return (
-        <Grid container xs={ 12 } className="idp-selective-share-container">
+        <SelectiveShareContainer container xs={ 12 }>
             {
                 isLoading ? (
-                    <Grid
+                    <SelectiveShareLeftPanel
                         container
                         xs={ 12 }
                         padding={ 1 }
-                        className="idp-selective-share-left-panel"
                         justifyContent="center"
                         alignItems="center"
                     >
                         <CircularProgress size={ 30 } />
-                    </Grid>
+                    </SelectiveShareLeftPanel>
                 ) : organizationTree.length > 0 ? (
                     <>
                         {
                             !hideLeftPanel && (
-                                <Grid
+                                <SelectiveShareLeftPanel
                                     xs={ 12 }
                                     md={ 4 }
                                     lg={ 3 }
                                     padding={ 1 }
-                                    className="idp-selective-share-left-panel"
                                 >
                                     <RichTreeView
                                         data-componentid={ `${ componentId }-tree-view` }
@@ -596,22 +644,21 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
                                             </LinkButton>
                                         )
                                     }
-                                </Grid>
+                                </SelectiveShareLeftPanel>
                             )
                         }
-                        <Grid
+                        <SelectiveShareRightPanel
                             xs={ 12 }
                             md={ hideLeftPanel ? 12 : 8 }
                             lg={ hideLeftPanel ? 12 : 9 }
                             paddingX={ 2 }
                             paddingY={ 1 }
-                            className="idp-selective-share-right-panel"
                         >
                             { resolveShareSettingsPane() }
-                        </Grid>
+                        </SelectiveShareRightPanel>
                     </>
                 ) : (
-                    <Grid xs={ 12 } padding={ 1 } className="idp-selective-share-empty">
+                    <SelectiveShareEmpty xs={ 12 } padding={ 1 }>
                         <Box
                             data-componentid={ `${ componentId }-no-orgs` }
                             display="flex"
@@ -628,10 +675,10 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
                                 subtitle={ [ t("organizations:placeholders.emptyList.subtitles.0") ] }
                             />
                         </Box>
-                    </Grid>
+                    </SelectiveShareEmpty>
                 )
             }
-        </Grid>
+        </SelectiveShareContainer>
     );
 };
 

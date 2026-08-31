@@ -23,7 +23,6 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Typography from "@oxygen-ui/react/Typography";
-import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
@@ -52,6 +51,7 @@ import useGetIdVPShare from "../../../api/use-get-idp-share";
 import { ConnectionInterface } from "../../../models/connection";
 import {
     IdPSelectiveShareOrganizationInterface,
+    IdPShareListResponseInterface,
     IdPShareType,
     IdPShareTypeSwitchApproach,
     IdPSharingPolicy
@@ -125,7 +125,7 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
 
     // Derive the initial share type from the current share status.
     useEffect(() => {
-        const data: OrganizationListInterface = shareData as OrganizationListInterface;
+        const data: IdPShareListResponseInterface = shareData;
 
         if (!data) {
             return;
@@ -470,7 +470,7 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
                         <IdentityProviderSelectiveShare
                             data-componentid={ `${ componentId }-selective-share` }
                             identityProviderId={ identityProviderId }
-                            sharedOrganizations={ shareData as OrganizationListInterface }
+                            sharedOrganizations={ shareData }
                             selectedItems={ selectedItems }
                             setSelectedItems={ setSelectedItems }
                             addedOrgs={ addedOrgs }
