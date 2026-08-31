@@ -196,7 +196,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                            validationError: "Enter a valid URL."
                        },
 
-                       issuerCert: {
+                       keySource: {
                            x5cLabel: "Trusted X.509 Root Certificate",
                            pemLabel: "PEM Certificate",
                            dropzone: {
@@ -239,7 +239,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                            },
                            editClaim: "Edit Attribute",
                            emptyPlaceholder:
-                               "No attributes added yet. Add an attribute to specify which credential fields to request.",
+                               "No attributes added yet. Add an attribute to specify which attributes to request.",
                            required: {
                                label: "Required",
                                hint: "When enabled, the wallet must include this attribute in the presentation."

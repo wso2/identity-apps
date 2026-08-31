@@ -38,6 +38,19 @@
     String vpOrgId = request.getParameter("orgId");
     String vpRootTenantDomain = request.getParameter("rootTenantDomain");
 
+    long vpSessionTtlMs = 0L;
+    String sessionTtlParam = request.getParameter("sessionTtlMs");
+    if (sessionTtlParam != null && !sessionTtlParam.isEmpty()) {
+        try {
+            long parsed = Long.parseLong(sessionTtlParam);
+            if (parsed >= 30000L && parsed <= 180000L) {
+                vpSessionTtlMs = parsed;
+            }
+        } catch (NumberFormatException e) {
+            // ignored; vpSessionTtlMs stays 0 and JS uses the default
+        }
+    }
+
     // Validate walletUrl: only non-empty openid4vp:// URIs with an authority component are accepted.
     // Encode.forJavaScript at the render site neutralises quote injection but cannot prevent a
     // javascript: URI from executing in window.location.href, so scheme validation must happen here.
@@ -104,19 +117,13 @@
             <jsp:include page="includes/analytics.jsp"/>
         <% } %>
 
-        <script src="${pageContext.request.contextPath}/libs/qrcode.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/qrCodeGenerator.js"></script>
 
         <style>
-            #qrcode {
-                margin: 0 auto;
-                width: 250px;
-                height: 250px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            #qrcode canvas,
-            #qrcode img {
+            #qrcanv {
+                display: block;
+                width: 280px;
+                margin-left: calc(50% - 122px);
                 border-radius: 8px;
             }
             .wallet-spinner {
@@ -143,9 +150,8 @@
                 font-size: 13px;
             }
             @media (max-width: 480px) {
-                #qrcode {
-                    width: 200px;
-                    height: 200px;
+                #qrcanv {
+                    max-width: 100%;
                 }
             }
         </style>
@@ -178,7 +184,8 @@
                     <div class="segment-form">
                         <%-- QR Code --%>
                         <div id="qrcodeSection" class="field text-center">
-                            <div id="qrcode"></div>
+                            <input type="hidden" id="ecc" value="2">
+                            <canvas id="qrcanv"></canvas>
                         </div>
 
                         <%-- Status --%>
@@ -264,6 +271,7 @@
                 sessionDataKey: '<%=sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : ""%>',
                 requestId: '<%=vpRequestId != null ? Encode.forJavaScript(vpRequestId) : ""%>',
                 walletUrl: '<%=walletUrl != null ? Encode.forJavaScript(walletUrl) : ""%>',
+                sessionTtlMs: <%=vpSessionTtlMs%>,
                 pollInterval: 2000,
                 pollTimeout: 8000,
                 pollEndpoint: '/openid4vp/v1/status?requestId=<%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>'
@@ -285,32 +293,24 @@
             var pollInFlight = false;
             var networkErrorCount = 0;
             var MAX_NETWORK_ERRORS = 5;
-            // Client-side guard: stop polling after 5 min even if the server
-            // never sends a terminal status (e.g. cache expiry bug).
-            var MAX_DURATION_MS = 300000;
+            var MAX_DURATION_MS = CONFIG.sessionTtlMs > 0 ? CONFIG.sessionTtlMs : 120000;
             var pollStart = Date.now();
             var currentController = null;
             var vpRequestId = '';
 
             // Initialize QR code
             function initQRCode() {
-                var qrContainer = document.getElementById('qrcode');
-                if (!qrContainer || !CONFIG.walletUrl) return;
+                if (!CONFIG.walletUrl) return;
 
-                if (typeof QRCode === 'undefined') {
+                if (typeof setupqr === 'undefined') {
                     handleError('Unable to generate QR code. Please restart the login flow.');
                     return;
                 }
 
                 try {
-                    new QRCode(qrContainer, {
-                        text: CONFIG.walletUrl,
-                        width: 250,
-                        height: 250,
-                        colorDark: '#000000',
-                        colorLight: '#ffffff',
-                        correctLevel: QRCode.CorrectLevel.M
-                    });
+                    wd = 280; ht = 280;
+                    setupqr();
+                    doqr(CONFIG.walletUrl);
                 } catch (e) {
                     handleError('Unable to generate QR code. Please restart the login flow.');
                 }

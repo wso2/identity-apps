@@ -75,7 +75,7 @@ import { handleConnectionDeleteError, handleConnectionUpdateError } from "../../
 const FORM_ID: string = "digital-wallet-general-settings-form";
 
 // Keys managed by this form; all other authenticator properties are preserved on submit.
-const MANAGED_AUTHENTICATOR_PROPERTY_KEYS: string[] = [ "presentationDefinitionId", "timeout" ];
+const MANAGED_AUTHENTICATOR_PROPERTY_KEYS: string[] = [ "presentationDefinitionId" ];
 
 export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGeneralSettingsPropsInterface> = (
     props: DigitalWalletGeneralSettingsPropsInterface
@@ -99,8 +99,6 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedPresentationDefinitionId, setSelectedPresentationDefinitionId ] = useState<string>("");
-    const [ timeoutSeconds, setTimeoutSeconds ] = useState<string>("");
-    const [ timeoutValidationError, setTimeoutValidationError ] = useState<string>("");
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletingConnection, setIsDeletingConnection ] = useState<boolean>(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
@@ -139,26 +137,6 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
         };
 
         setSelectedPresentationDefinitionId(getPropertyValue("presentationDefinitionId"));
-
-        const loadedTimeout: string = getPropertyValue("timeout") || String(
-            ConnectionUIConstants.DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                .TIMEOUT_DEFAULT_VALUE
-        );
-        const parsedTimeout: number = parseInt(loadedTimeout, 10);
-
-        setTimeoutSeconds(loadedTimeout);
-
-        if (
-            isNaN(parsedTimeout)
-            || parsedTimeout < ConnectionUIConstants
-                .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TIMEOUT_MIN_VALUE
-            || parsedTimeout > ConnectionUIConstants
-                .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TIMEOUT_MAX_VALUE
-        ) {
-            setTimeoutValidationError(
-                t("authenticationProvider:templates.digitalWallet.form.timeout.validationError")
-            );
-        }
     }, [ authenticatorData ]);
 
     const presentationDefinitionOptions: PresentationDefinitionOptionInterface[] =
@@ -324,10 +302,6 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
     };
 
     const handleFormSubmit = (values: DigitalWalletGeneralSettingsFormValuesInterface): void => {
-        if (timeoutValidationError) {
-            return;
-        }
-
         const authenticatorId: string =
             editingIDP?.federatedAuthenticators?.defaultAuthenticatorId;
 
@@ -346,8 +320,7 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                     ...currentAuthenticator,
                     properties: [
                         ...unchangedProperties,
-                        { key: "presentationDefinitionId", value: selectedPresentationDefinitionId },
-                        { key: "timeout", value: timeoutSeconds }
+                        { key: "presentationDefinitionId", value: selectedPresentationDefinitionId }
                     ]
                 };
 
@@ -541,65 +514,6 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                                                     </Hint>
                                                 </Grid.Column>
                                             </Grid.Row>
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } computer={ 12 }>
-                                                    <TextField
-                                                        type="number"
-                                                        fullWidth
-                                                        margin="dense"
-                                                        label={ t(
-                                                            "authenticationProvider:templates.digitalWallet" +
-                                                            ".form.timeout.label"
-                                                        ) }
-                                                        inputProps={ {
-                                                            max: String(ConnectionUIConstants
-                                                                .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                                                .TIMEOUT_MAX_VALUE),
-                                                            min: String(ConnectionUIConstants
-                                                                .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                                                .TIMEOUT_MIN_VALUE),
-                                                            readOnly: isReadOnly
-                                                        } }
-                                                        value={ timeoutSeconds }
-                                                        error={ !!timeoutValidationError }
-                                                        helperText={ timeoutValidationError }
-                                                        onChange={ (
-                                                            e: React.ChangeEvent<HTMLInputElement>
-                                                        ): void => {
-                                                            const parsedValue: number =
-                                                                parseInt(e.target.value, 10);
-
-                                                            if (
-                                                                e.target.value === ""
-                                                                || isNaN(parsedValue)
-                                                                || parsedValue < ConnectionUIConstants
-                                                                    .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                                                    .TIMEOUT_MIN_VALUE
-                                                                || parsedValue > ConnectionUIConstants
-                                                                    .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                                                    .TIMEOUT_MAX_VALUE
-                                                            ) {
-                                                                setTimeoutValidationError(t(
-                                                                    "authenticationProvider:templates.digitalWallet" +
-                                                                    ".form.timeout.validationError"
-                                                                ));
-                                                            } else {
-                                                                setTimeoutValidationError("");
-                                                            }
-                                                            setTimeoutSeconds(e.target.value);
-                                                        } }
-                                                        data-componentid={
-                                                            `${ componentId }-timeout-input`
-                                                        }
-                                                    />
-                                                    <Hint compact>
-                                                        { t(
-                                                            "authenticationProvider:templates.digitalWallet" +
-                                                            ".form.timeout.hint"
-                                                        ) }
-                                                    </Hint>
-                                                </Grid.Column>
-                                            </Grid.Row>
                                         </>
                                     )
                                 }
@@ -613,8 +527,6 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                                                     isSubmitting
                                                     || isAuthenticatorDataLoading
                                                     || isEmpty(selectedPresentationDefinitionId)
-                                                    || isEmpty(timeoutSeconds)
-                                                    || !!timeoutValidationError
                                                 }
                                                 data-componentid={ `${ componentId }-update-button` }
                                             >

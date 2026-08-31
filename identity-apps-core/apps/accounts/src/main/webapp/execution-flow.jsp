@@ -126,7 +126,7 @@
         };
     </script>
 
-    <script src="${pageContext.request.contextPath}/libs/qrcode.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/qrCodeGenerator.js"></script>
     <style>
         .wallet-reg-spinner {
             display: inline-block; width: 16px; height: 16px;
@@ -365,13 +365,13 @@
                     // before the next poll fires (avoids the vpPollInFlight early-return
                     // leaving no reschedule registered).
                     var VP_POLL_TIMEOUT = 1500;
-                    // Client-side guard: stop polling after 5 min even if the server
+                    // Client-side guard: stop polling after 2 min even if the server
                     // never sends a terminal status (e.g. cache expiry bug).
-                    var VP_MAX_DURATION_MS = 300000;
+                    var VP_MAX_DURATION_MS = walletQR.sessionTtlMs > 0 ? walletQR.sessionTtlMs : 120000;
                     var vpPollStart = Date.now();
 
-                    // Status endpoint.
-                    var vpStatusEndpoint = baseUrl + "/openid4vp/v1/status?requestId="
+                    // Status endpoint — servlet is at root, strip tenant/org path prefix.
+                    var vpStatusEndpoint = new URL(baseUrl).origin + "/openid4vp/v1/status?requestId="
                         + encodeURIComponent(requestId);
 
                     // Holds the AbortController for the in-flight fetch so the cleanup
@@ -642,7 +642,8 @@
                             var redirectURL = flow.data.redirectURL;
                             if (redirectURL && redirectURL.startsWith("openid4vp://")) {
                                 var requestId = flow.data.additionalData && flow.data.additionalData.vp_request_id;
-                                setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId });
+                                var ttlMs = flow.data.additionalData && parseInt(flow.data.additionalData.sessionTtlMs, 10);
+                                setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId, sessionTtlMs: (ttlMs >= 30000 && ttlMs <= 180000 ? ttlMs : 0) });
                                 setLoading(false);
                             } else {
                                 setLoading(true);
@@ -701,7 +702,6 @@
                 const { useTranslations } = ReactUICore;
 
                 const WalletQRView = function() {
-                    var qrRef = useRef(null);
                     var deepLinkTimerRef = useRef(null);
                     var deepLinkHandlerRef = useRef(null);
                     var [ qrStatus, setQrStatus ] = useState("pending");
@@ -725,21 +725,15 @@
                             setQrErrorMsg(t("wallet.vp.qr.error.generate", "Unable to generate QR code. Please restart the registration flow."));
                             return;
                         }
-                        if (typeof QRCode === "undefined") {
+                        if (typeof setupqr === "undefined") {
                             setQrStatus("error");
                             setQrErrorMsg(t("wallet.vp.qr.error.load", "QR code could not be loaded. Please restart the registration flow."));
                             return;
                         }
                         try {
-                            qrRef.current.innerHTML = "";
-                            new QRCode(qrRef.current, {
-                                text: walletQR.url,
-                                width: 250,
-                                height: 250,
-                                colorDark: "#000000",
-                                colorLight: "#ffffff",
-                                correctLevel: QRCode.CorrectLevel.M
-                            });
+                            wd = 280; ht = 280;
+                            setupqr();
+                            doqr(walletQR.url);
                             setQrStatus("ok");
                         } catch (e) {
                             setQrStatus("error");
@@ -777,17 +771,16 @@
                             t("wallet.vp.qr.subtitle", "Scan the QR code below with your digital wallet to share your credentials")
                         ),
                         createElement("div", { className: "ui divider hidden" }),
-                        createElement("div", { className: "field text-center" },
-                            createElement("div", {
-                                ref: qrRef,
+                        createElement("div", { className: "field text-center", style: { minHeight: "280px" } },
+                            createElement("input", { type: "hidden", id: "ecc", value: "2" }),
+                            createElement("canvas", {
+                                id: "qrcanv",
                                 style: {
+                                    display: "block",
+                                    width: "280px",
                                     margin: "0 auto",
-                                    width: "250px",
-                                    height: qrStatus === "error" ? "0" : "250px",
-                                    overflow: "hidden",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center"
+                                    borderRadius: "8px",
+                                    visibility: qrStatus === "error" ? "hidden" : "visible"
                                 }
                             })
                         ),
@@ -798,12 +791,12 @@
                               )
                             : createElement("div", { className: "text-center" },
                                 createElement("span", { className: "wallet-reg-spinner" }),
-                                createElement("span", null, t("wallet.vp.qr.waiting", "Waiting for wallet verification..."))
+                                createElement("span", null, t("wallet.vp.qr.waiting", "Waiting for wallet..."))
                               ),
                         createElement("div", { className: "ui info message", style: { marginTop: "16px" } },
                             createElement("div", { className: "header", style: { fontSize: "14px", marginBottom: "10px" } }, t("wallet.vp.qr.howto.heading", "How to register")),
                             createElement("ol", { className: "wallet-reg-steps" },
-                                createElement("li", null, t("wallet.vp.qr.howto.step1", "Open your digital wallet app (e.g. Inji)")),
+                                createElement("li", null, t("wallet.vp.qr.howto.step1", "Open your digital wallet app (e.g. Heidi)")),
                                 createElement("li", null, t("wallet.vp.qr.howto.step2", "Scan the QR code above")),
                                 createElement("li", null, t("wallet.vp.qr.howto.step3", "Review the credential request")),
                                 createElement("li", null, t("wallet.vp.qr.howto.step4", "Approve to share your credentials"))

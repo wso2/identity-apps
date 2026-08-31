@@ -103,6 +103,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         && !!cliSettingsFeatureConfig?.properties?.applicationName
         && !!cliSettingsFeatureConfig?.properties?.clientId;
 
+    const isPresentationDefinitionsEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.presentationDefinitions?.enabled === true;
+
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
     const isAnalyticsFeatureEnabled: boolean =
@@ -240,7 +243,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().verifiableCredentials
             },
             id: "verifiableCredentials",
-            name: "Credential Templates",
+            name: isPresentationDefinitionsEnabled ? "Credential Templates" : "Verifiable Credentials",
             order: 7,
             path: AppConstants.getPaths().get("VC_TEMPLATES"),
             protected: true,

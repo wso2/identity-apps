@@ -97,6 +97,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
         );
 
     const initialValues: DigitalWalletWizardFormValuesInterface = {
+        description: t("authenticationProvider:templates.digitalWallet.form.description.defaultValue"),
         name: t("authenticationProvider:templates.digitalWallet.form.name.defaultValue")
     };
 
@@ -125,9 +126,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
             connection.templateId = template.templateId;
 
             connection.federatedAuthenticators.authenticators[ 0 ].properties = [
-                { key: "presentationDefinitionId", value: selectedPresentationDefinitionId },
-                { key: "timeout", value: String(ConnectionUIConstants
-                    .DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TIMEOUT_DEFAULT_VALUE) }
+                { key: "presentationDefinitionId", value: selectedPresentationDefinitionId }
             ];
 
             if (!isEmpty(UIConfig?.connectionResourcesUrl)) {

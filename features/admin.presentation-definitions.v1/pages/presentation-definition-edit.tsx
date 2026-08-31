@@ -907,8 +907,8 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         };
 
         const resolvePrimaryText = (issuerConfig: IssuerConfigInterface): string => {
-            if (issuerConfig.keyResolutionMethod === "x5c") {
-                const displayCert: DisplayCertificate | null = parseCertForDisplay(issuerConfig.issuerCert);
+            if (issuerConfig.keySourceType === "x5c") {
+                const displayCert: DisplayCertificate | null = parseCertForDisplay(issuerConfig.keySource);
 
                 if (displayCert && !displayCert.infoUnavailable && displayCert.subjectDN) {
                     const commonName: string = CertificateManagementUtils.searchIssuerDNAlias(
@@ -916,12 +916,12 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                     );
 
                     return commonName || t(
-                        "presentationDefinitions:editPage.issuerTrust.issuerConfig.issuerCert.x5cLabel"
+                        "presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.x5cLabel"
                     );
                 }
 
                 return t(
-                    "presentationDefinitions:editPage.issuerTrust.issuerConfig.issuerCert.x5cLabel"
+                    "presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.x5cLabel"
                 );
             }
 
@@ -929,7 +929,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         };
 
         const renderCertSubheader = (issuerConfig: IssuerConfigInterface): ReactNode => {
-            const displayCert: DisplayCertificate | null = parseCertForDisplay(issuerConfig.issuerCert);
+            const displayCert: DisplayCertificate | null = parseCertForDisplay(issuerConfig.keySource);
 
             if (!displayCert || displayCert.infoUnavailable) {
                 return null;
@@ -970,8 +970,8 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                 key: "issuerUrl",
                 render: (issuerConfig: IssuerConfigInterface): ReactNode => {
                     const primaryText: string = resolvePrimaryText(issuerConfig);
-                    const hasCert: boolean = issuerConfig.keyResolutionMethod === "pem"
-                        || issuerConfig.keyResolutionMethod === "x5c";
+                    const hasCert: boolean = issuerConfig.keySourceType === "pem"
+                        || issuerConfig.keySourceType === "x5c";
 
                     return (
                         <div
@@ -995,7 +995,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 <div style={ { fontSize: "0.85em", opacity: 0.7 } }>
                                     { hasCert
                                         ? renderCertSubheader(issuerConfig)
-                                        : (issuerConfig.jwksUri || "—")
+                                        : (issuerConfig.keySource || "—")
                                     }
                                 </div>
                             </div>
@@ -1006,7 +1006,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             },
             {
                 allowToggleVisibility: false,
-                dataIndex: "keyResolutionMethod",
+                dataIndex: "keySourceType",
                 id: "method",
                 key: "method",
                 textAlign: "right",
@@ -1015,7 +1015,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                         size="small"
                         label={ t(
                             `presentationDefinitions:editPage.issuerTrust.keyResolutionMethod` +
-                            `.shortLabels.${issuerConfig.keyResolutionMethod}`
+                            `.shortLabels.${issuerConfig.keySourceType}`
                         ) }
                         sx={ { fontSize: "0.7em" } }
                     />

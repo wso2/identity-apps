@@ -81,10 +81,10 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
     const pendingSaveRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect((): void => {
-        setMethod(existingConfig?.keyResolutionMethod ?? "x5c");
+        setMethod(existingConfig?.keySourceType ?? "x5c");
         setIssuerUrl(existingConfig?.issuerUrl ?? "");
-        setJwksUri(existingConfig?.jwksUri ?? "");
-        setExistingCert(existingConfig?.issuerCert ?? "");
+        setJwksUri(existingConfig?.keySource ?? "");
+        setExistingCert(existingConfig?.keySource ?? "");
         setTriggerCertUpload(false);
         setShowCertFinishButton(false);
         pendingSaveRef.current = false;
@@ -127,10 +127,10 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
     })();
 
     const buildConfig = (cert: string): IssuerConfigInterface => ({
-        keyResolutionMethod: method,
+        keySourceType: method,
         ...(method !== "x5c" && { issuerUrl: issuerUrl.trim() || undefined }),
-        ...(method === "jwks_uri" && { jwksUri: jwksUri.trim() }),
-        ...((method === "x5c" || method === "pem") && { issuerCert: cert })
+        ...((method === "x5c" || method === "pem") && { keySource: cert }),
+        ...(method === "jwks_uri" && { keySource: jwksUri.trim() })
     });
 
     const handleSave = (): void => {
@@ -207,8 +207,8 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
     };
 
     const certLabel: string = method === "x5c"
-        ? t("presentationDefinitions:editPage.issuerTrust.issuerConfig.issuerCert.x5cLabel")
-        : t("presentationDefinitions:editPage.issuerTrust.issuerConfig.issuerCert.pemLabel");
+        ? t("presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.x5cLabel")
+        : t("presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.pemLabel");
 
     const certSection: ReactNode = (
         <Box sx={ { mt: 2 } }>

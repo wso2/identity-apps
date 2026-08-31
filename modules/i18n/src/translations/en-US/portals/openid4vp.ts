@@ -30,14 +30,14 @@ export const openid4vp: OpenID4VPConfigNS = {
                },
                responseMode: {
                    directPost: {
-                       hint: "Submits the VP response as plain JSON over HTTPS POST. No response encryption."
+                       hint: "Submits the verifiable credential as plain JSON over HTTPS POST. No response encryption."
                    },
                    directPostJwt: {
-                       hint: "Submits the VP response as an encrypted JWT over HTTPS POST. " +
+                       hint: "Submits the verifiable credential as an encrypted JWT over HTTPS POST. " +
                            "Provides confidentiality for the response content."
                    },
                    hint:
-                       "How the wallet submits the VP response. Use direct_post.jwt for " +
+                       "How the wallet submits the verifiable credential. Use direct_post.jwt for " +
                        "response encryption; direct_post for plain JSON.",
                    label: "Response Mode"
                },
@@ -45,17 +45,17 @@ export const openid4vp: OpenID4VPConfigNS = {
            notifications: {
                getConfiguration: {
                    error: {
-                       description: "An error occurred while retrieving the OpenID4VP configuration.",
+                       description: "An error occurred while retrieving the verifiable presentation configuration.",
                        message: "Retrieval Error"
                    }
                },
                updateConfiguration: {
                    error: {
-                       description: "An error occurred while updating the OpenID4VP configuration.",
+                       description: "An error occurred while updating the verifiable presentation configuration.",
                        message: "Update Error"
                    },
                    success: {
-                       description: "OpenID4VP configuration updated successfully.",
+                       description: "Verifiable presentation configuration updated successfully.",
                        message: "Update Successful"
                    }
                }

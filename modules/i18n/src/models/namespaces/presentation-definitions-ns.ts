@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,11 +68,30 @@ export interface PresentationDefinitionsInterface {
     wizard: {
         title: string;
         form: {
-            displayName: { label: string; placeholder: string; hint: string };
-            identifier: { label: string; placeholder: string; hint: string; validationError: string };
-            description: { label: string; placeholder: string };
-            credentialType: { label: string; placeholder: string; hint: string };
-            format: { label: string; hint: string };
+            displayName: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            identifier: {
+                label: string;
+                placeholder: string;
+                hint: string;
+                validationError: string;
+            };
+            description: {
+                label: string;
+                placeholder: string;
+            };
+            credentialType: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            format: {
+                label: string;
+                hint: string;
+            };
             submitButton: string;
         };
     };
@@ -86,7 +105,10 @@ export interface PresentationDefinitionsInterface {
         };
         digitalWalletHint: string;
         quickCopy: {
-            identifier: { label: string; hint: string };
+            identifier: {
+                label: string;
+                hint: string;
+            };
         };
         issuerTrust: {
             heading: string;
@@ -142,9 +164,15 @@ export interface PresentationDefinitionsInterface {
                     subheading: string;
                 };
                 sections: {
-                    x5c: { subheading: string };
-                    jwksUri: { subheading: string };
-                    pem: { subheading: string };
+                    x5c: {
+                        subheading: string;
+                    };
+                    jwksUri: {
+                        subheading: string;
+                    };
+                    pem: {
+                        subheading: string;
+                    };
                 };
                 issuerUrl: {
                     label: string;
@@ -152,7 +180,7 @@ export interface PresentationDefinitionsInterface {
                     hint: string;
                     validationError: string;
                 };
-                issuerCert: {
+                keySource: {
                     x5cLabel: string;
                     pemLabel: string;
                     dropzone: {
@@ -167,17 +195,34 @@ export interface PresentationDefinitionsInterface {
             };
         };
         form: {
-            displayName: { label: string; placeholder: string; requiredError: string };
-            description: { label: string; placeholder: string };
+            displayName: {
+                label: string;
+                placeholder: string;
+                requiredError: string;
+            };
+            description: {
+                label: string;
+                placeholder: string;
+            };
             credentials: {
-                type: { label: string; placeholder: string };
+                type: {
+                    label: string;
+                    placeholder: string;
+                };
                 claims: {
                     label: string;
                     hint: string;
                     addTitle: string;
                     editTitle: string;
-                    claimPath: { label: string; placeholder: string; hint: string };
-                    required: { label: string; hint: string };
+                    claimPath: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    required: {
+                        label: string;
+                        hint: string;
+                    };
                     addClaim: string;
                     editClaim: string;
                     emptyPlaceholder: string;
@@ -214,31 +259,70 @@ export interface PresentationDefinitionsInterface {
     };
     notifications: {
         fetchDefinitions: {
-            error: { message: string; description: string };
+            error: {
+                message: string;
+                description: string;
+            };
         };
         fetchDefinition: {
-            error: { message: string; description: string };
+            error: {
+                message: string;
+                description: string;
+            };
         };
         createDefinition: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
-            duplicateError: { message: string; description: string };
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
+            duplicateError: {
+                message: string;
+                description: string;
+            };
         };
         updateDefinition: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
         };
         deleteDefinition: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
         };
         saveIssuerConfig: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
         };
         deleteIssuerConfig: {
-            success: { message: string; description: string };
-            error: { message: string; description: string };
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
         };
     };
 }
