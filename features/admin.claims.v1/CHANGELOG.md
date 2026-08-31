@@ -1,5 +1,11 @@
 # @wso2is/admin.claims.v1
 
+## 2.31.5
+
+### Patch Changes
+
+- [#10648](https://github.com/wso2/identity-apps/pull/10648) [`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix attribute list not refreshing after adding custom SCIM attributes
+
 ## 2.31.4
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 4.14.20
+
+### Patch Changes
+
+- [#10648](https://github.com/wso2/identity-apps/pull/10648) [`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix attribute list not refreshing after adding custom SCIM attributes
+
+* [#10656](https://github.com/wso2/identity-apps/pull/10656) [`021521ffd4fd9cd38872723c06826739f88ee548`](https://github.com/wso2/identity-apps/commit/021521ffd4fd9cd38872723c06826739f88ee548) Thanks [@savindi7](https://github.com/savindi7)! - Use product name config in Try it app.
+
+* Updated dependencies [[`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1), [`021521ffd4fd9cd38872723c06826739f88ee548`](https://github.com/wso2/identity-apps/commit/021521ffd4fd9cd38872723c06826739f88ee548)]:
+  - @wso2is/admin.claims.v1@2.31.5
+  - @wso2is/admin.applications.v1@2.43.17
+
 ## 4.14.19
 
 ### Patch Changes
