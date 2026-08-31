@@ -2329,6 +2329,7 @@
         "listAllAttributeDialects": true,
         "loginFlowCustomFirstFactorAuthenticators": [],
         "loginFlowCustomSecondFactorAuthenticators": [],
+        "makeSubjectMandatory": true,
         "multiTenancy": {
             "isTenantDomainDotExtensionMandatory": true,
             "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",

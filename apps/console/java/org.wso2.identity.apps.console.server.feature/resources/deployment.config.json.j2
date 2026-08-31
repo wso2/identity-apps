@@ -3088,6 +3088,9 @@
         {% if console.enable_identity_claims is defined %}
         "enableIdentityClaims": {{ console.enable_identity_claims }},
         {% endif %}
+        {% if console.make_subject_mandatory is defined %}
+        "makeSubjectMandatory": {{ console.make_subject_mandatory }},
+        {% endif %}
         {% if scim2.custom_user_schema_uri is defined %}
         "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
         {% endif %}

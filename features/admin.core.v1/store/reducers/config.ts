@@ -339,6 +339,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isTrustedAppConsentRequired: undefined,
             isWSFedProtocolTemplateEnabled: undefined,
             listAllAttributeDialects: undefined,
+            makeSubjectMandatory: undefined,
             multiTenancy: {
                 isTenantDomainDotExtensionMandatory: true,
                 tenantDomainIllegalCharactersRegex: "",

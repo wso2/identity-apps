@@ -177,7 +177,9 @@ export const applicationConfig: ApplicationConfig = {
                 return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
             }
         },
-        makeSubjectMandatory: true,
+        get makeSubjectMandatory(): boolean {
+            return window[ "AppUtils" ]?.getConfig()?.ui?.makeSubjectMandatory ?? true;
+        },
         roleMapping: true
     },
     customApplication: {
