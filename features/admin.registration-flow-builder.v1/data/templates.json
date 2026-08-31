@@ -722,7 +722,7 @@
         "display": {
             "label": "Basic + Wallet",
             "description": "Basic registration experience with digital wallet as an addition",
-            "image": "assets/images/identity-providers/wallet.svg",
+            "image": "libs/themes/default/assets/images/identity-providers/wallet.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -820,7 +820,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Register with Digital Wallet",
-                                        "image": "assets/images/identity-providers/wallet.svg"
+                                        "image": "libs/themes/default/assets/images/identity-providers/wallet.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",

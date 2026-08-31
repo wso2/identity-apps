@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,14 +40,13 @@ export interface RequestedCredentialModelInterface {
 
 /**
  * Interface for a single trusted issuer configuration entry.
- * keyResolutionMethod is one of: x5c | jwks_uri | pem.
- * issuerCert is a base64-encoded PEM string (trusted root CA for x5c, leaf cert for pem).
+ * keySourceType is one of: x5c | jwks_uri | pem.
+ * keySource is a base64-encoded PEM string (trusted root CA for x5c, leaf cert for pem).
  */
 export interface IssuerConfigInterface {
-    keyResolutionMethod: string;
+    keySourceType: string;
     issuerUrl?: string;
-    jwksUri?: string;
-    issuerCert?: string;
+    keySource?: string;
 }
 
 /**
@@ -221,4 +220,3 @@ export interface IssuerConfigModalPropsInterface extends IdentifiableComponentIn
     /** Whether the save operation is currently in progress. */
     isSaving?: boolean;
 }
-

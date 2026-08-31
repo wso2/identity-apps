@@ -1547,6 +1547,7 @@ export interface AuthenticationProviderNS {
                     };
                 };
                 description: {
+                    defaultValue: string;
                     hint: string;
                 };
                 presentationDefinition: {
@@ -1555,12 +1556,6 @@ export interface AuthenticationProviderNS {
                     loadingPlaceholder: string;
                     emptyPlaceholder: string;
                     hint: string;
-                    noneAvailableHint: string;
-                };
-                timeout: {
-                    label: string;
-                    hint: string;
-                    validationError: string;
                 };
             };
             notifications: {
@@ -1633,10 +1628,6 @@ export interface AuthenticationProviderNS {
                 presentationDefinition: {
                     heading: string;
                     hint: string;
-                };
-                message: {
-                    paragraph1: string;
-                    paragraph2: string;
                 };
             };
         };

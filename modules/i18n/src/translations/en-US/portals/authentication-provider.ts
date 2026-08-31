@@ -2366,23 +2366,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 },
                 description: {
-                    hint: "Briefly describe the purpose of this digital wallet connection."
+                    defaultValue: "Enable users to sign in or register using verifiable credentials.",
+                    hint: "Optional description of the purpose of this digital wallet connection."
                 },
                 presentationDefinition: {
                     label: "Presentation Definition",
                     placeholder: "Select a presentation definition",
                     loadingPlaceholder: "Loading presentation definitions...",
                     emptyPlaceholder: "No presentation definitions available",
-                    hint: "Defines the credentials to request from the user's digital wallet.",
-                    noneAvailableHint: "No presentation definitions found. <1>Create one</1> to proceed."
+                    hint: "Defines the credential to request from the user's digital wallet."
                 },
-                timeout: {
-                    label: "Presentation Time Limit (seconds)",
-                    hint:
-                    "Specifies how long to wait for the requested presentation from the user's digital wallet. " +
-                    "Must be between 1 and 180 seconds.",
-                    validationError: "Presentation time limit must be a number between 1 and 180 seconds."
-                }
             },
             claimMapping: {
                 form: {
@@ -2456,20 +2449,8 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 },
                 presentationDefinition: {
                     heading: "Presentation Definition",
-                    hint:
-                        "Select a presentation definition that specifies the credentials " +
-                        "to request from the user's digital wallet."
+                    hint: "Select a presentation definition that specifies the credentials to request from the user's digital wallet."
                 },
-                message: {
-                    paragraph1:
-                        "A Digital Wallet connection allows users to interact with your application " +
-                        "by presenting verifiable credentials from a compatible digital wallet. " +
-                        "It can be used to sign in existing users or register new users based on " +
-                        "verified credential information.",
-                    paragraph2:
-                        "The selected presentation definition determines which credentials " +
-                        "are requested from the user's wallet during the interaction."
-                }
             }
         }
     },

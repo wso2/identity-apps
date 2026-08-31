@@ -266,10 +266,7 @@ export class ConnectionUIConstants {
             IDP_DESCRIPTION_MAX_LENGTH: 100,
             IDP_DESCRIPTION_MIN_LENGTH: 3,
             IDP_NAME_MAX_LENGTH: 50,
-            IDP_NAME_MIN_LENGTH: 3,
-            TIMEOUT_DEFAULT_VALUE: 120,
-            TIMEOUT_MAX_VALUE: 180,
-            TIMEOUT_MIN_VALUE: 30
+            IDP_NAME_MIN_LENGTH: 3
         };
 
     /* eslint-disable max-len */
