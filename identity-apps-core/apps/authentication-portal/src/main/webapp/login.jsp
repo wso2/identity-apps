@@ -112,8 +112,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String forwardedQueryString =
-            StringUtils.defaultString((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING));
+    String forwardedQueryString = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
     String appName = Encode.forUriComponent(request.getParameter("sp"));
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
@@ -415,9 +414,9 @@
         } else {
             srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
         }
-        String srprmstr = URLDecoder.decode(forwardedQueryString, UTF_8);
-        String srURLWithoutEncoding = StringUtils.isNotBlank(srprmstr) ? srURI + "?" + srprmstr : srURI;
-        srURLEncodedURL = URLEncoder.encode(srURLWithoutEncoding, UTF_8);
+        String srprmstr = URLDecoder.decode(StringUtils.defaultString(forwardedQueryString), UTF_8);
+        String srURLWithoutEncoding = srURI + "?" + srprmstr;
+        srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
     }
 %>
 
@@ -1272,7 +1271,7 @@
                                     String serverName = request.getServerName();
                                     int serverPort = request.getServerPort();
                                     String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-                                    String prmstr = forwardedQueryString;
+                                    String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                                     String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
                                     if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
                                         urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
@@ -1310,7 +1309,7 @@
                             ((isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
                                 || dynamicPortalSREnabled)
                         ) {
-                                urlParameters = forwardedQueryString;
+                                urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                         %>
                                 <div class="ui horizontal divider">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
@@ -1369,7 +1368,7 @@
 
         <% if (Boolean.parseBoolean(request.getParameter("isSelfRegistration"))) { %>
                 $(".ui.segment").hide();
-                window.location = "<%=getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, forwardedQueryString)%>";
+                window.location = "<%=getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
         <% } %>
 
         function handleCredentialResponse(response) {
