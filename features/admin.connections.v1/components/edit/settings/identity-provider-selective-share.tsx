@@ -318,7 +318,7 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
 
         if (sharedOrganizations?.organizations?.length > 0) {
             const sharedOrgIds: string[] = sharedOrganizations.organizations.map(
-                (org: OrganizationInterface) => org.id
+                (org: IdPSharedOrganizationInterface) => org.id
             );
 
             if (selectedItems.length === 0) {

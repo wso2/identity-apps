@@ -71,7 +71,7 @@ export class IdentityProviderManagementUtils {
             let offset: number = 0;
 
             const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
-                const attrs: string = "federatedAuthenticators,provisioning,isShared";
+                const attrs: string = "federatedAuthenticators,provisioning";
 
                 return getConnections(limit, offset, "isEnabled eq \"true\"", attrs)
                     .then((response: IdentityProviderListResponseInterface) => {

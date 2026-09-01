@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { getConnectionDetails } from "@wso2is/admin.connections.v1/api/connections";
 import {
@@ -27,7 +29,7 @@ import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/m
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 
@@ -59,7 +61,7 @@ interface OutboundProvisioningConnectorSetupFormPropsInterface extends Identifia
 }
 
 interface DropdownOptionsInterface {
-    text: string;
+    text: ReactNode;
     key: number;
     value: string;
 }
@@ -134,7 +136,18 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             .map((idp: IdentityProviderInterface, index: number) => {
                 idpOption = {
                     key: index,
-                    text: idp.name,
+                    text: idp.isShared
+                        ? (
+                            <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
+                                { idp.name }
+                                <Chip
+                                    size="small"
+                                    label={ t("authenticationProvider:sharedConnection.label") }
+                                    data-componentid={ `${ componentId }-idp-option-${ idp.id }-shared-chip` }
+                                />
+                            </Box>
+                        )
+                        : idp.name,
                     value: idp.id
                 };
                 idpOptions.push(idpOption);
@@ -199,8 +212,10 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
      * @returns Prepared values.
      */
     const getFormValues = (_: Map<string, FormValue>): Record<string, unknown> => {
-        const idpName: string = (idpListOptions.find(
-            (idp: DropdownOptionsInterface) => idp.value === selectedIdp)).text;
+        // Resolve the IDP name from the source list rather than the dropdown option text, since the option
+        // text may be a React node (e.g. the name rendered alongside a "Shared" chip) rather than a string.
+        const idpName: string = idpList?.find(
+            (idp: IdentityProviderInterface) => idp.id === selectedIdp)?.name ?? "";
 
         return {
             blocking: isBlockingChecked,

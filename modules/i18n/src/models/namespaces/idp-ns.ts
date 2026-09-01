@@ -382,6 +382,9 @@ export interface IdpNS {
             };
         };
         outboundProvisioningTitle: string;
+        outboundProvisioningSharedConnector: {
+            hint: string;
+        };
     };
     helpPanel: {
         tabs: {

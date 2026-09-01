@@ -369,6 +369,10 @@ export const idp: IdpNS = {
             }
         },
         outboundProvisioningTitle: "Outbound Provisioning Connectors",
+        outboundProvisioningSharedConnector: {
+            hint: "This provisioning connector is configured in the parent organization and cannot be " +
+                "modified here."
+        },
         roleMapping: {
             heading: "Role Mapping",
             hint: "Map local roles with the Identity Provider roles",

@@ -3428,7 +3428,7 @@ importers:
         specifier: workspace:^
         version: link:../common.ui.shared-access.v1
       '@wso2is/core':
-        specifier: ^2.13.0
+        specifier: ^2.13.5
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.11.0

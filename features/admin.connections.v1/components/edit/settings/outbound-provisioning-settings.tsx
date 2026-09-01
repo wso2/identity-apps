@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { Show } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -29,6 +30,7 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
+    Hint,
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
@@ -420,6 +422,82 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         );
     };
 
+    /**
+     * Renders a read-only summary of the outbound provisioning connector type(s) for shared connections.
+     *
+     * The connector configuration itself is inherited from the parent organization and cannot be edited
+     * here, so each connector is shown as an accordion whose header denotes the connector type (icon and
+     * display name) and whose body explains that the configuration is managed in the parent organization.
+     *
+     * @returns The shared connectors summary section.
+     */
+    const renderSharedConnectorsSummary = (): ReactElement => {
+        if (isLoading || isFetchingConnectors) {
+            return <ContentLoader/>;
+        }
+
+        const activeConnectors: OutboundProvisioningConnectorWithMetaInterface[] = availableConnectors
+            // Filter the scim1 connector since it is deprecated.
+            .filter((connector: OutboundProvisioningConnectorWithMetaInterface) =>
+                connector.id !== CommonAuthenticatorConstants.DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
+            // Filter inactive connectors.
+            .filter((connector: OutboundProvisioningConnectorWithMetaInterface) => connector.data?.isEnabled);
+
+        if (activeConnectors.length === 0) {
+            return null;
+        }
+
+        return (
+            <Box className="default-provisioning-connector-section" sx={ { mt: 2 } }>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {
+                                activeConnectors.map((
+                                    connector: OutboundProvisioningConnectorWithMetaInterface,
+                                    index: number
+                                ) => (
+                                    <AuthenticatorAccordion
+                                        key={ index }
+                                        globalActions={ [] }
+                                        authenticators={ [
+                                            {
+                                                actions: [],
+                                                content: (
+                                                    <Hint>
+                                                        { t("idp:forms.outboundProvisioningSharedConnector.hint") }
+                                                    </Hint>
+                                                ),
+                                                icon: {
+                                                    icon: connector?.localMeta?.icon,
+                                                    verticalAlign: "middle"
+                                                },
+                                                id: connector?.id,
+                                                title: connector?.localMeta?.displayName
+                                                    ?? connector?.meta?.displayName,
+                                                titleOptions: {
+                                                    flex: true
+                                                }
+                                            }
+                                        ] }
+                                        data-testid={ `${ testId }-shared-connector-accordion` }
+                                        data-componentid={ `${ componentId }-shared-connector-accordion` }
+                                        accordionActiveIndexes={ accordionActiveIndexes }
+                                        accordionIndex={ index }
+                                        handleAccordionOnClick={ handleAccordionOnClick }
+                                        accordionContentStyle={ {
+                                            backgroundColor: "var(--oxygen-palette-common-white)"
+                                        } }
+                                    />
+                                ))
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Box>
+        );
+    };
+
     return (
         <EmphasizedSegment padded="very" data-componentid={ componentId }>
             <Grid.Row>
@@ -432,8 +510,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
             {
                 /* For shared connections the connector configuration is inherited from the parent and is not
-                   editable; only the outbound provisioning groups are shown below. */
-                !isSharedConnection && renderConnectorsSection()
+                   editable; show a read-only summary denoting the connector type instead of the config form. */
+                isSharedConnection ? renderSharedConnectorsSummary() : renderConnectorsSection()
             }
             {
                 !isSharedConnection && showWizard && (
