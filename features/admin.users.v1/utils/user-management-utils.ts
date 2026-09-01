@@ -68,6 +68,26 @@ export class UserManagementUtils {
     };
 
     /**
+     * Resolves the user id of the current session from the `sub` claim of the ID token.
+     *
+     *
+     * @param subject - The `sub` claim of the ID token.
+     * @returns The user id, or an empty string when it cannot be resolved.
+     */
+    public static resolveUserIdFromSubject = (subject: string): string => {
+        if (!subject) {
+            return "";
+        }
+
+        const withoutUserStoreDomain: string = subject.substring(subject.lastIndexOf("/") + 1);
+        const tenantDomainSeparatorIndex: number = withoutUserStoreDomain.lastIndexOf("@");
+
+        return tenantDomainSeparatorIndex === -1
+            ? withoutUserStoreDomain
+            : withoutUserStoreDomain.substring(0, tenantDomainSeparatorIndex);
+    };
+
+    /**
      * Checks whether administrator role is present in the user roles.
      */
     public static isAdminUser = (roles: UserRoleInterface[]): boolean => {

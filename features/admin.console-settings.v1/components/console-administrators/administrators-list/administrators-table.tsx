@@ -52,7 +52,7 @@ import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
@@ -181,13 +181,34 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state?.config?.ui?.features?.users;
     });
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const authenticatedUserSubject: string = useSelector((state: AppState): string => state?.auth?.username);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
     const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
+
+    /**
+     * User id of the current session, resolved from the `sub` claim of the ID token.
+     */
+    const authenticatedUserId: string = useMemo(
+        (): string => UserManagementUtils.resolveUserIdFromSubject(authenticatedUserSubject),
+        [ authenticatedUserSubject ]
+    );
+
+    /**
+     * Checks whether the given administrator is the user of the current session.
+     *
+     * The same table renders both the console administrators list and the organization users list, so
+     * a single email address can appear in both as two distinct accounts. Comparing usernames marks
+     * both rows as the current user; the user id identifies the session's account unambiguously.
+     *
+     * @param user - The administrator listed in a row of the table.
+     * @returns Whether the given administrator is the user of the current session.
+     */
+    const isAuthenticatedUser = (user: UserBasicInterface): boolean =>
+        !!user?.id && !!authenticatedUserId && user.id === authenticatedUserId;
 
     /**
      * Returns a locked icon if the account is locked.
@@ -453,7 +474,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())
-                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
+                    || isAuthenticatedUser(user);
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
@@ -474,9 +495,9 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns the label indication of your own account.
      */
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
-        if (authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))) {
+        if (isAuthenticatedUser(user)) {
             return (
-                <Label size="small">
+                <Label data-componentid={ `${ componentId }-item-myself-label` } size="small">
                     Me
                 </Label>
             );

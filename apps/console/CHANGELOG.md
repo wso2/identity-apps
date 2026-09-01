@@ -1,5 +1,62 @@
 # @wso2is/console
 
+## 4.14.21
+
+### Patch Changes
+
+- [#10608](https://github.com/wso2/identity-apps/pull/10608) [`c9071eeebca69a453584392d0c6fea505a733b98`](https://github.com/wso2/identity-apps/commit/c9071eeebca69a453584392d0c6fea505a733b98) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add support for `select` fields in connection create and edit templates, including a `useDynamicFieldOptions` hook that resolves field options from existing connections declared via `optionsSource` metadata.
+
+- Updated dependencies [[`c9071eeebca69a453584392d0c6fea505a733b98`](https://github.com/wso2/identity-apps/commit/c9071eeebca69a453584392d0c6fea505a733b98)]:
+  - @wso2is/admin.connections.v1@2.40.0
+  - @wso2is/i18n@2.45.6
+
+## 4.14.20
+
+### Patch Changes
+
+- [#10648](https://github.com/wso2/identity-apps/pull/10648) [`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix attribute list not refreshing after adding custom SCIM attributes
+
+* [#10656](https://github.com/wso2/identity-apps/pull/10656) [`021521ffd4fd9cd38872723c06826739f88ee548`](https://github.com/wso2/identity-apps/commit/021521ffd4fd9cd38872723c06826739f88ee548) Thanks [@savindi7](https://github.com/savindi7)! - Use product name config in Try it app.
+
+* Updated dependencies [[`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1), [`021521ffd4fd9cd38872723c06826739f88ee548`](https://github.com/wso2/identity-apps/commit/021521ffd4fd9cd38872723c06826739f88ee548)]:
+  - @wso2is/admin.claims.v1@2.31.5
+  - @wso2is/admin.applications.v1@2.43.17
+
+## 4.14.19
+
+### Patch Changes
+
+- [#10649](https://github.com/wso2/identity-apps/pull/10649) [`eeeb0cdfe1f691260db1e7ace820bc044505be0c`](https://github.com/wso2/identity-apps/commit/eeeb0cdfe1f691260db1e7ace820bc044505be0c) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Resolve the signed-in user id for the "Me" label from the ID token subject instead of the `scim2/Me` profile
+
+- Updated dependencies [[`eeeb0cdfe1f691260db1e7ace820bc044505be0c`](https://github.com/wso2/identity-apps/commit/eeeb0cdfe1f691260db1e7ace820bc044505be0c)]:
+  - @wso2is/admin.console-settings.v1@2.26.49
+  - @wso2is/admin.users.v1@2.38.52
+
+## 4.14.18
+
+### Patch Changes
+
+- [#10646](https://github.com/wso2/identity-apps/pull/10646) [`7981d90f5cb5876522cad0672b6f07d43bc2f95c`](https://github.com/wso2/identity-apps/commit/7981d90f5cb5876522cad0672b6f07d43bc2f95c) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Reuse an existing deployment unit session when handing off from the central region in central deployments, instead of forcing a re-authentication on every Console load.
+
+* [#10645](https://github.com/wso2/identity-apps/pull/10645) [`ed7687425a1fcb1e232c3f25ddf0926d83ae5fef`](https://github.com/wso2/identity-apps/commit/ed7687425a1fcb1e232c3f25ddf0926d83ae5fef) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Resolve the "Me" label in Console Settings > Administrators by user id instead of username
+
+* Updated dependencies [[`bdad49bc49c8552fed266305b66690bffefe1bac`](https://github.com/wso2/identity-apps/commit/bdad49bc49c8552fed266305b66690bffefe1bac)]:
+  - @wso2is/admin.console-settings.v1@2.26.48
+
+## 4.14.17
+
+### Patch Changes
+
+- [#10642](https://github.com/wso2/identity-apps/pull/10642) [`3dcf7d5529691811eb7f67037b125dd43e61ebe2`](https://github.com/wso2/identity-apps/commit/3dcf7d5529691811eb7f67037b125dd43e61ebe2) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Release the Console so the date field fix from #10631 ships in a Console distribution. That PR's changeset only covered `@wso2is/identity-apps-core`, so the release workflow did not cut a Console release.
+
+* [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
+* Updated dependencies [[`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.218
+  - @wso2is/admin.registration-flow-builder.v1@0.10.178
+  - @wso2is/i18n@2.45.5
+
 ## 4.14.16
 
 ### Patch Changes
