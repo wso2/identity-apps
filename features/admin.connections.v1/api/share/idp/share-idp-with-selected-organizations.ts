@@ -24,18 +24,10 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ShareIdPWithSelectedOrganizationsPayloadInterface } from "../../../models/identity-provider-sharing";
 
 /**
- * Get an axios instance.
+ * Get an HTTP client instance.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Resolve the base identity providers endpoint from the store.
- *
- * @returns The identity providers base endpoint.
- */
-const getIdentityProvidersEndpoint = (): string => store.getState().config.endpoints.identityProviders;
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Share an identity provider with a selected set of organizations.
@@ -53,7 +45,7 @@ export const shareIdPWithSelectedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ getIdentityProvidersEndpoint() }/share`
+        url: `${ store.getState().config.endpoints.identityProviders }/share`
     };
 
     return httpClient(requestConfig)

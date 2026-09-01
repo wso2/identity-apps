@@ -134,7 +134,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
             return;
         }
 
-        getConnections(null, null, null)
+        getConnections()
             .then((response: IdentityProviderListResponseInterface) => {
                 setIdpList(response.identityProviders);
             });

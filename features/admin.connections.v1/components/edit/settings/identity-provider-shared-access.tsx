@@ -47,7 +47,7 @@ import {
     unshareIdPFromSelectedOrganizations
 } from "../../../api/share/idp/unshare-idp-from-selected-organizations";
 import { unshareIdPWithAllOrganizations } from "../../../api/share/idp/unshare-idp-with-all-organizations";
-import useGetIdVPShare from "../../../api/use-get-idp-share";
+import useGetIdpShare from "../../../api/use-get-idp-share";
 import { ConnectionInterface } from "../../../models/connection";
 import {
     IdPSelectiveShareOrganizationInterface,
@@ -112,16 +112,11 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
         data: shareData,
         isLoading: isShareDataLoading,
         mutate: mutateShareData
-    } = useGetIdVPShare(
+    } = useGetIdpShare({
+        attributes: "sharingMode",
         identityProviderId,
-        !isEmpty(identityProviderId),
-        true,
-        null,
-        null,
-        null,
-        null,
-        "sharingMode"
-    );
+        shouldFetch: !isEmpty(identityProviderId)
+    });
 
     // Derive the initial share type from the current share status.
     useEffect(() => {

@@ -17,9 +17,7 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import {
-    GlobalVariablesContextInterface
-} from "@wso2is/admin.core.v1/context/global-variables-context";
+import { GlobalVariablesContextInterface } from "@wso2is/admin.core.v1/context/global-variables-context";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";

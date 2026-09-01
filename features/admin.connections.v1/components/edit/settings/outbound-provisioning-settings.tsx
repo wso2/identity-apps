@@ -480,7 +480,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                 }
                                             }
                                         ] }
-                                        data-testid={ `${ testId }-shared-connector-accordion` }
                                         data-componentid={ `${ componentId }-shared-connector-accordion` }
                                         accordionActiveIndexes={ accordionActiveIndexes }
                                         accordionIndex={ index }

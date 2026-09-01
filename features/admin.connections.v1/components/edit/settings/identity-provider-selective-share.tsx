@@ -55,7 +55,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useGetIdVPShare from "../../../api/use-get-idp-share";
+import useGetIdpShare from "../../../api/use-get-idp-share";
 import {
     IdPShareListResponseInterface,
     IdPSharedOrganizationInterface,
@@ -224,16 +224,13 @@ const IdentityProviderSelectiveShare: FunctionComponent<IdentityProviderSelectiv
     // Fetch the sharing details of the selected organization (to resolve its future-children policy).
     const {
         data: selectedSharedOrganization
-    } = useGetIdVPShare(
+    } = useGetIdpShare({
+        attributes: "sharingMode",
+        filter: `id eq '${ selectedOrgId }'`,
         identityProviderId,
-        !isEmpty(identityProviderId) && !isEmpty(selectedOrgId),
-        true,
-        `id eq '${ selectedOrgId }'`,
-        1,
-        null,
-        null,
-        "sharingMode"
-    );
+        limit: 1,
+        shouldFetch: !isEmpty(identityProviderId) && !isEmpty(selectedOrgId)
+    });
 
     const isLoading: boolean = isTopLevelOrganizationsFetchRequestLoading;
 
