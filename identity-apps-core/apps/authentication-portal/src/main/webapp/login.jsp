@@ -414,9 +414,16 @@
         } else {
             srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
         }
-        String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-        String srURLWithoutEncoding = srURI + "?" + srprmstr;
-        srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
+        /* This page can be reached without a servlet forward -- a direct request, or a dispatch that
+           carries no query string -- in which case the forwarded query string attribute is absent.
+           Decoding null throws and fails the whole login page, so treat a missing value as no
+           parameters and build the sign-up callback without a query component. */
+        String srForwardedQueryString = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+        String srprmstr = StringUtils.isNotBlank(srForwardedQueryString)
+                ? URLDecoder.decode(srForwardedQueryString, UTF_8)
+                : StringUtils.EMPTY;
+        String srURLWithoutEncoding = StringUtils.isNotBlank(srprmstr) ? srURI + "?" + srprmstr : srURI;
+        srURLEncodedURL = URLEncoder.encode(srURLWithoutEncoding, UTF_8);
     }
 %>
 
