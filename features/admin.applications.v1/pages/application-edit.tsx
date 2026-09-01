@@ -87,6 +87,7 @@ import {
     ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    InboundProtocolListItemInterface,
     idpInfoTypeInterface
 } from "../models/application";
 import {
@@ -327,8 +328,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          */
         if (!clonedApplication?.advancedConfigurations?.fragment && !clonedApplication?.templateId) {
             if (clonedApplication?.inboundProtocols?.length > 0) {
+                const fallbackProtocolType: string = clonedApplication.inboundProtocols.some(
+                    (protocol: InboundProtocolListItemInterface) =>
+                        protocol?.type === SupportedAuthProtocolTypes.OAUTH2
+                )
+                    ? SupportedAuthProtocolTypes.OAUTH2
+                    : clonedApplication.inboundProtocols[ 0 ]?.type;
+
                 clonedApplication.templateId = InboundProtocolDefaultFallbackTemplates.get(
-                    clonedApplication?.inboundProtocols?.[ 0 /*We pick the first*/ ]?.type
+                    fallbackProtocolType
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
 
                 return determineApplicationTemplate(clonedApplication);
