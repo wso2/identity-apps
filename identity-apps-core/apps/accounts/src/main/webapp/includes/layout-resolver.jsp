@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -154,15 +154,23 @@
                                     }
                                 }
                             } else {
-                                // App-wise and tenant-wise custom layout resolving logic.
+                                /* App-wise and tenant-wise custom layout resolving logic. Both path segments are
+                                   taken from the resolved branding preference, so that an organization inheriting
+                                   branding renders the layout of the organization the preference was resolved from. */
+                                String customLayoutName = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + preferenceResolvedFromOrganization;
+                                String customLayoutBaseURL = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromOrganization);
                                 if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
-                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
-                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences));
-                                } else if (StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
-                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + preferenceResolvedFromResourceName;
-                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName) + "/body.ser";
-                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName));
+                                    String resolvedApplicationName = convertApplicationName(preferenceResolvedFromApplication);
+                                    customLayoutName += CUSTOM_LAYOUT_NAME_SEPERATOR + resolvedApplicationName;
+                                    customLayoutBaseURL += "/apps/" + resolvedApplicationName;
+                                }
+                                String customLayoutFilePath = customLayoutBaseURL + "/body.ser";
+                                // Keep the default layout when the custom layout file is not deployed.
+                                if (customLayoutFilePath.startsWith("http")
+                                        || config.getServletContext().getResource(customLayoutFilePath) != null) {
+                                    layout = customLayoutName;
+                                    layoutFileRelativePath = customLayoutFilePath;
+                                    layoutData.put("BASE_URL", customLayoutBaseURL);
                                 }
                             }
                         } else {

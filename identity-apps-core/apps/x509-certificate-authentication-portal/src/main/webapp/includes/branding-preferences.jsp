@@ -263,12 +263,19 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String RESOURCE_TYPE_KEY = "type";
     String RESOURCE_NAME_KEY = "name";
+    String RESOURCE_ORGANIZATION_KEY = "organization";
+    String RESOURCE_APPLICATION_KEY = "application";
     String UI_THEME = "ui_theme";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     JSONObject preferenceResolvedFrom = null;
+    /* `preferenceResolvedFromResourceName` is deprecated. It is retained since the custom JSP files
+       may refer to it. Use `preferenceResolvedFromOrganization` & `preferenceResolvedFromApplication`
+       instead. */
     String preferenceResolvedFromResourceName = tenantRequestingPreferences;
     String applicationRequestingPreferences = spAppId;
+    String preferenceResolvedFromOrganization = tenantRequestingPreferences;
+    String preferenceResolvedFromApplication = applicationRequestingPreferences;
     String locale = userLocale != null ? userLocale.getLanguage() + "-" + userLocale.getCountry() : DEFAULT_RESOURCE_LOCALE;
     String resolutionStrategy = "DEFAULT";
     String uiThemeParam = request.getParameter(UI_THEME);
@@ -316,6 +323,8 @@
             preferenceResolvedFrom = brandingPreferenceResponse.getJSONObject(RESOLVED_FROM_KEY);
             preferenceResourceType = preferenceResolvedFrom.getString(RESOURCE_TYPE_KEY);
             preferenceResolvedFromResourceName = preferenceResolvedFrom.getString(RESOURCE_NAME_KEY);
+            preferenceResolvedFromOrganization = preferenceResolvedFrom.getString(RESOURCE_ORGANIZATION_KEY);
+            preferenceResolvedFromApplication = preferenceResolvedFrom.optString(RESOURCE_APPLICATION_KEY, null);
         }
 
 %>
