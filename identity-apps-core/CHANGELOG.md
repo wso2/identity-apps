@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.6
+
+### Patch Changes
+
+- [#10664](https://github.com/wso2/identity-apps/pull/10664) [`bfba2cd0d5c0f036ef07425eacf9d92f9a68208f`](https://github.com/wso2/identity-apps/commit/bfba2cd0d5c0f036ef07425eacf9d92f9a68208f) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix unhandled NullPointerException on the login page when the forwarded query string is absent
+
 ## 5.4.5
 
 ### Patch Changes
