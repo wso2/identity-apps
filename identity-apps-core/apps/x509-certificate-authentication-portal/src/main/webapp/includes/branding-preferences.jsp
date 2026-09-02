@@ -276,6 +276,8 @@
     String applicationRequestingPreferences = spAppId;
     String preferenceResolvedFromOrganization = tenantRequestingPreferences;
     String preferenceResolvedFromApplication = applicationRequestingPreferences;
+    String customLayoutOrganization = tenantRequestingPreferences;
+    String customLayoutApplication = applicationRequestingPreferences;
     String locale = userLocale != null ? userLocale.getLanguage() + "-" + userLocale.getCountry() : DEFAULT_RESOURCE_LOCALE;
     String resolutionStrategy = "DEFAULT";
     String uiThemeParam = request.getParameter(UI_THEME);

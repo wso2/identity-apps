@@ -71,9 +71,9 @@
 <style type="text/css"><%= cssContent %></style>
 <%
         } else {
-            styleFilePath = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromOrganization);
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", customLayoutOrganization);
             if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                styleFilePath += "/apps/" + convertApplicationName(preferenceResolvedFromApplication);
+                styleFilePath += "/apps/" + convertApplicationName(customLayoutApplication);
             }
             styleFilePath += "/styles.css";
         }

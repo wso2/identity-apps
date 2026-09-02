@@ -88,6 +88,19 @@
         layoutStoreURL = tempLayoutStoreURL;
     }
 
+    /* The app level custom layout is read from the organization & the application the branding preference was
+       resolved from. When the inheritance is turned off, it is read from the requesting organization &
+       application instead. The org level custom layout is always read from the resolved organization. */
+    boolean inheritAppLevelCustomLayout =
+            Boolean.parseBoolean(application.getInitParameter("inheritAppLevelCustomLayout"));
+    customLayoutOrganization = preferenceResolvedFromOrganization;
+    customLayoutApplication = preferenceResolvedFromApplication;
+    if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)
+            && !inheritAppLevelCustomLayout) {
+        customLayoutOrganization = tenantRequestingPreferences;
+        customLayoutApplication = applicationRequestingPreferences;
+    }
+
     // Common data for the layout file.
     layoutData.put("BASE_URL", "includes/layouts/" + layout);
 
@@ -154,13 +167,11 @@
                                     }
                                 }
                             } else {
-                                /* App-wise and tenant-wise custom layout resolving logic. Both path segments are
-                                   taken from the resolved branding preference, so that an organization inheriting
-                                   branding renders the layout of the organization the preference was resolved from. */
-                                String customLayoutName = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + preferenceResolvedFromOrganization;
-                                String customLayoutBaseURL = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromOrganization);
+                                // App-wise and tenant-wise custom layout resolving logic.
+                                String customLayoutName = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + customLayoutOrganization;
+                                String customLayoutBaseURL = layoutStoreURL.replace("${tenantDomain}", customLayoutOrganization);
                                 if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                    String resolvedApplicationName = convertApplicationName(preferenceResolvedFromApplication);
+                                    String resolvedApplicationName = convertApplicationName(customLayoutApplication);
                                     customLayoutName += CUSTOM_LAYOUT_NAME_SEPERATOR + resolvedApplicationName;
                                     customLayoutBaseURL += "/apps/" + resolvedApplicationName;
                                 }
