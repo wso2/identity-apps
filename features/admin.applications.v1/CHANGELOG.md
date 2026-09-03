@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.19
+
+### Patch Changes
+
+- [#10655](https://github.com/wso2/identity-apps/pull/10655) [`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Respect the `makeSubjectMandatory` config when persisting the subject claim's mandatory flag, instead of always forcing it to mandatory regardless of the config value
+
+- Updated dependencies [[`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7)]:
+  - @wso2is/admin.extensions.v1@2.43.12
+
 ## 2.43.18
 
 ### Patch Changes
