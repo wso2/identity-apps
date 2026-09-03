@@ -785,13 +785,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 data-testid={ `${testId}-settings-section` }
                 description={ t("myAccount:sections.consentManagement.description") }
                 header={ t("myAccount:sections.consentManagement.heading") }
-                placeholder={
-                    !(consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? t("myAccount:sections.consentManagement.actionTitles.empty")
-                        : null
-                }
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
+                { !(consentedApps && consentedApps.length && consentedApps.length > 0) && (
+                    <div style={{ textAlign: "center", padding: "20px" }}>{ t("myAccount:sections.consentManagement.actionTitles.empty") }</div>
+                ) }
                 <AppConsentList
                     data-testid={ `${testId}-list` }
                     consentedApps={ consentedApps }
@@ -802,7 +800,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     onPIIClaimToggle={ piiClaimToggleHandler }
                     deniedPIIClaimList={ deniedPIIClaimList }
                     acceptedPIIClaimList={ acceptedPIIClaimList }
-                />
+                />      
                 { revokingConsent && consentRevokeModal() }
             </SettingsSection>
         </>

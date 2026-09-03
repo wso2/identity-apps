@@ -312,15 +312,13 @@ export const PreferenceManagement: FunctionComponent<PreferenceManagementCompone
                 data-componentid={ `${componentId}-settings-section` }
                 description={ t("myAccount:sections.preferenceManagement.description") }
                 header={ t("myAccount:sections.preferenceManagement.heading") }
-                placeholder={
-                    !(consentItems && consentItems.length && consentItems.length > 0)
-                        ? t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading")
-                        : null
-                }
                 showActionBar={
                     !(consentItems && consentItems.length && consentItems.length > 0)
                 }
             >
+                { !(consentItems && consentItems.length && consentItems.length > 0) && (
+                    <div style={{ textAlign: "center", padding: "20px" }}>{ t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading") }</div>
+                ) }
                 <PreferenceManagementList
                     data-componentid={ `${componentId}-list` }
                     items={ consentItems }
