@@ -92,7 +92,8 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
 interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
-    oidc: OIDCDataInterface
+    oidc: OIDCDataInterface;
+    isSubjectClaimExplicit?: boolean;
 }
 
 interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
@@ -1139,6 +1140,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
 
+        const isSubjectClaimOmitted: boolean = !onlyOIDCConfigured
+            && !claimConfigurations?.subject?.claim?.uri
+            && !advanceSettingValues?.isSubjectClaimExplicit;
+
         if (selectedDialect.localDialect) {
             selectedClaims.map((claim: ExtendedClaimInterface) => {
                 // If claim mapping is there then check whether claim is requested or not.
@@ -1198,7 +1203,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             isSubjectSelectedWithoutMapping = true;
         }
 
-        if (claimMappingFinal.length > 0 && isSubjectSelectedWithoutMapping) {
+        if (claimMappingFinal.length > 0 && isSubjectSelectedWithoutMapping && !isSubjectClaimOmitted) {
             const claimMappedObject: ExtendedClaimMappingInterface = {
                 applicationClaim: DefaultSubjectAttribute,
                 localClaim: {
@@ -1247,6 +1252,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         // Stop sending subject claim for OIDC applications based on the excludeSubjectClaim configuration.
         if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
+        }
+
+        if (isSubjectClaimOmitted) {
+            delete submitValue.claimConfiguration.subject.claim;
         }
 
         // Stop sending tokenEndpointAllowReusePvtKeyJwt if tokenEndpointAuthMethod is not PRIVATE_KEY_JWT.

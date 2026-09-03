@@ -156,7 +156,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     setSelectedSubjectValue(selectedSubjectValue);
                 }
             } else {
-                setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
+                setSelectedSubjectValue(initialSubject?.claim?.uri || defaultSubjectAttribute);
             }
         } else if (selectedSubjectValue) {
             if (dropDownOptions && dropDownOptions.length > 0 &&
@@ -166,7 +166,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 setSelectedSubjectValue(defaultSubjectAttribute);
             }
         } else {
-            setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
+            setSelectedSubjectValue(initialSubject?.claim?.uri || defaultSubjectAttribute);
         }
     }, [ dropDownOptions ]);
 
@@ -247,9 +247,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const submitValues = (values: Record<string, any>) => {
         const settingValues: {
             role: RoleInterface;
-            subject: SubjectInterface
-            oidc: OIDCDataInterface
+            subject: SubjectInterface;
+            oidc: OIDCDataInterface;
+            isSubjectClaimExplicit: boolean;
         } = {
+            isSubjectClaimExplicit: showSubjectAttribute,
             oidc: {
                 ...oidcInitialValues,
                 subject: {
@@ -293,7 +295,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         // as sending an empty value for subject results in issues.
         // Ref: https://github.com/wso2/product-is/issues/19054
         if (!settingValues?.subject?.claim || settingValues?.subject?.claim === "") {
-            settingValues.subject.claim = claimConfigurations.subject.claim.uri;
+            settingValues.subject.claim = claimConfigurations?.subject?.claim?.uri ?? defaultSubjectAttribute;
         }
 
         // Preserve the configured role claim URI when the resolved value is empty, as the User Attributes tab does
@@ -340,12 +342,23 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     /**
+     * This function resolves the hidden status of the include user domain and include tenant domain options.
+     * @returns The hidden status.
+     */
+    const resolveIncludeDomainOptionsHiddenStatus = (): boolean => {
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+                (onlyOIDCConfigured && !showSubjectAttribute) ||
+                isEmpty(dropDownOptions)
+        ;
+    };
+
+    /**
      * This function resolves the hidden status of the subject attribute section.
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
         return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-                (onlyOIDCConfigured && !showSubjectAttribute)
+                ((onlyOIDCConfigured || !claimConfigurations?.subject?.claim?.uri) && !showSubjectAttribute)
         ;
     };
 
@@ -473,7 +486,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
-                            { (onlyOIDCConfigured &&
+                            { ((onlyOIDCConfigured || !claimConfigurations?.subject?.claim?.uri) &&
                                 !disabledFeatures?.includes(
                                     "applications.attributes.alternativeSubjectIdentifier")) && (
                                 <Grid.Row columns={ 1 }>
@@ -548,7 +561,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             {
                                 !(disabledFeatures?.includes("applications.attributes" +
-                                        ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                        ".alternativeSubjectIdentifier") ||
+                                    resolveIncludeDomainOptionsHiddenStatus()) && (
                                     <Grid.Row
                                         columns={ 1 }
                                         data-componentid="application-edit-user-attributes-include-user-domain"
@@ -576,7 +590,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             {
                                 !(disabledFeatures?.includes("applications.attributes" +
-                                    ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                    ".alternativeSubjectIdentifier") ||
+                                    resolveIncludeDomainOptionsHiddenStatus()) && (
                                     <Grid.Row
                                         columns={ 1 }
                                         data-componentid="application-edit-user-attributes-include-tenant-domain"
