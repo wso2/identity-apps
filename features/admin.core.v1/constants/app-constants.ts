@@ -541,6 +541,7 @@ export class AppConstants {
         "accountSecurity": "v1.0.0",
         "actions": "v0.0.0",
         "admin-forced-password-reset": "v1.0.0",
+        "agents": "v1.0.0",
         "apiResources": "v0.0.0",
         "applications": "v0.0.0",
         "approvalWorkflows": "v0.0.0",

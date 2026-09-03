@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -24,7 +23,6 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { getInboundProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -41,11 +39,12 @@ import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
 import { AGENT_APP_LIMIT_REACHED_SCIM_TYPE } from "../../constants/agents";
+import useAgentOwner from "../../hooks/use-agent-owner";
 import { AgentScimSchema, AgentType } from "../../models/agents";
 import "./add-agent-wizard.scss";
 
@@ -81,7 +80,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
+    const agentOwner: string = useAgentOwner();
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -110,7 +109,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 Description: values?.description,
                 DisplayName: values?.name,
                 IsUserServingAgent: values?.isUserServingAgent || false,
-                Owner: authenticatedUserInfo?.username
+                Owner: agentOwner
             }
         };
 

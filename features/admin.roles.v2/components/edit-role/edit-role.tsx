@@ -19,7 +19,6 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
@@ -80,8 +79,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
-
-    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         isLoading: isUserStoresListFetchRequestLoading,
@@ -270,7 +267,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             );
         }
 
-        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg && !isSubOrganization() &&
+        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg &&
             !Object.values(SYSTEM_RESERVED_ROLES).includes(roleObject?.displayName as SYSTEM_RESERVED_ROLES)) {
             panes.push(
                 {
