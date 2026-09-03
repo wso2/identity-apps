@@ -26,13 +26,13 @@ import { AlertLevels, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { CheckboxProps, Divider, List } from "semantic-ui-react";
+import { CheckboxProps, Divider } from "semantic-ui-react";
 import {
     deleteConnection,
     deleteCustomAuthenticator,
@@ -50,6 +50,7 @@ import {
     handleConnectionUpdateError,
     handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
+import ConnectedApplicationsList from "../../connected-applications-list";
 import { GeneralDetailsForm } from "../forms";
 import { CustomAuthenticatorGeneralDetailsForm } from "../forms/custom-authenticator-general-details-form";
 
@@ -607,15 +608,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-idp-confirmation` }>
                         { t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.content") }
                         <Divider hidden />
-                        <List ordered className="ml-6">
-                            { isAppsLoading ? (
-                                <ContentLoader />
-                            ) : (
-                                connectedApps?.map((app: string, index: number) => (
-                                    <List.Item key={ index }>{ app }</List.Item>
-                                ))
-                            ) }
-                        </List>
+                        <ConnectedApplicationsList
+                            applications={ connectedApps }
+                            isLoading={ isAppsLoading }
+                        />
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
