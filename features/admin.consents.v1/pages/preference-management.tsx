@@ -32,9 +32,11 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DocumentationLink,
     ListLayout,
     PageLayout,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,6 +64,7 @@ const PreferenceManagementPage: FunctionComponent<PreferenceManagementPageProps>
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -259,7 +262,16 @@ const PreferenceManagementPage: FunctionComponent<PreferenceManagementPageProps>
         <PageLayout
             pageTitle={ t("consents:preferenceManagement.pages.list.title") }
             title={ t("consents:preferenceManagement.pages.list.heading") }
-            description={ t("consents:preferenceManagement.pages.list.description") }
+            description={ (
+                <>
+                    { t("consents:preferenceManagement.pages.list.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.consentManagement.preferenceManagement.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 onClick: () => {

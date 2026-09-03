@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2022-2026, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -88,6 +88,19 @@
         layoutStoreURL = tempLayoutStoreURL;
     }
 
+    /* The app level custom layout is read from the organization & the application the branding preference was
+       resolved from. When the inheritance is turned off, it is read from the requesting organization &
+       application instead. The org level custom layout is always read from the resolved organization. */
+    boolean inheritAppLevelCustomLayout =
+            Boolean.parseBoolean(application.getInitParameter("inheritAppLevelCustomLayout"));
+    customLayoutOrganization = preferenceResolvedFromOrganization;
+    customLayoutApplication = preferenceResolvedFromApplication;
+    if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)
+            && !inheritAppLevelCustomLayout) {
+        customLayoutOrganization = tenantRequestingPreferences;
+        customLayoutApplication = applicationRequestingPreferences;
+    }
+
     // Common data for the layout file.
     layoutData.put("BASE_URL", "includes/layouts/" + layout);
 
@@ -155,14 +168,20 @@
                                 }
                             } else {
                                 // App-wise and tenant-wise custom layout resolving logic.
+                                String customLayoutName = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + customLayoutOrganization;
+                                String customLayoutBaseURL = layoutStoreURL.replace("${tenantDomain}", customLayoutOrganization);
                                 if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
-                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
-                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences));
-                                } else if (StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
-                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + preferenceResolvedFromResourceName;
-                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName) + "/body.ser";
-                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName));
+                                    String resolvedApplicationName = convertApplicationName(customLayoutApplication);
+                                    customLayoutName += CUSTOM_LAYOUT_NAME_SEPERATOR + resolvedApplicationName;
+                                    customLayoutBaseURL += "/apps/" + resolvedApplicationName;
+                                }
+                                String customLayoutFilePath = customLayoutBaseURL + "/body.ser";
+                                // Keep the default layout when the custom layout file is not deployed.
+                                if (customLayoutFilePath.startsWith("http")
+                                        || config.getServletContext().getResource(customLayoutFilePath) != null) {
+                                    layout = customLayoutName;
+                                    layoutFileRelativePath = customLayoutFilePath;
+                                    layoutData.put("BASE_URL", customLayoutBaseURL);
                                 }
                             }
                         } else {

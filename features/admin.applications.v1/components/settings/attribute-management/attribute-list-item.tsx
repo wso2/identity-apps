@@ -17,6 +17,7 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Hint, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -215,11 +216,15 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             return true;
         }
 
+        // Only force the subject claim's mandatory state when the deployment is configured to do so.
+        const isSubjectMandatoryEnforced: boolean = subject
+            && applicationConfig.attributeSettings.makeSubjectMandatory;
+
         if (onlyOIDCConfigured) {
-            return (subject && mandatory) || readOnly || isOIDCMapping;
+            return (isSubjectMandatoryEnforced && mandatory) || readOnly || isOIDCMapping;
         }
 
-        return subject || readOnly || isOIDCMapping;
+        return isSubjectMandatoryEnforced || readOnly || isOIDCMapping;
     };
 
     /**
@@ -325,7 +330,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 { ...(!localDialect && { textAlign: "center" }) }
             >
                 <Checkbox
-                    checked={ initialMandatory || mandatory || (subject && !onlyOIDCConfigured) }
+                    checked={ initialMandatory || mandatory || (subject && !onlyOIDCConfigured
+                        && applicationConfig.attributeSettings.makeSubjectMandatory) }
                     onClick={ !isMandatoryCheckboxReadOnly() ? handleMandatoryCheckChange : () => null }
                     disabled={ mappingOn ? !requested : false }
                     readOnly={ isMandatoryCheckboxReadOnly() }

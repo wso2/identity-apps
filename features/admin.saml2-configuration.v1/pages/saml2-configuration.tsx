@@ -34,10 +34,12 @@ import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     DangerZone,
     DangerZoneGroup,
+    DocumentationLink,
     EmphasizedSegment,
     PageLayout,
     PrimaryButton,
-    URLInput
+    URLInput,
+    useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
@@ -87,6 +89,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
     const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isReverting, setIsReverting ] = useState<boolean>(false);
@@ -311,7 +314,14 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
         <PageLayout
             title={ t("saml2Config:title") }
             pageTitle={ t("saml2Config:title") }
-            description={ t("saml2Config:description") }
+            description={ (
+                <>
+                    { t("saml2Config:description") }
+                    <DocumentationLink link={ getLink("manage.saml2WebSso.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")

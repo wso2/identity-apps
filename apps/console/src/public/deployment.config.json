@@ -589,6 +589,7 @@
                 ],
                 "enabled": true,
                 "properties": {
+                    "makeSubjectMandatory": true,
                     "maxGracefulRefreshTokenReuseLimit": 5,
                     "maxGracefulRefreshTokenRotationValidityPeriod": 60,
                     "multipleClientSecretsMaxCount": 2

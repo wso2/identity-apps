@@ -26,7 +26,14 @@ import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DangerZone, DangerZoneGroup, PageLayout } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    DangerZone,
+    DangerZoneGroup,
+    DocumentationLink,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +68,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
 
     const { ["data-componentid"]: componentId = "push-providers-page" } = props;
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -295,7 +303,14 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         <PageLayout
             title={ t("pushProviders:heading") }
             pageTitle={ t("pushProviders:heading") }
-            description={ t("pushProviders:subHeading") }
+            description={ (
+                <>
+                    { t("pushProviders:subHeading") }
+                    <DocumentationLink link={ getLink("develop.pushProviders.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             bottomMargin={ false }
             contentTopMargin={ false }
             pageHeaderMaxWidth= { true }

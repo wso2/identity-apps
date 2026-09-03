@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.7
+
+### Patch Changes
+
+- [#10663](https://github.com/wso2/identity-apps/pull/10663) [`cfbe6717f703f0d8ff5d7b8572af29b45b398f08`](https://github.com/wso2/identity-apps/commit/cfbe6717f703f0d8ff5d7b8572af29b45b398f08) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the custom layout resolution for inherited application level branding
+
 ## 5.4.6
 
 ### Patch Changes

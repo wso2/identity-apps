@@ -1,5 +1,45 @@
 # @wso2is/console
 
+## 4.14.24
+
+### Patch Changes
+
+- [#10655](https://github.com/wso2/identity-apps/pull/10655) [`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Respect the `makeSubjectMandatory` config when persisting the subject claim's mandatory flag, instead of always forcing it to mandatory regardless of the config value
+
+- Updated dependencies [[`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7)]:
+  - @wso2is/admin.applications.v1@2.43.19
+  - @wso2is/admin.extensions.v1@2.43.12
+
+## 4.14.23
+
+### Patch Changes
+
+- [#10659](https://github.com/wso2/identity-apps/pull/10659) [`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add the missing "Learn More" documentation links to the Login & Registration and Notification Channels
+  pages that were shipping without one — Alternative Login Identifiers, Username Validation, Session Management,
+  Policy Management, Preference Management, Admin Initiated Password Reset, SAML2 Web SSO Configuration,
+  Organization Discovery, Impersonation, Issuer Usage Scope, Outbound Provisioning Configuration,
+  Internal Notification Sending, Email Provider, SMS Provider and Push Provider. The Email Provider and SMS
+  Provider pages already rendered a `DocumentationLink`, but the `develop.emailProviders.learnMore` and
+  `develop.smsProviders.learnMore` keys they read were absent from the documentation link config, so the link
+  resolved to `undefined` and never rendered.
+
+  The two governance connector descriptions touched here (Alternative Login Identifiers and Admin Initiated
+  Password Reset) also move from hardcoded English to `governanceConnectors` i18n keys.
+
+- Updated dependencies [[`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9)]:
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.209
+  - @wso2is/admin.consents.v1@1.0.6
+  - @wso2is/admin.core.v1@2.59.3
+  - @wso2is/admin.impersonation.v1@1.6.210
+  - @wso2is/admin.issuer-usage-scope.v1@1.0.3
+  - @wso2is/admin.organization-discovery.v1@2.25.211
+  - @wso2is/admin.push-providers.v1@1.1.2
+  - @wso2is/admin.saml2-configuration.v1@2.25.210
+  - @wso2is/admin.server-configurations.v1@2.38.60
+  - @wso2is/admin.session-management.v1@2.26.8
+  - @wso2is/admin.username-validation.v1@1.5.207
+  - @wso2is/i18n@2.45.7
+
 ## 4.14.22
 
 ### Patch Changes
