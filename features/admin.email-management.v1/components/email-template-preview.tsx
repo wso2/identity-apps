@@ -98,10 +98,10 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
 
         BrandingPreferenceUtils.getPredefinedThemePreferences(theme)
             .then((response: BrandingPreferenceThemeInterface) => {
-                setPredefinedThemes({
-                    ...predefinedThemes,
+                setPredefinedThemes((prevPredefinedThemes: BrandingPreferenceThemeInterface) => ({
+                    ...prevPredefinedThemes,
                     ...response
-                });
+                }));
             });
     }, [ theme ]);
 
