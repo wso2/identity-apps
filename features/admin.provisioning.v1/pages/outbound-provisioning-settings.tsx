@@ -33,7 +33,13 @@ import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    EmptyPlaceholder,
+    PageLayout,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -81,6 +87,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     const { [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -333,7 +340,14 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
         <PageLayout
             pageTitle={ t("applications:resident.provisioning.outbound.heading") }
             title={ t("applications:resident.provisioning.outbound.heading") }
-            description={ t("applications:resident.provisioning.outbound.subHeading") }
+            description={ (
+                <>
+                    { t("applications:resident.provisioning.outbound.subHeading") }
+                    <DocumentationLink link={ getLink("manage.outboundProvisioning.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${ componentId }-layout` }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,

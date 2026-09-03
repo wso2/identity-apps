@@ -16,7 +16,19 @@
  * under the License.
  */
 
+interface AccountLoginDocumentationLinksInterface {
+    alternativeLoginIdentifiers: {
+        learnMore: string;
+    }
+    usernameValidation: {
+        learnMore: string;
+    }
+}
+
 interface AccountRecoveryDocumentationLinksInterface {
+    adminInitiatedPasswordReset: {
+        learnMore: string;
+    }
     passwordRecovery: {
         learnMore: string;
     }
@@ -31,6 +43,9 @@ interface LoginSecurityDocumentationLinksInterface {
         learnMore: string;
     },
     loginAttempts: {
+        learnMore: string;
+    },
+    sessionManagement: {
         learnMore: string;
     },
     siftConnector: {
@@ -402,7 +417,32 @@ interface ConnectionsDocumentationLinksInterface {
     }
 }
 
+interface ConsentManagementDocumentationLinksInterface {
+    policyManagement: {
+        learnMore: string;
+    }
+    preferenceManagement: {
+        learnMore: string;
+    }
+}
+
+interface EmailProvidersDocumentationLinksInterface {
+    learnMore: string;
+}
+
 interface EventPublishingDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface ImpersonationDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface InternalNotificationSendingDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface IssuerUsageScopeDocumentationLinksInterface {
     learnMore: string;
 }
 
@@ -422,6 +462,26 @@ interface SelfRegistrationDocumentationLinksInterface {
 }
 
 interface OrganizationDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface OrganizationDiscoveryDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface OutboundProvisioningDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface PushProvidersDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface Saml2WebSsoDocumentationLinksInterface {
+    learnMore: string;
+}
+
+interface SmsProvidersDocumentationLinksInterface {
     learnMore: string;
 }
 
@@ -531,21 +591,32 @@ export interface DocumentationLinksInterface {
         connections: ConnectionsDocumentationLinksInterface;
         eventPublishing: EventPublishingDocumentationLinksInterface;
         emailCustomization: EmailCustomizationLinksInterface;
+        emailProviders: EmailProvidersDocumentationLinksInterface;
         multiTenancy: MultiTenancyDocumentationLinksInterface;
+        pushProviders: PushProvidersDocumentationLinksInterface;
         smsCustomization: SmsCustomizationLinksInterface;
+        smsProviders: SmsProvidersDocumentationLinksInterface;
         webhooks: WebhooksDocumentationLinksInterface;
     }
     manage: {
         accountDisable: AccountDisableDocumentationLinksInterface;
+        accountLogin: AccountLoginDocumentationLinksInterface;
         accountRecovery: AccountRecoveryDocumentationLinksInterface;
         administrators: AdministratorsDocumentationLinksInterface;
+        consentManagement: ConsentManagementDocumentationLinksInterface;
+        impersonation: ImpersonationDocumentationLinksInterface;
+        internalNotificationSending: InternalNotificationSendingDocumentationLinksInterface;
+        issuerUsageScope: IssuerUsageScopeDocumentationLinksInterface;
         loginSecurity: LoginSecurityDocumentationLinksInterface;
         attributes: AttributesDocumentationLinksInterface;
         groups: GroupsDocumentationLinksInterface;
         insights: InsightsDocumentationLinksInterface;
         logs: LogsDocumentationLinksInterface;
+        organizationDiscovery: OrganizationDiscoveryDocumentationLinksInterface;
         organizations: OrganizationDocumentationLinksInterface;
+        outboundProvisioning: OutboundProvisioningDocumentationLinksInterface;
         privateKeyJWT: PrivateKeyJWTDocumentationLinksInterface;
+        saml2WebSso: Saml2WebSsoDocumentationLinksInterface;
         selfRegistration: SelfRegistrationDocumentationLinksInterface;
         users: UsersDocumentationLinksInterface;
         userStores: UserStoreDocumentationLinksInterface;
