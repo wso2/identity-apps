@@ -1151,8 +1151,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             claim: {
                                 uri: claimMappingURI
                             },
-                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString())
-                                ? applicationConfig.attributeSettings.makeSubjectMandatory
+                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString()
+                                && applicationConfig.attributeSettings.makeSubjectMandatory)
+                                ? true
                                 : claim.mandatory
                         };
 
@@ -1163,8 +1164,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         claim: {
                             uri: claim.claimURI
                         },
-                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString())
-                            ? applicationConfig.attributeSettings.makeSubjectMandatory
+                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString()
+                            && applicationConfig.attributeSettings.makeSubjectMandatory)
+                            ? true
                             : claim.mandatory
                     };
 
@@ -1258,20 +1260,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         /**
-         * Handles the error scenario of the claim configuration update by displaying claim configuration
-         * update failure alert when alternative subject identifier is not in the requested attribute.
-         */
-        const onClaimConfigUpdateWithNotAllowedSubjectAttributeError = () => {
-            dispatch(addAlert({
-                description: t("applications:notifications.updateClaimConfig" +
-                    ".mistmatchAlternativesubjectIdentifierError.description"),
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.updateClaimConfig.mistmatchAlternativesubjectIdentifierError" +
-                ".message")
-            }));
-        };
-
-        /**
          * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
          * update failure alert.
          */
@@ -1298,19 +1286,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 message: t("applications:notifications.updateClaimConfig.success.message")
             }));
         };
-
-        /**
-        * Distpatch an error alert when the alternative subject identifier value is not in the
-        * requested attribute list.
-        */
-        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
-            && !submitValue.claimConfiguration.requestedClaims.map(
-                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
-            onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
-
-            return;
-        }
 
         const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
             protocol.type === SupportedAuthProtocolTypes.OAUTH2);
