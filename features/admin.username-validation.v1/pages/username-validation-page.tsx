@@ -611,7 +611,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
                                                             name="isAlphanumericOnly"
                                                             label={ t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameAlphanumeric") }
-                                                            tabIndex={ 3 }
+                                                            tabIndex={ 0 }
                                                             hint={ !currentValues.isAlphanumericOnly ?
                                                                 t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialCharsHint") : undefined }

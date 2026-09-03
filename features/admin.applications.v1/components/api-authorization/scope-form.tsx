@@ -410,7 +410,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                                                     <Button
                                                                         variant="text"
                                                                         size="small"
-                                                                        tabIndex={ 6 }
+                                                                        tabIndex={ 0 }
                                                                         disabled={ isSelectAllDisabled }
                                                                         onClick={ () =>
                                                                             handleBulkDropdownChange(
@@ -429,7 +429,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                                                     <Button
                                                                         variant="text"
                                                                         size="small"
-                                                                        tabIndex={ 7 }
+                                                                        tabIndex={ 0 }
                                                                         disabled={ isSelectNoneDisabled }
                                                                         onClick={ () =>
                                                                             handleBulkDropdownChange(
@@ -485,7 +485,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                             <LinkButton
                                                 size="small"
                                                 floated="left"
-                                                tabIndex={ 8 }
+                                                tabIndex={ 0 }
                                                 onClick={ resetDropdown }
                                                 data-componentid={ `${componentId}-cancel-btn` }
                                                 disabled={ isUpdateButtonDisabled }
@@ -496,7 +496,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                             <PrimaryButton
                                                 size="small"
                                                 floated="right"
-                                                tabIndex={ 9 }
+                                                tabIndex={ 0 }
                                                 onClick={ updateScopesOfAPIResource }
                                                 data-componentid={ `${componentId}-update-btn` }
                                                 disabled={ isUpdateButtonDisabled }
