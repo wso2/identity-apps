@@ -113,6 +113,7 @@ export const flows: flowsNS = {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
                 default: "Execution",
+                digitalWallet: "Digital Wallet",
                 facebook: "Facebook",
                 flowExtension: "Flow Extension",
                 github: "GitHub",

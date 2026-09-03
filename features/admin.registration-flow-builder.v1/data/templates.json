@@ -716,6 +716,196 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "BASIC_WALLET",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Basic + Wallet",
+            "description": "Basic registration experience with digital wallet as an addition",
+            "image": "libs/themes/default/assets/images/identity-providers/wallet.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{WALLET_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "WALLET_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 330
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Account"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "END"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Register with Digital Wallet",
+                                        "image": "libs/themes/default/assets/images/identity-providers/wallet.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{WALLET_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{WALLET_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 580,
+                            "y": 730
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "VPRegistrationExecutor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 280,
+                            "height": 220
+                        },
+                        "position": {
+                            "x": 900,
+                            "y": 408
+                        },
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Registration Successful!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BASIC_PASSKEY",
         "version": "0.1.0",
         "deprecated": false,

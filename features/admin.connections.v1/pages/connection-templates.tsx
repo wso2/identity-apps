@@ -109,6 +109,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         && isFeatureEnabled(flowExtensionFeatureConfig, "flowExtensions.list")
         && hasFlowExtensionCreatePermissions);
 
+    const isPresentationDefinitionsEnabled: boolean =
+        UIConfig?.features?.presentationDefinitions?.enabled === true;
+
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -148,10 +151,14 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         let connectionTemplates: ConnectionTemplateInterface[] = [ ...fetchedConnectionTemplates ];
 
         // Flow Extension shows only when its capability is enabled; all other templates require connection create permission.
-        connectionTemplates = connectionTemplates.filter((template: ConnectionTemplateInterface) =>
-            template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
-                ? isFlowExtensionCreatable
-                : hasConnectionCreatePermissions);
+        connectionTemplates = connectionTemplates.filter((template: ConnectionTemplateInterface) => {
+            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION)
+                return isFlowExtensionCreatable;
+            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET)
+                return isPresentationDefinitionsEnabled && hasConnectionCreatePermissions;
+
+            return hasConnectionCreatePermissions;
+        });
 
         return [
             ...connectionTemplates,
@@ -162,7 +169,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         isTemplatesValidating,
         templatesFetchError,
         isFlowExtensionCreatable,
-        hasConnectionCreatePermissions
+        hasConnectionCreatePermissions,
+        isPresentationDefinitionsEnabled
     ]);
 
     /**

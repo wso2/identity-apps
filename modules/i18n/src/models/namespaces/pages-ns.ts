@@ -107,6 +107,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    verifiablePresentationSettings: {
+        title: string;
+        subTitle: string;
+    };
     oidcScopesEdit: {
         title: string;
         backButton: string;

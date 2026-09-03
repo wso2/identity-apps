@@ -22,6 +22,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import AppleExecution from "./apple-execution";
+import DigitalWalletExecution from "./digital-wallet-execution";
 import ExtensionExecution from "./extension-execution";
 import FacebookExecution from "./facebook-execution";
 import GithubExecution from "./github-execution";
@@ -80,6 +81,12 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GithubFederation) {
         return (
             <GithubExecution resource={ resource } />
+        );
+    }
+
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.DigitalWalletFederation) {
+        return (
+            <DigitalWalletExecution resource={ resource } />
         );
     }
 

@@ -69,6 +69,7 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getPresentationDefinitionEndpoints } from "@wso2is/admin.presentation-definitions.v1/configs/endpoints";
 import { getVCTemplateEndpoints } from "@wso2is/admin.verifiable-credentials.v1/configs/endpoints";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getConsentMgtResourceEndpoints } from "@wso2is/common.consents.v1/configs/endpoints";
@@ -330,7 +331,9 @@ export class Config {
                 I18nConstants.AGENTS_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
+                I18nConstants.PRESENTATION_DEFINITIONS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
+                I18nConstants.OPENID4VP_CONFIG_NAMESPACE,
                 I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
                 I18nConstants.CONSENTS_NAMESPACE,
                 I18nConstants.FLOW_EXTENSION_NAMESPACE,
@@ -411,6 +414,7 @@ export class Config {
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
+            ...getPresentationDefinitionEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHostWithSuperTenant(), this.getDeploymentConfig()),
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
