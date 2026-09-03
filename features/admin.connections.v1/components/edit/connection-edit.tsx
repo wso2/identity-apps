@@ -285,7 +285,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                             identityProvider.federatedAuthenticators.defaultAuthenticatorId
                         ))
                 }
-                isReadOnly={ isReadOnly || isSharedConnection }
+                isReadOnly={ isReadOnly }
                 loader={ Loader }
                 isOIDC={ isOidc }
                 isSaml={ isSaml }
@@ -345,7 +345,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-jit-provisioning-settings` }
-                isReadOnly={ isReadOnly || isSharedConnection }
+                isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
         </ResourceTab.Pane>

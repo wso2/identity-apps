@@ -240,6 +240,15 @@ const IdentityProviderSharedAccess: FunctionComponent<IdentityProviderSharedAcce
             setSavedShareType(shareType);
             setAddedOrgs([]);
             setRemovedOrgs([]);
+
+            // When the connection is no longer selectively shared, clear the tree selection so switching
+            // back to selective mode starts fresh instead of showing the previously-shared organizations.
+            if (shareType !== IdPShareType.SHARE_SELECTED) {
+                setSelectedItems([]);
+                setShouldShareWithFutureChildOrgsMap({});
+                setPreselectSharedOrgs(true);
+            }
+
             mutateShareData();
         } catch (error) {
             if (isUnshareOperation) {
