@@ -11,6 +11,8 @@
 "@wso2is/admin.server-configurations.v1": patch
 "@wso2is/admin.session-management.v1": patch
 "@wso2is/admin.username-validation.v1": patch
+"@wso2is/console": patch
+"@wso2is/i18n": patch
 ---
 
 Add the missing "Learn More" documentation links to the Login & Registration and Notification Channels
@@ -21,3 +23,6 @@ Internal Notification Sending, Email Provider, SMS Provider and Push Provider. T
 Provider pages already rendered a `DocumentationLink`, but the `develop.emailProviders.learnMore` and
 `develop.smsProviders.learnMore` keys they read were absent from the documentation link config, so the link
 resolved to `undefined` and never rendered.
+
+The two governance connector descriptions touched here (Alternative Login Identifiers and Admin Initiated
+Password Reset) also move from hardcoded English to `governanceConnectors` i18n keys.

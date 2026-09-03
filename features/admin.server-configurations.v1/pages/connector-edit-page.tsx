@@ -577,8 +577,8 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return (<>
-                    Configure alternative login identifiers and allow users to use username or configured
-                    login identifier in login and recovery flows.
+                    { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                        "multiattributeLoginHandler.description") }
                     <DocumentationLink
                         link={ getLink("manage.accountLogin.alternativeLoginIdentifiers.learnMore") }
                     >
@@ -587,7 +587,8 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 </>);
             case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
                 return (<>
-                    Enable administrators to initiate password reset process for users.
+                    { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                        "adminForcedPasswordReset.description") }
                     <DocumentationLink
                         link={ getLink("manage.accountRecovery.adminInitiatedPasswordReset.learnMore") }
                     >
