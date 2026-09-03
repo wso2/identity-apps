@@ -47,7 +47,7 @@ import {
     unshareIdPFromSelectedOrganizations
 } from "../../../api/share/idp/unshare-idp-from-selected-organizations";
 import { unshareIdPWithAllOrganizations } from "../../../api/share/idp/unshare-idp-with-all-organizations";
-import useGetIdpShare from "../../../api/use-get-idp-share";
+import useGetIdpShare from "../../../api/share/idp/use-get-idp-share";
 import { ConnectionInterface } from "../../../models/connection";
 import {
     IdPSelectiveShareOrganizationInterface,

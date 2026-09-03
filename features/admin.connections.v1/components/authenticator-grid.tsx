@@ -28,6 +28,7 @@ import {
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -85,7 +86,9 @@ import {
     ConnectionInterface,
     ConnectionTypes
 } from "../models/connection";
+import { IdPShareListResponseInterface } from "../models/identity-provider-sharing";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
+import { getIdPShare } from "../api/share/idp/use-get-idp-share";
 
 /**
  * Proptypes for the Authenticators Grid component.
@@ -181,7 +184,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         showDeleteErrorDueToConnectedAppsModal,
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
+    const [ showDeleteErrorDueToSharedOrgsModal, setShowDeleteErrorDueToSharedOrgsModal ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -315,6 +321,18 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * @param idpId - Identity provider id.
      */
     const handleFederatedAuthenticatorDelete = async (idpId: string): Promise<void> => {
+        // Block deletion while the connection is still shared with organizations.
+        if (isOrganizationManagementEnabled) {
+            const shareData: IdPShareListResponseInterface = await getIdPShare(idpId);
+            const isSharedWithOrganizations: boolean = shareData?.organizations?.length > 0;
+
+            if (isSharedWithOrganizations) {
+                setShowDeleteErrorDueToSharedOrgsModal(true);
+
+                return;
+            }
+        }
+
         setIsConnectedAppsLoading(true);
 
         getConnectedApps(idpId)
@@ -756,6 +774,37 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         })
                                 }
                             </List>
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                showDeleteErrorDueToSharedOrgsModal && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                        type="negative"
+                        open={ showDeleteErrorDueToSharedOrgsModal }
+                        secondaryAction={ t("common:close") }
+                        onSecondaryActionClick={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                        data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation` }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-header` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            negative
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-message` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-content` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

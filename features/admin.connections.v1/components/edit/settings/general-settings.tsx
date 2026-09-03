@@ -19,12 +19,11 @@
 import { Show } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, TestableComponentInterface,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -42,6 +41,7 @@ import {
     useGetConnections
 } from "../../../api/connections";
 import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
+import useGetIdpShare from "../../../api/share/idp/use-get-idp-share";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectedAppInterface, ConnectedAppsInterface, ConnectionInterface, CustomAuthConnectionInterface }
     from "../../../models/connection";
@@ -147,6 +147,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] = useState<boolean>(
         false
     );
+    const [ showDeleteErrorDueToSharedOrgsModal, setShowDeleteErrorDueToSharedOrgsModal ] = useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
@@ -160,6 +161,24 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const {
         data: connectedAppsOfLocalAuthenticator
     } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
+
+    // Fetch the sharing status of the identity provider so that deletion can be blocked while it is
+    // still shared with organizations. Only relevant for real identity providers when organization
+    // management is enabled (custom/local authenticators and shared connections cannot be shared).
+    const { data: idpShareData } = useGetIdpShare({
+        attributes: "sharingMode",
+        identityProviderId: editingIDP?.id,
+        shouldFetch: isOrganizationManagementEnabled
+            && !isCustomAuthenticator
+            && !isCustomLocalAuthenticator
+            && !isSharedConnection
+            && !!editingIDP?.id
+    });
+
+    const isSharedWithOrganizations: boolean = !!idpShareData?.sharingMode?.policy
+        || idpShareData?.organizations?.length > 0;
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -202,6 +221,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * This method handles the initiation of the delete action for federated authenticators.
      */
     const handleIdentityProviderDeleteInitiation = (): void => {
+        // Block deletion while the connection is still shared with organizations.
+        if (isSharedWithOrganizations) {
+            setShowDeleteErrorDueToSharedOrgsModal(true);
+
+            return;
+        }
+
         setIsAppsLoading(true);
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
@@ -624,6 +650,35 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 ))
                             ) }
                         </List>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showDeleteErrorDueToSharedOrgsModal && (
+                <ConfirmationModal
+                    onClose={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                    type="negative"
+                    open={ showDeleteErrorDueToSharedOrgsModal }
+                    secondaryAction={ t("common:close") }
+                    onSecondaryActionClick={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                    data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation` }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-header` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-message` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-content` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

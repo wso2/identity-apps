@@ -84,6 +84,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
             header: "Unable to Delete",
             message: "There are applications using this connection."
         },
+        deleteIDPWithSharedOrganizations: {
+            content: "Unshare this connection from all organizations using the Shared Access tab " +
+                "before deleting it.",
+            header: "Unable to Delete",
+            message: "This connection is shared with organizations."
+        },
         enableMultipleDeviceProgressiveEnrollment: {
             assertionHint: "I understand the security risk and want to enable this feature.",
             content: "When enabled, users can register additional push devices before completing " +

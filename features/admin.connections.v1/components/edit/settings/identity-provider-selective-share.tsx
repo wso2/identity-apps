@@ -55,7 +55,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useGetIdpShare from "../../../api/use-get-idp-share";
+import useGetIdpShare from "../../../api/share/idp/use-get-idp-share";
 import {
     IdPShareListResponseInterface,
     IdPSharedOrganizationInterface,

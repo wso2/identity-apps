@@ -16,14 +16,73 @@
  * under the License.
  */
 
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { IdPShareListResponseInterface } from "../models/identity-provider-sharing";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { IdPShareListResponseInterface } from "../../../models/identity-provider-sharing";
+
+/**
+ * Get an HTTP client instance.
+ */
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+/**
+ * Get the organizations that an identity provider is shared with.
+ *
+ * This is the imperative counterpart of {@link useGetIdpShare}, for use outside of a React render
+ * (e.g. resolving the share status when a delete action is triggered).
+ *
+ * @param identityProviderId - ID of the identity provider.
+ * @returns A promise resolving to the share response.
+ */
+export const getIdPShare = (identityProviderId: string): Promise<IdPShareListResponseInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            attributes: "sharingMode",
+            recursive: true
+        },
+        url: `${ store.getState().config.endpoints.identityProviders }/${ identityProviderId }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    "Failed to retrieve the shared organizations of the identity provider.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return response.data as IdPShareListResponseInterface;
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.response?.status,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
 
 /**
  * Arguments for the {@link useGetIdpShare} hook.

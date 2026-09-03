@@ -52,6 +52,11 @@ export interface AuthenticationProviderNS {
             content: string;
             assertionHint: string;
         };
+        deleteIDPWithSharedOrganizations: {
+            header: string;
+            message: string;
+            content: string;
+        };
         deleteAuthenticator: {
             header: string;
             message: string;
