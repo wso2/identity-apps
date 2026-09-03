@@ -542,7 +542,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
         css: {
             preprocessorOptions: {
                 scss: {
-                    silenceDeprecations: [ "legacy-js-api" ]
+                    silenceDeprecations: [ "legacy-js-api" ] as [ "legacy-js-api" ]
                 }
             }
         },
