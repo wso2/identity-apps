@@ -19,6 +19,8 @@
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.JsonObject" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="java.util.Enumeration" %>
 
 <%!
@@ -63,7 +65,6 @@ public static String toJson(JsonObject jsonObject) {
     addValue(reactGlobalContext, "branding.termsOfUseUrl", termsOfUseURL);
     addValue(reactGlobalContext, "branding.supportEmail", supportEmail);
 
-    String backToUrl = Encode.forJavaScript(IdentityManagementEndpointUtil.encodeURL(request.getParameter("callback")));
     String sp = Encode.forJava(request.getParameter("sp"));
     String accessUrl;
     try {
@@ -72,9 +73,39 @@ public static String toJson(JsonObject jsonObject) {
     } catch (Exception e) {
         accessUrl = null;
     }
-    if (StringUtils.equalsIgnoreCase(backToUrl, "null")) {
+
+    // Validate the raw callback against the tenant's configured callback allow list before it is
+    // reflected into the page. Output encoding alone is not authorization, and the allow list is a
+    // full string match, so it has to be evaluated on the raw value rather than the encoded one.
+    String rawCallback = request.getParameter("callback");
+    String callbackFlowType = request.getParameter("flowType");
+    boolean isValidCallback = false;
+    if (StringUtils.isNotBlank(rawCallback) && !StringUtils.equalsIgnoreCase(rawCallback, "null")) {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            // A missing flowType is treated as REGISTRATION, consistent with execution-flow.jsp.
+            if (StringUtils.equalsIgnoreCase(callbackFlowType, "PASSWORD_RECOVERY")) {
+                isValidCallback = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain, rawCallback);
+            } else if (StringUtils.equalsIgnoreCase(callbackFlowType, "INVITED_USER_REGISTRATION")) {
+                // Invited user registration is governed by the lite user sign up connector, which
+                // keeps its own allow list (LiteRegistration.CallbackRegex).
+                isValidCallback = preferenceRetrievalClient.checkIfLiteRegCallbackURLValid(tenantDomain, rawCallback);
+            } else {
+                isValidCallback = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain, rawCallback);
+            }
+        } catch (PreferenceRetrievalClientException e) {
+            // Fail closed.
+            isValidCallback = false;
+        }
+    }
+
+    String backToUrl;
+    if (isValidCallback) {
+        backToUrl = Encode.forJavaScript(IdentityManagementEndpointUtil.encodeURL(rawCallback));
+    } else {
         backToUrl = accessUrl;
     }
+
     addValue(reactGlobalContext, "application.accessUrl", accessUrl);
     addValue(reactGlobalContext, "application.callbackOrAccessUrl", backToUrl);
 
