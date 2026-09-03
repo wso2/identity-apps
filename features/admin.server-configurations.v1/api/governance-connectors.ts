@@ -97,7 +97,7 @@ export const useGovernanceConnectors = <
         },
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.governanceConnectorCategories + "/"
-            + categoryId + "/connectors/"
+            + categoryId + "/connectors"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
@@ -314,7 +314,7 @@ export const revertGovernanceConnectorProperties = (
  */
 export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceConnectorInterface[]> => {
     const url: string = store.getState().config.endpoints.governanceConnectorCategories +
-        "/" + categoryId + "/connectors/";
+        "/" + categoryId + "/connectors";
 
     return getData(url);
 };

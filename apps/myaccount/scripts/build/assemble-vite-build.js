@@ -35,6 +35,34 @@ const deploymentConfig = fs.readJsonSync(deploymentConfigPath);
 const themeName = deploymentConfig?.ui?.theme?.name || "default";
 const buildMode = resolveBuildMode(process.env);
 
+/**
+ * JSP scriptlet that resolves the externally visible proxy context path at request time.
+ */
+const PROXY_CONTEXT_PATH_SCRIPTLET = [
+    "<%",
+    "    String resolvedProxyContextPath = ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH);",
+    "    String proxyContextPathPrefix = StringUtils.isNotBlank(resolvedProxyContextPath) ? \"/\" + resolvedProxyContextPath : \"\";",
+    "%>"
+].join("\n");
+
+/**
+ * JSP expression that renders the resolved proxy context path prefix (empty when unset).
+ */
+const PROXY_CONTEXT_PATH_EXPRESSION = "<%=proxyContextPathPrefix%>";
+
+/**
+ * Resolve the public base path used by the deployed shells.
+ *
+ * @returns {string} Public base path, optionally prefixed with a JSP expression.
+ */
+function resolveRuntimePublicBase() {
+    if (buildMode.isExternalTomcat || (buildMode.isStatic && buildMode.isPreAuthCheckEnabled)) {
+        return buildMode.publicBase;
+    }
+
+    return `${PROXY_CONTEXT_PATH_EXPRESSION}${buildMode.publicBase}`;
+}
+
 const buildRoot = path.resolve(appRoot, "build", "myaccount");
 const appBuildRoot = path.resolve(buildRoot, buildMode.isStatic && buildMode.isPreAuthCheckEnabled
     ? buildMode.appBasePath
@@ -551,7 +579,7 @@ function buildTemplateOptions() {
     const basename = buildMode.isStatic && buildMode.isPreAuthCheckEnabled
         ? buildMode.appBasePath
         : "myaccount";
-    const publicPath = buildMode.publicBase;
+    const publicPath = resolveRuntimePublicBase();
     const themeHash = resolveThemeHash(themeName);
     const rtlThemeHash = resolveRtlThemeHash(themeName);
     const isExternalTomcat = buildMode.isExternalTomcat;
@@ -609,6 +637,9 @@ function buildTemplateOptions() {
             : "",
         proxyContextPathConstant: !isExternalTomcat
             ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
+            : "",
+        proxyContextPathScriptlet: !isExternalTomcat
+            ? PROXY_CONTEXT_PATH_SCRIPTLET
             : "",
         publicPath,
         requestForwardSnippet: "if(request.getParameter(\"code\") != null && !request.getParameter(\"code\").trim().isEmpty()) {request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
@@ -684,7 +715,7 @@ function renderShellFiles() {
     }
 
     const manifest = fs.readJsonSync(manifestPath);
-    const entryTags = buildEntryTags(manifest, "src/init/vite-entry.ts", buildMode.publicBase);
+    const entryTags = buildEntryTags(manifest, "src/init/vite-entry.ts", resolveRuntimePublicBase());
 
     if (buildMode.isStatic && buildMode.isPreAuthCheckEnabled) {
         renderTemplateToFile("auth.html", path.resolve(buildRoot, "index.html"), templateOptions);

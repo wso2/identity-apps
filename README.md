@@ -84,6 +84,10 @@ exposed_headers = [ "Location" ]
 [fido.trusted]
 origins=["https://localhost:9000"]
 
+# Make system apps editable
+[system_applications]
+read_only_apps = []
+
 # Configure Callback URLs for System Applications
 [console]
 callback_url = "regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login|https://localhost:9443/o/(.*)/console|https://localhost:9001/o/(.*)/console|https://localhost:9001/o/(.*)/console/login)"
