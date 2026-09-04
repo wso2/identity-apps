@@ -207,6 +207,10 @@ export interface FeatureConfigInterface {
      */
     parentUserInvitation?: FeatureAccessConfigInterface;
     /**
+     * Connection sharing feature (share IdPs / connections with organizations).
+     */
+    connectionSharing?: FeatureAccessConfigInterface;
+    /**
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;

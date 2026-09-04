@@ -84,6 +84,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
             header: "Unable to Delete",
             message: "There are applications using this connection."
         },
+        deleteIDPWithSharedOrganizations: {
+            content: "Unshare this connection from all organizations using the Shared Access tab " +
+                "before deleting it.",
+            header: "Unable to Delete",
+            message: "This connection is shared with organizations."
+        },
         enableMultipleDeviceProgressiveEnrollment: {
             assertionHint: "I understand the security risk and want to enable this feature.",
             content: "When enabled, users can register additional push devices before completing " +
@@ -1913,6 +1919,76 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: "Update successful"
             }
         }
+    },
+    sharedConnection: {
+        label: "Shared"
+    },
+    sharedAccess: {
+        modes: {
+            doNotShare: "Do not share with any organization",
+            shareWithAll: "Share with all organizations",
+            shareWithSelected: "Share with selected organizations"
+        },
+        notifications: {
+            fetchOrganizations: {
+                genericError: {
+                    description: "An error occurred while retrieving the organizations.",
+                    message: "Couldn't retrieve organizations"
+                }
+            },
+            noOrganizationsSelected: {
+                description: "Please select at least one organization to share the connection with.",
+                message: "No organizations selected"
+            },
+            share: {
+                genericError: {
+                    description: "An error occurred while updating the shared access of the connection.",
+                    message: "Couldn't update shared access"
+                },
+                success: {
+                    description: "The shared access of the connection was updated successfully.",
+                    message: "Shared access updated"
+                }
+            },
+            unshare: {
+                genericError: {
+                    description: "An error occurred while unsharing the connection from organizations.",
+                    message: "Couldn't unshare connection"
+                },
+                success: {
+                    description: "The connection was unshared from all organizations successfully.",
+                    message: "Connection unshared"
+                }
+            }
+        },
+        selectAnOrganizationToManage: "Select an organization to manage its sharing settings.",
+        shareAllInfo: "This connection will be shared with all existing organizations and any " +
+            "organizations created in the future.",
+        shareAllWarningModal: {
+            assertionHint: "Please confirm your action.",
+            description: "This will share the connection across ALL existing and future organizations. " +
+                "This action will affect all current and future organizations in your system.",
+            header: "Share with all organizations",
+            message: "You are about to share this connection across all organizations."
+        },
+        shareTypeSwitchModal: {
+            description: "Choose how you want to proceed:",
+            header: "Switch to selective sharing",
+            message: "You are about to switch from sharing with all organizations to selective sharing.",
+            preserveStateLabel1: "Preserve current sharing",
+            preserveStateLabel2: "Keep the connection shared with existing organizations and switch to " +
+                "selective mode.",
+            resetToDefaultLabel1: "Reset to default",
+            resetToDefaultLabel2: "Unshare the connection from all organizations and start fresh with " +
+                "selective sharing."
+        },
+        shareWithFutureChildOrgs: "Share with future child organizations",
+        sharingSettingsLabel: "Sharing settings for ",
+        subTitle: "Share this connection with organizations so that they can use it for authentication.",
+        tabName: "Shared Access",
+        title: "Sharing Policy",
+        toManageOrganizationSelectLeftPanel: "Select the organization from the left panel to manage its " +
+            "sharing settings."
     },
     placeHolders: {
         emptyAuthenticatorList: {

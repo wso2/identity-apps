@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
@@ -44,6 +46,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     useEffect,
     useMemo,
     useState
@@ -379,6 +382,35 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                     provisioningConfigurations?.outboundProvisioningIdps?.map(
                                         (provisioningIdp: OutboundProvisioningConfigurationInterface,
                                             index: number) => {
+                                            // Resolve whether the underlying connection is shared from a
+                                            // parent organization to denote it with a "Shared" chip.
+                                            const isSharedIdp: boolean = !!filteredIdpList?.find(
+                                                (idp: IdentityProviderInterface) =>
+                                                    idp.name === provisioningIdp.idp)?.isShared;
+                                            const provisionerTitle: ReactNode = isSharedIdp
+                                                ? (
+                                                    <Box
+                                                        sx={ {
+                                                            alignItems: "center",
+                                                            display: "inline-flex",
+                                                            gap: 1
+                                                        } }
+                                                    >
+                                                        { provisioningIdp?.idp }
+                                                        <Chip
+                                                            size="small"
+                                                            label={
+                                                                t("authenticationProvider:sharedConnection.label")
+                                                            }
+                                                            data-componentid={
+                                                                `${ componentId }-${ provisioningIdp?.idp }` +
+                                                                "-shared-chip"
+                                                            }
+                                                        />
+                                                    </Box>
+                                                )
+                                                : provisioningIdp?.idp;
+
                                             return (
                                                 <AuthenticatorAccordion
                                                     key={ provisioningIdp.idp }
@@ -418,7 +450,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                                     verticalAlign: "middle"
                                                                 },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp,
+                                                                title: provisionerTitle,
                                                                 titleOptions: {
                                                                     flex: true
                                                                 }

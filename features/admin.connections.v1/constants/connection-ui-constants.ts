@@ -59,6 +59,7 @@ export class ConnectionUIConstants {
         OUTBOUND_PROVISIONING: string;
         SETTINGS: string;
         IDENTITY_PROVIDER_GROUPS: string;
+        SHARED_ACCESS: string;
     }> = {
         ADVANCED: "advanced",
         ATTRIBUTES: "attributes",
@@ -67,7 +68,8 @@ export class ConnectionUIConstants {
         IDENTITY_PROVIDER_GROUPS: "identity-provider-groups",
         JIT_PROVISIONING: "jit-provisioning",
         OUTBOUND_PROVISIONING: "outbound-provisioning",
-        SETTINGS: "settings"
+        SETTINGS: "settings",
+        SHARED_ACCESS: "shared-access"
     } as const;
 
     /**

@@ -34,6 +34,7 @@ import { Icon, Label } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models/application";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
+import Chip from "@oxygen-ui/react/Chip";
 
 /**
  * Proptypes for the authenticators component.
@@ -370,6 +371,26 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
     };
 
+    /**
+     * Render the status chips shown on an authenticator card (shared connection marker and feature status).
+     *
+     * @param authenticator - Authenticator.
+     *
+     * @returns Authenticator status chips.
+     */
+    const renderAuthenticatorStatusChips = (authenticator: GenericAuthenticatorInterface): ReactElement => (
+        <Fragment>
+            {
+                authenticator?.isShared && (
+                    <Chip
+                        size="small"
+                        label={ t("authenticationProvider:sharedConnection.label") }
+                    />
+                )
+            }
+        </Fragment>
+    );
+
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
@@ -403,6 +424,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
+                                featureStatus={ renderAuthenticatorStatusChips(authenticator) }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
                                     ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator

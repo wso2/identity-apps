@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -639,12 +641,21 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
+            const isSharedConnection: boolean = !!(connector as ConnectionInterface)?.isShared;
+
             return (
-                <Fragment>
+                <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
                     { connector.name }
+                    { isSharedConnection && (
+                        <Chip
+                            data-componentid={ `${ testId }-shared-connection-chip` }
+                            label={ t("authenticationProvider:sharedConnection.label") }
+                            size="small"
+                        />
+                    ) }
                     { isConnectorDetailsFetchRequestLoading === false && connector.name &&
                         resolveStatusLabel(connector) }
-                </Fragment>
+                </Box>
             );
         }
 

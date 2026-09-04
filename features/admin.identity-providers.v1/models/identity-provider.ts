@@ -48,6 +48,10 @@ export interface StrictIdentityProviderInterface {
     groups?: IdentityProviderGroupInterface[];
     templateId?: string;
     tags?: string[];
+    /**
+     * Whether the identity provider is a shared (shadow) connection resolved from a parent organization.
+     */
+    isShared?: boolean;
 }
 
 export interface IdentityProviderInterface extends StrictIdentityProviderInterface {
@@ -508,6 +512,10 @@ export interface GenericAuthenticatorInterface extends StrictGenericAuthenticato
      * The list of tags that the authenticator can be categorized under.
      */
     tags?: string[];
+    /**
+     * Whether the underlying connection is a shared (shadow) connection from a parent organization.
+     */
+    isShared?: boolean;
 }
 
 /**
