@@ -1,5 +1,17 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.212
+
+### Patch Changes
+
+- [#10653](https://github.com/wso2/identity-apps/pull/10653) [`bbc895d7bd85fbe41269a14b7fa03ac7fa570212`](https://github.com/wso2/identity-apps/commit/bbc895d7bd85fbe41269a14b7fa03ac7fa570212) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Improve the UX for shared provisioning connectors
+
+- Updated dependencies [[`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724)]:
+  - @wso2is/admin.connections.v1@2.41.0
+  - @wso2is/admin.identity-providers.v1@2.29.2
+  - @wso2is/admin.applications.v1@2.43.20
+  - @wso2is/admin.core.v1@2.59.4
+
 ## 2.25.211
 
 ### Patch Changes
