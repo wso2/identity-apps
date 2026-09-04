@@ -527,7 +527,7 @@
                     String[] usernameSplitItems = usernameIdentifier.split("/");
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
                     String identifierFirstUserInput = request.getParameter(JS_IDENTIFIER_FIRST_USER_INPUT);
-                    if (StringUtils.isBlank(identifierFirstUserInput) || identifierFirstUserInput == "null") {
+                    if (StringUtils.isBlank(identifierFirstUserInput) || "null".equals(identifierFirstUserInput)) {
                         identifierFirstUserInput = sanitizeUserName;
                     }
                 %>
