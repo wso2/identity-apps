@@ -100,6 +100,31 @@ export class URLUtils {
     }
 
     /**
+     * Determines whether a value is a valid absolute URI.
+     *
+     * Validates that the input contains no whitespace and forms an absolute URI of any scheme
+     * (including URNs like `urn:`). Whitespace is explicitly checked beforehand because standard
+     * URL parsers may tolerate spaces within opaque paths (e.g., `urn:my audience`), which
+     * is considered invalid.
+     *
+     * @param uri - The URI string to evaluate.
+     * @returns `true` if the string is a non-empty, whitespace-free absolute URI; otherwise, `false`.
+     */
+    public static isAbsoluteURI(uri: string): boolean {
+        if (!uri) {
+            return false;
+        }
+
+        const trimmedURI: string = uri.trim();
+
+        if (trimmedURI === "" || /\s/.test(trimmedURI)) {
+            return false;
+        }
+
+        return URLUtils.isURLValid(trimmedURI, true);
+    }
+
+    /**
      * Checks if the the provided URL is a loop back call.
      *
      * @param url - The URL to evaluate.

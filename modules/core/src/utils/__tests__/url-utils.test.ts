@@ -175,6 +175,46 @@ describe("URLUtils", (): void => {
         });
     });
 
+    describe("isAbsoluteURI", (): void => {
+        it("should return true for absolute URIs of any scheme", (): void => {
+            expect(URLUtils.isAbsoluteURI("https://app.example.com/saml")).toBe(true);
+            expect(URLUtils.isAbsoluteURI("http://app.example.com/saml")).toBe(true);
+            expect(URLUtils.isAbsoluteURI("ftp://files.example.com")).toBe(true);
+            expect(URLUtils.isAbsoluteURI("myapp://open")).toBe(true);
+        });
+
+        it("should return true for URN audiences, which have no authority component", (): void => {
+            expect(URLUtils.isAbsoluteURI("urn:example:sp:audience")).toBe(true);
+            expect(URLUtils.isAbsoluteURI("urn:amazon:webservices")).toBe(true);
+        });
+
+        it("should return false for bare tokens that are not absolute", (): void => {
+            expect(URLUtils.isAbsoluteURI("PlainNonUrlAudience")).toBe(false);
+            expect(URLUtils.isAbsoluteURI("ABC-123")).toBe(false);
+            expect(URLUtils.isAbsoluteURI("app.example.com/saml")).toBe(false);
+        });
+
+        it("should return false for values containing whitespace", (): void => {
+            expect(URLUtils.isAbsoluteURI("my audience with spaces")).toBe(false);
+            expect(URLUtils.isAbsoluteURI("urn:my audience")).toBe(false);
+        });
+
+        it("should return false for empty and blank values", (): void => {
+            expect(URLUtils.isAbsoluteURI("")).toBe(false);
+            expect(URLUtils.isAbsoluteURI("   ")).toBe(false);
+            expect(URLUtils.isAbsoluteURI(undefined)).toBe(false);
+            expect(URLUtils.isAbsoluteURI(null)).toBe(false);
+        });
+
+        it("should reject unsafe schemes via the sanitization check", (): void => {
+            expect(URLUtils.isAbsoluteURI("javascript:alert(1)")).toBe(false);
+        });
+
+        it("should tolerate surrounding whitespace", (): void => {
+            expect(URLUtils.isAbsoluteURI("  https://app.example.com/saml  ")).toBe(true);
+        });
+    });
+
     describe("getDomain", (): void => {
         it("should extract domain correctly", (): void => {
             expect(URLUtils.getDomain("https://www.example.com/path")).toBe("example.com");

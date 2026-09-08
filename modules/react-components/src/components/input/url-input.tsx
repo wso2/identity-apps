@@ -18,7 +18,11 @@
 
 import IconButton from "@oxygen-ui/react/IconButton";
 import { PlusIcon, XMarkIcon } from "@oxygen-ui/react-icons";
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    TestableComponentInterface,
+    URLComponentsInterface
+} from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
@@ -757,8 +761,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const urlTextWidget = (url: string): ReactElement => {
 
-        const { protocol, host } = URLUtils.urlComponents(url);
-        let { pathWithoutProtocol } = URLUtils.urlComponents(url);
+        const components: URLComponentsInterface = URLUtils.urlComponents(url);
+
+        if (!components || !components.pathWithoutProtocol) {
+            return <span className="decoded-path">{ url }</span>;
+        }
+
+        const { protocol, host } = components;
+        let { pathWithoutProtocol } = components;
 
         // `pathWithoutProtocol` is taken from the `href` attribute returned when parsed using URL constructor.
         // It always appends a `/` if the URL doesn't have it. Need to get rid of this additional `/`.
@@ -768,7 +778,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         return (
             <span>
-                { (!URLUtils.isHTTPS(url) && !onlyOrigin && !isCustom) ? (
+                { (protocol === "http" && !onlyOrigin && !isCustom) ? (
                     <Popup
                         trigger={
                             <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
@@ -967,7 +977,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                                 data-componentid={ `${ componentId }-${ url }` }
                                                 data-testid={ `${ testId }-${ url }` }
                                             >
-                                                <span>{ url }</span>
+                                                { urlTextWidget(url) }
                                                 { !readOnly && urlRemoveButtonWidget(url) }
                                             </Label>
                                         </p>
