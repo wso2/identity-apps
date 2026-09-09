@@ -238,13 +238,33 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     }, [ searchQuery ]);
 
     /**
+     * Whether every group currently listed is among the selected ones. The two lists are
+     * compared by id rather than by length, because a selection made before a search is
+     * kept while the listing narrows, and the counts can then match without the listed
+     * groups being the selected ones.
+     */
+    const countSelectedAmongListed = (
+        listed: GroupsInterface[],
+        selected: GroupsInterface[]
+    ): number =>
+        listed.filter((group: GroupsInterface) =>
+            selected.some((item: GroupsInterface) => item.id === group.id)).length;
+
+    const areAllListedGroupsSelected = (
+        listed: GroupsInterface[],
+        selected: GroupsInterface[]
+    ): boolean =>
+        listed.length > 0
+        && listed.every((group: GroupsInterface) =>
+            selected.some((item: GroupsInterface) => item.id === group.id));
+
+    /**
      * A newly loaded page brings in groups that are not selected yet, so the header
      * checkbox must stop claiming that everything in the list is selected.
      */
     useEffect(() => {
-        setIsSelectAllGroupsChecked(
-            groupsList.length > 0 && selectedGroupsList.length === groupsList.length);
-    }, [ groupsList ]);
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(groupsList, selectedGroupsList));
+    }, [ groupsList, selectedGroupsList ]);
 
     /**
      * Show error if group list fetch request failed.
@@ -305,7 +325,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         setSelectedGroupList(checkedGroups);
-        setIsSelectAllGroupsChecked(checkedGroups.length === groupsList.length);
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(groupsList, checkedGroups));
     };
 
     const handleOpenAddNewGroupModal = () => {
@@ -544,7 +564,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     data-componentid="user-mgt-update-groups-modal-selection-summary"
                                 >
                                     { t("user:updateUser.groups.addGroupsModal.selectionSummary", {
-                                        selected: selectedGroupsList?.length ?? 0,
+                                        selected: countSelectedAmongListed(
+                                            groupsList, selectedGroupsList),
                                         total: groupsList.length
                                     }) }
                                     {
