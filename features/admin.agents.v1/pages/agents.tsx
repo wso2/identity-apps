@@ -43,7 +43,8 @@ export default function Agents ({
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+        useSelector((state: AppState): FeatureAccessConfigInterface =>
+            state?.config?.ui?.features?.agents);
 
     const hasAgentCreatePermissions: boolean =
         useRequiredScopes(agentFeatureConfig?.scopes?.create);
@@ -128,6 +129,7 @@ export default function Agents ({
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
             action={ shouldShowCreateAgentButton && (<PrimaryButton
+                data-componentid={ `${ componentId }-add-button` }
                 onClick={ () => {
                     setIsAddAgentWizardOpen(true);
                 } }>

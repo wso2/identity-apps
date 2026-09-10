@@ -186,7 +186,7 @@ export default function AgentList ({
                     action={
                         hasAgentCreatePermissions && (
                             <PrimaryButton
-                                data-testid={ `${ componentId }-empty-placeholder-add-agent-button` }
+                                data-componentid={ `${ componentId }-empty-placeholder-add-agent-button` }
                                 onClick={ () => setShowAgentAddWizard() }
                             >
                                 <Icon name="add" />
