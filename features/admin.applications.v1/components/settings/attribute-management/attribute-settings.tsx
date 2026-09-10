@@ -278,15 +278,18 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ externalClaims ]);
 
     /**
-     * Applications that define their own claim dialect carry per application attribute names. The OIDC scope
-     * grouped selector has no way to display or edit those names, and saving from it drops them. Route such
-     * applications to the local dialect selector, which supports them, and leave every other application on
-     * the scope grouped selector.
+     * Whether this tab operates on the tenant wide OIDC claim dialect rather than the local claim dialect.
      *
-     * `onlyOIDCConfigured` is intentionally left untouched. It also drives subject claim handling, and these
-     * applications are still OIDC applications.
+     * Applications that define their own claim dialect carry per application attribute names. Those names only
+     * exist in the local dialect, and the OIDC scope grouped selector has no field for them, so saving from it
+     * drops them. Such applications therefore work in the local dialect, like every application that is not
+     * OIDC only.
+     *
+     * This drives the dialect the tab loads, which selector renders, and whether an unset subject claim is
+     * sent on save. `onlyOIDCConfigured` is intentionally left untouched; those applications are still OIDC
+     * applications for every other purpose.
      */
-    const useScopeGroupedSelector: boolean = onlyOIDCConfigured && claimConfigurations?.dialect !== "CUSTOM";
+    const usesOIDCClaimDialect: boolean = onlyOIDCConfigured && claimConfigurations?.dialect !== "CUSTOM";
 
     /**
      * Set the dialects for inbound protocols
@@ -298,7 +301,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
 
-        if (useScopeGroupedSelector) {
+        if (usesOIDCClaimDialect) {
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
             return;
@@ -306,7 +309,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
         setIsClaimRequestLoading(false);
         changeSelectedDialect(localDialectURI);
-    }, [ useScopeGroupedSelector, dialect ]);
+    }, [ usesOIDCClaimDialect, dialect ]);
 
     useEffect(() => {
         if (advanceSettingValues) {
@@ -1151,7 +1154,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
 
-        const isSubjectClaimOmitted: boolean = !useScopeGroupedSelector
+        const isSubjectClaimOmitted: boolean = !usesOIDCClaimDialect
             && !claimConfigurations?.subject?.claim?.uri
             && !advanceSettingValues?.isSubjectClaimExplicit;
 
@@ -1352,7 +1355,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 {
-                                    useScopeGroupedSelector
+                                    usesOIDCClaimDialect
                                         ? (
                                             <AttributeSelectionOIDC
                                                 claims={ claims }
