@@ -18,6 +18,7 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -183,6 +184,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
+    const { UIConfig } = useUIConfig();
+
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
     const [ dialect, setDialect ] = useState<ClaimDialect[]>([]);
@@ -279,17 +282,21 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     /**
      * Whether this tab operates on the tenant wide OIDC claim dialect rather than the local claim dialect.
+     * It drives the dialect the tab loads, which selector renders, and whether an unset subject claim is
+     * sent on save.
      *
-     * Applications that define their own claim dialect carry per application attribute names. Those names only
-     * exist in the local dialect, and the OIDC scope grouped selector has no field for them, so saving from it
-     * drops them. Such applications therefore work in the local dialect, like every application that is not
-     * OIDC only.
+     * Applications that define their own claim dialect carry per application attribute names. Those names
+     * only exist in the local dialect, and the OIDC scope grouped selector has no field for them, so saving
+     * from it drops them. Sending such applications to the local dialect instead is a behaviour change for
+     * screens that work today, so it is opt in through `isCustomClaimDialectRoutingEnabled`. With the option
+     * off this is exactly `onlyOIDCConfigured`, which is what the tab used before the option existed.
      *
-     * This drives the dialect the tab loads, which selector renders, and whether an unset subject claim is
-     * sent on save. `onlyOIDCConfigured` is intentionally left untouched; those applications are still OIDC
-     * applications for every other purpose.
+     * `onlyOIDCConfigured` is intentionally left untouched; these are still OIDC applications for every
+     * other purpose.
      */
-    const usesOIDCClaimDialect: boolean = onlyOIDCConfigured && claimConfigurations?.dialect !== "CUSTOM";
+    const usesOIDCClaimDialect: boolean = UIConfig?.isCustomClaimDialectRoutingEnabled
+        ? onlyOIDCConfigured && claimConfigurations?.dialect !== "CUSTOM"
+        : onlyOIDCConfigured;
 
     /**
      * Set the dialects for inbound protocols

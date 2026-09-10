@@ -674,6 +674,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
     /**
+     * Send applications that define their own claim dialect to the local dialect attribute selector.
+     * Off by default; the scope grouped selector keeps handling them unless this is switched on.
+     */
+    isCustomClaimDialectRoutingEnabled?: boolean;
+    /**
      * Enable/Disable the custom claim mapping feature.
      */
     isCustomClaimMappingEnabled?: boolean;
