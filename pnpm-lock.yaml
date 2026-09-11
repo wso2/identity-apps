@@ -473,7 +473,7 @@ importers:
         specifier: ^1.5.207
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.52
+        specifier: ^2.38.53
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -503,7 +503,7 @@ importers:
         specifier: ^2.13.6
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.46.0
+        specifier: ^2.46.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.5
@@ -10060,7 +10060,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.44.1
+        specifier: ^2.46.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.5
