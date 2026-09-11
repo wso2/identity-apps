@@ -40,6 +40,7 @@ import { deleteAgent } from "../api/agents";
 
 interface AgentListProps extends IdentifiableComponentInterface {
     advancedSearch: ReactNode;
+    hasAgentCreatePermissions: boolean;
     isLoading: boolean;
     mutateAgentList: any;
     list: any[];
@@ -53,6 +54,7 @@ interface AgentListItemInterface {
 
 export default function AgentList ({
     advancedSearch,
+    hasAgentCreatePermissions,
     isLoading,
     list,
     mutateAgentList,
@@ -182,13 +184,15 @@ export default function AgentList ({
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
                     action={
-                        (<PrimaryButton
-                            data-testid={ `${ componentId }-empty-placeholder-add-agent-button` }
-                            onClick={ () => setShowAgentAddWizard() }
-                        >
-                            <Icon name="add" />
-                             New Agent
-                        </PrimaryButton>)
+                        hasAgentCreatePermissions && (
+                            <PrimaryButton
+                                data-componentid={ `${ componentId }-empty-placeholder-add-agent-button` }
+                                onClick={ () => setShowAgentAddWizard() }
+                            >
+                                <Icon name="add" />
+                                New Agent
+                            </PrimaryButton>
+                        )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
