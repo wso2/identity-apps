@@ -77,6 +77,9 @@
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
     final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
 
+    String authError = request.getParameter("error");
+    String authErrorDescription = request.getParameter("error_description");
+
     if (StringUtils.isBlank(spId) && !StringUtils.isBlank(sp)) {
         try {
             if (sp.equals("My Account")) {
@@ -204,6 +207,8 @@
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
+                const authError = "<%= Encode.forJavaScript(authError) != null ? Encode.forJavaScript(authError) : null %>";
+                const authErrorDescription = "<%= Encode.forJavaScript(authErrorDescription) != null ? Encode.forJavaScript(authErrorDescription) : null %>";
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
                 const extendedInputResolvers = [
@@ -243,8 +248,22 @@
                                 state
                             }
                         });
+
+                        return;
                     }
-                }, [code, state]);
+
+                    if (authError !== "null" && state !== "null") {
+                        setPostBody({
+                            flowId: savedFlowId,
+                            actionId: "",
+                            inputs: {
+                                error: authError,
+                                error_description: authErrorDescription === "null" ? "" : authErrorDescription,
+                                state
+                            }
+                        });
+                    }
+                }, [code, state, authError]);
 
                 useEffect(() => {
                     if (mlt !== "null" && flowId !== "null") {
@@ -272,9 +291,9 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
+                    if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);

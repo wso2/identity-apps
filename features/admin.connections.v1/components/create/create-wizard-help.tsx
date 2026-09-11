@@ -100,6 +100,10 @@ CreateConnectionWizardHelpPropsInterface> = (
                 return value.replace(value, deploymentConfig.customServerHost);
             case "redirect_uri":
                 return value.replace(value, deploymentConfig.customServerHost + "/commonauth");
+            case "registration_redirect_uri":
+                return value.replace(value, deploymentConfig.customServerHost + "/accounts/register");
+            case "recovery_redirect_uri":
+                return value.replace(value, deploymentConfig.customServerHost + "/accounts/recovery");
             default:
                 return value;
         }
