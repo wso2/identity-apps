@@ -34,6 +34,7 @@ import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
     Heading,
+    Hint,
     ItemTypeLabelPropsInterface,
     LinkButton,
     PrimaryButton,
@@ -53,6 +54,11 @@ import {
     Modal
 } from "semantic-ui-react";
 import { UserGroupsListTable } from "./user-groups-list";
+
+/**
+ * Number of groups fetched per page in the group assignment modal.
+ */
+const GROUPS_FETCH_LIMIT: number = 100;
 
 interface UserGroupsPropsInterface {
     /**
@@ -110,6 +116,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
 
+    /**
+     * Groups are fetched a page at a time and accumulated here, so that the modal is not
+     * limited to the first page returned by the API.
+     */
+    const [ fetchedGroups, setFetchedGroups ] = useState<GroupsInterface[]>([]);
+    const [ groupsStartIndex, setGroupsStartIndex ] = useState<number>(1);
+    const [ hasMoreGroups, setHasMoreGroups ] = useState<boolean>(false);
+
     const domain: string = user?.userName?.split("/")?.length > 1
         ? user.userName.split("/")[0]
         : userstoresConfig.primaryUserstoreName;
@@ -121,18 +135,18 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         isLoading: isGroupsListFetchRequestLoading,
         isValidating: isGroupsListFetchRequestValidating
     } = useGroupList(
-        null,
-        null,
+        GROUPS_FETCH_LIMIT,
+        groupsStartIndex,
         searchQuery,
         domain,
         excludedAttributes
     );
 
     const groupsList: GroupsInterface[] = useMemo(() => {
-        if (originalGroupsList?.Resources) {
+        if (fetchedGroups?.length > 0) {
             const filteredGroups: GroupsInterface[] = [];
 
-            originalGroupsList.Resources.map((group: GroupsInterface) => {
+            fetchedGroups.map((group: GroupsInterface) => {
                 let isGroupExistInUser: boolean = false;
 
                 if (user?.groups?.length > 0) {
@@ -153,11 +167,104 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         return [];
-    }, [ originalGroupsList ]);
+    }, [ fetchedGroups, user?.groups ]);
 
     const isLoading: boolean = useMemo(() => {
         return isGroupsListFetchRequestLoading || isGroupsListFetchRequestValidating;
     }, [ isGroupsListFetchRequestLoading, isGroupsListFetchRequestValidating ]);
+
+    /**
+     * Only the very first page should replace the list with a loading placeholder. Later
+     * pages are appended below the groups that are already rendered.
+     */
+    const isInitialGroupsLoading: boolean = isLoading && fetchedGroups.length === 0;
+
+    /**
+     * Accumulate each page returned by the API.
+     */
+    useEffect(() => {
+        if (!originalGroupsList) {
+            return;
+        }
+
+        const page: GroupsInterface[] = originalGroupsList.Resources ?? [];
+        const isPageFull: boolean = page.length === GROUPS_FETCH_LIMIT;
+
+        setFetchedGroups((previousGroups: GroupsInterface[]) => {
+            const merged: GroupsInterface[] = [ ...previousGroups ];
+
+            // Guard against the same page being appended twice on revalidation.
+            page.forEach((group: GroupsInterface) => {
+                if (!merged.some((item: GroupsInterface) => item.id === group.id)) {
+                    merged.push(group);
+                }
+            });
+
+            return merged;
+        });
+
+        // A page that is not full is the last one. The listing is capped by the server's
+        // maximum group list length, which is expected to be configured above the number
+        // of groups in the server, so reaching the end here means the whole list is loaded.
+        setHasMoreGroups(isPageFull);
+    }, [ originalGroupsList ]);
+
+    /**
+     * Loads the next page of groups when the list is scrolled to the bottom.
+     */
+    const loadMoreGroups: () => void = useCallback(() => {
+        if (!hasMoreGroups || isLoading) {
+            return;
+        }
+
+        // The scroll observer can fire again before the state of the page in flight has
+        // settled. Advance only once every group of the current page has been collected,
+        // so that a page is never skipped or requested twice.
+        if (fetchedGroups.length < groupsStartIndex - 1 + GROUPS_FETCH_LIMIT) {
+            return;
+        }
+
+        setGroupsStartIndex((previousStartIndex: number) => previousStartIndex + GROUPS_FETCH_LIMIT);
+    }, [ hasMoreGroups, isLoading, fetchedGroups.length, groupsStartIndex ]);
+
+    /**
+     * Restart pagination whenever the search query changes, so that results of the previous
+     * query are not mixed with the new one.
+     */
+    useEffect(() => {
+        setFetchedGroups([]);
+        setGroupsStartIndex(1);
+        setHasMoreGroups(false);
+    }, [ searchQuery ]);
+
+    /**
+     * Whether every group currently listed is among the selected ones. The two lists are
+     * compared by id rather than by length, because a selection made before a search is
+     * kept while the listing narrows, and the counts can then match without the listed
+     * groups being the selected ones.
+     */
+    const countSelectedAmongListed = (
+        listed: GroupsInterface[],
+        selected: GroupsInterface[]
+    ): number =>
+        listed.filter((group: GroupsInterface) =>
+            selected.some((item: GroupsInterface) => item.id === group.id)).length;
+
+    const areAllListedGroupsSelected = (
+        listed: GroupsInterface[],
+        selected: GroupsInterface[]
+    ): boolean =>
+        listed.length > 0
+        && listed.every((group: GroupsInterface) =>
+            selected.some((item: GroupsInterface) => item.id === group.id));
+
+    /**
+     * A newly loaded page brings in groups that are not selected yet, so the header
+     * checkbox must stop claiming that everything in the list is selected.
+     */
+    useEffect(() => {
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(groupsList, selectedGroupsList));
+    }, [ groupsList, selectedGroupsList ]);
 
     /**
      * Show error if group list fetch request failed.
@@ -218,7 +325,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         setSelectedGroupList(checkedGroups);
-        setIsSelectAllGroupsChecked(checkedGroups.length === groupsList.length);
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(groupsList, checkedGroups));
     };
 
     const handleOpenAddNewGroupModal = () => {
@@ -407,7 +514,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     <TransferList
                         bordered={ false }
                         isListEmpty={ groupsList?.length === 0 }
-                        isLoading={ isLoading }
+                        isLoading={ isInitialGroupsLoading }
+                        hasMore={ hasMoreGroups }
+                        loadMore={ loadMoreGroups }
                         listType="unselected"
                         listHeaders={ [
                             t("transferList:list.headers.0"),
@@ -447,6 +556,36 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
+                    { !isInitialGroupsLoading && groupsList.length > 0 && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Hint
+                                    compact
+                                    data-componentid="user-mgt-update-groups-modal-selection-summary"
+                                >
+                                    { t("user:updateUser.groups.addGroupsModal.selectionSummary", {
+                                        selected: countSelectedAmongListed(
+                                            groupsList, selectedGroupsList),
+                                        total: groupsList.length
+                                    }) }
+                                    {
+                                        // A full page means there are more groups still to load.
+                                        // Say so before the list is scrolled, so that selecting
+                                        // all is never mistaken for selecting every group. Once
+                                        // the last page has arrived the list is complete and
+                                        // nothing more needs to be said.
+                                        hasMoreGroups && (
+                                            <>
+                                                { " " }
+                                                { t("user:updateUser.groups.addGroupsModal" +
+                                                    ".listIncomplete") }
+                                            </>
+                                        )
+                                    }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton

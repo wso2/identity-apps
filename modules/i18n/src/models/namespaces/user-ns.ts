@@ -796,6 +796,8 @@ export interface userNS {
         groups: {
             addGroupsModal: {
                 heading: string;
+                listIncomplete: string;
+                selectionSummary: string;
                 subHeading: string;
             };
             editGroups: {

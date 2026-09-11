@@ -837,6 +837,9 @@ export const user: userNS = {
         groups: {
             addGroupsModal: {
                 heading: "Update User Groups",
+                listIncomplete: "More groups may be available. Scroll down to load them, or "
+                    + "search by name.",
+                selectionSummary: "{{selected}} of {{total}} listed groups selected.",
                 subHeading: "Add new groups or remove existing groups assigned to the user."
             },
             editGroups: {
