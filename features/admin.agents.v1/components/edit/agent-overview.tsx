@@ -41,6 +41,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Loader } from "semantic-ui-react";
 import { deleteAgent, updateAgent, updateAgentLockStatus } from "../../api/agents";
+import useAgentOwner from "../../hooks/use-agent-owner";
 import useGetAgent from "../../hooks/use-get-agent";
 import { AgentScimSchema } from "../../models/agents";
 import "./agent-overview.scss";
@@ -74,7 +75,16 @@ export default function AgentOverview({
         setIsAgentLocked(agentInfo["urn:scim:wso2:schema"]?.accountLocked);
     }, [ agentInfo ]);
 
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUser: string = useAgentOwner();
+
+    /**
+     * Owner is read-only in the overview form, hence it has to be carried over from the existing agent on update.
+     * Falls back to the authenticated user only for legacy agents that were created without an owner.
+     */
+    const agentOwner: string = useMemo(
+        (): string => agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner ?? authenticatedUser,
+        [ agentInfo, authenticatedUser ]
+    );
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
@@ -164,7 +174,7 @@ export default function AgentOverview({
                             const updateAgentPayload: AgentScimSchema = {
                                 "urn:scim:wso2:agent:schema": {
                                     ...values,
-                                    Owner: authenticatedUser
+                                    Owner: agentOwner
                                 },
                                 // TODO: Move this to BE API to set the agent username when updating
                                 // the agent information
