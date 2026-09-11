@@ -388,6 +388,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const notificationChannels: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const cibaSkipUserValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const cibaAllowFederatedUsers: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenExchangeRestrictScopeIssuanceForFederatedTokens: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -407,6 +408,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
     const [ showCibaFields, setShowCibaFields ] = useState<boolean>(false);
+    const [ showTokenExchangeFields, setShowTokenExchangeFields ] = useState<boolean>(false);
     const [ isSkipUserValidationEnabled, setIsSkipUserValidationEnabled ] = useState<boolean>(
         initialValues?.cibaAuthenticationRequest?.skipUserValidation ?? false
     );
@@ -784,6 +786,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         setShowCibaFields(
             selectedGrantTypes?.includes(ApplicationManagementConstants.CIBA_GRANT) ?? false
+        );
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        setShowTokenExchangeFields(
+            selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE) ?? false
         );
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -1769,6 +1777,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         authReqExpiryTime: undefined,
                         notificationChannels: [],
                         skipUserValidation: false
+                    }
+                };
+            }
+
+            if (showTokenExchangeFields) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    tokenExchange: {
+                        restrictScopeIssuanceForFederatedTokens:
+                            values.get("tokenExchangeRestrictScopeIssuanceForFederatedTokens")?.length > 0
                     }
                 };
             }
@@ -3076,6 +3094,46 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         showEmptyLinkText
                                     > hybrid flow </DocumentationLink> response type.
                                 </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
+            {
+                showTokenExchangeFields && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Heading as="h4">
+                                { t("applications:forms.inboundOIDC.fields.tokenExchange.heading") }
+                            </Heading>
+                            <Field
+                                ref={ tokenExchangeRestrictScopeIssuanceForFederatedTokens }
+                                name="tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                required={ false }
+                                type="checkbox"
+                                value={
+                                    initialValues?.tokenExchange?.restrictScopeIssuanceForFederatedTokens
+                                        ? [ "tokenExchangeRestrictScopeIssuanceForFederatedTokens" ]
+                                        : []
+                                }
+                                children={ [
+                                    {
+                                        label: t("applications:forms.inboundOIDC.fields." +
+                                            "tokenExchange.restrictScopeIssuanceForFederatedTokens.label"),
+                                        value: "tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                data-componentid={ `${ testId }-token-exchange-restrict-scopes-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.fields." +
+                                    "tokenExchange.restrictScopeIssuanceForFederatedTokens.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
