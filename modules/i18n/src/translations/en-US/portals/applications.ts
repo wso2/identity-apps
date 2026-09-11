@@ -1971,6 +1971,14 @@ export const applications: ApplicationsNS = {
                         label: "Allow federated users"
                     },
                     heading: "Client Initiated Backchannel Authentication"
+                },
+                tokenExchange: {
+                    heading: "Token Exchange",
+                    restrictScopeIssuanceForFederatedTokens: {
+                        hint: "When enabled, the server does not issue scopes for tokens obtained " +
+                            "by exchanging a federated token.",
+                        label: "Restrict scope issuance for federated tokens"
+                    }
                 }
             },
             messages: {
