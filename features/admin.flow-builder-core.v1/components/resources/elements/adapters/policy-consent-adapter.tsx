@@ -199,6 +199,11 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
                                                             className="rich-text-link"
                                                             target="_blank"
                                                             rel="noopener noreferrer"
+                                                            aria-label={
+                                                                policy.name
+                                                                || i18nLink(i18n.language, policy.policyUrl)
+                                                                || "Policy link"
+                                                            }
                                                         />
                                                     ] }
                                                 />

@@ -654,6 +654,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                         className="rich-text-link"
                         target={ isValidPolicyUrl ? "_blank" : undefined }
                         rel={ isValidPolicyUrl ? "noopener noreferrer" : undefined }
+                        aria-label={ exampleLinkText }
                     />
                 ] }
             />
