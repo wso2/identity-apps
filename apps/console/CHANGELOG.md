@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.16.2
+
+### Patch Changes
+
+- [#10685](https://github.com/wso2/identity-apps/pull/10685) [`073b8cc835421f80288acb56750e2fe6e9bc610d`](https://github.com/wso2/identity-apps/commit/073b8cc835421f80288acb56750e2fe6e9bc610d) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Paginate the group assignment list in the user Groups tab and show how many of the listed groups are selected
+
+- Updated dependencies [[`073b8cc835421f80288acb56750e2fe6e9bc610d`](https://github.com/wso2/identity-apps/commit/073b8cc835421f80288acb56750e2fe6e9bc610d)]:
+  - @wso2is/admin.users.v1@2.38.53
+  - @wso2is/i18n@2.46.1
+
 ## 4.16.1
 
 ### Patch Changes
