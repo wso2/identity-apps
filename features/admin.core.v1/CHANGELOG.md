@@ -1,5 +1,13 @@
 # @wso2is/admin.core.v1
 
+## 2.59.5
+
+### Patch Changes
+
+- [#10680](https://github.com/wso2/identity-apps/pull/10680) [`63d35224b19554eda3063cbd978bbef38cc2d6d5`](https://github.com/wso2/identity-apps/commit/63d35224b19554eda3063cbd978bbef38cc2d6d5) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Point the Internal Notification Sending "Learn More" link at the notification settings guide. The page is now
+  published on the WSO2 Identity Platform doc site (wso2/docs-is#6327), so the link value no longer needs to be
+  left undefined. The page itself was already wired to render the link.
+
 ## 2.59.4
 
 ### Patch Changes

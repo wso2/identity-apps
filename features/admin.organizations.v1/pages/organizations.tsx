@@ -19,7 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AdvanceSearchConstants } from "@wso2is/admin.core.v1/constants/advance-search";
@@ -27,6 +27,8 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import PlanLimitExceededAlert from "@wso2is/admin.feature-gate.v1/components/plan-limit-exceeded-alert";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
@@ -109,6 +111,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         featureConfig.organizations,
         "organizations.filterByMetadataAttributes"
     );
+
+    const organizationToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATIONS_TOGGLE_ENABLE
+    );
+    const isOrganizationToggleEnableFeatureLocked: boolean =
+        organizationToggleEnableFeatureStatus === FeatureStatus.DISABLED;
 
     const [ organizationList, setOrganizationList ] = useState<OrganizationListInterface>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -584,7 +592,22 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </>
                     ) }
                     data-componentid={ `${ testId }-page-layout` }
+                    contentTopMargin={ !isOrganizationToggleEnableFeatureLocked }
                 >
+                    { isOrganizationToggleEnableFeatureLocked && (
+                        <PlanLimitExceededAlert
+                            title={ t("console:common.planLimitExceededAlert.organizations.title") }
+                            description={ t("console:common.planLimitExceededAlert.organizations.description") }
+                            upgradeResolutionKey={
+                                "console:common.planLimitExceededAlert.organizations.upgradeResolution"
+                            }
+                            stayResolutionKey={
+                                "console:common.planLimitExceededAlert.organizations.stayResolution"
+                            }
+                            data-componentid={ `${ testId }-plan-limit-exceeded-alert` }
+                            sx={ { mb: 4 } }
+                        />
+                    ) }
                     <ListLayout
                         advancedSearch={
                             (<AdvancedSearchWithBasicFilters

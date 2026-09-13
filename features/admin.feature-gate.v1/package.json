@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.feature-gate.v1",
-    "version": "1.9.10",
+    "version": "1.10.0",
     "description": "Access control management for admin level features.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -31,13 +31,15 @@
         "@mui/system": "catalog:",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "catalog:",
+        "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/admin.core.v1": "^2.57.3",
-        "@wso2is/admin.organizations.v1": "^2.28.4",
-        "@wso2is/access-control": "^3.5.8",
+        "@wso2is/admin.organizations.v1": "^2.29.0",
+        "@wso2is/access-control": "^3.7.0",
         "@wso2is/core": "^2.12.10",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",
-        "react-redux": "^7.2.9"
+        "react-redux": "^7.2.9",
+        "swr": "^2.0.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

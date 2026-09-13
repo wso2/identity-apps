@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 5.4.8
+
+### Patch Changes
+
+- [#10677](https://github.com/wso2/identity-apps/pull/10677) [`634dac71b9c53ba68be00cb620b13b78e9ab11ed`](https://github.com/wso2/identity-apps/commit/634dac71b9c53ba68be00cb620b13b78e9ab11ed) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add i18n entry for the invalid authenticator error status
+
+* [#10687](https://github.com/wso2/identity-apps/pull/10687) [`65beee4c814ca554fabbf6de871a2237e492e858`](https://github.com/wso2/identity-apps/commit/65beee4c814ca554fabbf6de871a2237e492e858) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove redundant authorization header from HYPR and iProov login pages
+
 ## 5.4.7
 
 ### Patch Changes

@@ -502,8 +502,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             learnMore: documentationBaseUrl + "/guides/organization-insights/"
         },
         internalNotificationSending: {
-            // TODO: Update once the internal notification sending guide is published on the Asgardeo doc site.
-            learnMore: undefined
+            learnMore: documentationBaseUrl + "/guides/account-configurations/notification-settings/"
         },
         issuerUsageScope: {
             learnMore: documentationBaseUrl + "/guides/organization-management/"

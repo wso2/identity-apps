@@ -450,9 +450,43 @@ export const console: ConsoleNS = {
             contactAction: "Contact us",
             suffix: "to get access."
         },
+        featureLockedTooltip: {
+            toggleEnable: "This resource cannot be enabled as you have exceeded the resource allocation for your current plan."
+        },
         freeTrialBanner: {
             upgradeAction: "upgrade",
             contactAction: "contact us"
+        },
+        planLimitExceededAlert: {
+            comparePlansAction: "Compare plans",
+            hideDetails: "Hide details",
+            showDetails: "Show details",
+            resolutionsHeading: "To restore access, choose one of the following:",
+            applications: {
+                title: "All applications are disabled \u2014 plan limit exceeded",
+                description: "You have more applications than your current plan allows.",
+                upgradeResolution: "<strong>Upgrade your plan</strong> to increase your application limit. "
+                    + "Once upgraded, you can re-enable your existing applications and create new ones.",
+                stayResolution: "<strong>Stay on your current plan</strong> and delete excess applications "
+                    + "to fall within the allowed limit. Once within the limit, you can re-enable the rest."
+            },
+            enterpriseConnections: {
+                title: "All enterprise connections are disabled \u2014 plan limit exceeded",
+                description: "You have more enterprise connections than your current plan allows.",
+                upgradeResolution: "<strong>Upgrade your plan</strong> to increase your enterprise connection "
+                    + "limit. Once upgraded, you can re-enable your existing connections and create new ones.",
+                stayResolution: "<strong>Stay on your current plan</strong> and delete excess enterprise "
+                    + "connections to fall within the allowed limit. Once within the limit, you can re-enable "
+                    + "the rest."
+            },
+            organizations: {
+                title: "All organizations are disabled \u2014 plan limit exceeded",
+                description: "You have more organizations than your current plan allows.",
+                upgradeResolution: "<strong>Upgrade your plan</strong> to increase your organization limit. "
+                    + "Once upgraded, you can re-enable your existing organizations and create new ones.",
+                stayResolution: "<strong>Stay on your current plan</strong> and delete excess organizations "
+                    + "to fall within the allowed limit. Once within the limit, you can re-enable the rest."
+            }
         },
         upgrade: "Upgrade",
         validations: {

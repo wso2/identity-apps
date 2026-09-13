@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, HttpErrorResponseDataInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -137,6 +139,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -155,6 +158,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         useState<boolean>(false);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
+
+    const isEnterpriseConnection: boolean = [
+        ConnectionTemplateIds.ENTERPRISE,
+        ConnectionTemplateIds.OIDC,
+        ConnectionTemplateIds.SAML
+    ].includes(templateType);
+
+    const enterpriseConnectionToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_ENTERPRISE_TOGGLE_ENABLE
+    );
+    const isEnterpriseConnectionToggleEnableFeatureLocked: boolean = isEnterpriseConnection
+        && enterpriseConnectionToggleEnableFeatureStatus === FeatureStatus.DISABLED;
 
     const { data: idpList, isLoading: isIdPListRequestLoading, error: idpListError } = useGetConnections();
 
@@ -338,6 +353,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 );
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onDelete();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
@@ -577,6 +593,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             onActionClick={ undefined }
                             toggle={ {
                                 checked: editingIDP.isEnabled,
+                                disableHint: t("console:common.featureLockedTooltip.toggleEnable"),
+                                disabled: isEnterpriseConnectionToggleEnableFeatureLocked,
                                 onChange: handleConnectorDisable
                             } }
                             data-testid={ `${testId}-disable-idp-danger-zone` }
