@@ -264,18 +264,61 @@
             document.getElementById("maskedEmail").innerHTML = finalArr.join('');
         }
 
-        // UI countdown
-        function countdown(redirectURL) {
-            var timeleft = 3;
-            var downloadTimer = setInterval(function() {
-                if(timeleft <= 0){
-                    clearInterval(downloadTimer);
-                    document.getElementById("countdown").innerHTML = "0";
-                    redirect(redirectURL);
-                } else {
-                    document.getElementById("countdown").innerHTML = timeleft;
+        // UI countdown.
+        //
+        // `abandonIfHidden` is set only for the auto login redirect, whose target is
+        // /commonauth and which therefore hands off to the application (for a mobile
+        // client, through a custom URI scheme). A browser that is in the background
+        // cannot start another application, so firing that redirect while the page is
+        // hidden loses the handoff -- and because the request still reaches
+        // /commonauth, it also consumes the single use sessionDataKey, leaving the
+        // user with no way to recover. In that case we abandon the automatic redirect
+        // and fall back to the "Continue" button: a user activated navigation is the
+        // only thing that can reliably reach the application once the browser has
+        // been backgrounded.
+        function countdown(redirectURL, seconds, abandonIfHidden) {
+            var timeleft = seconds || 3;
+            var deadline = Date.now() + (timeleft * 1000);
+            var finished = false;
+
+            function paint(value) {
+                var element = document.getElementById("countdown");
+                if (element) {
+                    element.innerHTML = value < 0 ? 0 : value;
                 }
-                timeleft -= 1;
+            }
+
+            function isHidden() {
+                return typeof document.visibilityState !== "undefined"
+                        && document.visibilityState === "hidden";
+            }
+
+            function abandonAutomaticRedirect() {
+                var note = document.getElementById("auto-redirect-note");
+                if (note) {
+                    note.style.display = "none";
+                }
+            }
+
+            var downloadTimer = setInterval(function() {
+                // Derived from a deadline rather than counting ticks, so a throttled
+                // background tab shows the true remaining time when the user returns.
+                var remaining = Math.ceil((deadline - Date.now()) / 1000);
+                if (remaining > 0) {
+                    paint(remaining);
+                    return;
+                }
+                paint(0);
+                clearInterval(downloadTimer);
+                if (finished) {
+                    return;
+                }
+                finished = true;
+                if (abandonIfHidden && isHidden()) {
+                    abandonAutomaticRedirect();
+                    return;
+                }
+                redirect(redirectURL);
             }, 1000);
         }
     </script>
@@ -392,6 +435,7 @@
                                         url =IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding);
                                     }
                                 }
+                                boolean isAutoLoginRedirect = false;
                                 if (autoLoginEnabled && !accountLockOnCreationEnabled
                                                 && StringUtils.isNotBlank(sessionDataKey)) {
 
@@ -406,6 +450,7 @@
 
                                     url = identityServerEndpointContextParam + "/commonauth?sessionDataKey="
                                                 + sessionDataKey;
+                                    isAutoLoginRedirect = true;
                             }
                             int countdown = 3;
                             if (accountVerification) {
@@ -419,10 +464,19 @@
                             if (StringUtils.isNotBlank(url)) {
                         %>
                                 <p class="portal-tagline-description">
-                                    <script>countdown('<%= url %>');</script>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
-                                    <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
-                                    <br/><br/>
+                                    <script>countdown('<%= url %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
+                                    <span id="auto-redirect-note">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
+                                        <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
+                                    </span>
+                                    <a
+                                        id="continue-to-application"
+                                        class="ui primary button large fluid mt-4"
+                                        href="<%= Encode.forHtmlAttribute(url) %>"
+                                    >
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Continue")%>
+                                    </a>
+                                    <br/>
 		            <%
 		                    } else {
 		            %>
