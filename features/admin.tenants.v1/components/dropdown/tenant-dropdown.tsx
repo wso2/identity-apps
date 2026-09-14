@@ -48,6 +48,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    HttpErrorResponseDataInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
@@ -58,7 +59,16 @@ import {
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -85,6 +95,11 @@ import {
 } from "../../models";
 import { TenantAssociationsInterface } from "../../models/saas/tenants";
 import { handleTenantSwitch } from "../../utils";
+import {
+    filterAssociatedTenants,
+    hasMoreAssociatedTenants as hasMoreAssociatedTenantsInResponse,
+    shouldLoadMoreForTenantSearch
+} from "../../utils/tenant-search";
 import { AddTenantWizard } from "../add-modal";
 import "./tenant-dropdown.scss";
 
@@ -200,6 +215,13 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ organizationName, setOrganizationName ] = useState<string>("");
     const [ organizationHandle, setOrganizationHandle ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
+    const [ tenantSearchQuery, setTenantSearchQuery ] = useState<string>("");
+    const [ isAssociatedTenantsLoading, setIsAssociatedTenantsLoading ] = useState<boolean>(false);
+
+    const isAssociatedTenantsRequestInFlight: React.MutableRefObject<boolean> = useRef<boolean>(false);
+    const lastAutomaticTenantSearchRequest: React.MutableRefObject<string> = useRef<string>(undefined);
+    const automaticTenantSearchRetryCounts: React.MutableRefObject<Record<string, number>> =
+        useRef<Record<string, number>>({});
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -209,10 +231,12 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const associatedTenantsLimit: number = 15;
 
-    useEffect(() => {
+    useEffect((): void => {
         setAssociatedTenantsOffset(0);
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
-            getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset)
+            isAssociatedTenantsRequestInFlight.current = true;
+            setIsAssociatedTenantsLoading(true);
+            getAssociatedTenants(null, associatedTenantsLimit, 0)
                 .then((response: TenantRequestResponse) => {
                     let defaultTenant: TenantInfo;
                     let currentTenant: TenantInfo;
@@ -232,7 +256,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     setAssociatedTenants(tenants);
                     setDefaultTenant(defaultTenant);
                     setCurrentTenant(currentTenant);
-                    setHasMoreAssociatedTenants(response.totalResults > response.associatedTenants.length);
+                    setHasMoreAssociatedTenants(
+                        hasMoreAssociatedTenantsInResponse(response.totalResults, 0,
+                            response.associatedTenants.length)
+                    );
                 })
                 .catch((error: any) => {
                     dispatch(
@@ -246,6 +273,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                 t("extensions:manage.features.tenant.notifications." + "getTenants.message")
                         })
                     );
+                })
+                .finally((): void => {
+                    isAssociatedTenantsRequestInFlight.current = false;
+                    setIsAssociatedTenantsLoading(false);
                 });
         }
         getOrganizationData();
@@ -281,24 +312,30 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             setCurrentTenant(_currentTenant);
         }
 
+        const visibleAssociatedTenants: TenantInfo[] = [ ...associatedTenants ];
+        const currentTenantIndex: number = visibleAssociatedTenants.findIndex(
+            (tenant: TenantInfo): boolean => tenant.domain === currentTenant?.domain
+        );
+
+        if (currentTenantIndex !== -1) {
+            visibleAssociatedTenants.splice(currentTenantIndex, 1);
+        }
+
         const association: TenantAssociationsInterface = {
-            associatedTenants: associatedTenants,
+            associatedTenants: visibleAssociatedTenants,
             currentTenant: currentTenant,
             defaultTenant: defaultTenant,
             username: email ?? username
         };
 
-        if (Array.isArray(association.associatedTenants)) {
-            // Remove the current tenant from the associated tenants list.
-            const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
-
-            if (currentTenantIndex !== -1) {
-                association.associatedTenants.splice(currentTenantIndex, 1);
-            }
-            setTempTenantAssociationsList(association.associatedTenants);
-        }
+        setTempTenantAssociationsList(filterAssociatedTenants(visibleAssociatedTenants, tenantSearchQuery));
         setTenantAssociations(association);
-    }, [ associatedTenants, defaultTenant, currentTenant ]);
+    }, [ associatedTenants, currentTenant, defaultTenant, tenantSearchQuery ]);
+
+    useEffect((): void => {
+        lastAutomaticTenantSearchRequest.current = undefined;
+        automaticTenantSearchRetryCounts.current = {};
+    }, [ tenantSearchQuery ]);
 
     const {
         data: deploymentUnitResponse,
@@ -393,47 +430,93 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     /**
      * Load more tenants in the list using infinite scroll.
      */
-    const loadMoreItems = () => {
+    const loadMoreItems: () => void = useCallback((): void => {
         // Fetch more tenants.
-        if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
-            getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset + associatedTenantsLimit)
-                .then((response: TenantRequestResponse) => {
-                    let updatedDefaultTenant: TenantInfo = defaultTenant;
-                    let updatedCurrentTenant: TenantInfo = currentTenant;
-                    const tenants: TenantInfo[] = [];
-
-                    response.associatedTenants.forEach((tenant: TenantInfo) => {
-                        if (isEmpty(defaultTenant) && tenant.default) {
-                            updatedDefaultTenant = tenant;
-                        }
-                        if (isEmpty(currentTenant) && tenant.domain === tenantDomain) {
-                            updatedCurrentTenant = tenant;
-                        }
-
-                        tenants.push(tenant);
-                    });
-                    // Add tenants to the associatedTenants state
-                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
-                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
-                    setDefaultTenant(updatedDefaultTenant);
-                    setCurrentTenant(updatedCurrentTenant);
-                    setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);
-                })
-                .catch((error: any) => {
-                    dispatch(
-                        addAlert({
-                            description:
-                                error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getTenants.description"),
-                            level: AlertLevels.ERROR,
-                            message:
-                                error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getTenants.message")
-                        })
-                    );
-                });
+        if (
+            isPrivilegedUser ||
+            saasFeatureStatus === FeatureStatus.DISABLED ||
+            !hasMoreAssociatedTenants ||
+            isAssociatedTenantsRequestInFlight.current
+        ) {
+            return;
         }
-    };
+
+        const nextOffset: number = associatedTenantsOffset + associatedTenantsLimit;
+
+        isAssociatedTenantsRequestInFlight.current = true;
+        setIsAssociatedTenantsLoading(true);
+
+        getAssociatedTenants(null, associatedTenantsLimit, nextOffset)
+            .then((response: TenantRequestResponse) => {
+                let updatedDefaultTenant: TenantInfo = defaultTenant;
+                let updatedCurrentTenant: TenantInfo = currentTenant;
+                const tenants: TenantInfo[] = [];
+
+                response.associatedTenants.forEach((tenant: TenantInfo) => {
+                    if (isEmpty(defaultTenant) && tenant.default) {
+                        updatedDefaultTenant = tenant;
+                    }
+                    if (isEmpty(currentTenant) && tenant.domain === tenantDomain) {
+                        updatedCurrentTenant = tenant;
+                    }
+
+                    tenants.push(tenant);
+                });
+                // Add tenants to the associatedTenants state
+                setAssociatedTenants([ ...associatedTenants, ...tenants ]);
+                setAssociatedTenantsOffset(nextOffset);
+                setDefaultTenant(updatedDefaultTenant);
+                setCurrentTenant(updatedCurrentTenant);
+                setHasMoreAssociatedTenants(
+                    hasMoreAssociatedTenantsInResponse(response.totalResults, nextOffset,
+                        response.associatedTenants.length)
+                );
+            })
+            .catch((error: HttpErrorResponseDataInterface) => {
+                const requestKey: string = `${ tenantSearchQuery }:${ associatedTenantsOffset }`;
+
+                if (lastAutomaticTenantSearchRequest.current === requestKey) {
+                    automaticTenantSearchRetryCounts.current[ requestKey ] =
+                        (automaticTenantSearchRetryCounts.current[ requestKey ] ?? 0) + 1;
+                    lastAutomaticTenantSearchRequest.current = undefined;
+                }
+
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.description &&
+                            t("extensions:manage.features.tenant.notifications." + "getTenants.description"),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.description &&
+                            t("extensions:manage.features.tenant.notifications." + "getTenants.message")
+                    })
+                );
+            })
+            .finally((): void => {
+                isAssociatedTenantsRequestInFlight.current = false;
+                setIsAssociatedTenantsLoading(false);
+            });
+    }, [ associatedTenants, associatedTenantsOffset, currentTenant, defaultTenant, hasMoreAssociatedTenants,
+        isPrivilegedUser, saasFeatureStatus, tenantDomain ]);
+
+    useEffect((): void => {
+        const requestKey: string = `${ tenantSearchQuery }:${ associatedTenantsOffset }`;
+        const retryCount: number = automaticTenantSearchRetryCounts.current[ requestKey ] ?? 0;
+
+        if (!shouldLoadMoreForTenantSearch(tenantSearchQuery, tempTenantAssociationsList ?? [],
+            hasMoreAssociatedTenants, isAssociatedTenantsLoading, retryCount)) {
+            return;
+        }
+
+        if (lastAutomaticTenantSearchRequest.current === requestKey) {
+            return;
+        }
+
+        lastAutomaticTenantSearchRequest.current = requestKey;
+        loadMoreItems();
+    }, [ associatedTenantsOffset, hasMoreAssociatedTenants, isAssociatedTenantsLoading, loadMoreItems,
+        tempTenantAssociationsList, tenantSearchQuery ]);
 
     /**
      * Resolve associated tenant record.
@@ -514,6 +597,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         resolveAssociatedTenantRecord(tenant, index))
                                 }
                             </InfiniteScroll>
+                        ) : tenantSearchQuery && isAssociatedTenantsLoading ? (
+                            loadingComponent()
                         ) : (
                             <Item
                                 className="empty-list"
@@ -582,17 +667,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const searchTenantList = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const changeValue: string = event.target.value;
 
-        if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
-            let result: TenantInfo[];
-
-            if (changeValue.length > 0) {
-                result = tenantAssociations.associatedTenants.filter((tenantInfo: TenantInfo) =>
-                    tenantInfo.domain?.toLowerCase()?.indexOf(changeValue.toLowerCase()) !== -1);
-            } else {
-                result = tenantAssociations.associatedTenants;
-            }
-            setTempTenantAssociationsList(result);
-        }
+        setTenantSearchQuery(changeValue);
     };
 
     /**
@@ -600,9 +675,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
      */
     const resetTenantDropdown = (): void => {
         setIsSwitchTenantsSelected(false);
-        if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
-            setTempTenantAssociationsList(tenantAssociations.associatedTenants);
-        }
+        setTenantSearchQuery("");
     };
 
     const handleTenantDropdown = (): void => {
