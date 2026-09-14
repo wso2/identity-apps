@@ -300,6 +300,19 @@
                 }
             }
 
+            function finish(abandon) {
+                if (finished) {
+                    return;
+                }
+                finished = true;
+                clearInterval(downloadTimer);
+                if (abandon) {
+                    abandonAutomaticRedirect();
+                    return;
+                }
+                redirect(redirectURL);
+            }
+
             var downloadTimer = setInterval(function() {
                 // Derived from a deadline rather than counting ticks, so a throttled
                 // background tab shows the true remaining time when the user returns.
@@ -309,17 +322,25 @@
                     return;
                 }
                 paint(0);
-                clearInterval(downloadTimer);
-                if (finished) {
-                    return;
-                }
-                finished = true;
-                if (abandonIfHidden && isHidden()) {
-                    abandonAutomaticRedirect();
-                    return;
-                }
-                redirect(redirectURL);
+                finish(abandonIfHidden && isHidden());
             }, 1000);
+
+            if (abandonIfHidden) {
+                // A background tab can have its timers suppressed altogether, so the
+                // tick that observes expiry may not run until the page is visible
+                // again. Decide on whether the deadline elapsed while hidden, not on
+                // the visibility at the moment the tick happens to run -- otherwise
+                // the redirect fires on return, consumes the sessionDataKey and still
+                // cannot reach the application, because the user activation needed to
+                // start it has been lost. This also covers a page that was hidden
+                // from the outset.
+                document.addEventListener("visibilitychange", function() {
+                    if (!isHidden() && Date.now() >= deadline) {
+                        paint(0);
+                        finish(true);
+                    }
+                });
+            }
         }
     </script>
 
