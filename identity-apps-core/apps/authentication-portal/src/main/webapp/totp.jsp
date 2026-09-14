@@ -109,7 +109,6 @@
         <% } %>
 
         <script src="js/scripts.js"></script>
-        <script src="/totpauthenticationendpoint/js/scripts.js"></script>
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
