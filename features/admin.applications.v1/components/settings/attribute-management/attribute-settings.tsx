@@ -18,6 +18,7 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -183,6 +184,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
+    const { UIConfig } = useUIConfig();
+
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
     const [ dialect, setDialect ] = useState<ClaimDialect[]>([]);
@@ -278,6 +281,22 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ externalClaims ]);
 
     /**
+     * Whether this tab operates on the tenant wide OIDC claim dialect rather than the local claim dialect.
+     *
+     * The scope grouped selector has no field for attributes renamed in a custom dialect, so it shows them
+     * as unselected and saving from it drops the names. Those applications use the local dialect instead.
+     *
+     * Opt in through `isCustomClaimDialectRoutingEnabled`; with it off this is `onlyOIDCConfigured`.
+     */
+    const hasRenamedAttributes: boolean = claimConfigurations?.dialect === "CUSTOM"
+        && (claimConfigurations?.claimMappings ?? []).some((mapping: ClaimMappingInterface) =>
+            !!mapping?.applicationClaim && mapping.applicationClaim !== mapping?.localClaim?.uri);
+
+    const usesOIDCClaimDialect: boolean = UIConfig?.isCustomClaimDialectRoutingEnabled
+        ? onlyOIDCConfigured && !hasRenamedAttributes
+        : onlyOIDCConfigured;
+
+    /**
      * Set the dialects for inbound protocols
      */
     useEffect(() => {
@@ -287,7 +306,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
 
-        if (onlyOIDCConfigured) {
+        if (usesOIDCClaimDialect) {
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
             return;
@@ -295,7 +314,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
         setIsClaimRequestLoading(false);
         changeSelectedDialect(localDialectURI);
-    }, [ onlyOIDCConfigured, dialect ]);
+    }, [ usesOIDCClaimDialect, dialect ]);
 
     useEffect(() => {
         if (advanceSettingValues) {
@@ -1140,7 +1159,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
 
-        const isSubjectClaimOmitted: boolean = !onlyOIDCConfigured
+        const isSubjectClaimOmitted: boolean = !usesOIDCClaimDialect
             && !claimConfigurations?.subject?.claim?.uri
             && !advanceSettingValues?.isSubjectClaimExplicit;
 
@@ -1341,7 +1360,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 {
-                                    onlyOIDCConfigured
+                                    usesOIDCClaimDialect
                                         ? (
                                             <AttributeSelectionOIDC
                                                 claims={ claims }

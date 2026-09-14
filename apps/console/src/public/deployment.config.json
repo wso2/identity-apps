@@ -2324,6 +2324,7 @@
         "isClaimUniquenessValidationEnabled": false,
         "isClientSecretHashEnabled": false,
         "isCookieConsentBannerEnabled": true,
+        "isCustomClaimDialectRoutingEnabled": false,
         "isCustomClaimMappingEnabled": true,
         "isCustomClaimMappingMergeEnabled": true,
         "isDefaultDialectEditingEnabled": false,
