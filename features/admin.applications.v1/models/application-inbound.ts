@@ -214,6 +214,9 @@ interface CIBAAuthenticationConfigurationInterface {
  * Token exchange related properties.
  */
 interface TokenExchangeConfigurationInterface {
+    /**
+     * If enabled, no scopes are issued for tokens obtained by exchanging a federated token.
+     */
     restrictScopeIssuanceForFederatedTokens?: boolean;
 }
 
