@@ -214,15 +214,14 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 data-componentid={ `${componentId}-settings-section` }
                 description={ t("myAccount:sections.policyConsentManagement.description") }
                 header={ t("myAccount:sections.policyConsentManagement.heading") }
-                placeholder={
-                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
-                        ? t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading")
-                        : null
-                }
                 showActionBar={
                     !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
                 }
             >
+                { !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0) && (
+                    <div style={{ textAlign: "center", padding: "20px" }}>{ t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading") }</div>
+                    
+                ) }
                 <PolicyConsentList
                     data-componentid={ `${componentId}-policy-consent-list` }
                     items={ policyConsentItems }
