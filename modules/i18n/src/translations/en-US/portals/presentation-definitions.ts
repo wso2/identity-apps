@@ -174,6 +174,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    issuerConfig: {
                        addTitle: "Add Trusted Issuer",
                        editTitle: "Edit Trusted Issuer",
+                       modalSubtitle: "Configure a trusted issuer for the credential.",
                        addButton: "Add Trusted Issuer",
                        emptyPlaceholder: "No trusted issuers configured.",
                        uploadCert: "Add Certificate",
@@ -244,7 +245,8 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                                label: "Required",
                                hint: "When enabled, the wallet must include this attribute in the presentation."
                            },
-                           addClaim: "Add Attribute"
+                           addClaim: "Add Attribute",
+                           modalSubtitle: "Configure an attribute to request from the credential."
                        }
                    }
                },

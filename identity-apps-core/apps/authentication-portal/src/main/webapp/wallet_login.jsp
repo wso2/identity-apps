@@ -264,6 +264,7 @@
                 value='<%=Encode.forHtmlAttribute(sessionDataKey != null ? sessionDataKey : "")%>'>
             <input type="hidden" name="status" id="authStatus" value="">
             <input type="hidden" name="vp_request_id" id="authRequestId" value="">
+            <input type="hidden" name="error_type" id="authErrorType" value="">
         </form>
 
         <script type="text/javascript">
@@ -277,13 +278,16 @@
                 pollEndpoint: '/openid4vp/v1/status?requestId=<%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>'
             };
             var I18N = {
-                waiting:        '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
-                verified:       '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.verified"))%>',
-                errorExpired:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.expired"))%>',
-                errorNetwork:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.network"))%>',
-                errorFailed:    '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.failed"))%>',
-                errorGeneric:   '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.generic"))%>',
-                mobileNoWallet: '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.mobile.no.wallet"))%>'
+                waiting:               '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
+                verified:              '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.verified"))%>',
+                errorExpired:          '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.expired"))%>',
+                errorNetwork:          '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.network"))%>',
+                errorFailed:           '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.failed"))%>',
+                errorGeneric:          '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.generic"))%>',
+                mobileNoWallet:        '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.mobile.no.wallet"))%>',
+                errorExpiredCredential: '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.expired_credential"))%>',
+                errorInvalidSignature:  '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.invalid_signature"))%>',
+                errorNonceMismatch:     '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.error.nonce_mismatch"))%>'
             };
 
             var pollTimer = null;
@@ -425,7 +429,7 @@
                         return;
                     }
 
-                    // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"EXPIRED"|"NOT_FOUND" }
+                    // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"NOT_FOUND" }
                     if (data.requestId) { vpRequestId = data.requestId; }
                     var status = data.status ? data.status.toUpperCase() : '';
 
@@ -439,8 +443,16 @@
                         }
                         handleSuccess();
                     } else if (status === 'FAILED') {
-                        handleFailed(null);
-                    } else if (status === 'EXPIRED' || status === 'NOT_FOUND') {
+                        var vpVerificationErrors = {
+                            'expired_credential': I18N.errorExpiredCredential,
+                            'invalid_signature':  I18N.errorInvalidSignature,
+                            'nonce_mismatch':     I18N.errorNonceMismatch
+                        };
+                        if (data.errorType) {
+                            document.getElementById('authErrorType').value = data.errorType;
+                        }
+                        handleFailed((data.errorType && vpVerificationErrors[data.errorType]) || I18N.errorFailed);
+                    } else if (status === 'NOT_FOUND') {
                         handleFailed(I18N.errorExpired);
                     } else {
                         handleError(I18N.errorGeneric);
@@ -496,7 +508,7 @@
                 document.getElementById('authForm').submit();
             }
 
-            // Handle terminal VP failure (FAILED / EXPIRED / NOT_FOUND).
+            // Handle terminal VP failure (FAILED / NOT_FOUND).
             function handleFailed(message) {
                 if (submitted) return;
                 submitted = true;

@@ -156,6 +156,7 @@ export interface PresentationDefinitionsInterface {
             issuerConfig: {
                 addTitle: string;
                 editTitle: string;
+                modalSubtitle: string;
                 addButton: string;
                 emptyPlaceholder: string;
                 uploadCert: string;
@@ -225,6 +226,7 @@ export interface PresentationDefinitionsInterface {
                     };
                     addClaim: string;
                     editClaim: string;
+                    modalSubtitle: string;
                     emptyPlaceholder: string;
                 };
             };

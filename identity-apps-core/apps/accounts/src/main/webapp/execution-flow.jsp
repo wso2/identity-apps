@@ -352,7 +352,7 @@
                     const { url, requestId, flowId } = walletQR;
 
                     if (!requestId) {
-                        setError({ code: "VP_ERROR", message: "Wallet session identifier is missing. Please try again." });
+                        setError({ code: "VP-65001", message: "Wallet session identifier is missing. Please try again." });
                         setWalletQR(null);
                         return;
                     }
@@ -447,7 +447,7 @@
                         })
                         .catch(function() {
                             clearTimeout(timeoutId);
-                            setError({ code: "NETWORK_ERROR", message: "Unable to complete authentication. Please try again." });
+                            setError({ code: "VP-65002", message: "Unable to complete authentication. Please try again." });
                             setWalletQR(null);
                         });
                     }
@@ -456,7 +456,7 @@
                         if (vpSubmitted || vpPollInFlight) return;
                         if (Date.now() - vpPollStart > VP_MAX_DURATION_MS) {
                             vpSubmitted = true;
-                            setError({ code: "VP_EXPIRED" });
+                            setError({ code: "VP-60002" });
                             setWalletQR(null);
                             return;
                         }
@@ -490,12 +490,12 @@
                             // returns 200 for the /status path; body is { error, error_description }).
                             if (httpStatus !== 200) {
                                 vpSubmitted = true;
-                                setError({ code: "VP_ERROR" });
+                                setError({ code: "VP-65001" });
                                 setWalletQR(null);
                                 return;
                             }
 
-                            // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"EXPIRED"|"NOT_FOUND" }
+                            // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"NOT_FOUND" }
                             var status = data.status ? data.status.toUpperCase() : "";
 
                             if (status === "ACTIVE") {
@@ -505,15 +505,21 @@
                                 advanceFlow();
                             } else if (status === "FAILED") {
                                 vpSubmitted = true;
-                                setError({ code: "VP_FAILED" });
+                                var vpFailureMsgKeys = {
+                                    'expired_credential': 'wallet.vp.error.expired_credential.message',
+                                    'invalid_signature':  'wallet.vp.error.invalid_signature.message',
+                                    'nonce_mismatch':     'wallet.vp.error.nonce_mismatch.message'
+                                };
+                                var vpMsgKey = data.errorType && vpFailureMsgKeys[data.errorType];
+                                setError({ code: "VP-60001", message: vpMsgKey || "" });
                                 setWalletQR(null);
-                            } else if (status === "EXPIRED" || status === "NOT_FOUND") {
+                            } else if (status === "NOT_FOUND") {
                                 vpSubmitted = true;
-                                setError({ code: "VP_EXPIRED" });
+                                setError({ code: "VP-60002" });
                                 setWalletQR(null);
                             } else {
                                 vpSubmitted = true;
-                                setError({ code: "VP_ERROR" });
+                                setError({ code: "VP-65001" });
                                 setWalletQR(null);
                             }
                         })
@@ -535,7 +541,7 @@
                                 schedulePoll();
                             } else {
                                 vpSubmitted = true;
-                                setError({ code: "NETWORK_ERROR", message: "Unable to reach the server. Please check your connection and try again." });
+                                setError({ code: "VP-65002", message: "Unable to reach the server. Please check your connection and try again." });
                                 setWalletQR(null);
                             }
                         });
