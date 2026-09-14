@@ -282,21 +282,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     /**
      * Whether this tab operates on the tenant wide OIDC claim dialect rather than the local claim dialect.
-     * It drives the dialect the tab loads, which selector renders, and whether an unset subject claim is
-     * sent on save.
      *
-     * Applications that give attributes their own names keep those names in a custom claim dialect. The
-     * names only exist in the local dialect, and the OIDC scope grouped selector has no field for them, so it
-     * shows those attributes as unselected and saving from it drops the names. Such applications work in the
-     * local dialect instead, but only when at least one attribute is actually renamed. A custom dialect whose
-     * mappings all keep the local claim URI displays correctly on the scope grouped selector, so it stays.
+     * The scope grouped selector has no field for attributes renamed in a custom dialect, so it shows them
+     * as unselected and saving from it drops the names. Those applications use the local dialect instead.
      *
-     * This changes screens that work today, so it is opt in through `isCustomClaimDialectRoutingEnabled`.
-     * With the option off this is exactly `onlyOIDCConfigured`, which is what the tab used before the option
-     * existed.
-     *
-     * `onlyOIDCConfigured` is intentionally left untouched; these are still OIDC applications for every
-     * other purpose.
+     * Opt in through `isCustomClaimDialectRoutingEnabled`; with it off this is `onlyOIDCConfigured`.
      */
     const hasRenamedAttributes: boolean = claimConfigurations?.dialect === "CUSTOM"
         && (claimConfigurations?.claimMappings ?? []).some((mapping: ClaimMappingInterface) =>
