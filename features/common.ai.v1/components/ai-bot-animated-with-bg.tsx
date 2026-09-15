@@ -19,7 +19,7 @@
 // Disabling max-line-length for this file as it contains SVGs.
 /* eslint-disable max-len */
 
-import { Variants, motion } from "framer-motion";
+import { LazyMotion, Variants, domAnimation, m } from "framer-motion";
 import React, {
     MutableRefObject,
     PropsWithChildren,
@@ -65,7 +65,7 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
     };
 
     return (
-        <>
+        <LazyMotion features={ domAnimation }>
             <svg
                 className="ai-loading-screen-animation"
                 width="728"
@@ -76,7 +76,7 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
             >
                 <AIBotBackground />
                 <g id="ai-bot-illustration">
-                    <motion.g
+                    <m.g
                         id="ai-bot-icons"
                         animate="iconAnimation"
                         variants={ variants }
@@ -99,15 +99,15 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
                         <AnimatedIcon>
                             <AnimatedCogWheelIcon />
                         </AnimatedIcon>
-                    </motion.g>
-                    <motion.g
+                    </m.g>
+                    <m.g
                         id="ai-bot"
                         animate="botAnimation"
                         variants={ variants }
                     >
                         <AnimatedHead shouldAnimate={ shouldAnimate } />
                         <AnimatedTorso />
-                    </motion.g>
+                    </m.g>
                 </g>
                 <defs>
                     <linearGradient
@@ -222,7 +222,7 @@ const AIBotAnimatedWithBackGround = (props: AIBotAnimatedProps): ReactElement =>
                     </linearGradient>
                 </defs>
             </svg>
-        </>
+        </LazyMotion>
     );
 };
 
@@ -238,7 +238,7 @@ const AIBotBackground = (): ReactElement => {
 
     return (
         <g>
-            <motion.path
+            <m.path
                 opacity="0.06"
                 initial="initial"
                 animate="animate"
@@ -283,7 +283,7 @@ const AnimatedHead = (props: AIBotAnimatedProps): ReactElement => {
     };
 
     return (
-        <motion.g
+        <m.g
             id="bot-head"
             variants={ variants }
         >
@@ -306,7 +306,7 @@ const AnimatedHead = (props: AIBotAnimatedProps): ReactElement => {
                     <AnimatedBotEyes shouldAnimate={ shouldAnimate } />
                 </g>
             </g>
-        </motion.g>
+        </m.g>
     );
 
 };
@@ -379,7 +379,7 @@ const AnimatedBotEyes = (props: AIBotAnimatedProps): ReactElement => {
         <>
             <g ref={ leftEyeRef } id="bot-left-eye">
                 <ellipse id="Ellipse 112" cx="184.719" cy="165.005" rx="9.51965" ry="9.01907" fill="white" />
-                <motion.circle
+                <m.circle
                     cx={ 184.719 + leftPupilPosition.x }
                     cy={ 165.005 + leftPupilPosition.y }
                     r="2"
@@ -395,7 +395,7 @@ const AnimatedBotEyes = (props: AIBotAnimatedProps): ReactElement => {
             </g>
             <g ref={ rightEyeRef } id="bot-right-eye">
                 <ellipse cx="231.817" cy="165.005" rx="9.51965" ry="9.01907" fill="white" />
-                <motion.circle
+                <m.circle
                     cx={ 231.817 + rightPupilPosition.x }
                     cy={ 165.005 + rightPupilPosition.y }
                     r="2"
@@ -467,13 +467,13 @@ const AnimatedIcon = (props: PropsWithChildren): ReactElement=> {
     };
 
     return (
-        <motion.g
+        <m.g
             animate="animate"
             whileHover="grow"
             variants={ variants }
         >
             { children }
-        </motion.g>
+        </m.g>
     );
 };
 
