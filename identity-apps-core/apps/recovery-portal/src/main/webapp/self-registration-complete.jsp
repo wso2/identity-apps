@@ -284,11 +284,19 @@
                         && document.visibilityState === "hidden";
             }
 
+            function showManualLink(visible) {
+                var manual = document.getElementById("manual-continue");
+                if (manual) {
+                    manual.style.display = visible ? "" : "none";
+                }
+            }
+
             function abandonAutomaticRedirect() {
                 var note = document.getElementById("auto-redirect-note");
                 if (note) {
                     note.style.display = "none";
                 }
+                showManualLink(true);
             }
 
             function finish(abandon) {
@@ -302,6 +310,15 @@
                     return;
                 }
                 redirect(redirectURL);
+            }
+
+            // The auto login target is single use. Following it while the countdown is
+            // still running would spend the key and leave the countdown to make a second
+            // /commonauth call, which lands on the retry page -- so only offer the link
+            // once the automatic redirect has been given up. It is rendered visible so
+            // that it still works if this script does not run at all.
+            if (abandonIfHidden) {
+                showManualLink(false);
             }
 
             var downloadTimer = setInterval(function() {
@@ -469,7 +486,6 @@
                             if (StringUtils.isNotBlank(url)) {
                         %>
                                 <p class="portal-tagline-description">
-                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
                                     <span id="auto-redirect-note">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
                                         <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
@@ -482,6 +498,7 @@
                                         </a>
                                     </span>
                                     <br/>
+                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
 		            <%
 		                    } else {
 		            %>
