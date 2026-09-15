@@ -265,7 +265,7 @@
         }
 
         // UI countdown
-        function countdown(redirectURL, seconds, abandonIfHidden) {
+        function countdown(redirectURL, seconds, singleUseTarget) {
             var timeleft = seconds || 3;
             var deadline = Date.now() + (timeleft * 1000);
             var finished = false;
@@ -310,7 +310,7 @@
                 redirect(redirectURL);
             }
 
-            if (abandonIfHidden) {
+            if (singleUseTarget) {
                 showManualLink(false);
             }
 
@@ -321,10 +321,10 @@
                     return;
                 }
                 paint(0);
-                finish(abandonIfHidden && isHidden());
+                finish(singleUseTarget && isHidden());
             }, 1000);
 
-            if (abandonIfHidden) {
+            if (singleUseTarget) {
                 document.addEventListener("visibilitychange", function() {
                     if (!isHidden() && Date.now() >= deadline) {
                         paint(0);
@@ -447,7 +447,7 @@
                                         url =IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding);
                                     }
                                 }
-                                boolean isAutoLoginRedirect = false;
+                                boolean isSingleUseTarget = false;
                                 if (autoLoginEnabled && !accountLockOnCreationEnabled
                                                 && StringUtils.isNotBlank(sessionDataKey)) {
 
@@ -462,7 +462,7 @@
 
                                     url = identityServerEndpointContextParam + "/commonauth?sessionDataKey="
                                                 + sessionDataKey;
-                                    isAutoLoginRedirect = true;
+                                    isSingleUseTarget = true;
                             }
                             int countdown = 3;
                             if (accountVerification) {
@@ -488,7 +488,7 @@
                                         </a>
                                     </span>
                                     <br/>
-                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
+                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isSingleUseTarget %>);</script>
 		            <%
 		                    } else {
 		            %>
