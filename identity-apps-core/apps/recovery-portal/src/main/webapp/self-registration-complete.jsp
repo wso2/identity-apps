@@ -264,9 +264,7 @@
             document.getElementById("maskedEmail").innerHTML = finalArr.join('');
         }
 
-        // UI countdown. `abandonIfHidden` is set only for the auto login redirect:
-        // a backgrounded browser cannot start the application, and redirecting anyway
-        // would consume the single use sessionDataKey, so fall back to the manual link.
+        // UI countdown
         function countdown(redirectURL, seconds, abandonIfHidden) {
             var timeleft = seconds || 3;
             var deadline = Date.now() + (timeleft * 1000);
@@ -312,11 +310,6 @@
                 redirect(redirectURL);
             }
 
-            // The auto login target is single use. Following it while the countdown is
-            // still running would spend the key and leave the countdown to make a second
-            // /commonauth call, which lands on the retry page -- so only offer the link
-            // once the automatic redirect has been given up. It is rendered visible so
-            // that it still works if this script does not run at all.
             if (abandonIfHidden) {
                 showManualLink(false);
             }
@@ -332,9 +325,6 @@
             }, 1000);
 
             if (abandonIfHidden) {
-                // Timers can be suppressed entirely while hidden, so expiry may only be
-                // observed after the page is visible again. Decide on the deadline rather
-                // than on the visibility at the moment the tick happens to run.
                 document.addEventListener("visibilitychange", function() {
                     if (!isHidden() && Date.now() >= deadline) {
                         paint(0);
