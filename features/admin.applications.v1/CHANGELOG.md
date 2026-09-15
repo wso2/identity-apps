@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.44.1
+
+### Patch Changes
+
+- [#10683](https://github.com/wso2/identity-apps/pull/10683) [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add an opt in option to route applications that rename attributes through a custom claim dialect to the local dialect attribute selector
+
+- Updated dependencies [[`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.identity-providers.v1@2.29.3
+  - @wso2is/admin.connections.v1@2.42.1
+
 ## 2.44.0
 
 ### Minor Changes

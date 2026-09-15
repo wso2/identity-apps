@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.9
+
+### Patch Changes
+
+- [#10609](https://github.com/wso2/identity-apps/pull/10609) [`020c83fe2862421b6a1bc52c9443592fd2d746da`](https://github.com/wso2/identity-apps/commit/020c83fe2862421b6a1bc52c9443592fd2d746da) Thanks [@sanjulaonline](https://github.com/sanjulaonline)! - Remove obsolete absolute TOTP scripts.js references from authentication portal pages.
+
 ## 5.4.8
 
 ### Patch Changes

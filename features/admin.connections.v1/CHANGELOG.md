@@ -1,5 +1,19 @@
 # @wso2is/admin.connections.v1
 
+## 2.42.1
+
+### Patch Changes
+
+- [#10686](https://github.com/wso2/identity-apps/pull/10686) [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111) Thanks [@KD23243](https://github.com/KD23243)! - Fix the option values of the SAML connection's User ID Location field, which were wired to the inverse
+  booleans of the `IsUserIdInClaims` property. `Use NameID as the User Identifier` mapped to `true` and
+  `User Identifier found among claims` to `false`, while the authenticator reads `false` as NameID and
+  `true` as claims. Every SAML connection was therefore rendered with the opposite user ID location to
+  the one stored, and selecting an option persisted the opposite boolean.
+- Updated dependencies [[`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.identity-providers.v1@2.29.3
+
 ## 2.42.0
 
 ### Minor Changes
