@@ -44,7 +44,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
 import { AGENT_APP_LIMIT_REACHED_SCIM_TYPE } from "../../constants/agents";
-import useAgentOwner from "../../hooks/use-agent-owner";
+import useResolvedAgentOwner from "../../hooks/use-resolved-agent-owner";
 import { AgentScimSchema, AgentType } from "../../models/agents";
 import "./add-agent-wizard.scss";
 
@@ -80,7 +80,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const agentOwner: string = useAgentOwner();
+    const agentOwner: string = useResolvedAgentOwner();
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);

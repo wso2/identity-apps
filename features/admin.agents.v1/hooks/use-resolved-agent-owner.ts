@@ -31,14 +31,21 @@ import { useSelector } from "react-redux";
  * endpoint, hence it always carries the ID of the user within the currently switched
  * organization. Both are the same in the root organization.
  *
+ * @param existingOwner - Owner already set on the agent. Owner is read-only once an agent is created,
+ * hence it has to be carried over on update. The authenticated user is used only as a fallback for
+ * legacy agents that were created without an owner.
  * @returns The tenant qualified agent owner. Ex: `<user-id>@<tenant-domain>`.
  */
-const useAgentOwner = (): string => {
+const useResolvedAgentOwner = (existingOwner?: string): string => {
     const username: string = useSelector((state: AppState): string => state?.auth?.username);
     const profileInfo: ProfileInfoInterface = useSelector(
         (state: AppState): ProfileInfoInterface => state?.profile?.profileInfo);
 
     return useMemo((): string => {
+        if (existingOwner) {
+            return existingOwner;
+        }
+
         if (!profileInfo?.id) {
             return username;
         }
@@ -47,7 +54,7 @@ const useAgentOwner = (): string => {
         const tenantQualifier: string = separatorIndex > -1 ? username.substring(separatorIndex + 1) : "";
 
         return tenantQualifier ? `${ profileInfo.id }@${ tenantQualifier }` : profileInfo.id;
-    }, [ username, profileInfo ]);
+    }, [ existingOwner, username, profileInfo ]);
 };
 
-export default useAgentOwner;
+export default useResolvedAgentOwner;
