@@ -16,17 +16,12 @@
  * under the License.
  */
 
-import { ReactComponent as OnboardingRocketIcon } from "./assets/icons/rocket.svg";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
-// Pages
-export { default as OnboardingPage } from "./pages/onboarding-page";
-
-// Assets
-export { OnboardingRocketIcon };
-
-// Hooks
-export { useOnboardingStatus } from "./hooks/use-onboarding-status";
-export { useOnboardingWizardAccess } from "./hooks/use-onboarding-wizard-access";
-
-// Utils
-export { buildOnboardingWizardPath } from "./utils/build-onboarding-wizard-path";
+/**
+ * Build the path to the onboarding wizard for an intentional entry from the home page.
+ * The `source=home` flag lets returning users bypass the first-run check on the onboarding page.
+ *
+ * @returns Wizard path.
+ */
+export const buildOnboardingWizardPath = (): string => `${ AppConstants.getPaths().get("ONBOARDING") }?source=home`;
