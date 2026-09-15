@@ -264,18 +264,9 @@
             document.getElementById("maskedEmail").innerHTML = finalArr.join('');
         }
 
-        // UI countdown.
-        //
-        // `abandonIfHidden` is set only for the auto login redirect, whose target is
-        // /commonauth and which therefore hands off to the application (for a mobile
-        // client, through a custom URI scheme). A browser that is in the background
-        // cannot start another application, so firing that redirect while the page is
-        // hidden loses the handoff -- and because the request still reaches
-        // /commonauth, it also consumes the single use sessionDataKey, leaving the
-        // user with no way to recover. In that case we abandon the automatic redirect
-        // and fall back to the "Continue" button: a user activated navigation is the
-        // only thing that can reliably reach the application once the browser has
-        // been backgrounded.
+        // UI countdown. `abandonIfHidden` is set only for the auto login redirect:
+        // a backgrounded browser cannot start the application, and redirecting anyway
+        // would consume the single use sessionDataKey, so fall back to the manual link.
         function countdown(redirectURL, seconds, abandonIfHidden) {
             var timeleft = seconds || 3;
             var deadline = Date.now() + (timeleft * 1000);
@@ -314,8 +305,6 @@
             }
 
             var downloadTimer = setInterval(function() {
-                // Derived from a deadline rather than counting ticks, so a throttled
-                // background tab shows the true remaining time when the user returns.
                 var remaining = Math.ceil((deadline - Date.now()) / 1000);
                 if (remaining > 0) {
                     paint(remaining);
@@ -326,14 +315,9 @@
             }, 1000);
 
             if (abandonIfHidden) {
-                // A background tab can have its timers suppressed altogether, so the
-                // tick that observes expiry may not run until the page is visible
-                // again. Decide on whether the deadline elapsed while hidden, not on
-                // the visibility at the moment the tick happens to run -- otherwise
-                // the redirect fires on return, consumes the sessionDataKey and still
-                // cannot reach the application, because the user activation needed to
-                // start it has been lost. This also covers a page that was hidden
-                // from the outset.
+                // Timers can be suppressed entirely while hidden, so expiry may only be
+                // observed after the page is visible again. Decide on the deadline rather
+                // than on the visibility at the moment the tick happens to run.
                 document.addEventListener("visibilitychange", function() {
                     if (!isHidden() && Date.now() >= deadline) {
                         paint(0);
@@ -485,7 +469,7 @@
                             if (StringUtils.isNotBlank(url)) {
                         %>
                                 <p class="portal-tagline-description">
-                                    <script>countdown('<%= url %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
+                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isAutoLoginRedirect %>);</script>
                                     <span id="auto-redirect-note">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
                                         <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
