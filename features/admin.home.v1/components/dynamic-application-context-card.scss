@@ -1,0 +1,81 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+$guided-setup-accent: var(--oxygen-palette-primary-main, #ff7300);
+
+.guided-setup-banner {
+    align-items: center;
+    appearance: none;
+    background: rgba(255, 115, 0, 0.06);
+    border: 1px solid rgba(255, 115, 0, 0.25);
+    border-radius: 8px;
+    color: $guided-setup-accent;
+    column-gap: 12px;
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    justify-content: space-between;
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    text-align: left;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+
+    .guided-setup-banner-label {
+        align-items: center;
+        column-gap: 10px;
+        display: inline-flex;
+        font-weight: 500;
+        min-width: 0;
+    }
+
+    i.icon.guided-setup-banner-chevron {
+        flex-shrink: 0;
+        height: auto;
+        margin: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .guided-setup-banner-meta {
+        align-items: center;
+        column-gap: 8px;
+        display: inline-flex;
+        flex-shrink: 0;
+    }
+
+    .guided-setup-banner-duration {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 0.85em;
+        white-space: nowrap;
+    }
+
+    &:hover,
+    &:focus-visible {
+        background: rgba(255, 115, 0, 0.1);
+        border-color: rgba(255, 115, 0, 0.45);
+
+        i.icon.guided-setup-banner-chevron {
+            transform: translateX(3px);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid $guided-setup-accent;
+        outline-offset: 2px;
+    }
+}

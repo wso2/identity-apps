@@ -66,10 +66,10 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         [ location.search ]
     );
 
-    // Capture source=fab once on mount. Uses a ref so the wizard URL sync
+    // Capture source=home once on mount. Uses a ref so the wizard URL sync
     // (which rewrites query params) cannot invalidate the bypass flag.
     const isIntentionalAccessRef: React.MutableRefObject<boolean> = useRef<boolean>(
-        new URLSearchParams(location.search).get("source") === "fab"
+        new URLSearchParams(location.search).get("source") === "home"
     );
     const isIntentionalAccess: boolean = isIntentionalAccessRef.current;
 
@@ -91,7 +91,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
     const isFeatureEnabled: boolean = !!featureConfig?.onboarding?.enabled;
 
     // Route guard: always enforce feature flag and scopes.
-    // Only skip the SCIM claim check when the user intentionally navigated via the FAB.
+    // Only skip the SCIM claim check when the user intentionally navigated from the home page.
     useEffect(() => {
         if (isLoading) {
             return;

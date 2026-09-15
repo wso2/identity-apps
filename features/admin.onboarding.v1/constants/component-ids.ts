@@ -23,7 +23,6 @@ export const OnboardingComponentIds: Record<string, string> = {
     COLOR_PICKER: "color-picker",
     CONFIGURE_REDIRECT_URL_STEP: "configure-redirect-url-step",
     DESIGN_LOGIN_STEP: "design-login-step",
-    FAB: "onboarding-fab",
     LOGIN_BOX_PREVIEW: "login-box-preview",
     LOGO_SELECTOR: "logo-selector",
     LOGO_URL_INPUT: "logo-url-input",
