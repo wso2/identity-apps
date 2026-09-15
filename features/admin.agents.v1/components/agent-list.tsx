@@ -35,8 +35,9 @@ import {
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteAgent } from "../api/agents";
+import isAgentManagedByParentOrg from "../utils/is-agent-managed-by-parent-org";
 
 interface AgentListProps extends IdentifiableComponentInterface {
     advancedSearch: ReactNode;
@@ -93,20 +94,18 @@ export default function AgentList ({
             {
                 "data-testid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => false,
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (agent: AgentListItemInterface): SemanticICONS =>
+                    isAgentManagedByParentOrg(agent) ? "eye" : "pencil alternate",
                 onClick: (_e: SyntheticEvent, agent: AgentListItemInterface): void =>
                     history.push(AppConstants.getPaths().get("AGENT_EDIT").replace(":id", agent.id )),
-                popupText: (_agent: AgentListItemInterface): string => {
-                    return t("common:edit");
-                },
+                popupText: (agent: AgentListItemInterface): string =>
+                    isAgentManagedByParentOrg(agent) ? t("common:view") : t("common:edit"),
                 renderer: "semantic-icon"
             },
             {
                 "data-testid": `${ componentId }-item-delete-button`,
-                hidden: (_agent: AgentListItemInterface) => {
-
-                    return false;
-                },
+                // Agents shared down from a parent organization are not owned by this organization.
+                hidden: (agent: AgentListItemInterface): boolean => isAgentManagedByParentOrg(agent),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, _agent: UserBasicInterface): void => {
                     setCurrentDeletedAgent(_agent);
@@ -152,7 +151,18 @@ export default function AgentList ({
                             />
 
                             <Header.Content>
-                                { agent?.["urn:scim:wso2:agent:schema"]?.DisplayName }
+                                <div>
+                                    { agent?.["urn:scim:wso2:agent:schema"]?.DisplayName }
+                                    { isAgentManagedByParentOrg(agent) && (
+                                        <Label
+                                            size="mini"
+                                            className="client-id-label"
+                                            data-componentid={ `${ componentId }-managed-by-parent-org-label` }
+                                        >
+                                            { t("parentOrgInvitations:invitedUserLabel") }
+                                        </Label>
+                                    ) }
+                                </div>
                                 <Header.Subheader>{ agent.id }</Header.Subheader>
                             </Header.Content>
                         </Header>
