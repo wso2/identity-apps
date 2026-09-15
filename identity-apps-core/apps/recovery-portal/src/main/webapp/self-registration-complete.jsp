@@ -490,13 +490,13 @@
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
                                         <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
                                     </span>
-                                    <a
-                                        id="continue-to-application"
-                                        class="ui primary button large fluid mt-4"
-                                        href="<%= Encode.forHtmlAttribute(url) %>"
-                                    >
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Continue")%>
-                                    </a>
+                                    <br/><br/>
+                                    <span id="manual-continue">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "if.the.page.does.not.redirect.automatically")%>
+                                        <a id="continue-to-application" href="<%= Encode.forHtmlAttribute(url) %>">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "click.here")%>
+                                        </a>
+                                    </span>
                                     <br/>
 		            <%
 		                    } else {
