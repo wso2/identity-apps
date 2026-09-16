@@ -23,6 +23,9 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    useGetCurrentOrganizationType
+} from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -90,14 +93,18 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
 
     const isFeatureEnabled: boolean = !!featureConfig?.onboarding?.enabled;
 
-    // Route guard: always enforce feature flag and scopes.
+    // Sub-organizations are not eligible for the wizard, even when the URL carries the entry source.
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const isEligibleOrganization: boolean = !isSubOrganization();
+
+    // Route guard: always enforce feature flag, scopes and organization eligibility.
     // Only skip the SCIM claim check when the user intentionally navigated from the home page.
     useEffect(() => {
         if (isLoading) {
             return;
         }
 
-        if (!isFeatureEnabled || !hasRequiredCreateScopes) {
+        if (!isFeatureEnabled || !hasRequiredCreateScopes || !isEligibleOrganization) {
             history.push(AppConstants.getAppHomePath());
 
             return;
@@ -106,7 +113,14 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         if (!isIntentionalAccess && !shouldShowOnboarding) {
             history.push(AppConstants.getAppHomePath());
         }
-    }, [ isLoading, isFeatureEnabled, shouldShowOnboarding, hasRequiredCreateScopes, isIntentionalAccess ]);
+    }, [
+        isLoading,
+        isFeatureEnabled,
+        shouldShowOnboarding,
+        hasRequiredCreateScopes,
+        isEligibleOrganization,
+        isIntentionalAccess
+    ]);
 
     const handleComplete: (data: OnboardingDataInterface) => Promise<void> = useCallback(
         async (data: OnboardingDataInterface): Promise<void> => {
@@ -135,7 +149,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         history.push(AppConstants.getAppHomePath());
     }, [ isIntentionalAccess, markOnboardingComplete ]);
 
-    if (!isFeatureEnabled || !hasRequiredCreateScopes) {
+    if (!isFeatureEnabled || !hasRequiredCreateScopes || !isEligibleOrganization) {
         return null;
     }
 
