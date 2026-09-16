@@ -265,7 +265,7 @@
         }
 
         // UI countdown
-        function countdown(redirectURL, seconds, singleUseTarget) {
+        function countdown(redirectURL, seconds, consumesSessionDataKey) {
             var timeleft = seconds || 3;
             var deadline = Date.now() + (timeleft * 1000);
             var finished = false;
@@ -310,7 +310,7 @@
                 redirect(redirectURL);
             }
 
-            if (singleUseTarget) {
+            if (consumesSessionDataKey) {
                 showManualLink(false);
             }
 
@@ -321,10 +321,10 @@
                     return;
                 }
                 paint(0);
-                finish(singleUseTarget && isHidden());
+                finish(consumesSessionDataKey && isHidden());
             }, 1000);
 
-            if (singleUseTarget) {
+            if (consumesSessionDataKey) {
                 document.addEventListener("visibilitychange", function() {
                     if (!isHidden() && Date.now() >= deadline) {
                         paint(0);
@@ -447,7 +447,7 @@
                                         url =IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding);
                                     }
                                 }
-                                boolean isSingleUseTarget = false;
+                                boolean consumesSessionDataKey = false;
                                 if (autoLoginEnabled && !accountLockOnCreationEnabled
                                                 && StringUtils.isNotBlank(sessionDataKey)) {
 
@@ -462,7 +462,7 @@
 
                                     url = identityServerEndpointContextParam + "/commonauth?sessionDataKey="
                                                 + sessionDataKey;
-                                    isSingleUseTarget = true;
+                                    consumesSessionDataKey = true;
                             }
                             int countdown = 3;
                             if (accountVerification) {
@@ -488,7 +488,7 @@
                                         </a>
                                     </span>
                                     <br/>
-                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= isSingleUseTarget %>);</script>
+                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= consumesSessionDataKey %>);</script>
 		            <%
 		                    } else {
 		            %>
