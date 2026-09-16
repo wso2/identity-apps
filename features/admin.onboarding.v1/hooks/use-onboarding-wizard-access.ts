@@ -41,16 +41,15 @@ export const useOnboardingWizardAccess = (): UseOnboardingWizardAccessReturn => 
     );
     const onboardingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.onboarding;
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const hasRequiredCreateScopes: boolean = useRequiredScopes(
         onboardingFeatureConfig?.scopes?.create as string[]
     );
 
-    // Root organizations (super, tenant and first level) can all create applications through the wizard.
     const canAccessWizard: boolean =
         !!onboardingFeatureConfig?.enabled &&
-        !isSubOrganization() &&
+        isFirstLevelOrganization() &&
         hasRequiredCreateScopes;
 
     return { canAccessWizard };

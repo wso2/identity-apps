@@ -18,23 +18,17 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import {
-    useGetCurrentOrganizationType
-} from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useRef } from "react";
-import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import OnboardingWizard from "../components/onboarding-wizard";
 import Header from "../components/shared/header";
 import { ContentArea } from "../components/shared/onboarding-styles";
 import { OnboardingComponentIds } from "../constants";
 import { useOnboardingStatus } from "../hooks/use-onboarding-status";
+import { useOnboardingWizardAccess } from "../hooks/use-onboarding-wizard-access";
 import { OnboardingDataInterface, ParsedWizardUrlParamsInterface } from "../models/onboarding";
 import { parseWizardUrlParams } from "../utils/parse-wizard-url-params";
 
@@ -84,27 +78,16 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         userAccountType
     } = useOnboardingStatus();
 
-    const featureConfig: FeatureConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features
-    );
-    const hasRequiredCreateScopes: boolean = useRequiredScopes(
-        featureConfig?.onboarding?.scopes?.create as string[]
-    );
+    const { canAccessWizard } = useOnboardingWizardAccess();
 
-    const isFeatureEnabled: boolean = !!featureConfig?.onboarding?.enabled;
-
-    // Sub-organizations are not eligible for the wizard, even when the URL carries the entry source.
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-    const isEligibleOrganization: boolean = !isSubOrganization();
-
-    // Route guard: always enforce feature flag, scopes and organization eligibility.
+    // Route guard: always enforce wizard eligibility.
     // Only skip the SCIM claim check when the user intentionally navigated from the home page.
     useEffect(() => {
         if (isLoading) {
             return;
         }
 
-        if (!isFeatureEnabled || !hasRequiredCreateScopes || !isEligibleOrganization) {
+        if (!canAccessWizard) {
             history.push(AppConstants.getAppHomePath());
 
             return;
@@ -113,14 +96,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         if (!isIntentionalAccess && !shouldShowOnboarding) {
             history.push(AppConstants.getAppHomePath());
         }
-    }, [
-        isLoading,
-        isFeatureEnabled,
-        shouldShowOnboarding,
-        hasRequiredCreateScopes,
-        isEligibleOrganization,
-        isIntentionalAccess
-    ]);
+    }, [ isLoading, canAccessWizard, shouldShowOnboarding, isIntentionalAccess ]);
 
     const handleComplete: (data: OnboardingDataInterface) => Promise<void> = useCallback(
         async (data: OnboardingDataInterface): Promise<void> => {
@@ -149,7 +125,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         history.push(AppConstants.getAppHomePath());
     }, [ isIntentionalAccess, markOnboardingComplete ]);
 
-    if (!isFeatureEnabled || !hasRequiredCreateScopes || !isEligibleOrganization) {
+    if (!canAccessWizard) {
         return null;
     }
 
