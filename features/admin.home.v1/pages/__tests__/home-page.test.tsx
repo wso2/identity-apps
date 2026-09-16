@@ -23,7 +23,6 @@ import HomePage from "../home-page";
 import "@testing-library/jest-dom";
 
 vi.mock("@wso2is/admin.onboarding.v1/public-api", () => ({
-    OnboardingRocketIcon: () => null,
     buildOnboardingWizardPath: () => "",
     useOnboardingWizardAccess: () => ({ canAccessWizard: false })
 }));

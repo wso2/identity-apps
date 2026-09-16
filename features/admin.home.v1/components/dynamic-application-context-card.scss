@@ -21,55 +21,85 @@ $guided-setup-accent: var(--oxygen-palette-primary-main, #ff7300);
 .guided-setup-banner {
     align-items: center;
     appearance: none;
-    background: rgba(255, 115, 0, 0.06);
-    border: 1px solid rgba(255, 115, 0, 0.25);
-    border-radius: 8px;
-    color: $guided-setup-accent;
-    column-gap: 12px;
+    background:
+        radial-gradient(120px 80px at 88% 12%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(90px 70px at 96% 96%, rgba(250, 210, 180, 0.45) 0%, rgba(250, 210, 180, 0) 72%),
+        linear-gradient(100deg, #fdeade 0%, #fdf2e9 55%, #fffaf6 100%);
+    border: 1px solid rgba(255, 115, 0, 0.16);
+    border-radius: 10px;
+    column-gap: 16px;
     cursor: pointer;
     display: flex;
+    flex-wrap: wrap;
     font: inherit;
-    justify-content: space-between;
-    margin: 0 0 20px;
-    padding: 14px 16px;
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    row-gap: 10px;
     text-align: left;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
 
-    .guided-setup-banner-label {
+    .guided-setup-banner-body {
         align-items: center;
-        column-gap: 10px;
-        display: inline-flex;
-        font-weight: 500;
+        column-gap: 12px;
+        display: flex;
+        flex: 1;
         min-width: 0;
     }
 
-    i.icon.guided-setup-banner-chevron {
+    .guided-setup-banner-illustration {
+        flex-shrink: 0;
+    }
+
+    .guided-setup-banner-content {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        row-gap: 1px;
+    }
+
+    .guided-setup-banner-overline {
+        align-items: center;
+        color: $guided-setup-accent;
+        column-gap: 6px;
+        display: inline-flex;
+        font-size: 0.72em;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .guided-setup-banner-duration {
+        color: rgba(0, 0, 0, 0.45);
+        font-weight: 500;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+
+        &::before {
+            content: "· ";
+        }
+    }
+
+    .guided-setup-banner-title {
+        font-weight: 500;
+        line-height: 1.3;
+    }
+
+    i.icon.guided-setup-banner-arrow {
+        color: $guided-setup-accent;
         flex-shrink: 0;
         height: auto;
         margin: 0;
         transition: transform 0.2s ease;
     }
 
-    .guided-setup-banner-meta {
-        align-items: center;
-        column-gap: 8px;
-        display: inline-flex;
-        flex-shrink: 0;
-    }
-
-    .guided-setup-banner-duration {
-        color: rgba(0, 0, 0, 0.5);
-        font-size: 0.85em;
-        white-space: nowrap;
-    }
-
     &:hover,
     &:focus-visible {
-        background: rgba(255, 115, 0, 0.1);
         border-color: rgba(255, 115, 0, 0.45);
+        box-shadow: 0 4px 12px rgba(255, 115, 0, 0.12);
 
-        i.icon.guided-setup-banner-chevron {
+        i.icon.guided-setup-banner-arrow {
             transform: translateX(3px);
         }
     }

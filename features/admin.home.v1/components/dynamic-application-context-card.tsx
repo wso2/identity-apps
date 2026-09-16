@@ -30,7 +30,6 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import {
-    OnboardingRocketIcon,
     buildOnboardingWizardPath,
     useOnboardingWizardAccess
 } from "@wso2is/admin.onboarding.v1/public-api";
@@ -41,6 +40,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Card, Grid, Icon } from "semantic-ui-react";
+import { ReactComponent as GuidedSetupRocket } from "../assets/images/guided-setup-rocket.svg";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import "./dynamic-application-context-card.scss";
@@ -245,14 +245,21 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
                             onClick={ handleGuidedSetupClick }
                             data-componentid={ `${ testId }-guided-setup-banner` }
                         >
-                            <span className="guided-setup-banner-label">
-                                <OnboardingRocketIcon fill="currentColor" height={ 18 } width={ 18 } />
-                                Start guided setup
+                            <span className="guided-setup-banner-body">
+                                <GuidedSetupRocket
+                                    className="guided-setup-banner-illustration"
+                                    height={ 52 }
+                                    width={ 52 }
+                                />
+                                <span className="guided-setup-banner-content">
+                                    <span className="guided-setup-banner-overline">
+                                        Guided setup
+                                        <span className="guided-setup-banner-duration">~2 min</span>
+                                    </span>
+                                    <span className="guided-setup-banner-title">Set up an app in minutes</span>
+                                </span>
                             </span>
-                            <span className="guided-setup-banner-meta">
-                                <span className="guided-setup-banner-duration">~2 min</span>
-                                <Icon name="angle right" className="guided-setup-banner-chevron" />
-                            </span>
+                            <Icon name="angle right" className="guided-setup-banner-arrow" />
                         </button>
                     )
                 }

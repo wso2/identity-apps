@@ -16,13 +16,8 @@
  * under the License.
  */
 
-import { ReactComponent as OnboardingRocketIcon } from "./assets/icons/rocket.svg";
-
 // Pages
 export { default as OnboardingPage } from "./pages/onboarding-page";
-
-// Assets
-export { OnboardingRocketIcon };
 
 // Hooks
 export { useOnboardingStatus } from "./hooks/use-onboarding-status";
