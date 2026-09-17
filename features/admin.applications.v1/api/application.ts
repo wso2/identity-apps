@@ -292,12 +292,12 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
         }
         : null;
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
         data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };
