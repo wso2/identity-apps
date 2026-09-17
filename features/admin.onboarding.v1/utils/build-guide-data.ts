@@ -33,9 +33,9 @@ interface BuildGuideDataParamsInterface {
     inboundProtocolConfig?: OIDCDataInterface;
     /** OIDC endpoint metadata (from Redux state.application.oidcConfigurations) */
     oidcConfigurations?: OIDCApplicationConfigurationInterface;
-    /** Server origin URL */
+    /** Server origin URL, without the tenant path */
     serverOrigin?: string;
-    /** Custom server host (tenant-qualified, preferred over serverOrigin) */
+    /** Custom server host (tenant-qualified). Only a fallback when serverOrigin is unavailable */
     customServerHost?: string;
     /** Tenant domain */
     tenantDomain?: string;
@@ -80,7 +80,7 @@ export const buildOnboardingGuideData = (params: BuildGuideDataParamsInterface):
         set(data, "metadata.oidc", params.oidcConfigurations);
     }
 
-    data.serverOrigin = params.customServerHost || params.serverOrigin || "";
+    data.serverOrigin = params.serverOrigin || params.customServerHost || "";
     data.tenantDomain = params.tenantDomain || "";
     data.clientOrigin = params.clientOrigin || "";
     data.productName = params.productName || "";

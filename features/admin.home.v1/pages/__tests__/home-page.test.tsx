@@ -23,7 +23,8 @@ import HomePage from "../home-page";
 import "@testing-library/jest-dom";
 
 vi.mock("@wso2is/admin.onboarding.v1/public-api", () => ({
-    OnboardingFab: () => null
+    buildOnboardingWizardPath: () => "",
+    useOnboardingWizardAccess: () => ({ canAccessWizard: false })
 }));
 
 describe("Test if the Getting Started page is working as expected", () => {

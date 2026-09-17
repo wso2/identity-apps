@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,15 +29,21 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import {
+    buildOnboardingWizardPath,
+    useOnboardingWizardAccess
+} from "@wso2is/admin.onboarding.v1/public-api";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Grid } from "semantic-ui-react";
+import { Card, Grid, Icon } from "semantic-ui-react";
+import { ReactComponent as GuidedSetupRocket } from "../assets/images/guided-setup-rocket.svg";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
+import "./dynamic-application-context-card.scss";
 
 type DynamicApplicationContextCardPropsInterface = {
     onTemplateSelected: (group: ApplicationTemplateListItemInterface) => void;
@@ -59,6 +65,8 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
         (state: AppState) => state?.application?.groupedTemplates
     );
     const [ context, setContext ] = useState<Context | undefined>(undefined);
+
+    const { canAccessWizard } = useOnboardingWizardAccess();
 
     /**
      * Figure out which context should be shown initially.
@@ -99,6 +107,13 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
         });
 
         onTemplateSelected(selected);
+    };
+
+    /**
+     * Handler for the guided setup entry point.
+     */
+    const handleGuidedSetupClick = (): void => {
+        history.push(buildOnboardingWizardPath());
     };
 
     /**
@@ -207,17 +222,47 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
             data-testid="application-integration-card"
             className="basic-card no-hover getting-started-card social-connections-card"
         >
-            <Card.Content extra className="description-container">
+            <Card.Content extra className="description-container" style={ { paddingBottom: "0" } }>
                 <div className="card-heading mb-1">
                     <Heading as="h2">
                     Onboard and manage apps
                     </Heading>
                 </div>
                 <Text muted>
-                    Choose the type of application
+                    {
+                        canAccessWizard
+                            ? "Start the guided setup or choose an application type to onboard your app"
+                            : "Choose the type of application"
+                    }
                 </Text>
             </Card.Content>
             <Card.Content style={ { borderTop: "none" } } className="illustration-container">
+                {
+                    canAccessWizard && (
+                        <button
+                            type="button"
+                            className="guided-setup-banner"
+                            onClick={ handleGuidedSetupClick }
+                            data-componentid={ `${ testId }-guided-setup-banner` }
+                        >
+                            <span className="guided-setup-banner-body">
+                                <GuidedSetupRocket
+                                    className="guided-setup-banner-illustration"
+                                    height={ 52 }
+                                    width={ 52 }
+                                />
+                                <span className="guided-setup-banner-content">
+                                    <span className="guided-setup-banner-overline">
+                                        Guided setup
+                                        <span className="guided-setup-banner-duration">~2 min</span>
+                                    </span>
+                                    <span className="guided-setup-banner-title">Set up an app in minutes</span>
+                                </span>
+                            </span>
+                            <Icon name="angle right" className="guided-setup-banner-arrow" />
+                        </button>
+                    )
+                }
                 <Grid>
                     <Grid.Row columns={ 2 } style={ { rowGap: "13px" } }>
                         {

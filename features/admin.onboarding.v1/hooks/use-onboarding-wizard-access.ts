@@ -26,16 +26,16 @@ import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
 
 /**
- * Return type for the useOnboardingFabVisibility hook.
+ * Return type for the useOnboardingWizardAccess hook.
  */
-interface UseOnboardingFabVisibilityReturn {
-    isVisible: boolean;
+interface UseOnboardingWizardAccessReturn {
+    canAccessWizard: boolean;
 }
 
 /**
- * Determines whether the onboarding FAB should be visible for the current user.
+ * Determines whether the current user can enter the onboarding wizard from within the Console.
  */
-export const useOnboardingFabVisibility = (): UseOnboardingFabVisibilityReturn => {
+export const useOnboardingWizardAccess = (): UseOnboardingWizardAccessReturn => {
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features
     );
@@ -47,10 +47,10 @@ export const useOnboardingFabVisibility = (): UseOnboardingFabVisibilityReturn =
         onboardingFeatureConfig?.scopes?.create as string[]
     );
 
-    const isVisible: boolean =
+    const canAccessWizard: boolean =
         !!onboardingFeatureConfig?.enabled &&
         isFirstLevelOrganization() &&
         hasRequiredCreateScopes;
 
-    return { isVisible };
+    return { canAccessWizard };
 };
