@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 5.4.9
+
+### Patch Changes
+
+- [#10695](https://github.com/wso2/identity-apps/pull/10695) [`09294633defca1ac01c3cbaad3512beb257b90f8`](https://github.com/wso2/identity-apps/commit/09294633defca1ac01c3cbaad3512beb257b90f8) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the null string comparison for the identifier first user input in login.jsp
+
+* [#10666](https://github.com/wso2/identity-apps/pull/10666) [`e1dc6682e201f8d63ffd3395deb3c40fc18a1aaf`](https://github.com/wso2/identity-apps/commit/e1dc6682e201f8d63ffd3395deb3c40fc18a1aaf) Thanks [@PulithThewmika](https://github.com/PulithThewmika)! - Fix string comparison in login.jsp — replace reference equality (`==`) with `.equals()` for the identifier-first username null check
+
+- [#10609](https://github.com/wso2/identity-apps/pull/10609) [`020c83fe2862421b6a1bc52c9443592fd2d746da`](https://github.com/wso2/identity-apps/commit/020c83fe2862421b6a1bc52c9443592fd2d746da) Thanks [@sanjulaonline](https://github.com/sanjulaonline)! - Remove obsolete absolute TOTP scripts.js references from authentication portal pages.
+
+* [#10693](https://github.com/wso2/identity-apps/pull/10693) [`2529dd02b3bde57d1f9c06fb9ca52b9a492c729e`](https://github.com/wso2/identity-apps/commit/2529dd02b3bde57d1f9c06fb9ca52b9a492c729e) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add a fallback link to the self registration completion page, and stop the auto login
+  redirect from firing while the page is hidden. A backgrounded browser cannot hand off to
+  the application, but the redirect still reaches `/commonauth` and consumes the single use
+  `sessionDataKey`, leaving the user stranded on the completion page with no way to continue.
+
 ## 5.4.8
 
 ### Patch Changes
