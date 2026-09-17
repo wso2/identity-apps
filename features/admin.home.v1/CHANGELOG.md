@@ -1,5 +1,16 @@
 # @wso2is/admin.home.v1
 
+## 1.7.200
+
+### Patch Changes
+
+- [#10694](https://github.com/wso2/identity-apps/pull/10694) [`0df0ca414588d47cf832eaaae666bb90d734b29c`](https://github.com/wso2/identity-apps/commit/0df0ca414588d47cf832eaaae666bb90d734b29c) Thanks [@savindi7](https://github.com/savindi7)! - Add guided setup option to the home page.
+
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`0df0ca414588d47cf832eaaae666bb90d734b29c`](https://github.com/wso2/identity-apps/commit/0df0ca414588d47cf832eaaae666bb90d734b29c)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.onboarding.v1@1.0.96
+
 ## 1.7.199
 
 ### Patch Changes

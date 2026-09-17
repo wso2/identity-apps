@@ -1,5 +1,21 @@
 # @wso2is/admin.core.v1
 
+## 2.59.6
+
+### Patch Changes
+
+- [#10652](https://github.com/wso2/identity-apps/pull/10652) [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Enable agent management and agent sign-in configuration in sub-organizations and preserve the existing agent owner when updating agent information
+
+* [#10683](https://github.com/wso2/identity-apps/pull/10683) [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add an opt in option to route applications that rename attributes through a custom claim dialect to the local dialect attribute selector
+
+* Updated dependencies [[`41434e235b2bd29a028d68df244e067466222c54`](https://github.com/wso2/identity-apps/commit/41434e235b2bd29a028d68df244e067466222c54), [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`ac6c1919738a2d331e914d6356c89f0ed3df2ece`](https://github.com/wso2/identity-apps/commit/ac6c1919738a2d331e914d6356c89f0ed3df2ece), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.agents.v1@1.2.2
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.roles.v2@2.27.387
+  - @wso2is/admin.authentication.v1@2.25.212
+  - @wso2is/admin.identity-providers.v1@2.29.3
+  - @wso2is/admin.connections.v1@2.42.1
+
 ## 2.59.5
 
 ### Patch Changes

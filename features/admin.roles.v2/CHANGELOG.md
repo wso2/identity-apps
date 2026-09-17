@@ -1,5 +1,18 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.387
+
+### Patch Changes
+
+- [#10652](https://github.com/wso2/identity-apps/pull/10652) [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Enable agent management and agent sign-in configuration in sub-organizations and preserve the existing agent owner when updating agent information
+
+- Updated dependencies [[`41434e235b2bd29a028d68df244e067466222c54`](https://github.com/wso2/identity-apps/commit/41434e235b2bd29a028d68df244e067466222c54), [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.agents.v1@1.2.2
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.identity-providers.v1@2.29.3
+  - @wso2is/admin.connections.v1@2.42.1
+
 ## 2.27.386
 
 ### Patch Changes
