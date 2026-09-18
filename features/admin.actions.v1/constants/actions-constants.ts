@@ -45,6 +45,7 @@ export class ActionsConstants {
     public static readonly ACTIVATE: string = "activate";
     public static readonly DEACTIVATE: string = "deactivate";
     public static readonly ACTIVE_STATUS: string = "ACTIVE";
+    public static readonly INACTIVE_STATUS: string = "INACTIVE";
 
     public static readonly CREATE_ACTION_ERROR_CODE: string = "ACTION-00001";
     public static readonly UPDATE_ACTION_ERROR_CODE: string = "ACTION-00002";
