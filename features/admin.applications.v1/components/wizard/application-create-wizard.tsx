@@ -189,7 +189,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
                 // Set the steps for the wizard.
                 if (addProtocol) {
-                    setCurrentWizardStep(currentWizardStep + 1);
+                    setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
                 } else {
                     setWizardSteps(STEPS.slice(1));
                 }
@@ -252,7 +252,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
 
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
@@ -477,7 +477,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         if (formType === WizardStepsFormTypes.PROTOCOL_SELECTION) {
             if (values) {
                 if (isEqual(values, selectedTemplate)) {
-                    setCurrentWizardStep(currentWizardStep + 1);
+                    setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
                 } else {
                     setSelectedTemplate(values as ApplicationTemplateListItemInterface);
                 }
@@ -485,7 +485,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 setTriggerProtocolSelectionSubmit();
             }
         } else {
-            setCurrentWizardStep(currentWizardStep + 1);
+            setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
             if (has(wizardState, formType)) {
                 setWizardState(set(wizardState, formType, values));
             } else {
