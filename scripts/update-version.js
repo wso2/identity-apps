@@ -30,18 +30,20 @@
 
 const { execSync } = require("child_process");
 const path = require("path");
-const XmlParser = require("fast-xml-parser");
+const { XMLParser } = require("fast-xml-parser");
 const fs = require("fs-extra");
+const simpleGit = require("simple-git");
 
 const packageJson = path.join(__dirname, "..", "package.json");
 const pomXml = path.join(__dirname, "..", "pom.xml");
 const workingDir = path.join(__dirname, "..");
 
-const git = require("simple-git/promise")(workingDir);
+const git = simpleGit(workingDir);
+const xmlParser = new XMLParser();
 
 const getProjectVersion = function() {
     const fileContent = fs.readFileSync(pomXml);
-    const pom = XmlParser.parse(fileContent.toString());
+    const pom = xmlParser.parse(fileContent.toString());
 
     return pom.project.version.replace("-SNAPSHOT", "");
 };
