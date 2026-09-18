@@ -1679,6 +1679,13 @@ export interface ApplicationsNS {
                         label: string;
                     };
                     heading: string;
+                };
+                tokenExchange: {
+                    restrictScopeIssuanceForFederatedTokens: {
+                        hint: string;
+                        label: string;
+                    };
+                    heading: string;
                 }
             };
             mobileApp: {
