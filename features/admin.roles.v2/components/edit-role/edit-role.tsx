@@ -222,7 +222,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                     roleObject?.audience?.display) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                         />
                     </ResourceTab.Pane>
                 )
@@ -239,7 +239,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                 isReadOnly={ isGroupReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 2 }
+                                tabIndex={ 0 }
                             />
                         </ResourceTab.Pane>
                     )
@@ -258,7 +258,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                 isReadOnly={ isUserReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 3 }
+                                tabIndex={ 0 }
                                 isForNonHumanUser={ false }
                             />
                         </ResourceTab.Pane>
@@ -280,7 +280,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                 isForNonHumanUser={ true }
                                 activeUserStore="AGENT"
                                 onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 3 }
+                                tabIndex={ 0 }
                                 data-componentid="edit-role-agents"
                             />
                         </ResourceTab.Pane>
