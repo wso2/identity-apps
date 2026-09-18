@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.38.54
+
+### Patch Changes
+
+- [#10697](https://github.com/wso2/identity-apps/pull/10697) [`994927c01a532527e0271ffa16484f013978cd3e`](https://github.com/wso2/identity-apps/commit/994927c01a532527e0271ffa16484f013978cd3e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the Shared Access role pickers showing "No roles available" until Save for organizations whose sharing policy has no roles
+
+- Updated dependencies [[`40557c5ac24c07c6c14b3e02e9041be42312f48d`](https://github.com/wso2/identity-apps/commit/40557c5ac24c07c6c14b3e02e9041be42312f48d)]:
+  - @wso2is/core@2.13.7
+  - @wso2is/react-components@2.10.6
+
 ## 2.38.53
 
 ### Patch Changes

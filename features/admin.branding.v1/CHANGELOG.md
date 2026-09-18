@@ -1,5 +1,16 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.173
+
+### Patch Changes
+
+- [#10696](https://github.com/wso2/identity-apps/pull/10696) [`cda502803158435d0035b59d88d02c81bc934ad5`](https://github.com/wso2/identity-apps/commit/cda502803158435d0035b59d88d02c81bc934ad5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix the application dropdown in the branding page not filtering results when a search term is typed
+
+- Updated dependencies [[`cda502803158435d0035b59d88d02c81bc934ad5`](https://github.com/wso2/identity-apps/commit/cda502803158435d0035b59d88d02c81bc934ad5), [`40557c5ac24c07c6c14b3e02e9041be42312f48d`](https://github.com/wso2/identity-apps/commit/40557c5ac24c07c6c14b3e02e9041be42312f48d)]:
+  - @wso2is/admin.applications.v1@2.44.2
+  - @wso2is/core@2.13.7
+  - @wso2is/react-components@2.10.6
+
 ## 2.32.172
 
 ### Patch Changes
