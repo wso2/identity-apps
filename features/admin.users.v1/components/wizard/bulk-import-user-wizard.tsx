@@ -738,13 +738,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns filtered attribute mapping.
      */
     const filterAttributes = (headers: string[], attributeMapping: CSVAttributeMapping[]): CSVAttributeMapping[] => {
-        const filteredAttributeList: CSVAttributeMapping[] = headers
-            .map((header: string) =>
-                attributeMapping.find(
-                    (attribute: CSVAttributeMapping) => header.toLowerCase() === attribute.attributeName.toLowerCase()
-                )
-            )
-            .filter(Boolean);
+        const filteredAttributeList: CSVAttributeMapping[] = headers.flatMap((header: string) => {
+            const attribute = attributeMapping.find(
+                (attribute: CSVAttributeMapping) =>
+                    header.toLowerCase() === attribute.attributeName.toLowerCase()
+            );
+
+            return attribute ? [ attribute ] : [];
+        });
 
         filteredAttributeList.push(
             attributeMapping.find((attribute: CSVAttributeMapping) =>
