@@ -79,10 +79,13 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
             if (!availableConsents) return [];
 
             return purposes
-                .map((p: PurposeInterface) =>
-                    availableConsents.find((c: ConsentListItemInterface): boolean => c.id === p.purposeId)
-                )
-                .filter(Boolean) as ConsentListItemInterface[];
+                .flatMap((p: PurposeInterface) => {
+                    const consent = availableConsents.find(
+                        (c: ConsentListItemInterface): boolean => c.id === p.purposeId
+                    );
+
+                    return consent ? [ consent ] : [];
+                }) as ConsentListItemInterface[];
         },
         [ purposes, availableConsents ]
     );

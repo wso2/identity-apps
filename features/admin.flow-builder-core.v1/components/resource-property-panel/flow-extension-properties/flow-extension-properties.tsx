@@ -77,8 +77,11 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
         const usedActionIds: Set<string> = new Set(
             nodes
                 .filter((node: Node) => node.id !== resource?.id)
-                .map((node: Node) => (node.data as any)?.action?.executor?.meta?.actionId)
-                .filter(Boolean)
+                .flatMap((node: Node) => {
+                    const actionId: string | undefined = (node.data as any)?.action?.executor?.meta?.actionId;
+
+                    return actionId ? [ actionId ] : [];
+                })
         );
 
         return allConnections.filter(

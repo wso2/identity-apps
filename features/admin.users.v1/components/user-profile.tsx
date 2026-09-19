@@ -303,7 +303,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 ]);
 
                 const systemMappedClaimURIs: Set<string> = new Set(
-                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
+                    systemClaims.flatMap((claim: ExternalClaim) => {
+                        const mappedLocalClaimURI = claim.mappedLocalClaimURI;
+
+                        return mappedLocalClaimURI ? [ mappedLocalClaimURI ] : [];
+                    })
                 );
                 const duplicates: ExternalClaim[] = enterpriseClaims.filter(
                     (claim: ExternalClaim) =>
@@ -723,18 +727,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns The primary email address or undefined if not found.
      */
     const getPrimaryEmail = (emails: any[]): string | undefined => {
-        return emails
-            .map((email: any) => {
-                if (typeof email === "string") {
-                    return email;
-                }
-                if (typeof email === "object" && email !== null && email.primary === true) {
-                    return email.value;
-                }
+        return emails.flatMap((email: any) => {
+            if (typeof email === "string") {
+                return [ email ];
+            }
 
-                return undefined;
-            })
-            .filter(Boolean)[0];
+            if (typeof email === "object" && email !== null && email.primary === true) {
+                return email.value ? [ email.value ] : [];
+            }
+
+            return [];
+        })[0];
     };
 
     /**
