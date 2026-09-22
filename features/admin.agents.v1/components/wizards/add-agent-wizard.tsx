@@ -103,7 +103,6 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         setIsSubmitting(true);
         setSubmittedValues(values);
 
-        // Step 1: Create SCIM payload with minimal data (only send isUserServingAgent flag).
         const addAgentPayload: AgentScimSchema = {
             "urn:scim:wso2:agent:schema": {
                 Description: values?.description,
@@ -114,7 +113,6 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         };
 
         try {
-            // Step 2: Create the agent via SCIM.
             const response: AgentScimSchema = await addAgent(addAgentPayload);
 
             const result: AgentCreationResultInterface = {
@@ -124,28 +122,17 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 oauthClientId: undefined
             };
 
-            // Step 3: If this is a user-serving agent, update application OAuth configuration.
             if (values?.isUserServingAgent && response?.id) {
-                try {
-                    // Extract the application ID from response (agentId == applicationId).
-                    const applicationId: string = response.id;
+                const applicationId: string = response.id;
 
-                    // Update application OAuth configuration via Application REST API.
+                try {
                     await updateAgentApplicationConfiguration(applicationId, {
                         agentType: values?.agentType,
                         callbackUrl: values?.callbackUrl,
                         cibaAuthReqExpiryTime: values?.cibaAuthReqExpiryTime,
                         notificationChannels: values?.notificationChannels
                     });
-
-                    // Step 4: Fetch the OAuth Client ID.
-                    const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
-
-                    if (oidcConfig?.clientId) {
-                        result.oauthClientId = oidcConfig.clientId;
-                    }
-                } catch (error) {
-                    // If Application API update fails, show warning but continue.
+                } catch {
                     dispatch(
                         addAlert({
                             description: t("agents:wizard.alerts.configUpdateFailed.description"),
@@ -154,9 +141,24 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                         })
                     );
                 }
+
+                try {
+                    const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
+
+                    if (oidcConfig?.clientId) {
+                        result.oauthClientId = oidcConfig.clientId;
+                    }
+                } catch {
+                    dispatch(
+                        addAlert({
+                            description: t("agents:wizard.alerts.clientIdFetchFailed.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("agents:wizard.alerts.clientIdFetchFailed.message")
+                        })
+                    );
+                }
             }
 
-            // Step 5: Show success alert.
             dispatch(
                 addAlert({
                     description: t("agents:wizard.alerts.created.description"),
@@ -165,7 +167,6 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 })
             );
 
-            // Step 6: Show success screen with all data ready.
             setCreationResult(result);
             setIsShowingSuccessScreen(true);
             setIsSubmitting(false);
