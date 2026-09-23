@@ -1247,6 +1247,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
+     * The application version is also watched, since updating the version can change the inbound
+     * protocol configurations returned by the server. (e.g. `accessTokenAttributes` is reset when the
+     * application is upgraded to a version which supports access token attributes.)
      */
     useEffect(() => {
         if (!application?.inboundProtocols || !application?.id) {
@@ -1254,7 +1257,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [ JSON.stringify(application?.inboundProtocols) ]);
+    }, [ JSON.stringify(application?.inboundProtocols), application?.applicationVersion ]);
 
     useEffect(() => {
         if (samlConfigurations !== undefined) {
