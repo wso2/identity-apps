@@ -22,6 +22,7 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import {
+    BoltIcon,
     CircleCheckFilledIcon,
     KeyFlowIcon,
     PadlockAsteriskFlowIcon,
@@ -398,29 +399,52 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
         </>
     );
 
+    const isActionStatusActive = (status: string | number | null | undefined): boolean | null => {
+        if (status === null || status === undefined) {
+            return null;
+        }
+
+        if (status === ActionsConstants.ACTIVE_STATUS) {
+            return true;
+        }
+
+        const normalizedStatus: string = status.toString().toUpperCase();
+
+        if (normalizedStatus === ActionsConstants.ACTIVE_STATUS) {
+            return true;
+        }
+
+        if (normalizedStatus === ActionsConstants.INACTIVE_STATUS) {
+            return false;
+        }
+
+        return false;
+    };
+
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
+        let isActive: boolean | null = null;
 
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                count = typeCounts?.preIssueAccessToken;
-
+                count = typeCounts?.preIssueAccessToken ?? 0;
+                isActive = isActionStatusActive(preIssueAccessTokenActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH:
-                count = typeCounts?.preIssueIdToken;
-
+                count = typeCounts?.preIssueIdToken ?? 0;
+                isActive = isActionStatusActive(preIssueIdTokenActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                count = typeCounts?.preUpdatePassword;
-
+                count = typeCounts?.preUpdatePassword ?? 0;
+                isActive = isActionStatusActive(preUpdatePasswordActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                count = typeCounts?.preUpdateProfile;
-
+                count = typeCounts?.preUpdateProfile ?? 0;
+                isActive = isActionStatusActive(preUpdateProfileActions?.[0]?.status);
                 break;
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                count = typeCounts?.preRegistration;
-
+                count = typeCounts?.preRegistration ?? 0;
+                isActive = isActionStatusActive(preRegistrationActions?.[0]?.status);
                 break;
             default:
                 break;
@@ -428,28 +452,39 @@ const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface>
 
         if (count > 0) {
             return (
-                <div
-                    className="status-tag"
-                    data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
-                >
-                    <CircleCheckFilledIcon className="icon-configured"/>
-                    <Typography  className="text-configured" variant="h6">
-                        { t("actions:status.configured") }
-                    </Typography>
-                </div>
-            );
-        } else {
-            return (
-                <div
-                    className="status-tag"
-                    data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
-                >
-                    <Typography  className="text-not-configured" variant="h6">
-                        {  t("actions:status.notConfigured") }
-                    </Typography>
+                <div className="status-tags-container">
+                    <div
+                        className="status-tag"
+                        data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
+                    >
+                        <CircleCheckFilledIcon className="icon-configured" />
+                        <Typography className="text-configured" variant="h6" color="inherit">
+                            { t("actions:status.configured") }
+                        </Typography>
+                    </div>
+
+                    <div className={`status-tag ${ isActive === null ? "status-unknown" : (isActive ? "status-active" : "status-inactive") }`}>
+                        { isActive === true && (
+                            <BoltIcon className="icon-status" />
+                        ) }
+                        <Typography className="text-status" variant="h6" color="inherit">
+                            { isActive === null ? "?" : (isActive ? t("actions:status.active") : t("actions:status.inactive")) }
+                        </Typography>
+                    </div>
                 </div>
             );
         }
+
+        return (
+            <div
+                className="status-tag"
+                data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
+            >
+                <Typography className="text-not-configured" variant="h6" color="inherit">
+                    { t("actions:status.notConfigured") }
+                </Typography>
+            </div>
+        );
     };
 
     /**
