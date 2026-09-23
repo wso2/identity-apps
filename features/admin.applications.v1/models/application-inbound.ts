@@ -210,6 +210,16 @@ interface CIBAAuthenticationConfigurationInterface {
     skipUserValidation?: boolean;
 }
 
+/**
+ * Token exchange related properties.
+ */
+interface TokenExchangeConfigurationInterface {
+    /**
+     * If enabled, no scopes are issued for tokens obtained by exchanging a federated token.
+     */
+    restrictScopeIssuanceForFederatedTokens?: boolean;
+}
+
 interface OIDCLogoutConfigurationInterface {
     backChannelLogoutUrl?: string;
     frontChannelLogoutUrl?: string;
@@ -244,6 +254,7 @@ export interface OIDCDataInterface {
     fapiProfile?: FapiProfile;
     hybridFlow?: HybridFlowConfigurationInterface;
     cibaAuthenticationRequest?: CIBAAuthenticationConfigurationInterface;
+    tokenExchange?: TokenExchangeConfigurationInterface;
     issuer?: AllowedIssuerInterface;
 }
 
