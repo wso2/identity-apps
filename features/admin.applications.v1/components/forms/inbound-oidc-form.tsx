@@ -634,7 +634,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ claims, externalClaims ]);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (!initialValues?.accessToken?.accessTokenAttributes) {
             setSelectedAccessTokenAttributes(undefined);
 
@@ -648,7 +648,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setSelectedAccessTokenAttributes(selectedAttributes);
     }, [ accessTokenAttributes, JSON.stringify(initialValues?.accessToken?.accessTokenAttributes) ]);
 
-    useEffect(() => {
+    useEffect((): void => {
         setAccessTokenAttributesEnabled(ApplicationManagementUtils.isAppVersionAllowed(
             application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
     }, [ application?.applicationVersion ]);

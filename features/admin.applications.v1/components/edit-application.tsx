@@ -60,7 +60,7 @@ import {
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -315,10 +315,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
     };
 
+    const inboundProtocolRequestIdRef: React.MutableRefObject<number> = useRef<number>(0);
+
     /**
      * Finds the configured inbound protocol.
      */
     const findConfiguredInboundProtocol = (appId: string): void => {
+        const requestId: number = ++inboundProtocolRequestIdRef.current;
         let protocolConfigs: any = {};
         const selectedProtocolList: string[] = [];
         const inboundProtocolRequests: Promise<any>[] = [];
@@ -376,6 +379,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }));
                 })
                 .finally(() => {
+                    // Discard the results if a newer lookup has started, so a stale batch doesn't overwrite it.
+                    if (requestId !== inboundProtocolRequestIdRef.current) {
+                        return;
+                    }
+
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
                     setIsApplicationUpdated(true);
