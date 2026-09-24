@@ -702,7 +702,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 } }
                                 children={ passwordResetOptions }
                                 value={ "setPassword" }
-                                tabIndex={ 4 }
+                                tabIndex={ 0 }
                                 maxWidth={ 60 }
                                 width={ 60 }
                             />
