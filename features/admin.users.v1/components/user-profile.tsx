@@ -721,13 +721,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Local type to represent an email attribute that may carry a `primary` flag.
+     * `MultiValueAttributeInterface` does not declare `primary`, so it is extended here
+     * for use within `getPrimaryEmail`.
+     */
+    type EmailAttributeInterface = MultiValueAttributeInterface & {
+        primary?: boolean;
+    };
+
+    /**
      * Extracts the primary email from an array of email objects or strings.
      *
      * @param emails - Array of email strings or email objects with primary flag.
      * @returns The primary email address or undefined if not found.
      */
-    const getPrimaryEmail = (emails: string[] | MultiValueAttributeInterface[]): string | undefined => {
-        return emails.flatMap((email: string | MultiValueAttributeInterface): string[] => {
+    const getPrimaryEmail = (emails: string[] | EmailAttributeInterface[]): string | undefined => {
+        return emails.flatMap((email: string | EmailAttributeInterface): string[] => {
             if (typeof email === "string") {
                 return email ? [ email ] : [];
             }
