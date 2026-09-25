@@ -84,8 +84,8 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
             if (!availableConsents) return [];
 
             return purposes
-                .flatMap((p: PurposeInterface) => {
-                    const consent = availableConsents.find(
+                .flatMap((p: PurposeInterface): ConsentListItemInterface[] => {
+                    const consent: ConsentListItemInterface | undefined = availableConsents.find(
                         (c: ConsentListItemInterface): boolean => c.id === p.purposeId
                     );
 

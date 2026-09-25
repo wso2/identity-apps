@@ -581,8 +581,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
                 if (userHasAConsoleRole) {
                     const assignedRoles: RolesInterface[] = invite?.roles
-                        .flatMap((roleDisplayName: string) => {
-                            const role = consoleRolesList?.Resources?.find(
+                        .flatMap((roleDisplayName: string): RolesInterface[] => {
+                            const role: RolesInterface | undefined = consoleRolesList?.Resources?.find(
                                 (role: RolesInterface) => role?.displayName === roleDisplayName
                             );
 

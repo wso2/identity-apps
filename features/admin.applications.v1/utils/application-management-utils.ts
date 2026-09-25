@@ -452,8 +452,8 @@ export class ApplicationManagementUtils {
         if (!matchWithParantheses && !matchWithoutParantheses) return raw;
 
         const inner: string = matchWithParantheses ? matchWithParantheses[1] : matchWithoutParantheses[1];
-        const parts: string[] = inner.split("|").flatMap((part) => {
-            const trimmedPart = part.trim();
+        const parts: string[] = inner.split("|").flatMap((part: string): string[] => {
+            const trimmedPart: string = part.trim();
 
             return trimmedPart ? [ trimmedPart ] : [];
         });

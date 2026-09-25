@@ -283,7 +283,7 @@ export const getFlattenedInitialValues = (
                     const primaryEmail: string = Array.isArray(emails)
                         ? emails.flatMap((email: unknown): string[] => {
                             if (typeof email === "string") {
-                                return [ email ];
+                                return email ? [ email ] : [];
                             }
 
                             if (typeof email === "object" && email !== null && email["primary"] === true) {

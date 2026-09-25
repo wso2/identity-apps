@@ -196,8 +196,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                 ]);
 
                 const systemMappedClaimURIs: Set<string> = new Set(
-                    systemClaims.flatMap((claim: ExternalClaim) => {
-                        const mappedLocalClaimURI = claim.mappedLocalClaimURI;
+                    systemClaims.flatMap((claim: ExternalClaim): string[] => {
+                        const mappedLocalClaimURI: ExternalClaim["mappedLocalClaimURI"] = claim.mappedLocalClaimURI;
 
                         return mappedLocalClaimURI ? [ mappedLocalClaimURI ] : [];
                     })

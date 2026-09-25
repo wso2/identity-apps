@@ -133,8 +133,8 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
     const usedPropertyNames: Set<string> = useMemo(() => new Set(
         rulesArray
-            .flatMap((r: UnificationRuleModel) => {
-                const propertyName = String(r.property_name ?? "").trim().toLowerCase();
+            .flatMap((r: UnificationRuleModel): string[] => {
+                const propertyName: string = String(r.property_name ?? "").trim().toLowerCase();
 
                 return propertyName ? [ propertyName ] : [];
             })

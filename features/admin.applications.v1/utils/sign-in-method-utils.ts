@@ -273,8 +273,8 @@ export class SignInMethodUtils {
                 // Extract all the IdP names.
                 [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ]
                     // Find the authenticator model.
-                    .flatMap((idpName: string) => {
-                        const authenticator = federatedAuthenticators.find(
+                    .flatMap((idpName: string): GenericAuthenticatorInterface[] => {
+                        const authenticator: GenericAuthenticatorInterface | undefined = federatedAuthenticators.find(
                             ({ name }: { name: string }) => name === idpName
                         );
 
@@ -367,8 +367,8 @@ export class SignInMethodUtils {
             const uniqueIdpNames: string[] = [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ];
             // Find the authenticator model.
             const idPsInSubjectIdStep: GenericAuthenticatorInterface[] =
-                uniqueIdpNames.flatMap((idpName: string) => {
-                    const authenticator = federatedAuthenticators.find(
+                uniqueIdpNames.flatMap((idpName: string): GenericAuthenticatorInterface[] => {
+                    const authenticator: GenericAuthenticatorInterface | undefined = federatedAuthenticators.find(
                         ({ name }: { name: string }) => name === idpName
                     );
 

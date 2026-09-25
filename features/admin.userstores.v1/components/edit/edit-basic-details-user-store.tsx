@@ -196,7 +196,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         };
 
         const requiredData: PatchData[] = properties?.required.flatMap(
-            (property: TypeProperty) => {
+            (property: TypeProperty): PatchData[] => {
                 if (property.name !== DISABLED) {
                     return [ {
                         operation: "REPLACE",
