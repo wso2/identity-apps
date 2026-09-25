@@ -46,7 +46,7 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
+import { Form, Grid, Header, Icon, Input, Label } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
@@ -377,8 +377,20 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                         <Header.Content>
                             <Grid verticalAlign="middle">
                                 <Grid.Row>
-                                    <Grid.Column width={ 16 }>
+                                    <Grid.Column width={ 16 } className="flex align-items-center">
                                         { subscribedAPIResource.displayName }
+                                        { (subscribedAPIResource.type === "TENANT" ||
+                                            subscribedAPIResource.type === "SYSTEM") && (
+                                            <Label size="mini" className="ml-2">
+                                                { t("extensions:develop.apiResource.resourceTypes.management") }
+                                            </Label>
+                                        ) }
+                                        { (subscribedAPIResource.type === "ORGANIZATION" ||
+                                            subscribedAPIResource.identifier?.includes("/o/")) && (
+                                            <Label size="mini" className="ml-2">
+                                                { t("extensions:develop.apiResource.resourceTypes.organization") }
+                                            </Label>
+                                        ) }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
