@@ -273,11 +273,13 @@ export class SignInMethodUtils {
                 // Extract all the IdP names.
                 [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ]
                     // Find the authenticator model.
-                    .map((idpName: string) => federatedAuthenticators.find(
-                        ({ name } : { name: string }) => name === idpName))
-                    // Remove all the {@code undefined|null} ones please.
-                    .filter(Boolean)
-                    // Find all the JIT disabled ones in the subject identifier step.
+                    .flatMap((idpName: string): GenericAuthenticatorInterface[] => {
+                        const authenticator: GenericAuthenticatorInterface | undefined = federatedAuthenticators.find(
+                            ({ name }: { name: string }) => name === idpName
+                        );
+
+                        return authenticator ? [ authenticator ] : [];
+                    })
                     .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => (
                         !auth?.provisioning?.jit?.isEnabled
                     )) as GenericAuthenticatorWithProvisioningConfigs[];
@@ -365,8 +367,13 @@ export class SignInMethodUtils {
             const uniqueIdpNames: string[] = [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ];
             // Find the authenticator model.
             const idPsInSubjectIdStep: GenericAuthenticatorInterface[] =
-                uniqueIdpNames.map((idpName: string) => federatedAuthenticators
-                    .find(({ name } : { name: string }) => name === idpName)).filter(Boolean);
+                uniqueIdpNames.flatMap((idpName: string): GenericAuthenticatorInterface[] => {
+                    const authenticator: GenericAuthenticatorInterface | undefined = federatedAuthenticators.find(
+                        ({ name }: { name: string }) => name === idpName
+                    );
+
+                    return authenticator ? [ authenticator ] : [];
+                });
 
             /** Start solving the 2nd problem. **/
 

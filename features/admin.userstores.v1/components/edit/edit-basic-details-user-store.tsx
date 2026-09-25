@@ -195,15 +195,19 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             value: values.get("description")?.toString()
         };
 
-        const requiredData: PatchData[] = properties?.required.map((property: TypeProperty) => {
-            if (property.name !== DISABLED) {
-                return {
-                    operation: "REPLACE",
-                    path: `/properties/${ property.name }`,
-                    value: values.get(property.name)?.toString()
-                };
+        const requiredData: PatchData[] = properties?.required.flatMap(
+            (property: TypeProperty): PatchData[] => {
+                if (property.name !== DISABLED) {
+                    return [ {
+                        operation: "REPLACE",
+                        path: `/properties/${ property.name }`,
+                        value: values.get(property.name)?.toString()
+                    } ];
+                }
+
+                return [];
             }
-        }).filter(Boolean);
+        );
 
         requiredData.push(description);
 
