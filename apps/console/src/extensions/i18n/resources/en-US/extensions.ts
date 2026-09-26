@@ -30,7 +30,9 @@ export const extensions: Extensions = {
         apiResource: {
             resourceTypes: {
                 api: "API resource",
-                mcp: "MCP server"
+                management: "Management API",
+                mcp: "MCP server",
+                organization: "Organization API"
             },
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
