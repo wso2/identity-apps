@@ -17,7 +17,7 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -365,63 +365,81 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
      * Resolves the header of the subscribed API Resources list.
      */
     const resolveSubscribedAPIResourcesListHeader = (subscribedAPIResource: AuthorizedAPIListItemInterface):
-        ReactElement => (
-        <Header
-            as="h6"
-            className="header-with-icon"
-            data-componentId={ `${componentId}-heading` }
-        >
-            <Grid verticalAlign="middle">
-                <Grid.Row>
-                    <Grid.Column width={ 8 }>
-                        <Header.Content>
-                            <Grid verticalAlign="middle">
-                                <Grid.Row>
-                                    <Grid.Column width={ 16 } className="flex align-items-center">
-                                        { subscribedAPIResource.displayName }
-                                        { (subscribedAPIResource.type === "TENANT" ||
-                                            subscribedAPIResource.type === "SYSTEM") && (
-                                            <Label size="mini" className="ml-2">
-                                                { t("extensions:develop.apiResource.resourceTypes.management") }
-                                            </Label>
-                                        ) }
-                                        { (subscribedAPIResource.type === "ORGANIZATION" ||
-                                            subscribedAPIResource.identifier?.includes("/o/")) && (
-                                            <Label size="mini" className="ml-2">
-                                                { t("extensions:develop.apiResource.resourceTypes.organization") }
-                                            </Label>
-                                        ) }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                            <Header.Subheader className="mt-1">
-                                {
-                                    subscribedAPIResource.identifier
-                                        ? <Code withBackground>{ subscribedAPIResource.identifier }</Code>
-                                        : null
-                                }
-                            </Header.Subheader>
-                        </Header.Content>
-                    </Grid.Column>
-                    {
-                        !m2mApplication && (
-                            <Grid.Column width={ 8 }>
-                                {
-                                    subscribedAPIResource.identifier
-                                        ? (
-                                            <Header.Subheader>
-                                                { renderPolicyForAPIResource(subscribedAPIResource.policyId) }
-                                            </Header.Subheader>
-                                        )
-                                        : null
-                                }
-                            </Grid.Column>
-                        )
-                    }
-                </Grid.Row>
-            </Grid>
-        </Header>
-    );
+        ReactElement => {
+        const targetAPIResource: APIResourceInterface = allAPIResourcesListData?.find(
+            (apiResource: APIResourceInterface) =>
+                apiResource.id === subscribedAPIResource.id ||
+                apiResource.identifier === subscribedAPIResource.identifier
+        );
+        const resolvedType: string = subscribedAPIResource.type || targetAPIResource?.type;
+        const isOrganizationAPI: boolean =
+            resolvedType === APIResourceCategories.ORGANIZATION ||
+            (!resolvedType && subscribedAPIResource.identifier?.includes("/o/"));
+        const isManagementAPI: boolean =
+            !isOrganizationAPI && (
+                resolvedType === APIResourceCategories.TENANT ||
+                resolvedType === APIResourceCategories.SYSTEM ||
+                subscribedAPIResource.identifier?.startsWith("internal_") ||
+                subscribedAPIResource.identifier?.startsWith("/api/identity/") ||
+                subscribedAPIResource.identifier?.startsWith("/api/server/")
+            );
+
+        return (
+            <Header
+                as="h6"
+                className="header-with-icon"
+                data-componentId={ `${componentId}-heading` }
+            >
+                <Grid verticalAlign="middle">
+                    <Grid.Row>
+                        <Grid.Column width={ 8 }>
+                            <Header.Content>
+                                <Grid verticalAlign="middle">
+                                    <Grid.Row>
+                                        <Grid.Column width={ 16 } className="flex align-items-center">
+                                            { subscribedAPIResource.displayName }
+                                            { isManagementAPI && (
+                                                <Label size="mini" className="ml-2">
+                                                    { t("extensions:develop.apiResource.resourceTypes.management") }
+                                                </Label>
+                                            ) }
+                                            { isOrganizationAPI && (
+                                                <Label size="mini" className="ml-2">
+                                                    { t("extensions:develop.apiResource.resourceTypes.organization") }
+                                                </Label>
+                                            ) }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                                <Header.Subheader className="mt-1">
+                                    {
+                                        subscribedAPIResource.identifier
+                                            ? <Code withBackground>{ subscribedAPIResource.identifier }</Code>
+                                            : null
+                                    }
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Grid.Column>
+                        {
+                            !m2mApplication && (
+                                <Grid.Column width={ 8 }>
+                                    {
+                                        subscribedAPIResource.identifier
+                                            ? (
+                                                <Header.Subheader>
+                                                    { renderPolicyForAPIResource(subscribedAPIResource.policyId) }
+                                                </Header.Subheader>
+                                            )
+                                            : null
+                                    }
+                                </Grid.Column>
+                            )
+                        }
+                    </Grid.Row>
+                </Grid>
+            </Header>
+        );
+    };
 
     /**
      * Creates the actions of the subscribed API Resources list item.
