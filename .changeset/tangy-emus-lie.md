@@ -2,4 +2,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Improvement
+Improve URL encoding of Create Account button in tenantauth.jsp
