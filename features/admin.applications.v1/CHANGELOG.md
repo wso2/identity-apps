@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.44.3
+
+### Patch Changes
+
+- [#10689](https://github.com/wso2/identity-apps/pull/10689) [`49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd`](https://github.com/wso2/identity-apps/commit/49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add application level token exchange scope restriction configuration to Console
+
+* [#10705](https://github.com/wso2/identity-apps/pull/10705) [`963ac66647e4637075b9dfcafefd5e7cc8ffc5b2`](https://github.com/wso2/identity-apps/commit/963ac66647e4637075b9dfcafefd5e7cc8ffc5b2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Refresh the inbound protocol configuration after an application version update
+
+* Updated dependencies [[`49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd`](https://github.com/wso2/identity-apps/commit/49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd)]:
+  - @wso2is/i18n@2.46.2
+
 ## 2.44.2
 
 ### Patch Changes
