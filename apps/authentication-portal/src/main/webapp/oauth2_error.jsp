@@ -31,10 +31,12 @@
     String regex = "application=";
     String errorMsgContext = errorMsg;
     String errorMsgApp = "";
-    String[] error = errorMsg.split(regex);
-    if (error.length > 1) {
-        errorMsgContext = errorMsg.split(regex)[0] + regex;
-        errorMsgApp = errorMsg.split(regex)[1];
+    if (errorMsg != null) {
+        String[] error = errorMsg.split(regex);
+        if (error.length > 1) {
+            errorMsgContext = errorMsg.split(regex)[0] + regex;
+            errorMsgApp = errorMsg.split(regex)[1];
+        }
     }
 %>
 
