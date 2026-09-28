@@ -242,6 +242,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                             { " " }
                             <a
                                 role="button"
+                                tabIndex={ 0 }
                                 style={ { cursor: "pointer", textDecoration: "underline" } }
                                 onClick={ (): void => history.push(
                                     AppConstants.getPaths().get("PROFILE")?.replace(
