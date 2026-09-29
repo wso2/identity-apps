@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.44.4
+
+### Patch Changes
+
+- [#10712](https://github.com/wso2/identity-apps/pull/10712) [`e39d187ca581475aa1cb7124c3c01e714a16a762`](https://github.com/wso2/identity-apps/commit/e39d187ca581475aa1cb7124c3c01e714a16a762) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix the login flow editor crashing when the preferred flow builder mode is unavailable
+
+- Updated dependencies [[`e39d187ca581475aa1cb7124c3c01e714a16a762`](https://github.com/wso2/identity-apps/commit/e39d187ca581475aa1cb7124c3c01e714a16a762)]:
+  - @wso2is/admin.login-flow-builder.v1@2.29.15
+
 ## 2.44.3
 
 ### Patch Changes
