@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.4.10
+
+### Patch Changes
+
+- [#10709](https://github.com/wso2/identity-apps/pull/10709) [`d9b46a8e34c59bb245d5cbe5e45e3282cc2d7d68`](https://github.com/wso2/identity-apps/commit/d9b46a8e34c59bb245d5cbe5e45e3282cc2d7d68) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Improve URL encoding of Create Account button in tenantauth.jsp
+
 ## 5.4.9
 
 ### Patch Changes
