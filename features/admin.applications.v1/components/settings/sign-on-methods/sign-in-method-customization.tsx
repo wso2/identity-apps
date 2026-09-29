@@ -736,7 +736,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     };
 
     const renderPasskeyWarnMessages = (): ReactElement => {
-        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps.some(
+        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps?.some(
             (step: AuthenticationStepInterface) =>
                 !!step?.options.find(
                     (authenticator: AuthenticatorInterface) =>
