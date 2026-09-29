@@ -1,5 +1,5 @@
 <%--
-~ Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+~ Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
 ~
 ~ WSO2 LLC. licenses this file to you under the Apache License,
 ~ Version 2.0 (the "License"); you may not use this file except
@@ -181,7 +181,7 @@
                     %>
                     <div id="alertDiv"></div>
                     <div class="segment-form">
-                        <form class="ui large form" id="codeForm" name="codeForm"
+                        <form class="ui large form otp-form" id="codeForm" name="codeForm"
                             action="passwordrecoveryotp.do" method="POST">
                             <%
                                 String loginFailed = request.getParameter("authFailure");
@@ -204,42 +204,26 @@
                                 </label>
 
                                 <% if (otpLength <= 6) { %>
-                                    <div class="sms-otp-fields equal width fields">
+                                    <div class="sms-otp-fields equal width fields segmented-otp-field">
                                         <input
-                                            hidden
                                             type="text"
                                             id="OTPCode"
                                             name="OTPcode"
-                                            class="form-control"
+                                            class="segmented-otp-input"
+                                            maxlength="<%=otpLength%>"
+                                            autocomplete="one-time-code"
+                                            autocorrect="off"
+                                            autocapitalize="off"
+                                            spellcheck="false"
+                                            autofocus
                                             data-testid="recovery-otp-page-segmented-otp-input"
-                                            placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            aria-label="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                 "verification.code")%>"
                                         >
-                                        <% for (int index = 1; index <= otpLength;) {
-                                            String previousStringIndex = null;
-                                            if (index != 1) {
-                                                previousStringIndex = "pincode-" + (index - 1);
-                                            }
-                                            String currentStringIndex = "pincode-" + index;
-                                            index++;
-                                            String nextStringIndex = null;
-                                            if (index != (otpLength + 1)) {
-                                                nextStringIndex = "pincode-" + index;
-                                            }
-                                        %>
-                                            <div class="field mt-5">
-                                                <input
-                                                    class="text-center pl-0 pr-0 pt-3 pb-3"
-                                                    id=<%= currentStringIndex %>
-                                                    name=<%= currentStringIndex %>
-                                                    onkeyup="movetoNext(this, '<%= nextStringIndex %>',
-                                                        '<%= previousStringIndex %>')"
-                                                    tabindex="1"
-                                                    placeholder="·"
-                                                    autofocus
-                                                    maxlength="1"
-                                                >
-                                            </div>
+                                        <% for (int index = 1; index <= otpLength; index++) { %>
+                                        <div class="field mt-5">
+                                            <div class="text-center p-1 pb-3 pt-3" id="pincode-<%=index%>" aria-hidden="true">·</div>
+                                        </div>
                                         <% } %>
                                     </div>
                                 <% } else { %>
@@ -249,6 +233,10 @@
                                             id='OTPCode'
                                             name="OTPcode"
                                             size='30'
+                                            autocomplete="one-time-code"
+                                            autocorrect="off"
+                                            autocapitalize="off"
+                                            spellcheck="false"
                                             data-testid="recovery-otp-page-non-segmented-otp-input"
                                         />
                                         <i id="password-eye" class="eye icon right-align password-toggle slash"
@@ -314,9 +302,9 @@
                                 <div class="buttons">
                                     <% if (otpLength <= 6) { %>
                                         <div>
-                                            <input type="button"
+                                            <input type="submit"
                                                 id="subButton"
-                                                onclick="sub(); return false;"
+                                                disabled
                                                 value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "sms.otp.submit.button")%>"
                                                 class="ui primary fluid large button" />
@@ -394,69 +382,59 @@
             var insightsTenantIdentifier = "<%=userTenant%>";
             var otpLength = "<%=otpLength%>";
 
-            function movetoNext(current, nextFieldID, previousID) {
-                var key = event.keyCode || event.charCode;
-                if(key == 8 || key == 46) {
-                    if (previousID != null && previousID != 'null') {
-                        document.getElementById(previousID).focus();
-                    }
-                } else {
-                    if (nextFieldID != null && nextFieldID != 'null' && current.value.length >= current.maxLength) {
-                        document.getElementById(nextFieldID).focus();
-                    }
-                }
-            }
+            (function() {
+                var OTPInput = document.getElementById('OTPCode');
+                if (!OTPInput || !OTPInput.classList.contains('segmented-otp-input')) return;
+                var submitBtn = document.getElementById('subButton');
+                var otpLen = parseInt(otpLength);
 
-            function sub() {
-
-                var token = null;
-                var hasNullDigit = false;
-
-                for(var i = 1; i <= otpLength; i++){
-                    var currentDigit = document.getElementById("pincode-"+i).value;
-                    if(!currentDigit || currentDigit == null || currentDigit == 'null') {
-                        hasNullDigit = true;
-                        break;
-                    }
-                    if(i === 1) {
-                        token = currentDigit;
-                    } else {
-                        token += currentDigit;
+                function updateDigitBoxes(value) {
+                    for (var i = 1; i <= otpLen; i++) {
+                        var box = document.getElementById('pincode-' + i);
+                        if (box) box.textContent = (value.length >= i) ? value[i - 1] : '·';
                     }
                 }
 
-                document.getElementById('OTPCode').value = token;
-
-                if (!hasNullDigit) {
-                    // Disable during the initial submission to prevent double submissions.
-                    document.getElementById("subButton").disabled = true;
-                    document.getElementById("codeForm").submit();
-                }
-
-            }
-
-            // Handle paste events
-            function handlePaste(e) {
-                var clipboardData, value;
-
-                // Stop data get being pasted into element
-                e.stopPropagation();
-                e.preventDefault();
-
-                // Get pasted data via clipboard API
-                clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
-                const reg = new RegExp(/^[a-zA-Z0-9_]+$/);
-                if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
-                        $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                function updateCursor(value) {
+                    for (var i = 1; i <= otpLen; i++) {
+                        var box = document.getElementById('pincode-' + i);
+                        if (box) box.classList.remove('active-pincode');
+                    }
+                    if (value.length < otpLen) {
+                        var activeBox = document.getElementById('pincode-' + (value.length + 1));
+                        if (activeBox) activeBox.classList.add('active-pincode');
                     }
                 }
-            }
 
-            document.getElementById('pincode-1') ? document.getElementById('pincode-1')
-                .addEventListener('paste', handlePaste) : null;
+                function handlePaste(e) {
+                    e.preventDefault();
+                    var pasted = (e.clipboardData || window.clipboardData).getData('Text').replace(/\s/g, '');
+                    if (!/^[a-zA-Z0-9_]+$/.test(pasted)) return;
+                    OTPInput.value = pasted.slice(0, otpLen);
+                    OTPInput.dispatchEvent(new InputEvent('input', { bubbles: true }));
+                }
+
+                function handleInput() {
+                    var sanitized = OTPInput.value.replace(/\s/g, '');
+                    if (sanitized !== OTPInput.value) OTPInput.value = sanitized;
+                    updateDigitBoxes(sanitized);
+                    updateCursor(sanitized);
+                    if (submitBtn) submitBtn.disabled = sanitized.length !== otpLen;
+                }
+
+                document.addEventListener('selectionchange', function () {
+                    if (document.activeElement === OTPInput) {
+                        OTPInput.selectionStart = OTPInput.selectionEnd = OTPInput.value.length;
+                    }
+                });
+                OTPInput.addEventListener('copy', function (e) { e.preventDefault(); });
+                OTPInput.addEventListener('cut', function (e) { e.preventDefault(); });
+                OTPInput.addEventListener('focus', function () { updateCursor(this.value); });
+                OTPInput.addEventListener('blur', function () { updateCursor(Array(otpLen + 1).join('x')); });
+                OTPInput.addEventListener('paste', handlePaste);
+                OTPInput.addEventListener('input', handleInput);
+                updateCursor(OTPInput.value);
+            })();
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {
