@@ -435,6 +435,17 @@
                     $('#subButton').attr('disabled', true);
                 }
             });
+            // Submit on Enter only when the TOTP is complete (same readiness as enabling Continue).
+            $('#totpForm').find('input[id^="pincode-"]').on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''
+                            && $('#pincode-3').val() != '' && $('#pincode-4').val() != ''
+                            && $('#pincode-5').val() != '' && $('#pincode-6').val() != '') {
+                        handleSubmit();
+                    }
+                }
+            });
         </script>
     </body>
 </html>
