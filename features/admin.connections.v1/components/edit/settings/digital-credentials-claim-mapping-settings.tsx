@@ -96,10 +96,6 @@ export const DigitalCredentialsClaimMappingSettings: FunctionComponent<
         (!!idpId && !!defaultAuthenticatorId && isAuthenticatorLoading) ||
         (!!presentationDefinitionId && isPresentationDefinitionLoading);
 
-    // Flatten credential attribute paths to dot-joined strings (e.g. "address.street_address").
-    // These match the remote claim URIs stored in IDP_CLAIM by the OpenID4VP authenticator.
-    // Returns an empty array (not undefined) when the PD has no paths, so callers can
-    // distinguish "not yet loaded" from "loaded but empty".
     const allowedMappedValues: string[] = useMemo((): string[] => {
         if (!presentationDefinitionData?.credentials) {
             return [];
