@@ -26,6 +26,6 @@ import { PresentationDefinitionEndpointsInterface } from "../models/endpoints";
  */
 export const getPresentationDefinitionEndpoints = (serverHost: string): PresentationDefinitionEndpointsInterface => {
     return {
-        presentationDefinitions: `${serverHost}/api/server/v1/openid4vp/presentation-definitions`
+        presentationDefinitions: `${serverHost}/api/server/v1/presentation-definitions`
     };
 };
