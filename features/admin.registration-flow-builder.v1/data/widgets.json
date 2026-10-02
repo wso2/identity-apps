@@ -777,7 +777,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "VPRegistrationExecutor",
+                                    "name": "PresentationExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }
