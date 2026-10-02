@@ -81,10 +81,12 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
     const pendingSaveRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect((): void => {
-        setMethod(existingConfig?.keySourceType ?? "x5c");
+        const resolvedMethod: string = existingConfig?.keySourceType?.toLowerCase() ?? "x5c";
+
+        setMethod(resolvedMethod);
         setIssuerUrl(existingConfig?.issuerUrl ?? "");
-        setJwksUri(existingConfig?.keySource ?? "");
-        setExistingCert(existingConfig?.keySource ?? "");
+        setJwksUri(resolvedMethod === "jwks_uri" ? existingConfig?.keySource ?? "" : "");
+        setExistingCert(resolvedMethod === "jwks_uri" ? "" : existingConfig?.keySource ?? "");
         setTriggerCertUpload(false);
         setShowCertFinishButton(false);
         pendingSaveRef.current = false;
@@ -101,7 +103,9 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
         if (!existingCert) return null;
 
         try {
-            const rawPem: string = atob(existingCert);
+            const rawPem: string = existingCert.includes(CertificateManagementConstants.CERTIFICATE_BEGIN)
+                ? existingCert
+                : atob(existingCert);
 
             if (CertificateManagementUtils.canSafelyParseCertificate(rawPem)) {
                 return CertificateManagementUtils.displayCertificate(null, rawPem);
