@@ -24,4 +24,8 @@ export class PresentationDefinitionConstants {
     public static readonly CREDENTIAL_FORMAT_OPTIONS: { key: string; text: string; value: string }[] = [
         { key: "dc+sd-jwt", text: "dc+sd-jwt", value: "dc+sd-jwt" }
     ];
+
+    public static readonly KEY_SOURCE_TYPE_X5C: string = "x5c";
+    public static readonly KEY_SOURCE_TYPE_JWKS_URI: string = "jwks_uri";
+    public static readonly KEY_SOURCE_TYPE_PEM: string = "pem";
 }

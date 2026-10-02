@@ -51,6 +51,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { PresentationDefinitionConstants } from "../constants/presentation-definition";
 import {
     IssuerConfigInterface,
     IssuerConfigModalPropsInterface
@@ -70,7 +71,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
 
     const { t, i18n } = useTranslation();
 
-    const [ method, setMethod ] = useState<string>("x5c");
+    const [ method, setMethod ] = useState<string>(PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C);
     const [ issuerUrl, setIssuerUrl ] = useState<string>("");
     const [ jwksUri, setJwksUri ] = useState<string>("");
     // Tracks the cert already saved in the config (edit mode). Cleared when user replaces it.
@@ -81,12 +82,15 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
     const pendingSaveRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect((): void => {
-        const resolvedMethod: string = existingConfig?.keySourceType?.toLowerCase() ?? "x5c";
+        const resolvedMethod: string = existingConfig?.keySourceType?.toLowerCase()
+            ?? PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C;
 
         setMethod(resolvedMethod);
         setIssuerUrl(existingConfig?.issuerUrl ?? "");
-        setJwksUri(resolvedMethod === "jwks_uri" ? existingConfig?.keySource ?? "" : "");
-        setExistingCert(resolvedMethod === "jwks_uri" ? "" : existingConfig?.keySource ?? "");
+        setJwksUri(resolvedMethod === PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI
+            ? existingConfig?.keySource ?? "" : "");
+        setExistingCert(resolvedMethod === PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI
+            ? "" : existingConfig?.keySource ?? "");
         setTriggerCertUpload(false);
         setShowCertFinishButton(false);
         pendingSaveRef.current = false;
@@ -123,22 +127,31 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
         && !URLUtils.isHttpUrl(jwksUri) && !URLUtils.isHttpsUrl(jwksUri);
 
     const isSaveDisabled: boolean = (() => {
-        if (method === "x5c") return !showCertFinishButton && !existingCert;
-        if (method === "jwks_uri") return !issuerUrl.trim() || issuerUrlError || !jwksUri.trim() || jwksUriError;
-        if (method === "pem") return !issuerUrl.trim() || issuerUrlError || (!showCertFinishButton && !existingCert);
+        if (method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C) {
+            return !showCertFinishButton && !existingCert;
+        }
+        if (method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI) {
+            return !issuerUrl.trim() || issuerUrlError || !jwksUri.trim() || jwksUriError;
+        }
+        if (method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_PEM) {
+            return !issuerUrl.trim() || issuerUrlError || (!showCertFinishButton && !existingCert);
+        }
 
         return true;
     })();
 
     const buildConfig = (cert: string): IssuerConfigInterface => ({
         keySourceType: method,
-        ...(method !== "x5c" && { issuerUrl: issuerUrl.trim() || undefined }),
-        ...((method === "x5c" || method === "pem") && { keySource: cert }),
-        ...(method === "jwks_uri" && { keySource: jwksUri.trim() })
+        ...(method !== PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C
+            && { issuerUrl: issuerUrl.trim() || undefined }),
+        ...((method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C
+            || method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_PEM) && { keySource: cert }),
+        ...(method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI && { keySource: jwksUri.trim() })
     });
 
     const handleSave = (): void => {
-        if ((method === "x5c" || method === "pem") && showCertFinishButton) {
+        if ((method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C
+            || method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_PEM) && showCertFinishButton) {
             // New cert staged in widget — trigger commit; handleCertSubmit completes the save.
             pendingSaveRef.current = true;
             setTriggerCertUpload((prev: boolean) => !prev);
@@ -210,7 +223,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
         setShowCertFinishButton(false);
     };
 
-    const certLabel: string = method === "x5c"
+    const certLabel: string = method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C
         ? t("presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.x5cLabel")
         : t("presentationDefinitions:editPage.issuerTrust.issuerConfig.keySource.pemLabel");
 
@@ -340,7 +353,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                         data-componentid={ `${ componentId }-method-group` }
                     >
                         <FormControlLabel
-                            value="x5c"
+                            value={ PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C }
                             control={ <Radio size="small" /> }
                             label={
                                 <span style={ { alignItems: "center", display: "inline-flex", whiteSpace: "nowrap" } }>
@@ -370,7 +383,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                             data-componentid={ `${ componentId }-method-x5c` }
                         />
                         <FormControlLabel
-                            value="jwks_uri"
+                            value={ PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI }
                             control={ <Radio size="small" /> }
                             label={
                                 <span style={ { alignItems: "center", display: "inline-flex", whiteSpace: "nowrap" } }>
@@ -400,7 +413,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                             data-componentid={ `${ componentId }-method-jwks-uri` }
                         />
                         <FormControlLabel
-                            value="pem"
+                            value={ PresentationDefinitionConstants.KEY_SOURCE_TYPE_PEM }
                             control={ <Radio size="small" /> }
                             label={
                                 <span style={ { alignItems: "center", display: "inline-flex", whiteSpace: "nowrap" } }>
@@ -432,7 +445,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                     </RadioGroup>
                 </FormControl>
 
-                { method !== "x5c" && (
+                { method !== PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C && (
                     <Box
                         key="issuer-url"
                         sx={ {
@@ -479,7 +492,7 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                     </Box>
                 ) }
 
-                { method === "jwks_uri" && (
+                { method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_JWKS_URI && (
                     <Box
                         key="jwks-uri"
                         sx={ {
@@ -521,7 +534,8 @@ export const IssuerConfigModal: FunctionComponent<IssuerConfigModalPropsInterfac
                     </Box>
                 ) }
 
-                { (method === "x5c" || method === "pem") && (
+                { (method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_X5C
+                    || method === PresentationDefinitionConstants.KEY_SOURCE_TYPE_PEM) && (
                     <Box
                         key="cert-section"
                         sx={ {
