@@ -268,6 +268,27 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
     const handleSaveIssuerConfig = useCallback((config: IssuerConfigInterface): void => {
         if (!credentialId) return;
 
+        const isDuplicateIssuerConfig: boolean = issuerConfigs.some(
+            (existingConfig: IssuerConfigInterface, index: number): boolean =>
+                index !== editingIssuerConfigIndex &&
+                existingConfig.keySourceType === config.keySourceType &&
+                (existingConfig.keySource ?? "").trim() === (config.keySource ?? "").trim()
+        );
+
+        if (isDuplicateIssuerConfig) {
+            dispatch(addAlert<AlertInterface>({
+                description: t(
+                    "presentationDefinitions:notifications.saveIssuerConfig.duplicateError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "presentationDefinitions:notifications.saveIssuerConfig.duplicateError.message"
+                )
+            }));
+
+            return;
+        }
+
         const newConfigs: IssuerConfigInterface[] = editingIssuerConfigIndex === null
             ? [ ...issuerConfigs, config ]
             : issuerConfigs.map((existingConfig: IssuerConfigInterface, index: number) =>

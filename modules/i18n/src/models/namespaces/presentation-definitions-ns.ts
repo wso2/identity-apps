@@ -320,6 +320,10 @@ export interface PresentationDefinitionsInterface {
                 message: string;
                 description: string;
             };
+            duplicateError: {
+                message: string;
+                description: string;
+            };
         };
         deleteIssuerConfig: {
             success: {

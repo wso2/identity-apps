@@ -343,6 +343,11 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                    error: {
                        message: "Save Failed",
                        description: "An error occurred while saving the issuer configuration."
+                   },
+                   duplicateError: {
+                       message: "Duplicate Issuer Configuration",
+                       description: "An issuer configuration with the same key resolution method " +
+                           "and key source already exists for this credential."
                    }
                },
                deleteIssuerConfig: {
