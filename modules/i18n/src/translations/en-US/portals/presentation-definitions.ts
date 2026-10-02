@@ -227,6 +227,10 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                            label: "Credential Type",
                            placeholder: "urn:eu:europa:ec:eudi:pid:1"
                        },
+                       format: {
+                           label: "Format",
+                           hint: "Specifies the format of the verifiable credential to be requested."
+                       },
                        claims: {
                            label: "Attributes",
                            hint: "Specify the attributes to request from the credential.",
@@ -236,7 +240,7 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                                label: "Attribute Name",
                                placeholder: "given_name",
                                hint:
-                                   "Name of the attribute to request from the credential. Use dot notation to specify nested attributes, such as address.street_address."
+                                   "Name of the attribute to request from the credential."
                            },
                            editClaim: "Edit Attribute",
                            emptyPlaceholder:

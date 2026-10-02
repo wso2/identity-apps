@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { addPresentationDefinition } from "../../api/presentation-definitions";
+import { PresentationDefinitionConstants } from "../../constants/presentation-definition";
 import {
     AddPresentationDefinitionWizardPropsInterface,
     PresentationDefinitionCreationModelInterface,
@@ -83,7 +84,7 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
     const [ isIdentifierManuallySet, setIsIdentifierManuallySet ] = useState<boolean>(false);
     const [ description, setDescription ] = useState<string>("");
     const [ credentialType, setCredentialType ] = useState<string>("");
-    const [ format, setFormat ] = useState<string>("dc+sd-jwt");
+    const [ format, setFormat ] = useState<string>(PresentationDefinitionConstants.DEFAULT_CREDENTIAL_FORMAT);
 
     const [ displayNameError, setDisplayNameError ] = useState<string>("");
     const [ identifierError, setIdentifierError ] = useState<string>("");
@@ -318,7 +319,13 @@ const AddPresentationDefinitionWizard: FunctionComponent<AddPresentationDefiniti
                             }
                             data-componentid={ `${ componentId }-format-field` }
                         >
-                            <MenuItem value="dc+sd-jwt">dc+sd-jwt</MenuItem>
+                            { PresentationDefinitionConstants.CREDENTIAL_FORMAT_OPTIONS.map((
+                                option: { key: string; text: string; value: string }
+                            ): ReactElement => (
+                                <MenuItem key={ option.key } value={ option.value }>
+                                    { option.text }
+                                </MenuItem>
+                            )) }
                         </TextField>
                         <Hint compact>
                             { t("presentationDefinitions:wizard.form.format.hint") }

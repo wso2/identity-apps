@@ -25,6 +25,7 @@ import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import MenuItem from "@oxygen-ui/react/MenuItem";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
@@ -85,6 +86,7 @@ import {
     updatePresentationDefinition
 } from "../api/presentation-definitions";
 import { IssuerConfigModal } from "../components/issuer-config-modal";
+import { PresentationDefinitionConstants } from "../constants/presentation-definition";
 import { useGetClaimMappingConnections } from "../hooks/use-get-claim-mapping-connections";
 import { useGetIssuerConfigs } from "../hooks/use-get-issuer-configs";
 import { useGetPresentationDefinition } from "../hooks/use-get-presentation-definition";
@@ -145,7 +147,9 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
 
     // Settings tab state
     const [ credentialType, setCredentialType ] = useState<string>("");
-    const [ credentialFormat, setCredentialFormat ] = useState<string>("dc+sd-jwt");
+    const [ credentialFormat, setCredentialFormat ] = useState<string>(
+        PresentationDefinitionConstants.DEFAULT_CREDENTIAL_FORMAT
+    );
 
     // Claims tab state
     const [ claims, setClaims ] = useState<ClaimConstraintModelInterface[]>([]);
@@ -197,7 +201,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setDisplayName(definition.displayName ?? "");
         setDescription(definition.description ?? "");
         setCredentialType(credential?.type ?? "");
-        setCredentialFormat(credential?.format ?? "dc+sd-jwt");
+        setCredentialFormat(credential?.format ?? PresentationDefinitionConstants.DEFAULT_CREDENTIAL_FORMAT);
         setClaims(
             (credential?.claims ?? []).map((claim: ClaimConstraintModelInterface) => ({
                 ...claim,
@@ -408,6 +412,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
             setBlockedClaimConnections(mapped);
             setBlockedClaimPath(claimPath);
             setShowClaimMappedModal(true);
+
             return;
         }
 
@@ -577,6 +582,31 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 sx={ { mb: 2 } }
                                 data-componentid={ `${componentId}-credential-type-input` }
                             />
+                            <TextField
+                                select
+                                fullWidth
+                                size="small"
+                                margin="dense"
+                                label={ t("presentationDefinitions:editPage.form.credentials.format.label") }
+                                value={ credentialFormat }
+                                onChange={ (e: React.ChangeEvent<HTMLInputElement>): void =>
+                                    setCredentialFormat(e.target.value)
+                                }
+                                disabled={ isReadOnly }
+                                sx={ { mb: 2 } }
+                                data-componentid={ `${componentId}-credential-format-input` }
+                            >
+                                { PresentationDefinitionConstants.CREDENTIAL_FORMAT_OPTIONS.map((
+                                    option: { key: string; text: string; value: string }
+                                ): ReactElement => (
+                                    <MenuItem key={ option.key } value={ option.value }>
+                                        { option.text }
+                                    </MenuItem>
+                                )) }
+                            </TextField>
+                            <Hint compact>
+                                { t("presentationDefinitions:editPage.form.credentials.format.hint") }
+                            </Hint>
                             <Box sx={ { mb: 2 } } />
 
                             { !isReadOnly && (

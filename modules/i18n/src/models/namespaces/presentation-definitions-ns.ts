@@ -210,6 +210,10 @@ export interface PresentationDefinitionsInterface {
                     label: string;
                     placeholder: string;
                 };
+                format: {
+                    label: string;
+                    hint: string;
+                };
                 claims: {
                     label: string;
                     hint: string;
