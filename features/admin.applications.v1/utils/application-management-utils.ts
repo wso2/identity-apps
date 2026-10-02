@@ -452,7 +452,11 @@ export class ApplicationManagementUtils {
         if (!matchWithParantheses && !matchWithoutParantheses) return raw;
 
         const inner: string = matchWithParantheses ? matchWithParantheses[1] : matchWithoutParantheses[1];
-        const parts: string[] = inner.split("|").map(part => part.trim()).filter(Boolean);
+        const parts: string[] = inner.split("|").flatMap((part: string): string[] => {
+            const trimmedPart: string = part.trim();
+
+            return trimmedPart ? [ trimmedPart ] : [];
+        });
 
         const isHttpUrl = (urlString: string): boolean => {
             try {

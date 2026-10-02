@@ -303,7 +303,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 ]);
 
                 const systemMappedClaimURIs: Set<string> = new Set(
-                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
+                    systemClaims.flatMap((claim: ExternalClaim): string[] => {
+                        const mappedLocalClaimURI: ExternalClaim["mappedLocalClaimURI"] = claim.mappedLocalClaimURI;
+
+                        return mappedLocalClaimURI ? [ mappedLocalClaimURI ] : [];
+                    })
                 );
                 const duplicates: ExternalClaim[] = enterpriseClaims.filter(
                     (claim: ExternalClaim) =>
@@ -369,7 +373,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const emailSchema: string = schemaNames[0];
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
-                                const emails: any[] = userInfo[emailSchema];
+                                const emails: string[] | MultiValueAttributeInterface[] = userInfo[emailSchema];
                                 const primaryEmail: string | undefined = getPrimaryEmail(emails);
 
                                 // Set the primary email value.
@@ -717,24 +721,32 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Local type to represent an email attribute that may carry a `primary` flag.
+     * `MultiValueAttributeInterface` does not declare `primary`, so it is extended here
+     * for use within `getPrimaryEmail`.
+     */
+    type EmailAttributeInterface = MultiValueAttributeInterface & {
+        primary?: boolean;
+    };
+
+    /**
      * Extracts the primary email from an array of email objects or strings.
      *
      * @param emails - Array of email strings or email objects with primary flag.
      * @returns The primary email address or undefined if not found.
      */
-    const getPrimaryEmail = (emails: any[]): string | undefined => {
-        return emails
-            .map((email: any) => {
-                if (typeof email === "string") {
-                    return email;
-                }
-                if (typeof email === "object" && email !== null && email.primary === true) {
-                    return email.value;
-                }
+    const getPrimaryEmail = (emails: string[] | EmailAttributeInterface[]): string | undefined => {
+        return emails.flatMap((email: string | EmailAttributeInterface): string[] => {
+            if (typeof email === "string") {
+                return email ? [ email ] : [];
+            }
 
-                return undefined;
-            })
-            .filter(Boolean)[0];
+            if (typeof email === "object" && email !== null && email.primary === true) {
+                return email.value ? [ email.value ] : [];
+            }
+
+            return [];
+        })[0];
     };
 
     /**

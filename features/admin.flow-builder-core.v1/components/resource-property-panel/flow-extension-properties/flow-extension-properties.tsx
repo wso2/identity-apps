@@ -42,6 +42,37 @@ import "./flow-extension-properties.scss";
 const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
 /**
+ * Safely extracts the flow extension action ID from a React Flow node's `data` object
+ * without resorting to an unsafe type assertion.
+ *
+ * @param data - The `data` property of a React Flow node.
+ * @returns The action ID if present, otherwise `undefined`.
+ */
+const getFlowExtensionActionId = (data: Record<string, unknown> | undefined): string | undefined => {
+    const action: unknown = data?.action;
+
+    if (typeof action !== "object" || action === null) {
+        return undefined;
+    }
+
+    const executor: unknown = (action as Record<string, unknown>).executor;
+
+    if (typeof executor !== "object" || executor === null) {
+        return undefined;
+    }
+
+    const meta: unknown = (executor as Record<string, unknown>).meta;
+
+    if (typeof meta !== "object" || meta === null) {
+        return undefined;
+    }
+
+    const actionId: unknown = (meta as Record<string, unknown>).actionId;
+
+    return typeof actionId === "string" ? actionId : undefined;
+};
+
+/**
  * Props interface of {@link FlowExtensionProperties}
  */
 type FlowExtensionPropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
@@ -77,8 +108,11 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
         const usedActionIds: Set<string> = new Set(
             nodes
                 .filter((node: Node) => node.id !== resource?.id)
-                .map((node: Node) => (node.data as any)?.action?.executor?.meta?.actionId)
-                .filter(Boolean)
+                .flatMap((node: Node): string[] => {
+                    const actionId: string | undefined = getFlowExtensionActionId(node.data);
+
+                    return actionId ? [ actionId ] : [];
+                })
         );
 
         return allConnections.filter(
