@@ -1119,7 +1119,7 @@ export interface FederatedAuthenticatorDetailsInterface {
  */
 export interface PresentationDefinitionAttributeConstraintInterface {
     /**
-     * Dot-notation path of the attribute to request (e.g. "address.street_address").
+     * Literal name of the attribute to request (e.g. "given_name").
      */
     path?: string;
 }
