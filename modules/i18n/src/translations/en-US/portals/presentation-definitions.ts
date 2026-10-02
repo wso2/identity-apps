@@ -240,7 +240,8 @@ export const presentationDefinitions: PresentationDefinitionsInterface = {
                                label: "Attribute Name",
                                placeholder: "given_name",
                                hint:
-                                   "Name of the attribute to request from the credential."
+                                   "Name of the attribute to request from the credential.",
+                               validationError: "This attribute has already been added to the credential."
                            },
                            editClaim: "Edit Attribute",
                            emptyPlaceholder:

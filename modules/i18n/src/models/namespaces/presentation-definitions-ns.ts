@@ -223,6 +223,7 @@ export interface PresentationDefinitionsInterface {
                         label: string;
                         placeholder: string;
                         hint: string;
+                        validationError: string;
                     };
                     required: {
                         label: string;

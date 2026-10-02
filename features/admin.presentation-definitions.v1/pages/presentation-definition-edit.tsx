@@ -422,8 +422,18 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
         setShowClaimModal(true);
     };
 
+    const isDuplicateClaimPath: boolean = useMemo((): boolean => {
+        const trimmedPath: string = modalPath.trim();
+
+        if (!trimmedPath) return false;
+
+        return claims.some((claim: ClaimConstraintModelInterface, index: number): boolean =>
+            index !== claimModalIndex && (claim.path ?? "").trim() === trimmedPath
+        );
+    }, [ claims, modalPath, claimModalIndex ]);
+
     const saveClaimModal = (): void => {
-        if (!modalPath.trim()) return;
+        if (!modalPath.trim() || isDuplicateClaimPath) return;
         const updatedClaim: ClaimConstraintModelInterface = {
             mandatory: modalMandatory,
             path: modalPath.trim()
@@ -869,15 +879,25 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                                 onChange={ (e: React.ChangeEvent<HTMLInputElement>): void =>
                                     setModalPath(e.target.value)
                                 }
+                                error={ isDuplicateClaimPath }
+                                helperText={ isDuplicateClaimPath
+                                    ? t(
+                                        "presentationDefinitions:editPage.form.credentials" +
+                                        ".claims.claimPath.validationError"
+                                    )
+                                    : undefined
+                                }
                                 data-componentid={ `${ componentId }-modal-claim-path` }
                             />
-                            <div style={ { marginTop: "6px" } }>
-                                <Hint compact>
-                                    { t(
-                                        "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint"
-                                    ) }
-                                </Hint>
-                            </div>
+                            { !isDuplicateClaimPath && (
+                                <div style={ { marginTop: "6px" } }>
+                                    <Hint compact>
+                                        { t(
+                                            "presentationDefinitions:editPage.form.credentials.claims.claimPath.hint"
+                                        ) }
+                                    </Hint>
+                                </div>
+                            ) }
                         </Box>
                         <Box sx={ { mb: 1 } }>
                             <FormControlLabel
@@ -913,7 +933,7 @@ const PresentationDefinitionEditPage: FunctionComponent<PresentationDefinitionEd
                             { t("common:cancel") }
                         </LinkButton>
                         <PrimaryButton
-                            disabled={ !modalPath.trim() || isSubmitting }
+                            disabled={ !modalPath.trim() || isDuplicateClaimPath || isSubmitting }
                             loading={ isSubmitting }
                             onClick={ saveClaimModal }
                             data-componentid={ `${ componentId }-modal-save-button` }
