@@ -388,9 +388,8 @@
                     var VP_MAX_DURATION_MS = walletQR.sessionTtlMs > 0 ? walletQR.sessionTtlMs : 120000;
                     var vpPollStart = Date.now();
 
-                    // Status endpoint — servlet is at root, strip tenant/org path prefix.
-                    var vpStatusEndpoint = new URL(baseUrl).origin + "/openid4vp/v1/status?requestId="
-                        + encodeURIComponent(requestId);
+                    var vpStatusEndpoint = baseUrl + "/oid4vp/verification-sessions/"
+                        + encodeURIComponent(requestId) + "/status";
 
                     // Holds the AbortController for the in-flight fetch so the cleanup
                     // function can cancel it on unmount.
@@ -486,8 +485,13 @@
                             var httpStatus = result.httpStatus;
                             var data = result.data;
 
-                            // Non-200 responses are unexpected backend errors (servlet always
-                            // returns 200 for the /status path; body is { error, error_description }).
+                            if (httpStatus === 404) {
+                                vpSubmitted = true;
+                                setError({ code: "VP-60002" });
+                                setWalletQR(null);
+                                return;
+                            }
+
                             if (httpStatus !== 200) {
                                 vpSubmitted = true;
                                 setError({ code: "VP-65001" });
@@ -495,7 +499,6 @@
                                 return;
                             }
 
-                            // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"NOT_FOUND" }
                             var status = data.status ? data.status.toUpperCase() : "";
 
                             if (status === "ACTIVE") {
@@ -506,16 +509,12 @@
                             } else if (status === "FAILED") {
                                 vpSubmitted = true;
                                 var vpFailureMsgKeys = {
-                                    'expired_credential': 'wallet.vp.error.expired_credential.message',
-                                    'invalid_signature':  'wallet.vp.error.invalid_signature.message',
-                                    'nonce_mismatch':     'wallet.vp.error.nonce_mismatch.message'
+                                    'VPV-60004': 'wallet.vp.error.invalid_signature.message',
+                                    'VPV-60005': 'wallet.vp.error.expired_credential.message',
+                                    'VPV-60007': 'wallet.vp.error.nonce_mismatch.message'
                                 };
                                 var vpMsgKey = data.errorType && vpFailureMsgKeys[data.errorType];
                                 setError({ code: "VP-60001", message: vpMsgKey || "" });
-                                setWalletQR(null);
-                            } else if (status === "NOT_FOUND") {
-                                vpSubmitted = true;
-                                setError({ code: "VP-60002" });
                                 setWalletQR(null);
                             } else {
                                 vpSubmitted = true;

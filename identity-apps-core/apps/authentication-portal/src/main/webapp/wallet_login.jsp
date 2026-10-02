@@ -93,6 +93,10 @@
     } else {
         commonauthURLForWallet = commonauthURL;
     }
+
+    String vpStatusPollBase = hasNonSuperTenant
+            ? "/t/" + vpTenantDomain + "/oid4vp/verification-sessions/"
+            : "/oid4vp/verification-sessions/";
 %>
 
 <html lang="en-US">
@@ -264,7 +268,6 @@
                 value='<%=Encode.forHtmlAttribute(sessionDataKey != null ? sessionDataKey : "")%>'>
             <input type="hidden" name="status" id="authStatus" value="">
             <input type="hidden" name="vp_request_id" id="authRequestId" value="">
-            <input type="hidden" name="error_type" id="authErrorType" value="">
         </form>
 
         <script type="text/javascript">
@@ -275,7 +278,7 @@
                 sessionTtlMs: <%=vpSessionTtlMs%>,
                 pollInterval: 2000,
                 pollTimeout: 8000,
-                pollEndpoint: '/openid4vp/v1/status?requestId=<%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>'
+                pollEndpoint: '<%=Encode.forJavaScript(vpStatusPollBase)%><%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>/status'
             };
             var I18N = {
                 waiting:               '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
@@ -422,14 +425,16 @@
                     var httpStatus = result.httpStatus;
                     var data = result.data;
 
-                    // Non-200 responses are unexpected backend errors (servlet always
-                    // returns 200 for the /status path; body is { error, error_description }).
+                    if (httpStatus === 404) {
+                        handleFailed(I18N.errorExpired);
+                        return;
+                    }
+
                     if (httpStatus !== 200) {
                         handleError('Something went wrong. Please try again.');
                         return;
                     }
 
-                    // HTTP 200 — body is { requestId, status: "ACTIVE"|"VERIFIED"|"FAILED"|"NOT_FOUND" }
                     if (data.requestId) { vpRequestId = data.requestId; }
                     var status = data.status ? data.status.toUpperCase() : '';
 
@@ -444,16 +449,11 @@
                         handleSuccess();
                     } else if (status === 'FAILED') {
                         var vpVerificationErrors = {
-                            'expired_credential': I18N.errorExpiredCredential,
-                            'invalid_signature':  I18N.errorInvalidSignature,
-                            'nonce_mismatch':     I18N.errorNonceMismatch
+                            'VPV-60004': I18N.errorInvalidSignature,
+                            'VPV-60005': I18N.errorExpiredCredential,
+                            'VPV-60007': I18N.errorNonceMismatch
                         };
-                        if (data.errorType) {
-                            document.getElementById('authErrorType').value = data.errorType;
-                        }
                         handleFailed((data.errorType && vpVerificationErrors[data.errorType]) || I18N.errorFailed);
-                    } else if (status === 'NOT_FOUND') {
-                        handleFailed(I18N.errorExpired);
                     } else {
                         handleError(I18N.errorGeneric);
                     }
