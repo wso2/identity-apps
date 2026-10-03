@@ -353,7 +353,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
      * Moves to the previous step in the wizard
      */
     const previous = () => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
     };
 
     return (

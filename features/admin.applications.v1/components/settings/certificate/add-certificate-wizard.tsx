@@ -70,7 +70,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
     }, [ partiallyCompletedStep ]);
 
     const navigateToNext = () => {

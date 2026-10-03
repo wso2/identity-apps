@@ -747,7 +747,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             && usersList?.totalResults >= modifiedLimit
         ) {
             // Fetch the next page.
-            setModifiedLimit(modifiedLimit + clonedUserListDeficit);
+            setModifiedLimit((prevModifiedLimit: number) => prevModifiedLimit + clonedUserListDeficit);
             setListItemAdditionalLimit(usersList?.Resources?.length - clonedUserList.Resources?.length);
             moderatedUsersList = moderateUsersList(
                 clonedUserList, modifiedLimit - clonedUserListDeficit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
