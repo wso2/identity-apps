@@ -1524,11 +1524,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestsPage
-                }))
-            ),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests")),
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WORKFLOW_INSTANCES,
             icon: {
@@ -1543,11 +1539,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestDetailsPage
-                }))
-            ),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details")),
             exact: true,
             id: "workflowInstanceDetails",
             name: "workflowRequests:details.header",
