@@ -120,7 +120,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "basic.form.fields.identifier.emptyValidate") }
                             required={ true }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             value={ initalBasicDetails && initalBasicDetails.identifier }
                             validation={ async (value: string, validation: Validation) => {
 
@@ -179,7 +179,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                                 "name.label") }
                             placeholder={ createResourceWizard?.displayNamePlaceholder }
                             required={ true }
-                            tabIndex={ 2 }
+                            tabIndex={ 0 }
                             requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "basic.form.fields.name.emptyValidate") }
                             value={ initalBasicDetails?.displayName }
