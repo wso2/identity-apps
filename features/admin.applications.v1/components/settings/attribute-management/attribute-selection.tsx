@@ -606,7 +606,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const onDeleteAttribute = (claimURI: string): void => {
         setLocalClaimURIToBeDeleted(claimURI);
-        if ((selectedSubjectValue === resolveClaimValue(claimURI))
+        // Any attribute may be the subject identifier, so removing a requested attribute leaves the subject
+        // untouched. Only in the claim mapping view does the removal delete the mapping the subject relies on,
+        // which resets the subject to the default and therefore needs a confirmation.
+        if (claimMappingOn
+            && (selectedSubjectValue === resolveClaimValue(claimURI))
             && defaultSubjectAttribute !== claimURI) {
             setShowDeleteConfirmationModal(true);
         } else {
@@ -626,8 +630,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const removeAttributeModal = () => {
+        // The default subject attribute may itself be a selected attribute, so look it up in both lists.
         const defaultSubjectClaim: ExtendedClaimInterface =
-        claims.find((claim: ExtendedClaimInterface) => claim.claimURI === defaultSubjectAttribute);
+        [ ...claims, ...selectedClaims ].find(
+            (claim: ExtendedClaimInterface) => claim.claimURI === defaultSubjectAttribute
+        );
 
         return (
             <ConfirmationModal
@@ -666,7 +673,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     <Trans
                         i18nKey={ "applications:confirmations." +
                             "removeApplicationUserAttribute.content" }
-                        i18nOptions={ { default: defaultSubjectClaim?.displayName } }
+                        values={ { default: defaultSubjectClaim?.displayName } }
                     >
                         If you remove this, the subject attribute will be set to
                         the <strong>{ defaultSubjectClaim?.displayName }</strong>
@@ -947,8 +954,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         setIsDefaultMappingChanged
                                                                                     }
                                                                                     initialMandatory={
-                                                                                        selectedSubjectValue ===
-                                                                                resolveClaimValue(claim.claimURI)
+                                                                                        (selectedSubjectValue ===
+                                                                                resolveClaimValue(claim.claimURI) &&
+                                                                                applicationConfig.attributeSettings
+                                                                                    .makeSubjectMandatory)
                                                                                             ? true
                                                                                             : claim.mandatory
                                                                                     }
@@ -1042,7 +1051,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     initialMandatory={
                                                                                         (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
-                                                                                    !onlyOIDCConfigured)
+                                                                                    !onlyOIDCConfigured &&
+                                                                                    applicationConfig.attributeSettings
+                                                                                        .makeSubjectMandatory)
                                                                                             ? true
                                                                                             : claim.mandatory
                                                                                     }
@@ -1052,7 +1063,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     readOnly={
                                                                                         (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
-                                                                                    !onlyOIDCConfigured
+                                                                                    !onlyOIDCConfigured &&
+                                                                                    applicationConfig.attributeSettings
+                                                                                        .makeSubjectMandatory
                                                                                     || !checkMapping(claim))
                                                                                             ? true
                                                                                             : readOnly

@@ -208,6 +208,14 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [ claimMappingOn ]);
 
     /**
+     * Whether this deployment enforces the subject claim's requested and mandatory state.
+     * With `makeSubjectMandatory` (the default) the subject claim is kept requested, mandatory and read only;
+     * without it the subject claim behaves like any other attribute.
+     */
+    const isSubjectMandatoryEnforced: boolean = subject
+        && applicationConfig.attributeSettings.makeSubjectMandatory;
+
+    /**
      * This function will resolve whether the mandatory checkbox should be read only or not.
      */
     const isMandatoryCheckboxReadOnly = (): boolean => {
@@ -215,10 +223,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         if (claimURI && READONLY_CLAIM_CONFIGS.includes(claimURI)) {
             return true;
         }
-
-        // Only force the subject claim's mandatory state when the deployment is configured to do so.
-        const isSubjectMandatoryEnforced: boolean = subject
-            && applicationConfig.attributeSettings.makeSubjectMandatory;
 
         if (onlyOIDCConfigured) {
             return (isSubjectMandatoryEnforced && mandatory) || readOnly || isOIDCMapping;
@@ -232,10 +236,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
      */
     const isRequestedCheckboxReadOnly = (): boolean => {
         if (onlyOIDCConfigured) {
-            return (subject && requested) || readOnly || isOIDCMapping;
+            return (isSubjectMandatoryEnforced && requested) || readOnly || isOIDCMapping;
         }
 
-        return subject || readOnly || isOIDCMapping;
+        return isSubjectMandatoryEnforced || readOnly || isOIDCMapping;
     };
 
     return (
@@ -316,7 +320,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         { ...(!localDialect && { textAlign: "center" }) }
                     >
                         <Checkbox
-                            checked={ initialRequested || requested || (subject && !onlyOIDCConfigured) }
+                            checked={ initialRequested || requested
+                                || (isSubjectMandatoryEnforced && !onlyOIDCConfigured) }
                             onClick={ !isRequestedCheckboxReadOnly() ? handleRequestedCheckChange : () => null }
                             disabled={ mappingOn ? !mandatory : false }
                             readOnly={ isRequestedCheckboxReadOnly() }
@@ -330,8 +335,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 { ...(!localDialect && { textAlign: "center" }) }
             >
                 <Checkbox
-                    checked={ initialMandatory || mandatory || (subject && !onlyOIDCConfigured
-                        && applicationConfig.attributeSettings.makeSubjectMandatory) }
+                    checked={ initialMandatory || mandatory || (isSubjectMandatoryEnforced && !onlyOIDCConfigured) }
                     onClick={ !isMandatoryCheckboxReadOnly() ? handleMandatoryCheckChange : () => null }
                     disabled={ mappingOn ? !requested : false }
                     readOnly={ isMandatoryCheckboxReadOnly() }

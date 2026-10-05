@@ -644,6 +644,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appVersion={ application?.applicationVersion }
                 technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
+                advancedConfigurations={ application?.advancedConfigurations }
                 featureConfig={ featureConfig }
                 onlyOIDCConfigured={
                     (application?.templateId === CustomApplicationTemplate.id
