@@ -270,7 +270,7 @@
             "openid",
             "profile"
         ],
-        "serverOrigin": "https://haste-pope-debug.ngrok-free.dev",
+        "serverOrigin": "https://localhost:3000",
         "storage": "webWorker"
     },
     "loginCallbackPath": "",
@@ -281,7 +281,7 @@
         "login": "",
         "logout": "/logout"
     },
-    "serverOrigin": "https://haste-pope-debug.ngrok-free.dev",
+    "serverOrigin": "https://localhost:3000",
     "session": {
         "checkSessionInterval": 3.0,
         "sessionRefreshTimeOut": 300.0,
@@ -2217,7 +2217,7 @@
             },
             "presentationDefinitions": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
