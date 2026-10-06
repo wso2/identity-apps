@@ -43,7 +43,7 @@ import ScreenDropdown from "../screen-dropdown";
 import "./custom-text.scss";
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
-    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+    import("@wso2is/admin.core.v1/components/monaco-editor/monaco-editor")
 );
 
 /**

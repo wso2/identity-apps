@@ -8,6 +8,7 @@
     "dependencies": {
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
+        "@monaco-editor/react": "^4.5.1",
         "@mui/icons-material": "catalog:",
         "@mui/lab": "catalog:",
         "@mui/material": "catalog:",
@@ -74,6 +75,7 @@
         "i18next": "^21.9.1",
         "jsrsasign": "^10.5.26",
         "lodash-es": "^4.17.21",
+        "monaco-editor": "0.36.1",
         "node-forge": "^0.10.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",
