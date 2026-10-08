@@ -168,7 +168,10 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         state?.config?.ui?.primaryUserStoreDomainName);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
 
-    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -281,8 +284,13 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
      * Resolves the attributes by which the users can be searched.
      */
     const userSearchAttributes: DropdownChild[] = useMemo(() => {
+        // Wait until the duplicated Enterprise schema attributes are identified, so they are not listed.
+        if (isDuplicatedClaimsLoading) {
+            return [];
+        }
+
         return resolveUserSearchAttributes(profileSchemas, duplicatedClaims);
-    }, [ profileSchemas, duplicatedClaims ]);
+    }, [ profileSchemas, duplicatedClaims, isDuplicatedClaimsLoading ]);
 
     useEffect(() => {
         setIsEnterpriseLoginEnabled(OrganizationConfig?.isEnterpriseLoginEnabled);

@@ -66,7 +66,7 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, ContentLoader, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -177,7 +177,10 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
-    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -2487,6 +2490,11 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
             </div>
         );
     };
+
+    // Wait until the duplicated Enterprise schema attributes are identified, so they are not rendered.
+    if (isDuplicatedClaimsLoading) {
+        return <ContentLoader />;
+    }
 
     return (
         <Forms

@@ -172,7 +172,10 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
-    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
@@ -1146,7 +1149,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         }
     };
 
-    if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
+    if (
+        isUserStoreRequestLoading
+        || isUserStoreRequestValidating
+        || isAttributesRequestLoading
+        || isDuplicatedClaimsLoading
+    ) {
         return (
             <OxygenGrid container spacing={ 3 }>
                 { Array.from({ length: 3 }).map((_: unknown, idx: number) => (

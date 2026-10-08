@@ -214,7 +214,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
 
-    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -542,8 +545,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Resolves the attributes by which the users can be searched.
      */
     const userSearchAttributes: DropdownChild[] = useMemo(() => {
+        // Wait until the duplicated Enterprise schema attributes are identified, so they are not listed.
+        if (isDuplicatedClaimsLoading) {
+            return [];
+        }
+
         return resolveUserSearchAttributes(profileSchemas, duplicatedClaims);
-    }, [ profileSchemas, duplicatedClaims ]);
+    }, [ profileSchemas, duplicatedClaims, isDuplicatedClaimsLoading ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
