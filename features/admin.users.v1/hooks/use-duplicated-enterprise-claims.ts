@@ -63,7 +63,7 @@ const useDuplicatedEnterpriseClaims = (): UseDuplicatedEnterpriseClaimsInterface
 
         const calculateDuplicatedClaims = async (): Promise<void> => {
             try {
-                const [ enterpriseClaims, coreUserClaims, systemClaims ] = await Promise.all([
+                const [ enterpriseClaims, coreUserClaims, systemClaims ]: ExternalClaim[][] = await Promise.all([
                     getAllExternalClaims(
                         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
                         null

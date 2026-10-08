@@ -86,7 +86,9 @@ import {
     UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../../../../constants";
-import useDuplicatedEnterpriseClaims from "../../../../hooks/use-duplicated-enterprise-claims";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "../../../../hooks/use-duplicated-enterprise-claims";
 import {
     BasicUserDetailsInterface,
     UserListInterface
@@ -170,7 +172,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
-    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
+    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);

@@ -106,7 +106,9 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import useDuplicatedEnterpriseClaims from "../hooks/use-duplicated-enterprise-claims";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "../hooks/use-duplicated-enterprise-claims";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 import { resolveUserSearchAttributes } from "../utils/user-management-utils";
@@ -212,7 +214,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
 
-    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
+    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

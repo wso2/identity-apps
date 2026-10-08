@@ -91,7 +91,9 @@ import {
     PasswordOptionTypes,
     UserManagementConstants
 } from "../../../constants";
-import useDuplicatedEnterpriseClaims from "../../../hooks/use-duplicated-enterprise-claims";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "../../../hooks/use-duplicated-enterprise-claims";
 import {
     BasicUserDetailsInterface,
     SchemaAttributeValueInterface,
@@ -175,7 +177,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
-    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
+    const { duplicatedClaims }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);

@@ -83,7 +83,9 @@ import {
     UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../constants";
-import useDuplicatedEnterpriseClaims from "../hooks/use-duplicated-enterprise-claims";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "../hooks/use-duplicated-enterprise-claims";
 import {
     AccountConfigSettingsInterface,
     ResendCodeRequestData,
@@ -228,7 +230,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         duplicatedClaims: duplicatedUserClaims,
         error: duplicatedClaimsFetchError,
         isLoading: isClaimsLoading
-    } = useDuplicatedEnterpriseClaims();
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
