@@ -91,6 +91,7 @@ import {
     PasswordOptionTypes,
     UserManagementConstants
 } from "../../../constants";
+import useDuplicatedEnterpriseClaims from "../../../hooks/use-duplicated-enterprise-claims";
 import {
     BasicUserDetailsInterface,
     SchemaAttributeValueInterface,
@@ -103,6 +104,7 @@ import {
     getConfiguration,
     getDisplayOrder,
     getUsernameConfiguration,
+    isDuplicatedEnterpriseSchema,
     isFieldDisplayableInUserCreationWizard,
     normalizeLocaleFormat
 } from "../../../utils";
@@ -173,6 +175,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
+    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -480,6 +483,11 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                 continue;
             }
 
+            // Exclude Enterprise schema attributes that duplicate a core User or System schema attribute.
+            if (isDuplicatedEnterpriseSchema(schema, duplicatedClaims)) {
+                continue;
+            }
+
             // If multiple email and mobile number feature is disabled,
             // we need to hide the email addresses and mobile numbers attributes.
             if (!isMultipleEmailAndMobileNumberEnabled) {
@@ -502,7 +510,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
         setProfileSchema(filteredSchemas);
         setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
-    }, [ profileSchemas ]);
+    }, [ profileSchemas, duplicatedClaims ]);
 
     /*
     * This map the user data to schema using initial values of the wizard.

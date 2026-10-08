@@ -29,7 +29,12 @@ import {
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
+import {
+    ExternalClaim,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    SharedProfileValueResolvingMethod
+} from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -496,13 +501,36 @@ export const getDisplayOrder = (
 };
 
 /**
+ * Checks whether a profile schema is an Enterprise schema attribute that duplicates a core User or System
+ * schema attribute. See `useDuplicatedEnterpriseClaims` for how the duplicated claims are identified.
+ *
+ * @param schema - Profile schema to check.
+ * @param duplicatedClaims - Enterprise schema claims that duplicate a core User or System schema attribute.
+ * @returns Whether the schema should be excluded from the UI.
+ */
+export const isDuplicatedEnterpriseSchema = (
+    schema: ProfileSchemaInterface,
+    duplicatedClaims: ExternalClaim[]
+): boolean => {
+    if (!schema || !duplicatedClaims || duplicatedClaims.length === 0) {
+        return false;
+    }
+
+    const schemaClaimURI: string = schema.schemaUri ?? `${schema.schemaId}:${schema.name}`;
+
+    return duplicatedClaims.some((claim: ExternalClaim) => claim?.claimURI === schemaClaimURI);
+};
+
+/**
  * Resolves the attributes by which users can be searched.
  *
  * @param profileSchemas  - SCIM profile schemas.
+ * @param duplicatedClaims - Enterprise schema claims that duplicate a core User or System schema attribute.
  * @returns Header of the user list item.
  */
 export const resolveUserSearchAttributes = (
-    profileSchemas: ProfileSchemaInterface[]
+    profileSchemas: ProfileSchemaInterface[],
+    duplicatedClaims: ExternalClaim[] = []
 ): DropdownChild[] => {
     const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
         .filter((schema: ProfileSchemaInterface) => {
@@ -511,6 +539,15 @@ export const resolveUserSearchAttributes = (
              * Exclude it here to avoid rendering a duplicate entry.
              */
             if (schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+                return false;
+            }
+
+            /*
+             * Migrated tenants can have Enterprise schema attributes (e.g. `firstName`) mapped to a local claim
+             * that is already exposed by the core User or System schema (e.g. `name.givenName`). Exclude them
+             * since they duplicate the canonical attribute and cannot be used in search filters.
+             */
+            if (isDuplicatedEnterpriseSchema(schema, duplicatedClaims)) {
                 return false;
             }
 

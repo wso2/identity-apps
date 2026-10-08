@@ -106,6 +106,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
+import useDuplicatedEnterpriseClaims from "../hooks/use-duplicated-enterprise-claims";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 import { resolveUserSearchAttributes } from "../utils/user-management-utils";
@@ -210,6 +211,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
     const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
+
+    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -537,8 +540,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Resolves the attributes by which the users can be searched.
      */
     const userSearchAttributes: DropdownChild[] = useMemo(() => {
-        return resolveUserSearchAttributes(profileSchemas);
-    }, [ profileSchemas ]);
+        return resolveUserSearchAttributes(profileSchemas, duplicatedClaims);
+    }, [ profileSchemas, duplicatedClaims ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.

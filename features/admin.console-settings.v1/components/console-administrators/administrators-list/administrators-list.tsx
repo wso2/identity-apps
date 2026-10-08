@@ -45,6 +45,7 @@ import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import useDuplicatedEnterpriseClaims from "@wso2is/admin.users.v1/hooks/use-duplicated-enterprise-claims";
 import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -165,6 +166,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         state?.config?.ui?.primaryUserStoreDomainName);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
 
+    const { duplicatedClaims } = useDuplicatedEnterpriseClaims();
+
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
             "consoleSettings.privilegedUsers"
@@ -276,8 +279,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
      * Resolves the attributes by which the users can be searched.
      */
     const userSearchAttributes: DropdownChild[] = useMemo(() => {
-        return resolveUserSearchAttributes(profileSchemas);
-    }, [ profileSchemas ]);
+        return resolveUserSearchAttributes(profileSchemas, duplicatedClaims);
+    }, [ profileSchemas, duplicatedClaims ]);
 
     useEffect(() => {
         setIsEnterpriseLoginEnabled(OrganizationConfig?.isEnterpriseLoginEnabled);
