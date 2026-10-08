@@ -3677,6 +3677,9 @@ importers:
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.210
         version: link:../admin.authentication.v1
+      '@wso2is/admin.claims.v1':
+        specifier: ^2.31.5
+        version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
         specifier: workspace:^
         version: link:../admin.connections.v1

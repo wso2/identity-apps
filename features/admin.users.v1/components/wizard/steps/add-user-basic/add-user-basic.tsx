@@ -25,6 +25,9 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -86,9 +89,6 @@ import {
     UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../../../../constants";
-import useDuplicatedEnterpriseClaims, {
-    UseDuplicatedEnterpriseClaimsInterface
-} from "../../../../hooks/use-duplicated-enterprise-claims";
 import {
     BasicUserDetailsInterface,
     UserListInterface

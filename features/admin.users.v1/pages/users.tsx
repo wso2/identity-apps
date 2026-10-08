@@ -19,6 +19,9 @@
 import Chip from "@oxygen-ui/react/Chip";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -106,9 +109,6 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import useDuplicatedEnterpriseClaims, {
-    UseDuplicatedEnterpriseClaimsInterface
-} from "../hooks/use-duplicated-enterprise-claims";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 import { resolveUserSearchAttributes } from "../utils/user-management-utils";

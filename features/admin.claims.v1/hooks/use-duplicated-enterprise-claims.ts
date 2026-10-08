@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { ExternalClaim } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
+import { getAllExternalClaims } from "../api/claims";
+import { ClaimManagementConstants } from "../constants/claim-management-constants";
 
 /**
  * Interface for the return type of the `useDuplicatedEnterpriseClaims` hook.

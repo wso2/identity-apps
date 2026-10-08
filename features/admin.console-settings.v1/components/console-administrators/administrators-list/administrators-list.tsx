@@ -28,6 +28,9 @@ import { GuestUsersList } from "@wso2is/admin.administrators.v1/components/guest
 import { AdministratorConstants } from "@wso2is/admin.administrators.v1/constants/users";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { AddAdministratorWizard } from "@wso2is/admin.administrators.v1/wizard/add-administrator-wizard";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -45,9 +48,6 @@ import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import useDuplicatedEnterpriseClaims, {
-    UseDuplicatedEnterpriseClaimsInterface
-} from "@wso2is/admin.users.v1/hooks/use-duplicated-enterprise-claims";
 import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

@@ -18,6 +18,9 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -83,9 +86,6 @@ import {
     UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../constants";
-import useDuplicatedEnterpriseClaims, {
-    UseDuplicatedEnterpriseClaimsInterface
-} from "../hooks/use-duplicated-enterprise-claims";
 import {
     AccountConfigSettingsInterface,
     ResendCodeRequestData,

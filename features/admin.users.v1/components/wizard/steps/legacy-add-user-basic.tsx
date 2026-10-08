@@ -27,6 +27,9 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -91,9 +94,6 @@ import {
     PasswordOptionTypes,
     UserManagementConstants
 } from "../../../constants";
-import useDuplicatedEnterpriseClaims, {
-    UseDuplicatedEnterpriseClaimsInterface
-} from "../../../hooks/use-duplicated-enterprise-claims";
 import {
     BasicUserDetailsInterface,
     SchemaAttributeValueInterface,
