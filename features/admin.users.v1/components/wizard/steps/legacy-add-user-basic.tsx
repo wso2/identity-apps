@@ -1172,7 +1172,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                                 type="password"
                                 value={ randomPassword ? randomPassword : initialValues?.newPassword }
                                 validation={ validateNewPassword }
-                                tabIndex={ 5 }
+                                tabIndex={ 0 }
                                 enableReinitialize={ true }
                                 listen={ handlePasswordChange }
                                 maxWidth={ 60 }
@@ -1336,7 +1336,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                             } }
                             type="email"
                             value={ initialValues && initialValues.email }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             maxLength={ 60 }
                         />
                     </Grid.Column>
@@ -1418,7 +1418,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                             } }
                             type="email"
                             value={ initialValues && initialValues.email }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             maxLength={ 60 }
                         />
                     </Grid.Column>
@@ -1552,7 +1552,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                         } }
                         type="text"
                         value={ initialValues && initialValues.userName }
-                        tabIndex={ 1 }
+                        tabIndex={ 0 }
                         maxLength={ 60 }
                     />
                     { (userConfig?.userNameValidation?.validateViaAPI ||
@@ -1619,7 +1619,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                 } }
                 type="email"
                 value={ initialValues && initialValues.email }
-                tabIndex={ 1 }
+                tabIndex={ 0 }
                 maxLength={ 60 }
                 listen={ handleEmailEmpty }
             />
@@ -2543,7 +2543,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                                                         userStore.value === data.value)?.text?.toString());
                                             }
                                         }
-                                        tabIndex={ 1 }
+                                        tabIndex={ 0 }
                                         maxLength={ 60 }
                                     />
                                 </Form.Field>
@@ -2575,7 +2575,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                                     ) }
                                     type="text"
                                     value={ initialValues && initialValues.firstName }
-                                    tabIndex={ 2 }
+                                    tabIndex={ 0 }
                                     maxLength={ 30 }
                                     validation={ async (value: string, validation: Validation) => {
                                         if (value.includes("/")) {
@@ -2610,7 +2610,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                                     ) }
                                     type="text"
                                     value={ initialValues && initialValues.lastName }
-                                    tabIndex={ 3 }
+                                    tabIndex={ 0 }
                                     maxLength={ 30 }
                                     validation={ async (value: string, validation: Validation) => {
                                         if (value.includes("/")) {
