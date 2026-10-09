@@ -26,6 +26,7 @@ import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/a
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -57,12 +58,26 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
         (state: AppState) => state.config.ui.features?.ai
     );
 
+    const presentationDefinitionsFeature: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.presentationDefinitions
+    );
+
     const data: unknown = useMemo(() => {
         const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
             FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION);
 
+        const isOpenID4VPDisabled: boolean = !presentationDefinitionsFeature?.enabled ||
+            presentationDefinitionsFeature?.disabledFeatures?.includes(
+                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.PRESENTATION_DEFINITIONS_FLOWS_TYPES_REGISTRATION
+            );
+
         const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
-            return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+            return (!isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI) &&
+                (!isOpenID4VPDisabled || template?.type !== TemplateTypes.BasicWallet);
+        });
+
+        const filteredWidgets: any[] = (widgets as any[]).filter((widget: any) => {
+            return !isOpenID4VPDisabled || widget?.type !== WidgetTypes.DigitalWalletFederation;
         });
 
         return {
@@ -82,10 +97,10 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
             ],
             widgets: [
                 ...coreResources?.widgets,
-                ...widgets
+                ...filteredWidgets
             ]
         };
-    }, [ coreResources, aiFeature, extensionExecutorSteps ]);
+    }, [ coreResources, aiFeature, presentationDefinitionsFeature, extensionExecutorSteps ]);
 
     return {
         data: data as Data,

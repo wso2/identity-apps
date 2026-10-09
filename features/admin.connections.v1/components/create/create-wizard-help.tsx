@@ -198,8 +198,8 @@ CreateConnectionWizardHelpPropsInterface> = (
 
     return (
         <div data-testid={ testId }>
-            { renderPreRequisites() }
-            <Divider hidden/>
+            { wizardHelp.message && renderPreRequisites() }
+            { wizardHelp.message && <Divider hidden/> }
             {
                 wizardHelp?.fields?.map((
                     field: { fieldName: string, hint: string | ReactElement },

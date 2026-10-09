@@ -232,6 +232,34 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                 portalUrlStatus: "true"
             };
 
+        case "VP-60001":
+
+            return {
+                message: stripBraces(errorMessage) || "wallet.vp.error.failed.message",
+                description: "wallet.vp.error.failed.description"
+            };
+
+        case "VP-60002":
+
+            return {
+                message: "wallet.vp.error.expired.message",
+                description: "wallet.vp.error.expired.description"
+            };
+
+        case "VP-65001":
+
+            return {
+                message: stripBraces(errorMessage) || "wallet.vp.error.generic.message",
+                description: "wallet.vp.error.generic.description"
+            };
+
+        case "VP-65002":
+
+            return {
+                message: "wallet.vp.error.network.message",
+                description: "wallet.vp.error.network.description"
+            };
+
         default:
 
             return {

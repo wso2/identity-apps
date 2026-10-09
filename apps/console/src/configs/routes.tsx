@@ -103,6 +103,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         && !!cliSettingsFeatureConfig?.properties?.applicationName
         && !!cliSettingsFeatureConfig?.properties?.clientId;
 
+    const isPresentationDefinitionsEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.presentationDefinitions?.enabled === true;
+
     const isInsightsFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
     const isAnalyticsFeatureEnabled: boolean =
@@ -226,7 +229,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
                     exact: true,
                     id: "editVCTemplate",
-                    name: "Edit Verifiable Credential",
+                    name: "Edit Credential Template",
                     path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -240,9 +243,48 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().verifiableCredentials
             },
             id: "verifiableCredentials",
-            name: "Verifiable Credentials",
+            name: isPresentationDefinitionsEnabled ? "Credential Templates" : "Verifiable Credentials",
             order: 7,
             path: AppConstants.getPaths().get("VC_TEMPLATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            children: [
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.presentation-definitions.v1/pages/presentation-definition-edit"
+                        )),
+                    exact: true,
+                    id: "editVPDefinition",
+                    name: "Edit Presentation Definition",
+                    path: AppConstants.getPaths().get("VP_DEFINITION_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.presentation-definitions.v1/pages/openid4vp-configuration")),
+                    exact: true,
+                    id: "verifiablePresentationSettings",
+                    name: "Verifier Settings",
+                    path: AppConstants.getPaths().get("OPENID4VP_CONFIG"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.presentation-definitions.v1/pages/presentation-definitions")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.PRESENTATION_DEFINITIONS,
+            icon: {
+                icon: getSidePanelIcons().presentationDefinitions
+            },
+            id: "presentationDefinitions",
+            name: "Presentation Definitions",
+            order: 9,
+            path: AppConstants.getPaths().get("VP_DEFINITIONS"),
             protected: true,
             showOnSidePanel: true
         },

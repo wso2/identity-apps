@@ -2853,6 +2853,44 @@
                 }
             },
             {% endif %}
+            {% if console.verifiable_presentation is defined %}
+            "presentationDefinitions": {
+                "disabledFeatures": [],
+                "enabled": {% if console.verifiable_presentation.enabled is defined %} {{ console.verifiable_presentation.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [],
+                "scopes": {
+                    {% if console.verifiable_presentation.scopes is defined %}
+                    {% for operation, scopes in console.verifiable_presentation.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": ["internal_presentation_definition_create"],
+                        "delete": ["internal_presentation_definition_delete"],
+                        "feature": ["console:presentation_definitions"],
+                        "read": ["internal_presentation_definition_view"],
+                        "update": ["internal_presentation_definition_update"]
+                    {% endif %}
+                },
+                "subFeatures": {
+                    "verifiablePresentationSettings": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "read": ["internal_config_view"],
+                            "update": ["internal_config_update"]
+                        }
+                    }
+                }
+            },
+            {% endif %}
             {% if console.verifiable_credentials is defined %}
             "verifiableCredentials": {
                 "disabledFeatures": [
