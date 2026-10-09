@@ -107,9 +107,13 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
                         </button>
                     </div>
                     <div className="mt-1 align-center">
-                        <a href="javascript:goBack()" className="ui button secondary large fluid">
+                        <button
+                            type="button"
+                            id="subButton"
+                            className="ui secondary fluid large button"
+                        >
                             Cancel
-                        </a>
+                        </button>
                     </div>
                 </form>
             </div>
