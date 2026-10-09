@@ -1428,24 +1428,23 @@ export const applications: ApplicationsNS = {
                 subject: {
                     fields:{
                         alternateSubjectAttribute: {
-                            hint: "This option will allow to use an alternate attribute as the subject identifier instead of the <1>userid</1>.",
+                            hint: "This option will allow to use an alternate attribute as the subject identifier instead of the " +
+                                "<1>{{defaultSubjectAttribute}}</1>.",
                             label: "Assign alternate subject identifier"
                         },
                         subjectAttribute: {
-                            hint: "Select which of the shared attributes you want to use as the" +
-                                " subject identifier of the user",
-                            hintOIDC: "Select which of the shared attributes you want to use as the" +
-                                " subject identifier of the user. This represents the <1>sub</1> claim of" +
-                                " the <1>id_token</1>.",
-                            hintSAML: "Select which of the shared attributes you want to use as the" +
-                                " subject identifier of the user. This represents the <1>subject</1>" +
-                                " element of the SAML assertion.",
+                            hint: "Select the attribute you want to use as the subject identifier of the user",
+                            hintOIDC: "Select the attribute you want to use as the subject identifier of the" +
+                                " user. This represents the <1>sub</1> claim of the <1>id_token</1>.",
+                            hintSAML: "Select the attribute you want to use as the subject identifier of the" +
+                                " user. This represents the <1>subject</1> element of the SAML assertion.",
                             label: "Subject attribute",
                             validations: {
                                 empty: "Select the subject attribute"
                             },
                             placeholder: "Select an attribute",
-                            info: "Alternate subject identifier's can be assigned only if user attributes are selected."
+                            info: "An alternate subject identifier can be assigned once the application has user" +
+                                " attributes to choose from."
                         },
                         subjectIncludeTenantDomain: {
                             hint: "This option will append the organization name to the local subject " +
