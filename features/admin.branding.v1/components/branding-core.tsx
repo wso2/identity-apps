@@ -328,10 +328,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
         BrandingPreferenceUtils.getPredefinedThemePreferences(theme)
             .then((response: BrandingPreferenceThemeInterface) => {
-                setPredefinedThemes({
-                    ...predefinedThemes,
+                setPredefinedThemes((prevPredefinedThemes: BrandingPreferenceThemeInterface) => ({
+                    ...prevPredefinedThemes,
                     ...response
-                });
+                }));
             })
             .catch(() => {
                 // Add debug logs here one a logger is added.
@@ -665,7 +665,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         mutateCustomTextPreferenceFetchRequests();
 
         // Increment the tabs component key to remount the component on branding revert.
-        setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
+        setPreferenceTabsComponentKey((prevPreferenceTabsComponentKey: number) => prevPreferenceTabsComponentKey + 1);
 
         setIsBrandingPreferenceDeleteRequestLoading(false);
         setShowRevertConfirmationModal(false);
