@@ -793,7 +793,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         selection
                         options={ userStoreOptions }
                         onChange={ handleDomainChange }
-                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                        value={ selectedUserStore ?? userstoresConfig.primaryUserstoreName }
                         loading={ isUserStoreListFetchRequestLoading }
                         readonly={ userStoreOptions.length <= 1 }
                     />)
