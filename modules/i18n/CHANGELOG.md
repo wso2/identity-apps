@@ -1,5 +1,15 @@
 # @wso2is/i18n
 
+## 2.47.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+### Patch Changes
+
+- [#10724](https://github.com/wso2/identity-apps/pull/10724) [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Show each application's own default subject identifier, list every available attribute in the subject attribute dropdown, and let the subject attribute's Requested and Mandatory states follow the makeSubjectMandatory config
+
 ## 2.46.2
 
 ### Patch Changes

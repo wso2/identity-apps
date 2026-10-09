@@ -1,5 +1,22 @@
 # @wso2is/admin.users.v1
 
+## 2.38.55
+
+### Patch Changes
+
+- [#10723](https://github.com/wso2/identity-apps/pull/10723) [`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Enterprise schema attributes that duplicate core User or System schema attributes in user search, user profile and user creation in migrated environments
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11), [`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe), [`47e361c251f999f5bae3b776368dbcfc600d4b8e`](https://github.com/wso2/identity-apps/commit/47e361c251f999f5bae3b776368dbcfc600d4b8e), [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364)]:
+  - @wso2is/admin.core.v1@2.60.0
+  - @wso2is/admin.feature-gate.v1@1.11.0
+  - @wso2is/admin.flow-builder-core.v1@0.11.0
+  - @wso2is/admin.server-configurations.v1@2.39.0
+  - @wso2is/forms@2.12.0
+  - @wso2is/i18n@2.47.0
+  - @wso2is/admin.claims.v1@2.31.6
+  - @wso2is/admin.extensions.v1@2.44.1
+  - @wso2is/admin.flows.v1@1.0.181
+
 ## 2.38.54
 
 ### Patch Changes

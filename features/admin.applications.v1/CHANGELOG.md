@@ -1,5 +1,24 @@
 # @wso2is/admin.applications.v1
 
+## 2.44.5
+
+### Patch Changes
+
+- [#10724](https://github.com/wso2/identity-apps/pull/10724) [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Show each application's own default subject identifier, list every available attribute in the subject attribute dropdown, and let the subject attribute's Requested and Mandatory states follow the makeSubjectMandatory config
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11), [`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe), [`47e361c251f999f5bae3b776368dbcfc600d4b8e`](https://github.com/wso2/identity-apps/commit/47e361c251f999f5bae3b776368dbcfc600d4b8e), [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364)]:
+  - @wso2is/admin.connections.v1@2.43.0
+  - @wso2is/admin.core.v1@2.60.0
+  - @wso2is/admin.feature-gate.v1@1.11.0
+  - @wso2is/admin.server-configurations.v1@2.39.0
+  - @wso2is/forms@2.12.0
+  - @wso2is/i18n@2.47.0
+  - @wso2is/admin.claims.v1@2.31.6
+  - @wso2is/admin.console-settings.v1@2.26.50
+  - @wso2is/admin.users.v1@2.38.55
+  - @wso2is/admin.extensions.v1@2.44.1
+  - @wso2is/admin.branding.v1@2.32.174
+
 ## 2.44.4
 
 ### Patch Changes
