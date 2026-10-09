@@ -66,7 +66,7 @@ const FacebookExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <img src={ loadStaticResource("assets/images/icons/facebook.svg") } height="20" />
+            <img src={ loadStaticResource("assets/images/icons/facebook.svg") } alt="" height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.facebook") }</Typography>
         </Box>
     );
