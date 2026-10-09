@@ -452,6 +452,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             return (
                 <iframe
                     hidden
+                    sandbox="allow-scripts allow-same-origin"
                     src={ `${getBasePath(consoleUrl)}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
