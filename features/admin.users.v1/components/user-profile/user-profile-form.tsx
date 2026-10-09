@@ -621,7 +621,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         profileData,
         isMultipleEmailAndMobileNumberEnabled,
         isEmailVerificationEnabled,
-        isMobileVerificationEnabled
+        isMobileVerificationEnabled,
+        enableSCIMLegacyEnterpriseUser
     ]);
 
     const extractAttributeValue = (schema: ProfileSchemaInterface): unknown => {
