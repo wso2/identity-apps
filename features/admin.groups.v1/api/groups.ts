@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,8 +46,17 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param domain - user store
  * @param excludedAttributes - Excluded Attributes.
+ * @param count - Number of groups to return in this page.
+ * @param startIndex - Index of the first group of the page. The index is one based.
+ * @param filter - Filter string.
  */
-export const getGroupList = (domain: string, excludedAttributes?: string): Promise<GroupListInterface | any> => {
+export const getGroupList = (
+    domain: string,
+    excludedAttributes?: string,
+    count: number = null,
+    startIndex: number = null,
+    filter: string = null
+): Promise<GroupListInterface | any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -56,8 +65,11 @@ export const getGroupList = (domain: string, excludedAttributes?: string): Promi
         },
         method: HttpMethods.GET,
         params: {
+            count,
             domain,
-            excludedAttributes
+            excludedAttributes,
+            filter,
+            startIndex
         },
         url: store.getState().config.endpoints.groups
     };

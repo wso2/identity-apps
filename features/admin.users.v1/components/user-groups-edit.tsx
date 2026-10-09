@@ -16,12 +16,17 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
-import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import {
+    GroupListInterface,
+    GroupsInterface,
+    GroupsMemberInterface
+} from "@wso2is/admin.groups.v1/models/groups";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
@@ -41,10 +46,20 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FormEvent,
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -53,6 +68,11 @@ import {
     Modal
 } from "semantic-ui-react";
 import { UserGroupsListTable } from "./user-groups-list";
+
+/**
+ * Number of groups fetched per page once the user scrolls past the first response.
+ */
+const GROUPS_PAGE_SIZE: number = 50;
 
 interface UserGroupsPropsInterface {
     /**
@@ -104,11 +124,26 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const [ groupsList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState<boolean>(false);
     const [ isSelectAllGroupsChecked, setIsSelectAllGroupsChecked ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ searchValue, setSearchValue ] = useState<string>(null);
+    const [ fetchedGroups, setFetchedGroups ] = useState<GroupsInterface[]>(undefined);
+    const [ totalGroupCount, setTotalGroupCount ] = useState<number>(0);
+    const [ storeGroupCount, setStoreGroupCount ] = useState<number>(null);
+    const [ isShowingSelectedGroups, setIsShowingSelectedGroups ] = useState<boolean>(false);
+
+    // Bumped by a search or a re-fetch, so a page of an older fetch is dropped when it arrives late.
+    const groupFetchSequence: MutableRefObject<number> = useRef<number>(0);
+    // Identifies the first response, so a revalidation with the same groups keeps the scrolled pages.
+    const firstPageSignature: MutableRefObject<string> = useRef<string>(null);
+    const loadedGroupsRef: MutableRefObject<GroupsInterface[]> = useRef<GroupsInterface[]>([]);
+    const isLoadingMoreRef: MutableRefObject<boolean> = useRef<boolean>(false);
+    // Read by the scroll callback, as an observer from an earlier render can still call it.
+    const canLoadMoreRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const domain: string = user?.userName?.split("/")?.length > 1
         ? user.userName.split("/")[0]
@@ -128,36 +163,141 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         excludedAttributes
     );
 
-    const groupsList: GroupsInterface[] = useMemo(() => {
-        if (originalGroupsList?.Resources) {
-            const filteredGroups: GroupsInterface[] = [];
+    /**
+     * Display names of the groups the user already belongs to.
+     */
+    const assignedGroupNames: Set<string> = useMemo(() => {
+        const names: Set<string> = new Set<string>();
 
-            originalGroupsList.Resources.map((group: GroupsInterface) => {
-                let isGroupExistInUser: boolean = false;
+        if (user?.groups?.length > 0) {
+            user.groups.forEach((userGroup: GroupsMemberInterface) => {
+                const groupDomain: string = userGroup?.display?.split("/")[0];
 
-                if (user?.groups?.length > 0) {
-                    user.groups.forEach((userGroup: GroupsMemberInterface) => {
-                        if (userGroup.display === group.displayName) {
-                            isGroupExistInUser = true;
-                        }
-                    });
-                }
-
-                // Do not show the group if the group is already assigned to the user.
-                if (!isGroupExistInUser) {
-                    filteredGroups.push(group);
+                if (userGroup?.display && groupDomain !== APPLICATION_DOMAIN && groupDomain !== INTERNAL_DOMAIN) {
+                    names.add(userGroup.display);
                 }
             });
-
-            return filteredGroups;
         }
 
-        return [];
-    }, [ originalGroupsList ]);
+        return names;
+    }, [ user?.groups ]);
 
     const isLoading: boolean = useMemo(() => {
         return isGroupsListFetchRequestLoading || isGroupsListFetchRequestValidating;
     }, [ isGroupsListFetchRequestLoading, isGroupsListFetchRequestValidating ]);
+
+    const hasMoreGroups: boolean = (fetchedGroups?.length ?? 0) < totalGroupCount;
+    const canLoadMoreGroups: boolean = hasMoreGroups && !isShowingSelectedGroups && !groupsListFetchRequestError;
+
+    canLoadMoreRef.current = canLoadMoreGroups;
+
+    /**
+     * Loads the next page and appends it. Called when the end of the list is scrolled into view.
+     * Re-created after each page, so the list checks again whether its end is still in view.
+     */
+    const loadMoreGroups: () => void = useCallback((): void => {
+        if (isLoadingMoreRef.current || !canLoadMoreRef.current) {
+            return;
+        }
+
+        const loaded: GroupsInterface[] = loadedGroupsRef.current ?? [];
+
+        if (loaded.length >= totalGroupCount) {
+            return;
+        }
+
+        const sequence: number = groupFetchSequence.current;
+
+        isLoadingMoreRef.current = true;
+
+        getGroupList(domain, excludedAttributes, GROUPS_PAGE_SIZE, loaded.length + 1, searchQuery)
+            .then((response: AxiosResponse<GroupListInterface>) => {
+                if (sequence !== groupFetchSequence.current) {
+                    return;
+                }
+
+                const page: GroupsInterface[] = response?.data?.Resources ?? [];
+                const merged: GroupsInterface[] = [ ...loaded ];
+                const seen: Set<string> = new Set<string>(loaded.map((group: GroupsInterface) => group.id));
+
+                // Groups can be added or removed between two pages, so keep the first copy of a group.
+                page.forEach((group: GroupsInterface) => {
+                    if (!seen.has(group.id)) {
+                        seen.add(group.id);
+                        merged.push(group);
+                    }
+                });
+
+                // Nothing new came back, so asking again would request the same window. Stop here.
+                if (merged.length === loaded.length) {
+                    setTotalGroupCount(loaded.length);
+                    if (!searchQuery) {
+                        setStoreGroupCount(loaded.length);
+                    }
+
+                    return;
+                }
+
+                loadedGroupsRef.current = merged;
+                setFetchedGroups(merged);
+            })
+            .catch(() => {
+                if (sequence !== groupFetchSequence.current) {
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.roles.edit.groups.notifications" +
+                            ".fetchError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                    })
+                );
+            })
+            .finally(() => {
+                if (sequence === groupFetchSequence.current) {
+                    isLoadingMoreRef.current = false;
+                }
+            });
+    }, [ domain, excludedAttributes, searchQuery, totalGroupCount, fetchedGroups, dispatch, t ]);
+
+    /**
+     * A search replaces the list, so any page still in flight for the previous query is stale.
+     */
+    useEffect(() => {
+        groupFetchSequence.current += 1;
+        isLoadingMoreRef.current = false;
+    }, [ searchQuery ]);
+
+    /**
+     * Starts the list from the first response. Further pages are fetched only when the user scrolls.
+     */
+    useEffect(() => {
+        if (!originalGroupsList) {
+            return;
+        }
+
+        const firstPage: GroupsInterface[] = originalGroupsList.Resources ?? [];
+        const signature: string = `${ searchQuery }|${ originalGroupsList.totalResults }:${ firstPage.map(
+            (group: GroupsInterface) => group.id).join(",") }`;
+
+        if (signature === firstPageSignature.current) {
+            return;
+        }
+
+        firstPageSignature.current = signature;
+        groupFetchSequence.current += 1;
+        isLoadingMoreRef.current = false;
+        loadedGroupsRef.current = firstPage;
+        setFetchedGroups(firstPage);
+        // A server that caps the listing reports the capped number, so no further page is requested.
+        setTotalGroupCount(originalGroupsList.totalResults ?? firstPage.length);
+        // The unfiltered total is kept for the selection count while a search reports its own.
+        if (!searchQuery) {
+            setStoreGroupCount(originalGroupsList.totalResults ?? firstPage.length);
+        }
+    }, [ originalGroupsList ]);
 
     /**
      * Show error if group list fetch request failed.
@@ -188,15 +328,90 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     }, [ groupsListFetchRequestError ]);
 
     /**
-     * The following function enables the user to select all the roles at once.
+     * Whether every listed group is selected. Compared by id, as the selection is kept across searches.
+     */
+    const areAllListedGroupsSelected = (listed: GroupsInterface[], selected: GroupsInterface[]): boolean =>
+        listed.length > 0
+        && listed.every((group: GroupsInterface) =>
+            selected.some((item: GroupsInterface) => item.id === group.id));
+
+    /**
+     * Groups to list. A search lists its matches only, and the selection outside them is kept for later.
+     */
+    const buildListedGroups = (
+        baseList: GroupsInterface[],
+        selected: GroupsInterface[],
+        query: string
+    ): GroupsInterface[] => {
+        // Do not show the group if the group is already assigned to the user.
+        const listed: GroupsInterface[] = baseList.filter((group: GroupsInterface) =>
+            !assignedGroupNames.has(group.displayName));
+
+        if (query) {
+            return listed;
+        }
+
+        selected?.forEach((group: GroupsInterface) => {
+            if (!listed.some((item: GroupsInterface) => item.id === group.id)) {
+                listed.push(group);
+            }
+        });
+
+        return listed;
+    };
+
+    /**
+     * Rebuilds the list when a page arrives or the query changes.
+     */
+    useEffect(() => {
+        if (!showAddNewRoleModal || !fetchedGroups || isShowingSelectedGroups) {
+            return;
+        }
+
+        // A rejected listing lists no rows rather than the rows of the previous query.
+        const listed: GroupsInterface[] = buildListedGroups(groupsListFetchRequestError ? [] : fetchedGroups,
+            selectedGroupsList, searchQuery);
+
+        setGroupsList(listed);
+        // A group that arrives later is not selected on the user's behalf. It clears the header checkbox instead.
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(listed, selectedGroupsList));
+    }, [ fetchedGroups, searchQuery, groupsListFetchRequestError ]);
+
+    /**
+     * Switches the list between the selection and the loaded groups.
+     */
+    useEffect(() => {
+        if (!showAddNewRoleModal) {
+            return;
+        }
+
+        const listed: GroupsInterface[] = isShowingSelectedGroups
+            ? [ ...selectedGroupsList ]
+            : buildListedGroups(groupsListFetchRequestError ? [] : fetchedGroups ?? [], selectedGroupsList,
+                searchQuery);
+
+        setGroupsList(listed);
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(listed, selectedGroupsList));
+    }, [ isShowingSelectedGroups ]);
+
+    /**
+     * Ticks or unticks the listed groups. Groups selected outside the list stay selected.
      */
     const selectAllGroups = () => {
         if (!isSelectAllGroupsChecked) {
-            setSelectedGroupList(groupsList);
+            const selected: GroupsInterface[] = [ ...selectedGroupsList ];
+
+            groupsList.forEach((group: GroupsInterface) => {
+                if (!selected.some((item: GroupsInterface) => item.id === group.id)) {
+                    selected.push(group);
+                }
+            });
+            setSelectedGroupList(selected);
         } else {
-            setSelectedGroupList([]);
+            setSelectedGroupList(selectedGroupsList.filter((item: GroupsInterface) =>
+                !groupsList.some((group: GroupsInterface) => group.id === item.id)));
         }
-        setIsSelectAllGroupsChecked(!isSelectAllGroupsChecked);
+        setIsSelectAllGroupsChecked(!isSelectAllGroupsChecked && groupsList.length > 0);
     };
 
     /**
@@ -218,27 +433,40 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         setSelectedGroupList(checkedGroups);
-        setIsSelectAllGroupsChecked(checkedGroups.length === groupsList.length);
+        setIsSelectAllGroupsChecked(areAllListedGroupsSelected(groupsList, checkedGroups));
     };
 
     const handleOpenAddNewGroupModal = () => {
+        handleUnselectedListSearch.cancel();
         setSearchQuery(null);
+        setSearchValue(null);
+        setIsShowingSelectedGroups(false);
+        setSelectedGroupList([]);
+        setGroupsList(buildListedGroups(fetchedGroups ?? [], [], null));
+        setIsSelectAllGroupsChecked(false);
         setAddNewRoleModalView(true);
     };
 
     const handleCloseAddNewGroupModal = () => {
+        handleUnselectedListSearch.cancel();
         setIsSelectAllGroupsChecked(false);
         setSearchQuery(null);
+        setSearchValue(null);
+        setIsShowingSelectedGroups(false);
         setAddNewRoleModalView(false);
     };
 
     const handleUnselectedListSearch: DebouncedFunc<(e: FormEvent<HTMLInputElement>, query: string) => void>
     = useCallback(debounce((e: FormEvent<HTMLInputElement>, query: string) => {
+        setIsShowingSelectedGroups(false);
+
         if (isEmpty(query.trim())) {
+            setSearchValue(null);
             setSearchQuery(null);
         } else {
             const processedQuery: string = "displayName co " + query;
 
+            setSearchValue(query);
             setSearchQuery(processedQuery);
         }
     }, 1000), []);
@@ -381,6 +609,38 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         return displayName;
     };
 
+    /**
+     * Number of groups that can still be assigned, as the groups the user already belongs to are not listed.
+     */
+    const resolveAssignableGroupCount = (): number => {
+        const selectedCount: number = selectedGroupsList?.length ?? 0;
+
+        // A store that cannot count its groups can report fewer than are selected.
+        return Math.max(storeGroupCount - assignedGroupNames.size, selectedCount);
+    };
+
+    /**
+     * Describes what the list holds when it is not the plain group list.
+     */
+    const resolveListStatus = (): string => {
+        if (isShowingSelectedGroups) {
+            return t("user:updateUser.groups.addGroupsModal.showingSelectedGroups");
+        }
+
+        if (!searchQuery) {
+            return null;
+        }
+
+        // Matches the user already belongs to are not listed, so they are not counted either.
+        const assignedMatchCount: number = (fetchedGroups ?? []).filter((group: GroupsInterface) =>
+            assignedGroupNames.has(group.displayName)).length;
+
+        return t("user:updateUser.groups.addGroupsModal.matchingGroups", {
+            search: searchValue,
+            total: Math.max(totalGroupCount - assignedMatchCount, 0)
+        });
+    };
+
     const addNewGroupModal = () => (
         <Modal
             data-testid="user-mgt-update-groups-modal"
@@ -406,8 +666,10 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 >
                     <TransferList
                         bordered={ false }
-                        isListEmpty={ groupsList?.length === 0 }
-                        isLoading={ isLoading }
+                        isListEmpty={ groupsList?.length === 0 && !canLoadMoreGroups }
+                        isLoading={ isLoading && !isShowingSelectedGroups }
+                        hasMore={ canLoadMoreGroups }
+                        loadMore={ loadMoreGroups }
                         listType="unselected"
                         listHeaders={ [
                             t("transferList:list.headers.0"),
@@ -444,6 +706,75 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         }
                     </TransferList>
                 </TransferComponent>
+                <Box mt={ 1 }>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        {
+                            storeGroupCount !== null && (
+                                <Heading
+                                    subHeading
+                                    as="h6"
+                                    compact
+                                    data-componentid="user-mgt-update-groups-modal-selected-count"
+                                    data-testid="user-mgt-update-groups-modal-selected-count"
+                                >
+                                    { t("user:updateUser.groups.addGroupsModal.selectedOfTotal", {
+                                        selected: selectedGroupsList?.length ?? 0,
+                                        total: resolveAssignableGroupCount()
+                                    }) }
+                                </Heading>
+                            )
+                        }
+                        {
+                            (isShowingSelectedGroups || selectedGroupsList?.length > 0) && (
+                                <LinkButton
+                                    compact
+                                    data-componentid="user-mgt-update-groups-modal-show-selected-button"
+                                    data-testid="user-mgt-update-groups-modal-show-selected-button"
+                                    onClick={ () => {
+                                        handleUnselectedListSearch.flush();
+                                        setIsShowingSelectedGroups(!isShowingSelectedGroups);
+                                    } }
+                                >
+                                    {
+                                        isShowingSelectedGroups
+                                            ? t("user:updateUser.groups.addGroupsModal.showAll")
+                                            : t("user:updateUser.groups.addGroupsModal.showSelected")
+                                    }
+                                </LinkButton>
+                            )
+                        }
+                    </Box>
+                    {
+                        !isLoading && !groupsListFetchRequestError && resolveListStatus() && (
+                            <Heading
+                                subHeading
+                                as="h6"
+                                compact
+                                data-componentid="user-mgt-update-groups-modal-list-status"
+                                data-testid="user-mgt-update-groups-modal-list-status"
+                            >
+                                { resolveListStatus() }
+                            </Heading>
+                        )
+                    }
+                    {
+                        canLoadMoreGroups && !isLoading && (
+                            <Heading
+                                subHeading
+                                as="h6"
+                                compact
+                                data-componentid="user-mgt-update-groups-modal-list-incomplete"
+                                data-testid="user-mgt-update-groups-modal-list-incomplete"
+                            >
+                                {
+                                    searchQuery
+                                        ? t("user:updateUser.groups.addGroupsModal.scrollForMore")
+                                        : t("user:updateUser.groups.addGroupsModal.listIncomplete")
+                                }
+                            </Heading>
+                        )
+                    }
+                </Box>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
