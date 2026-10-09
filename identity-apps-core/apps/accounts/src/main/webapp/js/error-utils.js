@@ -29,6 +29,13 @@ function stripBraces(s) {
 }
 
 /**
+ * Whether a string is an i18n token.
+ */
+function isI18nToken(s) {
+    return !!s && s.startsWith("{{") && s.endsWith("}}");
+}
+
+/**
  * Returns the i18n keys for the given error code.
  *
  * @param {string} errorCode - The error code (e.g., "60001")
@@ -233,6 +240,19 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
             };
 
         default:
+
+            // An executor registered by a connector deployed on the server has no case above. Those can be handled through here.
+            if (isI18nToken(errorMessage) || isI18nToken(errorDescription)) {
+                return {
+                    message: isI18nToken(errorMessage)
+                        ? stripBraces(errorMessage)
+                        : "orchestration.flow.error.failed.message",
+                    description: isI18nToken(errorDescription)
+                        ? stripBraces(errorDescription)
+                        : "orchestration.flow.error.failed.description",
+                    portalUrlStatus: "true"
+                };
+            }
 
             return {
                 message: "orchestration.flow.error.failed.message",
