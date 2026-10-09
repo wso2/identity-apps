@@ -23,7 +23,15 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Button, ButtonProps, Container, Modal, Placeholder } from "semantic-ui-react";
 import { UserSessionsList } from "./user-sessions-list";
@@ -63,7 +71,8 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const { t } = useTranslation();
 
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
-    const [ editingUserSession, setEditingUserSession ] = useState<UserSession>(emptyUserSession);
+    // Holds the session targeted by the terminate-confirmation modal; only read/written in handlers.
+    const editingUserSessionRef: MutableRefObject<UserSession> = useRef<UserSession>(emptyUserSession());
     const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
     const [ isRevokeUserSessionModalVisible, setRevokeUserSessionModalVisibility ] = useState(false);
     const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
@@ -156,7 +165,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * Terminate a single user session.
      */
     const handleTerminateUserSession = (): void => {
-        terminateUserSession(editingUserSession.id)
+        terminateUserSession(editingUserSessionRef.current.id)
             .then(() => {
                 onAlertFired({
                     description: t(
@@ -263,7 +272,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * @param session - Session which needs to be edited.
      */
     const handleTerminateUserSessionClick = (session: UserSession): void => {
-        setEditingUserSession(session);
+        editingUserSessionRef.current = session;
         setRevokeUserSessionModalVisibility(true);
     };
 
