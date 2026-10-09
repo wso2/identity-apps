@@ -31,7 +31,7 @@ import { IdentifiableComponentInterface,
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useReducer } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
@@ -83,6 +83,53 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
     versionInfo: ActionVersionInfo;
 }
 
+interface FormStateInterface {
+    /**
+     * Whether the authentication update form is active.
+     */
+    isAuthenticationUpdateFormState: boolean;
+    /**
+     * The current authentication type selected.
+     */
+    authenticationType: AuthenticationType | null;
+    /**
+     * Whether the form is currently submitting.
+     */
+    isSubmitting: boolean;
+    /**
+     * Whether the action has an associated rule.
+     */
+    isHasRule: boolean;
+    /**
+     * The current rule associated with the action.
+     */
+    rule: RuleWithoutIdInterface | null;
+}
+
+type FormActionInterface =
+    | { type: "SET_AUTH_UPDATE_FORM_STATE"; payload: boolean }
+    | { type: "SET_AUTHENTICATION_TYPE"; payload: AuthenticationType | null }
+    | { type: "SET_IS_SUBMITTING"; payload: boolean }
+    | { type: "SET_IS_HAS_RULE"; payload: boolean }
+    | { type: "SET_RULE"; payload: RuleWithoutIdInterface | null };
+
+const formReducer = (state: FormStateInterface, action: FormActionInterface): FormStateInterface => {
+    switch (action.type) {
+        case "SET_AUTH_UPDATE_FORM_STATE":
+            return { ...state, isAuthenticationUpdateFormState: action.payload };
+        case "SET_AUTHENTICATION_TYPE":
+            return { ...state, authenticationType: action.payload };
+        case "SET_IS_SUBMITTING":
+            return { ...state, isSubmitting: action.payload };
+        case "SET_IS_HAS_RULE":
+            return { ...state, isHasRule: action.payload };
+        case "SET_RULE":
+            return { ...state, rule: action.payload };
+        default:
+            return state;
+    }
+};
+
 const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessTokenActionConfigFormInterface> = ({
     initialValues,
     isLoading,
@@ -94,12 +141,17 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
-    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
-    const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
-
+    const [ actionFormState, dispatch ] = useReducer<React.Reducer<FormStateInterface, FormActionInterface>>(
+        formReducer,
+        {
+            isAuthenticationUpdateFormState: false,
+            authenticationType: null,
+            isSubmitting: false,
+            isHasRule: false,
+            rule: null
+        }
+    );
+    
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
@@ -132,16 +184,16 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
      */
     useEffect(() => {
         if (!initialValues?.id) {
-            setIsAuthenticationUpdateFormState(true);
+            dispatch({ type: "SET_AUTH_UPDATE_FORM_STATE", payload: true });
         } else {
-            setAuthenticationType(initialValues.authenticationType as AuthenticationType);
-            setIsAuthenticationUpdateFormState(false);
+            dispatch({ type: "SET_AUTHENTICATION_TYPE", payload: initialValues.authenticationType as AuthenticationType });
+            dispatch({ type: "SET_AUTH_UPDATE_FORM_STATE", payload: false });
         }
     }, [ initialValues ]);
 
     useEffect(() => {
         if (actionData?.rule) {
-            setIsHasRule(true);
+            dispatch({ type: "SET_IS_HAS_RULE", payload: true });
         }
     }, [ actionData ]);
 
@@ -155,12 +207,12 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     );
 
     const validateForm = (values: ActionConfigFormPropertyInterface):
-        Partial<ActionConfigFormPropertyInterface> => {
+    Partial<ActionConfigFormPropertyInterface> => {
 
         // Call the utility validate function
         return validateActionCommonFields(values, {
-            authenticationType: authenticationType,
-            isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
+            authenticationType: actionFormState.authenticationType,
+            isAuthenticationUpdateFormState: actionFormState.isAuthenticationUpdateFormState,
             isCreateFormState: isCreateFormState
         });
     };
@@ -171,17 +223,17 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     {
         let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
-        if (isHasRule) {
-            payloadRule = rule;
+        if (actionFormState.isHasRule) {
+            payloadRule = actionFormState.rule;
         } else {
-            if (!isCreateFormState && !rule) {
+            if (!isCreateFormState && !actionFormState.rule) {
                 payloadRule = {};
             }
         }
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-        if (isAuthenticationUpdateFormState || isCreateFormState) {
+        if (actionFormState.isAuthenticationUpdateFormState || isCreateFormState) {
             switch (values.authenticationType) {
                 case AuthenticationType.BASIC:
                     authProperties.username = values.usernameAuthProperty;
@@ -235,7 +287,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 ...(payloadRule !== null && { rule: payloadRule })
             };
 
-            setIsSubmitting(true);
+            dispatch({ type: "SET_IS_SUBMITTING", payload: true });
             createAction(actionTypeApiPath, actionValues)
                 .then(() => {
                     handleSuccess(ActionsConstants.CREATE);
@@ -245,19 +297,19 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     handleError(error, ActionsConstants.CREATE);
                 })
                 .finally(() => {
-                    setIsSubmitting(false);
+                    dispatch({ type: "SET_IS_SUBMITTING", payload: false });
                 });
         } else {
             // Updating the action
             const updatingValues: ActionUpdateInterface = {
-                endpoint: isAuthenticationUpdateFormState ||
+                endpoint: actionFormState.isAuthenticationUpdateFormState ||
                 changedFields?.endpointUri ||
                 changedFields?.allowedHeaders ||
                 changedFields?.allowedParameters
                     ? {
                         allowedHeaders: changedFields?.allowedHeaders ? values.allowedHeaders : undefined,
                         allowedParameters: changedFields?.allowedParameters ? values.allowedParameters : undefined,
-                        authentication: isAuthenticationUpdateFormState ? {
+                        authentication: actionFormState.isAuthenticationUpdateFormState ? {
                             properties: authProperties,
                             type: values.authenticationType as AuthenticationType
                         } : undefined,
@@ -267,18 +319,18 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 ...(payloadRule !== null && { rule: payloadRule })
             };
 
-            setIsSubmitting(true);
+            dispatch({ type: "SET_IS_SUBMITTING", payload: true });
             updateAction(actionTypeApiPath, initialValues.id, updatingValues)
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
-                    setIsAuthenticationUpdateFormState(false);
+                    dispatch({ type: "SET_AUTH_UPDATE_FORM_STATE", payload: false });
                     mutateAction();
                 })
                 .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, ActionsConstants.UPDATE);
                 })
                 .finally(() => {
-                    setIsSubmitting(false);
+                    dispatch({ type: "SET_IS_SUBMITTING", payload: false });
                 });
         }
     };
@@ -296,19 +348,19 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     isCreateFormState={ isCreateFormState }
                     isReadOnly={ isReadOnly }
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
-                        setAuthenticationType(updatedValue);
-                        setIsAuthenticationUpdateFormState(change);
+                        dispatch({ type: "SET_AUTHENTICATION_TYPE", payload: updatedValue });
+                        dispatch({ type: "SET_AUTH_UPDATE_FORM_STATE", payload: change });
                     } }
                     showHeadersAndParams={ showHeadersAndParams }
                 />
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
-                        rule={ rule }
+                        rule={ actionFormState.rule }
                         ruleActionType={ actionTypeApiPath }
-                        setRule={ setRule }
-                        isHasRule={ isHasRule }
-                        setIsHasRule={ setIsHasRule }
+                        setRule={ (rule: RuleWithoutIdInterface) => dispatch({ type: "SET_RULE", payload: rule }) }
+                        isHasRule={ actionFormState.isHasRule }
+                        setIsHasRule={ (isHasRule: boolean) => dispatch({ type: "SET_IS_HAS_RULE", payload: isHasRule }) }
                         data-componentid={ `${ _componentId }-rule` }
                     />
                 ) }
@@ -344,7 +396,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                                             onClick={ handleSubmit }
                                             className={ "button-container" }
                                             data-componentid={ `${ _componentId }-primary-button` }
-                                            loading={ isSubmitting }
+                                            loading={ actionFormState.isSubmitting }
                                             disabled={ isReadOnly }
                                         >
                                             {
