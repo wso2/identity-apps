@@ -35,6 +35,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { createUnificationRule } from "../api/unification-rules";
+import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
+import {
+    CreateUnificationRulePayload,
+    UnificationAttributeType,
+    UnificationMethod,
+    inferAttributeType,
+    supportsFuzzyMatching
+} from "../models/unification-rules";
 import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
 import { useUnificationRules } from "../hooks/use-unification-rules";
 import { APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../models/constants";
@@ -51,6 +59,8 @@ interface FormData {
     attribute: string; // raw opt.value (e.g., "emails.home" OR "identity_attributes.emails.home")
     priority: number;
     isActive: boolean;
+    attributeType: UnificationAttributeType;
+    unificationMethod: UnificationMethod;
 }
 
 /**
@@ -81,12 +91,16 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
+    const isFuzzyUnificationEnabled: boolean = useFuzzyUnificationEnabled();
+
     const [ formData, setFormData ] = useState<FormData>({
         attribute: "",
+        attributeType: UnificationAttributeType.PRIMITIVE_EXACT,
         isActive: true,
         priority: 1,
         ruleName: "",
-        scope: IDENTITY_ATTRIBUTES
+        scope: IDENTITY_ATTRIBUTES,
+        unificationMethod: UnificationMethod.DETERMINISTIC
     });
 
     const [ errors, setErrors ] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -327,10 +341,27 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     ): void => {
         const newAttribute: string = option?.value ?? "";
 
-        setFormData((prev: FormData) => ({
-            ...prev,
-            attribute: newAttribute
-        }));
+        // Seed the attribute type from the attribute itself. Leaving every new rule on the
+        // default would type an email address as a plain exact value, which quietly puts
+        // tolerant matching out of reach: only some types can be matched with tolerance, and
+        // the method selector is disabled for the rest. The operator can still override it.
+        setFormData((prev: FormData) => {
+            if (!newAttribute) {
+                return { ...prev, attribute: newAttribute };
+            }
+
+            const attributeType: UnificationAttributeType =
+                inferAttributeType(option?.propertyName ?? newAttribute);
+
+            return {
+                ...prev,
+                attribute: newAttribute,
+                attributeType,
+                unificationMethod: supportsFuzzyMatching(attributeType)
+                    ? prev.unificationMethod
+                    : UnificationMethod.DETERMINISTIC
+            };
+        });
 
         if (newAttribute) {
             const propertyName: string = buildPropertyName(formData.scope, newAttribute);
@@ -403,6 +434,77 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         return Object.keys(newErrors).length === 0;
     };
 
+    /**
+     * Attribute types offered in the dropdown, in the order an operator is most likely to
+     * want them: the identifying types first, the catch-alls last.
+     */
+    const attributeTypeOptions: { value: UnificationAttributeType; label: string }[] = useMemo(() => {
+        const all: UnificationAttributeType[] = [
+            UnificationAttributeType.EMAIL,
+            UnificationAttributeType.PHONE,
+            UnificationAttributeType.NAME,
+            UnificationAttributeType.UNIQUE_ID,
+            UnificationAttributeType.DATE,
+            UnificationAttributeType.LOCATION,
+            UnificationAttributeType.FUZZY_STRING,
+            UnificationAttributeType.PRIMITIVE_EXACT
+        ];
+
+        // Tolerant matching is only defined for some kinds of value — there is no
+        // nearly-correct identifier and no almost-the-same date — so offering the rest here
+        // would only let the operator build a rule the server refuses.
+        //
+        // Both catch-alls are shown to the operator as "Other", and which one is offered
+        // depends on the method: FUZZY_STRING under tolerant matching, PRIMITIVE_EXACT under
+        // exact. They are two enums for one idea — a value we cannot characterise — and the
+        // difference between them is only how much a match counts, which follows from the
+        // method rather than from anything the operator chose. Asking them to tell the two
+        // apart would be asking about an implementation detail.
+        const offered: UnificationAttributeType[] = formData.unificationMethod === UnificationMethod.FUZZY
+            ? all.filter(supportsFuzzyMatching)
+            : all.filter((type: UnificationAttributeType) => type !== UnificationAttributeType.FUZZY_STRING);
+
+        return offered.map((value: UnificationAttributeType) => ({
+            label: t(`customerDataService:unificationRules.create.fields.attributeType.options.${value}`),
+            value
+        }));
+    }, [ t, formData.unificationMethod ]);
+
+    /**
+     * Changing the attribute type can invalidate the matching method: only some types have a
+     * meaningful notion of "close enough", and the server rejects `fuzzy` for the others.
+     * Fall back to exact rather than leaving a selection the request would be refused for.
+     */
+    const handleAttributeTypeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        setFormData((prev: FormData) => ({
+            ...prev,
+            attributeType: event.target.value as UnificationAttributeType
+        }));
+    };
+
+    /**
+     * The method is the primary choice, so it reconciles the type rather than the reverse.
+     * Switching to tolerant while the type cannot support it would otherwise leave a
+     * selection the server refuses, so fall back to general text — tolerant matching on any
+     * string — and let the operator narrow it from the list that follows.
+     */
+    const handleUnificationMethodChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const unificationMethod: UnificationMethod = event.target.value as UnificationMethod;
+
+        setFormData((prev: FormData) => {
+            let attributeType: UnificationAttributeType = prev.attributeType;
+
+            if (unificationMethod === UnificationMethod.FUZZY && !supportsFuzzyMatching(attributeType)) {
+                attributeType = UnificationAttributeType.FUZZY_STRING;
+            } else if (unificationMethod === UnificationMethod.DETERMINISTIC
+                && attributeType === UnificationAttributeType.FUZZY_STRING) {
+                attributeType = UnificationAttributeType.PRIMITIVE_EXACT;
+            }
+
+            return { ...prev, attributeType, unificationMethod };
+        });
+    };
+
     const handleCancel = (): void => {
         history.push(AppConstants.getPaths().get("UNIFICATION_RULES"));
     };
@@ -426,12 +528,23 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         setIsSubmitting(true);
 
         try {
-            await createUnificationRule({
+            // Both fields are required by the server, so they are always sent. With tolerant
+            // matching switched off the rule is pinned to an exact match on a plain value,
+            // which is what the server stored before typed matching existed.
+            const payload: CreateUnificationRulePayload = {
+                attribute_type: isFuzzyUnificationEnabled
+                    ? formData.attributeType
+                    : UnificationAttributeType.PRIMITIVE_EXACT,
                 is_active: formData.isActive,
                 priority: Number(formData.priority),
                 property_name: buildPropertyName(formData.scope, formData.attribute),
-                rule_name: formData.ruleName
-            });
+                rule_name: formData.ruleName,
+                unification_method: isFuzzyUnificationEnabled
+                    ? formData.unificationMethod
+                    : UnificationMethod.DETERMINISTIC
+            };
+
+            await createUnificationRule(payload);
 
             dispatch(addAlert({
                 description: t("customerDataService:unificationRules.create.notifications.created.description"),
@@ -610,6 +723,65 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                             }</Hint>
                         ) }
                     </div>
+
+                    { isFuzzyUnificationEnabled && (
+                        <>
+                        { /* ── How it is matched ── */ }
+                        <div data-componentid={ `${componentId}-matching-group` }>
+                            <TextField
+                                select
+                                fullWidth
+                                required
+                                label={ t("customerDataService:unificationRules.create.fields.matching.label") }
+                                value={ formData.unificationMethod }
+                                onChange={ handleUnificationMethodChange }
+                                InputLabelProps={ { required: true } }
+                                data-componentid={ `${componentId}-unification-method` }
+                            >
+                                <MenuItem value={ UnificationMethod.DETERMINISTIC }>
+                                    { t("customerDataService:unificationRules.create.fields.matching.deterministic") }
+                                </MenuItem>
+                                <MenuItem value={ UnificationMethod.FUZZY }>
+                                    { t("customerDataService:unificationRules.create.fields.matching.fuzzy") }
+                                </MenuItem>
+                            </TextField>
+
+                            <Hint>
+                                { formData.unificationMethod === UnificationMethod.FUZZY
+                                    ? t("customerDataService:unificationRules.create.fields.matching.fuzzyHint")
+                                    : t("customerDataService:unificationRules.create.fields.matching.deterministicHint") }
+                            </Hint>
+                        </div>
+
+                        { /* ── What the value holds ── */ }
+                        <div data-componentid={ `${componentId}-attribute-type-group` }>
+                            <TextField
+                                select
+                                fullWidth
+                                required
+                                label={ t("customerDataService:unificationRules.create.fields.attributeType.label") }
+                                value={ formData.attributeType }
+                                onChange={ handleAttributeTypeChange }
+                                InputLabelProps={ { required: true } }
+                                data-componentid={ `${componentId}-attribute-type` }
+                            >
+                                { attributeTypeOptions.map(
+                                    (option: { value: UnificationAttributeType; label: string }) => (
+                                        <MenuItem key={ option.value } value={ option.value }>
+                                            { option.label }
+                                        </MenuItem>
+                                    )) }
+                            </TextField>
+
+                            <Hint>
+                                { formData.unificationMethod === UnificationMethod.FUZZY
+                                    ? t("customerDataService:unificationRules.create.fields.attributeType.fuzzyHint")
+                                    : t("customerDataService:unificationRules.create.fields.attributeType."
+                                        + "deterministicHint") }
+                            </Hint>
+                        </div>
+                        </>
+                    ) }
 
                     { /* ── Priority ── */ }
                     <div>
