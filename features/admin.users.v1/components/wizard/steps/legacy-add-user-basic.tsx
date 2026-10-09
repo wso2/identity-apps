@@ -27,6 +27,9 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -63,7 +66,7 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, ContentLoader, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -103,6 +106,7 @@ import {
     getConfiguration,
     getDisplayOrder,
     getUsernameConfiguration,
+    isDuplicatedEnterpriseSchema,
     isFieldDisplayableInUserCreationWizard,
     normalizeLocaleFormat
 } from "../../../utils";
@@ -173,6 +177,10 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -480,6 +488,11 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
                 continue;
             }
 
+            // Exclude Enterprise schema attributes that duplicate a core User or System schema attribute.
+            if (isDuplicatedEnterpriseSchema(schema, duplicatedClaims)) {
+                continue;
+            }
+
             // If multiple email and mobile number feature is disabled,
             // we need to hide the email addresses and mobile numbers attributes.
             if (!isMultipleEmailAndMobileNumberEnabled) {
@@ -502,7 +515,7 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
 
         setProfileSchema(filteredSchemas);
         setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
-    }, [ profileSchemas ]);
+    }, [ profileSchemas, duplicatedClaims ]);
 
     /*
     * This map the user data to schema using initial values of the wizard.
@@ -2477,6 +2490,11 @@ export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
             </div>
         );
     };
+
+    // Wait until the duplicated Enterprise schema attributes are identified, so they are not rendered.
+    if (isDuplicatedClaimsLoading) {
+        return <ContentLoader />;
+    }
 
     return (
         <Forms

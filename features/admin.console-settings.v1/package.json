@@ -20,6 +20,7 @@
         "@wso2is/admin.administrators.v1": "^2.29.209",
         "@wso2is/admin.applications.v1": "^2.42.23",
         "@wso2is/admin.authentication.v1": "^2.25.210",
+        "@wso2is/admin.claims.v1": "^2.31.5",
         "@wso2is/admin.connections.v1": "workspace:^",
         "@wso2is/admin.core.v1": "^2.58.0",
         "@wso2is/admin.extensions.v1": "^2.43.3",
