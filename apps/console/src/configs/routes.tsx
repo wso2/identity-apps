@@ -1909,6 +1909,30 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
                         protected: true,
                         showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/review-tasks")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataReviewTasks",
+                        name: "customerDataService:reviewTasks.page.title",
+                        path: AppConstants.getPaths().get("CUSTOMER_DATA_REVIEW_TASKS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/customer-data-settings")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataSettings",
+                        name: "customerDataService:resolutionSettings.page.title",
+                        path: AppConstants.getPaths().get("CUSTOMER_DATA_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: false
                     }
                 ],
                 component: lazy(() =>

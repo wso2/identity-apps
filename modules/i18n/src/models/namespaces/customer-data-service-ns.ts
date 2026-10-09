@@ -61,6 +61,10 @@ export interface CustomerDataServiceNS {
                 description: string;
                 title: string;
             };
+            reviewTasks: {
+                description: string;
+                title: string;
+            };
             unificationRules: {
                 description: string;
                 title: string;
@@ -573,6 +577,119 @@ export interface CustomerDataServiceNS {
         customerDataProfile: string;
     };
 
+    reviewTasks: {
+        buttons: {
+            retry: string;
+        };
+        caption: string;
+        confirmations: {
+            confirm: {
+                content: string;
+                header: string;
+                primaryAction: string;
+            };
+            reject: {
+                content: string;
+                header: string;
+                primaryAction: string;
+            };
+        };
+        list: {
+            actions: {
+                approve: string;
+                collapse: string;
+                expand: string;
+                reject: string;
+            };
+            columns: {
+                actions: string;
+                attribute: string;
+                attributeMatch: string;
+                candidateProfile: string;
+                profile: string;
+                profileMatch: string;
+            };
+            evidenceMissing: string;
+            noBreakdown: string;
+            unresolved: string;
+        };
+        notifications: {
+            approved: {
+                description: string;
+                message: string;
+            };
+            rejected: {
+                description: string;
+                message: string;
+            };
+            resolveFailed: {
+                description: string;
+                message: string;
+            };
+        };
+        page: {
+            backButton: string;
+            description: string;
+            title: string;
+        };
+        placeholders: {
+            empty: {
+                subtitle: string;
+                title: string;
+            };
+            error: {
+                subtitle: string;
+                title: string;
+            };
+        };
+    };
+    resolutionSettings: {
+        buttons: {
+            save: string;
+            saving: string;
+        };
+        description: string;
+        errors: {
+            autoMergeRange: string;
+            reviewRange: string;
+            reviewTooHigh: string;
+            reviewTooLow: string;
+        };
+        fields: {
+            autoMerge: {
+                above: string;
+                hint: string;
+                label: string;
+                never: string;
+                neverHint: string;
+            };
+            deterministicMatchDecisive: {
+                label: string;
+                offHint: string;
+                onHint: string;
+            };
+            manualReviewThreshold: {
+                hint: string;
+                label: string;
+            };
+        };
+        heading: string;
+        page: {
+            backButton: string;
+            description: string;
+            title: string;
+        };
+        notifications: {
+            saveFailed: {
+                description: string;
+                message: string;
+            };
+            saved: {
+                description: string;
+                message: string;
+            };
+        };
+    };
     unificationRules: {
         common: {
             notifications: {
@@ -613,7 +730,29 @@ export interface CustomerDataServiceNS {
                     rulesLoadFailedHint: string;
                     scopeAriaLabel: string;
                 };
+                attributeType: {
+                    deterministicHint: string;
+                    fuzzyHint: string;
+                    label: string;
+                    options: {
+                        DATE: string;
+                        EMAIL: string;
+                        FUZZY_STRING: string;
+                        LOCATION: string;
+                        NAME: string;
+                        PHONE: string;
+                        PRIMITIVE_EXACT: string;
+                        UNIQUE_ID: string;
+                    };
+                };
                 isActive: {
+                    label: string;
+                };
+                matching: {
+                    deterministic: string;
+                    deterministicHint: string;
+                    fuzzy: string;
+                    fuzzyHint: string;
                     label: string;
                 };
                 priority: {
@@ -679,6 +818,7 @@ export interface CustomerDataServiceNS {
             columns: {
                 attribute: string;
                 enabled: string;
+                matching: string;
                 priority: string;
                 rule: string;
             };
@@ -737,6 +877,10 @@ export interface CustomerDataServiceNS {
                         message: string;
                     };
                 };
+            };
+            matching: {
+                deterministic: string;
+                fuzzy: string;
             };
             page: {
                 description: string;

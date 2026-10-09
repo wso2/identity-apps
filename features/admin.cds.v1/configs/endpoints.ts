@@ -61,6 +61,7 @@ export const getCustomerDataServiceEndpoints = (
         cdsConfig: `${ cdsHost }/cds/api/v1/config`,
         cdsProfileSchema: `${ cdsHost }/cds/api/v1/profile-schema`,
         cdsProfiles: `${ cdsHost }/cds/api/v1/profiles`,
+        cdsReviewTasks: `${ cdsHost }/cds/api/v1/identity-resolution/review-tasks`,
         cdsUnificationRules: `${ cdsHost }/cds/api/v1/unification-rules`
     };
 };

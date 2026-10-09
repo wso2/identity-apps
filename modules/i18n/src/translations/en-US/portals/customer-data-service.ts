@@ -60,6 +60,10 @@ export const customerDataService: CustomerDataServiceNS = {
                 description: "Manage the attributes that make up the customer profiles",
                 title: "Profile Attributes"
             },
+            reviewTasks: {
+                description: "Review profile pairs that need an administrator to decide",
+                title: "Review Tasks"
+            },
             unificationRules: {
                 description: "Manage profile unification rules",
                 title: "Unification Rules"
@@ -637,6 +641,137 @@ export const customerDataService: CustomerDataServiceNS = {
         UnificationRules: "Unification Rules",
         customerDataProfile: "Customer Data"
     },
+    reviewTasks: {
+        buttons: {
+            retry: "Retry"
+        },
+        caption: "Attribute comparison",
+        confirmations: {
+            confirm: {
+                content: "You are confirming that these two profiles represent the same user. "
+                    + "Merging is irreversible, and the profiles will be merged according to the "
+                    + "configured attribute merge strategies.",
+                header: "Merge these profiles?",
+                primaryAction: "Merge"
+            },
+            reject: {
+                content: "You are confirming that these profiles represent different users. "
+                    + "Both profiles will remain independent.",
+                header: "Reject this merge?",
+                primaryAction: "Reject"
+            }
+        },
+        list: {
+            actions: {
+                approve: "Merge",
+                collapse: "Hide the attribute comparison",
+                expand: "Show the attribute comparison",
+                reject: "Reject"
+            },
+            columns: {
+                actions: "Actions",
+                attribute: "Attribute",
+                attributeMatch: "Attribute match",
+                candidateProfile: "Candidate profile",
+                profile: "Profile",
+                profileMatch: "Profile match"
+            },
+            evidenceMissing: "One of these profiles could not be loaded, so there is nothing to "
+                + "check the match against. Reload the page to try again.",
+            noBreakdown: "No attribute scores were recorded for this pair.",
+            unresolved: "Profile could not be loaded"
+        },
+        notifications: {
+            approved: {
+                description: "The profiles have been merged.",
+                message: "Match confirmed"
+            },
+            rejected: {
+                description: "The pair has been recorded as different people and will not be raised "
+                    + "again unless the evidence materially improves.",
+                message: "Marked as not a match"
+            },
+            resolveFailed: {
+                description: "The review task could not be resolved.",
+                message: "Something went wrong"
+            }
+        },
+        page: {
+            backButton: "Go back to Customer Data",
+            description: "Profile pairs that resemble each other closely enough to be worth checking, "
+                + "but not closely enough to merge without asking.",
+            title: "Review Tasks"
+        },
+        placeholders: {
+            empty: {
+                subtitle: "Pairs that need a decision will appear here.",
+                title: "Nothing to review"
+            },
+            error: {
+                subtitle: "The review queue could not be loaded, so there may be pairs waiting "
+                    + "that are not shown here.",
+                title: "Could not load review tasks"
+            }
+        }
+    },
+    resolutionSettings: {
+        buttons: {
+            save: "Update",
+            saving: "Updating..."
+        },
+        description: "Every candidate pair is given a match score from 0 to 1, where 1 means the "
+            + "compared values are identical. These settings decide how high that score has to be "
+            + "before profiles are unified.",
+        errors: {
+            autoMergeRange: "The automatic unification score must be between 0 and 1.",
+            reviewRange: "The review score must be between 0 and 1.",
+            reviewTooHigh: "The review score must be at most {{highest}}. A match held back from automatic "
+                + "unification is scored just below that threshold, and it has to stay high enough to "
+                + "still be shared for review.",
+            reviewTooLow: "The review score must be above {{contradiction}}. It is also the bar a rule has "
+                + "to clear to count as agreeing, so a lower value lets barely-related values decide "
+                + "whether profiles are unified."
+        },
+        fields: {
+            autoMerge: {
+                above: "When the match score is above",
+                hint: "A match score at or above this unifies the profiles without administrator review.",
+                label: "Unify profiles automatically",
+                never: "Never unify profiles automatically",
+                neverHint: "No profiles are unified without an administrator approving the match. The "
+                    + "score is still used: it sets the score given to a match held back by a "
+                    + "contradiction, and it limits how high the review score can be set."
+            },
+            deterministicMatchDecisive: {
+                label: "An exact match is final",
+                offHint: "Other rules may object. Two profiles sharing an email but holding different phone "
+                    + "numbers are shared for review instead of being unified. Tolerant rules are "
+                    + "unaffected.",
+                onHint: "A match on any exact rule unifies the profiles straight away, without the other "
+                    + "rules being consulted."
+            },
+            manualReviewThreshold: {
+                hint: "A match score at or above this is shared for an administrator to review.",
+                label: "Share profiles for an administrator to review if the match is above"
+            }
+        },
+        heading: "Profile unification",
+        notifications: {
+            saveFailed: {
+                description: "The matching settings could not be updated.",
+                message: "Update failed"
+            },
+            saved: {
+                description: "The matching settings have been updated.",
+                message: "Settings updated"
+            }
+        },
+        page: {
+            backButton: "Go back to Customer Data",
+            description: "Configure how the Customer Data Service behaves for this organization.",
+            title: "Settings"
+        }
+    },
     unificationRules: {
         common: {
             notifications: {
@@ -677,8 +812,38 @@ export const customerDataService: CustomerDataServiceNS = {
                     rulesLoadFailedHint: "Failed to load existing rules. Duplicate validation may be inaccurate.",
                     scopeAriaLabel: "Attribute scope"
                 },
+                attributeType: {
+                    deterministicHint: "Values are still compared exactly, but the kind decides how much "
+                        + "the result counts. A matching identifier can merge profiles on its own and two "
+                        + "different ones block a merge, while a matching name cannot do either. Dates and "
+                        + "identifiers are also tidied into a standard form first, so the same date written "
+                        + "two ways still matches.",
+                    fuzzyHint: "This decides how closely two values are compared — names are matched on how "
+                        + "they sound, emails on their mailbox and domain separately, addresses on the words "
+                        + "they share.",
+                    label: "What this attribute holds",
+                    options: {
+                        DATE: "Date (e.g. date of birth)",
+                        EMAIL: "Email address",
+                        FUZZY_STRING: "Other",
+                        LOCATION: "Location / address",
+                        NAME: "Name",
+                        PHONE: "Phone number",
+                        PRIMITIVE_EXACT: "Other",
+                        UNIQUE_ID: "Unique identifier"
+                    }
+                },
                 isActive: {
                     label: "Enable this rule immediately"
+                },
+                matching: {
+                    deterministic: "Exact",
+                    deterministicHint: "Only identical values match. This is the safer setting and the one "
+                        + "to keep for identifiers, where a difference means a different person.",
+                    fuzzy: "Tolerant",
+                    fuzzyHint: "Also matches typos and spelling variations, so it finds duplicates exact "
+                        + "matching misses. Expect more matches to be sent to a person to confirm.",
+                    label: "How it is matched"
                 },
                 priority: {
                     errors: {
@@ -743,6 +908,7 @@ export const customerDataService: CustomerDataServiceNS = {
             columns: {
                 attribute: "Attribute",
                 enabled: "Enabled",
+                matching: "Matching",
                 priority: "Priority",
                 rule: "Rule"
             },
@@ -804,6 +970,10 @@ export const customerDataService: CustomerDataServiceNS = {
                         message: "Update Failed"
                     }
                 }
+            },
+            matching: {
+                deterministic: "Exact",
+                fuzzy: "Tolerant"
             },
             page: {
                 description: "Manage profile unification rules.",
