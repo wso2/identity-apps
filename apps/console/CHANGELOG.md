@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.17.1
+
+### Patch Changes
+
+- [#10733](https://github.com/wso2/identity-apps/pull/10733) [`3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32`](https://github.com/wso2/identity-apps/commit/3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32) Thanks [@Zeta201](https://github.com/Zeta201)! - Fix the digital wallet connector icon breaking on deployments where the console is accessed from a different origin than the one active when the connection was created
+
+- Updated dependencies [[`3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32`](https://github.com/wso2/identity-apps/commit/3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32)]:
+  - @wso2is/admin.connections.v1@2.43.1
+
 ## 4.17.0
 
 ### Minor Changes
