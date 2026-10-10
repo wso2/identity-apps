@@ -60,6 +60,7 @@ class FeatureFlagConstants {
         CONSENTS_POLICY_CONSENTS: "consents.policyConsents",
         CONSENTS_PREFERENCE_MANAGEMENT: "consents.preferenceManagement",
         CONSOLE_SETTINGS: "console.consoleSettings",
+        CUSTOMER_DATA_FUZZY_UNIFICATION: "customerDataFuzzyUnification",
         CUSTOMER_DATA_PROFILES: "customerDataProfiles",
         CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",
         CUSTOMER_DATA_PROFILE_ATTRIBUTES: "customerDataProfileAttributes",

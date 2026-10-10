@@ -2859,6 +2859,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.57.31
         version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.10.0
+        version: link:../admin.feature-gate.v1
       '@wso2is/core':
         specifier: ^2.12.10
         version: link:../../modules/core

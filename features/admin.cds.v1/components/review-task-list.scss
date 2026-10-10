@@ -1,0 +1,193 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/**
+ * Every `.data-table-row` is styled as its own white, rounded, shadowed card with an even gap
+ * above and below. A detail row inherits all of that, so an opened pair would read as two
+ * unrelated cards — and with the gap even on both sides, the detail would sit as close to the
+ * next pair as to its own. These rules make the pair and its detail read as one object.
+ */
+.cds-review-task-list {
+    /* Fixed layout means a profile id can no longer push its column wider. */
+    .data-table-cell .ui.header,
+    .data-table-cell .sub.header {
+        word-break: break-word;
+    }
+
+    .review-task-truncated {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
+    }
+
+    .review-task-row.data-table-row {
+        &.open {
+            /* Square off the edge the detail continues from. */
+            border-radius: 4px 4px 0 0;
+        }
+    }
+
+    /* Header cells get no padding from the theme, so the offset is stated here. It clears the
+       Reject button and the collapse icon, which is what leaves "Actions" sitting over Merge.
+       Approximate by nature — it is measured against those two controls, so changing either
+       label means revisiting this number. */
+    .review-task-actions-header {
+        padding-right: 10rem !important;
+    }
+
+    .review-task-actions {
+        /* Flex rather than inline-block: the decisions and the disclosure have different
+           intrinsic heights, and only a shared cross-axis centre keeps them on one line. */
+        .review-task-action-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.4rem;
+            white-space: nowrap;
+        }
+
+        .ui.button {
+            margin: 0;
+        }
+    }
+
+    .review-task-disclosure.ui.button {
+        /* Flat, so it reads as part of the action group rather than as a heavier control of
+           its own — square target, no ring, no fill. */
+        box-shadow: none !important;
+        background: transparent !important;
+        border: none !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.9rem;
+        height: 1.9rem;
+        padding: 0 !important;
+        color: var(--oxygen-palette-grey-600) !important;
+
+        &:hover,
+        &:focus {
+            background: transparent !important;
+            color: var(--oxygen-palette-text-primary) !important;
+        }
+
+        .icon {
+            margin: 0 !important;
+            height: auto;
+        }
+    }
+
+    /* Chained with .data-table-row so this outscores the theme's own
+       `.data-table .data-table-row` rule, which sets the white card background at the same
+       specificity and would otherwise win on source order. */
+    /* The table is `selectable`, which makes the theme paint every row as a white card with a
+       pointer cursor at a specificity this cannot outrank — hence `!important` rather than a
+       longer selector. The detail row is not a card and is not clickable. */
+    .review-task-detail-row.data-table-row {
+        box-shadow: none !important;
+        background: transparent !important;
+        cursor: default !important;
+
+        &:hover {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* Closed, the row holds a collapsed element and nothing else, so it must occupy
+           nothing at all — padding here would leave a visible sliver between every pair. */
+        > .data-table-cell {
+            padding: 0;
+            border: none;
+        }
+
+        &.open {
+            border-radius: 0 0 4px 4px;
+            background: var(--oxygen-palette-grey-100) !important;
+
+            &:hover {
+                background: var(--oxygen-palette-grey-100) !important;
+            }
+
+            /* Close the 5px table border-spacing so the detail meets its own row. */
+            transform: translateY(-5px);
+        }
+    }
+
+    .review-task-evidence-caption {
+        /* Starts at the attribute column, which is the detail's own first column. */
+        padding: 0 0.78571429em 0.6rem;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--oxygen-palette-grey-600);
+    }
+
+    .review-task-detail {
+        /* No horizontal padding: the detail spans the whole row, and its columns can only land
+           under the parent's if it starts at the same edge. Subordination is carried by the
+           background and by the attribute gutter, not by an indent. */
+        padding: 0.75rem 0 1rem;
+    }
+
+    .review-task-evidence {
+        background: transparent;
+        margin: 0;
+
+        /* The parent's cells use semantic's default horizontal padding (@relativeMini). This
+           has to match, or the two tables share column boundaries but not where their text
+           starts. `!important` because `.ui.basic.table td` outranks this selector. */
+        th,
+        td {
+            padding-left: 0.78571429em !important;
+            padding-right: 0.78571429em !important;
+        }
+
+        /* Quieter than the Console's standalone table headers: no uppercase, no letter-spacing
+           and no rule beneath. It names the columns of a detail section and should not read as
+           the top of a second table. */
+        thead th {
+            padding-top: 0.75rem;
+            padding-bottom: 0.4rem;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--oxygen-palette-grey-500);
+            border-bottom: none !important;
+        }
+
+        tbody td {
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+            /* Fixed layout clips rather than widens, so values have to be free to wrap. */
+            word-break: break-word;
+
+            /* The attribute names the row. Weighting it lets the eye run down the column and
+               find a comparison, rather than reading every value to work out which is which.
+               Third, not first — the attribute moved out of the lead. */
+            &:nth-child(3) {
+                font-weight: 500;
+                color: var(--oxygen-palette-text-primary);
+            }
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+    }
+}
