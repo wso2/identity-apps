@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.5.1
+
+### Patch Changes
+
+- [#10735](https://github.com/wso2/identity-apps/pull/10735) [`33f486601ed60ad1fa19f861bc8cbbfe240ce2d2`](https://github.com/wso2/identity-apps/commit/33f486601ed60ad1fa19f861bc8cbbfe240ce2d2) Thanks [@Zeta201](https://github.com/Zeta201)! - Add wallet SVG to accounts webapp for OpenID4VP self-registration flow
+
 ## 5.5.0
 
 ### Minor Changes
