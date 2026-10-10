@@ -38,6 +38,11 @@ interface PreRenderedOutputInfoInterface {
     name?: string;
 }
 
+interface PreRenderedWorkerChunkInterface {
+    facadeModuleId?: string | null;
+    name: string;
+}
+
 const isDeploymentConfig = (value: unknown): value is DeploymentConfigInterface => {
     return typeof value === "object" && value !== null;
 };
@@ -664,7 +669,14 @@ export default defineConfig(({ mode }: { mode: string }) => {
         worker: {
             rollupOptions: {
                 output: {
-                    entryFileNames: "[hash].worker.js"
+                    entryFileNames: (chunk: PreRenderedWorkerChunkInterface): string => {
+                        // Monaco workers are served from the directory mapped to the default servlet in web.xml.
+                        if (chunk.facadeModuleId?.includes("/node_modules/monaco-editor/")) {
+                            return "monaco-workers/[name].[hash].js";
+                        }
+
+                        return "[hash].worker.js";
+                    }
                 }
             }
         }
