@@ -79,6 +79,9 @@
     // For sub-org login use /t/{rootTenant}/o/{orgId}/commonauth with the ROOT tenant (e.g. carbon.super).
     // This ensures TenantContextRewriteValve sets applicationResidentOrganizationId and the commonAuthId cookie
     // is written with path "/" or "/t/carbon.super/" which matches the OAuth2 authorize URL.
+    // URLs are absolute (server public origin) because the page may be served from a different host
+    // than the server endpoints (e.g. a separate accounts domain fronting only authenticationendpoint).
+    String serverOrigin = ServiceURLBuilder.create().build().getAbsolutePublicUrlWithoutPath();
     String commonauthURLForWallet;
     boolean hasOrgId = vpOrgId != null && !vpOrgId.isEmpty();
     boolean hasNonSuperTenant = vpTenantDomain != null && !vpTenantDomain.isEmpty()
@@ -87,16 +90,16 @@
     if (hasOrgId) {
         String rootTenant = hasRootTenant ? vpRootTenantDomain
                 : (hasNonSuperTenant ? vpTenantDomain : "carbon.super");
-        commonauthURLForWallet = "/t/" + rootTenant + "/o/" + vpOrgId + "/commonauth";
+        commonauthURLForWallet = serverOrigin + "/t/" + rootTenant + "/o/" + vpOrgId + "/commonauth";
     } else if (hasNonSuperTenant) {
-        commonauthURLForWallet = "/t/" + vpTenantDomain + "/commonauth";
+        commonauthURLForWallet = serverOrigin + "/t/" + vpTenantDomain + "/commonauth";
     } else {
         commonauthURLForWallet = commonauthURL;
     }
 
-    String vpStatusPollBase = hasNonSuperTenant
+    String vpStatusPollBase = serverOrigin + (hasNonSuperTenant
             ? "/t/" + vpTenantDomain + "/oid4vp/verification-sessions/"
-            : "/oid4vp/verification-sessions/";
+            : "/oid4vp/verification-sessions/");
 %>
 
 <html lang="en-US">
