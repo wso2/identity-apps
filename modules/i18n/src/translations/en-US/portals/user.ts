@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -837,6 +837,13 @@ export const user: userNS = {
         groups: {
             addGroupsModal: {
                 heading: "Update User Groups",
+                listIncomplete: "Scroll down to load more, or search by name.",
+                matchingGroups: "{{total}} found for \"{{search}}\"",
+                scrollForMore: "Scroll down to load more.",
+                selectedOfTotal: "{{selected}} of {{total}} groups selected",
+                showAll: "Show all groups",
+                showSelected: "Show selected",
+                showingSelectedGroups: "Showing the selected groups only.",
                 subHeading: "Add new groups or remove existing groups assigned to the user."
             },
             editGroups: {
