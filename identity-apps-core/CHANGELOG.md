@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.5.2
+
+### Patch Changes
+
+- [#10737](https://github.com/wso2/identity-apps/pull/10737) [`0975f164d234e5c80488d727ee283bf02535a4f8`](https://github.com/wso2/identity-apps/commit/0975f164d234e5c80488d727ee283bf02535a4f8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Use absolute server URLs for wallet login status polling and form submission so the flow works when the login page is served from a different host
+
 ## 5.5.1
 
 ### Patch Changes
