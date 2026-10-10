@@ -19,7 +19,6 @@
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import TextField from "@oxygen-ui/react/TextField";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, HttpErrorResponseDataInterface } from "@wso2is/core/models";
@@ -72,7 +71,6 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
 
     const [ selectedPresentationDefinitionId, setSelectedPresentationDefinitionId ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -129,11 +127,7 @@ export const DigitalWalletConnectionCreateWizard: FunctionComponent<
                 { key: "presentationDefinitionId", value: selectedPresentationDefinitionId }
             ];
 
-            if (!isEmpty(UIConfig?.connectionResourcesUrl)) {
-                connection.image = UIConfig.connectionResourcesUrl + template.image;
-            } else {
-                connection.image = resolveConnectionIcon();
-            }
+            connection.image = template.image;
 
             const response: AxiosResponse<ConnectionInterface> = await createConnection(connection);
 
