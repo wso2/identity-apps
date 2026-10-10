@@ -73,6 +73,17 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
     /**
+     * The user store list API returns an array. Should it ever answer HTTP 200 with anything
+     * else, treat it the same as a list that has not been resolved yet. This provider wraps the
+     * entire app, so an unexpected payload shape would otherwise throw while rendering and bring
+     * the whole Console down.
+     */
+    const userStores: UserStoreListItem[] | undefined = useMemo(
+        () => Array.isArray(fetchedUserStores) ? fetchedUserStores : undefined,
+        [ fetchedUserStores ]
+    );
+
+    /**
      * Determines whether the primary user store should be fetched.
      * If the primary user store is not present in the list of user stores, then it should be fetched separately.
      */
@@ -82,11 +93,11 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return false;
             }
 
-            return !(fetchedUserStores?.some(
+            return !(userStores?.some(
                 (userStore: UserStoreListItem) => userStore.id === userstoresConfig.primaryUserstoreId
             ) ?? true);
         },
-        [ fetchedUserStores ]
+        [ userStores ]
     );
 
     const {
@@ -112,7 +123,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return [];
             }
 
-            const combinedUserStores: UserStoreListItem[] = [ ...fetchedUserStores ];
+            const combinedUserStores: UserStoreListItem[] = [ ...(userStores ?? []) ];
 
             if (shouldFetchPrimaryUserStore && primaryUserStoreDetails) {
                 combinedUserStores.push(primaryUserStoreDetails as unknown as UserStoreListItem);
@@ -133,7 +144,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return userStore.name.toUpperCase();
             });
         },
-        [ fetchedUserStores, isPrimaryUserStoreDetailsRequestLoading ]
+        [ userStores, isPrimaryUserStoreDetailsRequestLoading ]
     );
 
     /**
@@ -201,7 +212,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     ): UserStoreListItem[] => {
         const filteredUserStores: UserStoreListItem[] = [];
 
-        if (!fetchedUserStores) {
+        if (!userStores) {
             return filteredUserStores;
         }
 
@@ -212,7 +223,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
             filteredUserStores.push(primaryUserStoreDetails as unknown as UserStoreListItem);
         }
 
-        for (const userStore of fetchedUserStores) {
+        for (const userStore of userStores) {
             if (!includeHiddenUserStores && isUserStoreHidden(userStore.name)) {
                 continue;
             }
@@ -241,7 +252,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 isUserStoreReadOnly,
                 mutateUserStoreList,
                 readOnlyUserStoreNamesList: readOnlyUserStoreNames,
-                userStoresList: fetchedUserStores
+                userStoresList: userStores
             } }
         >
             { children }
