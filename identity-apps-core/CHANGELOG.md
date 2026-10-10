@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.5.3
+
+### Patch Changes
+
+- [#10739](https://github.com/wso2/identity-apps/pull/10739) [`d82d0655ec8ec054ad454997d087a83807e029ed`](https://github.com/wso2/identity-apps/commit/d82d0655ec8ec054ad454997d087a83807e029ed) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Use the server endpoint URLs resolved by init-url.jsp for wallet login status polling and form submission
+
 ## 5.5.2
 
 ### Patch Changes
