@@ -74,32 +74,6 @@
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         return;
     }
-
-    // Build org/tenant-aware commonauthURL.
-    // For sub-org login use /t/{rootTenant}/o/{orgId}/commonauth with the ROOT tenant (e.g. carbon.super).
-    // This ensures TenantContextRewriteValve sets applicationResidentOrganizationId and the commonAuthId cookie
-    // is written with path "/" or "/t/carbon.super/" which matches the OAuth2 authorize URL.
-    // URLs are absolute (server public origin) because the page may be served from a different host
-    // than the server endpoints (e.g. a separate accounts domain fronting only authenticationendpoint).
-    String serverOrigin = ServiceURLBuilder.create().build().getAbsolutePublicUrlWithoutPath();
-    String commonauthURLForWallet;
-    boolean hasOrgId = vpOrgId != null && !vpOrgId.isEmpty();
-    boolean hasNonSuperTenant = vpTenantDomain != null && !vpTenantDomain.isEmpty()
-            && !"carbon.super".equals(vpTenantDomain);
-    boolean hasRootTenant = vpRootTenantDomain != null && !vpRootTenantDomain.isEmpty();
-    if (hasOrgId) {
-        String rootTenant = hasRootTenant ? vpRootTenantDomain
-                : (hasNonSuperTenant ? vpTenantDomain : "carbon.super");
-        commonauthURLForWallet = serverOrigin + "/t/" + rootTenant + "/o/" + vpOrgId + "/commonauth";
-    } else if (hasNonSuperTenant) {
-        commonauthURLForWallet = serverOrigin + "/t/" + vpTenantDomain + "/commonauth";
-    } else {
-        commonauthURLForWallet = commonauthURL;
-    }
-
-    String vpStatusPollBase = serverOrigin + (hasNonSuperTenant
-            ? "/t/" + vpTenantDomain + "/oid4vp/verification-sessions/"
-            : "/oid4vp/verification-sessions/");
 %>
 
 <html lang="en-US">
@@ -266,7 +240,7 @@
             <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
-        <form id="authForm" style="display: none;" method="POST" action="<%=Encode.forHtmlAttribute(commonauthURLForWallet)%>">
+        <form id="authForm" style="display: none;" method="POST" action="<%=Encode.forHtmlAttribute(commonauthURL)%>">
             <input type="hidden" name="sessionDataKey"
                 value='<%=Encode.forHtmlAttribute(sessionDataKey != null ? sessionDataKey : "")%>'>
             <input type="hidden" name="status" id="authStatus" value="">
@@ -281,7 +255,7 @@
                 sessionTtlMs: <%=vpSessionTtlMs%>,
                 pollInterval: 2000,
                 pollTimeout: 8000,
-                pollEndpoint: '<%=Encode.forJavaScript(vpStatusPollBase)%><%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>/status'
+                pollEndpoint: '<%=Encode.forJavaScript(identityServerEndpointContextParam + "/oid4vp/verification-sessions/")%><%=Encode.forUriComponent(vpRequestId != null ? vpRequestId : "")%>/status'
             };
             var I18N = {
                 waiting:               '<%=Encode.forJavaScript(i18n(resourceBundle, customText, "wallet.vp.login.waiting"))%>',
