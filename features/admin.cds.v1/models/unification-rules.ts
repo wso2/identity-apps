@@ -152,16 +152,25 @@ export interface CreateUnificationRulePayload {
  * compares byte for byte and is the safe thing to do with a value we cannot characterise.
  */
 export const inferAttributeType = (propertyName: string): UnificationAttributeType => {
-    const leaf: string = propertyName.toLowerCase().split(".").pop() ?? propertyName.toLowerCase();
+    const leaf: string = propertyName.split(".").pop() ?? propertyName;
 
     // Split on separators and camelCase humps so a needle is tested against whole words. Plain
     // substring matching reads `clinic` as an identifier (`nic`), `ethnicity` as a location
     // (`city`) and `mailingaddress` as an email (`mail`) — and a wrong guess is not cosmetic:
     // the type sets the evidence strengths, and UNIQUE_ID lets one match merge on its own.
-    const words: string[] = leaf
+    //
+    // The hump split has to run before the value is lowercased, or there are no capitals left
+    // to split on and every compound stays one word.
+    const parts: string[] = leaf
         .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .split(/[^a-z0-9]+/i)
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
         .filter(Boolean);
+
+    // Both readings are kept. `familyName` has to be found through its parts, while
+    // `nationalId` and `dateOfBirth` are only recognised joined up — splitting them leaves
+    // `national`, `id`, `date`, `of`, `birth`, none of which is a needle.
+    const words: string[] = Array.from(new Set([ ...parts, parts.join("") ]));
 
     // Needles short enough, or common enough as a fragment, to be unsafe anywhere but as a
     // whole word: `mail` inside `mailing`, `city` inside `ethnicity`, `region` inside
