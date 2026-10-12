@@ -40,9 +40,10 @@
 # publishes — would never fire. This also matches the existing release history.
 #
 # Merging the release pull request is housekeeping: the packages are published by the
-# follow-up run, not by this one. So every failure here is reported as an annotation
-# and the script still exits 0, leaving the rest of the Release job to run. A human
-# can always merge the pull request by hand afterwards.
+# follow-up run, not by this one. Failures are reported as annotations and exit
+# non-zero so the step is visibly red, while "continue-on-error" on the step keeps the
+# rest of the Release job running. A human can always merge the pull request by hand
+# afterwards. Nothing to do — already merged, already contained — is a success.
 
 set -euo pipefail
 
@@ -72,14 +73,14 @@ for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
     # script, so capture the failure and fall through to the next attempt instead.
     if ! state=$(gh pr view "$PR_NUMBER" \
         --json mergeable,state,baseRefName,headRefName \
-        --jq '"\(.state) \(.mergeable) \(.baseRefName) \(.headRefName)"' 2>&1); then
+        --jq '[ .state, .mergeable, .baseRefName, .headRefName ] | @tsv' 2>&1); then
         echo "Attempt $attempt: could not query PR #$PR_NUMBER, retrying. Error: $state"
         mergeable=""
         sleep "$RETRY_INTERVAL"
         continue
     fi
 
-    read -r pr_state mergeable base_branch head_branch <<< "$state"
+    IFS=$'\t' read -r pr_state mergeable base_branch head_branch <<< "$state"
 
     echo "Attempt $attempt: PR #$PR_NUMBER is $pr_state / $mergeable ($head_branch -> $base_branch)"
 
@@ -90,12 +91,12 @@ for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
 
     if [ "$pr_state" = "CLOSED" ]; then
         echo "::error::PR #$PR_NUMBER is closed and cannot be merged."
-        exit 0
+        exit 1
     fi
 
     if [ "$mergeable" = "CONFLICTING" ]; then
         echo "::error::PR #$PR_NUMBER conflicts with $base_branch. Resolve the conflicts and merge it manually."
-        exit 0
+        exit 1
     fi
 
     if [ "$mergeable" = "MERGEABLE" ]; then
@@ -107,7 +108,16 @@ done
 
 if [ "$mergeable" != "MERGEABLE" ]; then
     echo "::error::PR #$PR_NUMBER did not become mergeable within $((MAX_ATTEMPTS * RETRY_INTERVAL))s (last state: ${mergeable:-unknown}). Merge it manually."
-    exit 0
+    exit 1
+fi
+
+# Every git call below takes these names as operands. git itself rejects a branch
+# whose name holds a space or starts with a dash, so neither field parsing nor option
+# injection is reachable here — but this script pushes to a protected branch, so the
+# assumption is enforced rather than relied upon.
+if ! printf '%s' "$base_branch" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._/-]*$'; then
+    echo "::error::PR #$PR_NUMBER has an unexpected base branch name. Refusing to merge it automatically."
+    exit 1
 fi
 
 # This script pushes straight to the base branch, so it must only ever land the
@@ -119,7 +129,7 @@ expected_head="changeset-release/$base_branch"
 
 if [ "$head_branch" != "$expected_head" ]; then
     echo "::error::PR #$PR_NUMBER merges $head_branch, not $expected_head. Refusing to merge it automatically."
-    exit 0
+    exit 1
 fi
 
 echo "Merging $head_branch into $base_branch for PR #$PR_NUMBER..."
@@ -142,12 +152,12 @@ for attempt in $(seq 1 "$PUSH_ATTEMPTS"); do
     # not to do.
     if ! git checkout -B "$base_branch" "origin/$base_branch"; then
         echo "::error::Could not check out $base_branch. Merge PR #$PR_NUMBER manually."
-        exit 0
+        exit 1
     fi
 
     if ! git reset --hard "origin/$base_branch"; then
         echo "::error::Could not reset $base_branch to origin/$base_branch. Merge PR #$PR_NUMBER manually."
-        exit 0
+        exit 1
     fi
 
     if git merge-base --is-ancestor "origin/$head_branch" HEAD; then
@@ -158,7 +168,7 @@ for attempt in $(seq 1 "$PUSH_ATTEMPTS"); do
     if ! git merge --no-ff "origin/$head_branch" -m "$SUBJECT" -m ""; then
         git merge --abort || true
         echo "::error::Merging $head_branch into $base_branch conflicted. Merge PR #$PR_NUMBER manually."
-        exit 0
+        exit 1
     fi
 
     if git push origin "$base_branch"; then
@@ -178,4 +188,4 @@ if final_state=$(gh pr view "$PR_NUMBER" --json state --jq .state) \
 fi
 
 echo "::error::Could not merge PR #$PR_NUMBER after $PUSH_ATTEMPTS attempts. Merge it manually."
-exit 0
+exit 1
