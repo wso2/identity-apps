@@ -193,8 +193,8 @@ jobs:
                   # the output going missing (e.g. on an action version bump).
                   if [ -z "$pr_number" ]; then
                       pr_number=$(gh pr list \
-                          --base "${{ env.BRANCH }}" \
-                          --head "changeset-release/${{ env.BRANCH }}" \
+                          --base "$BRANCH" \
+                          --head "changeset-release/$BRANCH" \
                           --state open --json number --jq '.[0].number')
                   fi
 
@@ -204,9 +204,9 @@ jobs:
                   fi
 
                   MERGE_SCRIPT=.github/workflows/scripts/merge-release-pr.sh
-                  chmod +x $MERGE_SCRIPT
-                  $MERGE_SCRIPT "$pr_number" \
-                      "[Release] [GitHub Action] [${{ env.BRANCH }}] Update package versions (#$pr_number)"
+                  chmod +x "$MERGE_SCRIPT"
+                  "$MERGE_SCRIPT" "$pr_number" \
+                      "[Release] [GitHub Action] [$BRANCH] Update package versions (#$pr_number)"
               shell: bash
 
             - name: 🚀 Perform Release
