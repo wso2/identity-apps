@@ -110,6 +110,18 @@ if [ "$mergeable" != "MERGEABLE" ]; then
     exit 0
 fi
 
+# This script pushes straight to the base branch, so it must only ever land the
+# branch changesets/action maintains. The workflow derives the pull request number
+# from that action, but the branches come back from the GitHub API, so the identity
+# is checked here rather than assumed — a merge of anything else is a bug, not
+# something to carry onto a protected branch under the release bot's authority.
+expected_head="changeset-release/$base_branch"
+
+if [ "$head_branch" != "$expected_head" ]; then
+    echo "::error::PR #$PR_NUMBER merges $head_branch, not $expected_head. Refusing to merge it automatically."
+    exit 0
+fi
+
 echo "Merging $head_branch into $base_branch for PR #$PR_NUMBER..."
 
 # The base branch can move while this job runs, so the push is attempted against a
@@ -124,8 +136,19 @@ for attempt in $(seq 1 "$PUSH_ATTEMPTS"); do
     # changesets/action leaves its version bump in the working tree; it is already
     # committed on the head branch, so discarding it here loses nothing. Untracked
     # files are left alone, since later steps still need the installed dependencies.
-    git checkout -B "$base_branch" "origin/$base_branch"
-    git reset --hard "origin/$base_branch"
+    #
+    # Both are guarded: under "set -e" a nonzero exit here would end the script before
+    # it could report anything, and a silent abort is exactly what this script is meant
+    # not to do.
+    if ! git checkout -B "$base_branch" "origin/$base_branch"; then
+        echo "::error::Could not check out $base_branch. Merge PR #$PR_NUMBER manually."
+        exit 0
+    fi
+
+    if ! git reset --hard "origin/$base_branch"; then
+        echo "::error::Could not reset $base_branch to origin/$base_branch. Merge PR #$PR_NUMBER manually."
+        exit 0
+    fi
 
     if git merge-base --is-ancestor "origin/$head_branch" HEAD; then
         echo "✅ $head_branch is already contained in $base_branch. Nothing to do."
