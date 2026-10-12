@@ -183,6 +183,9 @@ jobs:
             - name: 🔀 Merge the release pull request
               id: merge-release-pr
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' && steps.changesets.outputs.published != 'true' }}
+              # Merging the release pull request is housekeeping — the publish happens in
+              # the follow-up run. It must never take "🚀 Perform Release" down with it.
+              continue-on-error: true
               env:
                   CHANGESETS_PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
               run: |
