@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.17.2
+
+### Patch Changes
+
+- [#10703](https://github.com/wso2/identity-apps/pull/10703) [`6a49e4ba78f0d12ff0fe6b363a5ead62e5346925`](https://github.com/wso2/identity-apps/commit/6a49e4ba78f0d12ff0fe6b363a5ead62e5346925) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Distinguish client ID fetch failure from config update failure
+
+- Updated dependencies [[`6a49e4ba78f0d12ff0fe6b363a5ead62e5346925`](https://github.com/wso2/identity-apps/commit/6a49e4ba78f0d12ff0fe6b363a5ead62e5346925)]:
+  - @wso2is/admin.agents.v1@1.2.3
+
 ## 4.17.1
 
 ### Patch Changes
