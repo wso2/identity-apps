@@ -1,5 +1,38 @@
 # @wso2is/admin.claims.v1
 
+## 2.31.6
+
+### Patch Changes
+
+- [#10723](https://github.com/wso2/identity-apps/pull/10723) [`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Enterprise schema attributes that duplicate core User or System schema attributes in user search, user profile and user creation in migrated environments
+
+- Updated dependencies [[`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe), [`47e361c251f999f5bae3b776368dbcfc600d4b8e`](https://github.com/wso2/identity-apps/commit/47e361c251f999f5bae3b776368dbcfc600d4b8e), [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364)]:
+  - @wso2is/admin.users.v1@2.38.55
+  - @wso2is/admin.extensions.v1@2.44.1
+  - @wso2is/i18n@2.46.3
+
+## 2.31.5
+
+### Patch Changes
+
+- [#10648](https://github.com/wso2/identity-apps/pull/10648) [`fd9aa87db360d2d96fdf310b97a65896324323b1`](https://github.com/wso2/identity-apps/commit/fd9aa87db360d2d96fdf310b97a65896324323b1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix attribute list not refreshing after adding custom SCIM attributes
+
+## 2.31.4
+
+### Patch Changes
+
+- [#10567](https://github.com/wso2/identity-apps/pull/10567) [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8) Thanks [@KD23243](https://github.com/KD23243)! - Resolve flow extension read-only claims from server configuration and list identity claims in the claim picker
+
+- Updated dependencies [[`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9), [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8)]:
+  - @wso2is/admin.extensions.v1@2.43.10
+  - @wso2is/i18n@2.45.3
+
+## 2.31.3
+
+### Patch Changes
+
+- [#10588](https://github.com/wso2/identity-apps/pull/10588) [`ce3ee2ef547a965e8fe091e0465a63c8566d9718`](https://github.com/wso2/identity-apps/commit/ce3ee2ef547a965e8fe091e0465a63c8566d9718) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix the search of the "User Attribute to map to" dropdown in the external attribute mapping edit form always returning "No results found."
+
 ## 2.31.2
 
 ### Patch Changes

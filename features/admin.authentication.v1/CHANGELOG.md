@@ -1,5 +1,14 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.212
+
+### Patch Changes
+
+- [#10688](https://github.com/wso2/identity-apps/pull/10688) [`ac6c1919738a2d331e914d6356c89f0ed3df2ece`](https://github.com/wso2/identity-apps/commit/ac6c1919738a2d331e914d6356c89f0ed3df2ece) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix B2B organization switch failing when the Console is served on a hostname different from the Identity Server
+
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330)]:
+  - @wso2is/admin.core.v1@2.59.6
+
 ## 2.25.211
 
 ### Patch Changes

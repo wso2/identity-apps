@@ -340,7 +340,7 @@ const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Error = Re
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: resourceEndpoints.identityProviders + "/" + idpId + "/connected-apps/"
+        url: resourceEndpoints.identityProviders + "/" + idpId + "/connected-apps"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -857,7 +857,7 @@ export const getConnectedApps = (
             limit,
             offset
         },
-        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/connected-apps/"
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/connected-apps"
     };
 
     return httpClient(requestConfig)
@@ -890,7 +890,7 @@ export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promis
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
+        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps"
     };
 
     return httpClient(requestConfig)
@@ -1034,7 +1034,7 @@ const updateFederatedAuthenticators = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators/"
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators"
     };
 
     return httpClient(requestConfig)
@@ -1281,7 +1281,7 @@ export const useConnectionGroups = <Data = ConnectionGroupInterface[], Error = R
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups/"
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -1310,7 +1310,7 @@ export const updateConnectionGroup = (idpId: string, idpGroups: ConnectionGroupI
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups/"
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups"
     };
 
     return httpClient(requestConfig)

@@ -110,8 +110,7 @@
                     </h3>
                     <p class="portal-tagline-description">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
-                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%><%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
                     </p>
                 </div>
             <% } %>

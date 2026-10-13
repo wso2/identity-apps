@@ -79,9 +79,12 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
 
     const dynamicClientRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.dynamicClientRegistration);
+    const isFapiFeatureEnabled: boolean = useSelector(
+        (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
 
     const [ isAuthenticationRequired = true, setAuthenticationRequired ] = useState<boolean>(authenticationRequired);
     const [ isMandateSSA = !isAuthenticationRequired, setMandateSSA ] = useState<boolean>(mandateSSA);
+    const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -105,6 +108,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
         if (dcrConfigs) {
             setMandateSSA(dcrConfigs?.mandateSSA);
             setAuthenticationRequired(dcrConfigs?.authenticationRequired);
+            setEnableFapiEnforcement(dcrConfigs?.enableFapiEnforcement);
             setSsaJwks(dcrConfigs?.ssaJwks);
         }
     }, [ dcrConfigs ]);
@@ -235,6 +239,16 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             }
         ];
 
+        if (!isFapiFeatureEnabled) {
+            updateData.push(
+                {
+                    operation: "REPLACE",
+                    path: "/enableFapiEnforcement",
+                    value: values.enableFapiEnforcement
+                }
+            );
+        }
+
         if (values.ssaJwks != undefined) {
             updateData.push(
                 {
@@ -326,6 +340,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                     initialValues={ {
                         authenticationRequired: isAuthenticationRequired,
                         dcrEndpoint: dcrEndpointState,
+                        enableFapiEnforcement: isEnableFapiEnforcement,
                         mandateSSA: isMandateSSA,
                         ssaJwks: ssaJwksState
                     } }
@@ -403,6 +418,19 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                         readOnly={ !hasDynamicClientRegistrationUpdatePermission }
                         data-componentid={ `${componentId}-ssaJwks-url` }
                     />
+                    { !isFapiFeatureEnabled && (
+                        <Field.Checkbox
+                            ariaLabel="Enforce Fapi"
+                            name="enableFapiEnforcement"
+                            label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label") }
+                            hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
+                            tabIndex={ 3 }
+                            width={ 16 }
+                            listen={ (value: boolean) => setEnableFapiEnforcement(value) }
+                            readOnly={ !hasDynamicClientRegistrationUpdatePermission }
+                            data-componentid={ `${componentId}-enableFapiEnforcement-checkbox` }
+                        />
+                    ) }
                     <Field.Button
                         form={ FORM_ID }
                         size="small"

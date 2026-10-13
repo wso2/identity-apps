@@ -222,7 +222,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         }
 
         if (groupsList?.length === 0) {
-            if (hasGroupCreatePermissions) {
+            if (hasGroupCreatePermissions && !readOnly) {
                 return (
                     <EmptyPlaceholder
                         data-testid={ `${ componentId }-empty-list-empty-placeholder` }
@@ -362,20 +362,22 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             size="small"
                             transparent
                         />
-                        <Show
-                            when={ featureConfig?.groups?.scopes?.create }
-                        >
-                            <PrimaryButton
-                                data-testid="user-mgt-roles-list-update-button"
-                                size="medium"
-                                icon={ <Icon name="add" /> }
-                                floated="right"
-                                onClick={ () => setShowWizard(true) }
+                        { !readOnly && (
+                            <Show
+                                when={ featureConfig?.groups?.scopes?.create }
                             >
-                                <Icon name="add" />
-                                { t("idp:identityProviderGroups.groupsList.newGroup") }
-                            </PrimaryButton>
-                        </Show>
+                                <PrimaryButton
+                                    data-testid="user-mgt-roles-list-update-button"
+                                    size="medium"
+                                    icon={ <Icon name="add" /> }
+                                    floated="right"
+                                    onClick={ () => setShowWizard(true) }
+                                >
+                                    <Icon name="add" />
+                                    { t("idp:identityProviderGroups.groupsList.newGroup") }
+                                </PrimaryButton>
+                            </Show>
+                        ) }
                     </div>
                 ) }
             >

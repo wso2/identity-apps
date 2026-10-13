@@ -48,7 +48,8 @@ export enum AuthType {
     BEARER = "BEARER",
     BASIC = "BASIC",
     API_KEY = "API_KEY",
-    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL"
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL"
 }
 
 export interface SMSProviderPropertiesInterface {

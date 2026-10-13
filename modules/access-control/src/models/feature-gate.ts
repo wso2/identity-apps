@@ -72,7 +72,10 @@ export interface FeatureGateInterface {
                 },
                 status: FeatureStatus
             },
-            status: FeatureStatus
+            status: FeatureStatus,
+            toggleEnable: {
+                status: FeatureStatus
+            }
         },
         approvalWorkflows: {
             status: FeatureStatus
@@ -92,7 +95,10 @@ export interface FeatureGateInterface {
                     status: FeatureStatus
                 },
                 enterprise: {
-                    status: FeatureStatus
+                    status: FeatureStatus,
+                    toggleEnable: {
+                        status: FeatureStatus
+                    }
                 },
                 idvp: {
                     status: FeatureStatus
@@ -107,6 +113,11 @@ export interface FeatureGateInterface {
         },
         loginAndRegistration: {
             sessionManagement: {
+                status: FeatureStatus
+            }
+        },
+        organizations: {
+            toggleEnable: {
                 status: FeatureStatus
             }
         },

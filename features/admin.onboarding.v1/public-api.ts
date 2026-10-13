@@ -19,8 +19,9 @@
 // Pages
 export { default as OnboardingPage } from "./pages/onboarding-page";
 
-// Components
-export { default as OnboardingFab } from "./components/shared/onboarding-fab";
-
 // Hooks
 export { useOnboardingStatus } from "./hooks/use-onboarding-status";
+export { useOnboardingWizardAccess } from "./hooks/use-onboarding-wizard-access";
+
+// Utils
+export { buildOnboardingWizardPath } from "./utils/build-onboarding-wizard-path";

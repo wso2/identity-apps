@@ -32,7 +32,8 @@ import { updateApplicationConfigurations } from "../../api/application";
 import {
     AdvancedConfigurationsInterface,
     ApplicationTemplateListItemInterface,
-    AuthenticationSequenceInterface
+    AuthenticationSequenceInterface,
+    InboundProtocolListItemInterface
 } from "../../models/application";
 import { AdvancedConfigurationsForm } from "../forms/advanced-configurations-form";
 
@@ -52,6 +53,10 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
      * Currently configured authentication sequence for the application.
      */
     authenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Inbound protocols configured for the application.
+     */
+    inboundProtocols?: InboundProtocolListItemInterface[];
     /**
      * Callback to update the application details.
      */
@@ -81,6 +86,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         appId,
         advancedConfigurations,
         authenticationSequence,
+        inboundProtocols,
         featureConfig,
         onUpdate,
         readOnly,
@@ -153,6 +159,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
             <AdvancedConfigurationsForm
                 authenticationSequence={ authenticationSequence }
                 config={ advancedConfigurations }
+                inboundProtocols={ inboundProtocols }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
                     readOnly

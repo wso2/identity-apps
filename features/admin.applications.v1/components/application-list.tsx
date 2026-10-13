@@ -27,6 +27,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -160,6 +161,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -281,6 +283,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 }));
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onApplicationDelete();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {

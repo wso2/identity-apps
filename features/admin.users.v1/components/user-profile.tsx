@@ -18,8 +18,9 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -43,7 +44,6 @@ import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserstore } from "@w
 import {
     AlertInterface,
     AlertLevels,
-    ExternalClaim,
     FeatureAccessConfigInterface,
     MultiValueAttributeInterface,
     ProfileInfoInterface,
@@ -195,6 +195,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+    const hasUsersDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.delete
+    );
 
     const roleAssignmentsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.roleAssignments);
@@ -222,8 +225,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
     const [ associationType, setAssociationType ] = useState<string>("");
-    const [ duplicatedUserClaims, setDuplicatedUserClaims ] = useState<ExternalClaim[]>([]);
-    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(true);
+
+    const {
+        duplicatedClaims: duplicatedUserClaims,
+        error: duplicatedClaimsFetchError,
+        isLoading: isClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
@@ -273,55 +280,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     }, []);
 
     /**
-     * This useEffect identifies external claims that are mapped to the same local claim
-     * between the Enterprise schema and the WSO2 System schema.
-     *
-     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
-     * introduced in https://github.com/wso2/product-is/issues/20850.
-     *
-     * The effect fetches both sets of external claims and detects overlaps by comparing their
-     * mappedLocalClaimURI values.
-     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
+     * Shows an alert if the claims used to identify the duplicated Enterprise schema attributes
+     * cannot be fetched. The profile is still rendered in that case, without excluding them.
      */
     useEffect(() => {
-        const calculateDuplicateClaims = async () => {
-            setIsClaimsLoading(true);
+        if (!duplicatedClaimsFetchError) {
+            return;
+        }
 
-            try {
-                const [ enterpriseClaims, systemClaims ] = await Promise.all([
-                    getAllExternalClaims(
-                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
-                        null
-                    ),
-                    getAllExternalClaims(
-                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
-                        null
-                    )
-                ]);
-
-                const systemMappedClaimURIs: Set<string> = new Set(
-                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
-                );
-                const duplicates: ExternalClaim[] = enterpriseClaims.filter(
-                    (claim: ExternalClaim) =>
-                        claim.mappedLocalClaimURI &&
-                        systemMappedClaimURIs.has(claim.mappedLocalClaimURI)
-                );
-
-                setDuplicatedUserClaims(duplicates);
-                setIsClaimsLoading(false);
-
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
-                }));
-            }
-        };
-
-        calculateDuplicateClaims();
-    }, []);
+        dispatch(addAlert({
+            description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
+        }));
+    }, [ duplicatedClaimsFetchError ]);
 
     /**
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
@@ -992,7 +964,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveDangerActions = (): ReactElement => {
-        if (!hasUsersUpdatePermissions) {
+        if (!hasUsersUpdatePermissions && !hasUsersDeletePermissions) {
             return null;
         }
 
@@ -1010,10 +982,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) && (
                         !isCurrentUserAdmin
                         || !isUserCurrentLoggedInUser
+                    ) && (
+                        hasUsersDeletePermissions
+                        || hasUsersUpdatePermissions
                     ) ? (
-                            <Show
-                                when={ featureConfig?.users?.scopes?.delete }
-                            >
+                            <>
                                 <UserImpersonationAction
                                     user={ user }
                                     isLocked={ accountLocked }
@@ -1074,47 +1047,51 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         }
                                         {
                                             !allowDeleteOnly && configSettings?.accountDisable === "true" && (
-                                                <DangerZone
-                                                    data-testid={ `${ testId }-account-disable-button` }
-                                                    actionTitle={ t("user:editUser." +
-                                                    "dangerZoneGroup.disableUserZone.actionTitle") }
-                                                    header={ t("user:editUser.dangerZoneGroup." +
-                                                    "disableUserZone.header") }
-                                                    subheader={ t("user:editUser.dangerZoneGroup." +
-                                                    "disableUserZone.subheader") }
-                                                    onActionClick={ undefined }
-                                                    toggle={ {
-                                                        checked: accountDisabled,
-                                                        id: "accountDisabled",
-                                                        onChange: handleDangerZoneToggles
-                                                    } }
-                                                />
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
+                                                    <DangerZone
+                                                        data-testid={ `${ testId }-account-disable-button` }
+                                                        actionTitle={ t("user:editUser." +
+                                                        "dangerZoneGroup.disableUserZone.actionTitle") }
+                                                        header={ t("user:editUser.dangerZoneGroup." +
+                                                        "disableUserZone.header") }
+                                                        subheader={ t("user:editUser.dangerZoneGroup." +
+                                                        "disableUserZone.subheader") }
+                                                        onActionClick={ undefined }
+                                                        toggle={ {
+                                                            checked: accountDisabled,
+                                                            id: "accountDisabled",
+                                                            onChange: handleDangerZoneToggles
+                                                        } }
+                                                    />
+                                                </Show>
                                             )
                                         }
                                         {
                                             !allowDeleteOnly && (
-                                                <DangerZone
-                                                    data-testid={ `${ testId }-danger-zone-toggle` }
-                                                    actionTitle={ t("user:editUser." +
-                                                        "dangerZoneGroup.lockUserZone.actionTitle") }
-                                                    header={
-                                                        t("user:editUser.dangerZoneGroup." +
-                                                        "lockUserZone.header")
-                                                    }
-                                                    subheader={
-                                                        t("user:editUser.dangerZoneGroup." +
-                                                        "lockUserZone.subheader")
-                                                    }
-                                                    onActionClick={ undefined }
-                                                    toggle={ {
-                                                        checked: accountLocked,
-                                                        disableHint: t("user:editUser.dangerZoneGroup." +
-                                                            "lockUserZone.disabledHint"),
-                                                        disabled: accountDisabled,
-                                                        id: "accountLocked",
-                                                        onChange: handleDangerZoneToggles
-                                                    } }
-                                                />
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
+                                                    <DangerZone
+                                                        data-testid={ `${ testId }-danger-zone-toggle` }
+                                                        actionTitle={ t("user:editUser." +
+                                                            "dangerZoneGroup.lockUserZone.actionTitle") }
+                                                        header={
+                                                            t("user:editUser.dangerZoneGroup." +
+                                                            "lockUserZone.header")
+                                                        }
+                                                        subheader={
+                                                            t("user:editUser.dangerZoneGroup." +
+                                                            "lockUserZone.subheader")
+                                                        }
+                                                        onActionClick={ undefined }
+                                                        toggle={ {
+                                                            checked: accountLocked,
+                                                            disableHint: t("user:editUser.dangerZoneGroup." +
+                                                                "lockUserZone.disabledHint"),
+                                                            disabled: accountDisabled,
+                                                            id: "accountLocked",
+                                                            onChange: handleDangerZoneToggles
+                                                        } }
+                                                    />
+                                                </Show>
                                             )
                                         }
                                         {
@@ -1122,49 +1099,53 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             adminUserType === AdminAccountTypes.INTERNAL &&
                                             associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
                                             (
-                                                <DangerZone
-                                                    data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                                    actionTitle={ t("user:editUser.dangerZoneGroup." +
-                                                    "deleteAdminPriviledgeZone.actionTitle") }
-                                                    header={ t("user:editUser.dangerZoneGroup." +
-                                                    "deleteAdminPriviledgeZone.header") }
-                                                    subheader={ t("user:editUser.dangerZoneGroup." +
-                                                    "deleteAdminPriviledgeZone.subheader") }
-                                                    onActionClick={ (): void => {
-                                                        setShowAdminRevokeConfirmationModal(true);
-                                                        setDeletingUser(user);
-                                                    } }
-                                                />
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
+                                                    <DangerZone
+                                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                        actionTitle={ t("user:editUser.dangerZoneGroup." +
+                                                        "deleteAdminPriviledgeZone.actionTitle") }
+                                                        header={ t("user:editUser.dangerZoneGroup." +
+                                                        "deleteAdminPriviledgeZone.header") }
+                                                        subheader={ t("user:editUser.dangerZoneGroup." +
+                                                        "deleteAdminPriviledgeZone.subheader") }
+                                                        onActionClick={ (): void => {
+                                                            setShowAdminRevokeConfirmationModal(true);
+                                                            setDeletingUser(user);
+                                                        } }
+                                                    />
+                                                </Show>
                                             )
                                         }
                                         { !isUserCurrentLoggedInUser &&
                                             getUserNameWithoutDomain(user.userName) !== adminUsername && (
-                                            <DangerZone
-                                                data-testid={ `${ testId }-danger-zone` }
-                                                actionTitle={ t("user:editUser.dangerZoneGroup." +
-                                                "deleteUserZone.actionTitle") }
-                                                header={ t("user:editUser.dangerZoneGroup." +
-                                                "deleteUserZone.header") }
-                                                subheader={ commonConfig.userEditSection.isGuestUser
-                                                    ? t("extensions:manage.guest.editUser.dangerZoneGroup" +
-                                                        ".deleteUserZone.subheader")
-                                                    : t("user:editUser.dangerZoneGroup." +
-                                                        "deleteUserZone.subheader")
-                                                }
-                                                onActionClick={ (): void => {
-                                                    setShowDeleteConfirmationModal(true);
-                                                    setDeletingUser(user);
-                                                } }
-                                                isButtonDisabled={
-                                                    adminUserType === AdminAccountTypes.INTERNAL &&
-                                                    isReadOnlyUserStore }
-                                                buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
-                                                "deleteUserZone.buttonDisableHint") }
-                                            />
+                                            <Show when={ featureConfig?.users?.scopes?.delete }>
+                                                <DangerZone
+                                                    data-testid={ `${ testId }-danger-zone` }
+                                                    actionTitle={ t("user:editUser.dangerZoneGroup." +
+                                                    "deleteUserZone.actionTitle") }
+                                                    header={ t("user:editUser.dangerZoneGroup." +
+                                                    "deleteUserZone.header") }
+                                                    subheader={ commonConfig.userEditSection.isGuestUser
+                                                        ? t("extensions:manage.guest.editUser.dangerZoneGroup" +
+                                                            ".deleteUserZone.subheader")
+                                                        : t("user:editUser.dangerZoneGroup." +
+                                                            "deleteUserZone.subheader")
+                                                    }
+                                                    onActionClick={ (): void => {
+                                                        setShowDeleteConfirmationModal(true);
+                                                        setDeletingUser(user);
+                                                    } }
+                                                    isButtonDisabled={
+                                                        adminUserType === AdminAccountTypes.INTERNAL &&
+                                                        isReadOnlyUserStore }
+                                                    buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
+                                                    "deleteUserZone.buttonDisableHint") }
+                                                />
+                                            </Show>
                                         ) }
                                     </DangerZoneGroup>
                                 ) }
-                            </Show>
+                            </>
                         ) : null }
             </>
         );
@@ -1489,6 +1470,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             profileData={ user }
                             flattenedProfileData={ profileInfo }
                             profileSchema={ profileSchema }
+                            duplicateClaims={ duplicatedUserClaims }
                             isReadOnly={ isReadOnly }
                             onUpdate={ handleUserUpdate }
                             isUpdating={ isSubmitting }

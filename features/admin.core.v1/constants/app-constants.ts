@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -128,7 +128,7 @@ export class AppConstants {
      * @returns The app base name.
      */
     public static getAppBasename(): string {
-        return window["AppUtils"]?.getConfig()?.appBase;
+        return window["AppUtils"]?.getConfig()?.appBaseWithProxy;
     }
 
     /**
@@ -380,6 +380,7 @@ export class AppConstants {
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
             [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
+            [ "CUSTOMER_DATA_PROFILE", `${AppConstants.getMainViewBasePath()}/customer-data` ],
             [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
@@ -435,6 +436,7 @@ export class AppConstants {
             [ "SAML2_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
             [ "CONSOLE_SETTINGS", `${AppConstants.getAdminViewBasePath()}/settings` ],
+            [ "CLI_SETTINGS", `${AppConstants.getAdminViewBasePath()}/cli-settings` ],
             [ "CONSOLE_ADMINISTRATORS_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/administrators/:id` ],
             [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
@@ -446,6 +448,8 @@ export class AppConstants {
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "OPENID4VP_CONFIG",
+                `${AppConstants.getAdminViewBasePath()}/verifier-settings` ],
             [ "ISSUER_USAGE_SCOPE",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
             [ "FAPI_SECURITY_POLICY",
@@ -478,7 +482,9 @@ export class AppConstants {
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
-            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
+            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ],
+            [ "VP_DEFINITIONS", `${AppConstants.getAdminViewBasePath()}/presentation-definitions` ],
+            [ "VP_DEFINITION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/presentation-definitions/:id` ]
         ]);
 
         return paths;
@@ -539,6 +545,7 @@ export class AppConstants {
         "accountSecurity": "v1.0.0",
         "actions": "v0.0.0",
         "admin-forced-password-reset": "v1.0.0",
+        "agents": "v1.0.0",
         "apiResources": "v0.0.0",
         "applications": "v0.0.0",
         "approvalWorkflows": "v0.0.0",
@@ -558,6 +565,7 @@ export class AppConstants {
         "oidcScopes": "v0.0.0",
         "organizations": "v0.0.0",
         "password-recovery": "v1.0.0",
+        "presentationDefinitions": "v0.0.0",
         "residentOutboundProvisioning": "v0.0.0",
         "roles": "v0.0.0",
         "self-registration-connector": "v1.0.0",

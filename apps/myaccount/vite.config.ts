@@ -484,7 +484,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
     const environment: Record<string, string> = loadEnv(mode, __dirname, "");
     const buildMode: ReturnType<typeof resolveBuildMode> = resolveBuildMode(environment);
     const isDevelopment: boolean = mode !== "production";
-    const publicBasePath: string = isDevelopment ? "/" : buildMode.publicBase;
+    // Relative base keeps built asset/chunk URLs anchored to the importing module
+    // (`import.meta.url`), so the app works under any externally visible prefix
+    // (e.g. a `proxy_context_path`) without the base being baked in at build time.
+    const publicBasePath: string = isDevelopment ? "/" : "./";
     const devServerPort: number = Number(environment.DEV_SERVER_PORT || 9000);
     const devServerHost: string = environment.DEV_SERVER_HOST || "localhost";
     const devServerWebSocketHost: string = environment.WDS_SOCKET_HOST || devServerHost;

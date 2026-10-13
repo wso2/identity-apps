@@ -204,7 +204,7 @@
             {% if actions is defined %}
             {% for key, value in actions.items() %}
             {% if key != 'types' %}
-            "{{ key }}": {% if value is mapping %}{{ value | tojson }}{% elif value is number %}{{ value }}{% elif value is boolean %}{{ value }}{% else %}"{{ value }}"{% endif %},
+            "{{ key }}": {% if value is mapping %}{{ value | tojson }}{% elif value is boolean %}{{ value | tojson }}{% elif value is number %}{{ value }}{% else %}"{{ value }}"{% endif %},
             {% endif %}
             {% endfor %}
             {% endif %}
@@ -213,7 +213,7 @@
                 {% for type_name, type_config in actions.types.items() %}
                 "{{ type_name }}": {
                     {% for config_key, config_value in type_config.items() %}
-                    "{{ config_key }}": {% if config_value is mapping %}{{ config_value | tojson }}{% elif config_value is number %}{{ config_value }}{% elif config_value is boolean %}{{ config_value }}{% else %}"{{ config_value }}"{% endif %}{{ "," if not loop.last }}
+                    "{{ config_key }}": {% if config_value is mapping %}{{ config_value | tojson }}{% elif config_value is boolean %}{{ config_value | tojson }}{% elif config_value is number %}{{ config_value }}{% elif config_value is sequence and config_value is not string %}{{ config_value | tojson }}{% else %}"{{ config_value }}"{% endif %}{{ "," if not loop.last }}
                     {% endfor %}
                 }{{ "," if not loop.last }}
                 {% endfor %}
@@ -767,8 +767,8 @@
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.analytics.scopes is defined %}
-                    {% for operation, scopes in console.analytics.scopes.items() %}
+                    {% if console.analytics.moesif.scopes is defined %}
+                    {% for operation, scopes in console.analytics.moesif.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -844,8 +844,10 @@
                 {% else %} true,
                 {% endif %}
                 "properties": {
+                    "makeSubjectMandatory": {% if console.applications.make_subject_mandatory is defined %}{{ console.applications.make_subject_mandatory }}{% else %}true{% endif %},
                     "maxGracefulRefreshTokenReuseLimit": {% if oauth.graceful_refresh_token_rotation.maximum_reuse_limit is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_reuse_limit }}{% else %}5{% endif %},
-                    "maxGracefulRefreshTokenRotationValidityPeriod": {% if oauth.graceful_refresh_token_rotation.maximum_validity_period is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_validity_period }}{% else %}60{% endif %}
+                    "maxGracefulRefreshTokenRotationValidityPeriod": {% if oauth.graceful_refresh_token_rotation.maximum_validity_period is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_validity_period }}{% else %}60{% endif %},
+                    "multipleClientSecretsMaxCount": {% if oauth.multiple_client_secrets.max_secret_count is defined %}{{ oauth.multiple_client_secrets.max_secret_count }}{% else %}2{% endif %}
                 },
                 "featureFlags": [
                     {% if console.applications.feature_flags is defined %}
@@ -1198,6 +1200,75 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.cli_settings is defined %}
+            "cliSettings": {
+                "disabledFeatures": [
+                    {% if console.cli_settings.disabled_features is defined %}
+                    {% for feature in console.cli_settings.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.cli_settings.enabled is defined %} {{ console.cli_settings.enabled }},
+                {% else %} false,
+                {% endif %}
+                "properties": {
+                    {% if console.cli_settings.application_name is defined %}
+                    "applicationName": {{ console.cli_settings.application_name | tojson }}{{ "," if console.cli_settings.client_id is defined }}
+                    {% endif %}
+                    {% if console.cli_settings.client_id is defined %}
+                    "clientId": {{ console.cli_settings.client_id | tojson }}
+                    {% endif %}
+                },
+                "scopes": {
+                    {% if console.cli_settings.scopes is defined %}
+                    {% for operation, scopes in console.cli_settings.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.connection_sharing is defined %}
+            "connectionSharing": {
+                "disabledFeatures": [
+                    {% if console.connection_sharing.disabled_features is defined %}
+                    {% for feature in console.connection_sharing.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.connection_sharing.enabled is defined %} {{ console.connection_sharing.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.connection_sharing.scopes is defined %}
+                    {% for operation, scopes in console.connection_sharing.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
                     {% endif %}
                 }
             },
@@ -1634,6 +1705,11 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "properties": {
+                    "maxPushDeviceLimitPerUser": {% if push_device_management.max_device_limit_per_user is defined %}{{ push_device_management.max_device_limit_per_user }}{% else %}10{% endif %},
+                    "multiplePushDeviceSupportEnabled": {% if push_device_management.multiple_device_support_enabled is defined %}{{ push_device_management.multiple_device_support_enabled }}{% else %}true{% endif %},
+                    "pushDeviceRegistrationNotificationsEnabled": {% if push_device_management.device_registration_notifications_enabled is defined %}{{ push_device_management.device_registration_notifications_enabled }}{% else %}true{% endif %}
                 }
             },
             {% endif %}
@@ -2741,6 +2817,9 @@
                 "enabled": {% if console.flow_extensions.enabled is defined %} {{ console.flow_extensions.enabled }},
                 {% else %} true,
                 {% endif %}
+                "properties": {
+                    "nonModifiablePaths": {% if actions is defined and actions.types is defined and actions.types.flow_extension is defined and actions.types.flow_extension.non_modifiable_paths is defined %}{{ actions.types.flow_extension.non_modifiable_paths | tojson }}{% else %}[]{% endif %}
+                },
                 "featureFlags": [
                     {% if console.flow_extensions.feature_flags is defined %}
                     {% for flag in console.flow_extensions.feature_flags %}
@@ -2771,6 +2850,44 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.verifiable_presentation is defined %}
+            "presentationDefinitions": {
+                "disabledFeatures": [],
+                "enabled": {% if console.verifiable_presentation.enabled is defined %} {{ console.verifiable_presentation.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [],
+                "scopes": {
+                    {% if console.verifiable_presentation.scopes is defined %}
+                    {% for operation, scopes in console.verifiable_presentation.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": ["internal_presentation_definition_create"],
+                        "delete": ["internal_presentation_definition_delete"],
+                        "feature": ["console:presentation_definitions"],
+                        "read": ["internal_presentation_definition_view"],
+                        "update": ["internal_presentation_definition_update"]
+                    {% endif %}
+                },
+                "subFeatures": {
+                    "verifiablePresentationSettings": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "read": ["internal_config_view"],
+                            "update": ["internal_config_update"]
+                        }
+                    }
                 }
             },
             {% endif %}
@@ -2958,6 +3075,9 @@
         {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ (oauth.hash_client_secret | default(false)) or (oauth.hash_tokens_and_secrets) }},
+        {% endif %}
+        {% if console.ui.is_custom_claim_dialect_routing_enabled is defined %}
+        "isCustomClaimDialectRoutingEnabled": {{ console.ui.is_custom_claim_dialect_routing_enabled }},
         {% endif %}
         {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
         "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},

@@ -1028,6 +1028,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "Sie können die Login-Eingabeaufforderungen nutzen, die von Ihrer konfigurierten Push-Authentifikator-App für die Zwei-Faktor-Authentifizierung generiert werden. Wenn Sie keinen Zugriff auf die Anwendung haben, können Sie hier eine neue Authentifikator-App einrichten.",
                 "deleteHint": "Entfernen",
                 "description": "Sie können die Push-Authentifikator-App verwenden, um Login-Eingabeaufforderungen als Push-Benachrichtigungen für die Zwei-Faktor-Authentifizierung zu erhalten.",
+                "deviceLimitReachedHint": "Maximale Geräteanzahl von {{limit}} erreicht",
                 "heading": "Push-Authentifikator",
                 "hint": "Anzeigen",
                 "modals": {
@@ -1058,6 +1059,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "Das registrierte Gerät wurde erfolgreich entfernt.",
                             "message": "Gerät erfolgreich gelöscht"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Beim Abrufen der Push-Authentifikator-Konfiguration ist ein Fehler aufgetreten.",
+                            "message": "Etwas ist schiefgelaufen"
                         }
                     },
                     "deviceListFetchError": {

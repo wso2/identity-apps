@@ -18,6 +18,12 @@
 
 export const AGENT_SHARING_ERROR: string = "AGENT_SHARING_ERROR";
 
+/**
+ * SCIM `scimType` value returned when agent creation fails because the
+ * organization has reached its allowed application limit.
+ */
+export const AGENT_APP_LIMIT_REACHED_SCIM_TYPE: string = "applicationLimitReached";
+
 export const AGENT_FEATURE_DICTIONARY: Map<string, string> = new Map()
     .set("AGENT_GROUPS", "agents.groups")
     .set("AGENT_SHARED_ACCESS", "agents.sharedAccess")

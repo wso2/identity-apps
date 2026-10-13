@@ -167,6 +167,11 @@ export class EmailProviderConstants {
             key: AuthType.API_KEY,
             text: "externalApiAuthentication:fields.authentication.types.apiKey.name",
             value: AuthType.API_KEY
+        },
+        {
+            key: AuthType.PASSWORD_CREDENTIAL,
+            text: "externalApiAuthentication:fields.authentication.types.passwordCredential.name",
+            value: AuthType.PASSWORD_CREDENTIAL
         }
     ];
 }

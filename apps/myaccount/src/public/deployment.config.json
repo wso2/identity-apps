@@ -53,6 +53,7 @@
         },
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "disableMFAForFederatedUsers": true,
+        "enableLegacyLocaleDropdown": false,
         "enableMFAUserWise": true,
         "features": {
             "applications": {
@@ -128,6 +129,9 @@
                     "security.mfa.sms"
                 ],
                 "enabled": true,
+                "properties": {
+                    "multiplePushDeviceSupportEnabled": true
+                },
                 "scopes": {
                     "create": [],
                     "delete": [],

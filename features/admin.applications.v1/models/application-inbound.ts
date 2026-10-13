@@ -210,6 +210,16 @@ interface CIBAAuthenticationConfigurationInterface {
     skipUserValidation?: boolean;
 }
 
+/**
+ * Token exchange related properties.
+ */
+interface TokenExchangeConfigurationInterface {
+    /**
+     * If enabled, no scopes are issued for tokens obtained by exchanging a federated token.
+     */
+    restrictScopeIssuanceForFederatedTokens?: boolean;
+}
+
 interface OIDCLogoutConfigurationInterface {
     backChannelLogoutUrl?: string;
     frontChannelLogoutUrl?: string;
@@ -221,6 +231,8 @@ interface OIDCLogoutConfigurationInterface {
 export interface OIDCDataInterface {
     clientId?: string;
     clientSecret?: string;
+    clientSecretExpiresAt?: number;
+    multipleClientSecretsConfigured?: boolean;
     state?: State;
     grantTypes?: string[];
     callbackURLs?: string[];
@@ -242,7 +254,56 @@ export interface OIDCDataInterface {
     fapiProfile?: FapiProfile;
     hybridFlow?: HybridFlowConfigurationInterface;
     cibaAuthenticationRequest?: CIBAAuthenticationConfigurationInterface;
+    tokenExchange?: TokenExchangeConfigurationInterface;
     issuer?: AllowedIssuerInterface;
+}
+
+/**
+ * Server-reported status of a client secret.
+ */
+export enum ClientSecretStatus {
+    ACTIVE = "ACTIVE",
+    EXPIRED = "EXPIRED"
+}
+
+/**
+ * Metadata of a single OAuth2/OIDC client secret.
+ */
+export interface ClientSecretInterface {
+    secretId?: string;
+    secretValue?: string;
+    // Expiry of the client secret in Unix epoch seconds (0 when it does not expire).
+    expiresAt?: number;
+    status?: ClientSecretStatus;
+    latest?: boolean;
+}
+
+/**
+ * List of client secrets attached to an application.
+ */
+export interface ClientSecretListInterface {
+    count?: number;
+    list?: ClientSecretInterface[];
+}
+
+/**
+ * Request payload for creating a new client secret.
+ */
+export interface ClientSecretCreationRequestInterface {
+    // Requested expiry of the client secret in Unix epoch seconds (omit for a non-expiring secret).
+    expiresAt?: number;
+}
+
+/**
+ * Expiration presets offered when generating a new client secret.
+ */
+export enum ClientSecretExpirationOption {
+    THIRTY_DAYS = "30",
+    SIXTY_DAYS = "60",
+    NINETY_DAYS = "90",
+    ONE_EIGHTY_DAYS = "180",
+    CUSTOM = "custom",
+    NO_EXPIRATION = "No expiration"
 }
 
 /**

@@ -83,6 +83,21 @@ export const authenticationProvider:AuthenticationProviderNS = {
             content: "Remove the associations from these applications before deleting:",
             header: "Unable to Delete",
             message: "There are applications using this connection."
+        },
+        deleteIDPWithSharedOrganizations: {
+            content: "Unshare this connection from all organizations using the Shared Access tab " +
+                "before deleting it.",
+            header: "Unable to Delete",
+            message: "This connection is shared with organizations."
+        },
+        enableMultipleDeviceProgressiveEnrollment: {
+            assertionHint: "I understand the security risk and want to enable this feature.",
+            content: "When enabled, users can register additional push devices before completing " +
+                "authentication. An attacker with the user's primary credentials could enroll their " +
+                 "own device during sign-in and use it for future authentication. Enable this option " +
+                 "only if your use case requires it.",
+            header: "Are you sure?",
+            message: "Enabling progressive enrollment for multiple devices introduces a security risk."
         }
     },
     dangerZoneGroup: {
@@ -266,6 +281,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Team ID is a required field."
                     }
                 }
+            },
+            dynamicOptions: {
+                disabled: "{{value}} (disabled)",
+                empty: "No matching connections available.",
+                loading: "Loading available connections...",
+                unavailable: "{{value}} (unavailable)"
             },
             emailOTP: {
                 enableBackupCodes: {
@@ -963,8 +984,52 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     hint: "When enabled, users may enroll their devices for push authentication at the moment they log in to the application.",
                     label: "Enable push notification device progressive enrollment",
                     validations: {
-                        required: "Enablin push notification device progressive enrollment is required."
+                        required: "Enabling push notification device progressive enrollment is required."
                     }
+                },
+                enableDeviceRegistrationNotification: {
+                    hint: "When enabled, users will be notified when a new device is registered " +
+                        "for push authentication.",
+                    label: "Enable device registration notifications"
+                },
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: "Notify via email",
+                        push: "Notify via push notification"
+                    }
+                },
+                enableMultipleDeviceEnrollment: {
+                    hint: "When enabled, users can enroll multiple devices for push authentication.",
+                    label: "Allow users to register multiple devices",
+                    validations: {
+                        required: "Enabling multiple device enrollment is required."
+                    }
+                },
+                maximumDeviceLimit: {
+                    hint: "The maximum device limit for users when multiple device enrollment is enabled.",
+                    label: "Maximum number of push devices",
+                    placeholder: "Enter maximum device limit.",
+                    validations: {
+                        required: "Maximum device limit is a required field.",
+                        invalid: "Maximum device limit should be an integer.",
+                        range: "Maximum device limit should be between {{min}} & {{max}}."
+                    },
+                    unit: "devices"
+                },
+                enableMultipleDeviceProgressiveEnrollment: {
+                    hint: "When enabled, users may progressively enroll additional devices for push authentication " +
+                        "when multiple device enrollment is enabled.",
+                    label: "Allow progressive enrollment for multiple devices",
+                    securityWarning: "Progressive enrollment for multiple devices is enabled. Users can register " +
+                        "additional push devices before completing authentication, and an attacker with the user's " +
+                        "primary credentials could enroll their own device during sign-in and use it for future " +
+                        "authentication.",
+                    validations: {
+                        required: "Enabling progressive enrollment for multiple devices is required."
+                    }
+                },
+                deviceManagementSettings: {
+                    label: "Device management settings"
                 }
             },
             totp: {
@@ -1839,7 +1904,91 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 description: "Successfully updated the SMS OTP connector.",
                 message: "Update successful"
             }
+        },
+        updatePushAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating the push authenticator configurations.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the Push authenticator configurations.",
+                message: "Update successful"
+            }
         }
+    },
+    sharedConnection: {
+        label: "Shared"
+    },
+    sharedAccess: {
+        modes: {
+            doNotShare: "Do not share with any organization",
+            shareWithAll: "Share with all organizations",
+            shareWithSelected: "Share with selected organizations"
+        },
+        notifications: {
+            fetchOrganizations: {
+                genericError: {
+                    description: "An error occurred while retrieving the organizations.",
+                    message: "Couldn't retrieve organizations"
+                }
+            },
+            noOrganizationsSelected: {
+                description: "Please select at least one organization to share the connection with.",
+                message: "No organizations selected"
+            },
+            share: {
+                genericError: {
+                    description: "An error occurred while updating the shared access of the connection.",
+                    message: "Couldn't update shared access"
+                },
+                success: {
+                    description: "The shared access of the connection was updated successfully.",
+                    message: "Shared access updated"
+                }
+            },
+            unshare: {
+                genericError: {
+                    description: "An error occurred while unsharing the connection from organizations.",
+                    message: "Couldn't unshare connection"
+                },
+                success: {
+                    description: "The connection was unshared from all organizations successfully.",
+                    message: "Connection unshared"
+                }
+            }
+        },
+        selectAnOrganizationToManage: "Select an organization to manage its sharing settings.",
+        shareAllInfo: "This connection will be shared with all existing organizations and any " +
+            "organizations created in the future.",
+        shareAllWarningModal: {
+            assertionHint: "Please confirm your action.",
+            description: "This will share the connection across ALL existing and future organizations. " +
+                "This action will affect all current and future organizations in your system.",
+            header: "Share with all organizations",
+            message: "You are about to share this connection across all organizations."
+        },
+        shareTypeSwitchModal: {
+            description: "Choose how you want to proceed:",
+            header: "Switch to selective sharing",
+            message: "You are about to switch from sharing with all organizations to selective sharing.",
+            preserveStateLabel1: "Preserve current sharing",
+            preserveStateLabel2: "Keep the connection shared with existing organizations and switch to " +
+                "selective mode.",
+            resetToDefaultLabel1: "Reset to default",
+            resetToDefaultLabel2: "Unshare the connection from all organizations and start fresh with " +
+                "selective sharing."
+        },
+        shareWithFutureChildOrgs: "Share with future child organizations",
+        sharingSettingsLabel: "Sharing settings for ",
+        subTitle: "Share this connection with organizations so that they can use it for authentication.",
+        tabName: "Shared Access",
+        title: "Sharing Policy",
+        toManageOrganizationSelectLeftPanel: "Select the organization from the left panel to manage its " +
+            "sharing settings."
     },
     placeHolders: {
         emptyAuthenticatorList: {
@@ -2277,6 +2426,113 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     certificate: "Certificates",
                     general: "General Settings"
                 }
+            }
+        },
+        digitalWallet: {
+            title: "Digital Wallet",
+            subTitle: "Enable users to sign in or register using verifiable credentials.",
+            tabs: {
+                general: "General",
+                attributes: "Attributes"
+            },
+            form: {
+                name: {
+                    label: "Name",
+                    placeholder: "My Wallet",
+                    defaultValue: "Digital Wallet",
+                    hint: "A unique name for this digital wallet connection.",
+                    validations: {
+                        required: "Connection name is required.",
+                        maxLength: "Connection name cannot exceed {{max}} characters.",
+                        minLength: "Connection name must be at least {{min}} characters."
+                    }
+                },
+                description: {
+                    defaultValue: "Enable users to sign in or register using verifiable credentials.",
+                    hint: "Optional description of the purpose of this digital wallet connection."
+                },
+                presentationDefinition: {
+                    label: "Presentation Definition",
+                    placeholder: "Select a presentation definition",
+                    loadingPlaceholder: "Loading presentation definitions...",
+                    emptyPlaceholder: "No presentation definitions available",
+                    hint: "Defines the credential to request from the user's digital wallet."
+                },
+            },
+            claimMapping: {
+                form: {
+                    credentialType: {
+                        label: "Credential Type",
+                        hint: "The credential type defined by the issuer. This must exactly match the credential type " +
+                        "specified in the presentation definition."
+                    },
+                    credentialFormat: {
+                        label: "Credential Format",
+                        hint: "Specifies the format of the verifiable credential to be requested.",
+                        options: {
+                            dcSdJwt: "dc+sd-jwt"
+                        }
+                    },
+                    requestedAttributes: {
+                        label: "Requested Attributes",
+                        hint: "Select the credential attributes to map to local user attributes.",
+                        emptyPlaceholder: "No attributes found in the selected presentation definition."
+                    }
+                },
+                notifications: {
+                    fetchFailed: {
+                        message: "Failed to Load Attributes",
+                        description: "An error occurred while loading the attributes from the presentation definition."
+                    },
+                    updateSuccess: {
+                        message: "Presentation Definition Updated",
+                        description: "The presentation definition was updated successfully."
+                    },
+                    updateFailed: {
+                        message: "Update Failed",
+                        description: "An error occurred while updating the presentation definition."
+                    },
+                    missingCredentialType: {
+                        message: "Credential Type Required",
+                        description: "Enter a credential type before updating the presentation definition."
+                    },
+                    noClaimPaths: {
+                        header: "No Attribute Paths Configured",
+                        description: "No attribute paths are configured in the linked Presentation Definition.",
+                        action: "Configure Attributes"
+                    }
+                },
+                heading: "Credential Attribute Mappings",
+                subheading: "Map the attributes from the linked Presentation Definition to local user attributes.",
+                pdClaimAttribute: {
+                    label: "Presentation Definition Attribute",
+                    tooltip: "Attributes requested in the Presentation Definition. " +
+                    "Map them to the corresponding user attributes."
+                }
+            },
+            notifications: {
+                noPresentationDefinition: {
+                    message: "Presentation Definition Required",
+                    description: "Select a presentation definition before creating the connection."
+                }
+            },
+            noPdModal: {
+                heading: "No Presentation Definitions Found",
+                subHeading: "A presentation definition is required to create a Digital Wallet connection.",
+                description: "You don't have any presentation definitions yet. " +
+                    "<1>Create one</1> to use this Digital Wallet connection."
+            },
+            wizardHelp: {
+                heading: "About Digital Wallet Connections",
+                subHeading: "Learn more about this connection",
+                name: {
+                    heading: "Name",
+                    hint: "Provide a unique name for the digital wallet connection."
+                },
+                presentationDefinition: {
+                    heading: "Presentation Definition",
+                    hint: "Select a presentation definition that specifies the credentials to request from the user's digital wallet."
+                },
             }
         }
     },

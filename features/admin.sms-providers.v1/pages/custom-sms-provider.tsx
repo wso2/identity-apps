@@ -536,6 +536,177 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                     </>
                                 ) }
 
+                                { activeAuthType === AuthType.PASSWORD_CREDENTIAL && (
+                                    <>
+                                        <FinalFormField
+                                            key="clientId"
+                                            ariaLabel="clientId"
+                                            className="addon-field-wrapper"
+                                            name="clientId"
+                                            type={ showPrimarySecret ? "text" : "password" }
+                                            required={ true }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-clientId`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.clientID.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.clientID.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 100 }
+                                            readOnly={ isReadOnly }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    showPrimarySecret,
+                                                    () => setShowPrimarySecret(!showPrimarySecret),
+                                                    componentId
+                                                )
+                                            } }
+                                        />
+                                        <FinalFormField
+                                            key="clientSecret"
+                                            ariaLabel="clientSecret"
+                                            className="addon-field-wrapper"
+                                            name="clientSecret"
+                                            type={ showSecondarySecret ? "text" : "password" }
+                                            required={ true }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-clientSecret`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "clientSecret.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "clientSecret.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 100 }
+                                            readOnly={ isReadOnly }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    showSecondarySecret,
+                                                    () => setShowSecondarySecret(!showSecondarySecret),
+                                                    componentId
+                                                )
+                                            } }
+                                        />
+                                        <FinalFormField
+                                            key="userName"
+                                            ariaLabel="username"
+                                            className="addon-field-wrapper"
+                                            name="userName"
+                                            type={ showPrimarySecret ? "text" : "password" }
+                                            required={ true }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-username`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.username.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.username.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 100 }
+                                            readOnly={ isReadOnly }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    showPrimarySecret,
+                                                    () => setShowPrimarySecret(!showPrimarySecret),
+                                                    componentId
+                                                )
+                                            } }
+                                        />
+                                        <FinalFormField
+                                            key="password"
+                                            ariaLabel="password"
+                                            className="addon-field-wrapper"
+                                            name="password"
+                                            type={ showSecondarySecret ? "text" : "password" }
+                                            required={ true }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-password`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.password.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties.password.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 100 }
+                                            readOnly={ isReadOnly }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    showSecondarySecret,
+                                                    () => setShowSecondarySecret(!showSecondarySecret),
+                                                    componentId
+                                                )
+                                            } }
+                                        />
+                                        <FinalFormField
+                                            key="tokenEndpoint"
+                                            ariaLabel="tokenEndpoint"
+                                            className="addon-field-wrapper"
+                                            name="tokenEndpoint"
+                                            type="url"
+                                            required={ true }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-tokenEndpoint`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "tokenEndpoint.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "tokenEndpoint.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 2048 }
+                                            readOnly={ isReadOnly }
+                                        />
+                                        <FinalFormField
+                                            key="scopes"
+                                            ariaLabel="scopes"
+                                            className="addon-field-wrapper"
+                                            name="scopes"
+                                            type="text"
+                                            required={ false }
+                                            data-componentid={
+                                                `${componentId}-endpoint-authentication-property-scopes`
+                                            }
+                                            label={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "scopes.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "externalApiAuthentication:fields." +
+                                                "authenticationTypeDropdown.authProperties." +
+                                                "scopes.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 500 }
+                                            readOnly={ isReadOnly }
+                                        />
+                                    </>
+                                ) }
+
                                 { activeAuthType === AuthType.BEARER && (
                                     <>
                                         <FinalFormField

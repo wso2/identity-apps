@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -143,6 +143,23 @@ export const AppUtils: AppUtilsInterface = (function() {
         },
 
         /**
+         * Get the app base prefixed with the proxy context path, without any tenant or
+         * organization segment.
+         *
+         * @returns App base with the proxy context path applied.
+         */
+        getAppBaseWithProxyContextPath: function() {
+            const proxyContextPath: string = this.getProxyContextPath();
+            const appBaseName: string = _config.appBaseName || "";
+
+            if (!proxyContextPath) {
+                return appBaseName;
+            }
+
+            return appBaseName ? `${proxyContextPath}/${appBaseName}` : proxyContextPath;
+        },
+
+        /**
          * Get app base with the tenant domain.
          *
          * @returns App base with tenant.
@@ -213,6 +230,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 appBase: _config.appBaseName,
+                appBaseWithProxy: this.getAppBaseWithProxyContextPath(),
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
                 clientID: this.getClientId(),

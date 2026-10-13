@@ -148,6 +148,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guestsList: "",
             identityProviders: "",
             impersonationConfigurations: "",
+            openid4vpConfigurations: "",
             issuerUsageScope: "",
             localAuthenticators: "",
             localClaims: "",
@@ -166,6 +167,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            pushDeviceMgtConfigs: "",
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
@@ -205,6 +207,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             wellKnown: "",
             workflowAssociations: "",
             workflowInstances: "",
+            presentationDefinitions: "",
             workflows: ""
         },
         features: {
@@ -321,6 +324,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
+            isCustomClaimDialectRoutingEnabled: undefined,
             isCustomClaimMappingEnabled: undefined,
             isCustomClaimMappingMergeEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,

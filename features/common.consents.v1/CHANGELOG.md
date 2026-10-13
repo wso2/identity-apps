@@ -1,5 +1,14 @@
 # @wso2is/common.consents.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#10533](https://github.com/wso2/identity-apps/pull/10533) [`7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09`](https://github.com/wso2/identity-apps/commit/7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix consent policy apps endpoint not using sub-org path
+
+- Updated dependencies [[`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf)]:
+  - @wso2is/admin.core.v1@2.57.30
+
 ## 1.0.4
 
 ### Patch Changes

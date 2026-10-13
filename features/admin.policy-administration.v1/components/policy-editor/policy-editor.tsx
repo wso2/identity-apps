@@ -61,7 +61,7 @@ interface PolicyEditorProps extends IdentifiableComponentInterface, HTMLAttribut
 }
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
-    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+    import("@wso2is/admin.core.v1/components/monaco-editor/monaco-editor")
 );
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.

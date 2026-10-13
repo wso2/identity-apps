@@ -19,6 +19,9 @@
 import Chip from "@oxygen-ui/react/Chip";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -210,6 +213,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
     const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
+
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -537,8 +545,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Resolves the attributes by which the users can be searched.
      */
     const userSearchAttributes: DropdownChild[] = useMemo(() => {
-        return resolveUserSearchAttributes(profileSchemas);
-    }, [ profileSchemas ]);
+        // Wait until the duplicated Enterprise schema attributes are identified, so they are not listed.
+        if (isDuplicatedClaimsLoading) {
+            return [];
+        }
+
+        return resolveUserSearchAttributes(profileSchemas, duplicatedClaims);
+    }, [ profileSchemas, duplicatedClaims, isDuplicatedClaimsLoading ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -24,10 +23,10 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { getInboundProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
+import { AxiosError } from "axios";
 import {
     CheckboxFieldAdapter,
     CheckboxGroupFieldAdapter,
@@ -40,10 +39,12 @@ import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
+import { AGENT_APP_LIMIT_REACHED_SCIM_TYPE } from "../../constants/agents";
+import useResolvedAgentOwner from "../../hooks/use-resolved-agent-owner";
 import { AgentScimSchema, AgentType } from "../../models/agents";
 import "./add-agent-wizard.scss";
 
@@ -79,7 +80,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
+    const agentOwner: string = useResolvedAgentOwner();
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -102,18 +103,16 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         setIsSubmitting(true);
         setSubmittedValues(values);
 
-        // Step 1: Create SCIM payload with minimal data (only send isUserServingAgent flag).
         const addAgentPayload: AgentScimSchema = {
             "urn:scim:wso2:agent:schema": {
                 Description: values?.description,
                 DisplayName: values?.name,
                 IsUserServingAgent: values?.isUserServingAgent || false,
-                Owner: authenticatedUserInfo?.username
+                Owner: agentOwner
             }
         };
 
         try {
-            // Step 2: Create the agent via SCIM.
             const response: AgentScimSchema = await addAgent(addAgentPayload);
 
             const result: AgentCreationResultInterface = {
@@ -123,28 +122,17 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 oauthClientId: undefined
             };
 
-            // Step 3: If this is a user-serving agent, update application OAuth configuration.
             if (values?.isUserServingAgent && response?.id) {
-                try {
-                    // Extract the application ID from response (agentId == applicationId).
-                    const applicationId: string = response.id;
+                const applicationId: string = response.id;
 
-                    // Update application OAuth configuration via Application REST API.
+                try {
                     await updateAgentApplicationConfiguration(applicationId, {
                         agentType: values?.agentType,
                         callbackUrl: values?.callbackUrl,
                         cibaAuthReqExpiryTime: values?.cibaAuthReqExpiryTime,
                         notificationChannels: values?.notificationChannels
                     });
-
-                    // Step 4: Fetch the OAuth Client ID.
-                    const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
-
-                    if (oidcConfig?.clientId) {
-                        result.oauthClientId = oidcConfig.clientId;
-                    }
-                } catch (error) {
-                    // If Application API update fails, show warning but continue.
+                } catch {
                     dispatch(
                         addAlert({
                             description: t("agents:wizard.alerts.configUpdateFailed.description"),
@@ -153,9 +141,24 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                         })
                     );
                 }
+
+                try {
+                    const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
+
+                    if (oidcConfig?.clientId) {
+                        result.oauthClientId = oidcConfig.clientId;
+                    }
+                } catch {
+                    dispatch(
+                        addAlert({
+                            description: t("agents:wizard.alerts.clientIdFetchFailed.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("agents:wizard.alerts.clientIdFetchFailed.message")
+                        })
+                    );
+                }
             }
 
-            // Step 5: Show success alert.
             dispatch(
                 addAlert({
                     description: t("agents:wizard.alerts.created.description"),
@@ -164,22 +167,36 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 })
             );
 
-            // Step 6: Show success screen with all data ready.
             setCreationResult(result);
             setIsShowingSuccessScreen(true);
             setIsSubmitting(false);
-        } catch (_err: unknown) {
+        } catch (error: unknown) {
             // On error, stay on form with the user's values.
             setIsShowingSuccessScreen(false);
             setCreationResult(null);
             setSubmittedValues(null);
-            dispatch(
-                addAlert({
-                    description: t("agents:wizard.alerts.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("agents:wizard.alerts.error.message")
-                })
-            );
+
+            const errorResponse: AxiosError<{ scimType?: string }>["response"] =
+                (error as AxiosError<{ scimType?: string }>)?.response;
+
+            if (errorResponse?.status === 403
+                && errorResponse?.data?.scimType === AGENT_APP_LIMIT_REACHED_SCIM_TYPE) {
+                dispatch(
+                    addAlert({
+                        description: t("agents:wizard.alerts.limitReached.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("agents:wizard.alerts.limitReached.message")
+                    })
+                );
+            } else {
+                dispatch(
+                    addAlert({
+                        description: t("agents:wizard.alerts.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("agents:wizard.alerts.error.message")
+                    })
+                );
+            }
             setIsSubmitting(false);
         }
     };

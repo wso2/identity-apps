@@ -1,5 +1,50 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.39.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+### Patch Changes
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11)]:
+  - @wso2is/admin.core.v1@2.60.0
+  - @wso2is/admin.feature-gate.v1@1.11.0
+  - @wso2is/forms@2.12.0
+  - @wso2is/i18n@2.47.0
+  - @wso2is/admin.users.v1@2.38.56
+
+## 2.38.60
+
+### Patch Changes
+
+- [#10659](https://github.com/wso2/identity-apps/pull/10659) [`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add the missing "Learn More" documentation links to the Login & Registration and Notification Channels
+  pages that were shipping without one — Alternative Login Identifiers, Username Validation, Session Management,
+  Policy Management, Preference Management, Admin Initiated Password Reset, SAML2 Web SSO Configuration,
+  Organization Discovery, Impersonation, Issuer Usage Scope, Outbound Provisioning Configuration,
+  Internal Notification Sending, Email Provider, SMS Provider and Push Provider. The Email Provider and SMS
+  Provider pages already rendered a `DocumentationLink`, but the `develop.emailProviders.learnMore` and
+  `develop.smsProviders.learnMore` keys they read were absent from the documentation link config, so the link
+  resolved to `undefined` and never rendered.
+
+  The two governance connector descriptions touched here (Alternative Login Identifiers and Admin Initiated
+  Password Reset) also move from hardcoded English to `governanceConnectors` i18n keys.
+
+- Updated dependencies [[`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9)]:
+  - @wso2is/admin.core.v1@2.59.3
+  - @wso2is/i18n@2.45.7
+
+## 2.38.59
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+- Updated dependencies [[`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33)]:
+  - @wso2is/admin.core.v1@2.59.2
+  - @wso2is/admin.extensions.v1@2.43.11
+
 ## 2.38.58
 
 ### Patch Changes

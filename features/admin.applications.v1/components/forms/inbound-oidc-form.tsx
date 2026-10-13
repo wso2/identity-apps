@@ -23,7 +23,7 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
 } from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
@@ -92,10 +92,7 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Icon, Label, List, Radio, Table } from "semantic-ui-react";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
-import {
-    ApplicationFeatureDictionaryKeys,
-    ApplicationManagementConstants
-} from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
 import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
@@ -105,6 +102,7 @@ import OIDCWebApplicationTemplate from
 import SinglePageApplicationTemplate from
     "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import useAllowedIssuers from "../../hooks/use-allowed-issuers";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import { useFapiProfileConstraints } from "@wso2is/admin.fapi-security-policy.v1";
 import {
     ApplicationInterface,
@@ -130,6 +128,7 @@ import {
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
+import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 import "./inbound-oidc-form.scss";
 
@@ -258,20 +257,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
     );
-    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
-        applicationFeatureConfig,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
-    );
     const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
         organizationsFeatureConfig,
         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION")
     );
 
-    const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
-    const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
+    const {
+        isEnforceClientSecretPermissionEnabled,
+        hasClientSecretReadPermission,
+        hasClientSecretCreatePermission,
+        maxSecretCount
+    } = useClientSecretManagement();
 
     const { isFAPIApplication, fapiProfile: initialFapiProfile } = initialValues;
     const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
@@ -392,6 +388,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const notificationChannels: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const cibaSkipUserValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const cibaAllowFederatedUsers: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenExchangeRestrictScopeIssuanceForFederatedTokens: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -411,6 +408,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
     const [ showCibaFields, setShowCibaFields ] = useState<boolean>(false);
+    const [ showTokenExchangeFields, setShowTokenExchangeFields ] = useState<boolean>(false);
     const [ isSkipUserValidationEnabled, setIsSkipUserValidationEnabled ] = useState<boolean>(
         initialValues?.cibaAuthenticationRequest?.skipUserValidation ?? false
     );
@@ -638,8 +636,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ claims, externalClaims ]);
 
-    useEffect(() => {
-        if (!initialValues.accessToken.accessTokenAttributes) {
+    useEffect((): void => {
+        if (!initialValues?.accessToken?.accessTokenAttributes) {
+            setSelectedAccessTokenAttributes(undefined);
+
             return;
         }
         const selectedAttributes: ExternalClaim[] = initialValues.accessToken.accessTokenAttributes
@@ -648,9 +648,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
         setSelectedAccessTokenAttributes(selectedAttributes);
+    }, [ accessTokenAttributes, JSON.stringify(initialValues?.accessToken?.accessTokenAttributes) ]);
+
+    useEffect((): void => {
         setAccessTokenAttributesEnabled(ApplicationManagementUtils.isAppVersionAllowed(
             application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
-    }, [ accessTokenAttributes, application ]);
+    }, [ application?.applicationVersion ]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -788,6 +791,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         setShowCibaFields(
             selectedGrantTypes?.includes(ApplicationManagementConstants.CIBA_GRANT) ?? false
+        );
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        setShowTokenExchangeFields(
+            selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE) ?? false
         );
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -1773,6 +1782,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         authReqExpiryTime: undefined,
                         notificationChannels: [],
                         skipUserValidation: false
+                    }
+                };
+            }
+
+            if (showTokenExchangeFields) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    tokenExchange: {
+                        restrictScopeIssuanceForFederatedTokens:
+                            values.get("tokenExchangeRestrictScopeIssuanceForFederatedTokens")?.length > 0
                     }
                 };
             }
@@ -3086,6 +3105,46 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
+            {
+                showTokenExchangeFields && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Heading as="h4">
+                                { t("applications:forms.inboundOIDC.fields.tokenExchange.heading") }
+                            </Heading>
+                            <Field
+                                ref={ tokenExchangeRestrictScopeIssuanceForFederatedTokens }
+                                name="tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                required={ false }
+                                type="checkbox"
+                                value={
+                                    initialValues?.tokenExchange?.restrictScopeIssuanceForFederatedTokens
+                                        ? [ "tokenExchangeRestrictScopeIssuanceForFederatedTokens" ]
+                                        : []
+                                }
+                                children={ [
+                                    {
+                                        label: t("applications:forms.inboundOIDC.fields." +
+                                            "tokenExchange.restrictScopeIssuanceForFederatedTokens.label"),
+                                        value: "tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                data-componentid={ `${ testId }-token-exchange-restrict-scopes-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.fields." +
+                                    "tokenExchange.restrictScopeIssuanceForFederatedTokens.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
             { /* Client Authentication*/ }
             {
                 isClientAuthenticationSectionEnabled && (
@@ -3743,8 +3802,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Code withBackground>access_token</Code>
                                     and the
                                     <Code withBackground>refresh_token</Code>
-                                    to the login session and issue a new token per session. When the application
-                                    session ends, the tokens will also be revoked.
+                                    to the productName login session and issue a new token per session. The tokens
+                                    are revoked when that login session is explicitly terminated, either through a
+                                    logout request or through the session management API. Session expiry alone does
+                                    not revoke the tokens.
                                 </Trans>
                             </Hint>
                         </Grid.Column>
@@ -5651,14 +5712,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
-                                                {
-                                                    t("applications:forms.inboundOIDC.fields" +
-                                                        ".clientSecret.label")
-                                                }
+                                                { t("applications:forms.inboundOIDC.fields.clientSecret.label") }
                                             </label>
                                             {
-                                                isClientSecretHashEnabled
+                                                maxSecretCount > 1
                                                     ? (
+                                                        <ClientSecretsSection
+                                                            appId={ application?.id }
+                                                            clientId={ initialValues?.clientId }
+                                                            clientSecret={ initialValues?.clientSecret }
+                                                            clientSecretExpiresAt={
+                                                                initialValues?.clientSecretExpiresAt
+                                                            }
+                                                            multipleClientSecretsConfigured={
+                                                                initialValues?.multipleClientSecretsConfigured
+                                                            }
+                                                            hideSecretValue={ isClientSecretHashEnabled }
+                                                            onUpdate={ onUpdate }
+                                                            readOnly={ readOnly }
+                                                            data-componentid={
+                                                                `${ componentId }-client-secrets-section`
+                                                            }
+                                                        />
+                                                    )
+                                                    : isClientSecretHashEnabled
+                                                        ? (
                                                         <>
                                                             <Message
                                                                 visible

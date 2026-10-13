@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -40,6 +41,13 @@ export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
+    const agentFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState): FeatureAccessConfigInterface =>
+            state?.config?.ui?.features?.agents);
+
+    const hasAgentCreatePermissions: boolean =
+        useRequiredScopes(agentFeatureConfig?.scopes?.create);
 
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
 
@@ -73,6 +81,9 @@ export default function Agents ({
         null,
         isAgentManagementEnabledForOrg
     );
+
+    const shouldShowCreateAgentButton: boolean =
+        hasAgentCreatePermissions && agentList?.Resources?.length > 0 && !isAgentListLoading;
 
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
@@ -117,7 +128,8 @@ export default function Agents ({
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
-            action={ agentList?.Resources?.length > 0 && !isAgentListLoading && (<PrimaryButton
+            action={ shouldShowCreateAgentButton && (<PrimaryButton
+                data-componentid={ `${ componentId }-add-button` }
                 onClick={ () => {
                     setIsAddAgentWizardOpen(true);
                 } }>
@@ -192,6 +204,7 @@ export default function Agents ({
                 data-testid={ `${ componentId }-list-layout` }
             >
                 <AgentList
+                    hasAgentCreatePermissions={ hasAgentCreatePermissions }
                     advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
                             onFilter={ () => {} }

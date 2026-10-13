@@ -1,5 +1,49 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.11.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+### Patch Changes
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11)]:
+  - @wso2is/admin.core.v1@2.60.0
+  - @wso2is/admin.registration-flow-builder.v1@0.11.0
+  - @wso2is/admin.branding.v1@2.32.174
+  - @wso2is/admin.flows.v1@1.0.181
+
+## 0.10.224
+
+### Patch Changes
+
+- [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
+- Updated dependencies [[`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.178
+
+## 0.10.223
+
+### Patch Changes
+
+- [#10551](https://github.com/wso2/identity-apps/pull/10551) [`1f92355a3f9d099148c1595b0e5c05b1c247e44c`](https://github.com/wso2/identity-apps/commit/1f92355a3f9d099148c1595b0e5c05b1c247e44c) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove policy from the steps
+
+## 0.10.222
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+- Updated dependencies [[`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.177
+
+## 0.10.221
+
+### Patch Changes
+
+- [#10537](https://github.com/wso2/identity-apps/pull/10537) [`9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac`](https://github.com/wso2/identity-apps/commit/9e230b44cbf1d8852af9cb3c02bbe8bb526b19ac) Thanks [@KD23243](https://github.com/KD23243)! - Add flow extension step support to password recovery and ask password flow builders
+
 ## 0.10.220
 
 ### Patch Changes

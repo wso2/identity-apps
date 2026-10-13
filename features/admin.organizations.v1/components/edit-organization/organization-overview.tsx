@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -109,6 +111,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state?.organization?.organization
@@ -123,6 +126,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     ] = useState(false);
 
     const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
+
+    const organizationToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATIONS_TOGGLE_ENABLE
+    );
+    const isOrganizationToggleEnableFeatureLocked: boolean =
+        organizationToggleEnableFeatureStatus === FeatureStatus.DISABLED;
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -209,6 +218,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     );
 
                     setShowOrgDeleteConfirmationModal(false);
+                    refreshAllFeatures();
                     onOrganizationDelete(organizationId);
                 })
                 .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
@@ -650,6 +660,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={ `${ testId }-disable-danger-zone` }
                                 toggle={ {
                                     checked: organization.status !== "ACTIVE",
+                                    disableHint: t("console:common.featureLockedTooltip.toggleEnable"),
+                                    disabled: isOrganizationToggleEnableFeatureLocked,
                                     onChange: handleDisableOrganization
                                 } }
                             />

@@ -1020,6 +1020,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "U kunt aanmeldingsnotificaties van uw geconfigureerde authenticatortoepassing gebruiken voor tweefactorauthenticatie. Als u geen toegang heeft tot de toepassing, kunt u hier een nieuwe authenticatortoepassing configureren.",
                 "deleteHint": "Verwijderen",
                 "description": "U kunt de push-authenticatortoepassing gebruiken om aanmeldingsnotificaties als pushmeldingen te ontvangen voor tweefactorauthenticatie.",
+                "deviceLimitReachedHint": "Maximaal aantal apparaten van {{limit}} bereikt",
                 "heading": "Push-authenticator",
                 "hint": "Bekijken",
                 "modals": {
@@ -1038,6 +1039,12 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "notifications": {
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Er is een fout opgetreden bij het ophalen van de push-authenticatorconfiguratie.",
+                            "message": "Er is iets misgegaan"
+                        }
+                    },
                     "delete": {
                         "error": {
                             "description": "{{error}}",

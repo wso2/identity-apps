@@ -433,6 +433,9 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "properties": {
+                    "multiplePushDeviceSupportEnabled": {% if push_device_management.multiple_device_support_enabled is defined %}{{ push_device_management.multiple_device_support_enabled }}{% else %}true{% endif %}
                 }
             }
         },

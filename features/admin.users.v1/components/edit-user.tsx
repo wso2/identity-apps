@@ -128,6 +128,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config.ui.features?.users;
     });
+    const isSAASDeployment: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isSAASDeployment
+    );
     const isUserGroupsEnabled: boolean = isFeatureEnabled(
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
@@ -331,7 +334,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ShareUserForm
                             user={ user }
-                            readOnly={ !hasSharedAccessUpdatePermission }
+                            readOnly={ (!isSAASDeployment && isReadOnly) || !hasSharedAccessUpdatePermission }
                             enableConsoleAdminRole={ enableConsoleAdminRole }
                         />
                     </ResourceTab.Pane>
@@ -344,6 +347,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         user,
         isUserGroupsEnabled,
         isSharedAccessEnabled,
+        isSAASDeployment,
         hasSharedAccessReadPermission,
         hasSharedAccessUpdatePermission,
         connectorProperties,

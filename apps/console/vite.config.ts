@@ -38,6 +38,11 @@ interface PreRenderedOutputInfoInterface {
     name?: string;
 }
 
+interface PreRenderedWorkerChunkInterface {
+    facadeModuleId?: string | null;
+    name: string;
+}
+
 const isDeploymentConfig = (value: unknown): value is DeploymentConfigInterface => {
     return typeof value === "object" && value !== null;
 };
@@ -551,7 +556,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
     const environment: Record<string, string> = loadEnv(mode, __dirname, "");
     const buildMode: ReturnType<typeof resolveBuildMode> = resolveBuildMode(environment);
     const isDevelopment: boolean = mode !== "production";
-    const publicBasePath: string = isDevelopment ? "/" : buildMode.publicBase;
+    // Relative base keeps built asset/chunk URLs anchored to the importing module
+    // (`import.meta.url`), so the app works under any externally visible prefix
+    // (e.g. a `proxy_context_path`) without the base being baked in at build time.
+    const publicBasePath: string = isDevelopment ? "/" : "./";
     const metaHash: string = resolveMetaHash();
     const devServerPort: number = Number(environment.DEV_SERVER_PORT || 9001);
     const devServerHost: string = environment.DEV_SERVER_HOST || "localhost";
@@ -661,7 +669,14 @@ export default defineConfig(({ mode }: { mode: string }) => {
         worker: {
             rollupOptions: {
                 output: {
-                    entryFileNames: "[hash].worker.js"
+                    entryFileNames: (chunk: PreRenderedWorkerChunkInterface): string => {
+                        // Monaco workers are served from the directory mapped to the default servlet in web.xml.
+                        if (chunk.facadeModuleId?.includes("/node_modules/monaco-editor/")) {
+                            return "monaco-workers/[name].[hash].js";
+                        }
+
+                        return "[hash].worker.js";
+                    }
                 }
             }
         }

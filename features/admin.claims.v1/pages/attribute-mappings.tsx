@@ -87,7 +87,7 @@ const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsP
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
         const [ mappedLocalclaims, setMappedLocalClaims ] = useState<string[]>([]);
         const [ triggerFetchMappedClaims, setTriggerFetchMappedClaims ] = useState<boolean>(true);
-        const [ triigerFetchDialects, setTriggerFetchDialects ] = useState<boolean>(true);
+        const [ triggerFetchDialects, setTriggerFetchDialects ] = useState<boolean>(true);
 
         const {
             userStoresList
@@ -100,9 +100,11 @@ const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsP
         }, [ userStoresList ]);
 
         useEffect(() => {
-            getDialect();
-            setTriggerFetchDialects(false);
-        }, [ triigerFetchDialects ]);
+            if (triggerFetchDialects) {
+                getDialect();
+                setTriggerFetchDialects(false);
+            }
+        }, [ triggerFetchDialects ]);
 
         useEffect(() => {
             if ( dialects && dialects.length > 0 && triggerFetchMappedClaims ) {

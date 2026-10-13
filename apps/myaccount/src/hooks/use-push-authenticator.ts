@@ -18,12 +18,22 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetPushAuthRegisteredDevices from "./use-get-push-auth-registered-devices";
-import { deletePushAuthRegisteredDevice, initPushAuthenticatorQRCode } from "../api/multi-factor-push";
+import {
+    deletePushAuthRegisteredDevice,
+    initPushAuthenticatorQRCode
+} from "../api/multi-factor-push";
+import { getConfigPreferences } from "../api/preference";
 import { AlertLevels } from "../models/alert";
 import { HttpResponse } from "../models/api";
+import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
+import {
+    ConfigPreferenceResponseInterface,
+    PushDeviceMgtConfigInterface
+} from "../models/push-authenticator";
+import { AppState } from "../store";
 import { addAlert } from "../store/actions/global";
 
 /**
@@ -42,10 +52,85 @@ const usePushAuthenticator = () => {
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
     const [ qrCode, setQrCode ] = useState<string>(null);
+    const [ isPushDeviceMgtConfigLoading, setIsPushDeviceMgtConfigLoading ] = useState<boolean>(false);
+    const [ pushDeviceMgtConfig, setPushDeviceMgtConfig ] = useState<PushDeviceMgtConfigInterface>(null);
 
     const { t } = useTranslation();
 
     const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
+
+    // Feature flag that gates multiple device support, exposed as a property of the security feature config.
+    const isMultipleDeviceSupportEnabled: boolean = useSelector(
+        (state: AppState) =>
+            Boolean(state?.config?.ui?.features?.security?.properties?.multiplePushDeviceSupportEnabled)
+    );
+
+    const isMultipleDeviceEnrollmentEnabled: boolean =
+        isMultipleDeviceSupportEnabled && (pushDeviceMgtConfig?.enableMultipleDeviceEnrollment ?? false);
+
+    const deviceLimit: number = isMultipleDeviceEnrollmentEnabled
+        ? (pushDeviceMgtConfig?.maximumDeviceLimit
+            ?? MultiFactorAuthenticationConstants.DEFAULT_MULTIPLE_PUSH_DEVICE_LIMIT)
+        : MultiFactorAuthenticationConstants.SINGLE_PUSH_DEVICE_LIMIT;
+
+    const isDeviceLimitReached: boolean = (registeredDeviceList?.length ?? 0) >= deviceLimit;
+
+    useEffect(() => {
+        if (!isMultipleDeviceSupportEnabled) {
+            return;
+        }
+
+        setIsPushDeviceMgtConfigLoading(true);
+
+        getConfigPreferences([
+            {
+                attributeNames: [
+                    MultiFactorAuthenticationConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT,
+                    MultiFactorAuthenticationConstants.PROPERTY_MAXIMUM_PUSH_DEVICE_LIMIT
+                ],
+                resourceName: MultiFactorAuthenticationConstants.DEVICE_MGT_RESOURCE_NAME,
+                resourceType: MultiFactorAuthenticationConstants.RESOURCE_TYPE
+            }
+        ])
+            .then((response: ConfigPreferenceResponseInterface[]) => {
+                const resource: ConfigPreferenceResponseInterface | undefined = response?.find(
+                    (item: ConfigPreferenceResponseInterface) =>
+                        item.resourceType === MultiFactorAuthenticationConstants.RESOURCE_TYPE &&
+                        item.resourceName === MultiFactorAuthenticationConstants.DEVICE_MGT_RESOURCE_NAME
+                );
+
+                if (resource) {
+                    const getValue = (name: string): string | undefined =>
+                        resource.attributeNames.find((p) => p.name === name)?.value;
+
+                    const parsedMaximumDeviceLimit: number = Number.parseInt(
+                        getValue(MultiFactorAuthenticationConstants.PROPERTY_MAXIMUM_PUSH_DEVICE_LIMIT)
+                            ?? String(MultiFactorAuthenticationConstants.DEFAULT_MULTIPLE_PUSH_DEVICE_LIMIT),
+                        10
+                    );
+                    const safeMaximumDeviceLimit: number =
+                        Number.isFinite(parsedMaximumDeviceLimit) && parsedMaximumDeviceLimit > 0
+                            ? parsedMaximumDeviceLimit
+                            : MultiFactorAuthenticationConstants.DEFAULT_MULTIPLE_PUSH_DEVICE_LIMIT;
+
+                    setPushDeviceMgtConfig({
+                        enableMultipleDeviceEnrollment:
+                            getValue(MultiFactorAuthenticationConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT) === "true",
+                        maximumDeviceLimit: safeMaximumDeviceLimit
+                    });
+                }
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t(translateKey + "notifications.configFetchError.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t(translateKey + "notifications.configFetchError.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsPushDeviceMgtConfigLoading(false);
+            });
+    }, [ isMultipleDeviceSupportEnabled ]);
 
     useEffect(() => {
         if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
@@ -62,7 +147,11 @@ const usePushAuthenticator = () => {
     /**
      * Initiate the push authenticator configuration flow.
      */
-    const initPushAuthenticatorRegFlow = () => {
+    const initPushAuthenticatorRegFlow = (): void => {
+        if (isDeviceLimitReached) {
+            return;
+        }
+
         setIsLoading(true);
 
         initPushAuthenticatorQRCode()
@@ -101,7 +190,7 @@ const usePushAuthenticator = () => {
     const handlePushAuthenticatorSetupSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         updateRegisteredDeviceList();
-        // setIsConfigPushAuthenticatorModalOpen(false);
+        setQrCode(null);
     };
 
     /**
@@ -122,9 +211,9 @@ const usePushAuthenticator = () => {
             }
         ).catch((_err: any) => {
             dispatch(addAlert({
-                description: t(translateKey + "notifications.deleteError.genericError.description"),
+                description: t(translateKey + "notifications.delete.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.deleteError.genericError.message")
+                message: t(translateKey + "notifications.delete.genericError.message")
             }));
         }).finally(() => {
             setIsLoading(false);
@@ -133,11 +222,15 @@ const usePushAuthenticator = () => {
 
     return {
         deleteRegisteredDevice,
+        deviceLimit,
         handlePushAuthenticatorInitCancel,
         handlePushAuthenticatorSetupSubmit,
         initPushAuthenticatorRegFlow,
         isConfigPushAuthenticatorModalOpen,
+        isDeviceLimitReached,
         isLoading,
+        isPushDeviceMgtConfigLoading,
+        isMultipleDeviceEnrollmentEnabled,
         isRegisteredDeviceListLoading,
         qrCode,
         registeredDeviceList,

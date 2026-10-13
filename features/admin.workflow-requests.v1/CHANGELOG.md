@@ -1,5 +1,11 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.21
+
+### Patch Changes
+
+- [#10716](https://github.com/wso2/identity-apps/pull/10716) [`793ad4acc7e56605f748093065046c71211d8dea`](https://github.com/wso2/identity-apps/commit/793ad4acc7e56605f748093065046c71211d8dea) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.workflow-requests.v1` package
+
 ## 1.0.20
 
 ### Patch Changes

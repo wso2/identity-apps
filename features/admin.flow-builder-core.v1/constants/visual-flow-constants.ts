@@ -46,7 +46,8 @@ class VisualFlowConstants {
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,
         TemplateTypes.Blank,
-        TemplateTypes.BasicPasskey
+        TemplateTypes.BasicPasskey,
+        TemplateTypes.BasicWallet
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -67,7 +68,7 @@ class VisualFlowConstants {
         WidgetTypes.GithubFederation,
         WidgetTypes.PasskeyEnrollment,
         WidgetTypes.MagicLink,
-        ElementTypes.Policy
+        WidgetTypes.DigitalWalletFederation
     ];
 
     public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [

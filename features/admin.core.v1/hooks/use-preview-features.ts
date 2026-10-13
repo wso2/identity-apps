@@ -23,6 +23,7 @@ import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
 import { CDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/models/config";
 import { getCDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/utils/application-identifier-utils";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
@@ -137,7 +138,9 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
         const items: PreviewFeaturesListInterface[] = [];
 
-        if (cdsFeatureConfig?.enabled && hasCDSScopes) {
+        // In the unified Customer Data Profile view, CDS is enabled from its own page,
+        // so it is not offered as a preview feature.
+        if (cdsFeatureConfig?.enabled && hasCDSScopes && !isCDSUnifiedProfileViewEnabled()) {
             items.push({
                 action: t("customerDataService:common.featurePreview.action"),
                 description: t("customerDataService:common.featurePreview.description"),
@@ -254,11 +257,8 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
     const canUsePreviewFeatures: boolean =
-        (
-            saasFeatureStatus === FeatureStatus.ENABLED &&
-            previewFeaturesFeatureStatus === FeatureStatus.ENABLED
-        ) ||
-        cdsFeatureConfig?.enabled === true &&
+        saasFeatureStatus === FeatureStatus.ENABLED &&
+        previewFeaturesFeatureStatus === FeatureStatus.ENABLED &&
         hasAccessiblePreviewFeatures;
 
     return {

@@ -1,5 +1,51 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.29.3
+
+### Patch Changes
+
+- [#10686](https://github.com/wso2/identity-apps/pull/10686) [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111) Thanks [@KD23243](https://github.com/KD23243)! - Fix the option values of the SAML connection's User ID Location field, which were wired to the inverse
+  booleans of the `IsUserIdInClaims` property. `Use NameID as the User Identifier` mapped to `true` and
+  `User Identifier found among claims` to `false`, while the authenticator reads `false` as NameID and
+  `true` as claims. Every SAML connection was therefore rendered with the opposite user ID location to
+  the one stored, and selecting an option persisted the opposite boolean.
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.roles.v2@2.27.387
+  - @wso2is/admin.connections.v1@2.42.1
+
+## 2.29.2
+
+### Patch Changes
+
+- [#10653](https://github.com/wso2/identity-apps/pull/10653) [`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add IDP sharing UI
+
+- Updated dependencies [[`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724)]:
+  - @wso2is/admin.connections.v1@2.41.0
+  - @wso2is/admin.applications.v1@2.43.20
+  - @wso2is/admin.core.v1@2.59.4
+  - @wso2is/i18n@2.45.8
+
+## 2.29.1
+
+### Patch Changes
+
+- [#10555](https://github.com/wso2/identity-apps/pull/10555) [`128ed8b644ed228e04633b8c645f87da76c688e0`](https://github.com/wso2/identity-apps/commit/128ed8b644ed228e04633b8c645f87da76c688e0) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Gate push device management config fetch and update on enabled features
+
+## 2.29.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.connections.v1@2.39.0
+  - @wso2is/admin.core.v1@2.58.0
+
 ## 2.28.1
 
 ### Patch Changes

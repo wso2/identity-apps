@@ -542,6 +542,7 @@ interface CustomExtendedWindow extends Window {
                 isCookieConsentBannerEnabled: true,
                 isGroupAndRoleSeparationEnabled: true,
                 isSignatureValidationCertificateAliasEnabled: false,
+                isCustomClaimDialectRoutingEnabled: false,
                 isCustomClaimMappingEnabled: true,
                 isCustomClaimMappingMergeEnabled: true,
                 isClientSecretHashEnabled: false,

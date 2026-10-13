@@ -395,7 +395,39 @@ export interface ConsoleNS {
         featureLockedBanner: {
             prefix: string;
             action: string;
+            contactAction: string;
             suffix: string;
+        };
+        featureLockedTooltip: {
+            toggleEnable: string;
+        };
+        planLimitExceededAlert: {
+            comparePlansAction: string;
+            hideDetails: string;
+            showDetails: string;
+            resolutionsHeading: string;
+            applications: {
+                title: string;
+                description: string;
+                upgradeResolution: string;
+                stayResolution: string;
+            };
+            enterpriseConnections: {
+                title: string;
+                description: string;
+                upgradeResolution: string;
+                stayResolution: string;
+            };
+            organizations: {
+                title: string;
+                description: string;
+                upgradeResolution: string;
+                stayResolution: string;
+            };
+        };
+        freeTrialBanner: {
+            upgradeAction: string;
+            contactAction: string;
         };
         upgrade: string;
     };

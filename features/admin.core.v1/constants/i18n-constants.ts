@@ -336,6 +336,12 @@ export class I18nConstants {
     public static readonly COMMON_USERS_NAMESPACE: string = I18nModuleConstants.COMMON_USERS_NAMESPACE;
 
     /**
+     * Presentation Definitions namespace.
+     */
+    public static readonly PRESENTATION_DEFINITIONS_NAMESPACE: string =
+        I18nModuleConstants.PRESENTATION_DEFINITIONS_NAMESPACE;
+
+    /**
      * Verifiable Credentials namespace.
      */
     public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string =
@@ -348,6 +354,11 @@ export class I18nConstants {
         I18nModuleConstants.CUSTOMER_DATA_SERVICE_NAMESPACE;
 
     /**
+     * OpenID4VP Configuration namespace.
+     */
+    public static readonly OPENID4VP_CONFIG_NAMESPACE: string = I18nModuleConstants.OPENID4VP_CONFIG_NAMESPACE;
+
+    /**
      * Consents namespace.
      */
     public static readonly CONSENTS_NAMESPACE: string = I18nModuleConstants.CONSENTS_NAMESPACE;
@@ -357,6 +368,11 @@ export class I18nConstants {
      */
     public static readonly FLOW_EXTENSION_NAMESPACE: string =
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
+
+    /**
+     * CLI settings namespace.
+     */
+    public static readonly CLI_SETTINGS_NAMESPACE: string = I18nModuleConstants.CLI_SETTINGS_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -422,10 +438,13 @@ export class I18nConstants {
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
+        [ I18nConstants.PRESENTATION_DEFINITIONS_NAMESPACE, "portals" ],
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
+        [ I18nConstants.OPENID4VP_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
-        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ],
+        [ I18nConstants.CLI_SETTINGS_NAMESPACE, "portals" ]
     ]);
 
     /**

@@ -1028,6 +1028,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "Puedes usar las solicitudes de inicio de sesión generadas desde tu aplicación autenticadora configurada para la autenticación de dos factores. Si no tienes acceso a la aplicación, puedes configurar una nueva aplicación autenticadora desde aquí.",
                 "deleteHint": "Eliminar",
                 "description": "Puedes usar la aplicación autenticadora push para recibir notificaciones de inicio de sesión como notificaciones push para la autenticación de dos factores.",
+                "deviceLimitReachedHint": "Se ha alcanzado el límite máximo de {{limit}} dispositivos",
                 "heading": "Autenticador Push",
                 "hint": "Ver",
                 "modals": {
@@ -1058,6 +1059,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "El dispositivo registrado se eliminó con éxito",
                             "message": "Dispositivo eliminado con éxito"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Se produjo un error al recuperar la configuración del autenticador push.",
+                            "message": "Algo salió mal"
                         }
                     },
                     "deviceListFetchError": {

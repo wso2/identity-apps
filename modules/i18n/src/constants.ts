@@ -250,6 +250,12 @@ export class I18nModuleConstants {
     public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
 
     /**
+     * CLI settings namespace.
+     * @constant
+     */
+    public static readonly CLI_SETTINGS_NAMESPACE: string = "cliSettings";
+
+    /**
      * Secrets namespace.
      * @constant
      */
@@ -395,9 +401,19 @@ export class I18nModuleConstants {
     public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
 
     /**
+     * Presentation Definitions namespace.
+     */
+    public static readonly PRESENTATION_DEFINITIONS_NAMESPACE: string = "presentationDefinitions";
+
+    /**
      * Verifiable Credentials namespace.
      */
     public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
+
+    /**
+     * OpenID4VP Configuration namespace.
+     */
+    public static readonly OPENID4VP_CONFIG_NAMESPACE: string = "openid4vp";
 
     /**
      * Customer Data Service namespace.

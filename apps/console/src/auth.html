@@ -534,7 +534,10 @@
 
                                             authSecondary.initialize(regionalAuthConfig);
                                             if (loginTenant !== superTenantGlobal) {
-                                                authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
+                                                // `prompt` is intentionally omitted so that an existing session at the
+                                                // deployment unit is reused. Forcing `prompt=login` here re-authenticated
+                                                // the user against the platform IdP on every console load.
+                                                authSecondary.signIn({ fidp: "PlatformIDP" });
                                             } else {
                                                 authSecondary.signIn(getAuthParams({}));
                                             }

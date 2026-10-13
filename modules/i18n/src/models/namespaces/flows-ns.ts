@@ -64,6 +64,10 @@ export interface flowsNS {
                         termsOfUseUrl: string;
                     };
                     urlTypeLabel: string;
+                    linkTargetLabel: string;
+                    linkTargetHint: string;
+                    newTabHint: string;
+                    sameTabHint: string;
                 };
                 placeholder: string;
             };
@@ -117,6 +121,7 @@ export interface flowsNS {
                 apple: string;
                 confirmationCode: string;
                 default: string;
+                digitalWallet: string;
                 facebook: string;
                 github: string;
                 google: string;

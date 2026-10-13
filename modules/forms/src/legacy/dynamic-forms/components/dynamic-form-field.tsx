@@ -22,6 +22,7 @@ import React, { FC, cloneElement } from "react";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldInput } from "./field-input";
+import { FieldSelect } from "./field-select";
 
 export type DynamicFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange" | "component">> & {
     /**
@@ -46,6 +47,7 @@ type DynamicFieldType = FC<DynamicFieldProps> & {
     Input: typeof FieldInput;
     Button: typeof FieldButton;
     CheckBox: typeof FieldCheckbox;
+    Select: typeof FieldSelect;
 }
 
 export const DynamicField: DynamicFieldType = (props: DynamicFieldProps) => {
@@ -85,3 +87,4 @@ export const DynamicField: DynamicFieldType = (props: DynamicFieldProps) => {
 DynamicField.Input = FieldInput;
 DynamicField.Button = FieldButton;
 DynamicField.CheckBox = FieldCheckbox;
+DynamicField.Select = FieldSelect;

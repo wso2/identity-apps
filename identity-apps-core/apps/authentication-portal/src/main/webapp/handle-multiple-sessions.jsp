@@ -39,6 +39,14 @@
 
 <%
     String promptId = request.getParameter("promptId");
+
+    // The prompt id identifies the authentication context this page acts on, and is encoded into the
+    // form below. Without it there is no context to render, so fail cleanly instead of throwing.
+    if (StringUtils.isBlank(promptId)) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
+    }
+
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
 
     if (StringUtils.isBlank(authAPIURL)) {

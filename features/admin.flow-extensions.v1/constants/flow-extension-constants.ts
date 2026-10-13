@@ -82,4 +82,33 @@ export class FlowExtensionConstants {
      */
     public static readonly FLOW_EXTENSION_DEFAULT_DESCRIPTION: string =
         "Extend flows with external services.";
+
+    /**
+     * Matches a bracket-encoded claim entry in a non-modifiable path, capturing the claim URI.
+     */
+    private static readonly NON_MODIFIABLE_CLAIM_PATH_REGEX: RegExp =
+        /^\/user\/claims\[uri=(.*)\](?:\{[^}]+\})?$/;
+
+    /**
+     * Claims that a flow extension may only read, never write. Read from
+     * `Actions.Types.FlowExtension.NonModifiablePaths` in the `identity.xml`.
+     */
+    public static get READ_ONLY_CLAIM_URIS(): string[] {
+        const nonModifiablePaths: string[] = window[ "AppUtils" ]?.getConfig()?.ui?.features
+            ?.flowExtensions?.properties?.nonModifiablePaths ?? [];
+
+        return nonModifiablePaths
+            .map((path: string) => path.match(FlowExtensionConstants.NON_MODIFIABLE_CLAIM_PATH_REGEX)?.[1])
+            .filter((claimURI: string | undefined): claimURI is string => !!claimURI);
+    }
+
+    /**
+     * Whether the given claim URI is read-only inside a flow extension.
+     *
+     * @param claimURI - Claim URI to test.
+     * @returns `true` when the claim may only be read.
+     */
+    public static isReadOnlyClaim(claimURI: string): boolean {
+        return FlowExtensionConstants.READ_ONLY_CLAIM_URIS.includes(claimURI);
+    }
 }

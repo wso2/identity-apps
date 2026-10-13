@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRolePermissionInterface, PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -27,17 +30,17 @@ import {
     RolePermissionInterface,
     RolesInterface
 } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import {
     EmphasizedSegment,
     Heading,
     PrimaryButton
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
@@ -48,6 +51,9 @@ import {
     APIResourceCollectionResponseInterface
 } from "../../../models/console-roles";
 import { SelectedPermissionCategoryInterface, SelectedPermissionsInterface } from "../../../models/permissions-ui";
+import flattenFeatureConfig from "../../../utils/flatten-feature-config";
+import getEligibilityScopeNames from "../../../utils/get-eligibility-scope-names";
+import isPermissionLevelActionable from "../../../utils/is-permission-level-actionable";
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
 import CreateConsoleRoleWizardPermissionsForm from
     "../create-console-role-wizard/create-console-role-wizard-permissions-form";
@@ -99,6 +105,17 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
+        (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
+
+    /**
+     * Switches the permissions evaluation between the legacy and the granular mode.
+     */
+    const useGranularConsolePermissions: boolean = isFeatureEnabled(
+        featureConfig?.consoleSettings,
+        ConsoleRolesOnboardingConstants.GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY
+    );
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
         true,
         "type eq tenant",
@@ -113,27 +130,38 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
+    // Flatten the feature config to easily access sub features. Must match the wizard so the initial
+    // values computed here cover every row the wizard renders — otherwise sub-feature rows (e.g.
+    // `applicationAuthenticationScript`) load with no checkbox state.
+    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(
+        () => flattenFeatureConfig(featureConfig),
+        [ featureConfig ]
+    );
+
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
         if (!tenantAPIResourceCollections) {
             return null;
         }
 
-        const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
-            cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
-        clonedTenantAPIResourceCollections.apiResourceCollections =
-                clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
-                    (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item?.name)
-                );
-
-        return clonedTenantAPIResourceCollections;
-    }, [ tenantAPIResourceCollections ]);
+        return {
+            ...tenantAPIResourceCollections,
+            apiResourceCollections: tenantAPIResourceCollections.apiResourceCollections.filter(
+                (item: APIResourceCollectionInterface) =>
+                    !filteringAPIResourceCollectionNames.includes(item?.name) &&
+                    (
+                        enabledFeatureOverridesInConsoleRolePermissions?.includes(item?.name)
+                        || flattenedFeatureConfig?.[item?.name]?.enabled
+                        || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                    )
+            )
+        };
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -141,61 +169,150 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             return null;
         }
 
-        const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
-            cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
-        clonedOrganizationAPIResourceCollections.apiResourceCollections =
-                clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
-                    (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item?.name)
-                );
+        return {
+            ...organizationAPIResourceCollections,
+            apiResourceCollections: organizationAPIResourceCollections.apiResourceCollections.filter(
+                (item: APIResourceCollectionInterface) => {
+                    const itemName: string = item?.name ?? "";
+                    const featureNameWithoutOrgPrefix: string = itemName.startsWith(
+                        ConsoleRolesOnboardingConstants.ORG_PREFIX)
+                        ? itemName.substring(ConsoleRolesOnboardingConstants.ORG_PREFIX.length)
+                        : itemName;
 
-        return clonedOrganizationAPIResourceCollections;
-    }, [ organizationAPIResourceCollections ]);
+                    return !filteringAPIResourceCollectionNames.includes(itemName) &&
+                        (
+                            enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
+                            || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
+                            || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[
+                                featureNameWithoutOrgPrefix]]?.enabled
+                        );
+                }
+            )
+        };
+    }, [ organizationAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
+
+    /**
+     * Extracts all scope names from a permission-category array.
+     * Returns an empty array when the category array is absent or empty.
+     */
+    const extractScopeNames = (
+        categories: APIResourceCollectionPermissionCategoryInterface[] | undefined
+    ): string[] => {
+        if (!categories || categories.length === 0) {
+            return [];
+        }
+
+        return categories.flatMap(
+            (resource: APIResourceCollectionPermissionCategoryInterface) =>
+                resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => scope.name)
+        );
+    };
+
+    /**
+     * Checks whether every scope in `categories` appears in `selectedFeatures`.
+     * An empty (or absent) category is treated as "not selected".
+     *
+     * The per-action feature scopes (`console:<feature>_create/_update/_delete/_edit`) are dropped
+     * from the check in both modes — only the underlying management scopes (the `internal_*` scopes
+     * that actually grant the capability) decide whether a box is reported as selected. This keeps
+     * the loaded role's checkbox state consistent with the live form, and lights up boxes whose
+     * required capability is already granted through a shared scope even if the per-action feature
+     * scope itself is not persisted on the role.
+     */
+    const allScopesSelected = (
+        categories: APIResourceCollectionPermissionCategoryInterface[] | undefined,
+        selectedFeatures: string[]
+    ): boolean => {
+        const names: string[] = getEligibilityScopeNames(extractScopeNames(categories));
+
+        return names.length > 0 && names.every((name: string) => selectedFeatures.includes(name));
+    };
 
     /**
      * Process the collection and return the selected permissions.
      *
+     * Legacy mode  (useGranularConsolePermissions === false):
+     *   Evaluates `read` and `write` categories. If `write` is fully covered it takes
+     *   precedence — `read` is then marked false and only write scopes are stored.
+     *
+     * Granular mode (useGranularConsolePermissions === true):
+     *   Evaluates `read`, `create`, `update`, and `delete` independently.
+     *   The `write` field from the API response is ignored entirely.
+     *   Each flag is set to `true` only when all of its scopes are present in the role.
+     *   Any combination of flags is valid; there is no precedence between them.
+     *
+     * In both modes the eligibility check ignores the per-action feature scopes
+     * (`console:<feature>_create/_update/_delete/_edit`) and decides each level by the underlying
+     * management scopes (the `internal_*` scopes that actually grant the capability). This keeps
+     * boxes lit when a role holds the management scope but not the cosmetic feature scope, and
+     * lets levels backed by the same management scope load together.
+     *
      * @param collection - API resource collection.
-     * @param selectedFeatures - Selected features.
-     * @returns Selected permissions.
+     * @param selectedFeatures - Scope names already assigned to the role.
+     * @returns Populated SelectedPermissionCategoryInterface, or null if nothing is selected.
      */
     const processCollection = (
         collection: APIResourceCollectionInterface,
         selectedFeatures: string[]
     ): SelectedPermissionCategoryInterface | null => {
-        const readPermissions: string[] = collection.apiResources.read.flatMap(
-            (resource: APIResourceCollectionPermissionCategoryInterface) =>
-                resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => scope.name)
-        );
+        if (useGranularConsolePermissions) {
+            // A create / update / delete level that carries no action scope of its own (only its
+            // per-action feature scope — e.g. Approvals) is not actionable: its cell is read-only in
+            // the form, so it must never be reported as selected here. Gate each write level on
+            // `isPermissionLevelActionable` before testing its scopes, otherwise — because the bucket
+            // is a cumulative superset of read and the feature scope is stripped by the eligibility
+            // check — it would falsely light up whenever read is granted. `read` is always actionable.
+            const hasRead: boolean = allScopesSelected(collection.apiResources.read, selectedFeatures);
+            const hasCreate: boolean = isPermissionLevelActionable(collection, "create")
+                && allScopesSelected(collection.apiResources.create, selectedFeatures);
+            const hasUpdate: boolean = isPermissionLevelActionable(collection, "update")
+                && allScopesSelected(collection.apiResources.update, selectedFeatures);
+            const hasDelete: boolean = isPermissionLevelActionable(collection, "delete")
+                && allScopesSelected(collection.apiResources.delete, selectedFeatures);
 
-        const writePermissions: string[] = collection.apiResources.write.flatMap(
-            (resource: APIResourceCollectionPermissionCategoryInterface) =>
-                resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => scope.name)
-        );
+            if (!hasRead && !hasCreate && !hasUpdate && !hasDelete) {
+                return null;
+            }
 
-        const hasReadPermissions: boolean = readPermissions.every((permission: string) =>
-            selectedFeatures.includes(permission)
-        );
-        const hasWritePermissions: boolean = writePermissions.every((permission: string) =>
-            selectedFeatures.includes(permission)
-        );
+            // Collect scopes for every checked level and deduplicate.
+            const activeCategories: APIResourceCollectionPermissionCategoryInterface[] = [
+                ...(hasRead ? (collection.apiResources.read ?? []) : []),
+                ...(hasCreate ? (collection.apiResources.create ?? []) : []),
+                ...(hasUpdate ? (collection.apiResources.update ?? []) : []),
+                ...(hasDelete ? (collection.apiResources.delete ?? []) : [])
+            ];
 
-        if (hasReadPermissions || hasWritePermissions) {
             return {
-                permissions: transformResourceCollectionToPermissions(
-                    collection.apiResources[hasWritePermissions ? "write" : "read"]
-                ),
-                read: hasWritePermissions ? false : hasReadPermissions,
-                write: hasWritePermissions
+                create: hasCreate,
+                delete: hasDelete,
+                permissions: transformResourceCollectionToPermissions(activeCategories),
+                read: hasRead,
+                update: hasUpdate,
+                write: false
             };
         }
 
-        return null;
+        // Legacy mode.
+        const hasReadPermission: boolean = allScopesSelected(collection.apiResources.read, selectedFeatures);
+        const hasWritePermission: boolean = allScopesSelected(collection.apiResources.write, selectedFeatures);
+
+        if (!hasReadPermission && !hasWritePermission) {
+            return null;
+        }
+
+        const legacyCategories: APIResourceCollectionPermissionCategoryInterface[] =
+            (hasWritePermission ? collection.apiResources.write : undefined) ?? collection.apiResources.read;
+
+        return {
+            permissions: transformResourceCollectionToPermissions(legacyCategories),
+            read: !hasWritePermission && hasReadPermission,
+            write: hasWritePermission
+        };
     };
 
     /**
@@ -240,7 +357,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         );
 
         return permissions;
-    }, [ role, filteredTenantAPIResourceCollections, filteredOrganizationAPIResourceCollections ]);
+    }, [ role, filteredTenantAPIResourceCollections, filteredOrganizationAPIResourceCollections,
+        useGranularConsolePermissions ]);
 
     /**
      * Update the role permissions.

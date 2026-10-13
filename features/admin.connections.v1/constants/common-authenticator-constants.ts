@@ -46,6 +46,7 @@ export class CommonAuthenticatorConstants {
         CUSTOM_AUTHENTICATOR: string;
         DAON_AUTHENTICATOR: string;
         DAON_IDV: string;
+        DIGITAL_WALLET: string;
         DUO: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
@@ -72,6 +73,7 @@ export class CommonAuthenticatorConstants {
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
             DAON_AUTHENTICATOR: "daon-authenticator",
             DAON_IDV: "daon-idv",
+            DIGITAL_WALLET: "digital-wallet",
             DUO: "duo-idp",
             ENTERPRISE: "enterprise-idp",
             EXPERT_MODE: "expert-mode-idp",

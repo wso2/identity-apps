@@ -293,16 +293,18 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     const sharingModeRoles: RoleSharingInterface[] =
                         org.sharingMode?.roleAssignment?.roles as RoleSharingInterface[];
 
-                    if (sharingModeRoles?.length > 0) {
-                        const roles: SelectedOrganizationRoleInterface[] =
-                            sharingModeRoles.map((role: RoleSharingInterface) => ({
-                                ...role,
-                                id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
-                                selected: true // Mark all existing roles as selected
-                            }));
+                    const roles: SelectedOrganizationRoleInterface[] = sharingModeRoles?.length > 0
+                        ? sharingModeRoles.map((role: RoleSharingInterface) => ({
+                            ...role,
+                            id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
+                            selected: true // Mark all existing roles as selected
+                        }))
+                        : [];
 
-                        rolesMap[org.orgId] = roles;
-                    }
+                    // Seed an entry for every shared organization, even when its sharing policy carries no
+                    // roles, so that the role list expansion effect below always produces a full option
+                    // list for it.
+                    rolesMap[org.orgId] = roles;
 
                     // Track the roles that are actually assigned to the user in this organization.
                     if (org.roles?.length > 0) {
@@ -311,7 +313,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 });
 
                 setSelectedOrgIds(orgIds);
-                setRoleSelections(rolesMap);
+                // Merge instead of replacing. The shared access widget owns the per organization role
+                // option lists (built from userRolesList) and fills them only once. Replacing the whole
+                // map on a later refresh of the sharing data would wipe those lists for every organization
+                // whose saved policy has no roles, leaving the role pickers empty until the next Save.
+                setRoleSelections((prevRoleSelections: Record<string, SelectedOrganizationRoleInterface[]>) => ({
+                    ...prevRoleSelections,
+                    ...rolesMap
+                }));
                 setShouldShareWithFutureChildOrgsMap(shouldShareWithFutureChildOrgsMap);
                 setInitialShouldShareWithFutureChildOrgsMap(shouldShareWithFutureChildOrgsMap);
                 setUserAssignedRolesMap(assignedRolesMap);

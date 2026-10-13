@@ -35,9 +35,9 @@ import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstor
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface,
-    RolesMemberInterface,
-    HttpErrorResponseDataInterface
+    RolesMemberInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -74,7 +74,14 @@ import { RoleConstants, RoleManagementFeatureKeys } from "../../constants/role-c
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
-type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
+interface RoleUsersPropsInterface extends IdentifiableComponentInterface, RoleEditSectionsInterface {
+    /**
+     * Base i18n key used to resolve the section labels (heading, sub heading, empty
+     * placeholders) and the user assignment notifications. Defaults to the standard 
+     * role users (or agents) keys when not provided.
+     */
+    baseI18nKey?: string;
+}
 
 export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     props: RoleUsersPropsInterface
@@ -88,6 +95,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         activeUserStore,
         isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
+        baseI18nKey: baseI18nKeyOverride,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
 
@@ -104,7 +112,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isForNonHumanUser
     );
 
-    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+    const baseI18nKey: string = baseI18nKeyOverride
+        ?? (isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.");
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);

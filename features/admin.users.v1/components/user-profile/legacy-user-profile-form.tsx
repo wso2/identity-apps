@@ -25,7 +25,6 @@ import Table from "@oxygen-ui/react/Table";
 import TableBody from "@oxygen-ui/react/TableBody";
 import TableCell from "@oxygen-ui/react/TableCell";
 import TableRow from "@oxygen-ui/react/TableRow";
-import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -55,6 +54,7 @@ import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -76,9 +76,12 @@ import {
 import {
     constructPatchOpValueForMultiValuedAttribute,
     constructPatchOperationForMultiValuedVerifiedAttribute,
+    isDuplicatedEnterpriseSchema,
     isMultipleEmailsAndMobileNumbersEnabled,
     isSchemaReadOnly
 } from "../../utils/user-management-utils";
+
+dayjs.extend(customParseFormat);
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -95,6 +98,10 @@ interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
     profileData: ProfileInfoInterface;
     flattenedProfileData: Map<string, string>;
     profileSchema: ProfileSchemaInterface[];
+    /**
+     * Enterprise schema claims that duplicate a core User or System schema attribute.
+     */
+    duplicateClaims?: ExternalClaim[];
     isReadOnly: boolean;
     onUserUpdate: (userId: string) => void;
     isUpdating: boolean;
@@ -110,6 +117,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         profileData,
         flattenedProfileData,
         profileSchema,
+        duplicateClaims = [],
         isReadOnly,
         isUpdating,
         adminUserType,
@@ -142,7 +150,6 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
             useState<Record<string, string[]>>({});
     const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
     const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
-    const [ duplicatedUserClaims, setDuplicatedUserClaims ] = useState<ExternalClaim[]>([]);
 
     const isDistinctAttributeProfilesFeatureEnabled: boolean = isFeatureEnabled(featureConfig?.attributeDialects,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG);
@@ -165,54 +172,6 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
      */
     const countryList: DropdownItemProps = useMemo(() => {
         return CommonUtils.getCountryList();
-    }, []);
-
-    /**
-     * This useEffect identifies external claims that are mapped to the same local claim
-     * between the Enterprise schema and the WSO2 System schema.
-     *
-     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
-     * introduced in https://github.com/wso2/product-is/issues/20850.
-     *
-     * The effect fetches both sets of external claims and detects overlaps by comparing their
-     * mappedLocalClaimURI values.
-     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
-     */
-    useEffect(() => {
-        const fetchAllClaims = async () => {
-            try {
-                const [ enterpriseClaims, systemClaims ] = await Promise.all([
-                    getAllExternalClaims(
-                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
-                        null
-                    ),
-                    getAllExternalClaims(
-                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
-                        null
-                    )
-                ]);
-
-                const systemMappedClaimURIs: Set<string> = new Set(
-                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
-                );
-                const duplicates: ExternalClaim[] = enterpriseClaims.filter(
-                    (claim: ExternalClaim) =>
-                        claim.mappedLocalClaimURI &&
-                        systemMappedClaimURIs.has(claim.mappedLocalClaimURI)
-                );
-
-                setDuplicatedUserClaims(duplicates);
-
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
-                }));
-            }
-        };
-
-        fetchAllClaims();
     }, []);
 
     /**
@@ -1215,6 +1174,18 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                                 .push(t("users:forms.validation.dateFormatError", {
                                     field: fieldName
                                 }));
+                        } else if (!dayjs(value, "YYYY-MM-DD", true).isValid()) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        } else if (dayjs().isBefore(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.futureDateError", {
+                                    field: fieldName
+                                }));
                         }
                     } }
                     maxLength={ schema.maxLength
@@ -1360,9 +1331,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                 || (!isReadOnly && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA);
         }
 
-        const schemaClaimURI: string = `${schema.schemaId}:${schema.name}`;
-
-        if (duplicatedUserClaims?.some((claim: ExternalClaim) => claim.claimURI === schemaClaimURI)) {
+        if (isDuplicatedEnterpriseSchema(schema, duplicateClaims)) {
             return false;
         }
 

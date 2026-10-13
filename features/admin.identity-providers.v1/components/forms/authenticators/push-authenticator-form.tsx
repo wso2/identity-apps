@@ -16,20 +16,31 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import {
+    useGetPushDeviceMgtConfig,
+    updatePushDeviceMgtConfig
+} from "@wso2is/admin.connections.v1/api/push-device-mgt-configs";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
-import { Code, Link } from "@wso2is/react-components";
+import { FormSpy } from "react-final-form";
+import { Code, ConfirmationModal, Heading, Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Label, Message } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Divider, Icon, Label, Message } from "semantic-ui-react";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -37,8 +48,11 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
     CommonPluggableComponentMetaPropertyInterface,
-    CommonPluggableComponentPropertyInterface
+    CommonPluggableComponentPropertyInterface,
+    DeviceRegistrationNotificationChannel,
+    PushDeviceMgtConfigInterface
 } from "../../../models";
+import "./push-authenticator-form.scss";
 
 /**
  * Interface for the Push Authenticator Form props.
@@ -100,6 +114,26 @@ interface PushAuthenticatorFormInitialValuesInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: number;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: boolean;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: number;
+    /**
+     * Enable progressive enrollment for multiple devices.
+     */
+    PUSH_EnableMultipleDeviceProgressiveEnrollment: boolean;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: boolean;
+    /**
+     * Channel used for device registration notifications. Either `email` or `push`.
+     */
+    PUSH_DeviceRegistrationNotificationType: string;
 }
 
 /**
@@ -122,6 +156,26 @@ interface PushAuthenticatorFormFieldsInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable progressive enrollment for multiple devices.
+     */
+    PUSH_EnableMultipleDeviceProgressiveEnrollment: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Channel used for device registration notifications.
+     */
+    PUSH_DeviceRegistrationNotificationType: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -144,9 +198,35 @@ interface PushAuthenticatorFormErrorValidationsInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: string;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: string;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: string;
+    /**
+     * Enable progressive enrollment for multiple devices.
+     */
+    PUSH_EnableMultipleDeviceProgressiveEnrollment: string;
+    /**
+     * Enable device registration notifications.
+     */
+    PUSH_EnableDeviceRegistrationNotification: string;
+    /**
+     * Channel used for device registration notifications.
+     */
+    PUSH_DeviceRegistrationNotificationType: string;
 }
 
 const FORM_ID: string = "push-authenticator-form";
+
+/**
+ * Channels available for device registration notifications.
+ */
+const EMAIL_NOTIFICATION_TYPE: string = "email";
+const PUSH_NOTIFICATION_TYPE: string = "push";
 
 /**
  * Push Authenticator Form.
@@ -157,31 +237,76 @@ const FORM_ID: string = "push-authenticator-form";
 export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormPropsInterface> = (
     props: PushAuthenticatorFormPropsInterface
 ): ReactElement => {
-
-    const {
+    const { 
         metadata,
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
-        isSubmitting,
         ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const dispatch: Dispatch = useDispatch();
 
     // This can be used when `meta` support is there.
     const [ , setFormFields ] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isProgressiveEnrollmentEnabled, setIsProgressiveEnrollmentEnabled ] = useState<boolean>(false);
+    const [ isMultipleDeviceEnrollmentEnabled, setIsMultipleDeviceEnrollmentEnabled ] = useState<boolean>(false);
+    const [ isMultipleDeviceProgressiveEnrollmentEnabled, setIsMultipleDeviceProgressiveEnrollmentEnabled ] = useState<
+        boolean
+    >(false);
+    const [isDeviceRegistrationNotificationEnabled, setIsDeviceRegistrationNotificationEnabled] = useState<boolean>(
+        false
+    );
+    const [
+        showMultipleDeviceProgressiveEnrollmentConfirmation,
+        setShowMultipleDeviceProgressiveEnrollmentConfirmation
+    ] = useState<boolean>(false);
+    const formChangeRef: MutableRefObject<((name: string, value: unknown) => void) | null> = useRef<
+        ((name: string, value: unknown) => void) | null
+    >(null);
 
-    const isReadOnly: boolean = isSubOrganization() || readOnly;
+    const isReadOnly: boolean = readOnly;
+
+    // Push device management settings are exposed as properties of the identity providers feature config.
+    const identityProvidersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.identityProviders
+    );
+
+    // Server-level upper bound sourced from the console deployment config.
+    const configuredMaxDeviceLimitPerUser: number =
+        identityProvidersFeatureConfig?.properties?.maxPushDeviceLimitPerUser as number;
+    const maxDeviceLimitPerUser: number =
+        configuredMaxDeviceLimitPerUser ??
+        ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.MAXIMUM_DEVICE_LIMIT_MAX_VALUE;
+
+    // Feature flag that gates the multiple device support UI sourced from the console deployment config.
+    const isMultipleDeviceSupportEnabled: boolean =
+        Boolean(identityProvidersFeatureConfig?.properties?.multiplePushDeviceSupportEnabled);
+
+    // Feature flag that gates the device registration notification UI sourced from the console deployment config.
+    const isDeviceRegistrationNotificationsEnabled: boolean =
+        Boolean(identityProvidersFeatureConfig?.properties?.pushDeviceRegistrationNotificationsEnabled);
+
+    // The push device management endpoint backs both feature sets, so only fetch it when either is enabled.
+    const shouldFetchPushDeviceMgtConfig: boolean =
+        isMultipleDeviceSupportEnabled || isDeviceRegistrationNotificationsEnabled;
+
+    const {
+        data: pushDeviceMgtConfig,
+        isLoading: isPushDeviceMgtConfigLoading,
+        mutate: mutatePushDeviceMgtConfig
+    } = useGetPushDeviceMgtConfig(shouldFetchPushDeviceMgtConfig);
 
     /**
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
 
-        if (isEmpty(originalInitialValues?.properties)) {
+        if (isEmpty(originalInitialValues?.properties) || isPushDeviceMgtConfigLoading) {
             return;
         }
 
@@ -192,7 +317,15 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
-    }, [ originalInitialValues ]);
+        setIsProgressiveEnrollmentEnabled(resolvedInitialValues?.PUSH_EnableProgressiveEnrollment ?? false);
+        setIsMultipleDeviceEnrollmentEnabled(pushDeviceMgtConfig?.enableMultipleDeviceEnrollment ?? false);
+        setIsMultipleDeviceProgressiveEnrollmentEnabled(
+            resolvedInitialValues?.PUSH_EnableMultipleDeviceProgressiveEnrollment ?? false
+        );
+        setIsDeviceRegistrationNotificationEnabled(
+            resolvedInitialValues?.PUSH_EnableDeviceRegistrationNotification ?? false
+        );
+    }, [ originalInitialValues, pushDeviceMgtConfig, isPushDeviceMgtConfigLoading ]);
 
     const resolveFormFields = () => {
         let resolvedFormFields: PushAuthenticatorFormFieldsInterface = null;
@@ -239,6 +372,48 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             }
         });
 
+        // Merge push device management config values fetched from the dedicated endpoint.
+        if (pushDeviceMgtConfig) {
+            const configuredChannels: DeviceRegistrationNotificationChannel[] =
+                pushDeviceMgtConfig.deviceRegistrationNotificationChannels ?? [];
+            const isRegistrationNotificationEnabled: boolean =
+                Boolean(pushDeviceMgtConfig.enableDeviceRegistrationNotifications);
+            // Email takes precedence as the default channel when both / none are set,
+            // since the form exposes only a single-choice radio.
+            const registrationNotificationType: string =
+                configuredChannels.includes(DeviceRegistrationNotificationChannel.PUSH_NOTIFICATION) &&
+                !configuredChannels.includes(DeviceRegistrationNotificationChannel.EMAIL)
+                    ? PUSH_NOTIFICATION_TYPE
+                    : EMAIL_NOTIFICATION_TYPE;
+
+            resolvedFormFields = {
+                ...resolvedFormFields,
+                PUSH_DeviceRegistrationNotificationType: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: registrationNotificationType
+                },
+                PUSH_EnableDeviceRegistrationNotification: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: isRegistrationNotificationEnabled.toString()
+                },
+                PUSH_EnableMultipleDeviceEnrollment: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: pushDeviceMgtConfig.enableMultipleDeviceEnrollment.toString()
+                },
+                PUSH_MaximumDeviceLimit: {
+                    meta: (null as unknown) as CommonPluggableComponentMetaPropertyInterface,
+                    value: pushDeviceMgtConfig.maximumDeviceLimit.toString()
+                }
+            };
+            resolvedInitialValues = {
+                ...resolvedInitialValues,
+                PUSH_DeviceRegistrationNotificationType: registrationNotificationType,
+                PUSH_EnableDeviceRegistrationNotification: isRegistrationNotificationEnabled,
+                PUSH_EnableMultipleDeviceEnrollment: pushDeviceMgtConfig.enableMultipleDeviceEnrollment,
+                PUSH_MaximumDeviceLimit: pushDeviceMgtConfig.maximumDeviceLimit
+            };
+        }
+
         return {
             resolvedFormFields,
             resolvedInitialValues
@@ -247,41 +422,134 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
     /**
      * Prepare form values for submitting.
+     * Splits device management fields out to be sent to the dedicated endpoint,
+     * and returns the remaining authenticator properties.
      *
      * @param values - Form values.
-     * @returns Sanitized form values.
+     * @returns Sanitized form values for the authenticator endpoint.
      */
     const getUpdatedConfigurations = (values: PushAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
-
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
+        const deviceMgtPropertyKeys: Set<string> = new Set([
+            "PUSH_DeviceRegistrationNotificationType",
+            "PUSH_EnableDeviceRegistrationNotification",
+            "PUSH_EnableMultipleDeviceEnrollment",
+            "PUSH_MaximumDeviceLimit"
+        ]);
+
         for (const [ name, value ] of Object.entries(values)) {
-            if (name != undefined) {
+            if (name == undefined || deviceMgtPropertyKeys.has(name)) {
+                continue;
+            }
+
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
-                    const timeInSeconds: number = value * 60;
-
-                    properties.push({
-                        name: moderatedName,
-                        value: timeInSeconds.toString()
-                    });
-
-                    continue;
-                }
+            if (name === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
+                const timeInSeconds: number = value * 60;
 
                 properties.push({
                     name: moderatedName,
-                    value: isBoolean(value) ? value.toString() : value
+                    value: timeInSeconds.toString()
                 });
+
+                continue;
             }
+
+            properties.push({
+                name: moderatedName,
+                value: isBoolean(value) ? value.toString() : value
+            });
         }
 
         return {
             ...originalInitialValues,
             properties
         };
+    };
+
+    /**
+     * Extracts push device management config from the form values.
+     *
+     * @param values - Form values.
+     * @returns Push device management configuration.
+     */
+    const getUpdatedPushDeviceMgtConfig = (
+        values: PushAuthenticatorFormInitialValuesInterface
+    ): PushDeviceMgtConfigInterface => {
+        const selectedChannel: DeviceRegistrationNotificationChannel =
+            values.PUSH_DeviceRegistrationNotificationType === PUSH_NOTIFICATION_TYPE
+                ? DeviceRegistrationNotificationChannel.PUSH_NOTIFICATION
+                : DeviceRegistrationNotificationChannel.EMAIL;
+
+        return {
+            deviceRegistrationNotificationChannels: [ selectedChannel ],
+            enableDeviceRegistrationNotifications: Boolean(values.PUSH_EnableDeviceRegistrationNotification),
+            enableMultipleDeviceEnrollment: values.PUSH_EnableMultipleDeviceEnrollment,
+            maximumDeviceLimit: values.PUSH_EnableMultipleDeviceEnrollment ? Number(values.PUSH_MaximumDeviceLimit) : 1
+        };
+    };
+
+    /**
+     * Handles the form submit by calling both the authenticator settings endpoint
+     * and the push device management configuration endpoint.
+     *
+     * @param values - Form values.
+     */
+    const handleFormSubmit = (values: PushAuthenticatorFormInitialValuesInterface): void => {
+        setIsSubmitting(true);
+
+        const authenticatorConfig: CommonAuthenticatorFormInitialValuesInterface = getUpdatedConfigurations(values);
+
+        // The device management config isn't fetched or editable when both features are disabled,
+        // so skip the update to avoid overwriting the server config with unfetched defaults.
+        if (!shouldFetchPushDeviceMgtConfig) {
+            onSubmit(authenticatorConfig);
+            setIsSubmitting(false);
+
+            return;
+        }
+
+        const deviceMgtConfig: PushDeviceMgtConfigInterface = getUpdatedPushDeviceMgtConfig(values);
+
+        updatePushDeviceMgtConfig(deviceMgtConfig)
+            .then(() => {
+                onSubmit(authenticatorConfig);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "authenticationProvider:notifications.updatePushAuthenticator.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications.updatePushAuthenticator.error.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "authenticationProvider:notifications.updatePushAuthenticator.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "authenticationProvider:notifications.updatePushAuthenticator.genericError.message"
+                            )
+                        })
+                    );
+                }
+
+                // Re-fetch the config so the form validates against the latest
+                // server-enforced upper bound (it may have changed since page load).
+                mutatePushDeviceMgtConfig();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -297,7 +565,12 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             PUSH_EnableNumberChallenge: undefined,
             PUSH_EnableProgressiveEnrollment: undefined,
             PUSH_ResendNotificationMaxAttempts: undefined,
-            PUSH_ResendNotificationTime: undefined
+            PUSH_ResendNotificationTime: undefined,
+            PUSH_EnableMultipleDeviceEnrollment: undefined,
+            PUSH_EnableMultipleDeviceProgressiveEnrollment: undefined,
+            PUSH_MaximumDeviceLimit: undefined,
+            PUSH_EnableDeviceRegistrationNotification: undefined,
+            PUSH_DeviceRegistrationNotificationType: undefined
         };
 
         if (!values.PUSH_ResendNotificationMaxAttempts) {
@@ -315,6 +588,35 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             // Check for invalid range.
             errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
                 ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range");
+        }
+
+        if (values.PUSH_EnableMultipleDeviceEnrollment) {
+            if (!values.PUSH_MaximumDeviceLimit) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" +
+                        ".authenticatorSettings.push.maximumDeviceLimit.validations.required"
+                );
+            } else if (!FormValidation.isInteger((values.PUSH_MaximumDeviceLimit as unknown) as number)) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" +
+                        ".authenticatorSettings.push.maximumDeviceLimit.validations.invalid"
+                );
+            } else if (
+                values.PUSH_MaximumDeviceLimit <
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MIN_VALUE ||
+                values.PUSH_MaximumDeviceLimit > maxDeviceLimitPerUser
+            ) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" + ".authenticatorSettings.push.maximumDeviceLimit.validations.range",
+                    {
+                        max: maxDeviceLimitPerUser,
+                        min:
+                            ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                                .MAXIMUM_DEVICE_LIMIT_MIN_VALUE
+                    }
+                );
+            }
         }
 
         if (!values.PUSH_ResendNotificationTime) {
@@ -342,13 +644,20 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values: Record<string, any>) =>{
-                onSubmit(getUpdatedConfigurations(values as PushAuthenticatorFormInitialValuesInterface));
+                handleFormSubmit(values as PushAuthenticatorFormInitialValuesInterface);
             } }
             initialValues={ initialValues }
             validate={ validateForm }
         >
+            <FormSpy subscription={{}}>
+                {({ form }: { form: { change: (name: string, value: unknown) => void } }) => {
+                    formChangeRef.current = form.change;
+
+                    return null;
+                }}
+            </FormSpy>
             {
-                !isSubOrganization() && (
+                (
                     <Message info>
                         <Icon name="info circle" />
                         <Trans
@@ -365,7 +674,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                                         AppConstants.getPaths().get("PUSH_PROVIDER")
                                     );
                                 } }
-                            > Push Provider
+                            >{" "}Push Provider
                             </Link>
                             &nbsp;is configured for the push notifications to be sent.
                         </Trans>
@@ -392,27 +701,6 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 readOnly={ isReadOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-push-enable-number-challenge-checkbox` }
-            />
-            <Field.Checkbox
-                ariaLabel="Enable progressive enrollment"
-                name="PUSH_EnableProgressiveEnrollment"
-                label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.enableProgressiveEnrollment.label")
-                }
-                hint={
-                    (<Trans
-                        i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
-                            ".push.enableProgressiveEnrollment.hint"
-                        }
-                    >
-                        Please check this checkbox to enable progressive enrollment.
-                    </Trans>)
-                }
-                readOnly={ isReadOnly }
-                width={ 16 }
-                data-testid={ `${ testId }-push-enable-progressive-enrollment-checkbox` }
             />
             <Field.Input
                 ariaLabel="Push Notification Resend Interval"
@@ -511,18 +799,307 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     }
                 </Label>
             </Field.Input>
+
+            <Divider />
+
+            <Heading as="h4">
+                {t("authenticationProvider:forms.authenticatorSettings" + ".push.deviceManagementSettings.label")}
+            </Heading>
+
+
+            {isDeviceRegistrationNotificationsEnabled && (
+                <Field.Checkbox
+                    ariaLabel="Enable device registration notifications"
+                    name="PUSH_EnableDeviceRegistrationNotification"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableDeviceRegistrationNotification.label"
+                    )}
+                    hint={
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" +
+                                ".push.enableDeviceRegistrationNotification.hint"
+                            }
+                        >
+                            When enabled, users will be notified when a new device is registered for push
+                            authentication.
+                        </Trans>
+                    }
+                    readOnly={isReadOnly}
+                    width={16}
+                    listen={(value: boolean) => {
+                        setIsDeviceRegistrationNotificationEnabled(value);
+                        // Email is the default notification channel when the option is enabled.
+                        if (value) {
+                            formChangeRef.current?.("PUSH_DeviceRegistrationNotificationType", EMAIL_NOTIFICATION_TYPE);
+                        }
+                    }}
+                    data-testid={ `${testId}-push-enable-device-registration-notification-checkbox` }
+                />
+            )}
+            {isDeviceRegistrationNotificationsEnabled && isDeviceRegistrationNotificationEnabled && (
+                <Field.Radio
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Send device registration notifications via email"
+                    name="PUSH_DeviceRegistrationNotificationType"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.deviceRegistrationNotificationType.options.email"
+                    )}
+                    value={EMAIL_NOTIFICATION_TYPE}
+                    readOnly={isReadOnly}
+                    data-testid={ `${testId}-push-device-registration-email-notification-radio` }
+                />
+            )}
+            {isDeviceRegistrationNotificationsEnabled && isDeviceRegistrationNotificationEnabled && (
+                <Field.Radio
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Send device registration notifications via push notification"
+                    name="PUSH_DeviceRegistrationNotificationType"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.deviceRegistrationNotificationType.options.push"
+                    )}
+                    value={PUSH_NOTIFICATION_TYPE}
+                    readOnly={isReadOnly}
+                    data-testid={ `${testId}-push-device-registration-push-notification-radio` }
+                />
+            )}
+
+            <Field.Checkbox
+                ariaLabel="Enable progressive enrollment"
+                name="PUSH_EnableProgressiveEnrollment"
+                label={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.enableProgressiveEnrollment.label"
+                )}
+                hint={
+                    <Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableProgressiveEnrollment.hint"
+                        }
+                    >
+                        Please check this checkbox to enable progressive enrollment.
+                    </Trans>
+                }
+                readOnly={isReadOnly}
+                width={16}
+                listen={(value: boolean) => {
+                    setIsProgressiveEnrollmentEnabled(value);
+                    // Multiple-device progressive enrollment is nested under this option, so
+                    // turning progressive enrollment off must also reset the nested setting.
+                    if (!value) {
+                        formChangeRef.current?.("PUSH_EnableMultipleDeviceProgressiveEnrollment", false);
+                        setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
+                    }
+                }}
+                data-testid={ `${testId}-push-enable-progressive-enrollment-checkbox` }
+            />
+
+            {isMultipleDeviceSupportEnabled && (
+                <Field.Checkbox
+                    ariaLabel="Enable multiple device enrollment"
+                    name="PUSH_EnableMultipleDeviceEnrollment"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableMultipleDeviceEnrollment.label"
+                    )}
+                    hint={
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" +
+                                ".push.enableMultipleDeviceEnrollment.hint"
+                            }
+                        >
+                            Please check this checkbox to enable multiple device enrollment.
+                        </Trans>
+                    }
+                    readOnly={isReadOnly}
+                    width={16}
+                    listen={(value: boolean) => {
+                        setIsMultipleDeviceEnrollmentEnabled(value);
+                        if (value) {
+                            // Restore the configured limit when re-enabled. A limit of 1 is only
+                            // valid for single device mode, so fall back to the allowed minimum.
+                            // Clamp to the server-enforced upper bound in case it was lowered
+                            // after the limit was originally configured.
+                            const configuredLimit: number = pushDeviceMgtConfig?.maximumDeviceLimit;
+                            const minLimit: number =
+                                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                                    .MAXIMUM_DEVICE_LIMIT_MIN_VALUE;
+
+                            formChangeRef.current?.(
+                                "PUSH_MaximumDeviceLimit",
+                                configuredLimit >= minLimit
+                                    ? Math.min(configuredLimit, maxDeviceLimitPerUser)
+                                    : minLimit
+                            );
+                        } else {
+                            formChangeRef.current?.("PUSH_MaximumDeviceLimit", 1);
+                            // Multiple-device progressive enrollment is nested under this option, so
+                            // turning multiple device enrollment off must also reset the nested setting.
+                            formChangeRef.current?.("PUSH_EnableMultipleDeviceProgressiveEnrollment", false);
+                            setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
+                        }
+                    }}
+                    data-testid={ `${testId}-push-enable-multiple-device-enrollment-checkbox` }
+                />
+            )}
+            {isMultipleDeviceSupportEnabled && isMultipleDeviceEnrollmentEnabled && (
+                <Field.Input
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Maximum Device Limit For Multiple Device Enrollment"
+                    inputType="number"
+                    name="PUSH_MaximumDeviceLimit"
+                    label={t("authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.label")}
+                    labelPosition="right"
+                    placeholder={t(
+                        "authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.placeholder"
+                    )}
+                    hint={
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.hint"
+                            }
+                        >
+                            Users will be limited to the specified device limit when multiple device enrollment is
+                            enabled.
+                        </Trans>
+                    }
+                    required={true}
+                    readOnly={isReadOnly}
+                    min={
+                        ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                            .MAXIMUM_DEVICE_LIMIT_MIN_VALUE
+                    }
+                    max={maxDeviceLimitPerUser}
+                    maxLength={String(maxDeviceLimitPerUser).length}
+                    minLength={
+                        ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                            .MAXIMUM_DEVICE_LIMIT_MIN_LENGTH
+                    }
+                    width={12}
+                    data-testid={ `${testId}-push-maximum-device-limit-input` }
+                >
+                    <input />
+                    <Label>
+                        {t("authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.unit")}
+                    </Label>
+                </Field.Input>
+            )}
+            {isMultipleDeviceSupportEnabled && isMultipleDeviceEnrollmentEnabled && isProgressiveEnrollmentEnabled && (
+                <Field.Checkbox
+                    className="push-authenticator-nested-setting"
+                    ariaLabel="Enable progressive enrollment for multiple devices"
+                    name="PUSH_EnableMultipleDeviceProgressiveEnrollment"
+                    label={t(
+                        "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableMultipleDeviceProgressiveEnrollment.label"
+                    )}
+                    hint={
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" +
+                                ".push.enableMultipleDeviceProgressiveEnrollment.hint"
+                            }
+                        >
+                            Please check this checkbox to enable progressive enrollment when multiple device
+                            enrollment is enabled.
+                        </Trans>
+                    }
+                    readOnly={isReadOnly}
+                    width={16}
+                    listen={(value: boolean) => {
+                        if (value) {
+                            // Enabling is security-sensitive, so revert the optimistic toggle and
+                            // gate it behind an explicit confirmation. The checkbox is flipped back
+                            // on only after the user confirms in the modal.
+                            formChangeRef.current?.("PUSH_EnableMultipleDeviceProgressiveEnrollment", false);
+                            setShowMultipleDeviceProgressiveEnrollmentConfirmation(true);
+                        } else {
+                            setIsMultipleDeviceProgressiveEnrollmentEnabled(false);
+                        }
+                    }}
+                    data-testid={ `${testId}-push-enable-multiple-device-progressive-enrollment-checkbox` }
+                />
+            )}
+            {isMultipleDeviceSupportEnabled &&
+                isMultipleDeviceEnrollmentEnabled &&
+                isProgressiveEnrollmentEnabled &&
+                isMultipleDeviceProgressiveEnrollmentEnabled && (
+                <Message
+                    warning
+                    className="push-authenticator-nested-setting"
+                    data-testid={ `${testId}-push-multiple-device-progressive-enrollment-warning` }
+                >
+                    <Icon name="warning sign" />
+                    {t(
+                        "authenticationProvider:forms.authenticatorSettings.push" +
+                            ".enableMultipleDeviceProgressiveEnrollment.securityWarning"
+                    )}
+                </Message>
+            )}
             <Field.Button
                 form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Push Authenticator update button"
                 name="update-button"
-                data-testid={ `${ testId }-submit-button` }
+                data-testid={ `${testId}-submit-button` }
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ isReadOnly }
             />
+            {isMultipleDeviceSupportEnabled && showMultipleDeviceProgressiveEnrollmentConfirmation && (
+                <ConfirmationModal
+                    type="warning"
+                    open={showMultipleDeviceProgressiveEnrollmentConfirmation}
+                    assertionType="checkbox"
+                    assertionHint={t(
+                        "authenticationProvider:confirmations" +
+                            ".enableMultipleDeviceProgressiveEnrollment.assertionHint"
+                    )}
+                    primaryAction={t("common:confirm")}
+                    secondaryAction={t("common:cancel")}
+                    onClose={(): void => setShowMultipleDeviceProgressiveEnrollmentConfirmation(false)}
+                    onSecondaryActionClick={(): void => setShowMultipleDeviceProgressiveEnrollmentConfirmation(false)}
+                    onPrimaryActionClick={(): void => {
+                        formChangeRef.current?.("PUSH_EnableMultipleDeviceProgressiveEnrollment", true);
+                        setIsMultipleDeviceProgressiveEnrollmentEnabled(true);
+                        setShowMultipleDeviceProgressiveEnrollmentConfirmation(false);
+                    }}
+                    closeOnDimmerClick={false}
+                    data-testid={ `${testId}-push-multiple-device-progressive-enrollment-confirmation` }
+                >
+                    <ConfirmationModal.Header
+                        data-testid={ `${testId}-push-multiple-device-progressive-enrollment-confirmation-header` }
+                    >
+                        {t(
+                            "authenticationProvider:confirmations" + ".enableMultipleDeviceProgressiveEnrollment.header"
+                        )}
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        warning
+                        data-testid={ `${testId}-push-multiple-device-progressive-enrollment-confirmation-message` }
+                    >
+                        {t(
+                            "authenticationProvider:confirmations" +
+                                ".enableMultipleDeviceProgressiveEnrollment.message"
+                        )}
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-testid={ `${testId}-push-multiple-device-progressive-enrollment-confirmation-content` }
+                    >
+                        {t(
+                            "authenticationProvider:confirmations" +
+                                ".enableMultipleDeviceProgressiveEnrollment.content"
+                        )}
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            )}
         </Form>
     );
 };

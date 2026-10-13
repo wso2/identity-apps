@@ -1,5 +1,16 @@
 # @wso2is/core
 
+## 2.13.7
+
+### Patch Changes
+
+- [#10682](https://github.com/wso2/identity-apps/pull/10682) [`40557c5ac24c07c6c14b3e02e9041be42312f48d`](https://github.com/wso2/identity-apps/commit/40557c5ac24c07c6c14b3e02e9041be42312f48d) Thanks [@KD23243](https://github.com/KD23243)! - Accept any absolute URI as a SAML assertion audience, and stop hiding stored audiences that are not
+  conventional URLs. Audience entry previously required a `<scheme>://<authority>` shape, which rejected
+  URNs such as `urn:amazon:webservices`, and values failing the URL check were dropped at render, so a
+  non-compliant audience already present in the assertion could be neither seen nor removed. The non-TLS
+  warning on URL chips is also narrowed to plain `http`, so schemes with no transport of their own — such
+  as mobile deep links — are no longer flagged as insecure.
+
 ## 2.13.6
 
 ### Patch Changes

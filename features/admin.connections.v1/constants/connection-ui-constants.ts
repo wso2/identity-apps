@@ -59,6 +59,7 @@ export class ConnectionUIConstants {
         OUTBOUND_PROVISIONING: string;
         SETTINGS: string;
         IDENTITY_PROVIDER_GROUPS: string;
+        SHARED_ACCESS: string;
     }> = {
         ADVANCED: "advanced",
         ATTRIBUTES: "attributes",
@@ -67,7 +68,8 @@ export class ConnectionUIConstants {
         IDENTITY_PROVIDER_GROUPS: "identity-provider-groups",
         JIT_PROVISIONING: "jit-provisioning",
         OUTBOUND_PROVISIONING: "outbound-provisioning",
-        SETTINGS: "settings"
+        SETTINGS: "settings",
+        SHARED_ACCESS: "shared-access"
     } as const;
 
     /**
@@ -181,11 +183,17 @@ export class ConnectionUIConstants {
         RESEND_INTERVAL_MAX_VALUE: number;
         RESEND_INTERVAL_MIN_LENGTH: number;
         RESEND_INTERVAL_MIN_VALUE: number;
+        MAXIMUM_DEVICE_LIMIT_MIN_LENGTH: number;
+        MAXIMUM_DEVICE_LIMIT_MIN_VALUE: number;
+        MAXIMUM_DEVICE_LIMIT_MAX_VALUE: number;
     } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 2,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 10,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            MAXIMUM_DEVICE_LIMIT_MAX_VALUE: 10,
+            MAXIMUM_DEVICE_LIMIT_MIN_LENGTH: 1,
+            MAXIMUM_DEVICE_LIMIT_MIN_VALUE: 2,
             RESEND_INTERVAL_MAX_LENGTH: 2,
             RESEND_INTERVAL_MAX_VALUE: 10,
             RESEND_INTERVAL_MIN_LENGTH: 1,
@@ -249,6 +257,19 @@ export class ConnectionUIConstants {
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
     ];
+
+    /**
+     * Digital Wallet Authenticator Settings Form element constraints.
+     */
+    public static readonly DIGITAL_WALLET_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<
+        string,
+        number
+    > = {
+            IDP_DESCRIPTION_MAX_LENGTH: 100,
+            IDP_DESCRIPTION_MIN_LENGTH: 3,
+            IDP_NAME_MAX_LENGTH: 50,
+            IDP_NAME_MIN_LENGTH: 3
+        };
 
     /* eslint-disable max-len */
     // TODO: These error messages need to be localized.

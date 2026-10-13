@@ -22,6 +22,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -76,6 +77,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
@@ -101,6 +103,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 }));
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onDelete();
 
                 eventPublisher.publish(

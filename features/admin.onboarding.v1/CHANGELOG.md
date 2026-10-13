@@ -1,5 +1,47 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.96
+
+### Patch Changes
+
+- [#10694](https://github.com/wso2/identity-apps/pull/10694) [`0df0ca414588d47cf832eaaae666bb90d734b29c`](https://github.com/wso2/identity-apps/commit/0df0ca414588d47cf832eaaae666bb90d734b29c) Thanks [@savindi7](https://github.com/savindi7)! - Add guided setup option to the home page.
+
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.roles.v2@2.27.387
+  - @wso2is/admin.connections.v1@2.42.1
+
+## 1.0.95
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+- Updated dependencies [[`642d59bbd6f4ee2742c40f606dafd0c00614c0fb`](https://github.com/wso2/identity-apps/commit/642d59bbd6f4ee2742c40f606dafd0c00614c0fb), [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33)]:
+  - @wso2is/admin.applications.v1@2.43.18
+  - @wso2is/admin.branding.v1@2.32.172
+  - @wso2is/admin.connections.v1@2.40.1
+  - @wso2is/admin.core.v1@2.59.2
+  - @wso2is/admin.extensions.v1@2.43.11
+  - @wso2is/admin.server-configurations.v1@2.38.59
+
+## 1.0.94
+
+### Patch Changes
+
+- Updated dependencies [[`c113928b8964fd2b81f66bacd92c3afe6de287b4`](https://github.com/wso2/identity-apps/commit/c113928b8964fd2b81f66bacd92c3afe6de287b4), [`3edf88f778f24fe6984fc67c35459940e7498173`](https://github.com/wso2/identity-apps/commit/3edf88f778f24fe6984fc67c35459940e7498173)]:
+  - @wso2is/admin.users.v1@2.38.50
+  - @wso2is/admin.analytics.v1@0.0.15
+
+## 1.0.93
+
+### Patch Changes
+
+- Updated dependencies [[`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063), [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2)]:
+  - @wso2is/admin.users.v1@2.38.46
+  - @wso2is/admin.analytics.v1@0.0.14
+
 ## 1.0.92
 
 ### Patch Changes

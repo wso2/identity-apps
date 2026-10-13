@@ -1,5 +1,113 @@
 # @wso2is/admin.connections.v1
 
+## 2.43.1
+
+### Patch Changes
+
+- [#10733](https://github.com/wso2/identity-apps/pull/10733) [`3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32`](https://github.com/wso2/identity-apps/commit/3e05d866d9ef0e9ca87fa3fc8727eee9d5c71c32) Thanks [@Zeta201](https://github.com/Zeta201)! - Fix the digital wallet connector icon breaking on deployments where the console is accessed from a different origin than the one active when the connection was created
+
+## 2.43.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+### Patch Changes
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11)]:
+  - @wso2is/admin.core.v1@2.60.0
+  - @wso2is/admin.feature-gate.v1@1.11.0
+  - @wso2is/forms@2.12.0
+  - @wso2is/i18n@2.47.0
+
+## 2.42.1
+
+### Patch Changes
+
+- [#10686](https://github.com/wso2/identity-apps/pull/10686) [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111) Thanks [@KD23243](https://github.com/KD23243)! - Fix the option values of the SAML connection's User ID Location field, which were wired to the inverse
+  booleans of the `IsUserIdInClaims` property. `Use NameID as the User Identifier` mapped to `true` and
+  `User Identifier found among claims` to `false`, while the authenticator reads `false` as NameID and
+  `true` as claims. Every SAML connection was therefore rendered with the opposite user ID location to
+  the one stored, and selecting an option persisted the opposite boolean.
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.roles.v2@2.27.387
+  - @wso2is/admin.identity-providers.v1@2.29.3
+
+## 2.42.0
+
+### Minor Changes
+
+- [#10679](https://github.com/wso2/identity-apps/pull/10679) [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate the enable/disable toggles of applications, enterprise connections and organizations behind the new `toggleEnable` feature gate flags, surface a plan limit exceeded alert on the respective listing pages, and refresh the feature gate after deleting one of these resources so the gate clears without a page reload
+
+### Patch Changes
+
+- Updated dependencies [[`7c629fa28df75cb527c01f24a12b10ff165ece22`](https://github.com/wso2/identity-apps/commit/7c629fa28df75cb527c01f24a12b10ff165ece22), [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2)]:
+  - @wso2is/admin.applications.v1@2.44.0
+  - @wso2is/admin.organizations.v1@2.29.0
+  - @wso2is/admin.feature-gate.v1@1.10.0
+  - @wso2is/admin.extensions.v1@2.44.0
+  - @wso2is/access-control@3.7.0
+  - @wso2is/i18n@2.46.0
+
+## 2.41.0
+
+### Minor Changes
+
+- [#10653](https://github.com/wso2/identity-apps/pull/10653) [`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add IDP sharing UI
+
+### Patch Changes
+
+- Updated dependencies [[`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724)]:
+  - @wso2is/admin.identity-providers.v1@2.29.2
+  - @wso2is/admin.applications.v1@2.43.20
+  - @wso2is/admin.core.v1@2.59.4
+  - @wso2is/i18n@2.45.8
+
+## 2.40.1
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+- Updated dependencies [[`642d59bbd6f4ee2742c40f606dafd0c00614c0fb`](https://github.com/wso2/identity-apps/commit/642d59bbd6f4ee2742c40f606dafd0c00614c0fb), [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33)]:
+  - @wso2is/admin.applications.v1@2.43.18
+  - @wso2is/admin.core.v1@2.59.2
+  - @wso2is/admin.extensions.v1@2.43.11
+
+## 2.40.0
+
+### Minor Changes
+
+- [#10608](https://github.com/wso2/identity-apps/pull/10608) [`c9071eeebca69a453584392d0c6fea505a733b98`](https://github.com/wso2/identity-apps/commit/c9071eeebca69a453584392d0c6fea505a733b98) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add support for `select` fields in connection create and edit templates, including a `useDynamicFieldOptions` hook that resolves field options from existing connections declared via `optionsSource` metadata.
+
+### Patch Changes
+
+- Updated dependencies [[`c9071eeebca69a453584392d0c6fea505a733b98`](https://github.com/wso2/identity-apps/commit/c9071eeebca69a453584392d0c6fea505a733b98)]:
+  - @wso2is/forms@2.11.0
+  - @wso2is/i18n@2.45.6
+
+## 2.39.1
+
+### Patch Changes
+
+- [#10605](https://github.com/wso2/identity-apps/pull/10605) [`dc2994e920cf3bd309356322075ee07575127f36`](https://github.com/wso2/identity-apps/commit/dc2994e920cf3bd309356322075ee07575127f36) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Remove logo gradient backdrop in connection edit pages
+
+## 2.39.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.identity-providers.v1@2.29.0
+  - @wso2is/admin.core.v1@2.58.0
+  - @wso2is/admin.console-settings.v1@2.26.47
+
 ## 2.38.4
 
 ### Patch Changes

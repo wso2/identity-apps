@@ -265,18 +265,73 @@
         }
 
         // UI countdown
-        function countdown(redirectURL) {
-            var timeleft = 3;
-            var downloadTimer = setInterval(function() {
-                if(timeleft <= 0){
-                    clearInterval(downloadTimer);
-                    document.getElementById("countdown").innerHTML = "0";
-                    redirect(redirectURL);
-                } else {
-                    document.getElementById("countdown").innerHTML = timeleft;
+        function countdown(redirectURL, seconds, consumesSessionDataKey) {
+            var timeleft = seconds || 3;
+            var deadline = Date.now() + (timeleft * 1000);
+            var finished = false;
+
+            function paint(value) {
+                var element = document.getElementById("countdown");
+                if (element) {
+                    element.innerHTML = value < 0 ? 0 : value;
                 }
-                timeleft -= 1;
+            }
+
+            function isHidden() {
+                return typeof document.visibilityState !== "undefined"
+                        && document.visibilityState === "hidden";
+            }
+
+            function showManualLink(visible) {
+                var manual = document.getElementById("manual-continue");
+                if (manual) {
+                    manual.style.display = visible ? "" : "none";
+                }
+            }
+
+            function abandonAutomaticRedirect() {
+                var note = document.getElementById("auto-redirect-note");
+                if (note) {
+                    note.style.display = "none";
+                }
+                showManualLink(true);
+            }
+
+            function finish(abandon) {
+                if (finished) {
+                    return;
+                }
+                finished = true;
+                clearInterval(downloadTimer);
+                if (abandon) {
+                    abandonAutomaticRedirect();
+                    return;
+                }
+                redirect(redirectURL);
+            }
+
+            if (consumesSessionDataKey) {
+                showManualLink(false);
+            }
+
+            var downloadTimer = setInterval(function() {
+                var remaining = Math.ceil((deadline - Date.now()) / 1000);
+                if (remaining > 0) {
+                    paint(remaining);
+                    return;
+                }
+                paint(0);
+                finish(consumesSessionDataKey && isHidden());
             }, 1000);
+
+            if (consumesSessionDataKey) {
+                document.addEventListener("visibilitychange", function() {
+                    if (!isHidden() && Date.now() >= deadline) {
+                        paint(0);
+                        finish(true);
+                    }
+                });
+            }
         }
     </script>
 
@@ -392,6 +447,7 @@
                                         url =IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding);
                                     }
                                 }
+                                boolean consumesSessionDataKey = false;
                                 if (autoLoginEnabled && !accountLockOnCreationEnabled
                                                 && StringUtils.isNotBlank(sessionDataKey)) {
 
@@ -406,6 +462,7 @@
 
                                     url = identityServerEndpointContextParam + "/commonauth?sessionDataKey="
                                                 + sessionDataKey;
+                                    consumesSessionDataKey = true;
                             }
                             int countdown = 3;
                             if (accountVerification) {
@@ -419,10 +476,19 @@
                             if (StringUtils.isNotBlank(url)) {
                         %>
                                 <p class="portal-tagline-description">
-                                    <script>countdown('<%= url %>');</script>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
-                                    <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
+                                    <span id="auto-redirect-note">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.will.redirected.back.to.the.application.in")%>
+                                        <span id="countdown"><%= countdown %></span> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "seconds")%>
+                                    </span>
                                     <br/><br/>
+                                    <span id="manual-continue">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "if.the.page.does.not.redirect.automatically")%>
+                                        <a id="continue-to-application" href="<%= Encode.forHtmlAttribute(url) %>">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "click.here")%>
+                                        </a>
+                                    </span>
+                                    <br/>
+                                    <script>countdown('<%= Encode.forJavaScript(url) %>', <%= countdown %>, <%= consumesSessionDataKey %>);</script>
 		            <%
 		                    } else {
 		            %>

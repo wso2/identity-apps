@@ -50,7 +50,7 @@ interface DataTablePropsInterface {
 interface ButtonPropsInterface {
     children: ReactNode;
     onClick?: () => void;
-    "data-testid"?: string;
+    "data-componentid"?: string;
 }
 
 interface ConfirmationModalPropsInterface {
@@ -165,7 +165,11 @@ vi.mock("@wso2is/react-components", () => {
                 { action }
             </div>
         ),
-        PrimaryButton: ({ children, onClick, "data-testid": componentId }: ButtonPropsInterface): ReactElement => (
+        PrimaryButton: ({
+            children,
+            onClick,
+            "data-componentid": componentId
+        }: ButtonPropsInterface): ReactElement => (
             <button
                 type="button"
                 data-componentid={ componentId }
@@ -189,6 +193,7 @@ describe("AgentList", () => {
         render(
             <AgentList
                 advancedSearch={ null }
+                hasAgentCreatePermissions={ true }
                 isLoading={ false }
                 list={ [] }
                 mutateAgentList={ vi.fn() }
@@ -203,10 +208,30 @@ describe("AgentList", () => {
         expect(setShowAgentAddWizard).toHaveBeenCalledTimes(1);
     });
 
+    it("hides the add-agent action without create permission", () => {
+        render(
+            <AgentList
+                advancedSearch={ null }
+                hasAgentCreatePermissions={ false }
+                isLoading={ false }
+                list={ [] }
+                mutateAgentList={ vi.fn() }
+                setShowAgentAddWizard={ vi.fn() }
+                data-componentid="agent-list"
+            />
+        );
+
+        expect(screen.getByTestId("agent-list-empty-placeholder")).toBeInTheDocument();
+        expect(
+            screen.queryByTestId("agent-list-empty-placeholder-add-agent-button")
+        ).not.toBeInTheDocument();
+    });
+
     it("navigates to the edit page when an agent row is selected", () => {
         render(
             <AgentList
                 advancedSearch={ null }
+                hasAgentCreatePermissions={ false }
                 isLoading={ false }
                 list={ [
                     {
@@ -236,6 +261,7 @@ describe("AgentList", () => {
         render(
             <AgentList
                 advancedSearch={ null }
+                hasAgentCreatePermissions={ false }
                 isLoading={ false }
                 list={ [
                     {
@@ -258,6 +284,7 @@ describe("AgentList", () => {
         await waitFor(() => {
             expect(deleteAgentMock).toHaveBeenCalledWith("agent-id");
         });
+
         expect(mutateAgentList).toHaveBeenCalledTimes(1);
     });
 });

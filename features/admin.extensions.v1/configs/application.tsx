@@ -177,7 +177,12 @@ export const applicationConfig: ApplicationConfig = {
                 return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
             }
         },
-        makeSubjectMandatory: true,
+        get makeSubjectMandatory(): boolean {
+            return Boolean(
+                window[ "AppUtils" ]?.getConfig()?.ui?.features?.applications?.properties
+                    ?.makeSubjectMandatory ?? true
+            );
+        },
         roleMapping: true
     },
     customApplication: {
@@ -232,31 +237,16 @@ export const applicationConfig: ApplicationConfig = {
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
-            // When unified MCP capabilities is enabled, all apps show "Authorization" tab
-            // When disabled, only MCP client and Digital Wallet show "Authorization", others show "API Authorization"
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
                 (
-                    (isUnifiedMcpCapabilitiesEnabled && (
-                        isMCPClientApp ||
-                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                        || application?.templateId === MobileAppTemplate?.id
-                        || application?.templateId === OIDCWebAppTemplate?.id
-                        || application?.templateId === SinglePageAppTemplate?.id
-                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
-                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
-                    )) ||
-                    (!isUnifiedMcpCapabilitiesEnabled && (
-                        isMCPClientApp ||
-                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                        || application?.templateId === MobileAppTemplate?.id
-                        || application?.templateId === OIDCWebAppTemplate?.id
-                        || application?.templateId === SinglePageAppTemplate?.id
-                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
-                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
-                    ))
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {

@@ -104,7 +104,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
-        applicationSearchQuery);
+        applicationSearchQuery, true, true);
 
     const {
         data: rolesList,

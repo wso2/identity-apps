@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2020-2026, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -71,13 +71,11 @@
 <style type="text/css"><%= cssContent %></style>
 <%
         } else {
-            if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                    + preferenceResolvedFromResourceName)) {
-                styleFilePath = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName) + "/styles.css";
-            } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                    + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
-                styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", customLayoutOrganization);
+            if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
+                styleFilePath += "/apps/" + convertApplicationName(customLayoutApplication);
             }
+            styleFilePath += "/styles.css";
         }
     } else {
         styleFilePath = "includes/layouts/" + layout + "/styles.css";

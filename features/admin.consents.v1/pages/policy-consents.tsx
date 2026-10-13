@@ -37,9 +37,11 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DocumentationLink,
     ListLayout,
     PageLayout,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -68,6 +70,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -334,7 +337,14 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         <PageLayout
             pageTitle={ t("consents:policyConsents.pages.list.title") }
             title={ t("consents:policyConsents.pages.list.heading") }
-            description={ t("consents:policyConsents.pages.list.description") }
+            description={ (
+                <>
+                    { t("consents:policyConsents.pages.list.description") }
+                    <DocumentationLink link={ getLink("manage.consentManagement.policyManagement.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 onClick: () => {

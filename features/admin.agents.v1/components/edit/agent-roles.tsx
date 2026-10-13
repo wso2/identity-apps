@@ -19,8 +19,9 @@
 import { Typography } from "@mui/material";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Link, Message } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -36,8 +37,9 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
     const { t } = useTranslation();
 
     const {
-        data: agentInfo
-    } = useGetAgent(agentId);
+        data: agentInfo,
+        isLoading: isAgentInfoLoading
+    }: RequestResultInterface<ProfileInfoInterface> = useGetAgent<ProfileInfoInterface>(agentId);
 
     return (
 
@@ -60,7 +62,7 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
                 </Link>
             </Message>
             <ReadOnlyRoleList
-                totalRoleList={ agentInfo?.roles }
+                totalRoleList={ isAgentInfoLoading ? undefined : agentInfo?.roles ?? [] }
                 emptyRolesListPlaceholder={ null }
             />
         </EmphasizedSegment>

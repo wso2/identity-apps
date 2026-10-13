@@ -29,7 +29,12 @@ import {
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
+import {
+    ExternalClaim,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    SharedProfileValueResolvingMethod
+} from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -65,6 +70,26 @@ export class UserManagementUtils {
         }
 
         return getUserNameWithoutDomain(username) === authenticatedUsername;
+    };
+
+    /**
+     * Resolves the user id of the current session from the `sub` claim of the ID token.
+     *
+     *
+     * @param subject - The `sub` claim of the ID token.
+     * @returns The user id, or an empty string when it cannot be resolved.
+     */
+    public static resolveUserIdFromSubject = (subject: string): string => {
+        if (!subject) {
+            return "";
+        }
+
+        const withoutUserStoreDomain: string = subject.substring(subject.lastIndexOf("/") + 1);
+        const tenantDomainSeparatorIndex: number = withoutUserStoreDomain.lastIndexOf("@");
+
+        return tenantDomainSeparatorIndex === -1
+            ? withoutUserStoreDomain
+            : withoutUserStoreDomain.substring(0, tenantDomainSeparatorIndex);
     };
 
     /**
@@ -476,16 +501,56 @@ export const getDisplayOrder = (
 };
 
 /**
+ * Checks whether a profile schema is an Enterprise schema attribute that duplicates a core User or System
+ * schema attribute. See `useDuplicatedEnterpriseClaims` for how the duplicated claims are identified.
+ *
+ * @param schema - Profile schema to check.
+ * @param duplicatedClaims - Enterprise schema claims that duplicate a core User or System schema attribute.
+ * @returns Whether the schema should be excluded from the UI.
+ */
+export const isDuplicatedEnterpriseSchema = (
+    schema: ProfileSchemaInterface,
+    duplicatedClaims: ExternalClaim[]
+): boolean => {
+    if (!schema || !duplicatedClaims || duplicatedClaims.length === 0) {
+        return false;
+    }
+
+    const schemaClaimURI: string = schema.schemaUri ?? `${schema.schemaId}:${schema.name}`;
+
+    return duplicatedClaims.some((claim: ExternalClaim) => claim?.claimURI === schemaClaimURI);
+};
+
+/**
  * Resolves the attributes by which users can be searched.
  *
  * @param profileSchemas  - SCIM profile schemas.
+ * @param duplicatedClaims - Enterprise schema claims that duplicate a core User or System schema attribute.
  * @returns Header of the user list item.
  */
 export const resolveUserSearchAttributes = (
-    profileSchemas: ProfileSchemaInterface[]
+    profileSchemas: ProfileSchemaInterface[],
+    duplicatedClaims: ExternalClaim[] = []
 ): DropdownChild[] => {
     const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
         .filter((schema: ProfileSchemaInterface) => {
+            /*
+             * `userName` is already added as a hardcoded option by the consumers of this function.
+             * Exclude it here to avoid rendering a duplicate entry.
+             */
+            if (schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+                return false;
+            }
+
+            /*
+             * Migrated tenants can have Enterprise schema attributes (e.g. `firstName`) mapped to a local claim
+             * that is already exposed by the core User or System schema (e.g. `name.givenName`). Exclude them
+             * since they duplicate the canonical attribute and cannot be used in search filters.
+             */
+            if (isDuplicatedEnterpriseSchema(schema, duplicatedClaims)) {
+                return false;
+            }
+
             // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
             let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
 
@@ -504,20 +569,38 @@ export const resolveUserSearchAttributes = (
             return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
-    let searchAttributes:DropdownChild[] = [];
+    /*
+     * Migrated tenants can end up with the same attribute (e.g. `country`, `preferredMFAOption`) exposed under
+     * both the enterprise dialect and the system schema. Both map to the same local claim and carry the same
+     * display name but different schema-qualified values, so de-duplicating by option value would not work.
+     * De-duplicate by attribute name instead, preferring the system schema variant as it is the canonical
+     * location in 7.x.
+     */
+    const deduplicatedSchemasByName: Map<string, ProfileSchemaInterface> = new Map();
 
-    if (sortedSchemas) {
-        searchAttributes = sortedSchemas.map((schema: ProfileSchemaInterface, index: number) => {
-            const extendedSchemaSupportedName:string = schema?.schemaId
-                ? schema.schemaId + ":" + schema.name
-                : schema.name;
+    sortedSchemas?.forEach((schema: ProfileSchemaInterface) => {
+        const existingSchema: ProfileSchemaInterface = deduplicatedSchemasByName.get(schema.name);
 
-            return {
-                key: index,
-                text: schema.displayName,
-                value: extendedSchemaSupportedName
-            };
-        });
+        if (!existingSchema || schema.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA) {
+            deduplicatedSchemasByName.set(schema.name, schema);
+        }
+    });
+
+    let searchAttributes: DropdownChild[] = [];
+
+    if (deduplicatedSchemasByName.size > 0) {
+        searchAttributes = Array.from(deduplicatedSchemasByName.values())
+            .map((schema: ProfileSchemaInterface, index: number) => {
+                const extendedSchemaSupportedName: string = schema?.schemaId
+                    ? schema.schemaId + ":" + schema.name
+                    : schema.name;
+
+                return {
+                    key: index,
+                    text: schema.displayName,
+                    value: extendedSchemaSupportedName
+                };
+            });
     }
 
     return searchAttributes;

@@ -1,5 +1,145 @@
 # @wso2is/i18n
 
+## 2.47.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+## 2.46.3
+
+### Patch Changes
+
+- [#10724](https://github.com/wso2/identity-apps/pull/10724) [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Show each application's own default subject identifier, list every available attribute in the subject attribute dropdown, and let the subject attribute's Requested and Mandatory states follow the makeSubjectMandatory config
+
+## 2.46.2
+
+### Patch Changes
+
+- [#10689](https://github.com/wso2/identity-apps/pull/10689) [`49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd`](https://github.com/wso2/identity-apps/commit/49008ebcbbda4e23bfe94dfb7e2da4c604b1edcd) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add application level token exchange scope restriction configuration to Console
+
+## 2.46.1
+
+### Patch Changes
+
+- [#10685](https://github.com/wso2/identity-apps/pull/10685) [`073b8cc835421f80288acb56750e2fe6e9bc610d`](https://github.com/wso2/identity-apps/commit/073b8cc835421f80288acb56750e2fe6e9bc610d) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Paginate the group assignment list in the user Groups tab and show how many of the listed groups are selected
+
+## 2.46.0
+
+### Minor Changes
+
+- [#10679](https://github.com/wso2/identity-apps/pull/10679) [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate the enable/disable toggles of applications, enterprise connections and organizations behind the new `toggleEnable` feature gate flags, surface a plan limit exceeded alert on the respective listing pages, and refresh the feature gate after deleting one of these resources so the gate clears without a page reload
+
+## 2.45.8
+
+### Patch Changes
+
+- [#10653](https://github.com/wso2/identity-apps/pull/10653) [`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add IDP sharing UI
+
+## 2.45.7
+
+### Patch Changes
+
+- [#10659](https://github.com/wso2/identity-apps/pull/10659) [`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add the missing "Learn More" documentation links to the Login & Registration and Notification Channels
+  pages that were shipping without one — Alternative Login Identifiers, Username Validation, Session Management,
+  Policy Management, Preference Management, Admin Initiated Password Reset, SAML2 Web SSO Configuration,
+  Organization Discovery, Impersonation, Issuer Usage Scope, Outbound Provisioning Configuration,
+  Internal Notification Sending, Email Provider, SMS Provider and Push Provider. The Email Provider and SMS
+  Provider pages already rendered a `DocumentationLink`, but the `develop.emailProviders.learnMore` and
+  `develop.smsProviders.learnMore` keys they read were absent from the documentation link config, so the link
+  resolved to `undefined` and never rendered.
+
+  The two governance connector descriptions touched here (Alternative Login Identifiers and Admin Initiated
+  Password Reset) also move from hardcoded English to `governanceConnectors` i18n keys.
+
+## 2.45.6
+
+### Patch Changes
+
+- [#10608](https://github.com/wso2/identity-apps/pull/10608) [`c9071eeebca69a453584392d0c6fea505a733b98`](https://github.com/wso2/identity-apps/commit/c9071eeebca69a453584392d0c6fea505a733b98) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add support for `select` fields in connection create and edit templates, including a `useDynamicFieldOptions` hook that resolves field options from existing connections declared via `optionsSource` metadata.
+
+## 2.45.5
+
+### Patch Changes
+
+- [#10607](https://github.com/wso2/identity-apps/pull/10607) [`92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed`](https://github.com/wso2/identity-apps/commit/92f04ea2aeb793dd159c54ef93c4c3fd1a33c2ed) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve steps in flow builder for dynamically registered executors from /dropins
+
+## 2.45.4
+
+### Patch Changes
+
+- [#10636](https://github.com/wso2/identity-apps/pull/10636) [`787918ac3a885ee9d0b49c883558bb1f1fcbc5b8`](https://github.com/wso2/identity-apps/commit/787918ac3a885ee9d0b49c883558bb1f1fcbc5b8) Thanks [@Malith-19](https://github.com/Malith-19)! - Hide app native authentication and client attestation settings for non-OIDC applications in the application advanced settings tab
+
+## 2.45.3
+
+### Patch Changes
+
+- [#10567](https://github.com/wso2/identity-apps/pull/10567) [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8) Thanks [@KD23243](https://github.com/KD23243)! - Resolve flow extension read-only claims from server configuration and list identity claims in the claim picker
+
+## 2.45.2
+
+### Patch Changes
+
+- [#10587](https://github.com/wso2/identity-apps/pull/10587) [`6185b49b267390c79cc3bf7fa7d51de6ccaa813d`](https://github.com/wso2/identity-apps/commit/6185b49b267390c79cc3bf7fa7d51de6ccaa813d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multiple client secrets support for OAuth/OIDC application
+
+## 2.45.1
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add CLI configuration UI
+
+## 2.45.0
+
+### Minor Changes
+
+- [#10598](https://github.com/wso2/identity-apps/pull/10598) [`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add Password Credential authentication option to SMS and Email provider forms
+
+## 2.44.2
+
+### Patch Changes
+
+- [#10616](https://github.com/wso2/identity-apps/pull/10616) [`053efa58e78944780d09ce984a9fd54865314af7`](https://github.com/wso2/identity-apps/commit/053efa58e78944780d09ce984a9fd54865314af7) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Clarify the SSO-session token binding type description to state that tokens are revoked when the identity server login session is explicitly terminated, not when it expires
+
+## 2.44.1
+
+### Patch Changes
+
+- [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+* [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+## 2.44.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10538](https://github.com/wso2/identity-apps/pull/10538) [`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Show a specific error message when agent creation fails because the organization's application limit has been reached, instead of the generic "Something went wrong" alert.
+
+* [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+## 2.43.14
+
+### Patch Changes
+
+- [#10430](https://github.com/wso2/identity-apps/pull/10430) [`4ebf145fc3bd1b76f5304ea1d374023fd2859a5a`](https://github.com/wso2/identity-apps/commit/4ebf145fc3bd1b76f5304ea1d374023fd2859a5a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add support for configuring link target behavior in Rich Text Editor
+
+## 2.43.13
+
+### Patch Changes
+
+- [#10534](https://github.com/wso2/identity-apps/pull/10534) [`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add a config-switchable unified Customer Data page for the Customer Data Service
+
+## 2.43.12
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+* [#10528](https://github.com/wso2/identity-apps/pull/10528) [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update email template update premium info message
+
 ## 2.43.11
 
 ### Patch Changes

@@ -18,6 +18,7 @@
 
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods, PreferenceRequest } from "../models";
+import { ConfigPreferenceRequestInterface, ConfigPreferenceResponseInterface } from "../models/push-authenticator";
 import { store } from "../store";
 
 /**
@@ -48,6 +49,40 @@ export const getPreference = (data: PreferenceRequest[]): Promise<any> => {
             }
 
             return Promise.resolve(response?.data);
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get server configuration preferences for the tenant.
+ *
+ * @param data - Resource types, names and properties to fetch.
+ * @returns Promise resolving to the config preference response.
+ */
+export const getConfigPreferences = (
+    data: ConfigPreferenceRequestInterface[]
+): Promise<ConfigPreferenceResponseInterface[]> => {
+    const requestConfig: HttpRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.serverConfigPreferences
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to fetch config preferences. Status: ${response.status}`)
+                );
+            }
+
+            return Promise.resolve(response?.data as ConfigPreferenceResponseInterface[]);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);

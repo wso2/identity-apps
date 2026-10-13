@@ -73,6 +73,7 @@ import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import CustomProtocolApplicationTemplate from
     "../../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -84,6 +85,7 @@ import {
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
+    State,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes,
     SupportedCustomAuthProtocolTypes
@@ -91,6 +93,7 @@ import {
 import { AuthProtocolMetaInterface } from "../../models/reducer-state";
 import { setAuthProtocolMeta } from "../../store/actions/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import RevokeAllClientSecretsDangerZone from "../client-secrets/revoke-all-client-secrets-danger-zone";
 import { InboundFormFactory } from "../forms/inbound-form-factory";
 import { ApplicationCreateWizard } from "../wizard/application-create-wizard";
 
@@ -245,6 +248,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
+    const { maxSecretCount } = useClientSecretManagement();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -468,6 +472,31 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     level: AlertLevels.ERROR,
                     message: t("applications:notifications.regenerateSecret" +
                         ".genericError.message")
+                }));
+            });
+    };
+
+    /**
+     * Revokes all client secrets of the application and regenerates a new one.
+     */
+    const handleRevokeAllClientSecrets = (): void => {
+        regenerateClientSecret(appId)
+            .then((response: AxiosResponse<OIDCDataInterface>) => {
+                dispatch(addAlert({
+                    description: t("applications:clientSecrets.notifications.revokeAll.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:clientSecrets.notifications.revokeAll.success.message")
+                }));
+
+                onApplicationSecretRegenerate(response.data);
+                onUpdate(appId);
+            })
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        ?? t("applications:clientSecrets.notifications.revokeAll.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:clientSecrets.notifications.revokeAll.genericError.message")
                 }));
             });
     };
@@ -1002,6 +1031,48 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     };
 
     /**
+     * Resolves the client secrets danger zone for OIDC applications.
+     *
+     * @returns Revoke all client secrets danger zone, or null.
+     */
+    const resolveClientSecretsDangerZone = (): ReactElement => {
+
+        const oidcConfig: OIDCDataInterface = inboundProtocolConfig?.[ SupportedAuthProtocolTypes.OIDC ];
+
+        /*
+         * The multi-protocol layout renders every configured protocol at once, so OIDC just needs to
+         * be one of them; the single-protocol view shows only the selected protocol.
+         */
+        const isOIDCProtocolInView: boolean = inboundProtocolList.length > 1
+            ? inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
+            : [ SupportedAuthProtocolTypes.OIDC, SupportedAuthProtocolTypes.OAUTH2_OIDC ]
+                .includes(selectedProtocol as SupportedAuthProtocolTypes);
+
+        /*
+         * Hidden unless multiple secrets are enabled and OIDC is in view; also skipped for public
+         * clients, system/default applications, and revoked configurations.
+         */
+        if (!(maxSecretCount > 1)
+            || !isOIDCProtocolInView
+            || isSystemApplication
+            || isDefaultApplication
+            || !oidcConfig?.clientId
+            || oidcConfig?.publicClient
+            || oidcConfig?.state === State.REVOKED) {
+
+            return null;
+        }
+
+        return (
+            <RevokeAllClientSecretsDangerZone
+                onRevokeAll={ handleRevokeAllClientSecrets }
+                readOnly={ readOnly || !hasApplicationUpdatePermissions }
+                data-componentid={ `${ componentId }-revoke-all-danger-zone` }
+            />
+        );
+    };
+
+    /**
      * Resolve protocol display name when there are multiple protocols.
      *
      * @param protocol - Protocol name.
@@ -1381,6 +1452,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     <Grid.Row>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             { resolveInboundProtocolSettingsForm() }
+                                            { resolveClientSecretsDangerZone() }
                                         </Grid.Column>
                                     </Grid.Row>
                                 )

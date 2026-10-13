@@ -180,7 +180,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             setActiveFlowMode(FlowModes[0]);
             onActiveFlowModeChange(FlowModes[0]?.mode);
         }
-    }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
+    }, [ isVisualEditorEnabled, isLegacyEditorEnabled, readOnly ]);
 
     /**
      * Set the active flow mode to the preferred flow mode when the user preference is updated.
@@ -190,13 +190,15 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             return;
         }
 
+        // The preferred mode is persisted per user and not per organization, so it may not be
+        // available in the current context. e.g. `Visual` when the flow is read only.
         const activeMode: AuthenticationFlowBuilderModesInterface = FlowModes.find(
             (mode: AuthenticationFlowBuilderModesInterface) => mode.mode === preferredAuthenticationFlowBuilderMode
-        );
+        ) ?? FlowModes[0];
 
         setActiveFlowMode(activeMode);
         onActiveFlowModeChange(activeMode?.mode);
-    }, [ preferredAuthenticationFlowBuilderMode ]);
+    }, [ preferredAuthenticationFlowBuilderMode, readOnly ]);
 
     /**
      * Handles the flow mode switch.

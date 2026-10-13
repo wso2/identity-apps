@@ -1,11 +1,20 @@
-<!--
-~    Copyright (c) 2022-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
-~
-~    This software is the property of WSO2 Inc. and its suppliers, if any.
-~    Dissemination of any information or reproduction of any material contained
-~    herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
-~    You may not alter or remove any copyright or other notice from copies of this content."
--->
+<%--
+  ~ Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+--%>
 
 <%= buildOptions.contentType %>
 <%= buildOptions.serverConfiguration %>
@@ -14,6 +23,9 @@
 <%= buildOptions.importIdentityTenantUtil %>
 <%= buildOptions.importOwaspEncode %>
 <%= buildOptions.importIsSuperTenantRequiredInUrl %>
+<%= buildOptions.importStringUtils %>
+
+<%= buildOptions.proxyContextPathScriptlet %>
 
 <script>
     var userAccessedPath = window.location.href;
@@ -148,7 +160,7 @@
                 animation-iteration-count: infinite;
             }
         </style>
-        <script src="/<%= buildOptions.basename ? buildOptions.basename + '/' : '' %>startup-config.js"></script>
+        <script src="<%= buildOptions.publicPath %>startup-config.js"></script>
         <script>
             var userAccessedPath = window.location.href;
             var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0] : null;
@@ -419,7 +431,7 @@
     <script>
         if (!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= buildOptions.basename ? '/' + buildOptions.basename + '/auth-spa-3.1.2.min.js' : '/auth-spa-3.1.2.min.js'%>";
+            var authScriptSrc = "<%= buildOptions.publicPath %>auth-spa-3.1.2.min.js";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");

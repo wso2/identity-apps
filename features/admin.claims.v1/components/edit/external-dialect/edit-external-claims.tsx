@@ -297,11 +297,12 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const handleAttributesSubmit = (claims: AddExternalClaim[]): void => {
 
         setIsSubmitting(true);
+        let isDialectCreated: boolean = false;
         const resolvedDialectIDPromise: Promise<string> = dialectID
             ? Promise.resolve(dialectID)
             : addDialect(attributeUri)
                 .then(() => {
-                    updateDialects(true);
+                    isDialectCreated = true;
 
                     return getDialects({});
                 })
@@ -325,7 +326,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 });
             });
 
-            Promise.all(addAttributesRequests);
+            return Promise.all(addAttributesRequests);
         }).then(() => {
             dispatch(addAlert(
                 {
@@ -353,6 +354,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 }
             ));
         }).finally(() => {
+            if (isDialectCreated) {
+                updateDialects?.(true);
+            }
             setIsSubmitting(false);
             setShowAddExternalClaim(false);
         });

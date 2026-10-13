@@ -31,7 +31,10 @@ export const featureGateConfig: FeatureGateInterface  = {
                 },
                 status: FeatureStatus.DEFAULT
             },
-            status: FeatureStatus.DEFAULT
+            status: FeatureStatus.DEFAULT,
+            toggleEnable: {
+                status: FeatureStatus.DEFAULT
+            }
         },
         approvalWorkflows: {
             status: FeatureStatus.DEFAULT
@@ -51,7 +54,10 @@ export const featureGateConfig: FeatureGateInterface  = {
                     status: FeatureStatus.DEFAULT
                 },
                 enterprise: {
-                    status: FeatureStatus.DEFAULT
+                    status: FeatureStatus.DEFAULT,
+                    toggleEnable: {
+                        status: FeatureStatus.DEFAULT
+                    }
                 },
                 idvp: {
                     status: FeatureStatus.DEFAULT
@@ -66,6 +72,11 @@ export const featureGateConfig: FeatureGateInterface  = {
         },
         loginAndRegistration: {
             sessionManagement: {
+                status: FeatureStatus.DEFAULT
+            }
+        },
+        organizations: {
+            toggleEnable: {
                 status: FeatureStatus.DEFAULT
             }
         },

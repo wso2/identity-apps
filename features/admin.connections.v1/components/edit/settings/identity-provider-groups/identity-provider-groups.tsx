@@ -317,6 +317,16 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         !isClaimConfigsFetchRequestLoading
             ? (
                 <>
+                    {
+                        editingIDP?.isShared && (
+                            <Message
+                                header={ t("idp:identityProviderGroups.sharedGroupsInfo.header") }
+                                content={ t("idp:identityProviderGroups.sharedGroupsInfo.description") }
+                                data-componentid={ `${ componentId }-shared-groups-info-message` }
+                                info
+                            />
+                        )
+                    }
                     { renderGroupAttributeSection() }
                     <Divider hidden/>
 

@@ -113,6 +113,53 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                 },
                 none: {
                     name: "None"
+                },
+                passwordCredential: {
+                    name: "Password Credential",
+                    properties: {
+                        clientID: {
+                            label: "Client ID",
+                            placeholder: "Client ID",
+                            validations: {
+                                empty: "Client id is a required field."
+                            }
+                        },
+                        clientSecret: {
+                            label: "Client Secret",
+                            placeholder: "Client Secret",
+                            validations: {
+                                empty: "Client secret is a required field."
+                            }
+                        },
+                        password: {
+                            label: "Password",
+                            placeholder: "Password",
+                            validations: {
+                                empty: "Password is a required field."
+                            }
+                        },
+                        scopes: {
+                            label: "Scopes",
+                            placeholder: "Scopes",
+                            validations: {
+                                empty: "Scopes is a required field."
+                            }
+                        },
+                        tokenEndpoint: {
+                            label: "Token Endpoint",
+                            placeholder: "Token Endpoint",
+                            validations: {
+                                empty: "Token endpoint is a required field."
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Username",
+                            validations: {
+                                empty: "Username is a required field."
+                            }
+                        }
+                    }
                 }
             }
         },

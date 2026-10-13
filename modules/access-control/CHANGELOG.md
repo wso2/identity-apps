@@ -1,5 +1,11 @@
 # @wso2is/access-control
 
+## 3.7.0
+
+### Minor Changes
+
+- [#10679](https://github.com/wso2/identity-apps/pull/10679) [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate the enable/disable toggles of applications, enterprise connections and organizations behind the new `toggleEnable` feature gate flags, surface a plan limit exceeded alert on the respective listing pages, and refresh the feature gate after deleting one of these resources so the gate clears without a page reload
+
 ## 3.6.0
 
 ### Minor Changes

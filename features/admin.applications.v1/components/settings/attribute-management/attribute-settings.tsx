@@ -18,6 +18,7 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -41,7 +42,7 @@ import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/rea
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -50,8 +51,15 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/application";
+import { sortSubjectAttributeOptions } from "./subject-attribute-options";
 import {
+    isClaimMappingInEffect as resolveClaimMappingInEffect,
+    isStoredSubjectMappingRemoved as resolveStoredSubjectMappingRemoved
+} from "./subject-mapping-utils";
+import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/application";
+import { ApplicationManagementConstants } from "../../../constants/application-management";
+import {
+    AdvancedConfigurationsInterface,
     AppClaimInterface,
     ClaimConfigurationInterface,
     ClaimMappingInterface,
@@ -59,7 +67,8 @@ import {
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface
+    SubjectConfigInterface,
+    additionalSpProperty
 } from "../../../models/application";
 import { OIDCDataInterface, SupportedAuthProtocolTypes } from "../../../models/application-inbound";
 
@@ -92,7 +101,8 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
 interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
-    oidc: OIDCDataInterface
+    oidc: OIDCDataInterface;
+    isSubjectClaimExplicit?: boolean;
 }
 
 interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
@@ -117,6 +127,10 @@ interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInt
      * If only OIDC configured for the application.
      */
     onlyOIDCConfigured: boolean;
+    /**
+     * Advanced configurations of the application, used to resolve its default subject identifier.
+     */
+    advancedConfigurations?: AdvancedConfigurationsInterface;
     /**
      * Callback to update the application details.
      */
@@ -153,6 +167,28 @@ const getLocalDialectURI = (): string => {
 
 const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
 
+/**
+ * Resolves the default subject identifier of an application from the useUserIdForDefaultSubject property exposed by
+ * the server through the additional service provider properties. Applications that predate the user id default, such
+ * as applications migrated from older releases, carry the property with the value false and default to the username.
+ * When the property is absent, the user id is assumed.
+ *
+ * @param advancedConfigurations - Advanced configurations of the application.
+ * @returns Local claim URI of the default subject identifier.
+ */
+const resolveDefaultSubjectAttribute = (advancedConfigurations: AdvancedConfigurationsInterface): string => {
+    const useUserIdForDefaultSubject: additionalSpProperty = advancedConfigurations?.additionalSpProperties?.find(
+        (property: additionalSpProperty) =>
+            property?.name === ApplicationManagementConstants.USE_USER_ID_FOR_DEFAULT_SUBJECT_PROPERTY
+    );
+
+    if (useUserIdForDefaultSubject?.value?.toString().toLowerCase() === "false") {
+        return ApplicationManagementConstants.USERNAME_SUBJECT_ATTRIBUTE;
+    }
+
+    return DefaultSubjectAttribute;
+};
+
 const LocalDialectURI: string = "http://wso2.org/claims";
 
 /**
@@ -173,7 +209,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         onUpdate,
         readOnly,
         inboundProtocolConfig,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId,
+        advancedConfigurations
     } = props;
 
     const { t } = useTranslation();
@@ -181,6 +218,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const dispatch: Dispatch = useDispatch();
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+
+    const { UIConfig } = useUIConfig();
 
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
@@ -216,6 +255,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     //Advance Settings.
     const [ advanceSettingValues, setAdvanceSettingValues ] = useState<AdvanceSettingsSubmissionInterface>();
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
+    const [ removedSubjectMapping, setRemovedSubjectMapping ] = useState<string>();
+    const resolvedDefaultSubjectAttribute: string = useMemo(
+        () => resolveDefaultSubjectAttribute(advancedConfigurations),
+        [ advancedConfigurations ]
+    );
 
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>(claimConfigurations?.role?.mappings ?? []);
@@ -277,6 +321,22 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ externalClaims ]);
 
     /**
+     * Whether this tab operates on the tenant wide OIDC claim dialect rather than the local claim dialect.
+     *
+     * The scope grouped selector has no field for attributes renamed in a custom dialect, so it shows them
+     * as unselected and saving from it drops the names. Those applications use the local dialect instead.
+     *
+     * Opt in through `isCustomClaimDialectRoutingEnabled`; with it off this is `onlyOIDCConfigured`.
+     */
+    const hasRenamedAttributes: boolean = claimConfigurations?.dialect === "CUSTOM"
+        && (claimConfigurations?.claimMappings ?? []).some((mapping: ClaimMappingInterface) =>
+            !!mapping?.applicationClaim && mapping.applicationClaim !== mapping?.localClaim?.uri);
+
+    const usesOIDCClaimDialect: boolean = UIConfig?.isCustomClaimDialectRoutingEnabled
+        ? onlyOIDCConfigured && !hasRenamedAttributes
+        : onlyOIDCConfigured;
+
+    /**
      * Set the dialects for inbound protocols
      */
     useEffect(() => {
@@ -286,7 +346,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
 
-        if (onlyOIDCConfigured) {
+        if (usesOIDCClaimDialect) {
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
             return;
@@ -294,7 +354,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
         setIsClaimRequestLoading(false);
         changeSelectedDialect(localDialectURI);
-    }, [ onlyOIDCConfigured, dialect ]);
+    }, [ usesOIDCClaimDialect, dialect ]);
 
     useEffect(() => {
         if (advanceSettingValues) {
@@ -572,6 +632,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 }
             });
 
+            const removedMappings: ExtendedClaimMappingInterface[] = [];
+
             removedClaims.map((claim: Claim) => {
                 let mappedClaim : ExtendedClaimMappingInterface;
 
@@ -581,9 +643,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     }
                 });
                 if (mappedClaim) {
+                    removedMappings.push(mappedClaim);
                     claimMappingList.splice(claimMappingList.indexOf(mappedClaim), 1);
                 }
             });
+            trackRemovedSubjectMapping(removedMappings);
             setClaimMapping(claimMappingList);
         }
     };
@@ -603,6 +667,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
         });
         if (mappedClaim) {
+            trackRemovedSubjectMapping([ mappedClaim ]);
             claimMappingList.splice(claimMappingList.indexOf(mappedClaim), 1);
             setClaimMapping(claimMappingList);
         }
@@ -724,22 +789,109 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     /**
      * Create sorted dropdown list.
      */
-    const createDropDownList = () : DropdownOptionsInterface[] => {
+    const createDropDownList = (options: DropdownOptionsInterface[]) : DropdownOptionsInterface[] => {
         let soretdDropdownList: DropdownOptionsInterface[] = [];
 
-        soretdDropdownList = createDropdownOption();
+        soretdDropdownList = [ ...options ];
 
-        if (onlyOIDCConfigured) {
-            const defaultSubjectClaimIndex: number =
-            soretdDropdownList.findIndex(
-                (option: DropdownOptionsInterface) => option?.value === DefaultSubjectAttribute
-            );
+        // The dropdown lists the alternate subject identifiers only. The default identifier of the application is
+        // selected by leaving the alternate subject identifier option unticked.
+        const defaultSubjectClaimIndex: number =
+        soretdDropdownList.findIndex(
+            (option: DropdownOptionsInterface) => option?.value === resolvedDefaultSubjectAttribute
+        );
 
-            soretdDropdownList = soretdDropdownList.filter((item:DropdownOptionsInterface,
-                index:number) => index !== defaultSubjectClaimIndex);
-        }
+        soretdDropdownList = soretdDropdownList.filter((item:DropdownOptionsInterface,
+            index:number) => index !== defaultSubjectClaimIndex);
 
         return soretdDropdownList;
+    };
+
+    /**
+     * Attribute name mapping is in effect only while it is switched on and at least one attribute of the table is
+     * mapped. With no mapped row the application is saved with the local dialect, so the subject attribute follows
+     * the local dialect rules and any attribute can be assigned.
+     */
+    const isClaimMappingInEffect: boolean = resolveClaimMappingInEffect(
+        claimMappingOn,
+        claimMapping,
+        selectedClaims.map((claim: ExtendedClaimInterface) => claim?.claimURI),
+        [ ...claims, ...selectedClaims ].map((claim: ExtendedClaimInterface) => claim?.claimURI)
+    );
+
+    /**
+     * Whether the mapped attribute name the stored subject relies on is gone in this session (attribute name mapping
+     * no longer in effect, or the name not mapped any more).
+     */
+    const isStoredSubjectMappingRemoved = (): boolean =>
+        resolveStoredSubjectMappingRemoved(
+            claimConfigurations, claimMapping, isClaimMappingInEffect, !!selectedDialect?.localDialect
+        );
+
+    /**
+     * Records the mapped attribute name that was the subject attribute when its mapping row was removed from the
+     * table, so that the subject returns to the application's default as the removal confirmation promises. Cleared
+     * as soon as the subject attribute changes.
+     *
+     * @param removedMappings - Mapping entries that leave the table.
+     */
+    const trackRemovedSubjectMapping = (removedMappings: ExtendedClaimMappingInterface[]): void => {
+        const removedSubject: ExtendedClaimMappingInterface = removedMappings.find(
+            (mapping: ExtendedClaimMappingInterface) =>
+                mapping?.addMapping && !!mapping?.applicationClaim && mapping.applicationClaim === selectedSubjectValue
+                // A mapped name equal to the default needs no reset, and a recorded no-op would never be cleared.
+                && mapping.applicationClaim !== resolvedDefaultSubjectAttribute
+        );
+
+        if (removedSubject) {
+            setRemovedSubjectMapping(removedSubject.applicationClaim);
+        }
+    };
+
+    /**
+     * Takes the subject attribute the advanced settings report and clears a recorded removal once the subject has
+     * moved on from the removed mapped name.
+     *
+     * @param value - Subject attribute selected in the advanced settings.
+     */
+    const handleSelectedSubjectValue = (value: string): void => {
+        setSelectedSubjectValue(value);
+
+        if (removedSubjectMapping && value !== removedSubjectMapping) {
+            setRemovedSubjectMapping(undefined);
+        }
+    };
+
+    /**
+     * Builds the option shown, disabled, while the alternate subject identifier is unticked: the application's
+     * default subject identifier as the dropdown would label it, or the local attribute when the current view does
+     * not list it (the attribute name mapping view without a mapping for it), or the bare URI.
+     */
+    const createDefaultSubjectOption = (options: DropdownOptionsInterface[]): DropdownOptionsInterface => {
+        const listedOption: DropdownOptionsInterface = options.find(
+            (option: DropdownOptionsInterface) => option?.value === resolvedDefaultSubjectAttribute
+        );
+
+        if (listedOption) {
+            return listedOption;
+        }
+
+        const localClaim: ExtendedClaimInterface = [ ...claims, ...selectedClaims ].find(
+            (claim: ExtendedClaimInterface) => claim?.claimURI === resolvedDefaultSubjectAttribute
+        );
+
+        return {
+            key: resolvedDefaultSubjectAttribute,
+            text: (
+                <SubjectAttributeListItem
+                    key={ localClaim?.id ?? resolvedDefaultSubjectAttribute }
+                    displayName={ localClaim?.displayName ?? resolvedDefaultSubjectAttribute }
+                    claimURI={ resolvedDefaultSubjectAttribute }
+                    value={ resolvedDefaultSubjectAttribute }
+                />
+            ),
+            value: resolvedDefaultSubjectAttribute
+        };
     };
 
     /**
@@ -747,10 +899,12 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      */
     const createDropdownOption = (): DropdownOptionsInterface[] => {
         const options: DropdownOptionsInterface[] = [];
+        const currentSubjectUri: string = claimConfigurations?.subject?.claim?.uri;
 
         if (selectedDialect.localDialect) {
-            if (claimMappingOn) {
+            if (isClaimMappingInEffect) {
                 let usernameAdded: boolean = false;
+                let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute;
                 const claimMappingOption: DropdownOptionsInterface[] = [];
                 const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
 
@@ -775,6 +929,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     if (element.localClaim.uri === DefaultSubjectAttribute) {
                         usernameAdded = true;
                     }
+                    if (element.applicationClaim === currentSubjectUri) {
+                        subjectAdded = true;
+                    }
                     claimMappingOption.push(option);
                 });
                 if (claimMappingList.length === 0 || !usernameAdded) {
@@ -798,12 +955,58 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         claimMappingOption.push(option);
                     }
                 }
+                if (!subjectAdded && claimConfigurations?.dialect === "CUSTOM" && !isStoredSubjectMappingRemoved()) {
+                    // Preserve a subject claim that isn't part of the current claim mappings so the dropdown
+                    // can render it and it survives round-trips through this form. Only the subject of an
+                    // application saved with the custom dialect is kept here (a mapped name, or a subject set
+                    // outside the Console); a local dialect subject returns to the default once mapping is in
+                    // effect, because the server accepts only a mapped name then.
+                    const subjectClaim: ExtendedClaimInterface = claims.filter(
+                        (element: ExtendedClaimInterface) => element.claimURI === currentSubjectUri)[ 0 ];
+
+                    if (subjectClaim !== null && typeof subjectClaim !== "undefined") {
+                        claimMappingOption.push({
+                            key: subjectClaim.claimURI,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ subjectClaim.id }
+                                    displayName={ subjectClaim.displayName }
+                                    claimURI={ subjectClaim.claimURI }
+                                    value={ subjectClaim.claimURI }
+                                />
+                            ),
+                            value: subjectClaim.claimURI
+                        });
+                    } else {
+                        claimMappingOption.push({
+                            key: currentSubjectUri,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ currentSubjectUri }
+                                    displayName={ currentSubjectUri }
+                                    claimURI={ currentSubjectUri }
+                                    value={ currentSubjectUri }
+                                />
+                            ),
+                            value: currentSubjectUri
+                        });
+                    }
+                }
 
                 return sortBy(claimMappingOption, "key");
             } else {
-                let usernameAdded: boolean = false;
+                let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute
+                    || isStoredSubjectMappingRemoved();
+                const addedClaimURIs: Set<string> = new Set<string>();
 
-                selectedClaims.map((element: ExtendedClaimInterface) => {
+                // Any attribute may be the subject identifier, so the dropdown lists every attribute the
+                // application can request (the available ones and the requested ones), not only the requested ones.
+                [ ...claims, ...selectedClaims ].map((element: ExtendedClaimInterface) => {
+                    if (!element || addedClaimURIs.has(element.claimURI)) {
+                        return;
+                    }
+                    addedClaimURIs.add(element.claimURI);
+
                     const option: DropdownOptionsInterface = {
                         key: element.claimURI,
                         text: (
@@ -818,86 +1021,78 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     };
 
                     options.push(option);
-                    if (element.claimURI === DefaultSubjectAttribute) {
-                        usernameAdded = true;
+                    if (element.claimURI === currentSubjectUri) {
+                        subjectAdded = true;
                     }
                 });
-                if (!usernameAdded) {
-                    const userclaim: ExtendedClaimInterface = claims.filter(
-                        (element: ExtendedClaimInterface) => element.claimURI === DefaultSubjectAttribute)[ 0 ];
-
-                    if (userclaim !== null && typeof userclaim !== "undefined") {
-                        const option: DropdownOptionsInterface = {
-                            key: userclaim.claimURI,
-                            text: (
-                                <SubjectAttributeListItem
-                                    key={ userclaim.id }
-                                    displayName={ userclaim.displayName }
-                                    claimURI={ userclaim.claimURI }
-                                    value={ userclaim.claimURI }
-                                />
-                            ),
-                            value: userclaim.claimURI
-                        };
-
-                        options.push(option);
-                    }
+                if (!subjectAdded) {
+                    // Preserve a subject claim that is not among the application's attributes (an excluded identity
+                    // claim or an unknown URI) so the dropdown can render it and it survives round-trips.
+                    options.push({
+                        key: currentSubjectUri,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ currentSubjectUri }
+                                displayName={ currentSubjectUri }
+                                claimURI={ currentSubjectUri }
+                                value={ currentSubjectUri }
+                            />
+                        ),
+                        value: currentSubjectUri
+                    });
                 }
             }
         } else {
-            let usernameAdded: boolean = false;
+            let subjectAdded: boolean = !currentSubjectUri || currentSubjectUri === DefaultSubjectAttribute;
+            const addedLocalClaimURIs: Set<string> = new Set<string>();
 
+            // Any attribute may be the subject identifier, so every attribute of every scope is listed, not only
+            // the requested ones. An attribute that belongs to more than one scope is listed once.
             unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 scope?.claims.map((element: ExtendedExternalClaimInterface) => {
-                    if (element.requested) {
-                        const option: DropdownOptionsInterface = {
-                            key: element.claimURI,
-                            text: (
-                                <SubjectAttributeListItem
-                                    key={ element.id }
-                                    displayName={ element.localClaimDisplayName }
-                                    claimURI={ element.claimURI }
-                                    value={ element.mappedLocalClaimURI }
-                                />
-                            ),
-                            value: element.mappedLocalClaimURI
-                        };
-
-                        options.push(option);
-                        if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
-                            usernameAdded = true;
-                        }
+                    if (!element || addedLocalClaimURIs.has(element.mappedLocalClaimURI)) {
+                        return;
                     }
-                });
-            });
-            if (!usernameAdded) {
-                const allExternalClaims: ExtendedExternalClaimInterface[] = [
-                    ...externalClaims, ...selectedExternalClaims
-                ];
-                const userclaim: ExtendedExternalClaimInterface = allExternalClaims.filter(
-                    (element: ExtendedExternalClaimInterface) =>
-                        element.mappedLocalClaimURI === DefaultSubjectAttribute)[ 0 ];
+                    addedLocalClaimURIs.add(element.mappedLocalClaimURI);
 
-                if (userclaim !== null && typeof userclaim !== "undefined") {
                     const option: DropdownOptionsInterface = {
-                        key: userclaim.claimURI,
+                        key: element.claimURI,
                         text: (
                             <SubjectAttributeListItem
-                                key={ userclaim.id }
-                                displayName={ userclaim.localClaimDisplayName }
-                                claimURI={ userclaim.claimURI }
-                                value={ userclaim.mappedLocalClaimURI }
+                                key={ element.id }
+                                displayName={ element.localClaimDisplayName }
+                                claimURI={ element.claimURI }
+                                value={ element.mappedLocalClaimURI }
                             />
                         ),
-                        value: userclaim.mappedLocalClaimURI
+                        value: element.mappedLocalClaimURI
                     };
 
                     options.push(option);
-                }
+                    if (element.mappedLocalClaimURI === currentSubjectUri) {
+                        subjectAdded = true;
+                    }
+                });
+            });
+            if (!subjectAdded) {
+                // Preserve a subject claim that is not an OpenID Connect attribute (a custom application claim or an
+                // unknown URI) so the dropdown can render it and it survives round-trips.
+                options.push({
+                    key: currentSubjectUri,
+                    text: (
+                        <SubjectAttributeListItem
+                            key={ currentSubjectUri }
+                            displayName={ currentSubjectUri }
+                            claimURI={ currentSubjectUri }
+                            value={ currentSubjectUri }
+                        />
+                    ),
+                    value: currentSubjectUri
+                });
             }
         }
 
-        return sortBy(options, "value");
+        return sortSubjectAttributeOptions(options);
     };
 
     const updateValues = () => {
@@ -943,6 +1138,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         let returnList: boolean = true;
 
         setClaimMappingError(false);
+        // Without a mapped row the application is saved with the local dialect and no mappings.
+        if (!isClaimMappingInEffect) {
+            return claimMappingFinal;
+        }
         const createdClaimMappings: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
 
         createdClaimMappings.map((claimMapping: ExtendedClaimMappingInterface) => {
@@ -971,46 +1170,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     });
 
     /**
-     * Get the final value of includeUserDomain
-     *
-     * @param advanceSettingValues - Advanced settings values for submit
-     */
-    const getIncludeUserDomainFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
-
-        let includeUserDomain: boolean = advanceSettingValues?.subject.includeUserDomain;
-
-        if (
-            onlyOIDCConfigured
-            && typeof advanceSettingValues?.subject?.claim === "string"
-            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
-        ) {
-            includeUserDomain = false;
-        }
-
-        return includeUserDomain;
-    });
-
-    /**
-     * Get the final value of includeUserDomain
-     *
-     * @param advanceSettingValues - Advanced settings values for submit
-     */
-    const getIncludeOrgNameFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
-
-        let includeTenantDomain: boolean = advanceSettingValues?.subject.includeTenantDomain;
-
-        if (
-            onlyOIDCConfigured
-            && typeof advanceSettingValues?.subject?.claim === "string"
-            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
-        ) {
-            includeTenantDomain = false;
-        }
-
-        return includeTenantDomain;
-    });
-
-    /**
      *  Submit update request
      *
      *  @param claimMappingFinal - final claim mappings
@@ -1019,6 +1178,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         let isSubjectSelectedWithoutMapping: boolean = false;
         const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
+
+        // When the server reported no subject identifier and the user did not pick an alternate one, leave the subject
+        // out of the payload so that the default resolved at runtime is not persisted.
+        const isSubjectClaimOmitted: boolean = !claimConfigurations?.subject?.claim?.uri
+            && !advanceSettingValues?.isSubjectClaimExplicit;
 
         if (selectedDialect.localDialect) {
             selectedClaims.map((claim: ExtendedClaimInterface) => {
@@ -1032,8 +1196,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             claim: {
                                 uri: claimMappingURI
                             },
-                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString())
-                                ? applicationConfig.attributeSettings.makeSubjectMandatory
+                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString()
+                                && applicationConfig.attributeSettings.makeSubjectMandatory)
+                                ? true
                                 : claim.mandatory
                         };
 
@@ -1044,8 +1209,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         claim: {
                             uri: claim.claimURI
                         },
-                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString())
-                            ? applicationConfig.attributeSettings.makeSubjectMandatory
+                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString()
+                            && applicationConfig.attributeSettings.makeSubjectMandatory)
+                            ? true
                             : claim.mandatory
                     };
 
@@ -1072,18 +1238,26 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             });
         }
 
-        if (claimMappingFinal
-            .findIndex((mapping: ExtendedClaimMappingInterface) =>
-                mapping.localClaim.uri === DefaultSubjectAttribute) < 0
-            && subjectClaim && subjectClaim.toString() === DefaultSubjectAttribute) {
+        // The subject dropdown offers the user id and the application's default subject identifier even when the
+        // application does not map them, so an identity mapping is added for whichever of them is selected.
+        const subjectClaimURI: string = subjectClaim?.toString();
+        const implicitlyMappedSubjectAttributes: string[] = [
+            resolvedDefaultSubjectAttribute,
+            DefaultSubjectAttribute
+        ];
+
+        if (subjectClaimURI
+            && implicitlyMappedSubjectAttributes.includes(subjectClaimURI)
+            && claimMappingFinal.findIndex((mapping: ExtendedClaimMappingInterface) =>
+                mapping.localClaim.uri === subjectClaimURI) < 0) {
             isSubjectSelectedWithoutMapping = true;
         }
 
-        if (claimMappingFinal.length > 0 && isSubjectSelectedWithoutMapping) {
+        if (claimMappingFinal.length > 0 && isSubjectSelectedWithoutMapping && !isSubjectClaimOmitted) {
             const claimMappedObject: ExtendedClaimMappingInterface = {
-                applicationClaim: DefaultSubjectAttribute,
+                applicationClaim: subjectClaimURI,
                 localClaim: {
-                    uri: DefaultSubjectAttribute
+                    uri: subjectClaimURI
                 }
             };
 
@@ -1107,8 +1281,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     claim: {
                         uri: advanceSettingValues?.subject.claim
                     },
-                    includeTenantDomain: getIncludeOrgNameFinalValue(advanceSettingValues),
-                    includeUserDomain: getIncludeUserDomainFinalValue(advanceSettingValues),
+                    includeTenantDomain: advanceSettingValues?.subject?.includeTenantDomain,
+                    includeUserDomain: advanceSettingValues?.subject?.includeUserDomain,
                     mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
@@ -1130,6 +1304,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
+        if (isSubjectClaimOmitted && submitValue.claimConfiguration.subject) {
+            delete submitValue.claimConfiguration.subject.claim;
+        }
+
         // Stop sending tokenEndpointAllowReusePvtKeyJwt if tokenEndpointAuthMethod is not PRIVATE_KEY_JWT.
         const PRIVATE_KEY_JWT: string = "private_key_jwt";
 
@@ -1137,20 +1315,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             || oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod != PRIVATE_KEY_JWT) {
             delete oidcSubmitValue?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt;
         }
-
-        /**
-         * Handles the error scenario of the claim configuration update by displaying claim configuration
-         * update failure alert when alternative subject identifier is not in the requested attribute.
-         */
-        const onClaimConfigUpdateWithNotAllowedSubjectAttributeError = () => {
-            dispatch(addAlert({
-                description: t("applications:notifications.updateClaimConfig" +
-                    ".mistmatchAlternativesubjectIdentifierError.description"),
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.updateClaimConfig.mistmatchAlternativesubjectIdentifierError" +
-                ".message")
-            }));
-        };
 
         /**
          * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
@@ -1179,19 +1343,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 message: t("applications:notifications.updateClaimConfig.success.message")
             }));
         };
-
-        /**
-        * Distpatch an error alert when the alternative subject identifier value is not in the
-        * requested attribute list.
-        */
-        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
-            && !submitValue.claimConfiguration.requestedClaims.map(
-                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
-            onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
-
-            return;
-        }
 
         const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
             protocol.type === SupportedAuthProtocolTypes.OAUTH2);
@@ -1229,6 +1380,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      */
     let submitAdvanceForm: () => void;
 
+    // The dialect is known only once the claim dialects have loaded; the option builder reads it.
+    const subjectAttributeOptions: DropdownOptionsInterface[] = selectedDialect ? createDropdownOption() : [];
+
     return (
         !isClaimRequestLoading && selectedDialect && !(isClaimLoading && isEmpty(externalClaims))
         && !isScopeExternalClaimMappingLoading
@@ -1238,7 +1392,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 {
-                                    onlyOIDCConfigured
+                                    usesOIDCClaimDialect
                                         ? (
                                             <AttributeSelectionOIDC
                                                 claims={ claims }
@@ -1258,7 +1412,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 selectedSubjectValue={ selectedSubjectValue }
                                                 claimMapping={ claimMapping }
                                                 claimConfigurations={ claimConfigurations }
-                                                defaultSubjectAttribute={ DefaultSubjectAttribute }
+                                                defaultSubjectAttribute={ resolvedDefaultSubjectAttribute }
                                                 readOnly={
                                                     readOnly
                                                 || !hasApplicationUpdatePermissions
@@ -1293,7 +1447,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 addToClaimMapping={ addToClaimMapping }
                                                 claimConfigurations={ claimConfigurations }
                                                 claimMappingOn={ claimMappingOn }
-                                                defaultSubjectAttribute={ DefaultSubjectAttribute }
+                                                defaultSubjectAttribute={ resolvedDefaultSubjectAttribute }
                                                 showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
                                                 setClaimMappingOn={ setClaimMappingOn }
                                                 claimMappingError={ claimMappingError }
@@ -1317,17 +1471,20 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <AdvanceAttributeSettings
-                                        dropDownOptions={ createDropDownList() }
+                                        dropDownOptions={ createDropDownList(subjectAttributeOptions) }
+                                        defaultSubjectOption={ createDefaultSubjectOption(subjectAttributeOptions) }
+                                        isStoredSubjectMappingRemoved={ isStoredSubjectMappingRemoved() }
+                                        removedSubjectMapping={ removedSubjectMapping }
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
                                         claimConfigurations={ claimConfigurations }
                                         setSubmissionValues={ setAdvanceSettingValues }
-                                        setSelectedValue={ setSelectedSubjectValue }
-                                        defaultSubjectAttribute={ DefaultSubjectAttribute }
+                                        setSelectedValue={ handleSelectedSubjectValue }
+                                        defaultSubjectAttribute={ resolvedDefaultSubjectAttribute }
                                         initialRole={ claimConfigurations?.role }
                                         initialSubject={ claimConfigurations?.subject }
-                                        claimMappingOn={ claimMappingOn }
+                                        claimMappingOn={ isClaimMappingInEffect }
                                         readOnly={
                                             readOnly
                                             || !hasApplicationUpdatePermissions

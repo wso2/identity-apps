@@ -26,6 +26,7 @@ import { CommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useTrialDetails } from "../hooks/use-trial-details";
 
@@ -48,6 +49,8 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
         ["data-componentid"]: componentId = "free-trial-banner"
     } = props;
 
+    const { t } = useTranslation();
+
     const { tenantHasTrial, daysRemaining } = useTrialDetails();
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -63,9 +66,17 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
         (state: AppState) =>
             (state?.config?.deployment?.extensions as { pricingURL?: string })?.pricingURL ?? "https://wso2.com"
     );
+    const upgradeButtonEnabled: boolean = useSelector(
+        (state: AppState): boolean =>
+            state?.config?.deployment?.extensions?.upgradeButtonEnabled === true
+    );
+    const contactUsURL: string = useSelector(
+        (state: AppState): string =>
+            (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
+    );
 
     useEffect(() => {
-        if (saasFeatureStatus === FeatureStatus.DISABLED) {
+        if (saasFeatureStatus === FeatureStatus.DISABLED || !upgradeButtonEnabled) {
             return;
         }
 
@@ -74,7 +85,7 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
                 setUpgradeButtonURL(upgradeButtonURL);
             }
         );
-    }, [ tenantDomain, associatedTenants ]);
+    }, [ tenantDomain, associatedTenants, upgradeButtonEnabled ]);
 
     if (saasFeatureStatus === FeatureStatus.DISABLED || !tenantHasTrial) {
         return null;
@@ -106,12 +117,14 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
                 { daysRemaining === 1 ? "day" : "days" } remaining. { " " }
                 Explore the additional capabilities { trialTierName } unlocks, and { " " }
                 <Link
-                    href={ upgradeButtonURL }
+                    href={ upgradeButtonEnabled ? upgradeButtonURL : contactUsURL }
                     target="_blank"
                     rel="noreferrer"
                     underline="always"
                 >
-                    upgrade
+                    { upgradeButtonEnabled
+                        ? t("console:common.freeTrialBanner.upgradeAction")
+                        : t("console:common.freeTrialBanner.contactAction") }
                 </Link>
                 { " " }when you&apos;re ready.
             </Typography>

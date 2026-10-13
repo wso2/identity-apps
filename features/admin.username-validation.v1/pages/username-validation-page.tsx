@@ -38,10 +38,12 @@ import { Field, Form } from "@wso2is/forms";
 import { ContentLoader,
     DangerZone,
     DangerZoneGroup,
+    DocumentationLink,
     EmphasizedSegment,
     Hint,
     PageLayout,
-    Text
+    Text,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
@@ -73,6 +75,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
     const dispatch: Dispatch = useDispatch();
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ isReverting, setReverting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
@@ -367,6 +370,11 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
             description={ (
                 <>
                     { t("extensions:manage.accountLogin.editPage.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.accountLogin.usernameValidation.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
                 </>
             ) }
             data-componentid={ `${componentId}-page-layout` }

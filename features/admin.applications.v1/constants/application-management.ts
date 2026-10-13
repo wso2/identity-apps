@@ -557,6 +557,18 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 
+    /**
+     * Local claim URI of the username, the default subject identifier of applications that predate the user id
+     * default, such as applications migrated from older releases.
+     */
+    public static readonly USERNAME_SUBJECT_ATTRIBUTE: string = "http://wso2.org/claims/username";
+
+    /**
+     * Additional service provider property through which the server exposes whether the user id is the default
+     * subject identifier of an application.
+     */
+    public static readonly USE_USER_ID_FOR_DEFAULT_SUBJECT_PROPERTY: string = "useUserIdForDefaultSubject";
+
     public static readonly CUSTOM_APPLICATION_SAML: string = "custom-application-saml";
 
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS: string = "custom-application-passive-sts";

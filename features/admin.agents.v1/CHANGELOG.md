@@ -1,5 +1,34 @@
 # @wso2is/admin.agents.v1
 
+## 1.2.3
+
+### Patch Changes
+
+- [#10703](https://github.com/wso2/identity-apps/pull/10703) [`6a49e4ba78f0d12ff0fe6b363a5ead62e5346925`](https://github.com/wso2/identity-apps/commit/6a49e4ba78f0d12ff0fe6b363a5ead62e5346925) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Distinguish client ID fetch failure from config update failure
+
+## 1.2.2
+
+### Patch Changes
+
+- [#10678](https://github.com/wso2/identity-apps/pull/10678) [`41434e235b2bd29a028d68df244e067466222c54`](https://github.com/wso2/identity-apps/commit/41434e235b2bd29a028d68df244e067466222c54) Thanks [@Nadula-W](https://github.com/Nadula-W)! - Hide AI agent creation actions for users without create permissions.
+
+* [#10652](https://github.com/wso2/identity-apps/pull/10652) [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Enable agent management and agent sign-in configuration in sub-organizations and preserve the existing agent owner when updating agent information
+
+* Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330)]:
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.core.v1@2.59.6
+  - @wso2is/admin.roles.v2@2.27.387
+
+## 1.2.1
+
+### Patch Changes
+
+- [#10538](https://github.com/wso2/identity-apps/pull/10538) [`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Show a specific error message when agent creation fails because the organization's application limit has been reached, instead of the generic "Something went wrong" alert.
+
+- Updated dependencies [[`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/admin.core.v1@2.58.0
+  - @wso2is/admin.users.v1@2.38.45
+
 ## 1.2.0
 
 ### Minor Changes

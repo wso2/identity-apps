@@ -36,7 +36,13 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
-import { EmphasizedSegment, Link, PageLayout } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    EmphasizedSegment,
+    Link,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -81,6 +87,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const { [ "data-componentid" ]: testId } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -439,7 +446,14 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         <PageLayout
             pageTitle={ t("pages:emailDomainDiscovery.title") }
             title={ t("pages:emailDomainDiscovery.title") }
-            description={ t("pages:emailDomainDiscovery.subTitle") }
+            description={ (
+                <>
+                    { t("pages:emailDomainDiscovery.subTitle") }
+                    <DocumentationLink link={ getLink("manage.organizationDiscovery.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${ testId }-page-layout` }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,

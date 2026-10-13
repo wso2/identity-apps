@@ -62,9 +62,11 @@ import {
     ContentLoader,
     DangerZone,
     DangerZoneGroup,
+    DocumentationLink,
     EmphasizedSegment,
     Message,
-    PageLayout } from "@wso2is/react-components";
+    PageLayout,
+    useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -93,6 +95,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
 
     const { ["data-componentid"]: componentId } = props;
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const categoryId: string = ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID;
@@ -600,6 +603,11 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                             description={ (
                                 <>
                                     { t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.description") }
+                                    <DocumentationLink
+                                        link={ getLink("manage.accountLogin.alternativeLoginIdentifiers.learnMore") }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
                                 </>
                             ) }
                             data-componentid={ `${componentId}-page-layout` }

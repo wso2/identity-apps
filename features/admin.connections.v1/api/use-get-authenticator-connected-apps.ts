@@ -42,7 +42,7 @@ export const useGetAuthenticatorConnectedApps = <Data = ConnectedAppsInterface, 
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
+        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);

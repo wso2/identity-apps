@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
 import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
 import { OutboundProvisioningConnectorMetaDataInterface } from "@wso2is/admin.connections.v1/models/connection";
@@ -36,7 +38,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -312,6 +314,35 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                     application?.provisioningConfigurations?.outboundProvisioningIdps?.map(
                                         (provisioningIdp: OutboundProvisioningConfigurationInterface,
                                             index: number) => {
+                                            // Resolve whether the underlying connection is shared from a
+                                            // parent organization to denote it with a "Shared" chip.
+                                            const isSharedIdp: boolean = !!idpList?.find(
+                                                (idp: IdentityProviderInterface) =>
+                                                    idp.name === provisioningIdp.idp)?.isShared;
+                                            const provisionerTitle: ReactNode = isSharedIdp
+                                                ? (
+                                                    <Box
+                                                        sx={ {
+                                                            alignItems: "center",
+                                                            display: "inline-flex",
+                                                            gap: 1
+                                                        } }
+                                                    >
+                                                        { provisioningIdp?.idp }
+                                                        <Chip
+                                                            size="small"
+                                                            label={
+                                                                t("authenticationProvider:sharedConnection.label")
+                                                            }
+                                                            data-componentid={
+                                                                `${ componentId }-${ provisioningIdp?.idp }` +
+                                                                "-shared-chip"
+                                                            }
+                                                        />
+                                                    </Box>
+                                                )
+                                                : provisioningIdp?.idp;
+
                                             return (
                                                 <AuthenticatorAccordion
                                                     key={ provisioningIdp.idp }
@@ -352,7 +383,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                     verticalAlign: "middle"
                                                                 },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp,
+                                                                title: provisionerTitle,
                                                                 titleOptions: {
                                                                     flex: true
                                                                 }

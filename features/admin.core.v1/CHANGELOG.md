@@ -1,5 +1,196 @@
 # @wso2is/admin.core.v1
 
+## 2.60.1
+
+### Patch Changes
+
+- [#10720](https://github.com/wso2/identity-apps/pull/10720) [`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bundle the Monaco editor with the Console instead of loading it from a CDN.
+
+- Updated dependencies [[`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229)]:
+  - @wso2is/admin.branding.v1@2.32.175
+  - @wso2is/admin.cds.v1@1.6.10
+  - @wso2is/admin.logs.v1@1.6.10
+  - @wso2is/admin.policy-administration.v1@1.0.126
+  - @wso2is/admin.users.v1@2.38.57
+
+## 2.60.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+### Patch Changes
+
+- Updated dependencies [[`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11)]:
+  - @wso2is/admin.connections.v1@2.43.0
+  - @wso2is/admin.feature-gate.v1@1.11.0
+  - @wso2is/admin.flow-builder-core.v1@0.11.0
+  - @wso2is/admin.presentation-definitions.v1@1.0.0
+  - @wso2is/admin.registration-flow-builder.v1@0.11.0
+  - @wso2is/admin.server-configurations.v1@2.39.0
+  - @wso2is/forms@2.12.0
+  - @wso2is/i18n@2.47.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.219
+  - @wso2is/admin.branding.v1@2.32.174
+  - @wso2is/admin.flows.v1@1.0.181
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.3
+  - @wso2is/admin.users.v1@2.38.56
+
+## 2.59.6
+
+### Patch Changes
+
+- [#10652](https://github.com/wso2/identity-apps/pull/10652) [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Enable agent management and agent sign-in configuration in sub-organizations and preserve the existing agent owner when updating agent information
+
+* [#10683](https://github.com/wso2/identity-apps/pull/10683) [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add an opt in option to route applications that rename attributes through a custom claim dialect to the local dialect attribute selector
+
+* Updated dependencies [[`41434e235b2bd29a028d68df244e067466222c54`](https://github.com/wso2/identity-apps/commit/41434e235b2bd29a028d68df244e067466222c54), [`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`ac6c1919738a2d331e914d6356c89f0ed3df2ece`](https://github.com/wso2/identity-apps/commit/ac6c1919738a2d331e914d6356c89f0ed3df2ece), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330), [`ade6da5f684fa674369bb0a56813a6b0d45c4111`](https://github.com/wso2/identity-apps/commit/ade6da5f684fa674369bb0a56813a6b0d45c4111)]:
+  - @wso2is/admin.agents.v1@1.2.2
+  - @wso2is/admin.applications.v1@2.44.1
+  - @wso2is/admin.roles.v2@2.27.387
+  - @wso2is/admin.authentication.v1@2.25.212
+  - @wso2is/admin.identity-providers.v1@2.29.3
+  - @wso2is/admin.connections.v1@2.42.1
+
+## 2.59.5
+
+### Patch Changes
+
+- [#10680](https://github.com/wso2/identity-apps/pull/10680) [`63d35224b19554eda3063cbd978bbef38cc2d6d5`](https://github.com/wso2/identity-apps/commit/63d35224b19554eda3063cbd978bbef38cc2d6d5) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Point the Internal Notification Sending "Learn More" link at the notification settings guide. The page is now
+  published on the WSO2 Identity Platform doc site (wso2/docs-is#6327), so the link value no longer needs to be
+  left undefined. The page itself was already wired to render the link.
+
+## 2.59.4
+
+### Patch Changes
+
+- [#10653](https://github.com/wso2/identity-apps/pull/10653) [`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add IDP sharing UI
+
+- Updated dependencies [[`455c2bda8975febc2eb9f69bc5d50b4db9f2c724`](https://github.com/wso2/identity-apps/commit/455c2bda8975febc2eb9f69bc5d50b4db9f2c724)]:
+  - @wso2is/admin.connections.v1@2.41.0
+  - @wso2is/admin.identity-providers.v1@2.29.2
+  - @wso2is/admin.applications.v1@2.43.20
+  - @wso2is/i18n@2.45.8
+
+## 2.59.3
+
+### Patch Changes
+
+- [#10659](https://github.com/wso2/identity-apps/pull/10659) [`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add the missing "Learn More" documentation links to the Login & Registration and Notification Channels
+  pages that were shipping without one — Alternative Login Identifiers, Username Validation, Session Management,
+  Policy Management, Preference Management, Admin Initiated Password Reset, SAML2 Web SSO Configuration,
+  Organization Discovery, Impersonation, Issuer Usage Scope, Outbound Provisioning Configuration,
+  Internal Notification Sending, Email Provider, SMS Provider and Push Provider. The Email Provider and SMS
+  Provider pages already rendered a `DocumentationLink`, but the `develop.emailProviders.learnMore` and
+  `develop.smsProviders.learnMore` keys they read were absent from the documentation link config, so the link
+  resolved to `undefined` and never rendered.
+
+  The two governance connector descriptions touched here (Alternative Login Identifiers and Admin Initiated
+  Password Reset) also move from hardcoded English to `governanceConnectors` i18n keys.
+
+- Updated dependencies [[`876762c21fedad832f109a5fd7c26b420feb10b9`](https://github.com/wso2/identity-apps/commit/876762c21fedad832f109a5fd7c26b420feb10b9)]:
+  - @wso2is/admin.push-providers.v1@1.1.2
+  - @wso2is/admin.server-configurations.v1@2.38.60
+  - @wso2is/i18n@2.45.7
+
+## 2.59.2
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+- Updated dependencies [[`642d59bbd6f4ee2742c40f606dafd0c00614c0fb`](https://github.com/wso2/identity-apps/commit/642d59bbd6f4ee2742c40f606dafd0c00614c0fb), [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33)]:
+  - @wso2is/admin.applications.v1@2.43.18
+  - @wso2is/admin.branding.v1@2.32.172
+  - @wso2is/admin.connections.v1@2.40.1
+  - @wso2is/admin.extensions.v1@2.43.11
+  - @wso2is/admin.server-configurations.v1@2.38.59
+
+## 2.59.1
+
+### Patch Changes
+
+- [#10623](https://github.com/wso2/identity-apps/pull/10623) [`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add CLI configuration UI
+
+- Updated dependencies [[`29fc7252676e3fe41b0f4bde59db62e3c021ffac`](https://github.com/wso2/identity-apps/commit/29fc7252676e3fe41b0f4bde59db62e3c021ffac)]:
+  - @wso2is/admin.groups.v1@2.27.130
+  - @wso2is/admin.roles.v2@2.27.386
+  - @wso2is/i18n@2.45.1
+
+## 2.59.0
+
+### Minor Changes
+
+- [#10598](https://github.com/wso2/identity-apps/pull/10598) [`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add Password Credential authentication option to SMS and Email provider forms
+
+### Patch Changes
+
+- Updated dependencies [[`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198)]:
+  - @wso2is/i18n@2.45.0
+
+## 2.58.1
+
+### Patch Changes
+
+- [#10478](https://github.com/wso2/identity-apps/pull/10478) [`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532) Thanks [@NethmikaKekuu](https://github.com/NethmikaKekuu)! - Rename LOGO_IMAGE component to LogoImage to follow JSX PascalCase naming convention.
+
+* [#10566](https://github.com/wso2/identity-apps/pull/10566) [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Honor the configured `console.ui.app_favicon_path` in the Console application. The favicon is now applied from the runtime config via react-helmet instead of the hardcoded build-time default.
+
+* Updated dependencies [[`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee)]:
+  - @wso2is/admin.users.v1@2.38.47
+
+## 2.58.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/admin.agents.v1@1.2.1
+  - @wso2is/i18n@2.44.0
+  - @wso2is/admin.identity-providers.v1@2.29.0
+  - @wso2is/admin.connections.v1@2.39.0
+  - @wso2is/admin.users.v1@2.38.45
+
+## 2.57.31
+
+### Patch Changes
+
+- [#10543](https://github.com/wso2/identity-apps/pull/10543) [`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix Customer Data Service navigation issues in the unified Customer Data view. The Feature Preview menu no longer appears empty when there are no accessible preview features, the home-page CDS banner routes to the Customer Data page, and the profile details page returns to the Customer Data page.
+
+- Updated dependencies [[`df07d6d1045f1296f42a36963d92e4d0ec2c4d19`](https://github.com/wso2/identity-apps/commit/df07d6d1045f1296f42a36963d92e4d0ec2c4d19), [`68f2289f4500b32f9f65e2e0988a791a5d63be79`](https://github.com/wso2/identity-apps/commit/68f2289f4500b32f9f65e2e0988a791a5d63be79)]:
+  - @wso2is/admin.cds.v1@1.6.9
+  - @wso2is/admin.applications.v1@2.43.11
+  - @wso2is/admin.users.v1@2.38.44
+
+## 2.57.30
+
+### Patch Changes
+
+- [#10534](https://github.com/wso2/identity-apps/pull/10534) [`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add a config-switchable unified Customer Data page for the Customer Data Service
+
+- Updated dependencies [[`ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf`](https://github.com/wso2/identity-apps/commit/ffd6bf3bde1f5a40c2a4e6edd5c040e204d5cebf), [`7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09`](https://github.com/wso2/identity-apps/commit/7021b6b4dcec6c3c87e389cb0fe9e1825b3e0e09)]:
+  - @wso2is/admin.cds.v1@1.6.8
+  - @wso2is/i18n@2.43.13
+  - @wso2is/common.consents.v1@1.0.5
+  - @wso2is/admin.users.v1@2.38.43
+
+## 2.57.29
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+- Updated dependencies [[`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b), [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12)]:
+  - @wso2is/admin.applications.v1@2.43.10
+  - @wso2is/admin.cds.v1@1.6.7
+  - @wso2is/i18n@2.43.12
+  - @wso2is/admin.users.v1@2.38.42
+
 ## 2.57.28
 
 ### Patch Changes

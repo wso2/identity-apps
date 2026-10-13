@@ -1,5 +1,30 @@
 # @wso2is/react-components
 
+## 2.10.6
+
+### Patch Changes
+
+- [#10682](https://github.com/wso2/identity-apps/pull/10682) [`40557c5ac24c07c6c14b3e02e9041be42312f48d`](https://github.com/wso2/identity-apps/commit/40557c5ac24c07c6c14b3e02e9041be42312f48d) Thanks [@KD23243](https://github.com/KD23243)! - Accept any absolute URI as a SAML assertion audience, and stop hiding stored audiences that are not
+  conventional URLs. Audience entry previously required a `<scheme>://<authority>` shape, which rejected
+  URNs such as `urn:amazon:webservices`, and values failing the URL check were dropped at render, so a
+  non-compliant audience already present in the assertion could be neither seen nor removed. The non-TLS
+  warning on URL chips is also narrowed to plain `http`, so schemes with no transport of their own — such
+  as mobile deep links — are no longer flagged as insecure.
+- Updated dependencies [[`40557c5ac24c07c6c14b3e02e9041be42312f48d`](https://github.com/wso2/identity-apps/commit/40557c5ac24c07c6c14b3e02e9041be42312f48d)]:
+  - @wso2is/core@2.13.7
+
+## 2.10.5
+
+### Patch Changes
+
+- [#10577](https://github.com/wso2/identity-apps/pull/10577) [`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use vite events to gracefully handle chunkload errors
+
+## 2.10.4
+
+### Patch Changes
+
+- [#10568](https://github.com/wso2/identity-apps/pull/10568) [`ffdcc597bcd321a6bdbbaa79a4ad7888317fa246`](https://github.com/wso2/identity-apps/commit/ffdcc597bcd321a6bdbbaa79a4ad7888317fa246) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Preserve complex regex callback URLs in migrated applications. A single `regexp=(...)` callback whose pattern contains a literal comma (e.g. a `{0,4}` quantifier) is now kept as one atomic value across display, edit and save instead of being split as a comma-separated list. Adding across syntaxes combines all alternatives into one de-duplicated `regexp=(...)`, and an input mixing both syntaxes is rejected.
+
 ## 2.10.3
 
 ### Patch Changes

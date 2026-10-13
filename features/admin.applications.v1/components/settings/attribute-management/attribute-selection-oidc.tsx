@@ -22,6 +22,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ExternalClaim, FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -680,7 +681,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         initialMandatory={
                                             (selectedSubjectValue
                                         === claim.mappedLocalClaimURI &&
-                                        !onlyOIDCConfigured)
+                                        !onlyOIDCConfigured &&
+                                        applicationConfig.attributeSettings.makeSubjectMandatory)
                                                 ? true
                                                 : claim.mandatory
                                         }
@@ -690,7 +692,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         readOnly={
                                             (selectedSubjectValue
                                         === claim.mappedLocalClaimURI &&
-                                        !onlyOIDCConfigured
+                                        !onlyOIDCConfigured &&
+                                        applicationConfig.attributeSettings.makeSubjectMandatory
                                         || !checkMapping(claim))
                                                 ? true
                                                 : readOnly
@@ -736,7 +739,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         return [ {
             checked: scope.selected,
             defaultChecked: scope.selected,
-            disabled: isSelectedSubjectAttributeIncluded(scope),
+            // The subject attribute must stay requested, so a scope through which it is requested cannot be
+            // unselected. A scope that is not selected does not request it and stays selectable.
+            disabled: scope.selected
+                && isSelectedSubjectAttributeIncluded(scope)
+                && applicationConfig.attributeSettings.makeSubjectMandatory,
             onChange: handleSelectedScopeCheckChange,
             popoverText: scope.selected
                 ? t("applications:edit" +

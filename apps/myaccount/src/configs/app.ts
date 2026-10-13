@@ -51,7 +51,7 @@ export class Config {
         return {
             __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             appBaseName: window["AppUtils"]?.getConfig()?.appBaseWithTenant,
-            appBaseNameWithoutTenant: window["AppUtils"]?.getConfig()?.appBase,
+            appBaseNameWithoutTenant: window["AppUtils"]?.getConfig()?.appBaseWithProxy,
             appHomePath: window["AppUtils"]?.getConfig()?.routes?.home,
             appLoginPath: window["AppUtils"]?.getConfig()?.routes?.login,
             appLogoutPath: window["AppUtils"]?.getConfig()?.routes?.logout,
@@ -131,6 +131,7 @@ export class Config {
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
+            serverConfigPreferences: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/configs/preferences`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
@@ -166,6 +167,7 @@ export class Config {
                 .replace("${year}", new Date().getFullYear()),
             disableMFAForFederatedUsers: window["AppUtils"]?.getConfig()?.ui?.disableMFAForFederatedUsers,
             disableMFAforSuperTenantUser: window["AppUtils"]?.getConfig()?.ui?.disableMFAforSuperTenantUser,
+            enableLegacyLocaleDropdown: window["AppUtils"]?.getConfig()?.ui?.enableLegacyLocaleDropdown ?? false,
             enableMFAUserWise: window["AppUtils"]?.getConfig()?.ui?.enableMFAUserWise,
             features: window["AppUtils"]?.getConfig()?.ui?.features,
             forceBackupCode: window["AppUtils"]?.getConfig()?.ui?.forceBackupCode,
@@ -207,7 +209,7 @@ export class Config {
                     generateBackendPaths(
                         language,
                         namespace,
-                        window["AppUtils"]?.getConfig()?.appBase,
+                        window["AppUtils"]?.getConfig()?.appBaseWithProxy,
                         store?.getState()?.config?.i18n ?? {
                             langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,

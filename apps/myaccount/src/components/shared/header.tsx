@@ -442,11 +442,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         }/` +
                                         `${ StringUtils.removeSlashesFromPath(
                                             window[ "AppUtils" ].getConfig()
-                                                .appBase
+                                                .appBaseWithProxy
                                         ) !== ""
                                             ? StringUtils.removeSlashesFromPath(
                                                 window[ "AppUtils" ].getConfig()
-                                                    .appBase
+                                                    .appBaseWithProxy
                                             ) + "/"
                                             : ""
                                         }libs/themes/` +
@@ -466,11 +466,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         }/` +
                                         `${ StringUtils.removeSlashesFromPath(
                                             window[ "AppUtils" ].getConfig()
-                                                .appBase
+                                                .appBaseWithProxy
                                         ) !== ""
                                             ? StringUtils.removeSlashesFromPath(
                                                 window[ "AppUtils" ].getConfig()
-                                                    .appBase
+                                                    .appBaseWithProxy
                                             ) + "/"
                                             : ""
                                         }libs/themes/` +

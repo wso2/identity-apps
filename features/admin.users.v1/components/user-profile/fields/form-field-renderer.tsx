@@ -25,6 +25,7 @@ import {
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/forms";
 import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,6 +40,8 @@ import MultiValuedTextField from "./multi-valued-text-field";
 import RadioGroupFormField from "./radio-group-form-field";
 import SingleValuedEmailMobileField from "./single-valued-email-mobile-field";
 import TextFormField from "./text-form-field";
+
+dayjs.extend(customParseFormat);
 
 /**
  * User profile form field renderer component props interface.
@@ -161,6 +164,34 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
 
         return undefined;
     };
+
+    const dateOfBirthValidator = (value: unknown): string | undefined => {
+        const genericError: string = genericValidator(value);
+
+        if (genericError) {
+            return genericError;
+        }
+
+        if (isEmpty(value)) {
+            return undefined;
+        }
+
+        if (!dayjs(value as string, "YYYY-MM-DD", true).isValid()) {
+            return (
+                t("users:forms.validation.dateFormatError", { field: fieldLabel })
+            );
+        }
+
+        if (dayjs().isBefore(value as string)) {
+            return (
+                t("users:forms.validation.futureDateError", { field: fieldLabel })
+            );
+        }
+
+        return undefined;
+    };
+
+    const isDOBSchema: boolean = schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB");
 
     /**
      * Render multi-valued email addresses field.
@@ -327,14 +358,14 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render date of birth field. Specially handled to use special validator.
      */
-    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")
+    if (isDOBSchema
         && schema.inputFormat?.inputType !== ClaimInputFormat.DATE_PICKER) {
         return (
             <TextFormField
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
                 fieldLabel={ fieldLabel }
                 initialValue={ initialValues[encodedSchemaId][schema.name] as string }
-                validator={ genericValidator }
+                validator={ dateOfBirthValidator }
                 placeholder="YYYY-MM-DD"
                 maxLength={ maxLength }
                 isReadOnly={ isReadOnly }
@@ -508,6 +539,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
 
         case ClaimInputFormat.DATE_PICKER:{
             const formattedInitialValue: Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
+            const dateValidator: (_value: unknown) => string | undefined = isDOBSchema
+                ? dateOfBirthValidator
+                : genericValidator;
 
             if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
                 return (
@@ -519,7 +553,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                         isUpdating={ isUpdating }
                         isReadOnly={ isReadOnly }
                         isRequired={ isRequired }
-                        validator={ genericValidator }
+                        validator={ dateValidator }
                         data-componentid={ fieldComponentId }
                     />
                 );
@@ -530,7 +564,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     fieldName={ fieldName }
                     fieldLabel={ fieldLabel }
                     initialValue={ initialValue as string }
-                    validator={ genericValidator }
+                    validator={ dateValidator }
                     maxLength={ maxLength }
                     isReadOnly={ isReadOnly }
                     isRequired={ isRequired }

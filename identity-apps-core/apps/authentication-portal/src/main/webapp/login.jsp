@@ -414,8 +414,8 @@
         } else {
             srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
         }
-        String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-        String srURLWithoutEncoding = srURI + "?" + srprmstr;
+        String srprmstr = URLDecoder.decode(StringUtils.defaultString(forwardedQueryString), UTF_8);
+        String srURLWithoutEncoding = StringUtils.isNotBlank(srprmstr) ? srURI + "?" + srprmstr : srURI;
         srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
     }
 %>
@@ -527,7 +527,7 @@
                     String[] usernameSplitItems = usernameIdentifier.split("/");
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
                     String identifierFirstUserInput = request.getParameter(JS_IDENTIFIER_FIRST_USER_INPUT);
-                    if (StringUtils.isBlank(identifierFirstUserInput) || identifierFirstUserInput == "null") {
+                    if (StringUtils.isBlank(identifierFirstUserInput) || "null".equals(identifierFirstUserInput)) {
                         identifierFirstUserInput = sanitizeUserName;
                     }
                 %>

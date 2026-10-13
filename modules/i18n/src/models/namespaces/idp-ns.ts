@@ -382,6 +382,9 @@ export interface IdpNS {
             };
         };
         outboundProvisioningTitle: string;
+        outboundProvisioningSharedConnector: {
+            hint: string;
+        };
     };
     helpPanel: {
         tabs: {
@@ -434,6 +437,10 @@ export interface IdpNS {
                 deleteGroup: Notification;
             };
             searchByName: string;
+        };
+        sharedGroupsInfo: {
+            description: string;
+            header: string;
         };
     };
     templates: {

@@ -18,7 +18,10 @@
 
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, {
+    AutocompleteInputChangeReason,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
@@ -36,8 +39,10 @@ import { AlertLevels, FeatureFlagsInterface, IdentifiableComponentInterface } fr
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
-    FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useEffect, useState
+    FunctionComponent, HTMLProps, MutableRefObject, ReactElement, SyntheticEvent,
+    useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -55,6 +60,29 @@ import "./branding-page-layout.scss";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
+/**
+ * Number of applications fetched per page, and the minimum number of selectable applications
+ * we want loaded before we stop proactively fetching more (see the dropdown prefetch effect below).
+ */
+const APPLICATION_LIST_PAGE_SIZE: number = 10;
+
+/**
+ * Time to wait before hitting the applications endpoint with the text typed in the dropdown.
+ */
+const APPLICATION_SEARCH_DEBOUNCE_TIMEOUT: number = 100;
+
+/**
+ * Determines whether an application should be selectable in the branding application dropdown,
+ * i.e. not a system app, default app, or M2M app.
+ *
+ * @param application - Application to check.
+ * @returns Whether the application is selectable.
+ */
+const isSelectableApplication = (application: ApplicationListItemInterface): boolean =>
+    !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.name) &&
+    !ApplicationManagementConstants.DEFAULT_APPS.includes(application?.name) &&
+    !(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID);
+
 const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     props: BrandingPageLayoutInterface
 ): ReactElement => {
@@ -67,6 +95,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const [ hasMoreApplications, setHasMoreApplications ] = useState(true);
     const [ appListOffset, setAppListOffset ] = useState<number>(0);
     const [ shouldFetchApplications, setShouldFetchApplications ] = useState<boolean>(true);
+    const [ isApplicationDropdownOpen, setIsApplicationDropdownOpen ] = useState<boolean>(false);
+    const [ applicationSearchQuery, setApplicationSearchQuery ] = useState<string>("");
+    const [ selectedApplicationOption, setSelectedApplicationOption ] =
+        useState<ApplicationListItemInterface>(null);
 
     const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
 
@@ -103,8 +135,13 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError
-    } = useApplicationList("templateId", 10, appListOffset, null,
-        brandingMode === BrandingModes.APPLICATION && shouldFetchApplications);
+    } = useApplicationList(
+        "templateId",
+        APPLICATION_LIST_PAGE_SIZE,
+        appListOffset,
+        applicationSearchQuery ? `name co ${ applicationSearchQuery }` : null,
+        brandingMode === BrandingModes.APPLICATION && shouldFetchApplications
+    );
 
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
@@ -137,6 +174,55 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             x: 0
         }
     };
+
+    const isInitialApplicationSearch: MutableRefObject<boolean> = useRef<boolean>(true);
+
+    /**
+     * Debounced setter for the application dropdown search term.
+     */
+    const searchApplications: DebouncedFunc<(query: string) => void> = useCallback(
+        debounce((query: string): void => setApplicationSearchQuery(query), APPLICATION_SEARCH_DEBOUNCE_TIMEOUT),
+        []
+    );
+
+    /**
+     * Handles the text typed into the application dropdown. Only user input triggers a search; the
+     * resets Material UI performs on selection, blur and close must not clear the current results.
+     *
+     * @param event - Input change event.
+     * @param value - Current input value.
+     * @param reason - What caused the input to change.
+     */
+    const handleApplicationSearchChange = (
+        event: SyntheticEvent<Element, Event>,
+        value: string,
+        reason: AutocompleteInputChangeReason
+    ): void => {
+        if (reason !== "input") {
+            return;
+        }
+
+        searchApplications(value.trim());
+    };
+
+    /**
+     * Options shown in the application dropdown. Filtering by name is done by the applications endpoint,
+     * so only the non-selectable applications are dropped here. The selected application is always kept
+     * in the list, since Material UI requires the value to be one of the options.
+     */
+    const applicationDropdownOptions: ApplicationListItemInterface[] = useMemo(() => {
+        const selectableApplications: ApplicationListItemInterface[] = applications.filter(isSelectableApplication);
+
+        if (
+            selectedApplicationOption &&
+            !selectableApplications.some((application: ApplicationListItemInterface) =>
+                application.id === selectedApplicationOption.id)
+        ) {
+            return [ selectedApplicationOption, ...selectableApplications ];
+        }
+
+        return selectableApplications;
+    }, [ applications, selectedApplicationOption ]);
 
     useEffect(() => {
         if (!history?.location?.search) {
@@ -187,6 +273,79 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             setHasMoreApplications(false);
         }
     }, [ applicationList ]);
+
+    /**
+     * Proactively loads more pages while the dropdown is open and too few selectable
+     * (non-system, non-default, non-M2M) applications have been loaded to overflow the
+     * scrollable listbox. `InfiniteScroll` only fires its `next` callback on a scroll event,
+     * which never happens when M2M apps make up most of a page and too few selectable
+     * options remain to overflow the container.
+     */
+    useEffect(() => {
+        if (
+            !isApplicationDropdownOpen ||
+            !hasMoreApplications ||
+            shouldFetchApplications ||
+            isApplicationListFetchRequestValidating ||
+            brandingMode !== BrandingModes.APPLICATION
+        ) {
+            return;
+        }
+
+        const selectableApplicationsCount: number = applications.filter(isSelectableApplication).length;
+
+        if (selectableApplicationsCount < APPLICATION_LIST_PAGE_SIZE) {
+            setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
+            setShouldFetchApplications(true);
+        }
+    }, [ applications, hasMoreApplications, shouldFetchApplications,
+        isApplicationListFetchRequestValidating, brandingMode, isApplicationDropdownOpen ]);
+
+    /**
+     * Restarts pagination whenever the search term changes, since the search is resolved by the
+     * applications endpoint and the previously accumulated pages belong to the previous term.
+     */
+    useEffect(() => {
+        if (isInitialApplicationSearch.current) {
+            isInitialApplicationSearch.current = false;
+
+            return;
+        }
+
+        setApplications([]);
+        setAppListOffset(0);
+        setHasMoreApplications(true);
+        setShouldFetchApplications(true);
+    }, [ applicationSearchQuery ]);
+
+    /**
+     * Keeps the option backing the dropdown value in sync with the selected application. The option is
+     * held separately from `applications` because a search or a pagination reset can drop it from the
+     * loaded pages, which would otherwise blank out the input.
+     */
+    useEffect(() => {
+        if (!selectedApplication) {
+            setSelectedApplicationOption(null);
+
+            return;
+        }
+
+        if (selectedApplicationOption?.id === selectedApplication) {
+            return;
+        }
+
+        const matchingApplication: ApplicationListItemInterface = applications?.find(
+            (application: ApplicationListItemInterface) => application.id === selectedApplication);
+
+        if (matchingApplication) {
+            setSelectedApplicationOption(matchingApplication);
+        }
+    }, [ selectedApplication, applications ]);
+
+    /**
+     * Cancels any pending search on unmount.
+     */
+    useEffect(() => () => searchApplications.cancel(), []);
 
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
@@ -297,7 +456,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const loadMoreApplications = () => {
         if (!hasMoreApplications) return;
 
-        setAppListOffset((prevOffset: number) => prevOffset + 10);
+        setAppListOffset((prevOffset: number) => prevOffset + APPLICATION_LIST_PAGE_SIZE);
         setShouldFetchApplications(true);
     };
 
@@ -450,14 +609,19 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     sx={ { width: 190 } }
                                                     readOnly={ isBrandingAppsRedirect }
                                                     clearIcon={ null }
-                                                    options={ applications ?? [] }
-                                                    value={ applications?.find(
-                                                        (app: ApplicationListItemInterface) =>
-                                                            app.id === selectedApplication) }
+                                                    onOpen={ () => setIsApplicationDropdownOpen(true) }
+                                                    onClose={ () => {
+                                                        setIsApplicationDropdownOpen(false);
+                                                        searchApplications.cancel();
+                                                        setApplicationSearchQuery("");
+                                                    } }
+                                                    options={ applicationDropdownOptions }
+                                                    value={ selectedApplicationOption ?? null }
                                                     onChange={ (
                                                         event: SyntheticEvent<Element, Event>,
                                                         application: ApplicationListItemInterface
                                                     ) => {
+                                                        setSelectedApplicationOption(application);
                                                         setSelectedApplication(application.id);
                                                         setMergedBrandingPreference(null);
                                                     } }
@@ -467,18 +631,16 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     ) =>
                                                         option.id === value.id
                                                     }
+                                                    onInputChange={ handleApplicationSearchChange }
                                                     filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                                        options.filter((application: ApplicationListItemInterface) =>
-                                                            !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                                application?.name) &&
-                                                            !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                                application?.name) &&
-                                                            !(application?.templateId ===
-                                                                ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
-                                                        )
+                                                        options
                                                     }
                                                     ListboxComponent={ customListboxComponent }
-                                                    loading={ isApplicationListFetchRequestLoading }
+                                                    loading={
+                                                        isApplicationListFetchRequestLoading ||
+                                                        isApplicationListFetchRequestValidating
+                                                    }
+                                                    noOptionsText={ t("common:noResultsFound") }
                                                     getOptionLabel={ (application: ApplicationListItemInterface) =>
                                                         application.name }
                                                     renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -492,7 +654,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                                 : t("extensions:develop.branding.pageHeader." +
                                                                     "selectApplication") }
                                                             margin="none"
-                                                            value={ selectedApplication }
                                                         />
                                                     ) }
                                                 />

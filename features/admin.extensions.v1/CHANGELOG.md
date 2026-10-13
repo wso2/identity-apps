@@ -1,5 +1,65 @@
 # @wso2is/admin.extensions.v1
 
+## 2.44.1
+
+### Patch Changes
+
+- [#10717](https://github.com/wso2/identity-apps/pull/10717) [`47e361c251f999f5bae3b776368dbcfc600d4b8e`](https://github.com/wso2/identity-apps/commit/47e361c251f999f5bae3b776368dbcfc600d4b8e) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Address review feedback on unified MCP capability tab visibility
+
+- Updated dependencies [[`a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe`](https://github.com/wso2/identity-apps/commit/a218d70a8b9bfe2f0ddbdab6c06ba3af393610fe), [`a291686630952bd31c1a6b605f31790ee99bd364`](https://github.com/wso2/identity-apps/commit/a291686630952bd31c1a6b605f31790ee99bd364)]:
+  - @wso2is/admin.claims.v1@2.31.6
+  - @wso2is/admin.users.v1@2.38.55
+  - @wso2is/admin.applications.v1@2.44.5
+  - @wso2is/i18n@2.46.3
+
+## 2.44.0
+
+### Minor Changes
+
+- [#10679](https://github.com/wso2/identity-apps/pull/10679) [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate the enable/disable toggles of applications, enterprise connections and organizations behind the new `toggleEnable` feature gate flags, surface a plan limit exceeded alert on the respective listing pages, and refresh the feature gate after deleting one of these resources so the gate clears without a page reload
+
+### Patch Changes
+
+- Updated dependencies [[`7c629fa28df75cb527c01f24a12b10ff165ece22`](https://github.com/wso2/identity-apps/commit/7c629fa28df75cb527c01f24a12b10ff165ece22), [`8712ebbd15611b50ec27d41d0246e7f273d83df2`](https://github.com/wso2/identity-apps/commit/8712ebbd15611b50ec27d41d0246e7f273d83df2)]:
+  - @wso2is/admin.applications.v1@2.44.0
+  - @wso2is/admin.organizations.v1@2.29.0
+  - @wso2is/admin.feature-gate.v1@1.10.0
+  - @wso2is/admin.connections.v1@2.42.0
+  - @wso2is/access-control@3.7.0
+  - @wso2is/i18n@2.46.0
+
+## 2.43.12
+
+### Patch Changes
+
+- [#10655](https://github.com/wso2/identity-apps/pull/10655) [`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Respect the `makeSubjectMandatory` config when persisting the subject claim's mandatory flag, instead of always forcing it to mandatory regardless of the config value
+
+- Updated dependencies [[`1a64c4996de3b9cb1ab42f48f074089cc725cac7`](https://github.com/wso2/identity-apps/commit/1a64c4996de3b9cb1ab42f48f074089cc725cac7)]:
+  - @wso2is/admin.applications.v1@2.43.19
+
+## 2.43.11
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+- Updated dependencies [[`642d59bbd6f4ee2742c40f606dafd0c00614c0fb`](https://github.com/wso2/identity-apps/commit/642d59bbd6f4ee2742c40f606dafd0c00614c0fb), [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33)]:
+  - @wso2is/admin.applications.v1@2.43.18
+  - @wso2is/admin.connections.v1@2.40.1
+  - @wso2is/admin.core.v1@2.59.2
+  - @wso2is/admin.server-configurations.v1@2.38.59
+
+## 2.43.10
+
+### Patch Changes
+
+- [#10637](https://github.com/wso2/identity-apps/pull/10637) [`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add trial expiry wizard functionality
+
+- Updated dependencies [[`bf449562189aaa2ef77bc652b3161316b768efa9`](https://github.com/wso2/identity-apps/commit/bf449562189aaa2ef77bc652b3161316b768efa9), [`71d3731953ced1b39548eee4e8991b0570dce1a8`](https://github.com/wso2/identity-apps/commit/71d3731953ced1b39548eee4e8991b0570dce1a8)]:
+  - @wso2is/admin.subscription.v1@1.5.230
+  - @wso2is/admin.claims.v1@2.31.4
+  - @wso2is/i18n@2.45.3
+
 ## 2.43.9
 
 ### Patch Changes

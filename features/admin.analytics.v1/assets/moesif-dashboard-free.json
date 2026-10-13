@@ -7,13 +7,18 @@
             "workspace_ids": [
                 [
                     "6a1fac5668f9b5457fabcabb",
-                    "6a1fac9168f9b5457fabcabc"
+                    "6a1fac9168f9b5457fabcabc",
+                    "6a5e2e79e57d307b8ba6d549",
+                    "6a5e2d748473bc558cd9b16d"
                 ],
                 [
                     "6a1fad0868f9b5457fabcac5"
                 ],
                 [
                     "6a1fad328507014e56ac462e"
+                ],
+                [
+                    "6a5e45698473bc558cd9b202"
                 ]
             ],
             "parent": null,
@@ -54,6 +59,17 @@
                                         }
                                     }
                                 }
+                            },
+                            {
+                                "bool": {
+                                    "must_not": {
+                                        "terms": {
+                                            "metadata.userStoreDomain.raw": [
+                                                "AGENT"
+                                            ]
+                                        }
+                                    }
+                                }
                             }
                         ]
                     }
@@ -88,6 +104,17 @@
                                                 }
                                             }
                                         }
+                                    },
+                                    {
+                                        "bool": {
+                                            "must_not": {
+                                                "terms": {
+                                                    "metadata.userStoreDomain.raw": [
+                                                        "AGENT"
+                                                    ]
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             }
@@ -108,7 +135,7 @@
             },
             "view": "segment",
             "funnel_query": {},
-            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&seg[metrics][0][metricName]=count%28distinct%28user_id%29%29&seg[metrics][0][customName]=%20",
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=698b6316&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=3a5aa5df&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=count%28distinct%28user_id%29%29&seg[metrics][0][customName]=%20",
             "analyticType": "seg",
             "chartType": "bar",
             "settings": {
@@ -155,6 +182,17 @@
                                         "false"
                                     ]
                                 }
+                            },
+                            {
+                                "bool": {
+                                    "must_not": {
+                                        "terms": {
+                                            "metadata.userStoreDomain.raw": [
+                                                "AGENT"
+                                            ]
+                                        }
+                                    }
+                                }
                             }
                         ]
                     }
@@ -185,6 +223,17 @@
                                                 "false"
                                             ]
                                         }
+                                    },
+                                    {
+                                        "bool": {
+                                            "must_not": {
+                                                "terms": {
+                                                    "metadata.userStoreDomain.raw": [
+                                                        "AGENT"
+                                                    ]
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             }
@@ -205,7 +254,7 @@
             },
             "view": "segment",
             "funnel_query": {},
-            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=938597af&evtcf[filtersGroups][0][filters][1][field]=metadata.userType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=APPLICATION&evtcf[filtersGroups][0][filters][2][id]=2714f5ec&evtcf[filtersGroups][0][filters][2][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=eq&evtcf[filtersGroups][0][filters][2][value][0]=false&evtcf[filtersGroups][0][filters][3][id]=57646124&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
             "analyticType": "seg",
             "chartType": "bar",
             "settings": {
@@ -259,6 +308,17 @@
                                                     }
                                                 }
                                             }
+                                        },
+                                        {
+                                            "bool": {
+                                                "must_not": {
+                                                    "terms": {
+                                                        "metadata.userStoreDomain.raw": [
+                                                            "AGENT"
+                                                        ]
+                                                    }
+                                                }
+                                            }
                                         }
                                     ]
                                 }
@@ -293,6 +353,17 @@
                                                     "terms": {
                                                         "metadata.serviceProvider.raw": [
                                                             "Console"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "bool": {
+                                                "must_not": {
+                                                    "terms": {
+                                                        "metadata.userStoreDomain.raw": [
+                                                            "AGENT"
                                                         ]
                                                     }
                                                 }
@@ -337,6 +408,17 @@
                                                             }
                                                         }
                                                     }
+                                                },
+                                                {
+                                                    "bool": {
+                                                        "must_not": {
+                                                            "terms": {
+                                                                "metadata.userStoreDomain.raw": [
+                                                                    "AGENT"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             ]
                                         }
@@ -371,6 +453,17 @@
                                                             "terms": {
                                                                 "metadata.serviceProvider.raw": [
                                                                     "Console"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "bool": {
+                                                        "must_not": {
+                                                            "terms": {
+                                                                "metadata.userStoreDomain.raw": [
+                                                                    "AGENT"
                                                                 ]
                                                             }
                                                         }
@@ -458,7 +551,7 @@
             },
             "view": "time",
             "funnel_query": {},
-            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=31f53870&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evtcf[filtersGroups][0][filters][2][id]=6af3bb9b&evtcf[filtersGroups][0][filters][2][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=not_contain&evtcf[filtersGroups][0][filters][2][value][0]=Console&evtcf[filtersGroups][0][filters][3][id]=45b814e1&evtcf[filtersGroups][0][filters][3][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][3][op]=not_contain&evtcf[filtersGroups][0][filters][3][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=aa7f60c8&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][1][filters][1][id]=cbb3b1c3&evtcf[filtersGroups][1][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=contains&evtcf[filtersGroups][1][filters][1][value][0]=step&evtcf[filtersGroups][1][filters][2][id]=6a52100d&evtcf[filtersGroups][1][filters][2][field]=metadata.authStepSuccess&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=eq&evtcf[filtersGroups][1][filters][2][value][0]=false&evtcf[filtersGroups][1][filters][3][id]=28fca1e7&evtcf[filtersGroups][1][filters][3][field]=metadata.serviceProvider.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=Console&evtcf[filtersGroups][1][filters][4][id]=a6cbcbe4&evtcf[filtersGroups][1][filters][4][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][1][filters][4][op]=not_contain&evtcf[filtersGroups][1][filters][4][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=24h&evt_ts[segments][0][name]=Login%20Success&evt_ts[segments][0][filterGroups][0][id]=bf054cca&evt_ts[segments][0][filterGroups][0][filters][0][id]=2e2dc3c1&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=overall&evt_ts[segments][1][name]=Login%20Failure&evt_ts[segments][1][filterGroups][0][id]=bb97e258&evt_ts[segments][1][filterGroups][0][filters][0][id]=52cd10d0&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.eventType.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=contains&evt_ts[segments][1][filterGroups][0][filters][0][value][0]=step&evt_ts[segments][1][filterGroups][0][filters][1][id]=ab18b766&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.authStepSuccess&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=eq&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=false",
             "analyticType": "entTmSrs",
             "chartType": "line",
             "settings": {
@@ -526,9 +619,26 @@
             "args": "",
             "es_query": {
                 "post_filter": {
-                    "terms": {
-                        "action_name.raw": [
-                            "User-Registration"
+                    "bool": {
+                        "must": [
+                            {
+                                "terms": {
+                                    "action_name.raw": [
+                                        "User-Registration"
+                                    ]
+                                }
+                            },
+                            {
+                                "bool": {
+                                    "must_not": {
+                                        "terms": {
+                                            "metadata.userstoreDomain.raw": [
+                                                "AGENT"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
                         ]
                     }
                 },
@@ -536,9 +646,26 @@
                 "aggs": {
                     "entTmSrs": {
                         "filter": {
-                            "terms": {
-                                "action_name.raw": [
-                                    "User-Registration"
+                            "bool": {
+                                "must": [
+                                    {
+                                        "terms": {
+                                            "action_name.raw": [
+                                                "User-Registration"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "bool": {
+                                            "must_not": {
+                                                "terms": {
+                                                    "metadata.userstoreDomain.raw": [
+                                                        "AGENT"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
                                 ]
                             }
                         },
@@ -587,7 +714,7 @@
             },
             "view": "time",
             "funnel_query": {},
-            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=3586431c&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][op]=not_contain&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[interval]=1d&evt_ts[groups][0][field]=metadata.userOnboardedMethod.raw&evt_ts[groups][0][func]=terms&evt_ts[groups][0][by]=metric",
             "analyticType": "entTmSrs",
             "chartType": "line",
             "settings": {
@@ -603,6 +730,609 @@
                         "func": "terms",
                         "by": "metric"
                     }
+                ]
+            }
+        },
+        {
+            "_id": "6a5e2e79e57d307b8ba6d549",
+            "type": "events",
+            "name": "New Agents",
+            "args": "",
+            "es_query": {
+                "post_filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "terms": {
+                                    "action_name.raw": [
+                                        "User-Registration"
+                                    ]
+                                }
+                            },
+                            {
+                                "terms": {
+                                    "metadata.userstoreDomain.raw": [
+                                        "AGENT"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "size": 0,
+                "aggs": {
+                    "seg": {
+                        "filter": {
+                            "bool": {
+                                "must": [
+                                    {
+                                        "terms": {
+                                            "action_name.raw": [
+                                                "User-Registration"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "terms": {
+                                            "metadata.userstoreDomain.raw": [
+                                                "AGENT"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "aggs": {
+                            "_id|cardinality": {
+                                "cardinality": {
+                                    "field": "_id"
+                                }
+                            }
+                        }
+                    }
+                },
+                "track_total_hits": false
+            },
+            "dateRange": {
+                "from": "-52w",
+                "to": "now"
+            },
+            "view": "segment",
+            "funnel_query": {},
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Registration&evtcf[filtersGroups][0][filters][1][id]=a2892735&evtcf[filtersGroups][0][filters][1][field]=metadata.userstoreDomain.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=AGENT&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+            "analyticType": "seg",
+            "chartType": "bar",
+            "settings": {
+                "singleValueSettings": {
+                    "chartHeight": "80",
+                    "hideLabel": "true",
+                    "trendIndicator": {
+                        "isIncreasementGreen": "true"
+                    }
+                },
+                "metrics": [
+                    {
+                        "metricName": "count(event_id)"
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "6a5e2d748473bc558cd9b16d",
+            "type": "events",
+            "name": "Agent Tokens",
+            "args": "",
+            "es_query": {
+                "post_filter": {
+                    "bool": {
+                        "should": [
+                            {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            "terms": {
+                                                "action_name.raw": [
+                                                    "OAuth-Token-Issuance"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "terms": {
+                                                "metadata.existingTokenUsed": [
+                                                    "false"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "terms": {
+                                                "metadata.userStoreDomain.raw": [
+                                                    "AGENT"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            "terms": {
+                                                "action_name.raw": [
+                                                    "OAuth-Token-Issuance"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "terms": {
+                                                "metadata.existingTokenUsed": [
+                                                    "false"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "bool": {
+                                                "should": [
+                                                    {
+                                                        "exists": {
+                                                            "field": "metadata.actor.raw"
+                                                        }
+                                                    },
+                                                    {
+                                                        "exists": {
+                                                            "field": "metadata.actor"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "bool": {
+                                                "must_not": {
+                                                    "terms": {
+                                                        "metadata.actor.raw": [
+                                                            "NOT_AVAILABLE"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "size": 0,
+                "aggs": {
+                    "seg": {
+                        "filter": {
+                            "bool": {
+                                "should": [
+                                    {
+                                        "bool": {
+                                            "must": [
+                                                {
+                                                    "terms": {
+                                                        "action_name.raw": [
+                                                            "OAuth-Token-Issuance"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "terms": {
+                                                        "metadata.existingTokenUsed": [
+                                                            "false"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "terms": {
+                                                        "metadata.userStoreDomain.raw": [
+                                                            "AGENT"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "bool": {
+                                            "must": [
+                                                {
+                                                    "terms": {
+                                                        "action_name.raw": [
+                                                            "OAuth-Token-Issuance"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "terms": {
+                                                        "metadata.existingTokenUsed": [
+                                                            "false"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "bool": {
+                                                        "should": [
+                                                            {
+                                                                "exists": {
+                                                                    "field": "metadata.actor.raw"
+                                                                }
+                                                            },
+                                                            {
+                                                                "exists": {
+                                                                    "field": "metadata.actor"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "bool": {
+                                                        "must_not": {
+                                                            "terms": {
+                                                                "metadata.actor.raw": [
+                                                                    "NOT_AVAILABLE"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "aggs": {
+                            "_id|cardinality": {
+                                "cardinality": {
+                                    "field": "_id"
+                                }
+                            }
+                        }
+                    }
+                },
+                "track_total_hits": false
+            },
+            "dateRange": {
+                "from": "-12w",
+                "to": "now"
+            },
+            "view": "segment",
+            "funnel_query": {},
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=32fc6113&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=83cacaad&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&seg[metrics][0][metricName]=count%28event_id%29&seg[metrics][0][customName]=%20",
+            "analyticType": "seg",
+            "chartType": "bar",
+            "settings": {
+                "singleValueSettings": {
+                    "chartHeight": "80",
+                    "hideLabel": "true",
+                    "trendIndicator": {
+                        "isIncreasementGreen": "true"
+                    }
+                },
+                "metrics": [
+                    {
+                        "metricName": "count(event_id)"
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "6a5e45698473bc558cd9b202",
+            "type": "events",
+            "name": "Agent Tokens Over Time",
+            "args": "",
+            "es_query": {
+                "post_filter": {
+                "bool": {
+                    "should": [
+                    {
+                        "bool": {
+                        "must": [
+                            {
+                            "terms": {
+                                "action_name.raw": [
+                                "OAuth-Token-Issuance"
+                                ]
+                            }
+                            },
+                            {
+                            "terms": {
+                                "metadata.existingTokenUsed": [
+                                "false"
+                                ]
+                            }
+                            },
+                            {
+                            "terms": {
+                                "metadata.userStoreDomain.raw": [
+                                "AGENT"
+                                ]
+                            }
+                            }
+                        ]
+                        }
+                    },
+                    {
+                        "bool": {
+                        "must": [
+                            {
+                            "terms": {
+                                "action_name.raw": [
+                                "OAuth-Token-Issuance"
+                                ]
+                            }
+                            },
+                            {
+                            "terms": {
+                                "metadata.existingTokenUsed": [
+                                "false"
+                                ]
+                            }
+                            },
+                            {
+                            "bool": {
+                                "should": [
+                                {
+                                    "exists": {
+                                    "field": "metadata.actor.raw"
+                                    }
+                                },
+                                {
+                                    "exists": {
+                                    "field": "metadata.actor"
+                                    }
+                                }
+                                ]
+                            }
+                            },
+                            {
+                            "bool": {
+                                "must_not": {
+                                "terms": {
+                                    "metadata.actor.raw": [
+                                    "NOT_AVAILABLE"
+                                    ]
+                                }
+                                }
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    ]
+                }
+                },
+                "size": 0,
+                "aggs": {
+                "entTmSrs": {
+                    "filter": {
+                    "bool": {
+                        "should": [
+                        {
+                            "bool": {
+                            "must": [
+                                {
+                                "terms": {
+                                    "action_name.raw": [
+                                    "OAuth-Token-Issuance"
+                                    ]
+                                }
+                                },
+                                {
+                                "terms": {
+                                    "metadata.existingTokenUsed": [
+                                    "false"
+                                    ]
+                                }
+                                },
+                                {
+                                "terms": {
+                                    "metadata.userStoreDomain.raw": [
+                                    "AGENT"
+                                    ]
+                                }
+                                }
+                            ]
+                            }
+                        },
+                        {
+                            "bool": {
+                            "must": [
+                                {
+                                "terms": {
+                                    "action_name.raw": [
+                                    "OAuth-Token-Issuance"
+                                    ]
+                                }
+                                },
+                                {
+                                "terms": {
+                                    "metadata.existingTokenUsed": [
+                                    "false"
+                                    ]
+                                }
+                                },
+                                {
+                                "bool": {
+                                    "should": [
+                                    {
+                                        "exists": {
+                                        "field": "metadata.actor.raw"
+                                        }
+                                    },
+                                    {
+                                        "exists": {
+                                        "field": "metadata.actor"
+                                        }
+                                    }
+                                    ]
+                                }
+                                },
+                                {
+                                "bool": {
+                                    "must_not": {
+                                    "terms": {
+                                        "metadata.actor.raw": [
+                                        "NOT_AVAILABLE"
+                                        ]
+                                    }
+                                    }
+                                }
+                                }
+                            ]
+                            }
+                        }
+                        ]
+                    }
+                    },
+                    "aggs": {
+                    "segment__Direct Agent Logins": {
+                        "filter": {
+                        "terms": {
+                            "metadata.userStoreDomain.raw": [
+                            "AGENT"
+                            ]
+                        }
+                        },
+                        "aggs": {
+                        "request.time": {
+                            "date_histogram": {
+                            "field": "request.time",
+                            "interval": "1d",
+                            "time_zone": "Asia/Colombo"
+                            },
+                            "aggs": {
+                            "_id|cardinality": {
+                                "cardinality": {
+                                "field": "_id"
+                                }
+                            }
+                            }
+                        }
+                        }
+                    },
+                    "segment__Agent On Behalf of User": {
+                        "filter": {
+                        "bool": {
+                            "must": [
+                            {
+                                "bool": {
+                                "should": [
+                                    {
+                                    "exists": {
+                                        "field": "metadata.actor.raw"
+                                    }
+                                    },
+                                    {
+                                    "exists": {
+                                        "field": "metadata.actor"
+                                    }
+                                    }
+                                ]
+                                }
+                            },
+                            {
+                                "bool": {
+                                "must_not": {
+                                    "terms": {
+                                    "metadata.actor.raw": [
+                                        "NOT_AVAILABLE"
+                                    ]
+                                    }
+                                }
+                                }
+                            }
+                            ]
+                        }
+                        },
+                        "aggs": {
+                        "request.time": {
+                            "date_histogram": {
+                            "field": "request.time",
+                            "interval": "1d",
+                            "time_zone": "Asia/Colombo"
+                            },
+                            "aggs": {
+                            "_id|cardinality": {
+                                "cardinality": {
+                                "field": "_id"
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "dateRange": {
+                "from": "-12w",
+                "to": "now"
+            },
+            "view": "time",
+            "funnel_query": {},
+            "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][0][filters][1][id]=2714f5ec&evtcf[filtersGroups][0][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=eq&evtcf[filtersGroups][0][filters][1][value][0]=false&evtcf[filtersGroups][0][filters][2][id]=b84a7b60&evtcf[filtersGroups][0][filters][2][field]=metadata.userStoreDomain.raw&evtcf[filtersGroups][0][filters][2][name]=&evtcf[filtersGroups][0][filters][2][op]=contains&evtcf[filtersGroups][0][filters][2][value][0]=AGENT&evtcf[filtersGroups][1][filters][0][id]=ad5ef950&evtcf[filtersGroups][1][filters][0][field]=action_name.raw&evtcf[filtersGroups][1][filters][0][name]=&evtcf[filtersGroups][1][filters][0][op]=contains&evtcf[filtersGroups][1][filters][0][value][0]=OAuth-Token-Issuance&evtcf[filtersGroups][1][filters][1][id]=0e44fc56&evtcf[filtersGroups][1][filters][1][field]=metadata.existingTokenUsed&evtcf[filtersGroups][1][filters][1][name]=&evtcf[filtersGroups][1][filters][1][op]=eq&evtcf[filtersGroups][1][filters][1][value][0]=false&evtcf[filtersGroups][1][filters][2][id]=83cacaad&evtcf[filtersGroups][1][filters][2][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][2][name]=&evtcf[filtersGroups][1][filters][2][op]=exists&evtcf[filtersGroups][1][filters][2][value]=&evtcf[filtersGroups][1][filters][3][id]=c919c6ab&evtcf[filtersGroups][1][filters][3][field]=metadata.actor.raw&evtcf[filtersGroups][1][filters][3][name]=&evtcf[filtersGroups][1][filters][3][op]=not_contain&evtcf[filtersGroups][1][filters][3][value][0]=NOT_AVAILABLE&evt_ts[metrics][0][metricName]=count%28event_id%29&evt_ts[metrics][0][customName]=%20&evt_ts[segments][0][name]=Direct%20Agent%20Logins&evt_ts[segments][0][filterGroups][0][id]=d306199d&evt_ts[segments][0][filterGroups][0][filters][0][id]=12a24629&evt_ts[segments][0][filterGroups][0][filters][0][field]=metadata.userStoreDomain.raw&evt_ts[segments][0][filterGroups][0][filters][0][name]=&evt_ts[segments][0][filterGroups][0][filters][0][op]=contains&evt_ts[segments][0][filterGroups][0][filters][0][value][0]=AGENT&evt_ts[segments][1][name]=Agent%20On%20Behalf%20of%20User&evt_ts[segments][1][filterGroups][0][id]=ec24a1bf&evt_ts[segments][1][filterGroups][0][filters][0][id]=b140ce64&evt_ts[segments][1][filterGroups][0][filters][0][field]=metadata.actor.raw&evt_ts[segments][1][filterGroups][0][filters][0][name]=&evt_ts[segments][1][filterGroups][0][filters][0][op]=exists&evt_ts[segments][1][filterGroups][0][filters][0][value]=&evt_ts[segments][1][filterGroups][0][filters][1][id]=ec5b72df&evt_ts[segments][1][filterGroups][0][filters][1][field]=metadata.actor.raw&evt_ts[segments][1][filterGroups][0][filters][1][name]=&evt_ts[segments][1][filterGroups][0][filters][1][op]=not_contain&evt_ts[segments][1][filterGroups][0][filters][1][value][0]=NOT_AVAILABLE",
+            "analyticType": "entTmSrs",
+            "chartType": "line",
+            "settings": {
+                "metrics": [
+                {
+                    "metricName": "count(event_id)",
+                    "customName": " "
+                }
+                ],
+                "segments": [
+                {
+                    "name": "Direct Agent Logins",
+                    "filterGroups": [
+                    {
+                        "id": "d306199d",
+                        "filters": [
+                        {
+                            "id": "12a24629",
+                            "field": "metadata.userStoreDomain.raw",
+                            "name": "",
+                            "op": "contains",
+                            "value": [
+                            "AGENT"
+                            ]
+                        }
+                        ]
+                    }
+                    ]
+                },
+                {
+                    "name": "Agent On Behalf of User",
+                    "filterGroups": [
+                    {
+                        "id": "ec24a1bf",
+                        "filters": [
+                        {
+                            "id": "b140ce64",
+                            "field": "metadata.actor.raw",
+                            "name": "",
+                            "op": "exists",
+                            "value": ""
+                        },
+                        {
+                            "id": "ec5b72df",
+                            "field": "metadata.actor.raw",
+                            "name": "",
+                            "op": "not_contain",
+                            "value": [
+                            "NOT_AVAILABLE"
+                            ]
+                        }
+                        ]
+                    }
+                    ]
+                }
                 ]
             }
         }

@@ -236,8 +236,11 @@ export const flowExtension: flowExtensionNS = {
                     title: "Write encrypted"
                 }
             },
+            identityClaimWriteWarning: "Modifying this system maintained attribute may cause unexpected behavior.",
             readOnlyBadge: "Read-Only",
-            title: "Field Configuration"
+            title: "Field Configuration",
+            usernameWriteWarning: "Write access to the username is only applied in the Self Registration " +
+                "flow."
         },
         node: {
             addEntryChip: "+ ADD ENTRY",

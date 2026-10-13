@@ -21,6 +21,7 @@ export interface insightsNS {
     description: string;
     advancedAnalytics: {
         card: {
+            dataRetentionHint: string;
             description: string;
             enableButton: string;
             title: string;

@@ -205,11 +205,11 @@ const getUserIdClaimRadioButtonField = (
     const options: StrictRadioChild[] = [
         {
             label: "Use NameID as the User Identifier",
-            value: "true"
+            value: "false"
         },
         {
             label: "User Identifier found among claims",
-            value: "false"
+            value: "true"
         }
     ];
 
