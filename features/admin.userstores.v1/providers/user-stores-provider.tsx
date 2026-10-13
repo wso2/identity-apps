@@ -73,16 +73,6 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
     /**
-     * Validated list of user stores. Resolves to `undefined` until a valid list is available, so
-     * that the checks below can tell an unresolved list apart from an empty one. The context value
-     * falls back to an empty array, since `userStoresList` is declared non-optional.
-     */
-    const userStores: UserStoreListItem[] | undefined = useMemo(
-        () => Array.isArray(fetchedUserStores) ? fetchedUserStores : undefined,
-        [ fetchedUserStores ]
-    );
-
-    /**
      * Determines whether the primary user store should be fetched.
      * If the primary user store is not present in the list of user stores, then it should be fetched separately.
      */
@@ -92,11 +82,11 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return false;
             }
 
-            return !(userStores?.some(
+            return !(fetchedUserStores?.some(
                 (userStore: UserStoreListItem) => userStore.id === userstoresConfig.primaryUserstoreId
             ) ?? true);
         },
-        [ userStores ]
+        [ fetchedUserStores ]
     );
 
     const {
@@ -122,7 +112,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return [];
             }
 
-            const combinedUserStores: UserStoreListItem[] = [ ...(userStores ?? []) ];
+            const combinedUserStores: UserStoreListItem[] = [ ...fetchedUserStores ];
 
             if (shouldFetchPrimaryUserStore && primaryUserStoreDetails) {
                 combinedUserStores.push(primaryUserStoreDetails as unknown as UserStoreListItem);
@@ -143,7 +133,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 return userStore.name.toUpperCase();
             });
         },
-        [ userStores, isPrimaryUserStoreDetailsRequestLoading ]
+        [ fetchedUserStores, isPrimaryUserStoreDetailsRequestLoading ]
     );
 
     /**
@@ -211,7 +201,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     ): UserStoreListItem[] => {
         const filteredUserStores: UserStoreListItem[] = [];
 
-        if (!userStores) {
+        if (!fetchedUserStores) {
             return filteredUserStores;
         }
 
@@ -222,7 +212,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
             filteredUserStores.push(primaryUserStoreDetails as unknown as UserStoreListItem);
         }
 
-        for (const userStore of userStores) {
+        for (const userStore of fetchedUserStores) {
             if (!includeHiddenUserStores && isUserStoreHidden(userStore.name)) {
                 continue;
             }
@@ -251,7 +241,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 isUserStoreReadOnly,
                 mutateUserStoreList,
                 readOnlyUserStoreNamesList: readOnlyUserStoreNames,
-                userStoresList: userStores ?? []
+                userStoresList: fetchedUserStores
             } }
         >
             { children }
