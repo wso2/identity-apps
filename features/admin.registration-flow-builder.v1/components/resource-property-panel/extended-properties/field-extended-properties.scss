@@ -1,0 +1,43 @@
+.field-extended-properties {
+    .define-custom-attribute-button {
+        margin-top: var(--oxygen-spacing-1);
+        // Matches the radius of the attribute selector directly above it.
+        border-radius: var(--oxygen-shape-borderRadius);
+        border-style: dashed;
+        text-transform: none;
+    }
+
+    .custom-attribute-summary {
+        margin-top: var(--oxygen-spacing-1);
+        padding: var(--oxygen-spacing-1) var(--oxygen-spacing-1) var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        background-color: var(--oxygen-palette-background-default);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--oxygen-spacing-1);
+
+        .custom-attribute-details {
+            min-width: 0;
+
+            .MuiTypography-root {
+                // Identifiers can be long; keep them on one line rather than growing the row.
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .custom-attribute-identifier {
+                font-family: monospace;
+            }
+        }
+
+        .custom-attribute-action {
+            // Icon buttons default to a circular 40px target, which dwarfs this row.
+            padding: 4px;
+            border-radius: 4px;
+        }
+    }
+}

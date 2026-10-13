@@ -71,7 +71,8 @@ export enum InputVariants {
     Telephone = "TELEPHONE",
     Checkbox = "CHECKBOX",
     OTP = "OTP",
-    Choice = "CHOICE"
+    Choice = "CHOICE",
+    OrgHandler = "ORG_HANDLE"
 }
 
 export enum ButtonVariants {

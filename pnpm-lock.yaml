@@ -8194,6 +8194,9 @@ importers:
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
+      '@wso2is/admin.roles.v2':
+        specifier: workspace:^
+        version: link:../admin.roles.v2
       '@wso2is/admin.rules.v1':
         specifier: ^0.7.50
         version: link:../admin.rules.v1

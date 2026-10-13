@@ -20,7 +20,7 @@ import { configure } from "@testing-library/react";
 import "./__mocks__/global";
 import "./__mocks__/module";
 import "./__mocks__/window";
-import "./__mocks__/server/hooks";
+import "@wso2is/admin.core.v1/configs/app";
 import "babel-polyfill";
 import  "./__mocks__/@asgardeo/auth-react";
 

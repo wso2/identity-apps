@@ -319,6 +319,9 @@ export interface flowsNS {
                     actionId: string;
                 };
             };
+            organizationAttributes: {
+                missingOrganizationName: string;
+            };
             userResolveExecutorFields: {
                 message: string;
                 messageWithUserIdentifier: string;
@@ -426,6 +429,17 @@ export interface flowsNS {
                 autoLogin: {
                     label: string;
                     hint: string;
+                };
+                provisionTarget: {
+                    label: string;
+                    hint: string;
+                };
+                organizationRoles: {
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    fetchError: string;
+                    noPermission: string;
                 };
             };
         };

@@ -56,6 +56,26 @@
         "type": "INPUT",
         "version": "0.1.0",
         "deprecated": false,
+        "variant": "ORG_HANDLE",
+        "display": {
+            "label": "Organization Handle",
+            "image": "assets/images/icons/organization.svg"
+        },
+        "config": {
+            "identifier": "organizationHandle",
+            "type": "text",
+            "hint": "Auto-generated from your organization name. You can edit it.",
+            "label": "Organization Handle",
+            "required": false,
+            "placeholder": "Enter your organization handle"
+        }
+    },
+    {
+        "resourceType": "ELEMENT",
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
         "variant": "EMAIL",
         "display": {
             "label": "Email Input",

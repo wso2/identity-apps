@@ -200,5 +200,70 @@
                 }
             ]
         }
+    },
+    {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+        "label": "Organization Onboarding View",
+        "image": "assets/images/icons/building-icon.svg",
+        "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+        "components": [
+            {
+                "category": "BLOCK",
+                "type": "FORM",
+                "config": {},
+                "id": "{{ID}}",
+                "components": [
+                    {
+                        "id": "{{ID}}",
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "TEXT",
+                        "config": {
+                            "type": "text",
+                            "hint": "Enter your organization name",
+                            "label": "Organization Name",
+                            "required": true,
+                            "placeholder": "e.g. Acme Corporation",
+                            "identifier": "organizationName",
+                            "identifierType": "ORGANIZATION"
+                        }
+                    },
+                    {
+                        "id": "{{ID}}",
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "ORG_HANDLE",
+                        "config": {
+                            "label": "Organization Handle",
+                            "identifier": "organizationHandle",
+                            "linkedTo": "organizationName",
+                            "identifierType": "ORGANIZATION"
+                        }
+                    },
+                    {
+                        "id": "{{ID}}",
+                        "category": "ACTION",
+                        "type": "BUTTON",
+                        "variant": "PRIMARY",
+                        "config": {
+                            "type": "submit",
+                            "text": "Create Organization"
+                        },
+                        "action": {
+                                "type": "NEXT"
+                        }
+                    }
+                ]
+            }
+        ]
     }
+}
 ]
