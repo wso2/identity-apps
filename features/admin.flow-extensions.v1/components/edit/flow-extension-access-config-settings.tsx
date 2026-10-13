@@ -134,7 +134,7 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
      * published flow collects. Core organization fields are available at their top-level paths.
      */
     const organizationAttributes: OrganizationAttributeEntryInterface[] = useMemo(
-        () => extractOrganizationAttributes(publishedFlow),
+        (): OrganizationAttributeEntryInterface[] => extractOrganizationAttributes(publishedFlow),
         [ publishedFlow ]
     );
 
@@ -144,9 +144,9 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
      * `FlowExtensionContextTreeBuilder` does not emit an Organization node yet, so it is built
      * here. Building it as metadata rather than as tree state means every downstream mechanism —
      * state mapping, access config building, round-trip on reload — treats it exactly like a
-     * server-sent node. Skipped once the backend starts sending its own.
+     * server-sent node. Existing Organization nodes are preserved and gain a missing attributes container.
      */
-    const contextTree: ContextTreeNodeMetadataInterface[] = useMemo(() => {
+    const contextTree: ContextTreeNodeMetadataInterface[] = useMemo((): ContextTreeNodeMetadataInterface[] => {
         if (!contextTreeData?.context) {
             return [];
         }
@@ -158,7 +158,32 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
         );
 
         if (hasServerOrganizationNode) {
-            return contextTreeData.context;
+            return contextTreeData.context.map(
+                (node: ContextTreeNodeMetadataInterface): ContextTreeNodeMetadataInterface => {
+                    const isOrganizationNode: boolean = node.path?.replace(/\/+$/, "") ===
+                        OrganizationContextConstants.ORGANIZATION_PATH_PREFIX.replace(/\/+$/, "");
+
+                    if (!isOrganizationNode) {
+                        return node;
+                    }
+
+                    const hasAttributesNode: boolean = node.children?.some(
+                        (child: ContextTreeNodeMetadataInterface): boolean =>
+                            child.path?.replace(/\/+$/, "") ===
+                            OrganizationContextConstants.ORGANIZATION_ATTRIBUTES_PATH
+                    ) ?? false;
+
+                    return hasAttributesNode
+                        ? node
+                        : {
+                            ...node,
+                            children: [
+                                ...(node.children ?? []),
+                                OrganizationContextConstants.ORGANIZATION_ATTRIBUTES_NODE
+                            ]
+                        };
+                }
+            );
         }
 
         // The container starts empty, like `/user/claims`. Entries are added through the modal;

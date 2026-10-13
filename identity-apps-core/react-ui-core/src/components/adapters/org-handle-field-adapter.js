@@ -163,12 +163,13 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
                 // Only keep searching when the candidate is *definitively* taken.
                 // If availability is uncertain, accept it and let the server decide.
                 if (result.available || result.uncertain) {
+                    const validationError = getValidationError(candidate);
                     setOrgHandle(candidate);
-                    setError("");
+                    setError(validationError);
                     setIsDuplicate(false);
                     setIsUncertain(!!result.uncertain);
                     if (fieldErrorHandler) {
-                        fieldErrorHandler(identifier, null);
+                        fieldErrorHandler(identifier, validationError ? [validationError] : null);
                     }
                 } else {
                     tryWithRandomCharacters(sanitizedValue, requestId, maxAttempts, currentAttempt + 1);
@@ -197,12 +198,13 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
                 const result = await checkOrgHandleAvailability(checkHandleUrl, baseHandle);
                 if (requestId !== requestIdRef.current) return;
                 if (result.available || result.uncertain) {
+                    const validationError = getValidationError(baseHandle);
                     setOrgHandle(baseHandle);
-                    setError("");
+                    setError(validationError);
                     setIsDuplicate(false);
                     setIsUncertain(!!result.uncertain);
                     if (fieldErrorHandler) {
-                        fieldErrorHandler(identifier, null);
+                        fieldErrorHandler(identifier, validationError ? [validationError] : null);
                     }
                 } else {
                     tryWithRandomCharacters(sanitizedValue, requestId);
@@ -368,7 +370,9 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
         const validationError = getValidationError(orgHandle);
         if (validationError) {
             setError(validationError);
-            fieldErrorHandler(identifier, [validationError]);
+            if (fieldErrorHandler) {
+                fieldErrorHandler(identifier, [validationError]);
+            }
         }
     };
 
