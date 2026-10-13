@@ -17,7 +17,8 @@
  */
 
 import { render, screen } from "@wso2is/unit-testing/utils";
-import React from "react";
+import React, { ReactElement } from "react";
+import useUserStores from "../hooks/use-user-stores";
 import UserStoresProvider from "../providers/user-stores-provider";
 import "@testing-library/jest-dom";
 
@@ -51,11 +52,24 @@ vi.mock("../api/use-get-user-store-details", () => ({
     })
 }));
 
+/**
+ * Reads the context the way consumers do, without guarding the list.
+ */
+const UserStoresConsumer = (): ReactElement => {
+    const { userStoresList } = useUserStores();
+
+    return (
+        <span data-componentid="user-stores-provider-child">
+            { userStoresList.length }
+        </span>
+    );
+};
+
 describe("UserStoresProvider", () => {
     const renderProvider = (): void => {
         render(
             <UserStoresProvider>
-                <span data-componentid="user-stores-provider-child">Console</span>
+                <UserStoresConsumer />
             </UserStoresProvider>
         );
     };
@@ -73,7 +87,7 @@ describe("UserStoresProvider", () => {
 
         renderProvider();
 
-        expect(screen.getByTestId("user-stores-provider-child")).toBeInTheDocument();
+        expect(screen.getByTestId("user-stores-provider-child")).toHaveTextContent("1");
     });
 
     /**
@@ -88,6 +102,6 @@ describe("UserStoresProvider", () => {
         mockUserStoresResponse.current = payload;
 
         expect(() => renderProvider()).not.toThrow();
-        expect(screen.getByTestId("user-stores-provider-child")).toBeInTheDocument();
+        expect(screen.getByTestId("user-stores-provider-child")).toHaveTextContent("0");
     });
 });

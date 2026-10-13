@@ -77,6 +77,10 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
      * else, treat it the same as a list that has not been resolved yet. This provider wraps the
      * entire app, so an unexpected payload shape would otherwise throw while rendering and bring
      * the whole Console down.
+     *
+     * This stays `undefined` rather than `[]` so that the checks below can still tell an
+     * unresolved list apart from an empty one. The context value itself is always an array, since
+     * `userStoresList` is declared non-optional.
      */
     const userStores: UserStoreListItem[] | undefined = useMemo(
         () => Array.isArray(fetchedUserStores) ? fetchedUserStores : undefined,
@@ -252,7 +256,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
                 isUserStoreReadOnly,
                 mutateUserStoreList,
                 readOnlyUserStoreNamesList: readOnlyUserStoreNames,
-                userStoresList: userStores
+                userStoresList: userStores ?? []
             } }
         >
             { children }
