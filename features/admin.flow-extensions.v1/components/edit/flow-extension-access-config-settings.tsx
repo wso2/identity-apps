@@ -45,7 +45,7 @@ import {
     FlowExtensionContextTreeResponseInterface,
     InitialAccessConfigInterface
 } from "../flow-context-tree";
-import { ContextTreeNodeMetadataInterface, NodeType } from "../flow-context-tree/models";
+import { ContextTreeNodeMetadataInterface } from "../flow-context-tree/models";
 import {
     OrganizationAttributeEntryInterface,
     extractOrganizationAttributes
@@ -139,12 +139,8 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
     );
 
     /**
-     * Server tree with the Organization branch appended.
-     *
-     * `FlowExtensionContextTreeBuilder` does not emit an Organization node yet, so it is built
-     * here. Building it as metadata rather than as tree state means every downstream mechanism —
-     * state mapping, access config building, round-trip on reload — treats it exactly like a
-     * server-sent node. Existing Organization nodes are preserved and gain a missing attributes container.
+     * Preserve server Organization metadata and add its missing attributes container.
+     * Do not create an Organization branch when the server omits it.
      */
     const contextTree: ContextTreeNodeMetadataInterface[] = useMemo((): ContextTreeNodeMetadataInterface[] => {
         if (!contextTreeData?.context) {
@@ -186,20 +182,7 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
             );
         }
 
-        // The container starts empty, like `/user/claims`. Entries are added through the modal;
-        // any already saved on the access config are restored by the metadata -> state mapping.
-        const organizationNode: ContextTreeNodeMetadataInterface = {
-            allowedOperations: [ "EXPOSE" ],
-            children: [ OrganizationContextConstants.ORGANIZATION_ATTRIBUTES_NODE ],
-            dataType: "",
-            key: "organization",
-            nodeType: NodeType.OBJECT,
-            path: OrganizationContextConstants.ORGANIZATION_PATH_PREFIX,
-            readOnly: true,
-            title: "Organization"
-        };
-
-        return [ ...contextTreeData.context, organizationNode ];
+        return contextTreeData.context;
     }, [ contextTreeData ]);
 
     const handleAccessConfigChange = (
