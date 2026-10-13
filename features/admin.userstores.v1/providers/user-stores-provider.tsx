@@ -73,14 +73,9 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
     /**
-     * The user store list API returns an array. Should it ever answer HTTP 200 with anything
-     * else, treat it the same as a list that has not been resolved yet. This provider wraps the
-     * entire app, so an unexpected payload shape would otherwise throw while rendering and bring
-     * the whole Console down.
-     *
-     * This stays `undefined` rather than `[]` so that the checks below can still tell an
-     * unresolved list apart from an empty one. The context value itself is always an array, since
-     * `userStoresList` is declared non-optional.
+     * Validated list of user stores. Resolves to `undefined` until a valid list is available, so
+     * that the checks below can tell an unresolved list apart from an empty one. The context value
+     * falls back to an empty array, since `userStoresList` is declared non-optional.
      */
     const userStores: UserStoreListItem[] | undefined = useMemo(
         () => Array.isArray(fetchedUserStores) ? fetchedUserStores : undefined,
