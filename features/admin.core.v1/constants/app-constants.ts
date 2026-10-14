@@ -387,6 +387,7 @@ export class AppConstants {
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
             [ "UNIFICATION_RULE_CREATE", `${AppConstants.getMainViewBasePath()}/unification-rules/create` ],
+            [ "UNIFICATION_RULE", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
             [ "PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes` ],
             [ "PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:scope/:id` ],
             [ "PROFILE_ATTRIBUTE_CREATE", `${AppConstants.getMainViewBasePath()}/profile-attributes/create` ],
