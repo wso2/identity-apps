@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ResourceOrigin } from "./organization-management";
+
 type ProfileSchemaGroupedScope =
     | "identity_attributes"
     | "traits"
@@ -65,6 +67,10 @@ export interface ProfileSchemaAttribute {
 
     // Canonical values for attributes for options value type.
     canonical_values?: CanonicalValues[];
+
+    // Organization management: OWNED, SHARED by the organization in owner_org_handle, or INHERITED from it.
+    origin?: ResourceOrigin;
+    owner_org_handle?: string;
 }
 
 interface ProfileSchemaCoreAttribute {
