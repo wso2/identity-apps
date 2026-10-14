@@ -36,10 +36,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import { EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -67,6 +68,7 @@ import type {
     ProfileSchemaSubAttributeRef,
     ValueType
 } from "../models/profile-attributes";
+import { useIsSubOrganization } from "../utils/organization-management-utils";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
 
 const StepActionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
@@ -160,8 +162,10 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
         const {
             applications,
+            isApplicationsRequestFailed,
             isLoading: isLoadingAppIds
         } = useCDSApplications(shouldFetchApplications);
+        const isSubOrganization: boolean = useIsSubOrganization();
 
         // The application name is always shown as the label while the config-resolved
         // identifier (app UUID or client ID) is submitted to the CDS APIs.
@@ -197,13 +201,11 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             }
         ], [ t ]);
 
+        // CDS stores an application data attribute as `application_data.<name>` with a separate
+        // application identifier, so the identifier is not part of the name.
         const fullAttributeName: string = useMemo((): string => {
             if (!name.trim()) return "";
-            if (scope === APPLICATION_DATA) {
-                if (!applicationIdentifier.trim()) return "";
-
-                return `${APPLICATION_DATA}.${applicationIdentifier.trim()}.${name.trim()}`;
-            }
+            if (scope === APPLICATION_DATA && !applicationIdentifier.trim()) return "";
 
             return `${scope}.${name.trim()}`;
         }, [ scope, applicationIdentifier, name ]);
@@ -223,14 +225,18 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
                     `attribute_name eq ${fullAttributeName}`
                 )
                     .then((list: ProfileSchemaAttribute[]): void => {
-                        setIsNameAvailable(list.length === 0);
+                        // An application data name is taken only for the same application.
+                        setIsNameAvailable(scope === APPLICATION_DATA
+                            ? !list.some((attr: ProfileSchemaAttribute): boolean =>
+                                attr.application_identifier === applicationIdentifier.trim())
+                            : list.length === 0);
                     })
                     .catch((): void => setIsNameAvailable(null))
                     .finally((): void => setIsCheckingName(false));
             }, 400);
 
             return (): void => clearTimeout(debounceTimer.current);
-        }, [ fullAttributeName, scope ]);
+        }, [ fullAttributeName, scope, applicationIdentifier ]);
 
         const handleScopeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
             setScope(e.target.value as ScopeValue);
@@ -356,6 +362,11 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
                                             { t("customerDataService:profileAttributes.create." +
                                                 "forms.attributeGeneral.fields.applicationIdentifier.loading") }
                                         </MenuItem>
+                                    ) : isApplicationsRequestFailed ? (
+                                        <MenuItem value="" disabled>
+                                            { t("customerDataService:profileAttributes.create." +
+                                                "forms.attributeGeneral.fields.applicationIdentifier.loadError") }
+                                        </MenuItem>
                                     ) : appIdentifierOptions.length === 0 ? (
                                         <MenuItem value="" disabled>
                                             { t("customerDataService:profileAttributes.create." +
@@ -405,6 +416,13 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
                             />
                         </Box>
                     </Box>
+                    { /* A child organization sees its own apps and the apps that a parent shares with it. */ }
+                    { scope === APPLICATION_DATA && isSubOrganization && (
+                        <Hint>
+                            { t("customerDataService:profileAttributes.create." +
+                                "forms.attributeGeneral.fields.applicationIdentifier.childOrganizationHint") }
+                        </Hint>
+                    ) }
                 </Grid>
 
                 <Grid xs={ 12 }>
@@ -992,10 +1010,12 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
 
                 history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"));
             })
-            .catch((): void => {
+            .catch((err: AxiosError<HttpErrorResponseDataInterface>): void => {
                 dispatch(
                     addAlert({
-                        description: t(
+                        // Organization management: CDS explains why it rejects the attribute, for example the ID of a
+                        // shared app.
+                        description: err?.response?.data?.description || t(
                             "customerDataService:profileAttributes.create."+
                             "notifications.addProfileAttribute.genericError.description"
                         ),
