@@ -18,12 +18,23 @@
 
 import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
+    AdvancedConfigurationsInterface,
     ApplicationListInterface,
-    ApplicationListItemInterface
+    ApplicationListItemInterface,
+    additionalSpProperty
 } from "@wso2is/admin.applications.v1/models/application";
 import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CDSApplicationIdentifierType } from "../models/config";
 import { getCDSApplicationIdentifierType } from "../utils/application-identifier-utils";
+
+/**
+ * An item of the application list with its advanced configurations, which the list returns when
+ * the request asks for them. A shared app of a child organization has the main app properties there.
+ */
+type ApplicationListItem = ApplicationListItemInterface & {
+    advancedConfigurations?: AdvancedConfigurationsInterface;
+};
 
 /**
  * An application enriched with the identifier used when communicating with CDS APIs.
@@ -53,9 +64,14 @@ interface UseCDSApplicationsReturn {
     /**
      * Resolves a CDS application identifier (app UUID, client ID or issuer)
      * to the application display name. Falls back to the identifier itself
-     * when the application cannot be resolved.
+     * while the list loads or when the request fails, and to an "Unknown
+     * application" label with the identifier when the list has no such app.
      */
     getApplicationDisplayName: (identifier: string) => string;
+    /**
+     * Organization management: true when the application list request fails.
+     */
+    isApplicationsRequestFailed: boolean;
     isLoading: boolean;
 }
 
@@ -70,9 +86,9 @@ const APPLICATION_LIST_PAGE_SIZE: number = 100;
  *
  * @returns All applications with client ID and issuer attributes.
  */
-const fetchAllApplications: () => Promise<ApplicationListItemInterface[]> =
-    async (): Promise<ApplicationListItemInterface[]> => {
-        const allApplications: ApplicationListItemInterface[] = [];
+const fetchAllApplications: () => Promise<ApplicationListItem[]> =
+    async (): Promise<ApplicationListItem[]> => {
+        const allApplications: ApplicationListItem[] = [];
         let offset: number = 0;
         let totalResults: number = 0;
 
@@ -82,9 +98,9 @@ const fetchAllApplications: () => Promise<ApplicationListItemInterface[]> =
                 offset,
                 null,
                 true,
-                "clientId,issuer"
+                "advancedConfigurations,clientId,issuer"
             );
-            const pageApplications: ApplicationListItemInterface[] = page?.applications ?? [];
+            const pageApplications: ApplicationListItem[] = (page?.applications ?? []) as ApplicationListItem[];
 
             if (pageApplications.length === 0) {
                 break;
@@ -99,6 +115,28 @@ const fetchAllApplications: () => Promise<ApplicationListItemInterface[]> =
     };
 
 /**
+ * Returns the identifier of the main app of a shared (fragment) app of a child organization. CDS keys
+ * the application data of a shared app by the main app in every organization. IS adds the
+ * main app ID (`mainApplicationId`) to each shared app.
+ *
+ * @param app - The application.
+ * @param identifierType - The identifier type of the deployment.
+ * @returns The identifier of the main app, or undefined for an app that is not shared.
+ */
+const mainApplicationIdentifierOf = (app: ApplicationListItem,
+    identifierType: CDSApplicationIdentifierType): string | undefined => {
+    if (!app?.advancedConfigurations?.fragment) {
+        return undefined;
+    }
+    const name: string = identifierType === CDSApplicationIdentifierType.APP_ID
+        ? "mainApplicationId"
+        : "mainApplicationClientId";
+
+    return app.advancedConfigurations.additionalSpProperties
+        ?.find((property: additionalSpProperty) => property.name === name)?.value;
+};
+
+/**
  * Hook to fetch applications for CDS application data operations.
  *
  * Provides the config-aware identifier to submit to CDS APIs and a resolver
@@ -106,14 +144,18 @@ const fetchAllApplications: () => Promise<ApplicationListItemInterface[]> =
  * type stored in CDS.
  *
  * @param shouldFetch - Should fetch the application list.
- * @returns Applications, a display-name resolver and the loading state.
+ * @returns Applications, a display-name resolver, and the loading and error states.
  */
 export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicationsReturn => {
 
+    const { t } = useTranslation();
+
     const identifierType: CDSApplicationIdentifierType = getCDSApplicationIdentifierType();
 
-    const [ applicationList, setApplicationList ] = useState<ApplicationListItemInterface[]>([]);
+    const [ applicationList, setApplicationList ] = useState<ApplicationListItem[]>([]);
     const [ isLoading, setIsLoading ] = useState<boolean>(shouldFetch);
+    const [ isApplicationsRequestFailed, setIsApplicationsRequestFailed ] = useState<boolean>(false);
+    const [ isLoaded, setIsLoaded ] = useState<boolean>(false);
     const hasFetchedRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect(() => {
@@ -126,17 +168,23 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
         let isCancelled: boolean = false;
 
         setIsLoading(true);
+        setIsApplicationsRequestFailed(false);
+        setIsLoaded(false);
 
         fetchAllApplications()
-            .then((fetchedApplications: ApplicationListItemInterface[]): void => {
+            .then((fetchedApplications: ApplicationListItem[]): void => {
                 if (!isCancelled) {
                     setApplicationList(fetchedApplications);
+                    setIsLoaded(true);
                 }
             })
-            // Fail silently - the UI falls back to displaying raw identifiers.
+            // The UI falls back to displaying raw identifiers.
             // Clear the latch so a later shouldFetch change can retry the fetch.
             .catch((): void => {
                 hasFetchedRef.current = false;
+                if (!isCancelled) {
+                    setIsApplicationsRequestFailed(true);
+                }
             })
             .finally((): void => {
                 if (!isCancelled) {
@@ -150,12 +198,22 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
     }, [ shouldFetch ]);
 
     const applications: CDSApplicationInterface[] = useMemo((): CDSApplicationInterface[] => {
+        const identifierOf = (app: ApplicationListItem): string => {
+            const mainIdentifier: string | undefined = mainApplicationIdentifierOf(app, identifierType);
+
+            if (identifierType === CDSApplicationIdentifierType.APP_ID) {
+                // Organization management: CDS rejects the ID of a shared app (400). A shared app without the main app
+                // ID has no valid identifier, so it is left out.
+                return (app.advancedConfigurations?.fragment ? mainIdentifier : app.id) ?? "";
+            }
+
+            return mainIdentifier ?? (app.clientId || app.issuer || "");
+        };
+
         return applicationList
-            .map((app: ApplicationListItemInterface): CDSApplicationInterface => ({
+            .map((app: ApplicationListItem): CDSApplicationInterface => ({
                 id: app.id ?? "",
-                identifier: identifierType === CDSApplicationIdentifierType.APP_ID
-                    ? app.id ?? ""
-                    : app.clientId || app.issuer || "",
+                identifier: identifierOf(app),
                 name: app.name
             }))
             .filter((app: CDSApplicationInterface): boolean => Boolean(app.identifier));
@@ -166,24 +224,39 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
     const displayNamesByIdentifier: Map<string, string> = useMemo((): Map<string, string> => {
         const names: Map<string, string> = new Map<string, string>();
 
-        applicationList.forEach((app: ApplicationListItemInterface): void => {
+        applicationList.forEach((app: ApplicationListItem): void => {
             if (app.id) names.set(app.id, app.name);
             if (app.clientId) names.set(app.clientId, app.name);
             if (app.issuer) names.set(app.issuer, app.name);
+            // A shared app of a child organization: the data is keyed by the main app.
+            [ "mainApplicationId", "mainApplicationClientId" ].forEach((name: string) => {
+                const value: string = app.advancedConfigurations?.additionalSpProperties
+                    ?.find((property: additionalSpProperty) => property.name === name)?.value;
+
+                if (app.advancedConfigurations?.fragment && value) names.set(value, app.name);
+            });
         });
 
         return names;
     }, [ applicationList ]);
 
     const getApplicationDisplayName: (identifier: string) => string = useCallback(
-        (identifier: string): string =>
-            displayNamesByIdentifier.get(identifier) ?? identifier,
-        [ displayNamesByIdentifier ]
+        (identifier: string): string => {
+            const name: string | undefined = displayNamesByIdentifier.get(identifier);
+
+            if (name) return name;
+            // Organization management: say so only when the list is loaded and has no app with the identifier.
+            if (!isLoaded || !identifier) return identifier;
+
+            return t("customerDataService:unknownApplication", { identifier });
+        },
+        [ displayNamesByIdentifier, isLoaded, t ]
     );
 
     return {
         applications,
         getApplicationDisplayName,
+        isApplicationsRequestFailed,
         isLoading
     };
 };
