@@ -16,18 +16,26 @@
  * under the License.
  */
 
+import { ResourceOrigin, ShareStateValue } from "./organization-management";
+
 export interface UnificationRuleModel {
     rule_id: string;
     property_name: string;
     rule_name: string;
     is_active: boolean;
     priority: number;
+    // Organization management: OWNED, or SHARED by the organization in owner_org_handle.
+    origin?: ResourceOrigin;
+    owner_org_handle?: string;
+    // Organization management: ACTIVE, or the reason why the rule does not run in this organization.
+    state?: ShareStateValue;
 }
 
 /**
  * Only these fields can be updated
  */
 export interface UpdateUnificationRulePayload {
+    rule_name?: string;
     is_active?: boolean;
     priority?: number;
 }
