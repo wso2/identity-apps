@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.18.0
+
+### Minor Changes
+
+- [#10748](https://github.com/wso2/identity-apps/pull/10748) [`233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75`](https://github.com/wso2/identity-apps/commit/233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add approval workflow support for adding or removing users from a group
+
+### Patch Changes
+
+- Updated dependencies [[`233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75`](https://github.com/wso2/identity-apps/commit/233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75)]:
+  - @wso2is/admin.approval-workflows.v1@1.4.0
+  - @wso2is/admin.workflow-requests.v1@1.0.22
+  - @wso2is/common.workflow-approvals.v1@1.0.16
+  - @wso2is/i18n@2.47.1
+
 ## 4.17.5
 
 ### Patch Changes
