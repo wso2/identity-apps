@@ -38,6 +38,7 @@ import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
 import { DEFAULT_PAGE_SIZE } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
+import { useIsSubOrganization } from "../utils/organization-management-utils";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
@@ -70,6 +71,8 @@ const extractSearchTerm = (query: string | null | undefined): string => {
 const ProfileUnificationRulePage: React.FC = () => {
 
     const { t } = useTranslation();
+    // Organization management: a child organization only reads the rules.
+    const isSubOrganization: boolean = useIsSubOrganization();
 
     const { data, error, isLoading, mutate } = useUnificationRules();
     const [ _alert, _setAlert, alertComponent ] = useConfirmationModalAlert();
@@ -189,7 +192,7 @@ const ProfileUnificationRulePage: React.FC = () => {
                 title={ t("customerDataService:unificationRules.list.page.title") }
                 description={ t("customerDataService:unificationRules.list.page.description") }
                 backButton={ backButton }
-                action={ hasRules ? (
+                action={ hasRules && !isSubOrganization ? (
                     <PrimaryButton onClick={ handleAddRule }>
                         <Icon name="add" />
                         { t("customerDataService:unificationRules.list.buttons.add") }
@@ -199,7 +202,7 @@ const ProfileUnificationRulePage: React.FC = () => {
             >
                 { !hasRules && !isLoading ? (
                     <EmptyPlaceholder
-                        action={ (
+                        action={ !isSubOrganization && (
                             <PrimaryButton onClick={ handleAddRule }>
                                 <Icon name="add" />
                                 { t("customerDataService:unificationRules.list.buttons.add") }

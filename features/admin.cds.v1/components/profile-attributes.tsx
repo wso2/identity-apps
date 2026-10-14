@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -45,6 +46,7 @@ import { Header, Label, SemanticICONS, SemanticWIDTHS } from "semantic-ui-react"
 import { deleteSchemaAttributeById } from "../api/profile-attributes";
 import { useCDSApplications } from "../hooks/use-cds-applications";
 import { ProfileSchemaListingRow, SCOPE_CONFIG } from "../models/profile-attribute-listing";
+import SharedChip from "./shared-chip";
 
 const COL_WIDTH_ATTRIBUTE: SemanticWIDTHS = 7;
 const COL_WIDTH_SCOPE: SemanticWIDTHS = 7;
@@ -99,7 +101,15 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
                         spaced="right"
                     />
                     <Header.Content>
-                        { row.display_name }
+                        <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
+                            { row.display_name }
+                            { row.shared_by && (
+                                <SharedChip
+                                    ownerOrg={ row.shared_by }
+                                    data-componentid={ `${componentId}-shared-chip` }
+                                />
+                            ) }
+                        </Box>
                     </Header.Content>
                 </Header>
             ),
@@ -154,10 +164,10 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
         {
             hidden: (row: ProfileSchemaListingRow): boolean =>
                 !row.attribute_id ||
-                row.scope === "identity_attributes" ||
-                !row.editable,
+                row.scope === "identity_attributes",
 
-            icon: (): SemanticICONS => "pencil alternate",
+            // Organization management: a shared attribute is read-only, so the action only views it.
+            icon: (row: ProfileSchemaListingRow): SemanticICONS => row.editable ? "pencil alternate" : "eye",
 
             onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
                 e?.stopPropagation?.();
@@ -170,8 +180,9 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
                 );
             },
 
-            popupText: (): string =>
-                t("profileAttributes.list.actions.edit"),
+            popupText: (row: ProfileSchemaListingRow): string => row.editable
+                ? t("profileAttributes.list.actions.edit")
+                : t("profileAttributes.list.actions.view"),
 
             renderer: "semantic-icon"
         },
@@ -224,7 +235,8 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
     };
 
     const handleRowClick = (_: SyntheticEvent, row: ProfileSchemaListingRow): void => {
-        if (!row.attribute_id || !row.editable) return;
+        // Organization management: a shared attribute opens read-only, so the row opens it too.
+        if (!row.attribute_id) return;
 
         history.push(
             AppConstants.getPaths()
