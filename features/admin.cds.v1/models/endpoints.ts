@@ -38,4 +38,16 @@ export interface CustomerDataServiceEndpointsInterface {
      * API to get the admin config.
      */
     cdsConfig: string;
+    /**
+     * API of the organization access of a root organization.
+     */
+    cdsOrganizationAccess: string;
+    /**
+     * API to start the organization tree sync of a root organization.
+     */
+    cdsOrganizationSync: string;
+    /**
+     * API to get the state of the organization tree sync of a root organization.
+     */
+    cdsOrganizationSyncStatus: string;
 }
