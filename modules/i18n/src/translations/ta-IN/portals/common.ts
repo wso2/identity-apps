@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "பாத்திரத்தை நீக்கவும்",
             deleteUser: "பயனரை நீக்கவும்",
             selfRegisterUser: "சுய பதிவு பயனர்",
+            updateGroupsOfUser: "குழுவின் பயனர்களைப் புதுப்பிக்கவும்",
             updateRolesOfUser: "பாத்திரப் பயனர்களை புதுப்பிக்கவும்"
         },
         placeholders: {

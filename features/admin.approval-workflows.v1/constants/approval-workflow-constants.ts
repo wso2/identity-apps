@@ -77,6 +77,9 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
  * Supported approval workflow rule fields.
  */
 export const APPROVAL_WORKFLOW_RULE_FIELDS: Record<string, string> = {
+    GROUP_HAS_ASSIGNED_USERS: "group.hasAssignedUsers",
+    GROUP_HAS_UNASSIGNED_USERS: "group.hasUnassignedUsers",
+    GROUP_ID: "group.id",
     ROLE_AUDIENCE: "role.audience",
     ROLE_HAS_ASSIGNED_USERS: "role.hasAssignedUsers",
     ROLE_HAS_UNASSIGNED_USERS: "role.hasUnassignedUsers",
@@ -111,6 +114,11 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     ],
     SELF_REGISTER_USER: [
         USER_CLAIMS_FIELD
+    ],
+    UPDATE_GROUPS_OF_USERS: [
+        APPROVAL_WORKFLOW_RULE_FIELDS.GROUP_ID,
+        APPROVAL_WORKFLOW_RULE_FIELDS.GROUP_HAS_ASSIGNED_USERS,
+        APPROVAL_WORKFLOW_RULE_FIELDS.GROUP_HAS_UNASSIGNED_USERS
     ],
     UPDATE_ROLES_OF_USERS: [
         APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_ID,

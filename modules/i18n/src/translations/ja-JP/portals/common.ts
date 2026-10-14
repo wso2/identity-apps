@@ -109,6 +109,7 @@ export const common: CommonNS = {
             "deleteRole": "ロールを削除",
             "deleteUser": "ユーザーを削除",
             "selfRegisterUser": "ユーザーの自己登録",
+            "updateGroupsOfUser": "グループのユーザーを更新",
             "updateRolesOfUser": "ロールのユーザーを更新"
         },
         "placeholders": {

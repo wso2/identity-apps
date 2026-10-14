@@ -117,7 +117,8 @@ export const operations: DropdownPropsInterface[] = [
     { key: "operation2", text: "Remove User", value: "DELETE_USER" },
     { key: "operation3", text: "Create Role", value: "ADD_ROLE" },
     { key: "operation4", text: "Add or Remove Users from Role", value: "UPDATE_ROLES_OF_USERS" },
-    { key: "operation5", text: "Self Register User", value: "SELF_REGISTER_USER" }
+    { key: "operation5", text: "Self Register User", value: "SELF_REGISTER_USER" },
+    { key: "operation6", text: "Add or Remove Users from Group", value: "UPDATE_GROUPS_OF_USERS" }
     // { key: "operation3", text: "Remove Role", value: "DELETE_ROLE" },
     // { key: "operation4", text: "Remove User Claims", value: "DELETE_USER_CLAIMS" },
     // { key: "operation6", text: "Update Role Name", value: "UPDATE_ROLE_NAME" },

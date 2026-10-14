@@ -332,6 +332,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 return "role creation request";
             case "UPDATE_ROLES_OF_USERS":
                 return "user role assignment update request";
+            case "UPDATE_GROUPS_OF_USERS":
+                return "user group assignment update request";
             default:
                 return "approval request";
         }
