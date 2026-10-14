@@ -106,6 +106,15 @@ export const flows: flowsNS = {
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
+            flowHandoff: {
+                configurationHint: "Hand off the flow to another device or client with a one-time link.",
+                expiryTimeHint: "Set the time span that the handoff link would be valid, in seconds. If not set, " +
+                    "60 seconds is used.",
+                expiryTimeLabel: "Handoff link expiry time (seconds)",
+                portalUrlHint: "Set the page that continues the flow from the handoff link. If not set, the portal " +
+                    "URL in the branding settings is used.",
+                portalUrlLabel: "Portal URL"
+            },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
             },
@@ -123,6 +132,12 @@ export const flows: flowsNS = {
             },
             tooltip: {
                 configurationHint: "Configure"
+            },
+            userVerification: {
+                configurationHint: "Verify the user with the ID token the application sends when starting the flow.",
+                maxTokenAgeHint: "Set the maximum age of the ID token from when it was issued, in seconds. If " +
+                    "not set, 300 seconds is used.",
+                maxTokenAgeLabel: "Maximum token age (seconds)"
             }
         },
         labels: {
