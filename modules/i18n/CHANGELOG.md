@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.47.1
+
+### Patch Changes
+
+- [#10748](https://github.com/wso2/identity-apps/pull/10748) [`233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75`](https://github.com/wso2/identity-apps/commit/233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add approval workflow support for adding or removing users from a group
+
 ## 2.47.0
 
 ### Minor Changes
