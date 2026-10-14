@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods,
     HttpErrorResponseDataInterface
@@ -25,6 +24,7 @@ import { HttpMethods,
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { WebhooksConstants } from "../constants/webhooks-constants";
 import { WebhookResponseInterface } from "../models/webhooks";
+import { getWebhooksEndpoint } from "../utils/api-version-utils";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -37,7 +37,7 @@ export const retrySubscriptionOrUnsubscription = (webhookId: string): Promise<We
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.webhooks}/${webhookId}/retry`
+        url: `${getWebhooksEndpoint()}/${webhookId}/retry`
     };
 
     return httpClient(requestConfig)

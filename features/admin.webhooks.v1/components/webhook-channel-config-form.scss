@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 .webhook-channel-config-form {
     .heading-container {
+        display: block;
         margin-bottom: 8px !important;
     }
 
@@ -26,41 +27,85 @@
         margin-bottom: 24px;
     }
 
-    .channel-checkbox-container {
-        margin-bottom: 24px;
+    .channel-accordion-list {
+        border: 1px solid var(--oxygen-palette-grey-300);
+        border-radius: var(--oxygen-shape-borderRadius);
+        // Clips the square corners of the first and last rows against the rounded border.
+        // The organization hint popup portals out of this subtree, so it is not clipped.
+        overflow: hidden;
 
-        .MuiFormControlLabel-root {
-            align-items: flex-start;
-            margin: 0;
-            width: 100%;
-        }
+        .webhook-channel-accordion {
+            // With child organization subscription switched off the row is a checkbox and nothing
+            // more, so it drops the pointer and the hover feedback that imply it opens.
+            &.static {
+                .MuiAccordionSummary-root {
+                    cursor: default;
 
-        .MuiFormControlLabel-labelPlacementEnd {
-            .MuiFormControlLabel-label {
-                padding-top: 0;
-                margin-top: 0;
-                line-height: 1;
-                width: 100%;
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            // MUI hides the divider above an expanded row, and the one below it, which welds
+            // the open row onto its neighbour. Both are restored so the rows stay separated.
+            &.Mui-expanded::before {
+                opacity: 1;
+            }
+
+            &.Mui-expanded + .webhook-channel-accordion::before {
+                display: block;
+            }
+
+            .MuiAccordionSummary-content {
+                display: flex;
+                align-items: flex-start;
+                margin: 12px 0;
+                min-width: 0;
+            }
+
+            // The expand affordance is a cog rather than a chevron, so it must not rotate —
+            // a cog at 180 degrees reads as a rendering fault rather than as a state change.
+            .MuiAccordionSummary-expandIconWrapper {
+                &.Mui-expanded {
+                    transform: none;
+                }
+            }
+
+            .MuiAccordionDetails-root {
+                padding-left: 48px;
             }
         }
 
-        .checkbox-control {
-            padding: 0;
-            margin: 0;
+        .channel-checkbox-control {
             display: flex;
             align-items: flex-start;
-            width: 100%;
+            flex-shrink: 0;
+            margin-right: 8px;
+
+            .MuiFormControl-root {
+                margin: 0;
+            }
+
+            .MuiFormControlLabel-root {
+                margin: 0;
+            }
 
             .MuiCheckbox-root {
                 padding: 0;
                 margin: 0;
-                margin-right: 8px;
-                flex-shrink: 0;
+            }
+
+            // The checkbox carries no label of its own; the name sits beside it so that
+            // clicking the name expands the row instead of toggling the subscription.
+            .MuiFormHelperText-root {
+                display: none;
             }
         }
 
-        .checkbox-label {
+        .channel-label {
             width: 100%;
+            min-width: 0;
 
             .channel-name-container {
                 display: flex;
@@ -117,14 +162,19 @@
             }
         }
 
-        .channel-grid {
-            .MuiGrid-container {
-                gap: 24px;
-            }
+        .subscription-policy-heading {
+            margin-bottom: 4px !important;
+        }
 
-            .MuiGrid-item {
-                min-width: 0;
-            }
+        .subscription-policy-description {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .subscription-policy-org-tree {
+            margin-top: 8px;
+            margin-left: 32px;
+            max-width: 480px;
         }
     }
 }
