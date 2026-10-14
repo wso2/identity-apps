@@ -65,6 +65,10 @@ const useReviewTaskProfiles = (tasks: ReviewTaskModel[]): ReviewTaskProfilesInte
         if (profileIds.length === 0) {
             setProfiles({});
             setFailedProfileIds([]);
+            // A fetch may still be in flight — the cleanup below stops its `finally` from
+            // clearing the flag, so it has to be cleared here or the list keeps reporting
+            // itself as loading and never falls through to the empty-state placeholder.
+            setIsLoading(false);
 
             return;
         }
