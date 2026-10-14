@@ -2844,6 +2844,9 @@ importers:
       '@mui/utils':
         specifier: ^5.12.3
         version: 5.17.1(@types/react@18.0.18)(react@18.3.1)
+      '@mui/x-tree-view':
+        specifier: ^8.5.2
+        version: 8.28.3(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oxygen-ui/react':
         specifier: 'catalog:'
         version: 2.4.6(68d5af65e266984a0e5c55056d1c3c66)
@@ -2856,6 +2859,12 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.60.1
         version: link:../admin.core.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: ^2.28.4
+        version: link:../admin.organizations.v1
+      '@wso2is/common.ui.shared-access.v1':
+        specifier: workspace:^
+        version: link:../common.ui.shared-access.v1
       '@wso2is/core':
         specifier: ^2.12.10
         version: link:../../modules/core
@@ -2880,6 +2889,9 @@ importers:
       react-i18next:
         specifier: ^11.18.5
         version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-infinite-scroll-component:
+        specifier: ^6.1.0
+        version: 6.1.1(react@18.3.1)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

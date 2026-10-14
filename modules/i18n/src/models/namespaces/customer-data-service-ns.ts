@@ -17,7 +17,6 @@
  */
 
 export interface CustomerDataServiceNS {
-
     common: {
         buttons: {
             cancel: string;
@@ -57,6 +56,10 @@ export interface CustomerDataServiceNS {
             label: string;
         };
         configuration: {
+            organizationSettings: {
+                description: string;
+                title: string;
+            };
             profileAttributes: {
                 description: string;
                 title: string;
@@ -83,6 +86,99 @@ export interface CustomerDataServiceNS {
                 };
             };
         };
+    };
+
+    organizationAccess: {
+        confirmations: {
+            allOrganizations: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+            modeChange: {
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
+        description: string;
+        heading: string;
+        includeChildOrganizations: string;
+        notSynced: string;
+        notifications: {
+            error: {
+                description: string;
+                message: string;
+            };
+            noOrganizationsSelected: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
+            };
+        };
+        options: {
+            all: string;
+            none: string;
+            selected: string;
+            selectedHint: string;
+        };
+    };
+
+    organizationSelection: {
+        covered: string;
+        emptyDescription: string;
+        emptyTitle: string;
+        loading: string;
+        noOrganizations: string;
+        notSelected: string;
+        notifications: {
+            fetch: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        settingsFor: string;
+    };
+
+    organizationSettings: {
+        childOrganization: string;
+        disabled: string;
+        page: {
+            description: string;
+            title: string;
+        };
+    };
+
+    organizationSync: {
+        description: string;
+        failed: string;
+        heading: string;
+        lastSynced: string;
+        notifications: {
+            error: {
+                description: string;
+                message: string;
+            };
+        };
+        states: {
+            FAILED: string;
+            NOT_SYNCED: string;
+            SYNCED: string;
+            SYNCING: string;
+        };
+        sync: string;
+        syncAgain: string;
+        syncing: string;
+    };
+
+    organizations: {
+        toggleHint: string;
     };
 
     profileAttributes: {
@@ -135,9 +231,11 @@ export interface CustomerDataServiceNS {
                         };
                         applicationIdentifier: {
                             label: string;
+                            loadError: string;
                             loading: string;
                             noOptions: string;
                             placeholder: string;
+                            childOrganizationHint: string;
                             validations: {
                                 empty: string;
                             };
@@ -246,6 +344,7 @@ export interface CustomerDataServiceNS {
                 applicationIdentifier: {
                     hint: string;
                     label: string;
+                    childOrganizationHint: string;
                 };
                 applicationName: {
                     hint: string;
@@ -566,6 +665,82 @@ export interface CustomerDataServiceNS {
         };
     };
 
+    sharing: {
+        actions: {
+            save: string;
+            share: string;
+        };
+        confirmations: {
+            shareAll: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+            switchToSelected: {
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
+        description: string;
+        heading: string;
+        includeChildOrganizations: string;
+        inherited: string;
+        inheritedFrom: string;
+        inheritedNotice: string;
+        notShareable: string;
+        notifications: {
+            error: {
+                description: string;
+                message: string;
+            };
+            noOrganizationsSelected: {
+                description: string;
+                message: string;
+            };
+            stopped: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
+            };
+        };
+        options: {
+            all: string;
+            allHint: string;
+            none: string;
+            selected: string;
+            selectedHint: string;
+        };
+        resource: {
+            attribute: string;
+            rule: string;
+        };
+        shared: string;
+        sharedBy: string;
+        sharedNotice: {
+            attribute: string;
+            rule: string;
+            ruleOwner: string;
+        };
+        status: {
+            reasons: {
+                LOCAL_NAME_CONFLICT: string;
+                MISSING_ATTRIBUTE: string;
+                SHARED_NAME_CONFLICT: string;
+            };
+            states: {
+                ACTIVE: string;
+                CONFLICTED: string;
+                INACTIVE_MISSING_ATTRIBUTE: string;
+            };
+        };
+        tab: string;
+    };
+
     sidePanel: {
         ProfileAttributes: string;
         Profiles: string;
@@ -663,13 +838,68 @@ export interface CustomerDataServiceNS {
                 title: string;
             };
         };
+        edit: {
+            dangerZone: {
+                delete: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+            };
+            defaultRuleNotice: string;
+            fields: {
+                attribute: {
+                    hint: string;
+                    label: string;
+                };
+                isActive: {
+                    hint: string;
+                    label: string;
+                };
+                priority: {
+                    hint: string;
+                    label: string;
+                };
+                ruleName: {
+                    hint: string;
+                    label: string;
+                };
+            };
+            notifications: {
+                fetchRule: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                updateRule: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+            page: {
+                backButton: string;
+                pageTitle: string;
+            };
+            tabs: {
+                general: string;
+            };
+        };
         list: {
             actions: {
                 delete: string;
                 disable: string;
+                edit: string;
                 enable: string;
                 moveDown: string;
                 moveUp: string;
+                view: string;
             };
             buttons: {
                 add: string;
@@ -760,4 +990,6 @@ export interface CustomerDataServiceNS {
             };
         };
     };
+
+    unknownApplication: string;
 };

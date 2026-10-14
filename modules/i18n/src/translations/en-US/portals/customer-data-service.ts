@@ -56,6 +56,10 @@ export const customerDataService: CustomerDataServiceNS = {
     landing: {
         backButton: "Go back to Customer Data",
         configuration: {
+            organizationSettings: {
+                description: "Select the organizations that can use Customer Data Service",
+                title: "Organization Settings"
+            },
             profileAttributes: {
                 description: "Manage the attributes that make up the customer profiles",
                 title: "Profile Attributes"
@@ -88,6 +92,94 @@ export const customerDataService: CustomerDataServiceNS = {
             description: "Manage customer profiles which have identity, behavioural and application data.",
             heading: "Profiles"
         }
+    },
+    organizationAccess: {
+        confirmations: {
+            allOrganizations: {
+                assertionHint: "Please confirm your action.",
+                content: "All organizations below this organization, also the ones that you create later, can use Customer Data Service.",
+                header: "Allow all organizations?",
+                message: "You are about to allow all organizations to use Customer Data Service."
+            },
+            modeChange: {
+                content: "Customer Data Service removes the current access policy and creates a new one. For a moment, no other organization can use Customer Data Service.",
+                header: "Change the organization access?",
+                message: "You are about to change between all organizations and selected organizations."
+            }
+        },
+        description: "Select the organizations that can use Customer Data Service. This organization always uses it.",
+        heading: "Organization access",
+        includeChildOrganizations: "Allow its existing and future child organizations",
+        notSynced: "Sync the organizations first. Customer Data Service needs the organizations of the identity provider before you select the organizations that can use it.",
+        notifications: {
+            error: {
+                description: "Could not save the organization access.",
+                message: "Organization access error"
+            },
+            noOrganizationsSelected: {
+                description: "Select at least one organization that can use Customer Data Service.",
+                message: "No organizations selected"
+            },
+            success: {
+                description: "The organizations that can use Customer Data Service are saved.",
+                message: "Organization access saved"
+            }
+        },
+        options: {
+            all: "Allow all organizations to use Customer Data Service",
+            none: "Do not allow other organizations to use Customer Data Service",
+            selected: "Allow selected organizations to use Customer Data Service",
+            selectedHint: "When you select an organization, its parent organizations are also selected."
+        }
+    },
+    organizationSelection: {
+        covered: "A parent organization includes this organization with its child organizations.",
+        emptyDescription: "To manage an organization, select it from the left panel.",
+        emptyTitle: "Select an organization to manage",
+        loading: "Loading...",
+        noOrganizations: "There are no organizations at the moment.",
+        notSelected: "Select the checkbox of the organization to include it.",
+        notifications: {
+            fetch: {
+                error: {
+                    description: "Could not get the organizations.",
+                    message: "Something went wrong"
+                }
+            }
+        },
+        settingsFor: "Settings for"
+    },
+    organizationSettings: {
+        childOrganization: "This organization gets Customer Data Service from the root organization. Only the root organization can enable or disable it.",
+        disabled: "Enable Customer Data Service on the Customer Data page. Then select the organizations that can use it.",
+        page: {
+            description: "Select the organizations that can use Customer Data Service",
+            title: "Organization Settings"
+        }
+    },
+    organizationSync: {
+        description: "Customer Data Service reads the organizations from the identity provider in the background. After the first sync, organization events keep them up to date.",
+        failed: "The last sync failed at {{time}}: {{error}}",
+        heading: "Organization sync",
+        lastSynced: "Last completed sync: {{time}}. {{count}} organizations, the root included.",
+        notifications: {
+            error: {
+                description: "Could not start the organization sync.",
+                message: "Organization sync error"
+            }
+        },
+        states: {
+            FAILED: "Failed",
+            NOT_SYNCED: "Not synced",
+            SYNCED: "Synced",
+            SYNCING: "Syncing"
+        },
+        sync: "Sync organizations",
+        syncAgain: "Sync again",
+        syncing: "The sync started at {{time}}. Wait until it completes. This page updates every 3 seconds."
+    },
+    organizations: {
+        toggleHint: "Only the root organization can change this setting."
     },
     profileAttributes: {
         create: {
@@ -132,7 +224,9 @@ export const customerDataService: CustomerDataServiceNS = {
                     fields: {
                         // NEW: application identifier field (application_data scope)
                         applicationIdentifier: {
+                            childOrganizationHint: "Shows the applications of this organization and the applications that a parent organization shares with it.",
                             label: "Application",
+                            loadError: "Could not load the applications.",
                             loading: "Loading applications…",
                             noOptions: "No applications found.",
                             placeholder: "Select an application",
@@ -295,6 +389,7 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             fields: {
                 applicationIdentifier: {
+                    childOrganizationHint: "The ID of the application in the organization that owns it. For a shared application, this is the ID of the main application.",
                     hint: "The application identifier this attribute belongs to, as stored in the customer data service.",
                     label: "Application Identifier"
                 },
@@ -631,6 +726,81 @@ export const customerDataService: CustomerDataServiceNS = {
             title: "Profiles"
         }
     },
+    sharing: {
+        actions: {
+            save: "Save",
+            share: "Share"
+        },
+        confirmations: {
+            shareAll: {
+                assertionHint: "Please confirm your action.",
+                content: "All organizations below this organization, also the ones that you create later, get the {{resource}}.",
+                header: "Share with all organizations?",
+                message: "You are about to share the {{resource}} with all organizations."
+            },
+            switchToSelected: {
+                content: "The {{resource}} is not shared now with the organizations that you do not select.",
+                header: "Switch to selective sharing?",
+                message: "You are about to switch from sharing with all organizations to selective sharing."
+            }
+        },
+        description: "Select how the {{resource}} is shared with organizations. An organization can use a shared {{resource}}, but it cannot change it.",
+        heading: "Sharing Policy",
+        includeChildOrganizations: "Share with its existing and future child organizations",
+        inherited: "Inherited",
+        inheritedFrom: "Inherited from {{org}}",
+        inheritedNotice: "This organization inherits this attribute from {{org}}. The identity provider controls it.",
+        notShareable: "In this version, you can share only traits and application data attributes that are not complex and are not sub-attributes.",
+        notifications: {
+            error: {
+                description: "Could not save the share settings.",
+                message: "Share error"
+            },
+            noOrganizationsSelected: {
+                description: "Select at least one organization to share the {{resource}} with.",
+                message: "No organizations selected"
+            },
+            stopped: {
+                description: "The {{resource}} is not shared now.",
+                message: "Share stopped"
+            },
+            success: {
+                description: "The share settings of the {{resource}} are saved.",
+                message: "Share settings saved"
+            }
+        },
+        options: {
+            all: "Share the {{resource}} with all organizations",
+            allHint: "Organizations that you create later also get it.",
+            none: "Do not share the {{resource}} with any organization",
+            selected: "Share the {{resource}} with selected organizations",
+            selectedHint: "Select the child organizations of this organization."
+        },
+        resource: {
+            attribute: "attribute",
+            rule: "rule"
+        },
+        shared: "Shared",
+        sharedBy: "Shared by {{org}}",
+        sharedNotice: {
+            attribute: "The organization {{org}} owns this attribute and shares it with this organization. You cannot change or delete it here.",
+            rule: "Rules that other organizations share run first, in the order of their owner. You cannot change them here.",
+            ruleOwner: "The organization {{org}} owns this rule and shares it with this organization. You cannot change or delete it here."
+        },
+        status: {
+            reasons: {
+                LOCAL_NAME_CONFLICT: "The organization has its own {{resource}} with the same name.",
+                MISSING_ATTRIBUTE: "The organization cannot see an attribute with the name and the type of the rule.",
+                SHARED_NAME_CONFLICT: "Another shared {{resource}} with the same name is active in the organization."
+            },
+            states: {
+                ACTIVE: "Active",
+                CONFLICTED: "Conflict",
+                INACTIVE_MISSING_ATTRIBUTE: "Inactive"
+            }
+        },
+        tab: "Sharing"
+    },
     sidePanel: {
         ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
@@ -727,13 +897,68 @@ export const customerDataService: CustomerDataServiceNS = {
                 title: "Create Unification Rule"
             }
         },
+        edit: {
+            dangerZone: {
+                delete: {
+                    actionTitle: "Delete Rule",
+                    header: "Delete unification rule",
+                    subheader: "The rule stops taking part in profile unification. You cannot undo this action."
+                }
+            },
+            defaultRuleNotice: "This is the default rule on the user ID. You cannot change or delete it.",
+            fields: {
+                attribute: {
+                    hint: "The attribute of a rule cannot change. To use another attribute, create a new rule.",
+                    label: "Attribute"
+                },
+                isActive: {
+                    hint: "An enabled rule takes part in profile matching and unification.",
+                    label: "Enabled"
+                },
+                priority: {
+                    hint: "Rules with a lower number run first. To change the priority, use the arrows in the rule list.",
+                    label: "Priority"
+                },
+                ruleName: {
+                    hint: "A name that describes the unification criteria, for example 'Unify on email'.",
+                    label: "Rule Name"
+                }
+            },
+            notifications: {
+                fetchRule: {
+                    error: {
+                        description: "Failed to load the unification rule.",
+                        message: "Loading failed"
+                    }
+                },
+                updateRule: {
+                    error: {
+                        description: "Failed to update the unification rule.",
+                        message: "Update failed"
+                    },
+                    success: {
+                        description: "The unification rule has been updated successfully.",
+                        message: "Rule updated"
+                    }
+                }
+            },
+            page: {
+                backButton: "Back to Unification Rules",
+                pageTitle: "Edit Unification Rule"
+            },
+            tabs: {
+                general: "General"
+            }
+        },
         list: {
             actions: {
                 delete: "Delete",
                 disable: "Disable",
+                edit: "Edit",
                 enable: "Enable",
                 moveDown: "Move Down",
-                moveUp: "Move Up"
+                moveUp: "Move Up",
+                view: "View"
             },
             buttons: {
                 add: "Add Unification Rule",
@@ -826,5 +1051,6 @@ export const customerDataService: CustomerDataServiceNS = {
                 search: "Search by Rule Name or Attribute Name"
             }
         }
-    }
+    },
+    unknownApplication: "Unknown application ({{identifier}})"
 };
