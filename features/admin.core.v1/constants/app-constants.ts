@@ -381,6 +381,8 @@ export class AppConstants {
             [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
             [ "CUSTOMER_DATA_PROFILE", `${AppConstants.getMainViewBasePath()}/customer-data` ],
+            [ "CDS_ORGANIZATION_SETTINGS",
+                `${AppConstants.getMainViewBasePath()}/customer-data/organization-settings` ],
             [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="ldap-outline" class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.35294 2.66667C5.06056 2.66667 4.82353 2.89052 4.82353 3.16667C4.82353 3.44281 5.06056 3.66667 5.35294 3.66667H10.6471C10.9394 3.66667 11.1765 3.44281 11.1765 3.16667C11.1765 2.89052 10.9394 2.66667 10.6471 2.66667H5.35294Z" fill="black"/>
+<path d="M5.35294 5.66667C5.06056 5.66667 4.82353 5.89052 4.82353 6.16667C4.82353 6.44281 5.06056 6.66667 5.35294 6.66667H10.6471C10.9394 6.66667 11.1765 6.44281 11.1765 6.16667C11.1765 5.89052 10.9394 5.66667 10.6471 5.66667H5.35294Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14 16V1.33333C14 0.596954 13.3679 0 12.5882 0H3.41176C2.63207 0 2 0.596953 2 1.33333V16H14ZM12.5882 1H3.41176C3.21684 1 3.05882 1.14924 3.05882 1.33333V15H4.82353V10C4.82353 9.26362 5.4556 8.66667 6.23529 8.66667H9.76471C10.5444 8.66667 11.1765 9.26362 11.1765 10V15H12.9412V1.33333C12.9412 1.14924 12.7832 1 12.5882 1ZM10.1176 15V10C10.1176 9.81591 9.95963 9.66667 9.76471 9.66667H6.23529C6.04037 9.66667 5.88235 9.81591 5.88235 10V15H10.1176Z" fill="black"/>
+</svg>
