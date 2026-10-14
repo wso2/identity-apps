@@ -45,6 +45,7 @@ export interface workflowRequestsNS {
         selfRegisterUser: string;
         deleteUser: string;
         updateUserRoles: string;
+        updateGroupUsers: string;
         createRole: string;
         deleteRole: string;
         updateRoleName: string;

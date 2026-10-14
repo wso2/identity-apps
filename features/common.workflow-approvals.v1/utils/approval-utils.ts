@@ -34,6 +34,8 @@ export const getOperationTypeTranslationKey = (operationType: string): string =>
             return "common:approvalsPage.operationTypes.deleteRole";
         case "UPDATE_ROLES_OF_USERS":
             return "common:approvalsPage.operationTypes.updateRolesOfUser";
+        case "UPDATE_GROUPS_OF_USERS":
+            return "common:approvalsPage.operationTypes.updateGroupsOfUser";
         case "SELF_REGISTER_USER":
             return "common:approvalsPage.operationTypes.selfRegisterUser";
         default:

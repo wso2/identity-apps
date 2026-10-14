@@ -109,6 +109,7 @@ export const common: CommonNS = {
             "deleteRole": "删除角色",
             "deleteUser": "删除用户",
             "selfRegisterUser": "用户自助注册",
+            "updateGroupsOfUser": "更新组用户",
             "updateRolesOfUser": "更新角色用户"
         },
         "placeholders": {

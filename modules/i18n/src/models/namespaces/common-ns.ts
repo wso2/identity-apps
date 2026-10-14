@@ -104,6 +104,7 @@ export interface CommonNS {
             deleteRole: string;
             deleteUser: string;
             selfRegisterUser: string;
+            updateGroupsOfUser: string;
             updateRolesOfUser: string;
         }
         placeholders: {

@@ -156,6 +156,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         return t("workflowRequests:operationType.deleteUser");
                     case WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS:
                         return t("workflowRequests:operationType.updateUserRoles");
+                    case WorkflowInstanceOperationType.UPDATE_GROUPS_OF_USERS:
+                        return t("workflowRequests:operationType.updateGroupUsers");
                     case WorkflowInstanceOperationType.ADD_ROLE:
                         return t("workflowRequests:operationType.createRole");
                     case WorkflowInstanceOperationType.DELETE_ROLE:
