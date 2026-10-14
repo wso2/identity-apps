@@ -189,11 +189,14 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
             attribute_id: a.attribute_id,
             attribute_name: name,
             chip_label: getScopeLabel("traits"),
-            deletable: true,
+            // Organization management: only the owner organization can delete a shared attribute.
+            deletable: a.origin !== "SHARED",
             display_name: relativeName("traits", name),
-            editable: true,
+            // Organization management: a shared attribute is read-only here, so the list offers to view it.
+            editable: a.origin !== "SHARED",
             id: rowId("traits", name, a.attribute_id),
-            scope: "traits"
+            scope: "traits",
+            shared_by: a.origin === "SHARED" ? a.owner_org_handle : undefined
         });
     });
 
@@ -216,11 +219,14 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
                 attribute_name: fullName,
                 belongs_to: appId,
                 chip_label: getScopeLabel("application_data"),
-                deletable: true,
+                deletable: a.origin !== "SHARED",
                 display_name: fieldPath || fullName,
-                editable: true,
+                // Organization management: a shared attribute is read-only here, so the list offers to view it.
+                editable: a.origin !== "SHARED",
                 id: rowId("application_data", fullName, a.attribute_id),
-                scope: "application_data"
+                scope: "application_data",
+                // Organization management: a shared attribute shows the Shared chip with its owner.
+                shared_by: a.origin === "SHARED" ? a.owner_org_handle : undefined
             });
         });
     });

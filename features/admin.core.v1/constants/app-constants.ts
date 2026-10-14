@@ -559,6 +559,11 @@ export class AppConstants {
         "branding": "v0.0.0",
         "consents": "v0.0.0",
         "consoleSettings": "v0.0.0",
+        // Organization management: a sub organization uses the Customer Data Service of its root organization.
+        "customerDataProfileAttributes": "v0.0.0",
+        "customerDataProfiles": "v0.0.0",
+        "customerDataService": "v0.0.0",
+        "customerDataUnificationRules": "v0.0.0",
         "emailTemplates": "v0.0.0",
         "flows": "v0.0.0",
         "gettingStarted": "v0.0.0",
