@@ -28,18 +28,20 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Header } from "semantic-ui-react";
+import { ReactComponent as OrganizationSettingsIcon } from "../assets/images/icons/cds-organization-settings.svg";
 import { ReactComponent as ProfileAttributesIcon } from "../assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as UnificationRuleIcon } from "../assets/images/icons/unification-rules.svg";
 import ConfigurationCard from "../components/configuration-card";
 import ProfilesSection from "../components/profiles-section";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
+import { useIsSubOrganization } from "../utils/organization-management-utils";
 import "./customer-data-profile.scss";
 
 /**
- * Unified Customer Data Profile page. Combines the CDS enable toggle,
- * the Profile Attributes / Unification Rules configuration cards, and
- * the customer profile list into a single view.
+ * Unified Customer Data Profile page. Combines the CDS enable toggle, the Organization Settings /
+ * Profile Attributes / Unification Rules configuration cards, and the customer profile list
+ * into a single view.
  */
 const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface> = ({
     ["data-componentid"]: componentId = "customer-data-profile-page"
@@ -62,6 +64,9 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
     const { isUpdating, toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfig);
 
     const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
+
+    // Organization management: a child organization inherits the enablement of its root, so it cannot change it.
+    const isSubOrganization: boolean = useIsSubOrganization();
 
     const handleToggle: (event: SyntheticEvent, data: CheckboxProps) => Promise<void> =
         async (_: SyntheticEvent, data: CheckboxProps): Promise<void> => {
@@ -89,10 +94,27 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 toggle
                 onChange={ handleToggle }
                 checked={ isCDSEnabled }
-                readOnly={ !hasCDSUpdateScopes || isUpdating }
+                readOnly={ !hasCDSUpdateScopes || isUpdating || isSubOrganization }
+                disabled={ isSubOrganization }
                 data-componentid={ `${ componentId }-enable-toggle` }
             />
+            { isSubOrganization && (
+                <p className="hint-description" data-componentid={ `${ componentId }-enable-toggle-hint` }>
+                    { t("customerDataService:organizations.toggleHint") }
+                </p>
+            ) }
             <Divider hidden />
+            { /* Organization management: a child organization has nothing to change in the organization settings. */ }
+            { !isSubOrganization && (
+                <ConfigurationCard
+                    title={ t("customerDataService:landing.configuration.organizationSettings.title") }
+                    description={ t("customerDataService:landing.configuration.organizationSettings.description") }
+                    icon={ OrganizationSettingsIcon }
+                    disabled={ !isCDSEnabled }
+                    onClick={ () => history.push(AppConstants.getPaths().get("CDS_ORGANIZATION_SETTINGS")) }
+                    data-componentid={ `${ componentId }-organization-settings-card` }
+                />
+            ) }
             <ConfigurationCard
                 title={ t("customerDataService:landing.configuration.profileAttributes.title") }
                 description={ t("customerDataService:landing.configuration.profileAttributes.description") }

@@ -1851,6 +1851,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/organization-settings")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataOrganizationSettings",
+                        name: "customerDataService:organizationSettings.page.title",
+                        path: AppConstants.getPaths().get("CDS_ORGANIZATION_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
                         component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attributes")),
                         exact: true,
                         icon: {
