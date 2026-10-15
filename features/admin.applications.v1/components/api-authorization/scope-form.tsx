@@ -468,6 +468,16 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                                 value={ selectedScopes }
                                                 onChange={ handleDropdownChange }
                                                 disabled={ !isScopesAvailableForUpdate }
+                                                renderLabel={ (item: DropdownItemProps) => ({
+                                                    content: (
+                                                        <>
+                                                            { item.text }
+                                                            <Code className="ml-2" withBackground>
+                                                                { String(item.value) }
+                                                            </Code>
+                                                        </>
+                                                    )
+                                                }) }
                                             />
                                             <Hint>
                                                 { t("extensions:develop.applications.edit.sections." +
