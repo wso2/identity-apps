@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesListLayout from "./console-roles-list-layout";
 import CreateConsoleRoleWizard from "./create-console-role-wizard/create-console-role-wizard";
+import useGetAPIResourceCollections from "../../api/use-get-api-resource-collections";
 import useConsoleRoles from "../../hooks/use-console-roles";
 
 /**
@@ -66,6 +67,13 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
     } = useConsoleRoles(true, listItemLimit, listOffset, searchQuery);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    // Warms the SWR cache for the API resource collections consumed by the create/edit role
+    // permissions grids. On first visit (notably in cloud deployments) this request is slow, so
+    // firing it while the roles list is on screen means it has usually resolved by the time the
+    // user opens the create wizard or an existing role, instead of blocking that view.
+    useGetAPIResourceCollections(true, "type eq tenant", "apiResources");
+    useGetAPIResourceCollections(true, "type eq organization", "apiResources");
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching the roles list.
