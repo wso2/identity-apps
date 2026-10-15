@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import startCase from "lodash-es/startCase";
 import { ExtensionExecutorInterface } from "../models/metadata";
 import { ResourceTypes } from "../models/resources";
 import { Step, StepCategories, StepTypes } from "../models/steps";
@@ -51,7 +52,9 @@ const buildExtensionExecutorSteps = (extensionExecutors: ExtensionExecutorInterf
             display: {
                 description: executor.description,
                 image: executor.icon || DEFAULT_EXTENSION_EXECUTOR_ICON,
-                label: executor.displayName,
+                label: !executor.displayName?.trim() || executor.displayName.trim() === executor.name
+                    ? startCase(executor.name)
+                    : executor.displayName,
                 showOnResourcePanel: true
             },
             resourceType: ResourceTypes.Step,
