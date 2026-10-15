@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.18.1
+
+### Patch Changes
+
+- [#10614](https://github.com/wso2/identity-apps/pull/10614) [`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add console support for the Daon TrustX connection templates: hide the tabs the templates do not use,
+  resolve the registration and recovery redirect URIs in the create wizard help panel, and ship the
+  connection logo
+- Updated dependencies [[`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab)]:
+  - @wso2is/admin.connections.v1@2.43.2
+  - @wso2is/admin.extensions.v1@2.44.2
+
 ## 4.18.0
 
 ### Minor Changes
