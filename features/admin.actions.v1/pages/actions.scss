@@ -81,32 +81,85 @@
             .oxygen-chip-coming-soon {
                 min-width: auto !important;
             }
-        
-            .status-tag {
+
+            .status-tags-container {
+                display: inline-flex;
+                gap: 0.2px;
+                align-items: center;
+                
+            }
+
+           .status-tag {
                 display: inline-flex;
                 flex-direction: row;
                 align-content: center;
                 align-items: center;
-                
+                padding: 2px 4.5px;
+                border-radius: 4px;
+
+
                 .icon-configured {
                     color: rgb(52 146 86);
                     font-size: 0.8em;
                     width: 1em;
                     height: 1em;
-                    margin-right: 5px; 
+                    margin-right: 5px;
                 }
-        
+       
+
+
+                .icon-status {
+                    color: #D35400;
+                    font-size: 0.8em;
+                    width: 1em;
+                    height: 1em;
+                    margin-right: 3.5px;
+                    stroke-width: 1.3px;
+                    stroke: #D35400;
+                    fill: currentColor;
+                }
+
+
                 .text-configured {
                     color: rgb(52 146 86);
                     font-size: 0.8em !important;
                 }
-        
+
+
                 .text-not-configured {
                     color: rgb(128, 134, 130);
                     font-size: 0.8em !important;
                 }
+
+
+                .text-status {
+                    font-size: 0.8em !important;
+                    line-height: 1 !important;
+                }
+
+            }
+           
+            .status-tag.status-active {
+                color: #D35400;
+               
+            }
+
+
+            .status-tag.status-inactive {
+                color: rgb(97, 88, 88);
+           
+            }
+
+
+            .status-tag.status-unknown {
+                background-color: rgba(128, 134, 130, 0.1);
+                border: 1px solid rgba(128, 134, 130, 0.3);
+                color: rgb(128, 134, 130);
+                font-size: 0.8em !important;
+                line-height: 1 !important;
             }
         }
+
 
         .placeholder-box {
             background-color: #ffffff;
