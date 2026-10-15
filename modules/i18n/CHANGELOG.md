@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.48.0
+
+### Minor Changes
+
+- [#10721](https://github.com/wso2/identity-apps/pull/10721) [`765bf48b42fcae117e82de6b02eeb81b3f3fb479`](https://github.com/wso2/identity-apps/commit/765bf48b42fcae117e82de6b02eeb81b3f3fb479) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Let unification rules choose an attribute type and tolerant matching, expose the matching confidence settings, and add the profile match review queue
+
 ## 2.47.1
 
 ### Patch Changes
