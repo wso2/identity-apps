@@ -763,7 +763,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                tabIndex={ 5 }
+                                tabIndex={ 0 }
                                 data-testid={ `${componentId}-cancel-button` }
                                 floated="left"
                                 onClick={ closeWizard }
@@ -776,7 +776,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
-                                tabIndex={ 6 }
+                                tabIndex={ 0 }
                                 data-testid={ `${componentId}-finish-button` }
                                 floated="right"
                                 onClick={ handleFormSubmit }
