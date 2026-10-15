@@ -16,24 +16,27 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
+import { PageLayout, SecondaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Header } from "semantic-ui-react";
 import { ReactComponent as ProfileAttributesIcon } from "../assets/images/icons/cds-profile-attributes.svg";
+import { ReactComponent as ReviewTasksIcon } from "../assets/images/icons/review-tasks.svg";
 import { ReactComponent as UnificationRuleIcon } from "../assets/images/icons/unification-rules.svg";
 import ConfigurationCard from "../components/configuration-card";
 import ProfilesSection from "../components/profiles-section";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
+import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
 import "./customer-data-profile.scss";
 
 /**
@@ -46,6 +49,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
 }: IdentifiableComponentInterface): ReactElement => {
 
     const { t } = useTranslation();
+    const isFuzzyUnificationEnabled: boolean = useFuzzyUnificationEnabled();
     const dispatch: Dispatch = useDispatch();
 
     const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -82,6 +86,15 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
             pageTitle={ t("customerDataService:landing.page.title") }
             description={ t("customerDataService:landing.page.description") }
             className="customer-data-profile-page"
+            action={ isCDSEnabled && isFuzzyUnificationEnabled && (
+                <SecondaryButton
+                    onClick={ () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_SETTINGS")) }
+                    data-componentid={ `${ componentId }-settings-button` }
+                >
+                    <GearIcon className="mr-2" />
+                    { t("customerDataService:resolutionSettings.page.title") }
+                </SecondaryButton>
+            ) }
             data-componentid={ `${ componentId }-layout` }
         >
             <Checkbox
@@ -109,6 +122,20 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 onClick={ () => history.push(AppConstants.getPaths().get("UNIFICATION_RULES")) }
                 data-componentid={ `${ componentId }-unification-rules-card` }
             />
+            { /* Review tasks sit beside the configuration rather than inside the settings page:
+                 they are work to get through, not something to set once. Gated with the rest of
+                 tolerant matching, since exact rules alone rarely produce anything to review. */ }
+            { isFuzzyUnificationEnabled && (
+                <ConfigurationCard
+                    title={ t("customerDataService:landing.configuration.reviewTasks.title") }
+                    description={ t("customerDataService:landing.configuration.reviewTasks.description") }
+                    icon={ ReviewTasksIcon }
+                    disabled={ !isCDSEnabled }
+                    onClick={ () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_REVIEW_TASKS")) }
+                    data-componentid={ `${ componentId }-review-tasks-card` }
+                />
+            ) }
+
             { isCDSEnabled && (
                 <>
                     <Divider hidden />

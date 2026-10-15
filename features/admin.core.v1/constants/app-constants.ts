@@ -383,6 +383,8 @@ export class AppConstants {
             [ "CUSTOMER_DATA_PROFILE", `${AppConstants.getMainViewBasePath()}/customer-data` ],
             [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
+            [ "CUSTOMER_DATA_SETTINGS", `${AppConstants.getMainViewBasePath()}/customer-data/settings` ],
+            [ "CUSTOMER_DATA_REVIEW_TASKS", `${AppConstants.getMainViewBasePath()}/customer-data/review-tasks` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
             [ "UNIFICATION_RULE_CREATE", `${AppConstants.getMainViewBasePath()}/unification-rules/create` ],
             [ "PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes` ],
