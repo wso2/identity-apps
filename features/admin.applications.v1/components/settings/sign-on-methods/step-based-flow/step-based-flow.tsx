@@ -1004,10 +1004,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         authenticationSteps.forEach((step: AuthenticationStepInterface) => {
             if (handleIdentifierFirstInStep(step.options)) {
                 if (subjectStepId === step.id && step.id < authenticationSteps.length) {
-                    setSubjectStepId(subjectStepId + 1);
+                    setSubjectStepId((prevSubjectStepId: number) => prevSubjectStepId + 1);
                 }
                 if (attributeStepId === step.id && step.id < authenticationSteps.length) {
-                    setAttributeStepId(attributeStepId + 1);
+                    setAttributeStepId((prevAttributeStepId: number) => prevAttributeStepId + 1);
                 }
             }
         });
