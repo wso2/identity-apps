@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.19.1
+
+### Patch Changes
+
+- [#10756](https://github.com/wso2/identity-apps/pull/10756) [`93ec239348a1f8e7acabe6ef55d3a846a1b59ac8`](https://github.com/wso2/identity-apps/commit/93ec239348a1f8e7acabe6ef55d3a846a1b59ac8) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Remove the duplicate Flow Extension step from the registration flow builder resource panel.
+
+- Updated dependencies [[`93ec239348a1f8e7acabe6ef55d3a846a1b59ac8`](https://github.com/wso2/identity-apps/commit/93ec239348a1f8e7acabe6ef55d3a846a1b59ac8)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.11.1
+
 ## 4.19.0
 
 ### Minor Changes
