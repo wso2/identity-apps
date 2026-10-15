@@ -133,6 +133,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ searchValue, setSearchValue ] = useState<string>(null);
     const [ fetchedGroups, setFetchedGroups ] = useState<GroupsInterface[]>(undefined);
     const [ totalGroupCount, setTotalGroupCount ] = useState<number>(0);
+    // One based start index of the next page, advanced by every page the server returns.
+    const [ nextStartIndex, setNextStartIndex ] = useState<number>(1);
     const [ storeGroupCount, setStoreGroupCount ] = useState<number>(null);
     const [ isShowingSelectedGroups, setIsShowingSelectedGroups ] = useState<boolean>(false);
 
@@ -186,7 +188,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         return isGroupsListFetchRequestLoading || isGroupsListFetchRequestValidating;
     }, [ isGroupsListFetchRequestLoading, isGroupsListFetchRequestValidating ]);
 
-    const hasMoreGroups: boolean = (fetchedGroups?.length ?? 0) < totalGroupCount;
+    const hasMoreGroups: boolean = fetchedGroups !== undefined && nextStartIndex <= totalGroupCount;
     const canLoadMoreGroups: boolean = hasMoreGroups && !isShowingSelectedGroups && !groupsListFetchRequestError;
 
     canLoadMoreRef.current = canLoadMoreGroups;
@@ -201,8 +203,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         const loaded: GroupsInterface[] = loadedGroupsRef.current ?? [];
+        const startIndex: number = nextStartIndex;
 
-        if (loaded.length >= totalGroupCount) {
+        if (startIndex > totalGroupCount) {
             return;
         }
 
@@ -210,13 +213,27 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         isLoadingMoreRef.current = true;
 
-        getGroupList(domain, excludedAttributes, GROUPS_PAGE_SIZE, loaded.length + 1, searchQuery)
+        getGroupList(domain, excludedAttributes, GROUPS_PAGE_SIZE, startIndex, searchQuery)
             .then((response: AxiosResponse<GroupListInterface>) => {
                 if (sequence !== groupFetchSequence.current) {
                     return;
                 }
 
                 const page: GroupsInterface[] = response?.data?.Resources ?? [];
+
+                // The server has nothing more although its total said otherwise. Stop here.
+                if (page.length === 0) {
+                    setTotalGroupCount(loaded.length);
+                    if (!searchQuery) {
+                        setStoreGroupCount(loaded.length);
+                    }
+
+                    return;
+                }
+
+                // Advanced by the page itself, so a page of groups already listed does not end the paging.
+                setNextStartIndex(startIndex + page.length);
+
                 const merged: GroupsInterface[] = [ ...loaded ];
                 const seen: Set<string> = new Set<string>(loaded.map((group: GroupsInterface) => group.id));
 
@@ -228,13 +245,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     }
                 });
 
-                // Nothing new came back, so asking again would request the same window. Stop here.
                 if (merged.length === loaded.length) {
-                    setTotalGroupCount(loaded.length);
-                    if (!searchQuery) {
-                        setStoreGroupCount(loaded.length);
-                    }
-
                     return;
                 }
 
@@ -260,7 +271,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     isLoadingMoreRef.current = false;
                 }
             });
-    }, [ domain, excludedAttributes, searchQuery, totalGroupCount, fetchedGroups, dispatch, t ]);
+    }, [ domain, excludedAttributes, searchQuery, totalGroupCount, nextStartIndex, fetchedGroups, dispatch, t ]);
 
     /**
      * A search replaces the list, so any page still in flight for the previous query is stale.
@@ -291,6 +302,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         isLoadingMoreRef.current = false;
         loadedGroupsRef.current = firstPage;
         setFetchedGroups(firstPage);
+        setNextStartIndex(firstPage.length + 1);
         // A server that caps the listing reports the capped number, so no further page is requested.
         setTotalGroupCount(originalGroupsList.totalResults ?? firstPage.length);
         // The unfiltered total is kept for the selection count while a search reports its own.
