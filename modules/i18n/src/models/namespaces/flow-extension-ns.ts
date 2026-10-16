@@ -214,6 +214,24 @@ export interface flowExtensionNS {
                 description: string;
             };
         };
+        addOrganizationAttributeModal: {
+            title: string;
+            subtitle: string;
+            noOptions: string;
+            invalidKey: string;
+            duplicateKey: string;
+            searchPlaceholder: string;
+            cancelButton: string;
+            addButton: string;
+            defineCustomAttribute: {
+                title: string;
+                keyLabel: string;
+                keyPlaceholder: string;
+                labelLabel: string;
+                labelPlaceholder: string;
+                addButton: string;
+            };
+        };
         addEntryModal: {
             title: {
                 createMap: string;

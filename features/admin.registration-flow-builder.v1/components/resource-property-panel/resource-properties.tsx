@@ -167,6 +167,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 <>
                     { renderElementId() }
                     <FieldExtendedProperties
+                        key={ resource.id }
                         resource={ resource }
                         data-componentid="field-extended-properties"
                         onChange={ onChange }

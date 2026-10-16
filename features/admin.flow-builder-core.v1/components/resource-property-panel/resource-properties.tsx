@@ -175,7 +175,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
             if (propertyKey != "action") {
                 const updatedResource: Resource = cloneDeep(lastInteractedResource);
 
-                if (propertyKey.startsWith("config.")) {
+                if (propertyKey === "config" || propertyKey.startsWith("config.")) {
                     set(updatedResource, propertyKey, newValue);
                 } else {
                     set(updatedResource.data, propertyKey, newValue);

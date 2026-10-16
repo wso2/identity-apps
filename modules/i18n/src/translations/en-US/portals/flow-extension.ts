@@ -214,6 +214,25 @@ export const flowExtension: flowExtensionNS = {
                 editObject: "Edit Complex Object Entry"
             }
         },
+        addOrganizationAttributeModal: {
+            addButton: "Add Attributes",
+            cancelButton: "Cancel",
+            defineCustomAttribute: {
+                addButton: "Add",
+                keyLabel: "Key",
+                keyPlaceholder: "e.g. businessType",
+                labelLabel: "Display label",
+                labelPlaceholder: "e.g. Business Type",
+                title: "Define a custom attribute"
+            },
+            duplicateKey: "That attribute has already been added.",
+            invalidKey: "An attribute key must start with a letter and contain only letters, "
+                + "numbers or underscores.",
+            noOptions: "No attributes available",
+            searchPlaceholder: "Select an attribute collected by the flow...",
+            subtitle: "Select the organization attributes to add to the attributes map.",
+            title: "Add Organization Attributes"
+        },
         fieldConfig: {
             deleteTooltip: "Delete",
             editTooltip: "Edit",
