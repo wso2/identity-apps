@@ -113,8 +113,12 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
                 multiple
                 fullWidth
                 disableCloseOnSelect
-                disablePortal
                 size="small"
+                slotProps={ {
+                    popper: {
+                        placement: "top-start"
+                    }
+                } }
                 options={ options }
                 value={ selectedRoles }
                 inputValue={ inputValue }

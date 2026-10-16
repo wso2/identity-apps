@@ -19,7 +19,7 @@
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
 import ReduxStoreStateMock from "@wso2is/unit-testing/__mocks__/redux/redux-store-state";
-import { RenderResult, fireEvent, render, screen, within } from "@wso2is/unit-testing/utils";
+import { RenderResult, fireEvent, render, screen, waitFor, within } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
 import OrganizationRoleProperties from "../organization-role-properties";
@@ -78,6 +78,33 @@ describe("OrganizationRoleProperties", () => {
         onChange.mockReset();
         useGetRolesListMock.mockReset();
         useGetRolesListMock.mockReturnValue({ data: roles, error: undefined, isLoading: false });
+    });
+
+    it("opens the role list above the input and outside the properties panel", async () => {
+        const { container } = renderRolePicker();
+
+        fireEvent.mouseDown(getInput());
+
+        const listbox: HTMLElement = screen.getByRole("listbox");
+
+        expect(container).not.toContainElement(listbox);
+        expect(document.body).toContainElement(listbox);
+        await waitFor(() => {
+            expect(listbox.closest("[data-popper-placement]"))
+                .toHaveAttribute("data-popper-placement", "top-start");
+        });
+        expect(within(listbox).getByRole("option", { name: /Manager/ })).toBeVisible();
+        expect(within(listbox).getByRole("option", { name: /Auditor/ })).toBeVisible();
+    });
+
+    it("supports selecting a role with the keyboard", () => {
+        renderRolePicker();
+
+        fireEvent.change(getInput(), { target: { value: "Auditor" } });
+        fireEvent.keyDown(getInput(), { key: "ArrowDown" });
+        fireEvent.keyDown(getInput(), { key: "Enter" });
+
+        expect(onChange).toHaveBeenCalledWith([ auditor.id ]);
     });
 
     it("searches loaded roles and adds a role without losing an existing selection", () => {
