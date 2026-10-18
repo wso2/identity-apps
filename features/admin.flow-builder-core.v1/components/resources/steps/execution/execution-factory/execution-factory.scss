@@ -24,7 +24,9 @@
     &.confirmation-code,
     &.magic-link,
     &.device-registration,
-    &.flow-extension {
+    &.flow-extension,
+    &.user-verification-executor,
+    &.flow-handoff-executor {
         img {
             filter: invert(100%);
         }
