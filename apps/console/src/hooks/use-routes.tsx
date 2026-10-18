@@ -17,6 +17,7 @@
  */
 
 import { AccessControlUtils } from "@wso2is/access-control";
+import { ORGANIZATION_MANAGEMENT_FEATURE_ID } from "@wso2is/admin.cds.v1/constants/organization-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
@@ -35,6 +36,7 @@ import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useGetSelfAuthenticatedOrganization from "@wso2is/admin.tenants.v1/api/use-get-self-authenticated-organization";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
@@ -146,6 +148,15 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
 
             if (isSubOrganization()) {
                 additionalRoutes.push(AppConstants.VC_TEMPLATES_ROUTE);
+            }
+
+            if (isSubOrganization()
+                && !isFeatureEnabled(featureConfig?.customerDataService, ORGANIZATION_MANAGEMENT_FEATURE_ID)) {
+                // A child organization uses CDS only through organization management.
+                additionalRoutes.push(AppConstants.CDS_ROUTE_ID);
+                additionalRoutes.push(AppConstants.CDS_PROFILES_ROUTE_ID);
+                additionalRoutes.push(AppConstants.CDS_PROFILE_UNIFICATION_RULES_ROUTE_ID);
+                additionalRoutes.push(AppConstants.CDS_PROFILE_ATTRIBUTES_ROUTE_ID);
             }
 
             // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.

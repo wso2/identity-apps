@@ -35,7 +35,7 @@ import ConfigurationCard from "../components/configuration-card";
 import ProfilesSection from "../components/profiles-section";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
+import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 import "./customer-data-profile.scss";
 
 /**
@@ -67,6 +67,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
 
     // Organization management: a child organization inherits the enablement of its root, so it cannot change it.
     const isSubOrganization: boolean = useIsSubOrganization();
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
 
     const handleToggle: (event: SyntheticEvent, data: CheckboxProps) => Promise<void> =
         async (_: SyntheticEvent, data: CheckboxProps): Promise<void> => {
@@ -105,7 +106,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
             ) }
             <Divider hidden />
             { /* Organization management: a child organization has nothing to change in the organization settings. */ }
-            { !isSubOrganization && (
+            { !isSubOrganization && isOrganizationManagementEnabled && (
                 <ConfigurationCard
                     title={ t("customerDataService:landing.configuration.organizationSettings.title") }
                     description={ t("customerDataService:landing.configuration.organizationSettings.description") }

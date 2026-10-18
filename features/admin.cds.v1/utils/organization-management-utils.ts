@@ -18,7 +18,10 @@
 
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
+import { ORGANIZATION_MANAGEMENT_FEATURE_ID } from "../constants/organization-management-constants";
 
 /**
  * Hook that tells whether the Console runs in a child organization.
@@ -31,4 +34,18 @@ export const useIsSubOrganization = (): boolean => {
     );
 
     return organizationType === OrganizationType.SUBORGANIZATION;
+};
+
+/**
+ * Hook that tells whether organization management of CDS is enabled. A deployment disables it with
+ * `customerDataService.organizationManagement` in the `disabledFeatures` of the `customerDataService` feature.
+ *
+ * @returns True when organization management is enabled.
+ */
+export const useIsOrganizationManagementEnabled = (): boolean => {
+    const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.customerDataService
+    );
+
+    return isFeatureEnabled(cdsFeatureConfig, ORGANIZATION_MANAGEMENT_FEATURE_ID);
 };

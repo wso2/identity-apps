@@ -47,7 +47,7 @@ import SharedChip from "../components/shared-chip";
 import { RuleStateChip } from "../components/unification-rule-list";
 import { useUnificationRule } from "../hooks/use-unification-rules";
 import { UnificationRuleModel, UpdateUnificationRulePayload } from "../models/unification-rules";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
+import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 
 const FORM_ID: string = "unification-rule-edit-form";
@@ -91,7 +91,8 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
     const isDefaultRule: boolean = rule?.property_name === DEFAULT_RULE_PROPERTY;
     const isReadOnly: boolean = isShared || isSubOrganization || isDefaultRule;
     // Organization management: the owner organization shares the rule with its child organizations.
-    const canShare: boolean = Boolean(rule) && !isShared && !isSubOrganization;
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
+    const canShare: boolean = Boolean(rule) && !isShared && !isSubOrganization && isOrganizationManagementEnabled;
 
     useEffect((): void => {
         if (!error) return;

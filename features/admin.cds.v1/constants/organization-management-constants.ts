@@ -30,3 +30,8 @@ export const OrganizationManagementScopes: {
     PROFILE_SCHEMA_SHARE: "internal_cds_profile_schema_share",
     UNIFICATION_RULE_SHARE: "internal_cds_unification_rule_share"
 };
+
+/**
+ * Key of organization management in the `disabledFeatures` of the `customerDataService` feature config.
+ */
+export const ORGANIZATION_MANAGEMENT_FEATURE_ID: string = "customerDataService.organizationManagement";

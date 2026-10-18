@@ -629,6 +629,11 @@ export class AppConstants {
     public static readonly VC_TEMPLATES_ROUTE: string = "verifiable-credentials";
 
     /**
+     * Route id of the customer data service landing page.
+     */
+    public static readonly CDS_ROUTE_ID: string = "customerDataService";
+
+    /**
      * Route id of the customer data service page.
      */
     public static readonly CDS_PROFILES_ROUTE_ID: string = "customerDataProfiles";

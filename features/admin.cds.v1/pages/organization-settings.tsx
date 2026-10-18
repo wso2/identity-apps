@@ -23,7 +23,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import OrganizationAccess from "../components/organization-access";
@@ -31,7 +31,7 @@ import { OrganizationManagementScopes } from "../constants/organization-manageme
 import useCDSConfig from "../hooks/use-config";
 import useTreeSync from "../hooks/use-tree-sync";
 import { TreeSyncStatus } from "../models/organization-management";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
+import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 
 /**
  * Organization settings of CDS: the organization access (the organizations that can use CDS).
@@ -55,7 +55,14 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
     const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
 
     const isSubOrganization: boolean = useIsSubOrganization();
-    const isRootWithCDS: boolean = isCDSEnabled && !isSubOrganization;
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
+    const isRootWithCDS: boolean = isCDSEnabled && !isSubOrganization && isOrganizationManagementEnabled;
+
+    useEffect(() => {
+        if (!isOrganizationManagementEnabled) {
+            history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"));
+        }
+    }, [ isOrganizationManagementEnabled ]);
 
     const { data: syncStatus, isLoading: isSyncLoading, mutate: mutateSync } = useTreeSync(isRootWithCDS);
 
