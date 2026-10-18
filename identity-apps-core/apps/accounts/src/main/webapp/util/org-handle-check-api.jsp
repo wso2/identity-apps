@@ -17,7 +17,12 @@
 --%>
 
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
-<%@ page import="java.net.*, java.io.*" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.InputStream" %>
+<%@ page import="java.io.InputStreamReader" %>
+<%@ page import="java.io.OutputStream" %>
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="java.net.URL" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>

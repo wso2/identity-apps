@@ -54,9 +54,11 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
             ? state.config.ui.features.userRolesV3
             : state.config?.ui?.features?.userRoles);
     const hasRoleReadPermission: boolean = useRequiredScopes(rolesFeatureConfig?.scopes?.read);
+
     const [ startIndex, setStartIndex ] = useState<number>(1);
     const [ roles, setRoles ] = useState<RolesV2Interface[]>([]);
     const [ inputValue, setInputValue ] = useState<string>("");
+
     const { data, error, isLoading } = useGetRolesList<RolesV2ResponseInterface>(
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
         startIndex,
