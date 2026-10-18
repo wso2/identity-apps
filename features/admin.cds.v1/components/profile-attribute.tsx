@@ -59,7 +59,7 @@ import {
     ProfileSchemaSubAttributeRef,
     ValueType
 } from "../models/profile-attributes";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
+import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
 
 const FORM_ID: string = "profile-attribute-edit-form";
@@ -184,6 +184,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     // Organization management: a child organization inherits the identity attributes from its root.
     const isInherited: boolean = attribute?.origin === "INHERITED";
     const isSubOrganization: boolean = useIsSubOrganization();
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
     // Organization management: a child organization only reads the schema. The root organization changes and
     // shares it.
     const isReadOnly: boolean = isShared || isSubOrganization;
@@ -861,7 +862,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                 render: renderGeneralTab
             },
             // Organization management: the owner organization shares the attribute with its child organizations.
-            ...(canShareScope && attribute && !isReadOnly
+            ...(isOrganizationManagementEnabled && canShareScope && attribute && !isReadOnly
                 ? [ {
                     componentId: "sharing",
                     menuItem: t("customerDataService:sharing.tab"),
@@ -881,7 +882,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             getApplicationDisplayName,
             canShareScope,
             isShareable,
-            isSubOrganization
+            isSubOrganization,
+            isOrganizationManagementEnabled
         ]
     );
 
