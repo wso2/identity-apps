@@ -114,6 +114,14 @@ export interface flowsNS {
             confirmationCode: {
                 configurationHint: string;
             };
+            flowHandoff: {
+                expiryTimeHint: string;
+                expiryTimeLabel: string;
+                expiryTimePlaceholder: string;
+                targetUrlHint: string;
+                targetUrlLabel: string;
+                targetUrlPlaceholder: string;
+            };
             landing: {
                 message: string;
             };
@@ -132,6 +140,11 @@ export interface flowsNS {
             };
             tooltip: {
                 configurationHint: string;
+            };
+            userVerification: {
+                tokenValidityPeriodHint: string;
+                tokenValidityPeriodLabel: string;
+                tokenValidityPeriodPlaceholder: string;
             };
         };
         labels: {
