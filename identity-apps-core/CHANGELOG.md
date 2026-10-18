@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 5.5.4
+
+### Patch Changes
+
+- [#10614](https://github.com/wso2/identity-apps/pull/10614) [`fec56075736ddc51f535e17ecbd39f9795e83b32`](https://github.com/wso2/identity-apps/commit/fec56075736ddc51f535e17ecbd39f9795e83b32) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Surface errors raised by a connector deployed on the server in the registration, invited user
+  registration and password recovery flows, and render the login failure banner on authentication steps
+  that have no local authenticator
+- Updated dependencies [[`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab)]:
+  - @wso2is/theme@2.11.1
+
 ## 5.5.3
 
 ### Patch Changes

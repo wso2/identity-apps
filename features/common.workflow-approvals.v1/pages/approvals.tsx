@@ -110,6 +110,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             key: 6,
             text: t("common:approvalsPage.operationTypes.selfRegisterUser"),
             value: "SELF_REGISTER_USER"
+        },
+        {
+            key: 7,
+            text: t("common:approvalsPage.operationTypes.updateGroupsOfUser"),
+            value: "UPDATE_GROUPS_OF_USERS"
         }
     ];
 

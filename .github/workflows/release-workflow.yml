@@ -180,6 +180,39 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 
+            - name: 🔀 Merge the release pull request
+              id: merge-release-pr
+              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' && steps.changesets.outputs.published != 'true' }}
+              # Merging the release pull request is housekeeping — the publish happens in
+              # the follow-up run. The script exits non-zero when it cannot merge, so the
+              # step shows red; this keeps that from taking "🚀 Perform Release" with it.
+              continue-on-error: true
+              env:
+                  CHANGESETS_PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
+              run: |
+                  pr_number="$CHANGESETS_PR_NUMBER"
+
+                  # changesets/action emits pullRequestNumber for both a created and an
+                  # updated pull request, so this fallback is only a safety net against
+                  # the output going missing (e.g. on an action version bump).
+                  if [ -z "$pr_number" ]; then
+                      pr_number=$(gh pr list \
+                          --base "$BRANCH" \
+                          --head "changeset-release/$BRANCH" \
+                          --state open --json number --jq '.[0].number')
+                  fi
+
+                  if [ -z "$pr_number" ]; then
+                      echo "No open release pull request to merge — nothing to do."
+                      exit 0
+                  fi
+
+                  MERGE_SCRIPT=.github/workflows/scripts/merge-release-pr.sh
+                  chmod +x "$MERGE_SCRIPT"
+                  "$MERGE_SCRIPT" "$pr_number" \
+                      "[Release] [GitHub Action] [$BRANCH] Update package versions (#$pr_number)"
+              shell: bash
+
             - name: 🚀 Perform Release
               id: perform-release
               working-directory: .github/workflows

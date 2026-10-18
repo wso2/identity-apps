@@ -1,5 +1,32 @@
 # @wso2is/admin.core.v1
 
+## 2.61.0
+
+### Minor Changes
+
+- [#10721](https://github.com/wso2/identity-apps/pull/10721) [`765bf48b42fcae117e82de6b02eeb81b3f3fb479`](https://github.com/wso2/identity-apps/commit/765bf48b42fcae117e82de6b02eeb81b3f3fb479) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Let unification rules choose an attribute type and tolerant matching, expose the matching confidence settings, and add the profile match review queue
+
+### Patch Changes
+
+- Updated dependencies [[`765bf48b42fcae117e82de6b02eeb81b3f3fb479`](https://github.com/wso2/identity-apps/commit/765bf48b42fcae117e82de6b02eeb81b3f3fb479)]:
+  - @wso2is/admin.cds.v1@1.7.0
+  - @wso2is/admin.feature-gate.v1@1.12.0
+  - @wso2is/i18n@2.48.0
+  - @wso2is/admin.users.v1@2.38.58
+
+## 2.60.1
+
+### Patch Changes
+
+- [#10720](https://github.com/wso2/identity-apps/pull/10720) [`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bundle the Monaco editor with the Console instead of loading it from a CDN.
+
+- Updated dependencies [[`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229)]:
+  - @wso2is/admin.branding.v1@2.32.175
+  - @wso2is/admin.cds.v1@1.6.10
+  - @wso2is/admin.logs.v1@1.6.10
+  - @wso2is/admin.policy-administration.v1@1.0.126
+  - @wso2is/admin.users.v1@2.38.57
+
 ## 2.60.0
 
 ### Minor Changes

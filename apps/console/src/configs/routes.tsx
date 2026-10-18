@@ -1566,11 +1566,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestsPage
-                }))
-            ),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests")),
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WORKFLOW_INSTANCES,
             icon: {
@@ -1585,11 +1581,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestDetailsPage
-                }))
-            ),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details")),
             exact: true,
             id: "workflowInstanceDetails",
             name: "workflowRequests:details.header",
@@ -1949,6 +1941,30 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         id: "createUnificationRule",
                         name: "Create Unification Rule",
                         path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/review-tasks")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataReviewTasks",
+                        name: "customerDataService:reviewTasks.page.title",
+                        path: AppConstants.getPaths().get("CUSTOMER_DATA_REVIEW_TASKS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/customer-data-settings")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataSettings",
+                        name: "customerDataService:resolutionSettings.page.title",
+                        path: AppConstants.getPaths().get("CUSTOMER_DATA_SETTINGS"),
                         protected: true,
                         showOnSidePanel: false
                     }

@@ -152,6 +152,11 @@ export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps>
             value: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS
         },
         {
+            key: WorkflowInstanceOperationType.UPDATE_GROUPS_OF_USERS,
+            text: t("workflowRequests:operationType.updateGroupUsers"),
+            value: WorkflowInstanceOperationType.UPDATE_GROUPS_OF_USERS
+        },
+        {
             key: WorkflowInstanceOperationType.ADD_ROLE,
             text: t("workflowRequests:operationType.createRole"),
             value: WorkflowInstanceOperationType.ADD_ROLE

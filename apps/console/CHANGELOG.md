@@ -1,5 +1,95 @@
 # @wso2is/console
 
+## 4.19.1
+
+### Patch Changes
+
+- [#10756](https://github.com/wso2/identity-apps/pull/10756) [`93ec239348a1f8e7acabe6ef55d3a846a1b59ac8`](https://github.com/wso2/identity-apps/commit/93ec239348a1f8e7acabe6ef55d3a846a1b59ac8) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Remove the duplicate Flow Extension step from the registration flow builder resource panel.
+
+- Updated dependencies [[`93ec239348a1f8e7acabe6ef55d3a846a1b59ac8`](https://github.com/wso2/identity-apps/commit/93ec239348a1f8e7acabe6ef55d3a846a1b59ac8)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.11.1
+
+## 4.19.0
+
+### Minor Changes
+
+- [#10721](https://github.com/wso2/identity-apps/pull/10721) [`765bf48b42fcae117e82de6b02eeb81b3f3fb479`](https://github.com/wso2/identity-apps/commit/765bf48b42fcae117e82de6b02eeb81b3f3fb479) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Let unification rules choose an attribute type and tolerant matching, expose the matching confidence settings, and add the profile match review queue
+
+### Patch Changes
+
+- Updated dependencies [[`765bf48b42fcae117e82de6b02eeb81b3f3fb479`](https://github.com/wso2/identity-apps/commit/765bf48b42fcae117e82de6b02eeb81b3f3fb479)]:
+  - @wso2is/admin.cds.v1@1.7.0
+  - @wso2is/admin.core.v1@2.61.0
+  - @wso2is/admin.feature-gate.v1@1.12.0
+  - @wso2is/i18n@2.48.0
+  - @wso2is/admin.users.v1@2.38.58
+
+## 4.18.1
+
+### Patch Changes
+
+- [#10614](https://github.com/wso2/identity-apps/pull/10614) [`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add console support for the Daon TrustX connection templates: hide the tabs the templates do not use,
+  resolve the registration and recovery redirect URIs in the create wizard help panel, and ship the
+  connection logo
+- Updated dependencies [[`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab)]:
+  - @wso2is/admin.connections.v1@2.43.2
+  - @wso2is/admin.extensions.v1@2.44.2
+
+## 4.18.0
+
+### Minor Changes
+
+- [#10748](https://github.com/wso2/identity-apps/pull/10748) [`233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75`](https://github.com/wso2/identity-apps/commit/233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add approval workflow support for adding or removing users from a group
+
+### Patch Changes
+
+- Updated dependencies [[`233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75`](https://github.com/wso2/identity-apps/commit/233ac1a4f9b1c5adfa6d95da604cfa8df6f8ac75)]:
+  - @wso2is/admin.approval-workflows.v1@1.4.0
+  - @wso2is/admin.workflow-requests.v1@1.0.22
+  - @wso2is/common.workflow-approvals.v1@1.0.16
+  - @wso2is/i18n@2.47.1
+
+## 4.17.5
+
+### Patch Changes
+
+- [#10731](https://github.com/wso2/identity-apps/pull/10731) [`e5807609f2de7ae8bb6eb4a32331cb44ff87d146`](https://github.com/wso2/identity-apps/commit/e5807609f2de7ae8bb6eb4a32331cb44ff87d146) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Stop the Console from crashing when the user store list API returns an unexpected payload
+
+- Updated dependencies [[`e5807609f2de7ae8bb6eb4a32331cb44ff87d146`](https://github.com/wso2/identity-apps/commit/e5807609f2de7ae8bb6eb4a32331cb44ff87d146)]:
+  - @wso2is/admin.userstores.v1@2.27.43
+
+## 4.17.4
+
+### Patch Changes
+
+- [#10716](https://github.com/wso2/identity-apps/pull/10716) [`793ad4acc7e56605f748093065046c71211d8dea`](https://github.com/wso2/identity-apps/commit/793ad4acc7e56605f748093065046c71211d8dea) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.workflow-requests.v1` package
+
+- Updated dependencies [[`793ad4acc7e56605f748093065046c71211d8dea`](https://github.com/wso2/identity-apps/commit/793ad4acc7e56605f748093065046c71211d8dea)]:
+  - @wso2is/admin.workflow-requests.v1@1.0.21
+
+## 4.17.3
+
+### Patch Changes
+
+- [#10720](https://github.com/wso2/identity-apps/pull/10720) [`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bundle the Monaco editor with the Console instead of loading it from a CDN.
+
+- Updated dependencies [[`4d71ee6f88433fcc5c0193a62087df6c34740229`](https://github.com/wso2/identity-apps/commit/4d71ee6f88433fcc5c0193a62087df6c34740229)]:
+  - @wso2is/admin.core.v1@2.60.1
+  - @wso2is/admin.branding.v1@2.32.175
+  - @wso2is/admin.cds.v1@1.6.10
+  - @wso2is/admin.logs.v1@1.6.10
+  - @wso2is/admin.policy-administration.v1@1.0.126
+  - @wso2is/admin.users.v1@2.38.57
+
+## 4.17.2
+
+### Patch Changes
+
+- [#10703](https://github.com/wso2/identity-apps/pull/10703) [`6a49e4ba78f0d12ff0fe6b363a5ead62e5346925`](https://github.com/wso2/identity-apps/commit/6a49e4ba78f0d12ff0fe6b363a5ead62e5346925) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Distinguish client ID fetch failure from config update failure
+
+- Updated dependencies [[`6a49e4ba78f0d12ff0fe6b363a5ead62e5346925`](https://github.com/wso2/identity-apps/commit/6a49e4ba78f0d12ff0fe6b363a5ead62e5346925)]:
+  - @wso2is/admin.agents.v1@1.2.3
+
 ## 4.17.1
 
 ### Patch Changes

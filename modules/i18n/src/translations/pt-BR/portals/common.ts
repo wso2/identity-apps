@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "Eliminar Função",
             deleteUser: "Eliminar Utilizador",
             selfRegisterUser: "Auto-registo de Utilizador",
+            updateGroupsOfUser: "Atualizar usuários do grupo",
             updateRolesOfUser: "Actualizar Funções do Utilizador"
         },
         placeholders: {

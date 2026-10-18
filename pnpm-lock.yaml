@@ -283,9 +283,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: 'catalog:'
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -335,7 +332,7 @@ importers:
         specifier: ^2.44.5
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.3.32
+        specifier: ^1.4.0
         version: link:../../features/admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -344,10 +341,10 @@ importers:
         specifier: ^2.25.212
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.174
+        specifier: ^2.32.175
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.9
+        specifier: ^1.7.0
         version: link:../../features/admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -359,7 +356,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.cli-settings.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.43.1
+        specifier: ^2.43.2
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
@@ -371,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.60.0
+        specifier: ^2.61.0
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -383,13 +380,13 @@ importers:
         specifier: ^2.28.3
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.44.1
+        specifier: ^2.44.2
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.fapi-security-policy.v1':
         specifier: workspace:^
         version: link:../../features/admin.fapi-security-policy.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.11.0
+        specifier: ^1.12.0
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flow-extensions.v1':
         specifier: workspace:^
@@ -413,7 +410,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.issuer-usage-scope.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.9
+        specifier: ^1.6.10
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.26.3
@@ -431,7 +428,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.125
+        specifier: ^1.0.126
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.presentation-definitions.v1':
         specifier: workspace:^
@@ -476,10 +473,10 @@ importers:
         specifier: ^1.5.207
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.56
+        specifier: ^2.38.58
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.42
+        specifier: ^2.27.43
         version: link:../../features/admin.userstores.v1
       '@wso2is/admin.validation.v1':
         specifier: ^2.28.5
@@ -500,13 +497,13 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.15
+        specifier: ^1.0.16
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.13.7
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.47.0
+        specifier: ^2.48.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
@@ -806,7 +803,7 @@ importers:
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
       '@monaco-editor/react':
         specifier: ^4.5.1
-        version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 4.7.0(monaco-editor@0.36.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: 'catalog:'
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -864,6 +861,9 @@ importers:
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
+      monaco-editor:
+        specifier: 0.36.1
+        version: 0.36.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2636,9 +2636,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: 'catalog:'
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -2670,7 +2667,7 @@ importers:
         specifier: ^2.28.1
         version: link:../admin.branding.ai.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.60.0
+        specifier: ^2.60.1
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.11
@@ -2857,8 +2854,11 @@ importers:
         specifier: ^2.43.11
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.31
+        specifier: ^2.61.0
         version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.12.0
+        version: link:../admin.feature-gate.v1
       '@wso2is/core':
         specifier: ^2.12.10
         version: link:../../modules/core
@@ -3401,7 +3401,7 @@ importers:
         specifier: ^2.60.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.44.0
+        specifier: ^2.44.2
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.11.0
@@ -3913,6 +3913,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
+      '@monaco-editor/react':
+        specifier: ^4.5.1
+        version: 4.7.0(monaco-editor@0.36.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: 'catalog:'
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -3965,10 +3968,10 @@ importers:
         specifier: ^2.25.212
         version: link:../admin.authentication.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.174
+        specifier: ^2.32.175
         version: link:../admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.9
+        specifier: ^1.7.0
         version: link:../admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -3986,7 +3989,7 @@ importers:
         specifier: ^2.43.11
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.11.0
+        specifier: ^1.12.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
         specifier: workspace:^
@@ -4004,7 +4007,7 @@ importers:
         specifier: ^2.28.3
         version: link:../admin.identity-verification-providers.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.8
+        specifier: ^1.6.10
         version: link:../admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.26.3
@@ -4019,7 +4022,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.124
+        specifier: ^1.0.126
         version: link:../admin.policy-administration.v1
       '@wso2is/admin.presentation-definitions.v1':
         specifier: workspace:^
@@ -4058,7 +4061,7 @@ importers:
         specifier: ^2.29.32
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.56
+        specifier: ^2.38.58
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -4088,7 +4091,7 @@ importers:
         specifier: ^2.12.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.47.0
+        specifier: ^2.48.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -4114,6 +4117,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.18.1
+      monaco-editor:
+        specifier: 0.36.1
+        version: 0.36.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -4798,7 +4804,7 @@ importers:
         specifier: ^2.31.6
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.42.0
+        specifier: ^2.43.2
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.59.2
@@ -5070,7 +5076,7 @@ importers:
         specifier: ^3.7.0
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.60.0
+        specifier: ^2.61.0
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.29.0
@@ -6365,7 +6371,7 @@ importers:
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
       '@monaco-editor/react':
         specifier: ^4.5.1
-        version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 4.7.0(monaco-editor@0.36.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: 'catalog:'
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
@@ -6394,7 +6400,7 @@ importers:
         specifier: ^2.37.6
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.11
+        specifier: ^2.60.1
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
@@ -6438,6 +6444,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.18.1
+      monaco-editor:
+        specifier: 0.36.1
+        version: 0.36.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -6696,7 +6705,7 @@ importers:
         specifier: 'catalog:'
         version: 2.4.6(68d5af65e266984a0e5c55056d1c3c66)
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.60.1
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.9.6
@@ -7723,7 +7732,7 @@ importers:
         specifier: ^2.42.23
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.60.1
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.13.6
@@ -10115,19 +10124,19 @@ importers:
         specifier: ^2.25.211
         version: link:../admin.authentication.v1
       '@wso2is/admin.cds.v1':
-        specifier: 1.6.9
+        specifier: 1.7.0
         version: link:../admin.cds.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.6
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.60.0
+        specifier: ^2.61.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.44.1
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.11.0
+        specifier: ^1.12.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
         specifier: workspace:^
@@ -10172,7 +10181,7 @@ importers:
         specifier: ^2.12.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.47.0
+        specifier: ^2.48.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
@@ -11619,7 +11628,7 @@ importers:
         specifier: ^2.28.4
         version: link:../features/common.branding.v1
       '@wso2is/theme':
-        specifier: ^2.11.0
+        specifier: ^2.11.1
         version: link:../modules/theme
       dompurify:
         specifier: ^3.0.9
@@ -17757,9 +17766,6 @@ packages:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
 
-  dompurify@3.2.7:
-    resolution: {integrity: sha512-WhL/YuveyGXJaerVlMYGWhvQswa7myDG17P7Vu65EWC05o8vfeNbvNf4d/BOvH99+ZW+LlQsc1GDKMa1vNK6dw==}
-
   dompurify@3.4.11:
     resolution: {integrity: sha512-zhlUV12GsaRzMsf9q5M254YhA4+VuF0fG+QFqu6aYpoGlKtz+w8//jBcGVYBgQkR5GHjUomejY84AV+/uPbWdw==}
 
@@ -19752,11 +19758,6 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  marked@14.0.0:
-    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
-    engines: {node: '>= 18'}
-    hasBin: true
-
   material-colors@1.2.6:
     resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
 
@@ -20004,8 +20005,8 @@ packages:
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
-  monaco-editor@0.55.1:
-    resolution: {integrity: sha512-jz4x+TJNFHwHtwuV9vA9rMujcZRb0CEilTEwG2rRSpe/A7Jdkuj8xPKttCgOh+v/lkHy7HsZ64oj+q3xoAFl9A==}
+  monaco-editor@0.36.1:
+    resolution: {integrity: sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==}
 
   motion-dom@11.18.1:
     resolution: {integrity: sha512-g76KvA001z+atjfxczdRtw/RXOM3OMSdd1f4DL77qCTF/+avrRJiawSG4yDibEQ215sr9kpinSlX2pCTJ9zbhw==}
@@ -26025,10 +26026,10 @@ snapshots:
     dependencies:
       state-local: 1.0.7
 
-  '@monaco-editor/react@4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@monaco-editor/react@4.7.0(monaco-editor@0.36.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@monaco-editor/loader': 1.7.0
-      monaco-editor: 0.55.1
+      monaco-editor: 0.36.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -30398,10 +30399,6 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
-  dompurify@3.2.7:
-    optionalDependencies:
-      '@types/trusted-types': 2.0.7
-
   dompurify@3.4.11:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
@@ -32920,8 +32917,6 @@ snapshots:
       repeat-string: 1.6.1
       strip-color: 0.1.0
 
-  marked@14.0.0: {}
-
   material-colors@1.2.6: {}
 
   math-intrinsics@1.1.0: {}
@@ -33295,10 +33290,7 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor@0.55.1:
-    dependencies:
-      dompurify: 3.2.7
-      marked: 14.0.0
+  monaco-editor@0.36.1: {}
 
   motion-dom@11.18.1:
     dependencies:

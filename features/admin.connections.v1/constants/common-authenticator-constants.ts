@@ -44,6 +44,8 @@ export class CommonAuthenticatorConstants {
     public static readonly CONNECTION_TEMPLATE_IDS: {
         APPLE: string;
         CUSTOM_AUTHENTICATOR: string;
+        DAON_AUTHENTICATOR: string;
+        DAON_IDV: string;
         DIGITAL_WALLET: string;
         DUO: string;
         ENTERPRISE: string;
@@ -69,6 +71,8 @@ export class CommonAuthenticatorConstants {
     } = {
             APPLE: "apple-idp",
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
+            DAON_AUTHENTICATOR: "daon-authenticator",
+            DAON_IDV: "daon-idv",
             DIGITAL_WALLET: "digital-wallet",
             DUO: "duo-idp",
             ENTERPRISE: "enterprise-idp",

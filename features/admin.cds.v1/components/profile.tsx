@@ -66,7 +66,7 @@ import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 // Lazy load Monaco Editor at module scope to prevent repeated remounting
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
-    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+    import("@wso2is/admin.core.v1/components/monaco-editor/monaco-editor")
 );
 
 type Props =
