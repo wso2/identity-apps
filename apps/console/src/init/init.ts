@@ -22,7 +22,9 @@ import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
-        accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
+        accountAppOrigin: process.env.NODE_ENV === "production"
+            ? undefined
+            : `${window.location.protocol}//${window.location.hostname}:9000`,
         contextPath: contextPathGlobal,
         isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
         isOrganizationManagementEnabled: isOrganizationManagementEnabled,
