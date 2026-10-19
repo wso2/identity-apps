@@ -317,6 +317,9 @@ export const flows: flowsNS = {
                 }
             },
             organizationAttributes: {
+                federatedAuthenticationNotSupported: "Organization onboarding is currently supported only with "
+                    + "username and password registration. Remove federated authentication from this flow, "
+                    + "or remove the organization onboarding fields.",
                 missingOrganizationName: "This flow collects organization attributes but no Organization "
                     + "Name, which is required to create an organization. Add an Organization Name field, "
                     + "or these values will be discarded at runtime."

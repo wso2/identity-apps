@@ -18,8 +18,10 @@
 
 import { renderHook } from "@testing-library/react";
 import Notification, { NotificationType } from "@wso2is/admin.flow-builder-core.v1/models/notification";
+import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
+import RegistrationFlowExecutorConstants from "../../constants/registration-flow-executor-constants";
 import { AttributeType } from "../../models/attributes";
 import useOrganizationAttributeValidation from "../use-organization-attribute-validation";
 
@@ -40,6 +42,26 @@ describe("useOrganizationAttributeValidation", () => {
         } } ] } ] },
         id: "view",
         position: { x: 0, y: 0 }
+    };
+    const organizationNameStep: Node = {
+        ...organizationStep,
+        data: { components: [ { config: {
+            identifier: "organizationName",
+            identifierType: AttributeType.Organization
+        } } ] }
+    };
+    const passwordStep: Node = {
+        data: { components: [ { action: { executor: {
+            name: RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR
+        } } } ] },
+        id: "password",
+        position: { x: 0, y: 0 }
+    };
+    const federatedStep: Node = {
+        data: { action: { executor: { name: ExecutionTypes.GoogleFederation } } },
+        id: "federated",
+        position: { x: 0, y: 0 },
+        type: "EXECUTION"
     };
 
     beforeEach(() => {
@@ -87,6 +109,78 @@ describe("useOrganizationAttributeValidation", () => {
         expect(mocks.removeNotification).toHaveBeenCalledWith("organization-attribute-validation");
     });
 
+    it.each([
+        ExecutionTypes.GoogleFederation,
+        ExecutionTypes.AppleFederation,
+        ExecutionTypes.FacebookFederation,
+        ExecutionTypes.MicrosoftFederation,
+        ExecutionTypes.GithubFederation,
+        ExecutionTypes.DigitalWalletFederation
+    ])("blocks organization onboarding with %s", (executor: ExecutionTypes) => {
+        mocks.getNodes.mockReturnValue([ organizationNameStep, {
+            ...federatedStep,
+            data: { action: { executor: { name: executor } } }
+        } ]);
+
+        renderHook(() => useOrganizationAttributeValidation());
+
+        expect(mocks.addNotification).toHaveBeenCalledTimes(1);
+        const notification: Notification = mocks.addNotification.mock.calls[0][0];
+
+        expect(notification.getId()).toBe("organization-federation-validation");
+        expect(notification.getType()).toBe(NotificationType.ERROR);
+        expect(notification.getMessage()).toBe(
+            "flows:core.validation.organizationAttributes.federatedAuthenticationNotSupported"
+        );
+    });
+
+    it("allows username and password organization onboarding", () => {
+        mocks.getNodes.mockReturnValue([ organizationNameStep, passwordStep ]);
+
+        renderHook(() => useOrganizationAttributeValidation());
+
+        expect(mocks.addNotification).not.toHaveBeenCalled();
+    });
+
+    it("blocks mixed password and federated organization onboarding", () => {
+        mocks.getNodes.mockReturnValue([ organizationNameStep, passwordStep, federatedStep ]);
+
+        renderHook(() => useOrganizationAttributeValidation());
+
+        expect(mocks.addNotification.mock.calls[0][0].getType()).toBe(NotificationType.ERROR);
+    });
+
+    it("allows federated registration without organization onboarding", () => {
+        mocks.getNodes.mockReturnValue([ federatedStep ]);
+
+        renderHook(() => useOrganizationAttributeValidation());
+
+        expect(mocks.addNotification).not.toHaveBeenCalled();
+    });
+
+    it("keeps only the missing-name warning for federated flows without an organization name", () => {
+        mocks.getNodes.mockReturnValue([ organizationStep, federatedStep ]);
+
+        renderHook(() => useOrganizationAttributeValidation());
+
+        expect(mocks.addNotification).toHaveBeenCalledTimes(1);
+        expect(mocks.addNotification.mock.calls[0][0].getType()).toBe(NotificationType.WARNING);
+    });
+
+    it.each([ "federated authentication", "organization name" ])("removes the error after removing %s", (
+        removed: string
+    ) => {
+        mocks.getNodes.mockReturnValue([ organizationNameStep, federatedStep ]);
+        const { rerender } = renderHook(() => useOrganizationAttributeValidation());
+
+        mocks.removeNotification.mockClear();
+        mocks.getNodes.mockReturnValue(removed === "federated authentication" ? [ organizationNameStep ] :
+            [ federatedStep ]);
+        rerender();
+
+        expect(mocks.removeNotification).toHaveBeenCalledWith("organization-federation-validation");
+    });
+
     it("removes its notification on unmount", () => {
         mocks.getNodes.mockReturnValue([ organizationStep ]);
         const { unmount } = renderHook(() => useOrganizationAttributeValidation());
@@ -94,7 +188,8 @@ describe("useOrganizationAttributeValidation", () => {
         mocks.removeNotification.mockClear();
         unmount();
 
-        expect(mocks.removeNotification).toHaveBeenCalledTimes(1);
+        expect(mocks.removeNotification).toHaveBeenCalledTimes(2);
         expect(mocks.removeNotification).toHaveBeenCalledWith("organization-attribute-validation");
+        expect(mocks.removeNotification).toHaveBeenCalledWith("organization-federation-validation");
     });
 });

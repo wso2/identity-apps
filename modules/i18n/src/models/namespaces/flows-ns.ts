@@ -320,6 +320,7 @@ export interface flowsNS {
                 };
             };
             organizationAttributes: {
+                federatedAuthenticationNotSupported: string;
                 missingOrganizationName: string;
             };
             userResolveExecutorFields: {

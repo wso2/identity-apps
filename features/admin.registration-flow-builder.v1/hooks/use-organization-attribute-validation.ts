@@ -17,7 +17,9 @@
  */
 
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
+import { Action } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import Notification, { NotificationType } from "@wso2is/admin.flow-builder-core.v1/models/notification";
+import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node, useReactFlow } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,9 +27,18 @@ import OrganizationAttributeConstants from "../constants/organization-attribute-
 import collectOrganizationAttributeIdentifiers from "../utils/collect-organization-attribute-identifiers";
 
 const NOTIFICATION_ID: string = "organization-attribute-validation";
+const FEDERATION_NOTIFICATION_ID: string = "organization-federation-validation";
+const FEDERATED_EXECUTORS: string[] = [
+    ExecutionTypes.GoogleFederation,
+    ExecutionTypes.AppleFederation,
+    ExecutionTypes.FacebookFederation,
+    ExecutionTypes.MicrosoftFederation,
+    ExecutionTypes.GithubFederation,
+    ExecutionTypes.DigitalWalletFederation
+];
 
 /**
- * Custom hook that warns when organization attributes are collected but cannot be provisioned.
+ * Custom hook that validates organization attribute collection and blocks federated organization onboarding.
  *
  * An organization cannot be created without a name, so a flow that collects organization attributes
  * without collecting an organization name silently discards them at runtime. The notification is a
@@ -46,6 +57,23 @@ const useOrganizationAttributeValidation = (): void => {
     const hasOrganizationName: boolean = identifiers.includes(
         OrganizationAttributeConstants.ORGANIZATION_NAME_IDENTIFIER
     );
+    const hasFederatedAuthentication: boolean = nodes.some((node: Node): boolean =>
+        FEDERATED_EXECUTORS.includes((node.data?.action as Action)?.executor?.name)
+    );
+
+    useEffect(() => {
+        if (!hasOrganizationName || !hasFederatedAuthentication) {
+            removeNotification(FEDERATION_NOTIFICATION_ID);
+
+            return;
+        }
+
+        addNotification(new Notification(
+            FEDERATION_NOTIFICATION_ID,
+            t("flows:core.validation.organizationAttributes.federatedAuthenticationNotSupported"),
+            NotificationType.ERROR
+        ));
+    }, [ hasOrganizationName, hasFederatedAuthentication, t, addNotification, removeNotification ]);
 
     useEffect(() => {
         if (!hasOrganizationAttributes || hasOrganizationName) {
@@ -68,6 +96,7 @@ const useOrganizationAttributeValidation = (): void => {
     useEffect(() => {
         return () => {
             removeNotification(NOTIFICATION_ID);
+            removeNotification(FEDERATION_NOTIFICATION_ID);
         };
     }, [ removeNotification ]);
 };
