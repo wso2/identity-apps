@@ -350,7 +350,7 @@ importers:
         specifier: ^2.25.206
         version: link:../../features/admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.31.7
+        specifier: ^2.31.8
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.cli-settings.v1':
         specifier: workspace:^
@@ -503,7 +503,7 @@ importers:
         specifier: ^2.13.7
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.48.1
+        specifier: ^2.48.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
@@ -3123,7 +3123,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.46.3
+        specifier: ^2.48.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.22
