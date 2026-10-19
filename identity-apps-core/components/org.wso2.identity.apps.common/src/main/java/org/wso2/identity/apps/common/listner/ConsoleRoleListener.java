@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -178,7 +179,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                     resolvedRolePermissions.add(systemPermission);
                 }
             });
-            List<Permission> rolePermissions = getUpgradedPermissions(resolvedRolePermissions, tenantDomain);
+            List<Permission> rolePermissions = getUpgradedPermissionsOfRoles(resolvedRolePermissions, tenantDomain);
             permissions.clear();
             permissions.addAll(rolePermissions.stream().map(Permission::getName).collect(Collectors.toList()));
         }
@@ -263,6 +264,27 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     }
 
     /**
+     * Resolve the combined permissions of several roles, resolving legacy and feature scopes separately.
+     */
+    private List<Permission> getUpgradedPermissionsOfRoles(List<Permission> rolePermissions, String tenantDomain)
+        throws IdentityRoleManagementException {
+
+        List<Permission> featurePermissions = getConsoleFeaturePermissions(rolePermissions);
+        List<Permission> legacyPermissions = rolePermissions.stream()
+            .filter(permission -> !featurePermissions.contains(permission))
+            .collect(Collectors.toList());
+        if (featurePermissions.isEmpty() || legacyPermissions.isEmpty()) {
+            return getUpgradedPermissions(rolePermissions, tenantDomain);
+        }
+        Map<String, Permission> upgradedPermissions = new LinkedHashMap<>();
+        getUpgradedPermissions(featurePermissions, tenantDomain)
+            .forEach(permission -> upgradedPermissions.putIfAbsent(permission.getName(), permission));
+        getUpgradedPermissions(legacyPermissions, tenantDomain)
+            .forEach(permission -> upgradedPermissions.putIfAbsent(permission.getName(), permission));
+        return new ArrayList<>(upgradedPermissions.values());
+    }
+
+    /**
      * This method resolves the new permissions for the console roles. In this method, we resolve 3 type of console
      * roles.
      *      1. Console roles created after 7.0.0.
@@ -326,7 +348,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                         });
                         List<String> legacyWriteScopes = apiResourceCollection.getLegacyWriteScopes();
                         // if all the writeScopes are in the role's permission list, then add new write scopes.
-                        if (rolePermissions.stream().anyMatch(rolePermission ->
+                        // Collections without a v0 definition have no legacy write scopes.
+                        if (legacyWriteScopes != null && rolePermissions.stream().anyMatch(rolePermission ->
                             legacyWriteScopes.contains(rolePermission.getName()))) {
                             apiResourceCollection.getWriteScopes().forEach(newWriteScope -> {
                                 Permission newPermission = systemPermissionsMap.get(newWriteScope);

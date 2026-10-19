@@ -28,10 +28,12 @@ import org.wso2.carbon.identity.api.resource.collection.mgt.model.APIResourceCol
 import org.wso2.carbon.identity.api.resource.collection.mgt.model.APIResourceCollectionSearchResult;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.common.model.Scope;
+import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Role;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 import org.wso2.identity.apps.common.listner.ConsoleRoleListener;
 
@@ -271,6 +273,44 @@ public class ConsoleRoleListenerTest {
     }
 
     @Test
+    public void testPostGetRoleLegacyRoleWithCollectionWithoutLegacyScopes() throws Exception {
+
+        // A collection added after 7.0.0 that lists the legacy scope but has no v0 definition (no legacy scopes).
+        APIResourceCollection collection = new APIResourceCollection();
+        collection.setReadScopes(Arrays.asList(LEGACY_VIEW, INTERNAL_USER_LIST));
+        collection.setWriteScopes(Collections.singletonList(INTERNAL_USER_DELETE));
+        mockDataHolder(allSystemScopes(), Arrays.asList(
+            legacyCollection(Collections.singletonList(INTERNAL_USER_UPDATE)), collection));
+        Role role = buildRole("legacy", CONSOLE_APP_AUDIENCE_NAME, Collections.singletonList(perm(LEGACY_VIEW)));
+
+        consoleRoleListener.postGetRole(role, "roleId", TENANT_DOMAIN);
+
+        Set<String> resolved = names(role.getPermissions());
+        assertTrue(resolved.containsAll(Arrays.asList(LEGACY_VIEW, INTERNAL_USER_VIEW, INTERNAL_USER_LIST)));
+        assertFalse(resolved.contains(INTERNAL_USER_DELETE), "Write scopes need a legacy write scope on the role.");
+    }
+
+    @Test
+    public void testPostGetPermissionListOfRolesKeepsLegacyRoleScopesWithNewRole() throws Exception {
+
+        // The scopes of a 7.0.0 format role and a feature scope role, combined as the token flow passes them.
+        List<Scope> systemScopes = new ArrayList<>(allSystemScopes());
+        systemScopes.add(new Scope(LEGACY_VIEW, LEGACY_VIEW, LEGACY_VIEW, LEGACY_VIEW));
+        systemScopes.add(new Scope(LEGACY_WRITE, LEGACY_WRITE, LEGACY_WRITE, LEGACY_WRITE));
+        mockDataHolder(systemScopes, Collections.singletonList(legacyCollection(withInternalWriteScopes(USERS_EDIT))));
+        mockConsoleRoles("newRoleId", "legacyRoleId");
+        List<String> permissions = new ArrayList<>(Arrays.asList(USERS_VIEW, LEGACY_VIEW, LEGACY_WRITE));
+
+        consoleRoleListener.postGetPermissionListOfRoles(permissions, Arrays.asList("newRoleId", "legacyRoleId"),
+            TENANT_DOMAIN);
+
+        assertTrue(permissions.containsAll(Arrays.asList(INTERNAL_USER_VIEW, LEGACY_VIEW, LEGACY_WRITE,
+            INTERNAL_USER_CREATE, INTERNAL_USER_UPDATE, INTERNAL_USER_DELETE)),
+            "Scopes of the 7.0.0 format role must be kept.");
+        assertEquals(permissions.size(), new HashSet<>(permissions).size());
+    }
+
+    @Test
     public void testResolveWriteFeatureScopesForwardAddsEdit() throws Exception {
 
         List<Permission> resolved = new ArrayList<>(Arrays.asList(perm(USERS_CREATE), perm(USERS_UPDATE),
@@ -368,6 +408,18 @@ public class ConsoleRoleListenerTest {
         APIResourceCollectionSearchResult searchResult = new APIResourceCollectionSearchResult(collections);
         when(apiResourceCollectionManager.getAPIResourceCollections(anyString(), anyList(), anyString()))
             .thenReturn(searchResult);
+    }
+
+    private void mockConsoleRoles(String... roleIds) throws Exception {
+
+        AppsCommonDataHolder dataHolder = AppsCommonDataHolder.getInstance();
+        when(dataHolder.getApplicationManagementService()).thenReturn(mock(ApplicationManagementService.class));
+        RoleManagementService roleManagementService = dataHolder.getRoleManagementServiceV2();
+        for (String roleId : roleIds) {
+            RoleBasicInfo roleBasicInfo = new RoleBasicInfo(roleId, roleId);
+            roleBasicInfo.setAudienceName(CONSOLE_APP_AUDIENCE_NAME);
+            when(roleManagementService.getRoleBasicInfoById(roleId, TENANT_DOMAIN)).thenReturn(roleBasicInfo);
+        }
     }
 
     private static Role buildRole(String name, String audienceName, List<Permission> permissions) {
