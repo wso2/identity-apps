@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.19.2
+
+### Patch Changes
+
+- [#10730](https://github.com/wso2/identity-apps/pull/10730) [`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Load further groups by scrolling in the user group assignment dialog, count the selected groups against every group the user can be assigned, and keep the selection across searches
+
+- Updated dependencies [[`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436)]:
+  - @wso2is/admin.groups.v1@2.27.131
+  - @wso2is/admin.users.v1@2.38.59
+  - @wso2is/i18n@2.48.1
+
 ## 4.19.1
 
 ### Patch Changes
