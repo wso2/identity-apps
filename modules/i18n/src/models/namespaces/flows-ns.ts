@@ -336,6 +336,9 @@ export interface flowsNS {
                 message: string;
                 messageWithUserIdentifier: string;
             };
+            userResolveRequiresFactors: {
+                message: string;
+            };
         };
         steps: {
             end: {
@@ -390,6 +393,18 @@ export interface flowsNS {
                     label: string;
                     hint: string;
                 };
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
+    };
+    profileUpdate: {
+        flowDisplayName: string;
+        steps: {
+            end: {
+                description: string;
                 flowCompletionNotification: {
                     label: string;
                     hint: string;

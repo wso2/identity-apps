@@ -74,7 +74,9 @@ export enum ExecutionTypes {
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",
     FlowExtension = "FlowExtensionExecutor",
-    DigitalWalletFederation = "PresentationExecutor"
+    DigitalWalletFederation = "PresentationExecutor",
+    UserVerification = "UserVerificationExecutor",
+    FlowHandoff = "FlowHandoffExecutor"
 }
 
 export enum ExecutionStepViewTypes {

@@ -603,7 +603,7 @@
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
 
-                        if (errorDetails.portalUrlStatus === "true") {
+                        if (errorDetails.portalUrlStatus === "true" && flowType !== "PROFILE_UPDATE") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
 

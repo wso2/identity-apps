@@ -1209,6 +1209,10 @@
                     {
                         "feature": "flows.types.list.inviteUserToSetPassword",
                         "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.profileUpdate",
+                        "flag": ""
                     }
                 ],
                 "scopes": {

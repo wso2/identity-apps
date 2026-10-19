@@ -247,7 +247,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">
-                                Choose one of these templates to start building registration experience
+                                Choose one of these templates to start building your flow
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { aiFeature?.enabled && AITemplates.map((aiTemplate: Template, index: number) => (
