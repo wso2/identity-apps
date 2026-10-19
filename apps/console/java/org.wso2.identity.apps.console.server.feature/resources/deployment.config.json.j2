@@ -166,6 +166,9 @@
             }
         }
         {% endif %}
+        {% if accounts is defined and accounts.hostname is defined %}
+        ,"accountsPortalURL": "https://{{ accounts.hostname }}{{ accounts.path | default('/accounts') }}"
+        {% endif %}
     },
     "session": {
         {% if console.session.params is defined %}
