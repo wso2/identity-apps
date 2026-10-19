@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.19.4
+
+### Patch Changes
+
+- [#10764](https://github.com/wso2/identity-apps/pull/10764) [`af9f98110a208b72d0c9191807a07427810fdea0`](https://github.com/wso2/identity-apps/commit/af9f98110a208b72d0c9191807a07427810fdea0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Filter the attribute mapping edit row with the full dialect list and refresh the mapped attributes after an inline edit.
+
+- Updated dependencies [[`af9f98110a208b72d0c9191807a07427810fdea0`](https://github.com/wso2/identity-apps/commit/af9f98110a208b72d0c9191807a07427810fdea0)]:
+  - @wso2is/admin.claims.v1@2.31.7
+
 ## 4.19.3
 
 ### Patch Changes
