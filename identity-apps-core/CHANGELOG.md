@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.5.5
+
+### Patch Changes
+
+- [#10770](https://github.com/wso2/identity-apps/pull/10770) [`bc8fbf5a3fa84498742a572e92bad3cd13f195f3`](https://github.com/wso2/identity-apps/commit/bc8fbf5a3fa84498742a572e92bad3cd13f195f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Resolve console roles in the 7.0.0 permission format without failing or dropping their scopes.
+
 ## 5.5.4
 
 ### Patch Changes
