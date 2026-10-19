@@ -210,6 +210,7 @@ export interface ClaimsNS {
                     validation: {
                         invalid: string;
                         alreadyExists: string;
+                        reserved: string;
                     };
                 };
             };
