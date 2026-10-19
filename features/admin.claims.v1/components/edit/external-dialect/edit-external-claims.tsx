@@ -596,6 +596,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         showTableHeaders={ true }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
+                        allExternalClaims={ claims }
                         localClaim={ ListType.EXTERNAL }
                         update={ () => update() }
                         dialectID={ dialectID }

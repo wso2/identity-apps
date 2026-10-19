@@ -124,6 +124,10 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      */
     list: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[];
     /**
+     * Unpaginated external claims of the dialect, used to filter already mapped local claims in the edit row.
+     */
+    allExternalClaims?: ExternalClaim[];
+    /**
      * Sets if the list is to contain local claims.
      */
     localClaim: ListType;
@@ -204,6 +208,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         defaultListItemLimit,
         featureConfig,
         list,
+        allExternalClaims,
         localClaim,
         update,
         dialectID,
@@ -896,10 +901,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     update={ () => {
                                         setEditClaim("");
                                         update();
+                                        updateMappedClaims?.(true);
                                     } }
                                     submit={ submitExternalClaim }
                                     claimURI={ claim.claimURI }
-                                    externalClaims={ list }
+                                    externalClaims={ allExternalClaims ?? list }
                                     data-testid={ `${ testId }-edit-external-claim` }
                                     attributeType={ attributeType }
                                 />
