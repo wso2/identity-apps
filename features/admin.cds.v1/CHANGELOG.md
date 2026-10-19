@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.7.1
+
+### Patch Changes
+
+- [#10772](https://github.com/wso2/identity-apps/pull/10772) [`f296568a23ae2df505a3d5aa36afdb8b43eb46fc`](https://github.com/wso2/identity-apps/commit/f296568a23ae2df505a3d5aa36afdb8b43eb46fc) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Send a unification rule's matching fields only where tolerant matching is enabled, so rule creation still works against a Customer Data Service that predates typed matching
+
 ## 1.7.0
 
 ### Minor Changes
