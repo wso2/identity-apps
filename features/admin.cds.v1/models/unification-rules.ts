@@ -134,8 +134,16 @@ export interface CreateUnificationRulePayload {
     rule_name: string;
     is_active: boolean;
     priority: number;
-    attribute_type: UnificationAttributeType;
-    unification_method: UnificationMethod;
+    /**
+     * Optional, and omitted entirely where tolerant matching is switched off.
+     *
+     * A server that predates typed matching rejects unknown fields outright, so sending
+     * these pinned to their defaults fails the whole request rather than being ignored.
+     * Left out, the request is the one such a server has always accepted, and a server
+     * that does understand them derives exactly the same values.
+     */
+    attribute_type?: UnificationAttributeType;
+    unification_method?: UnificationMethod;
 }
 
 /**
