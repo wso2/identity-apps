@@ -25,6 +25,7 @@ import {
     UserAsteriskIcon,
     UserFlowIcon,
     UserKeyIcon,
+    UserPencilIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -75,6 +76,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return <UserFlowIcon size="small" className="icon" />;
             case FlowTypes.INVITED_USER_REGISTRATION:
                 return <UserAsteriskIcon size="small" className="icon" />;
+            case FlowTypes.PROFILE_UPDATE:
+                return <UserPencilIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
         }

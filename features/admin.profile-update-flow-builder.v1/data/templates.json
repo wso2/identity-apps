@@ -1,0 +1,762 @@
+[
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BLANK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Blank",
+            "description": "Start a new flow from scratch",
+            "image": "assets/images/icons/refresh-ccw.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Heading"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "END",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 790,
+                            "y": 330
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Profile Updated Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your profile has been updated successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Profile Update with Email OTP",
+            "description": "Profile update using Email OTP",
+            "image": "assets/images/icons/email-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "FLOW_HANDOFF_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROFILE_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{FLOW_HANDOFF_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FLOW_HANDOFF_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 250,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FlowHandoffExecutor"
+                                },
+                                "next": "{{OTP_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your email",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{PROFILE_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROFILE_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 950,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Update Profile"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "END",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1440,
+                            "y": 330
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Profile Updated Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your profile has been updated successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "PROFILE_UPDATE_WITH_SMS_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Profile Update with SMS OTP",
+            "description": "Profile update using SMS OTP",
+            "image": "assets/images/icons/mobile-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "FLOW_HANDOFF_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROFILE_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{FLOW_HANDOFF_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FLOW_HANDOFF_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 250,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FlowHandoffExecutor"
+                                },
+                                "next": "{{OTP_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your mobile",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "SMSOTPExecutor"
+                                                },
+                                                "next": "{{PROFILE_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROFILE_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 950,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Update Profile"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "END",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1440,
+                            "y": 330
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Profile Updated Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your profile has been updated successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "PROFILE_UPDATE_WITH_MAGIC_LINK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Profile Update with Magic Link",
+            "description": "Profile update using Magic Link",
+            "image": "assets/images/icons/link.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "MAGIC_LINK_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROFILE_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 330
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{MAGIC_LINK_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{MAGIC_LINK_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 250,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "MagicLinkExecutor"
+                                },
+                                "next": "{{PROFILE_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email containing further instructions has been sent to your email address. Please check your inbox to continue.</span></h5>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROFILE_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 700,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Update Profile"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "END",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1190,
+                            "y": 330
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Profile Updated Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your profile has been updated successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

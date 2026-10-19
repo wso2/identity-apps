@@ -363,6 +363,9 @@ export interface flowsNS {
                 message: string;
                 messageWithUserIdentifier: string;
             };
+            userResolveRequiresFactors: {
+                message: string;
+            };
             variables: {
                 invalid: string;
                 tooManyHeaders: string;
@@ -483,6 +486,18 @@ export interface flowsNS {
                     label: string;
                     hint: string;
                 };
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
+    };
+    profileUpdate: {
+        flowDisplayName: string;
+        steps: {
+            end: {
+                description: string;
                 flowCompletionNotification: {
                     label: string;
                     hint: string;
