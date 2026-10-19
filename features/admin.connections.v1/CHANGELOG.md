@@ -1,5 +1,13 @@
 # @wso2is/admin.connections.v1
 
+## 2.43.3
+
+### Patch Changes
+
+- [#10765](https://github.com/wso2/identity-apps/pull/10765) [`a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3`](https://github.com/wso2/identity-apps/commit/a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve the registration and recovery redirect URIs in the connection create wizard help panel using the
+  accounts portal hostname configured under `[accounts]` in the deployment.toml, falling back to the custom
+  server host when it is not configured
+
 ## 2.43.2
 
 ### Patch Changes
