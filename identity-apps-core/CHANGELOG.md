@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.5.6
+
+### Patch Changes
+
+- [#10722](https://github.com/wso2/identity-apps/pull/10722) [`a411639116b0b581244c110c85a946803408b12f`](https://github.com/wso2/identity-apps/commit/a411639116b0b581244c110c85a946803408b12f) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add messages for enrolling a mobile number during SMS OTP authentication
+
 ## 5.5.5
 
 ### Patch Changes
