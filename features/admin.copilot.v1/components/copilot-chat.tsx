@@ -190,27 +190,46 @@ interface MessageErrorBoundaryProps {
 }
 
 /**
+ * State for MessageErrorBoundary
+ */
+interface MessageErrorBoundaryState {
+    hasError: boolean;
+    prevResetKey: string;
+}
+
+/**
  * Error boundary that catches rendering errors inside a single chat message.
  * Prevents a malformed message from crashing the entire chat list.
  * Resets automatically when resetKey changes (e.g. when the message content updates).
  */
 class MessageErrorBoundary extends Component<
     MessageErrorBoundaryProps,
-    { hasError: boolean }
+    MessageErrorBoundaryState
 > {
     constructor(props: MessageErrorBoundaryProps) {
         super(props);
-        this.state = { hasError: false };
+        this.state = {
+            hasError: false,
+            prevResetKey: props.resetKey
+        };
     }
 
-    static getDerivedStateFromError(): { hasError: boolean } {
+    static getDerivedStateFromError(): Partial<MessageErrorBoundaryState> {
         return { hasError: true };
     }
 
-    componentDidUpdate(prevProps: MessageErrorBoundaryProps): void {
-        if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
-            this.setState({ hasError: false });
+    static getDerivedStateFromProps(
+        props: MessageErrorBoundaryProps,
+        state: MessageErrorBoundaryState
+    ): Partial<MessageErrorBoundaryState> | null {
+        if (props.resetKey !== state.prevResetKey) {
+            return {
+                hasError: false,
+                prevResetKey: props.resetKey
+            };
         }
+
+        return null;
     }
 
     render(): ReactNode {
