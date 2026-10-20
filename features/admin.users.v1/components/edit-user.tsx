@@ -242,11 +242,21 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                             { " " }
                             <a
                                 role="button"
+                                tabIndex={ 0 }
                                 style={ { cursor: "pointer", textDecoration: "underline" } }
                                 onClick={ (): void => history.push(
                                     AppConstants.getPaths().get("PROFILE")?.replace(
                                         ":id", linkedCDSProfile.profile_id)
                                 ) }
+                                onKeyDown={ (event: React.KeyboardEvent<HTMLAnchorElement>): void => {
+                                    if (event.key === "Enter" || event.key === " ") {
+                                        event.preventDefault();
+                                        history.push(
+                                            AppConstants.getPaths().get("PROFILE")?.replace(
+                                                ":id", linkedCDSProfile.profile_id)
+                                        );
+                                    }
+                                } }
                             >
                                 { t("customerDataService:profiles.linkedUser.action") }
                             </a>
