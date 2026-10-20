@@ -3,4 +3,4 @@
 "@wso2is/i18n": patch
 ---
 
-Add SMS OTP settings to allow mobile number enrollment during login and to configure the mobile number regex
+Add an SMS OTP setting to allow mobile number enrollment during login

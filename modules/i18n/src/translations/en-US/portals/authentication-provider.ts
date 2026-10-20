@@ -953,15 +953,6 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         "Applies only when the user has already signed in with another authenticator in the " +
                         "same login flow.",
                     label: "Allow mobile number enrollment during login"
-                },
-                mobileNumberRegex: {
-                    hint: "The pattern a mobile number must match before it is added to the user's profile. " +
-                        "If empty, <1>^\\+?[0-9]{7,15}$</1> is used.",
-                    label: "Mobile number regex (optional)",
-                    placeholder: "Enter a regular expression.",
-                    validations: {
-                        invalid: "Enter a valid regular expression."
-                    }
                 }
             },
             push: {

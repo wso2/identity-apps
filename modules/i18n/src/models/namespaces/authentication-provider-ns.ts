@@ -409,14 +409,6 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                 };
-                mobileNumberRegex: {
-                    hint: string;
-                    label: string;
-                    placeholder: string;
-                    validations: {
-                        invalid: string;
-                    };
-                };
             };
             push: {
                 hint: string;
