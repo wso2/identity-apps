@@ -108,6 +108,14 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      * Whether to propagate OTP delivery failures to the user's login page.
      */
     SmsOTP_NotifySmsSendingFailure: boolean;
+    /**
+     * Whether to ask users without a mobile number to enroll one during login.
+     */
+    SmsOTP_EnrollUserInAuthenticationFlow?: boolean;
+    /**
+     * Regex that an enrolled mobile number must match.
+     */
+    SmsOTP_MobileNumberRegex?: string;
 }
 
 /**
@@ -138,6 +146,14 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      * Whether to propagate OTP delivery failures to the user's login page.
      */
     SmsOTP_NotifySmsSendingFailure: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Mobile number enrollment during login field.
+     */
+    SmsOTP_EnrollUserInAuthenticationFlow?: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Mobile number regex field.
+     */
+    SmsOTP_MobileNumberRegex?: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -168,6 +184,10 @@ interface SMSOTPAuthenticatorFormErrorValidationsInterface {
      * Whether to propagate OTP delivery failures to the user's login page.
      */
     SmsOTP_NotifySmsSendingFailure: string;
+    /**
+     * Mobile number regex field.
+     */
+    SmsOTP_MobileNumberRegex?: string;
 }
 
 const FORM_ID: string = "sms-otp-authenticator-form";
@@ -200,6 +220,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
+    const [ isMobileNumberEnrollmentEnabled, setIsMobileNumberEnrollmentEnabled ] = useState<boolean>(false);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -255,6 +276,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         });
 
         setIsOTPNumeric(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars);
+        setIsMobileNumberEnrollmentEnabled(!!resolvedInitialValues.SmsOTP_EnrollUserInAuthenticationFlow);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -270,7 +292,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
-        for (const [ name, value ] of Object.entries(values)) {
+        // A cleared input is left out of the form values, so send it as empty to remove the configured regex.
+        const submittedValues: SMSOTPAuthenticatorFormInitialValuesInterface =
+            initialValues?.SmsOTP_MobileNumberRegex !== undefined
+                ? { ...values, SmsOTP_MobileNumberRegex: values.SmsOTP_MobileNumberRegex ?? "" }
+                : values;
+
+        for (const [ name, value ] of Object.entries(submittedValues)) {
             if (name !== undefined) {
                 const moderatedName: string = name.replace(/_/g, ".");
 
@@ -309,6 +337,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         const errors: SMSOTPAuthenticatorFormErrorValidationsInterface = {
             SmsOTP_ExpiryTime: undefined,
+            SmsOTP_MobileNumberRegex: undefined,
             SmsOTP_NotifySmsSendingFailure: undefined,
             SmsOTP_OTPLength: undefined,
             SmsOTP_OtpRegex_UseNumericChars: undefined,
@@ -383,6 +412,15 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid range.
             errors.SmsOTP_ResendBlockDuration = t("authenticationProvider:forms" +
                 ".authenticatorSettings.smsOTP.resendBlockDuration.validations.range");
+        }
+
+        if (values.SmsOTP_MobileNumberRegex) {
+            try {
+                new RegExp(values.SmsOTP_MobileNumberRegex);
+            } catch {
+                errors.SmsOTP_MobileNumberRegex = t("authenticationProvider:forms" +
+                    ".authenticatorSettings.smsOTP.mobileNumberRegex.validations.invalid");
+            }
         }
 
         return errors;
@@ -652,6 +690,58 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 width={ 12 }
                 data-componentid={ `${ testId }-show-failure-reason` }
             />
+            {
+                initialValues?.SmsOTP_EnrollUserInAuthenticationFlow !== undefined && (
+                    <Field.Checkbox
+                        ariaLabel="Enroll mobile number during login"
+                        name="SmsOTP_EnrollUserInAuthenticationFlow"
+                        label={
+                            t("authenticationProvider:forms.authenticatorSettings" +
+                                ".smsOTP.enrollUserInAuthenticationFlow.label")
+                        }
+                        hint={ t("authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.enrollUserInAuthenticationFlow.hint") }
+                        readOnly={ readOnly }
+                        width={ 12 }
+                        data-componentid={ `${ testId }-enroll-user-in-authentication-flow` }
+                        listen={ (enabled: boolean) => setIsMobileNumberEnrollmentEnabled(enabled) }
+                    />
+                )
+            }
+            {
+                isMobileNumberEnrollmentEnabled && initialValues?.SmsOTP_MobileNumberRegex !== undefined && (
+                    <Field.Input
+                        ariaLabel="Mobile number regex"
+                        inputType="default"
+                        name="SmsOTP_MobileNumberRegex"
+                        label={
+                            t("authenticationProvider:forms.authenticatorSettings" +
+                                ".smsOTP.mobileNumberRegex.label")
+                        }
+                        placeholder={
+                            t("authenticationProvider:forms.authenticatorSettings" +
+                                ".smsOTP.mobileNumberRegex.placeholder")
+                        }
+                        hint={
+                            (<Trans
+                                i18nKey={
+                                    "authenticationProvider:forms.authenticatorSettings" +
+                                    ".smsOTP.mobileNumberRegex.hint"
+                                }
+                            >
+                                The pattern a mobile number must match before it is added to the user&apos;s
+                                profile. If empty, <Code>{ "^\\+?[0-9]{7,15}$" }</Code> is used.
+                            </Trans>)
+                        }
+                        required={ false }
+                        readOnly={ readOnly }
+                        maxLength={ 255 }
+                        minLength={ 0 }
+                        width={ 12 }
+                        data-componentid={ `${ testId }-mobile-number-regex` }
+                    />
+                )
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

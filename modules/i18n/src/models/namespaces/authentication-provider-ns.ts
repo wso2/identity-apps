@@ -405,6 +405,18 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                enrollUserInAuthenticationFlow: {
+                    hint: string;
+                    label: string;
+                };
+                mobileNumberRegex: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                    };
+                };
             };
             push: {
                 hint: string;
