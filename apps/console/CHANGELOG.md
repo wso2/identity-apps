@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.19.6
+
+### Patch Changes
+
+- [#10774](https://github.com/wso2/identity-apps/pull/10774) [`f80a40efb001c359431e94b455f957c1a6551186`](https://github.com/wso2/identity-apps/commit/f80a40efb001c359431e94b455f957c1a6551186) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add an SMS OTP setting to allow mobile number enrollment during login
+
+- Updated dependencies [[`f80a40efb001c359431e94b455f957c1a6551186`](https://github.com/wso2/identity-apps/commit/f80a40efb001c359431e94b455f957c1a6551186)]:
+  - @wso2is/i18n@2.48.3
+
 ## 4.19.5
 
 ### Patch Changes
