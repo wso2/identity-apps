@@ -405,6 +405,10 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                enrollUserInAuthenticationFlow: {
+                    hint: string;
+                    label: string;
+                };
             };
             push: {
                 hint: string;
