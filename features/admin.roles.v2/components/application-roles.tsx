@@ -150,6 +150,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
+    const isSharedAppRoleManagementFeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isSharedAppRoleManagementFeatureEnabled
+    );
+    const isRoleCreationAllowed: boolean = isSharedAppRoleManagementFeatureEnabled && allowRoleCreation;
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(
         userRolesV3FeatureEnabled
@@ -232,11 +236,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * The roles of a shared application can be managed only if they are application audience roles, and the
      * organization is allowed to create application roles for it or already has its own roles for the application.
      * Organization audience roles of a shared application are managed in the roles of the organization, as removing
-     * them here would delete them from the organization. Otherwise, the roles are read only.
+     * them here would delete them from the organization. Otherwise, the roles are read only. The roles of a shared
+     * application are always read only when the shared application role management feature is disabled.
      */
     const isRoleAssignmentReadOnly: boolean = readOnly || (isSharedApplication
-        && (roleAudience !== RoleAudienceTypes.APPLICATION
-            || (!allowRoleCreation
+        && (!isSharedAppRoleManagementFeatureEnabled
+            || roleAudience !== RoleAudienceTypes.APPLICATION
+            || (!isRoleCreationAllowed
                 && !(initialSelectedRoles ?? []).some((role: BasicRoleInterface) => !isInheritedRole(role)))));
 
     /**
@@ -531,7 +537,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         <Grid.Column width={ 6 }>
                                             {
                                                 !readOnly &&
-                                                (!isSharedApplication || allowRoleCreation) &&
+                                                (!isSharedApplication || isRoleCreationAllowed) &&
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
                                                 hasRoleCreatePermissions
                                                     && (

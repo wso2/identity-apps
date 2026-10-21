@@ -670,6 +670,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enabledFeatureOverridesInConsoleRolePermissions?: string[];
     /**
+     * Flag to check if the feature that allows organizations to manage roles for shared applications is enabled.
+     */
+    isSharedAppRoleManagementFeatureEnabled?: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

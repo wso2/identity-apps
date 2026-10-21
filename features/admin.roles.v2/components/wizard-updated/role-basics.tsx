@@ -26,7 +26,7 @@ import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/mode
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/forms";
@@ -42,6 +42,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps } from "semantic-ui-react";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
@@ -99,9 +100,13 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const { organizationType } = useGetCurrentOrganizationType();
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+    const isSharedAppRoleManagementFeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isSharedAppRoleManagementFeatureEnabled
+    );
+    const isSharedAppRoleCreationSupported: boolean = isSubOrg && isSharedAppRoleManagementFeatureEnabled;
 
     // Shared applications exist only in sub organizations. Hence, request whether application roles can be created
-    // for them only in sub organizations.
+    // for them only in sub organizations, and only when the feature is enabled.
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
@@ -110,7 +115,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList(
         "clientId,associatedRoles.allowedAudience,advancedConfigurations" +
-            (isSubOrg ? ",allowSharedAppRoleManagement" : ""),
+            (isSharedAppRoleCreationSupported ? ",allowSharedAppRoleManagement" : ""),
         null, null, applicationSearchQuery, true, true);
 
     const {
@@ -152,7 +157,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
                 // Shared applications are listed only if their owner allows creating application roles for them.
                 const isRoleCreationAllowed: boolean = application?.advancedConfigurations?.fragment === false
-                    || (application?.advancedConfigurations?.fragment === true
+                    || (isSharedAppRoleCreationSupported
+                        && application?.advancedConfigurations?.fragment === true
                         && application?.allowSharedAppRoleManagement === true);
 
                 if (isRoleCreationAllowed) {
@@ -382,7 +388,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             {
                                 // TODO: need to add a learn more for this.
                                 isSubOrg
-                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization.appNote")
+                                    ? (isSharedAppRoleCreationSupported
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization." +
+                                            "sharedAppNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization.appNote"))
                                     : t("roles:addRoleWizard.forms.roleBasicDetails.notes.appNote")
                             }
                         </Alert>
