@@ -97,23 +97,27 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+
+    // Shared applications exist only in sub organizations. Hence, request whether application roles can be created
+    // for them only in sub organizations.
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
-        applicationSearchQuery, true, true);
+    } = useApplicationList(
+        "clientId,associatedRoles.allowedAudience,advancedConfigurations" +
+            (isSubOrg ? ",allowSharedAppRoleManagement" : ""),
+        null, null, applicationSearchQuery, true, true);
 
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
     } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
-
-    const { organizationType } = useGetCurrentOrganizationType();
-    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -146,7 +150,12 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                if (application?.advancedConfigurations?.fragment === false) {
+                // Shared applications are listed only if their owner allows creating application roles for them.
+                const isRoleCreationAllowed: boolean = application?.advancedConfigurations?.fragment === false
+                    || (application?.advancedConfigurations?.fragment === true
+                        && application?.allowSharedAppRoleManagement === true);
+
+                if (isRoleCreationAllowed) {
                     options.push({
                         content: (
                             <ListItemText

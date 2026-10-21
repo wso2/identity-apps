@@ -320,7 +320,9 @@ export const applicationConfig: ApplicationConfig = {
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
                                     originalTemplateId={ application?.originalTemplateId }
-                                    readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
+                                    readOnly={ isReadOnly }
+                                    isSharedApplication={ !!application?.advancedConfigurations?.fragment }
+                                    allowRoleCreation={ !!application?.allowSharedAppRoleManagement }
                                 />
                             </ResourceTab.Pane>
                         )
