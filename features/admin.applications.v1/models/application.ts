@@ -51,6 +51,12 @@ export interface ApplicationBasicInterface {
     applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
     associatedRoles?: AssociatedRolesInterface;
+    /**
+     * For a main application, whether organizations can manage their own roles for its shared applications.
+     * For a shared application, the read-only value resolved from the main application, which is true only if
+     * organizations can create application roles for it.
+     */
+    sharedAppRoleManagementEnabled?: boolean;
 }
 
 export enum ApplicationAccessTypes {
