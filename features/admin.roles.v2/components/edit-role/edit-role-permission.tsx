@@ -29,8 +29,10 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -65,6 +67,7 @@ import {
     useAPIResourceDetails
 } from "../../api/roles";
 import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../../constants/role-constants";
+import { RoleManagementUtils } from "../../utils/role-management-utils";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
 import "./edit-role-permission.scss";
@@ -156,6 +159,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         return ids;
     }, [ blockedAPIResourceEntries ]);
 
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+
     // If the enforce role operation permission feature is enabled,
     // only allow to edit the role if the user has the relevant permission.
     const isReadOnlyView: boolean = isReadOnly ||
@@ -223,6 +229,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     return;
                 }
 
+                // Management API resources are not available to roles in organizations.
+                if (isSubOrg && !RoleManagementUtils.isAPIResourceAllowedInOrganization(api?.type)) {
+                    return;
+                }
+
                 if (
                     !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
@@ -244,7 +255,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             setAllAPIResourcesDropdownOptions(options);
         }
 
-    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
+    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds, isSubOrg ]);
 
     useEffect(() => {
         const options: DropdownItemProps[] = [];

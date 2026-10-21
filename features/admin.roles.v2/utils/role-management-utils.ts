@@ -28,6 +28,7 @@ import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { getPermissionList, searchRoleList } from "../api/roles";
 import { generatePermissionTree } from "../components/role-utils";
+import { RoleConstants } from "../constants/role-constants";
 import { PermissionObject,TreeNode } from "../models/permission";
 import { SearchRoleInterface  } from "../models/roles";
 
@@ -226,4 +227,14 @@ export class RoleManagementUtils {
 
         return categorizedGroups;
     };
+
+    /**
+     * Checks whether permissions of an API resource of the given type can be assigned to roles in organizations.
+     * Management API resources are not available to organizations, even when they are authorized for the application.
+     *
+     * @param apiResourceType - Type of the API resource.
+     * @returns True if the API resource is available to organizations.
+     */
+    public static isAPIResourceAllowedInOrganization = (apiResourceType: string): boolean =>
+        !RoleConstants.ORGANIZATION_RESTRICTED_API_RESOURCE_TYPES.includes(apiResourceType?.toUpperCase());
 }

@@ -17,6 +17,7 @@
  */
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
@@ -39,6 +40,16 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
      */
     isEnabled: boolean;
     /**
+     * Whether organizations are currently allowed to manage roles for the application. This requires
+     * enhanced organization login, hence it is disallowed together when enhanced organization login is disabled.
+     */
+    isSharedAppRoleManagementAllowed?: boolean;
+    /**
+     * Role audience of the application. With organization audience, disallowing role management for organizations
+     * does not delete their organization roles.
+     */
+    roleAudience?: string;
+    /**
      * Callback fired after a successful update.
      */
     onUpdate: () => void;
@@ -57,8 +68,10 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
 export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLoginTogglePropsInterface> = ({
     appId,
     isEnabled,
+    isSharedAppRoleManagementAllowed,
     onUpdate,
     readOnly,
+    roleAudience,
     "data-componentid": componentId
 }: EnhancedOrganizationLoginTogglePropsInterface): ReactElement => {
 
@@ -67,6 +80,13 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
     const [ showConfirmation, setShowConfirmation ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ pendingValue, setPendingValue ] = useState<boolean>(false);
+
+    const isOrganizationAudience: boolean = roleAudience?.toUpperCase() === RoleAudienceTypes.ORGANIZATION;
+    // Disabling enhanced organization login also disallows role management for organizations. With application
+    // audience, it deletes the application roles created by organizations. With organization audience, their
+    // organization roles are only no longer honoured for the application.
+    const isDisallowingRoleManagement: boolean = !pendingValue && !!isSharedAppRoleManagementAllowed;
+    const isDeletingOrganizationRoles: boolean = isDisallowingRoleManagement && !isOrganizationAudience;
 
     const handleToggle: (_event: SyntheticEvent, data: CheckboxProps) => void = (
         _event: SyntheticEvent,
@@ -85,7 +105,9 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
         setIsSubmitting(true);
 
         return updateApplicationConfigurations(appId, {
-            enhancedOrgAuthenticationEnabled: newValue
+            enhancedOrgAuthenticationEnabled: newValue,
+            // Application role management for shared applications requires enhanced organization login.
+            ...(!newValue && isSharedAppRoleManagementAllowed ? { sharedAppRoleManagementEnabled: false } : {})
         })
             .then((): void => {
                 dispatch(addAlert({
@@ -138,8 +160,14 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
             <ConfirmationModal
                 data-componentid={ `${componentId}-confirmation-modal` }
                 onClose={ (): void => setShowConfirmation(false) }
-                type="warning"
+                // With application audience, disabling while role management is allowed deletes the application
+                // roles created by organizations.
+                type={ isDeletingOrganizationRoles ? "negative" : "warning" }
                 open={ showConfirmation }
+                assertionHint={ isDeletingOrganizationRoles
+                    ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.assertionHint")
+                    : undefined }
+                assertionType={ isDeletingOrganizationRoles ? "checkbox" : undefined }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onPrimaryActionClick={ (): void => {
@@ -152,14 +180,28 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
                 <ConfirmationModal.Header>
                     { t("applications:edit.sections.enhancedOrganizationLogin.confirmation.header") }
                 </ConfirmationModal.Header>
-                <ConfirmationModal.Message attached warning>
-                    { t("applications:edit.sections.enhancedOrganizationLogin.confirmation.message") }
+                <ConfirmationModal.Message
+                    attached
+                    warning={ !isDeletingOrganizationRoles }
+                    negative={ isDeletingOrganizationRoles }
+                >
+                    { isDeletingOrganizationRoles
+                        ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.disableMessage")
+                        : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
                     <p>
                         { t("applications:edit.sections.enhancedOrganizationLogin" +
                             ".confirmation.content.0") }
                     </p>
+                    { isDisallowingRoleManagement && (
+                        <p data-componentid={ `${componentId}-shared-app-role-management-note` }>
+                            { isOrganizationAudience
+                                ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.content" +
+                                    ".disableOrganizationAudience")
+                                : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.content.1") }
+                        </p>
+                    ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

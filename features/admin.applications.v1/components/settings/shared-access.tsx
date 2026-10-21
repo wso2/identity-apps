@@ -30,6 +30,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { EnhancedOrganizationLoginToggle } from "./enhanced-organization-login-toggle";
+import { SharedAppRoleManagementToggle } from "./shared-app-role-management-toggle";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -163,6 +164,18 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    isSharedAppRoleManagementAllowed={ application.sharedAppRoleManagementEnabled ?? false }
+                    roleAudience={ application.associatedRoles?.allowedAudience }
+                    onUpdate={ handleUpdate }
+                    readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                />
+            ) }
+            { isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount &&
+                application.enhancedOrgAuthenticationEnabled && (
+                <SharedAppRoleManagementToggle
+                    appId={ application.id }
+                    isEnabled={ application.sharedAppRoleManagementEnabled ?? false }
+                    roleAudience={ application.associatedRoles?.allowedAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
                 />
