@@ -31,12 +31,14 @@ import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PenToSquareIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -47,6 +49,7 @@ import React, {
     useMemo,
     useState
 } from "react";
+import { useSelector } from "react-redux";
 import DefineOrganizationAttributeModal from "./define-organization-attribute-modal";
 import OrganizationAttributeConstants from "../../../constants/organization-attribute-constants";
 import useRegistrationFlowBuilder from "../../../hooks/use-registration-flow-builder";
@@ -80,6 +83,13 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
     const { supportedAttributes: userAttributes } = useRegistrationFlowBuilder();
     const { selectedNotification } = useValidationStatus();
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
+        flowsFeatureConfig,
+        "flows.registration.organizationOnboarding"
+    );
 
     const [ orgKeyError, setOrgKeyError ] = useState<string>("");
 
@@ -316,7 +326,8 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
         });
     };
 
-    if (resource.variant === InputVariants.Password || resource.variant === InputVariants.OrgHandler) {
+    if (resource.variant === InputVariants.Password || resource.variant === InputVariants.OrgHandler ||
+        (!isOrganizationOnboardingEnabled && attributeType === AttributeType.Organization)) {
         return null;
     }
 
@@ -333,12 +344,12 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                     onChange={handleAttributeTypeChange}
                 >
                     <Stack>
-                        <FormControlLabel
+                        {isOrganizationOnboardingEnabled && (<FormControlLabel
                             value={AttributeType.User}
                             control={<Radio size="small" />}
                             label="User Attribute"
 
-                        />
+                        />)}
                         <Autocomplete
                             disablePortal
                             disabled={attributeType !== AttributeType.User}
@@ -362,7 +373,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                             }}
                         />
                     </Stack>
-                    <Stack>
+                    {isOrganizationOnboardingEnabled && (<Stack>
                         <FormControlLabel
                             value={AttributeType.Organization}
                             control={<Radio size="small" />}
@@ -459,7 +470,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                                     </Button>
                                 )
                         )}
-                    </Stack>
+                    </Stack>)}
                 </RadioGroup>
             </FormControl>
 
@@ -469,13 +480,13 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 </FormHelperText>
             )}
 
-            <DefineOrganizationAttributeModal
+            {isOrganizationOnboardingEnabled && (<DefineOrganizationAttributeModal
                 open={isDefineModalOpen}
                 attribute={editingOrgAttribute}
                 onClose={handleDefineModalClose}
                 onSubmit={handleDefineModalSubmit}
                 data-componentid={`${componentId}-define-modal`}
-            />
+            />)}
 
         </Stack>
     );

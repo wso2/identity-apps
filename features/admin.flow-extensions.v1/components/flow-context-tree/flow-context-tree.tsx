@@ -27,7 +27,9 @@ import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { Claim, ClaimsGetParams } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { Claim, ClaimsGetParams, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
@@ -39,6 +41,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
 import { ReactComponent as LockIcon } from "../../resources/assets/images/icons/lock.svg";
 import AddClaimModal from "./add-claim-modal";
@@ -435,6 +438,14 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
     "data-componentid": componentId = "flow-context-tree"
 }: FlowContextTreePropsInterface): ReactElement => {
 
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
+        flowsFeatureConfig,
+        "flows.registration.organizationOnboarding"
+    );
+
     const [ allClaims, setAllClaims ] = useState<Claim[]>([]);
     const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(true);
 
@@ -472,6 +483,20 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
     );
 
     const [ selectedKey, setSelectedKey ] = useState<string | null>(null);
+
+    // Hide only the new attributes section; retain the full tree for access config serialization.
+    const visibleTree: TreeNodeStateInterface[] = useMemo(() => tree.map(
+        (node: TreeNodeStateInterface) => !isOrganizationOnboardingEnabled &&
+            node.path.replace(/\/+$/, "") ===
+                OrganizationContextConstants.ORGANIZATION_PATH_PREFIX.replace(/\/+$/, "")
+            ? {
+                ...node,
+                children: node.children?.filter(
+                    (child: TreeNodeStateInterface) => !isOrganizationAttributesContainer(child)
+                )
+            }
+            : node
+    ), [ tree, isOrganizationOnboardingEnabled ]);
 
     const [ claimModal, setClaimModal ] = useState<AddEntryModalStateInterface>({
         open: false,
@@ -533,19 +558,19 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
     // Default-select the first leaf once the tree is populated, and re-target if
     // the current selection no longer resolves (e.g. after a delete).
     useEffect(() => {
-        if (selectedKey && findNode(tree, selectedKey)) {
+        if (selectedKey && findNode(visibleTree, selectedKey)) {
             return;
         }
-        const fallback: string | null = findFirstLeafKey(tree);
+        const fallback: string | null = findFirstLeafKey(visibleTree);
 
         if (fallback !== selectedKey) {
             setSelectedKey(fallback);
         }
-    }, [ tree, selectedKey ]);
+    }, [ visibleTree, selectedKey ]);
 
     const selectedNode: TreeNodeStateInterface | null = useMemo(
-        () => (selectedKey ? findNode(tree, selectedKey) : null),
-        [ tree, selectedKey ]
+        () => (selectedKey ? findNode(visibleTree, selectedKey) : null),
+        [ visibleTree, selectedKey ]
     );
 
     const handleToggleExpose = useCallback((key: string): void => {
@@ -729,7 +754,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
                         px: "10px"
                     } }
                 >
-                    { tree.map((node: TreeNodeStateInterface) => (
+                    { visibleTree.map((node: TreeNodeStateInterface) => (
                         <FlowContextTreeNode
                             key={ node.key }
                             node={ node }
@@ -758,7 +783,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
                 </Box>
             </Box>
 
-            <AddOrganizationAttributeModal
+            { isOrganizationOnboardingEnabled && (<AddOrganizationAttributeModal
                 open={ orgAttributeModal.open }
                 attributeOptions={ organizationAttributeOptions }
                 existingKeys={
@@ -769,7 +794,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
                 onClose={ handleOrgAttributeModalClose }
                 onSubmit={ handleOrgAttributeModalSubmit }
                 data-componentid={ `${componentId}-add-organization-attribute-modal` }
-            />
+            />) }
 
             <AddClaimModal
                 open={ claimModal.open }

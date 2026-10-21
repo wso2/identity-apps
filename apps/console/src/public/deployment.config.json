@@ -1203,6 +1203,10 @@
                         "flag": ""
                     },
                     {
+                        "feature": "flows.registration.organizationOnboarding",
+                        "flag": ""
+                    },
+                    {
                         "feature": "flows.types.list.passwordRecovery",
                         "flag": ""
                     },

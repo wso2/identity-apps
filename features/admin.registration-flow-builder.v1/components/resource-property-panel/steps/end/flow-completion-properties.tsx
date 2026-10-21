@@ -37,6 +37,7 @@ import { Action } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
 import { StepData } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node, useNodesData, useReactFlow } from "@xyflow/react";
 import isEmpty from "lodash-es/isEmpty";
@@ -69,6 +70,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
     const { data: registrationFlowConfig } = useGetFlowConfig(FlowTypes.REGISTRATION);
     const { updateNodeData } = useReactFlow();
     const endStep: Pick<Node, "data"> = useNodesData(lastInteractedStepId);
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
+        flowsFeatureConfig,
+        "flows.registration.organizationOnboarding"
+    );
 
     const executorName: string = (endStep?.data as StepData)?.action?.executor?.name;
     const provisionTarget: unknown = (endStep?.data as StepData)?.action?.executor?.meta?.[
@@ -288,7 +296,8 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         </FormHelperText>
                     </Box>
                 ) }
-                { executorName === RegistrationFlowExecutorConstants.PROVISIONING_DISPATCH_EXECUTOR && (
+                { isOrganizationOnboardingEnabled &&
+                    executorName === RegistrationFlowExecutorConstants.PROVISIONING_DISPATCH_EXECUTOR && (
                     <Box data-componentid={ `${componentId}-provision-target` }>
                         <FormControlLabel
                             label={ t("flows:registrationFlow.steps.end.provisionTarget.label") }
@@ -307,7 +316,8 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         </FormHelperText>
                     </Box>
                 ) }
-                { executorName === RegistrationFlowExecutorConstants.PROVISIONING_DISPATCH_EXECUTOR && (
+                { isOrganizationOnboardingEnabled &&
+                    executorName === RegistrationFlowExecutorConstants.PROVISIONING_DISPATCH_EXECUTOR && (
                     <OrganizationRoleProperties
                         key={ lastInteractedStepId }
                         selectedRoleIds={ selectedRoleIds }
