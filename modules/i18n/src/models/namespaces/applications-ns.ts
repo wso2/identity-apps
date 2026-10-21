@@ -959,6 +959,12 @@ export interface ApplicationsNS {
                     description: string;
                     assertionHint: string;
                 };
+                unshareWarningModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
                 orgNotSelectedForRoleSharing: string;
                 individualRoleSharingLabel: string;
                 individualRoleSharingHint: string;
@@ -1112,12 +1118,69 @@ export interface ApplicationsNS {
             enhancedOrganizationLogin: {
                 title: string;
                 description: string;
+                disableHint: string;
                 hint: string;
                 confirmation: {
                     header: string;
                     message: string;
                     content: {
                         0: string;
+                        1: string;
+                    };
+                };
+                notifications: {
+                    enable: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disable: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                };
+            };
+            organizationLoginSettings: {
+                heading: string;
+                notifications: {
+                    update: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                };
+            };
+            organizationCustomRoles: {
+                title: string;
+                description: string;
+                disableHint: string;
+                confirmation: {
+                    assertionHint: string;
+                    audienceSwitch: string;
+                    header: string;
+                    message: string;
+                    disableMessage: string;
+                    content: {
+                        disableOrganizationAudience: string;
+                        enableApplicationAudience: string;
+                        enableOrganizationAudience: string;
+                        disableApplicationAudience: string;
                     };
                 };
                 notifications: {
@@ -1152,6 +1215,28 @@ export interface ApplicationsNS {
                     title: string;
                     subTitle: string;
                     button: string;
+                };
+                deleteSharedApplicationRoles: {
+                    confirmationModal: {
+                        assertionHint: string;
+                        content: string;
+                        header: string;
+                        message: string;
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        partialError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 };
             };
         };
