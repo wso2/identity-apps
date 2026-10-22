@@ -25,6 +25,23 @@ export interface ListDataInterface {
 }
 
 /**
+ * What a condition using an operator takes as its value: `none` for an operator that checks the
+ * field alone (`isBlank`, `isEmpty`), `list` for one compared against a set (`in`, `notIn`), and
+ * `single` for everything else.
+ */
+export type OperatorValueInputType = "none" | "single" | "list";
+
+/**
+ * An operator as the rule metadata publishes it.
+ */
+export interface OperatorInterface extends ListDataInterface {
+    /**
+     * The value a condition using the operator takes. A single value when absent.
+     */
+    valueInput?: OperatorValueInputType;
+}
+
+/**
  * Interface to represent the rule execution data.
  */
 export interface LinkInterface {
@@ -50,8 +67,22 @@ export interface ExpressionValueInterface {
  */
 export interface ConditionExpressionMetaInterface {
     field: ListDataInterface,
-    operators: ListDataInterface[],
+    /**
+     * How a qualifier is chosen for this field, for fields that name a family of values rather than a
+     * single one. Entered the same way as a value, so it carries the same shape. Absent on fields
+     * that name one value, and a field with no `qualifier` here renders no qualifier control.
+     */
+    qualifier?: ExpressionValueInterface;
+    /**
+     * The operators the field supports.
+     */
+    operators: OperatorInterface[],
     value: ExpressionValueInterface;
+    /**
+     * The fields a value of this field may be read from instead of being entered. Absent when only
+     * an entered value is allowed, which is what keeps the value input exactly as it was.
+     */
+    valueFieldNames?: string[];
 }
 
 /**

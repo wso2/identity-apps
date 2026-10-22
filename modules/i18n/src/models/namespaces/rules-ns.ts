@@ -37,6 +37,30 @@ export interface rulesNS {
             placeholderText: string;
             selectPlaceholderText: string;
         };
+        valueInput: {
+            fieldLabel: string;
+            fieldPlaceholder: string;
+            fieldPopover: {
+                close: string;
+                title: string;
+            };
+            fieldToggle: {
+                disable: string;
+                enable: string;
+            };
+            listPlaceholder: string;
+            noMatchingFields: string;
+            noMatchingQualifiers: string;
+            placeholder: string;
+            qualifierLabel: string;
+            qualifierPlaceholder: string;
+            qualifierTypedPlaceholder: string;
+            valueLabel: string;
+        };
+    };
+    limits: {
+        andLimitReached: string;
+        orLimitReached: string;
     };
     texts: {
         execute: string;
