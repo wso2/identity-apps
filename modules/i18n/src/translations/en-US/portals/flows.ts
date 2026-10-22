@@ -167,6 +167,28 @@ export const flows: flowsNS = {
                     message: "Custom Text Preference Meta Fetch Error"
                 }
             },
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: "Conditional branching is not enabled on the server, so decision steps cannot "
+                        + "be configured. Decision steps already in the flow are kept, but the flow cannot be "
+                        + "saved with them.",
+                    message: "Conditional Branching Not Enabled"
+                }
+            },
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: "The fields decision step conditions can use could not be loaded, so decision "
+                        + "steps cannot be configured. Decision steps already in the flow are kept, but the flow "
+                        + "cannot be saved with them until the fields can be loaded.",
+                    message: "Decision Steps Unavailable"
+                }
+            },
+            decisionStepLimit: {
+                warning: {
+                    description: "A flow can have at most {{max}} decision steps.",
+                    message: "Decision Step Limit Reached"
+                }
+            },
             disableFlow: {
                 genericError: {
                     description: "An error occurred while disabling the {{flowType}} flow.",

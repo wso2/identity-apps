@@ -2285,9 +2285,6 @@ importers:
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
-      '@wso2is/admin.rules.v1':
-        specifier: ^0.7.50
-        version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.39.0
         version: link:../admin.server-configurations.v1
@@ -5232,6 +5229,9 @@ importers:
       '@wso2is/admin.registration-flow-builder.v1':
         specifier: workspace:^
         version: link:../admin.registration-flow-builder.v1
+      '@wso2is/admin.rules.v1':
+        specifier: workspace:^
+        version: link:../admin.rules.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.28.0
         version: link:../common.ai.v1
@@ -5247,6 +5247,9 @@ importers:
       '@wso2is/core':
         specifier: ^2.13.6
         version: link:../../modules/core
+      '@wso2is/react-components':
+        specifier: ^2.10.6
+        version: link:../../modules/react-components
       '@xyflow/react':
         specifier: ^12.3.2
         version: 12.10.2(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -7601,9 +7604,6 @@ importers:
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
-      '@wso2is/admin.rules.v1':
-        specifier: ^0.7.50
-        version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.39.0
         version: link:../admin.server-configurations.v1
@@ -8206,9 +8206,6 @@ importers:
       '@wso2is/admin.roles.v2':
         specifier: workspace:^
         version: link:../admin.roles.v2
-      '@wso2is/admin.rules.v1':
-        specifier: ^0.7.50
-        version: link:../admin.rules.v1
       '@wso2is/admin.validation.v1':
         specifier: workspace:^
         version: link:../admin.validation.v1

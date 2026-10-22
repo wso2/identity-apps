@@ -54,7 +54,7 @@ const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterface> = ({
         return <View data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 
-    if (resources[0].type === StepTypes.Rule) {
+    if (resources[0].type === StepTypes.RuleEvaluation) {
         return <Rule data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 

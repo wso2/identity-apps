@@ -54,7 +54,7 @@ export enum StepCategories {
 
 export enum StepTypes {
     View = "VIEW",
-    Rule = "RULE",
+    RuleEvaluation = "RULE_EVALUATION",
     Execution = "EXECUTION",
     End = "END",
 }
