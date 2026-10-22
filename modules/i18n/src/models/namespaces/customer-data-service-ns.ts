@@ -714,18 +714,6 @@ export interface CustomerDataServiceNS {
             rule: string;
             ruleOwner: string;
         };
-        status: {
-            reasons: {
-                LOCAL_NAME_CONFLICT: string;
-                MISSING_ATTRIBUTE: string;
-                SHARED_NAME_CONFLICT: string;
-            };
-            states: {
-                ACTIVE: string;
-                CONFLICTED: string;
-                INACTIVE_MISSING_ATTRIBUTE: string;
-            };
-        };
         tab: string;
     };
 

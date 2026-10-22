@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResourceOrigin, ShareStateValue } from "./organization-management";
+import { ResourceOrigin } from "./organization-management";
 
 export interface UnificationRuleModel {
     rule_id: string;
@@ -27,8 +27,6 @@ export interface UnificationRuleModel {
     // Organization management: OWNED, or SHARED by the organization in owner_org_handle.
     origin?: ResourceOrigin;
     owner_org_handle?: string;
-    // Organization management: ACTIVE, or the reason why the rule does not run in this organization.
-    state?: ShareStateValue;
 }
 
 /**

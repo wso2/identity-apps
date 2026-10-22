@@ -19,7 +19,6 @@
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
@@ -42,52 +41,12 @@ import { AnyAction } from "redux";
 import { Header, Icon, Label, Message } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
-import { ShareStateReason } from "../models/organization-management";
 import { UnificationRuleModel } from "../models/unification-rules";
 import { useIsSubOrganization } from "../utils/organization-management-utils";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 import SharedChip from "./shared-chip";
 
 const isSharedRule = (rule: UnificationRuleModel): boolean => rule.origin === "SHARED";
-
-// Organization management: the reason that the tooltip shows for each state of a shared rule that is not active.
-const RULE_STATE_REASONS: Record<string, ShareStateReason> = {
-    CONFLICTED: "SHARED_NAME_CONFLICT",
-    INACTIVE_MISSING_ATTRIBUTE: "MISSING_ATTRIBUTE"
-};
-
-interface RuleStateChipProps {
-    rule: UnificationRuleModel;
-}
-
-/**
- * Organization management: shows the state of a shared rule that does not run in this organization.
- */
-export const RuleStateChip: FunctionComponent<RuleStateChipProps> = ({
-    rule
-}: RuleStateChipProps): ReactElement | null => {
-
-    const { t } = useTranslation();
-
-    if (!rule?.state || rule.state === "ACTIVE") {
-        return null;
-    }
-
-    return (
-        <Tooltip
-            title={ t("customerDataService:sharing.status.reasons." +
-                (RULE_STATE_REASONS[rule.state] ?? "SHARED_NAME_CONFLICT"),
-            { resource: t("customerDataService:sharing.resource.rule") }) }
-        >
-            <Chip
-                label={ t(`customerDataService:sharing.status.states.${ rule.state }`) }
-                size="small"
-                variant="outlined"
-                color="warning"
-            />
-        </Tooltip>
-    );
-};
 
 interface UnificationRulesListProps {
     rules: UnificationRuleModel[];
@@ -354,7 +313,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                     data-componentid={ `cds-unification-rule-${ rule.rule_id }-shared-chip` }
                                 />
                             ) }
-                            <RuleStateChip rule={ rule } />
                         </Box>
                     </Header.Content>
                 </Box>
