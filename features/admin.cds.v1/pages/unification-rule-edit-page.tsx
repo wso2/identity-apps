@@ -44,7 +44,6 @@ import { Grid, Icon, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import ShareSettings from "../components/share-settings";
 import SharedChip from "../components/shared-chip";
-import { RuleStateChip } from "../components/unification-rule-list";
 import { useUnificationRule } from "../hooks/use-unification-rules";
 import { UnificationRuleModel, UpdateUnificationRulePayload } from "../models/unification-rules";
 import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
@@ -379,7 +378,6 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
                                 data-componentid={ `${componentId}-shared-chip` }
                             />
                         ) }
-                        <RuleStateChip rule={ rule } />
                     </Box>
                 ) }
                 pageTitle={ t("customerDataService:unificationRules.edit.page.pageTitle") }

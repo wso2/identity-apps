@@ -24,19 +24,6 @@
 export type ResourceOrigin = "OWNED" | "SHARED" | "INHERITED";
 
 /**
- * State of a shared unification rule in the current organization.
- */
-export type ShareStateValue = "ACTIVE" | "CONFLICTED" | "INACTIVE_MISSING_ATTRIBUTE";
-
-/**
- * Why a shared unification rule is not active in the current organization.
- */
-export type ShareStateReason =
-    | "LOCAL_NAME_CONFLICT"
-    | "SHARED_NAME_CONFLICT"
-    | "MISSING_ATTRIBUTE";
-
-/**
  * The decision of a share policy or of the organization access. "all" reaches all organizations
  * below the initiating organization, also the ones created later. "selected" reaches the
  * organizations in orgs.

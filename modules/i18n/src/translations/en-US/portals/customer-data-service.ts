@@ -779,18 +779,6 @@ export const customerDataService: CustomerDataServiceNS = {
             rule: "Rules that other organizations share run first, in the order of their owner. You cannot change them here.",
             ruleOwner: "The organization {{org}} owns this rule and shares it with this organization. You cannot change or delete it here."
         },
-        status: {
-            reasons: {
-                LOCAL_NAME_CONFLICT: "The organization has its own {{resource}} with the same name.",
-                MISSING_ATTRIBUTE: "The organization cannot see an attribute with the name and the type of the rule.",
-                SHARED_NAME_CONFLICT: "Another shared {{resource}} with the same name is active in the organization."
-            },
-            states: {
-                ACTIVE: "Active",
-                CONFLICTED: "Conflict",
-                INACTIVE_MISSING_ATTRIBUTE: "Inactive"
-            }
-        },
         tab: "Sharing"
     },
     sidePanel: {
