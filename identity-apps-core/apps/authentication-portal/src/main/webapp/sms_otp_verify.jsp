@@ -1,5 +1,5 @@
 <%--
-~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+~ Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
 ~
 ~ WSO2 LLC. licenses this file to you under the Apache License,
 ~ Version 2.0 (the "License"); you may not use this file except
@@ -206,7 +206,11 @@
                             </label>
 
                             <div class="ui fluid icon input addon-wrapper">
-                                <input type="text" id='OTPCode' name="OTPcode" size='30'/>
+                                <input type="text" id='OTPCode' name="OTPcode" size='30'
+                                    autocomplete="one-time-code"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                             </div>
                         </div>
@@ -263,41 +267,6 @@
 
         <script type="text/javascript">
             var insightsTenantIdentifier = "<%=userTenant%>";
-
-            function movetoNext(current, nextFieldID, previousID) {
-                var key = event.keyCode || event.charCode;
-                if(key == 8 || key == 46) {
-                    if (previousID != null && previousID != 'null') {
-                        document.getElementById(previousID).focus();
-                    }
-                } else {
-                    if (nextFieldID != null && nextFieldID != 'null' && current.value.length >= current.maxLength) {
-                        document.getElementById(nextFieldID).focus();
-                    }
-                }
-            }
-
-            // Handle paste events
-    	    function handlePaste(e) {
-     	        var clipboardData, value;
-
-                // Stop data get being pasted into element
-                e.stopPropagation();
-                e.preventDefault();
-
-                // Get pasted data via clipboard API
-                clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
-                const reg = new RegExp(/^\d+$/);
-                if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
-                        $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
-                    }
-                }
-            }
-
-           document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {
