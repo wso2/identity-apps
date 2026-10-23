@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.49.2
+
+### Patch Changes
+
+- [#10783](https://github.com/wso2/identity-apps/pull/10783) [`f474346a773b8dfe06d2bc8599c39f764f04d7b1`](https://github.com/wso2/identity-apps/commit/f474346a773b8dfe06d2bc8599c39f764f04d7b1) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support value-less and list operators, field keys and comparison with another field in the rule condition editor
+
 ## 2.49.1
 
 ### Patch Changes
