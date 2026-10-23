@@ -1,5 +1,14 @@
 # @wso2is/admin.connections.v1
 
+## 2.43.4
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-extensions.v1@0.2.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.core.v1@2.61.1
+
 ## 2.43.3
 
 ### Patch Changes

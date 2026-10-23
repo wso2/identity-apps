@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 4.20.0
+
+### Minor Changes
+
+- [#10746](https://github.com/wso2/identity-apps/pull/10746) [`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add organization onboarding fields, provisioning settings, role selection, and organization attribute selection in flow-extension access configuration.
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-extensions.v1@0.2.0
+  - @wso2is/admin.registration-flow-builder.v1@0.12.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.220
+  - @wso2is/admin.branding.v1@2.32.176
+  - @wso2is/admin.core.v1@2.61.1
+  - @wso2is/admin.email-management.v1@2.25.378
+  - @wso2is/admin.flows.v1@1.0.182
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.4
+  - @wso2is/admin.users.v1@2.38.61
+  - @wso2is/admin.connections.v1@2.43.4
+
 ## 4.19.7
 
 ### Patch Changes
