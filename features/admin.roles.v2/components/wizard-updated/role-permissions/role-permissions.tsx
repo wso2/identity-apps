@@ -25,8 +25,10 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { Policy } from "@wso2is/admin.applications.v1/constants/api-authorization";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -46,6 +48,7 @@ import { DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-rea
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
 import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api/roles";
 import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../../../constants/role-constants";
+import { RoleManagementUtils } from "../../../utils/role-management-utils";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
 import { SelectedPermissionsInterface } from "../../../models/roles";
 
@@ -119,6 +122,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
             return ids;
         }, [ blockedAPIResourceEntries ]);
+
+        const { organizationType } = useGetCurrentOrganizationType();
+        const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
@@ -201,6 +207,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         return;
                     }
 
+                    // Management API resources are not available to roles in organizations.
+                    if (isSubOrg && !RoleManagementUtils.isAPIResourceAllowedInOrganization(api?.type)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
@@ -215,7 +226,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(options);
             }
-        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
+        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds, isSubOrg ]);
 
         useEffect(() => {
             const options: DropdownItemProps[] = [];
