@@ -36,8 +36,8 @@ import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useEffect,
-    useState } from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, MutableRefObject, ReactElement,
+    useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
@@ -71,6 +71,10 @@ interface ValueInputAutocompleteOptionsInterface {
  * Component common props interface.
  */
 interface ComponentCommonPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
     conditionId: string;
     expressionId: string;
     expressionValue: string;
@@ -119,6 +123,10 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
  * Rule expression component props interface.
  */
 interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
     expression: ConditionExpressionInterface;
     ruleId: string;
     conditionId: string;
@@ -139,110 +147,105 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
 }
 
 /**
- * Rules condition component to recursive render.
+ * Debounced expression updater with an identity that survives re-renders.
  *
- * @param props - Props injected to the component.
- * @returns Rule condition component.
+ * @returns A debounced `updateConditionExpression`.
  */
-const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
-    ["data-componentid"]: componentId = "rules-component-condition",
-    readonly,
-    rule: ruleInstance
-}: RulesComponentPropsInterface): ReactElement => {
+const useDebouncedConditionExpressionChange = (): (
+    changedValue: string,
+    ruleId: string,
+    conditionId: string,
+    expressionId: string,
+    fieldName: ExpressionFieldTypes,
+    isUserOnChange: boolean
+) => void => {
+    const { updateConditionExpression } = useRulesContext();
+    const updateRef: MutableRefObject<typeof updateConditionExpression> = useRef(updateConditionExpression);
 
-    const ruleConditions: RuleConditionsInterface = ruleInstance.rules;
+    updateRef.current = updateConditionExpression;
 
-    const {
-        addNewRuleConditionExpression,
-        conditionExpressionsMeta,
-        updateConditionExpression,
-        removeRuleConditionExpression,
-        hidden
-    } = useRulesContext();
-
-    const { t } = useTranslation();
-
-    /**
-     * Debounced function to handle the change of the condition expression.
-     *
-     * @param changedValue - Changed value.
-     * @param ruleId - Rule id.
-     * @param conditionId - Condition id.
-     * @param expressionId - Expression id.
-     * @param fieldName - Field name.
-     * @returns Debounced function.
-     */
-    const handleExpressionChangeDebounced: (
+    return useMemo(() => debounce((
         changedValue: string,
         ruleId: string,
         conditionId: string,
         expressionId: string,
         fieldName: ExpressionFieldTypes,
         isUserOnChange: boolean
-    ) => void = debounce(
-        (
-            changedValue: string,
-            ruleId: string,
-            conditionId: string,
-            expressionId: string,
-            fieldName: ExpressionFieldTypes,
-            isUserOnChange: boolean
-        ) => {
-            updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
-        },
-        300
-    );
+    ) => {
+        updateRef.current(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
+    }, 300), []);
+};
 
-    /**
-     * Value input autocomplete component.
-     *
-     * @param props - Props injected to the component.
-     * @returns Value input autocomplete component.
-     */
-    const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
-        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
-        valueReferenceAttribute,
-        valueDisplayAttribute,
-        resourceDetails,
-        resourceType,
-        initialResourcesLoadUrl,
-        filterBaseResourcesUrl,
-        ruleId,
-        conditionId,
-        expressionId,
-        shouldFetch,
-        hiddenResources = EMPTY_ARRAY
-    }: ValueInputAutocompleteProps) => {
 
-        const [ inputValue, setInputValue ] = useState<string>(null);
-        const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
-        const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
-        const [ open, setOpen ] = useState<boolean>(false);
+/**
+ * Value input autocomplete component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Value input autocomplete component.
+ */
+const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-value",
+    readonly,
+    valueReferenceAttribute,
+    valueDisplayAttribute,
+    resourceDetails,
+    resourceType,
+    initialResourcesLoadUrl,
+    filterBaseResourcesUrl,
+    ruleId,
+    conditionId,
+    expressionId,
+    shouldFetch,
+    hiddenResources = EMPTY_ARRAY
+}: ValueInputAutocompleteProps) => {
 
-        const MORE_ITEMS: string = "more-items";
-        const CLEAR_OPTION: string = "clear-option";
+    const { t } = useTranslation();
+    const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
+        useDebouncedConditionExpressionChange();
 
-        const filterUrl: string = inputValueLabel
-            ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
-            : initialResourcesLoadUrl;
+    const [ inputValue, setInputValue ] = useState<string>(null);
+    const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
+    const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
+    const [ open, setOpen ] = useState<boolean>(false);
 
-        const { data: initialResources = [], isLoading: isInitialLoading } =
-            useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
-        const { data: filteredResources = [], isLoading: isFiltering } =
-            useGetResourceListOrResourceDetails(filterUrl, shouldFetch);
+    const MORE_ITEMS: string = "more-items";
+    const CLEAR_OPTION: string = "clear-option";
 
-        useEffect(() => {
-            if (resourceDetails) {
-                setInputValue(resourceDetails[valueReferenceAttribute] || null);
-                setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
+    const filterUrl: string = inputValueLabel
+        ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
+        : initialResourcesLoadUrl;
+
+    const { data: initialResources = [], isLoading: isInitialLoading } =
+        useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
+    const { data: filteredResources = [], isLoading: isFiltering } =
+        useGetResourceListOrResourceDetails(filterUrl, shouldFetch);
+
+    useEffect(() => {
+        if (resourceDetails) {
+            setInputValue(resourceDetails[valueReferenceAttribute] || null);
+            setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
+        }
+    }, [ resourceDetails ]);
+
+    useEffect(() => {
+        if (inputValueLabel && filterUrl) {
+            if (filteredResources && Array.isArray(filteredResources[resourceType])) {
+                const filteredOptions: ValueInputAutocompleteOptionsInterface[] =
+                    filteredResources[resourceType]
+                        .filter((resource: ResourceInterface) =>
+                            !hiddenResources.includes(resource[valueReferenceAttribute])
+                        )
+                        .map((resource: ResourceInterface) => ({
+                            id: resource[valueReferenceAttribute],
+                            label: resource[valueDisplayAttribute]
+                        }));
+
+                setOptions(filteredOptions);
             }
-        }, [ resourceDetails ]);
-
-        useEffect(() => {
-            if (inputValueLabel && filterUrl) {
-                if (filteredResources && Array.isArray(filteredResources[resourceType])) {
-                    const filteredOptions: ValueInputAutocompleteOptionsInterface[] =
-                        filteredResources[resourceType]
+        } else {
+            if (initialResources && Array.isArray(initialResources[resourceType])) {
+                const initialOptions: ValueInputAutocompleteOptionsInterface[] =
+                        initialResources[resourceType]
                             .filter((resource: ResourceInterface) =>
                                 !hiddenResources.includes(resource[valueReferenceAttribute])
                             )
@@ -251,73 +254,291 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 label: resource[valueDisplayAttribute]
                             }));
 
-                    setOptions(filteredOptions);
-                }
-            } else {
-                if (initialResources && Array.isArray(initialResources[resourceType])) {
-                    const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            initialResources[resourceType]
-                                .filter((resource: ResourceInterface) =>
-                                    !hiddenResources.includes(resource[valueReferenceAttribute])
-                                )
-                                .map((resource: ResourceInterface) => ({
-                                    id: resource[valueReferenceAttribute],
-                                    label: resource[valueDisplayAttribute]
-                                }));
-
-                    setOptions(initialOptions);
-                }
+                setOptions(initialOptions);
             }
-        }, [ inputValueLabel, initialResources, filteredResources, filterUrl ]);
+        }
+    }, [ inputValueLabel, initialResources, filteredResources, filterUrl ]);
 
-        const hasMoreItems: boolean = filteredResources?.totalResults > filteredResources?.count;
+    const hasMoreItems: boolean = filteredResources?.totalResults > filteredResources?.count;
+
+    return (
+        <Autocomplete
+            className="autocomplete"
+            disabled={ readonly }
+            data-componentid={ componentId }
+            open={ open }
+            onOpen={ () => setOpen(true) }
+            onClose={ () => setOpen(false) }
+            options={ [
+                ...options,
+                ...(hasMoreItems
+                    ? [ {
+                        id: MORE_ITEMS,
+                        isDisabled: true,
+                        label: t("rules:fields.autocomplete.moreItemsMessage")
+                    } ]
+                    : []),
+                ...(inputValueLabel
+                    ? [ {
+                        id: CLEAR_OPTION,
+                        isDisabled: false,
+                        label: t("rules:fields.autocomplete.clearFilterActionText")
+                    } ]
+                    : [])
+            ] }
+            filterOptions={ (options: ValueInputAutocompleteOptionsInterface[]) => options }
+            getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
+            value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
+            isOptionEqualToValue={ (
+                option: ValueInputAutocompleteOptionsInterface,
+                value: ValueInputAutocompleteOptionsInterface
+            ) =>
+                value?.id && option.id === value.id
+            }
+            loading={ isFiltering }
+            onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
+                if (value?.isDisabled) return; // Prevent selection of disabled option
+
+                if (value?.id === CLEAR_OPTION) {
+                    setInputValueLabel("");
+                    setTimeout(() => setOpen(true), 0);
+
+                    return;
+                }
+
+                if (value) {
+                    handleExpressionChangeDebounced(
+                        value.id,
+                        ruleId,
+                        conditionId,
+                        expressionId,
+                        ExpressionFieldTypes.Value,
+                        true
+                    );
+                }
+            } }
+            inputValue={ inputValueLabel }
+            onInputChange={ (event: ChangeEvent, value: string) => {
+                setInputValueLabel(value);
+            } }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    variant="outlined"
+                    placeholder={ t("rules:fields.autocomplete.placeholderText") }
+                    value={ inputValueLabel }
+                    InputProps={ {
+                        ...params.InputProps,
+                        endAdornment: (
+                            <>
+                                { isInitialLoading || isFiltering ? (
+                                    <CircularProgress color="inherit" size={ 20 } />
+                                ) : null }
+                                { params.InputProps.endAdornment }
+                            </>
+                        )
+                    } }
+                />
+            ) }
+            renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
+                if (option.id === MORE_ITEMS) {
+                    return (
+                        <li
+                            { ...props }
+                            className="MuiAutocomplete-moreItemsAvailableMessage"
+                            key={ option.id }
+                        >
+                            { option.label }
+                        </li>
+                    );
+                }
+
+                if (option.id === CLEAR_OPTION) {
+                    return (
+                        <li
+                            { ...props }
+                            key={ option.id }
+                        >
+                            <Link className="MuiAutocomplete-clearFilterLink">
+                                <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
+                            </Link>
+                        </li>
+                    );
+                }
+
+                return (
+                    <li { ...props }>
+                        { option.label }
+                    </li>
+                );
+            } }
+        />
+    );
+};
+
+/**
+ * Resource list select component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Resource list select component.
+ */
+const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-value",
+    readonly,
+    ruleId,
+    conditionId,
+    setIsResourceMissing,
+    expressionValue,
+    expressionId,
+    expressionField,
+    findMetaValuesAgainst,
+    initialResourcesLoadUrl,
+    filterBaseResourcesUrl,
+    hiddenResources = EMPTY_ARRAY
+}: ResourceListSelectProps) => {
+
+    const { t } = useTranslation();
+    const { updateConditionExpression } = useRulesContext();
+    const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
+        useDebouncedConditionExpressionChange();
+
+    const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
+    const [ inputValue, setInputValue ] = useState("");
+    const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
+    const [ selectedValue, setSelectedValue ] = useState<string>(null);
+    const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
+    const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
+
+    let resourceType: string;
+    let shouldFetch: boolean = false;
+
+    // TODO: Handle other resource types once the API is updated with the required data.
+    if (expressionField === "application") {
+        resourceType = "applications";
+        shouldFetch = true;
+    } else if (expressionField === "claim") {
+        shouldFetch = false;
+    }
+
+    const {
+        data: fetchedResourcesList,
+        isLoading: isResourcesListLoading
+    } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
+
+    const {
+        data: resourcesDetails,
+        isLoading: isResourceDetailsLoading,
+        error: resourceDetailsError
+    } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetch);
+
+    useEffect(() => {
+        if (!isResourceDetailsLoading) {
+            if (resourceDetailsError) {
+                setIsResourceMissing(true);
+                setResourceDetails(null);
+            } else {
+                setIsResourceMissing(false);
+                setResourceDetails(resourcesDetails);
+            }
+        }
+    }, [ isResourceDetailsLoading, resourceDetailsError, resourcesDetails ]);
+
+    useEffect(() => {
+        if (expressionField === "claim" && fetchedResourcesList) {
+            const initialOptions: ValueInputAutocompleteOptionsInterface[] =
+                        fetchedResourcesList?.filter((resource: ClaimResourceInterface) =>
+                            !hiddenResources.includes(resource[valueReferenceAttribute])
+                        ).map((resource: ClaimResourceInterface) => ({
+                            id: resource[valueReferenceAttribute],
+                            label: resource[valueDisplayAttribute]
+                        }));
+
+            const sortedClaims: ValueInputAutocompleteOptionsInterface[] =
+            initialOptions?.sort((a: ValueInputAutocompleteOptionsInterface,
+                b: ValueInputAutocompleteOptionsInterface) => {
+                return a.label > b.label ? 1 : -1;
+            });
+
+            /**
+             * Disables the role claim attribute.
+             *
+             * The role attribute is temporarily disabled until the ambiguities
+             * related to the claim are resolved.
+             * @param claimsList - List of claims.
+             * @returns - Filtered claims list.
+             */
+            const filterOutRoleClaimAttribute = (claimsList: ValueInputAutocompleteOptionsInterface[]):
+            ValueInputAutocompleteOptionsInterface[] => {
+
+                const excludedClaims: Set<string> = new Set([
+                    "http://wso2.org/claims/roles",
+                    "http://wso2.org/claims/applicationRoles"
+                ]);
+
+                return claimsList?.filter((claim: ValueInputAutocompleteOptionsInterface) =>
+                    !excludedClaims.has(claim?.id));
+            };
+
+            const claimList: ValueInputAutocompleteOptionsInterface[] =
+            filterOutRoleClaimAttribute(sortedClaims);
+
+            const matchedClaim: ValueInputAutocompleteOptionsInterface = claimList.find(
+                (claim: ValueInputAutocompleteOptionsInterface) => claim.id === expressionValue
+            );
+
+            setClaimList(claimList);
+            setInputValue(matchedClaim ? matchedClaim.label : "");
+            setSelectedValue(matchedClaim ? matchedClaim.id : null);
+
+        }
+    }, [ fetchedResourcesList ]);
+
+    if (isResourcesListLoading || !fetchedResourcesList) {
+        return;
+    }
+
+    if (expressionField == "claim") {
 
         return (
             <Autocomplete
-                className="autocomplete"
-                disabled={ readonly }
-                data-componentid={ componentId }
-                open={ open }
-                onOpen={ () => setOpen(true) }
-                onClose={ () => setOpen(false) }
-                options={ [
-                    ...options,
-                    ...(hasMoreItems
-                        ? [ {
-                            id: MORE_ITEMS,
-                            isDisabled: true,
-                            label: t("rules:fields.autocomplete.moreItemsMessage")
-                        } ]
-                        : []),
-                    ...(inputValueLabel
-                        ? [ {
-                            id: CLEAR_OPTION,
-                            isDisabled: false,
-                            label: t("rules:fields.autocomplete.clearFilterActionText")
-                        } ]
-                        : [])
-                ] }
-                filterOptions={ (options: ValueInputAutocompleteOptionsInterface[]) => options }
-                getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
-                value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
-                isOptionEqualToValue={ (
-                    option: ValueInputAutocompleteOptionsInterface,
-                    value: ValueInputAutocompleteOptionsInterface
-                ) =>
-                    value?.id && option.id === value.id
-                }
-                loading={ isFiltering }
-                onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
-                    if (value?.isDisabled) return; // Prevent selection of disabled option
+                loading={ isResourcesListLoading }
+                fullWidth
+                aria-label="Attribute selection"
+                className="pt-2"
+                componentsProps={ {
+                    paper: {
+                        elevation: 2
+                    },
+                    popper: {
+                        modifiers: [
+                            {
+                                enabled: false,
+                                name: "flip"
+                            },
+                            {
+                                enabled: false,
+                                name: "preventOverflow"
+                            }
+                        ]
+                    }
+                } }
+                inputValue={ inputValue }
+                value={ selectedValue ? { id: selectedValue, label: inputValue } : null }
+                onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
 
-                    if (value?.id === CLEAR_OPTION) {
-                        setInputValueLabel("");
-                        setTimeout(() => setOpen(true), 0);
+                    if (reason === "reset") {
+                        setInputValue("");
 
                         return;
+                    } else {
+                        setInputValue(value);
                     }
+                } }
+                onChange={ (e: React.ChangeEvent, value: ValueInputAutocompleteOptionsInterface) => {
 
                     if (value) {
+                        setSelectedValue(value?.id);
+                        setInputValue(value?.label);
                         handleExpressionChangeDebounced(
                             value.id,
                             ruleId,
@@ -328,298 +549,162 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     }
                 } }
-                inputValue={ inputValueLabel }
-                onInputChange={ (event: ChangeEvent, value: string) => {
-                    setInputValueLabel(value);
-                } }
+                options={ claimList }
+                getOptionLabel={ (claim: DropdownProps) =>
+                    claim?.label
+                }
+                isOptionEqualToValue={
+                    (option: ValueInputAutocompleteOptionsInterface,
+                        value: ValueInputAutocompleteOptionsInterface) =>
+                        value?.id && option.id === value.id
+                }
+                renderOption={ (props: HTMLAttributes<HTMLLIElement>,
+                    option: ValueInputAutocompleteOptionsInterface) => (
+                    <li { ...props } key={ option.id }>
+                        <div className="multiline">
+                            <div>{ option?.label }</div>
+                            <div>
+                                <Code className="description" compact withBackground={ false }>
+                                    { option?.id }
+                                </Code>
+                            </div>
+                        </div>
+                    </li>
+                ) }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
                         variant="outlined"
                         placeholder={ t("rules:fields.autocomplete.placeholderText") }
-                        value={ inputValueLabel }
+                        value={ inputValue }
                         InputProps={ {
-                            ...params.InputProps,
-                            endAdornment: (
-                                <>
-                                    { isInitialLoading || isFiltering ? (
-                                        <CircularProgress color="inherit" size={ 20 } />
-                                    ) : null }
-                                    { params.InputProps.endAdornment }
-                                </>
-                            )
+                            ...params.InputProps
                         } }
                     />
                 ) }
-                renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
-                    if (option.id === MORE_ITEMS) {
-                        return (
-                            <li
-                                { ...props }
-                                className="MuiAutocomplete-moreItemsAvailableMessage"
-                                key={ option.id }
-                            >
-                                { option.label }
-                            </li>
-                        );
-                    }
+                key="autocompleteSearchWithList"
+                data-componentid={ `${componentId}-select-attributes` }
+            />
+        );
 
-                    if (option.id === CLEAR_OPTION) {
-                        return (
-                            <li
-                                { ...props }
-                                key={ option.id }
-                            >
-                                <Link className="MuiAutocomplete-clearFilterLink">
-                                    <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
-                                </Link>
-                            </li>
-                        );
-                    }
+    } else if (resourceType == "applications") {
+        // Set first value of the list if option is empty
+        if (expressionValue === "") {
+            handleExpressionChangeDebounced(
+                fetchedResourcesList[resourceType][0]?.id,
+                ruleId,
+                conditionId,
+                expressionId,
+                ExpressionFieldTypes.Value,
+                false
+            );
+        }
 
-                    return (
-                        <li { ...props }>
-                            { option.label }
-                        </li>
+        if (fetchedResourcesList.totalResults > fetchedResourcesList.count) {
+            return (
+                <ValueInputAutocomplete
+                    readonly={ readonly }
+                    conditionId={ conditionId }
+                    ruleId={ ruleId }
+                    expressionId={ expressionId }
+                    expressionValue={ expressionValue }
+                    resourceDetails={ resourceDetails }
+                    resourceType={ resourceType }
+                    valueReferenceAttribute={ valueReferenceAttribute }
+                    valueDisplayAttribute={ valueDisplayAttribute }
+                    initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                    filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                    shouldFetch={ shouldFetch }
+                    hiddenResources={ hiddenResources }
+                />
+            );
+        }
+
+        return (
+            <Select
+                disabled={ readonly }
+                value={ expressionValue }
+                data-componentid={ componentId }
+                onChange={ (e: SelectChangeEvent) => {
+                    updateConditionExpression(
+                        e.target.value,
+                        ruleId,
+                        conditionId,
+                        expressionId,
+                        ExpressionFieldTypes.Value,
+                        true
+                    );
+                } }
+            >
+                { fetchedResourcesList[resourceType]?.filter((resource: ResourceInterface) =>
+                    !hiddenResources.includes(resource[valueReferenceAttribute])
+                ).map((resource: ResourceInterface, index: number) => (
+                    <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
+                        { resource[valueDisplayAttribute] }
+                    </MenuItem>
+                )) }
+            </Select>
+        );
+    }
+};
+
+/**
+ * Condition value input component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Condition value input component.
+ */
+const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-value",
+    readonly,
+    findMetaValuesAgainst,
+    ruleId,
+    conditionId,
+    expressionField,
+    expressionId,
+    expressionValue,
+    metaValue,
+    setIsResourceMissing,
+    hiddenResources = EMPTY_ARRAY,
+    hiddenValues = EMPTY_ARRAY
+}: ConditionValueInputProps) => {
+
+    const { updateConditionExpression } = useRulesContext();
+    const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
+        useDebouncedConditionExpressionChange();
+
+    if (metaValue?.inputType === "input" || null) {
+        return (
+            <TextField
+                disabled={ readonly }
+                value={ expressionValue }
+                data-componentid={ componentId }
+                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleExpressionChangeDebounced(
+                        e.target.value,
+                        ruleId,
+                        conditionId,
+                        expressionId,
+                        ExpressionFieldTypes.Value,
+                        true
                     );
                 } }
             />
         );
-    };
+    }
 
-    /**
-     * Resource list select component.
-     *
-     * @param props - Props injected to the component.
-     * @returns Resource list select component.
-     */
-    const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
-        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
-        ruleId,
-        conditionId,
-        setIsResourceMissing,
-        expressionValue,
-        expressionId,
-        expressionField,
-        findMetaValuesAgainst,
-        initialResourcesLoadUrl,
-        filterBaseResourcesUrl,
-        hiddenResources = EMPTY_ARRAY
-    }: ResourceListSelectProps) => {
+    if (metaValue?.inputType === "options") {
+        if (metaValue?.values?.length > 1) {
 
-        const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
-        const [ inputValue, setInputValue ] = useState("");
-        const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
-        const [ selectedValue, setSelectedValue ] = useState<string>(null);
-        const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
-        const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
-
-        let resourceType: string;
-        let shouldFetch: boolean = false;
-
-        // TODO: Handle other resource types once the API is updated with the required data.
-        if (expressionField === "application") {
-            resourceType = "applications";
-            shouldFetch = true;
-        } else if (expressionField === "claim") {
-            shouldFetch = false;
-        }
-
-        const {
-            data: fetchedResourcesList,
-            isLoading: isResourcesListLoading
-        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
-
-        const {
-            data: resourcesDetails,
-            isLoading: isResourceDetailsLoading,
-            error: resourceDetailsError
-        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetch);
-
-        useEffect(() => {
-            if (!isResourceDetailsLoading) {
-                if (resourceDetailsError) {
-                    setIsResourceMissing(true);
-                    setResourceDetails(null);
-                } else {
-                    setResourceDetails(resourcesDetails);
-                }
-            }
-        }, [ isResourceDetailsLoading, resourceDetailsError ]);
-
-        useEffect(() => {
-            if (expressionField === "claim" && fetchedResourcesList) {
-                const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            fetchedResourcesList?.filter((resource: ClaimResourceInterface) =>
-                                !hiddenResources.includes(resource[valueReferenceAttribute])
-                            ).map((resource: ClaimResourceInterface) => ({
-                                id: resource[valueReferenceAttribute],
-                                label: resource[valueDisplayAttribute]
-                            }));
-
-                const sortedClaims: ValueInputAutocompleteOptionsInterface[] =
-                initialOptions?.sort((a: ValueInputAutocompleteOptionsInterface,
-                    b: ValueInputAutocompleteOptionsInterface) => {
-                    return a.label > b.label ? 1 : -1;
-                });
-
-                /**
-                 * Disables the role claim attribute.
-                 *
-                 * The role attribute is temporarily disabled until the ambiguities
-                 * related to the claim are resolved.
-                 * @param claimsList - List of claims.
-                 * @returns - Filtered claims list.
-                 */
-                const filterOutRoleClaimAttribute = (claimsList: ValueInputAutocompleteOptionsInterface[]):
-                ValueInputAutocompleteOptionsInterface[] => {
-
-                    const excludedClaims: Set<string> = new Set([
-                        "http://wso2.org/claims/roles",
-                        "http://wso2.org/claims/applicationRoles"
-                    ]);
-
-                    return claimsList?.filter((claim: ValueInputAutocompleteOptionsInterface) =>
-                        !excludedClaims.has(claim?.id));
-                };
-
-                const claimList: ValueInputAutocompleteOptionsInterface[] =
-                filterOutRoleClaimAttribute(sortedClaims);
-
-                const matchedClaim: ValueInputAutocompleteOptionsInterface = claimList.find(
-                    (claim: ValueInputAutocompleteOptionsInterface) => claim.id === expressionValue
-                );
-
-                setClaimList(claimList);
-                setInputValue(matchedClaim ? matchedClaim.label : "");
-                setSelectedValue(matchedClaim ? matchedClaim.id : null);
-
-            }
-        }, [ fetchedResourcesList ]);
-
-        if (isResourcesListLoading || !fetchedResourcesList) {
-            return;
-        }
-
-        if (expressionField == "claim") {
-
-            return (
-                <Autocomplete
-                    loading={ isResourcesListLoading }
-                    fullWidth
-                    aria-label="Attribute selection"
-                    className="pt-2"
-                    componentsProps={ {
-                        paper: {
-                            elevation: 2
-                        },
-                        popper: {
-                            modifiers: [
-                                {
-                                    enabled: false,
-                                    name: "flip"
-                                },
-                                {
-                                    enabled: false,
-                                    name: "preventOverflow"
-                                }
-                            ]
-                        }
-                    } }
-                    inputValue={ inputValue }
-                    value={ selectedValue ? { id: selectedValue, label: inputValue } : null }
-                    onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
-
-                        if (reason === "reset") {
-                            setInputValue("");
-
-                            return;
-                        } else {
-                            setInputValue(value);
-                        }
-                    } }
-                    onChange={ (e: React.ChangeEvent, value: ValueInputAutocompleteOptionsInterface) => {
-
-                        if (value) {
-                            setSelectedValue(value?.id);
-                            setInputValue(value?.label);
-                            handleExpressionChangeDebounced(
-                                value.id,
-                                ruleId,
-                                conditionId,
-                                expressionId,
-                                ExpressionFieldTypes.Value,
-                                true
-                            );
-                        }
-                    } }
-                    options={ claimList }
-                    getOptionLabel={ (claim: DropdownProps) =>
-                        claim?.label
-                    }
-                    isOptionEqualToValue={
-                        (option: ValueInputAutocompleteOptionsInterface,
-                            value: ValueInputAutocompleteOptionsInterface) =>
-                            value?.id && option.id === value.id
-                    }
-                    renderOption={ (props: HTMLAttributes<HTMLLIElement>,
-                        option: ValueInputAutocompleteOptionsInterface) => (
-                        <li { ...props } key={ option.id }>
-                            <div className="multiline">
-                                <div>{ option?.label }</div>
-                                <div>
-                                    <Code className="description" compact withBackground={ false }>
-                                        { option?.id }
-                                    </Code>
-                                </div>
-                            </div>
-                        </li>
-                    ) }
-                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                        <TextField
-                            { ...params }
-                            variant="outlined"
-                            placeholder={ t("rules:fields.autocomplete.placeholderText") }
-                            value={ inputValue }
-                            InputProps={ {
-                                ...params.InputProps
-                            } }
-                        />
-                    ) }
-                    key="autocompleteSearchWithList"
-                    data-componentid={ `${componentId}-select-attributes` }
-                />
-            );
-
-        } else if (resourceType == "applications") {
             // Set first value of the list if option is empty
             if (expressionValue === "") {
                 handleExpressionChangeDebounced(
-                    fetchedResourcesList[resourceType][0]?.id,
+                    metaValue?.values[0].name,
                     ruleId,
                     conditionId,
                     expressionId,
                     ExpressionFieldTypes.Value,
                     false
-                );
-            }
-
-            if (fetchedResourcesList.totalResults > fetchedResourcesList.count) {
-                return (
-                    <ValueInputAutocomplete
-                        conditionId={ conditionId }
-                        ruleId={ ruleId }
-                        expressionId={ expressionId }
-                        expressionValue={ expressionValue }
-                        resourceDetails={ resourceDetails }
-                        resourceType={ resourceType }
-                        valueReferenceAttribute={ valueReferenceAttribute }
-                        valueDisplayAttribute={ valueDisplayAttribute }
-                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
-                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
-                        shouldFetch={ shouldFetch }
-                        hiddenResources={ hiddenResources }
-                    />
                 );
             }
 
@@ -639,294 +724,243 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     } }
                 >
-                    { fetchedResourcesList[resourceType]?.filter((resource: ResourceInterface) =>
-                        !hiddenResources.includes(resource[valueReferenceAttribute])
-                    ).map((resource: ResourceInterface, index: number) => (
-                        <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
-                            { resource[valueDisplayAttribute] }
+                    { metaValue.values?.filter((item: ListDataInterface) =>
+                        !hiddenValues.includes(item.name)
+                    ).map((item: ListDataInterface, index: number) => (
+                        <MenuItem value={ item.name } key={ `${expressionId}-${index}` }>
+                            { item.displayName }
                         </MenuItem>
                     )) }
                 </Select>
             );
         }
-    };
 
-    /**
-     * Condition value input component.
-     *
-     * @param props - Props injected to the component.
-     * @returns Condition value input component.
-     */
-    const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
-        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
-        findMetaValuesAgainst,
-        ruleId,
-        conditionId,
-        expressionField,
-        expressionId,
-        expressionValue,
-        metaValue,
-        setIsResourceMissing,
-        hiddenResources = EMPTY_ARRAY,
-        hiddenValues = EMPTY_ARRAY
-    }: ConditionValueInputProps) => {
+        if (metaValue?.links?.length >= 1) {
+            const initialResourcesLoadUrl: string = metaValue?.links.find(
+                (link: LinkInterface) => link.rel === "values")?.href;
+            const filterBaseResourcesUrl: string = metaValue?.links.find(
+                (link: LinkInterface) => link.rel === "filter")?.href;
 
-        if (metaValue?.inputType === "input" || null) {
-            return (
-                <TextField
-                    disabled={ readonly }
-                    value={ expressionValue }
-                    data-componentid={ componentId }
-                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleExpressionChangeDebounced(
-                            e.target.value,
-                            ruleId,
-                            conditionId,
-                            expressionId,
-                            ExpressionFieldTypes.Value,
-                            true
-                        );
-                    } }
-                />
-            );
-        }
-
-        if (metaValue?.inputType === "options") {
-            if (metaValue?.values?.length > 1) {
-
-                // Set first value of the list if option is empty
-                if (expressionValue === "") {
-                    handleExpressionChangeDebounced(
-                        metaValue?.values[0].name,
-                        ruleId,
-                        conditionId,
-                        expressionId,
-                        ExpressionFieldTypes.Value,
-                        false
-                    );
-                }
+            if ((expressionField === "application" && initialResourcesLoadUrl && filterBaseResourcesUrl) ||
+                (expressionField === "claim" && initialResourcesLoadUrl)) {
 
                 return (
-                    <Select
-                        disabled={ readonly }
-                        value={ expressionValue }
-                        data-componentid={ componentId }
-                        onChange={ (e: SelectChangeEvent) => {
-                            updateConditionExpression(
-                                e.target.value,
-                                ruleId,
-                                conditionId,
-                                expressionId,
-                                ExpressionFieldTypes.Value,
-                                true
-                            );
-                        } }
-                    >
-                        { metaValue.values?.filter((item: ListDataInterface) =>
-                            !hiddenValues.includes(item.name)
-                        ).map((item: ListDataInterface, index: number) => (
-                            <MenuItem value={ item.name } key={ `${expressionId}-${index}` }>
-                                { item.displayName }
-                            </MenuItem>
-                        )) }
-                    </Select>
+                    <ResourceListSelect
+                        readonly={ readonly }
+                        ruleId={ ruleId }
+                        conditionId={ conditionId }
+                        setIsResourceMissing={ setIsResourceMissing }
+                        expressionField={ expressionField }
+                        expressionId={ expressionId }
+                        expressionValue={ expressionValue }
+                        findMetaValuesAgainst={ findMetaValuesAgainst }
+                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                        hiddenResources={ hiddenResources }
+                    />
                 );
-            }
-
-            if (metaValue?.links?.length >= 1) {
-                const initialResourcesLoadUrl: string = metaValue?.links.find(
-                    (link: LinkInterface) => link.rel === "values")?.href;
-                const filterBaseResourcesUrl: string = metaValue?.links.find(
-                    (link: LinkInterface) => link.rel === "filter")?.href;
-
-                if ((expressionField === "application" && initialResourcesLoadUrl && filterBaseResourcesUrl) ||
-                    (expressionField === "claim" && initialResourcesLoadUrl)) {
-
-                    return (
-                        <ResourceListSelect
-                            ruleId={ ruleId }
-                            conditionId={ conditionId }
-                            setIsResourceMissing={ setIsResourceMissing }
-                            expressionField={ expressionField }
-                            expressionId={ expressionId }
-                            expressionValue={ expressionValue }
-                            findMetaValuesAgainst={ findMetaValuesAgainst }
-                            initialResourcesLoadUrl={ initialResourcesLoadUrl }
-                            filterBaseResourcesUrl={ filterBaseResourcesUrl }
-                            hiddenResources={ hiddenResources }
-                        />
-                    );
-                }
-
-                return null;
             }
 
             return null;
         }
 
         return null;
-    };
+    }
 
-    /**
-     * Rule expression component to recursive render.
-     *
-     * @param props - Props injected to the component.
-     * @returns Rule expression component.
-     */
-    const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
-        ["data-componentid"]: componentId = "rules-condition-expression",
-        expression,
-        ruleId,
-        conditionId,
-        index,
-        isConditionLast,
-        isConditionExpressionRemovable,
-        hiddenConditions = EMPTY_ARRAY,
-        hiddenResources = EMPTY_ARRAY,
-        hiddenValues = EMPTY_ARRAY
-    }: RuleExpressionComponentProps) => {
+    return null;
+};
 
-        const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
+/**
+ * Rule expression component to recursive render.
+ *
+ * @param props - Props injected to the component.
+ * @returns Rule expression component.
+ */
+const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression",
+    readonly,
+    expression,
+    ruleId,
+    conditionId,
+    index,
+    isConditionLast,
+    isConditionExpressionRemovable,
+    hiddenConditions = EMPTY_ARRAY,
+    hiddenResources = EMPTY_ARRAY,
+    hiddenValues = EMPTY_ARRAY
+}: RuleExpressionComponentProps) => {
 
-        const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
-            (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta?.field?.name === expression.field
-        );
+    const { t } = useTranslation();
+    const {
+        addNewRuleConditionExpression,
+        conditionExpressionsMeta,
+        removeRuleConditionExpression,
+        updateConditionExpression
+    } = useRulesContext();
 
-        return (
-            <Box
-                sx={ { position: "relative" } }
-                key={ index }
-                className="box-container"
-                data-componentid={ componentId }
-            >
-                { isResourceMissing && (
-                    <Alert
-                        severity="warning"
-                        className="alert-warning"
-                        sx={ { mb: 2 } }
-                        data-componentid={ "rules-condition-expression-alert" }
+    const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
+
+    const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
+        (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta?.field?.name === expression.field
+    );
+
+    return (
+        <Box
+            sx={ { position: "relative" } }
+            key={ index }
+            className="box-container"
+            data-componentid={ componentId }
+        >
+            { isResourceMissing && (
+                <Alert
+                    severity="warning"
+                    className="alert-warning"
+                    sx={ { mb: 2 } }
+                    data-componentid={ "rules-condition-expression-alert" }
+                >
+                    <AlertTitle
+                        className="alert-title"
                     >
-                        <AlertTitle
-                            className="alert-title"
-                        >
-                            <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
-                                The resource linked to this rule is no longer available.
-                            </Trans>
-                        </AlertTitle>
-                        <Trans
-                            i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
-                        >
-                            Please update to a valid resource.
+                        <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
+                            The resource linked to this rule is no longer available.
                         </Trans>
-                    </Alert>
-                ) }
-                <FormControl fullWidth size="small">
-                    <Select
-                        disabled={ readonly }
-                        value={ expression.field }
-                        data-componentid={ "rules-condition-expression-input-field-select" }
-                        onChange={ (e: SelectChangeEvent) => {
-                            updateConditionExpression(
-                                e.target.value,
-                                ruleId,
-                                conditionId,
-                                expression.id,
-                                ExpressionFieldTypes.Field,
-                                true
-                            );
-                            updateConditionExpression(
-                                "",
-                                ruleId,
-                                conditionId,
-                                expression.id,
-                                ExpressionFieldTypes.Value,
-                                true
-                            );
-                        } }
+                    </AlertTitle>
+                    <Trans
+                        i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
                     >
-                        { conditionExpressionsMeta?.filter((item: ConditionExpressionMetaInterface) =>
-                            !hiddenConditions.includes(item.field?.name)
-                        ).map((item: ConditionExpressionMetaInterface, index: number) => (
-                            <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
-                                { item.field?.displayName }
-                            </MenuItem>
-                        )) }
-                    </Select>
-                </FormControl>
-                <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
-                    <Select
+                        Please update to a valid resource.
+                    </Trans>
+                </Alert>
+            ) }
+            <FormControl fullWidth size="small">
+                <Select
+                    disabled={ readonly }
+                    value={ expression.field }
+                    data-componentid={ "rules-condition-expression-input-field-select" }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expression.id,
+                            ExpressionFieldTypes.Field,
+                            true
+                        );
+                        updateConditionExpression(
+                            "",
+                            ruleId,
+                            conditionId,
+                            expression.id,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                >
+                    { conditionExpressionsMeta?.filter((item: ConditionExpressionMetaInterface) =>
+                        !hiddenConditions.includes(item.field?.name)
+                    ).map((item: ConditionExpressionMetaInterface, index: number) => (
+                        <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
+                            { item.field?.displayName }
+                        </MenuItem>
+                    )) }
+                </Select>
+            </FormControl>
+            <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
+                <Select
+                    disabled={ readonly }
+                    value={ expression.operator }
+                    data-componentid={ "rules-condition-expression-input-operator-select" }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expression.id,
+                            ExpressionFieldTypes.Operator,
+                            true
+                        );
+                    } }
+                >
+                    { findMetaValuesAgainst?.operators?.map((item: ListDataInterface, index: number) => (
+                        <MenuItem value={ item.name } key={ `${expression.id}-${index}` }>
+                            { item.displayName }
+                        </MenuItem>
+                    )) }
+                </Select>
+            </FormControl>
+            <FormControl fullWidth size="small">
+                <ConditionValueInput
+                    readonly={ readonly }
+                    conditionId={ conditionId }
+                    expressionField={ expression.field }
+                    expressionId={ expression.id }
+                    expressionValue={ expression.value }
+                    findMetaValuesAgainst={ findMetaValuesAgainst }
+                    metaValue={ findMetaValuesAgainst?.value }
+                    ruleId={ ruleId }
+                    setIsResourceMissing={ setIsResourceMissing }
+                    hiddenResources={ hiddenResources }
+                    hiddenValues={ hiddenValues }
+                />
+            </FormControl>
+            { ((!readonly) || (readonly && !isConditionLast)) && (
+                <FormControl sx={ { mt: 1 } } size="small">
+                    <Button
                         disabled={ readonly }
-                        value={ expression.operator }
-                        data-componentid={ "rules-condition-expression-input-operator-select" }
-                        onChange={ (e: SelectChangeEvent) => {
-                            updateConditionExpression(
-                                e.target.value,
-                                ruleId,
-                                conditionId,
-                                expression.id,
-                                ExpressionFieldTypes.Operator,
-                                true
-                            );
-                        } }
-                    >
-                        { findMetaValuesAgainst?.operators?.map((item: ListDataInterface, index: number) => (
-                            <MenuItem value={ item.name } key={ `${expression.id}-${index}` }>
-                                { item.displayName }
-                            </MenuItem>
-                        )) }
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth size="small">
-                    <ConditionValueInput
-                        conditionId={ conditionId }
-                        expressionField={ expression.field }
-                        expressionId={ expression.id }
-                        expressionValue={ expression.value }
-                        findMetaValuesAgainst={ findMetaValuesAgainst }
-                        metaValue={ findMetaValuesAgainst?.value }
-                        ruleId={ ruleId }
-                        setIsResourceMissing={ setIsResourceMissing }
-                        hiddenResources={ hiddenResources }
-                        hiddenValues={ hiddenValues }
-                    />
-                </FormControl>
-                { ((!readonly) || (readonly && !isConditionLast)) && (
-                    <FormControl sx={ { mt: 1 } } size="small">
-                        <Button
-                            disabled={ readonly }
-                            size="small"
-                            variant="contained"
-                            color="secondary"
-                            onClick={ () => {
-                                addNewRuleConditionExpression(
-                                    ruleId,
-                                    conditionId,
-                                    AdjoiningOperatorTypes.And,
-                                    expression.id
-                                );
-                            } }
-                            className="add-button"
-                            startIcon={ !readonly ? <PlusIcon /> : null }
-                        >
-                            { t("rules:buttons.and") }
-                        </Button>
-                    </FormControl>
-                ) }
-
-                { isConditionExpressionRemovable && !readonly && (
-                    <Fab
-                        aria-label="delete"
                         size="small"
-                        sx={ { position: "absolute" } }
-                        className="remove-button"
-                        onClick={ () => removeRuleConditionExpression(ruleId, expression.id) }
+                        variant="contained"
+                        color="secondary"
+                        onClick={ () => {
+                            addNewRuleConditionExpression(
+                                ruleId,
+                                conditionId,
+                                AdjoiningOperatorTypes.And,
+                                expression.id
+                            );
+                        } }
+                        className="add-button"
+                        startIcon={ !readonly ? <PlusIcon /> : null }
                     >
-                        <MinusIcon className="remove-button-icon" />
-                    </Fab>
-                ) }
-            </Box>
-        );
-    };
+                        { t("rules:buttons.and") }
+                    </Button>
+                </FormControl>
+            ) }
+
+            { isConditionExpressionRemovable && !readonly && (
+                <Fab
+                    aria-label="delete"
+                    size="small"
+                    sx={ { position: "absolute" } }
+                    className="remove-button"
+                    onClick={ () => removeRuleConditionExpression(ruleId, expression.id) }
+                >
+                    <MinusIcon className="remove-button-icon" />
+                </Fab>
+            ) }
+        </Box>
+    );
+};
+
+/**
+ * Rules condition component to recursive render.
+ *
+ * @param props - Props injected to the component.
+ * @returns Rule condition component.
+ */
+const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-component-condition",
+    readonly,
+    rule: ruleInstance
+}: RulesComponentPropsInterface): ReactElement => {
+
+    const ruleConditions: RuleConditionsInterface = ruleInstance.rules;
+
+    const {
+        addNewRuleConditionExpression,
+        hidden
+    } = useRulesContext();
+
+    const { t } = useTranslation();
 
     return (
         <div data-componentid={ componentId }>
@@ -941,6 +975,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                             <Box sx={ { mt: 2 } } key={ exprIndex }>
                                                 { (condition.expressions.length === (exprIndex + 1)) }
                                                 <RuleExpression
+                                                    readonly={ readonly }
                                                     expression={ expression }
                                                     ruleId={ ruleInstance.id }
                                                     conditionId={ condition.id }
