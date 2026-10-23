@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.19.7
+
+### Patch Changes
+
+- [#10785](https://github.com/wso2/identity-apps/pull/10785) [`aa0d7778c0299d290e95d092d79359c84cd0c25a`](https://github.com/wso2/identity-apps/commit/aa0d7778c0299d290e95d092d79359c84cd0c25a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Move the rule condition components to module level so they keep their state across renders
+
 ## 4.19.6
 
 ### Patch Changes
