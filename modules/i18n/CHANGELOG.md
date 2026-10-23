@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.49.0
+
+### Minor Changes
+
+- [#10746](https://github.com/wso2/identity-apps/pull/10746) [`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add organization onboarding fields, provisioning settings, role selection, and organization attribute selection in flow-extension access configuration.
+
 ## 2.48.3
 
 ### Patch Changes
