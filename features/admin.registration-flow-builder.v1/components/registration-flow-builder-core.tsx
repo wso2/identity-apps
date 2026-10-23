@@ -76,6 +76,8 @@ import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
+import useOrganizationAttributeValidation from "../hooks/use-organization-attribute-validation";
+import useOrganizationProvisioningExecutor from "../hooks/use-organization-provisioning-executor";
 import DEFAULT_END_NODE_TEMPLATE from "../migrations/templates/default-end-node.json";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
@@ -137,6 +139,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const { data: resources } = useGetRegistrationFlowBuilderResources();
 
     const { steps, templates } = resources;
+
+    useOrganizationProvisioningExecutor();
+    useOrganizationAttributeValidation();
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;

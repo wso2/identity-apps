@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { OrganizationAttributeEntryInterface } from "./organization-attributes";
 
 /**
  * Node types matching the backend ContextTreeNode.NodeType enum.
@@ -120,6 +121,11 @@ export interface FlowContextTreePropsInterface extends IdentifiableComponentInte
      * itself does not gate any controls on this — it is purely presentational.
      */
     redirectionEnabled?: boolean;
+    /**
+     * Organization attributes the published flow collects, offered as ready-made options when
+     * adding an entry to the organization attributes container.
+     */
+    organizationAttributeOptions?: OrganizationAttributeEntryInterface[];
 }
 
 /**

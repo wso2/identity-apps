@@ -316,6 +316,14 @@ export const flows: flowsNS = {
                     variant: "Typography must have a variant defined for proper text styling."
                 }
             },
+            organizationAttributes: {
+                federatedAuthenticationNotSupported: "Organization onboarding is currently supported only with "
+                    + "username and password registration. Remove federated authentication from this flow, "
+                    + "or remove the organization onboarding fields.",
+                missingOrganizationName: "This flow collects organization attributes but no Organization "
+                    + "Name, which is required to create an organization. Add an Organization Name field, "
+                    + "or these values will be discarded at runtime."
+            },
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
@@ -427,7 +435,21 @@ export const flows: flowsNS = {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:"
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                organizationRoles: {
+                    fetchError: "Some roles could not be loaded. Your saved selections have been kept.",
+                    hint: "Assign these roles to the user in the new organization. Roles must be available through "
+                        + "the existing sharing settings. Unavailable roles are skipped and logged without "
+                        + "interrupting registration. The default selfsignup role is kept.",
+                    label: "Roles in the new organization (optional)",
+                    noPermission: "You need permission to read roles to configure this selection.",
+                    placeholder: "Search and select parent organization roles"
+                },
+                provisionTarget: {
+                    hint: "Create the user inside the organization this flow creates, instead of the "
+                        + "organization the flow is running in.",
+                    label: "Onboard the user to the new organization"
+                }
             }
         }
     }

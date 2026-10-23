@@ -931,10 +931,16 @@
             ReactDOM.render(
                 createElement(
                     GlobalContextProvider,
-                    { globalData: <%= reactGlobalContextJson %> },
+                    {
+                        globalData: Object.assign(
+                            {},
+                            <%= StringUtils.isNotBlank(reactGlobalContextJson) ? reactGlobalContextJson : "{}" %>,
+                            { organizations: { checkHandleUrl: "<%= accountsBaseURL %>" + "/util/org-handle-check-api.jsp" } }
+                        )
+                    },
                     createElement(
                         I18nProvider,
-                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= i18nJsonString %> },
+                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= StringUtils.isNotBlank(i18nJsonString) ? i18nJsonString : "{}" %> },
                         createElement(Content)
                     )
                 ),
