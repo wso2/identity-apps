@@ -395,6 +395,26 @@ export const console: ConsoleNS = {
             documentation: {
                 content: "Access comprehensive documentation and guides for {{productName}}."
             },
+            actionCard: {
+                cancel: "Cancel",
+                cancelled: "Cancelled. Nothing was changed.",
+                confirm: "Confirm",
+                confirming: "Working on it...",
+                errors: {
+                    alreadyHandled: "This request has already been handled.",
+                    default: "This request couldn't be completed. Please try again.",
+                    expired: "This request expired. Ask the copilot again."
+                },
+                expired: "Expired. Nothing was changed.",
+                expiresIn: "Expires in {{minutes}} min",
+                failed: "Failed",
+                note: "Nothing changes until you confirm.",
+                notAvailable: "This request can't be confirmed.",
+                openResource: "Open",
+                reviewed: "I've reviewed these details",
+                succeeded: "Done.",
+                unknown: "Couldn't confirm whether this was done. Check the Console before trying again."
+            },
             chat: {
                 emptyChat: "Start a conversation...",
                 inputLabel: "Message (optional)",
