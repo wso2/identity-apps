@@ -30,6 +30,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { EnhancedOrganizationLoginToggle } from "./enhanced-organization-login-toggle";
+import { SharedAppRoleManagementToggle } from "./shared-app-role-management-toggle";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -84,6 +85,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         state?.config?.ui?.asyncOperationStatusPollingInterval);
     const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
+    const isSharedAppRoleManagementFeatureEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isSharedAppRoleManagementFeatureEnabled);
 
     const isMyAccount: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId ||
@@ -163,6 +166,20 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    isSharedAppRoleManagementAllowed={
+                        isSharedAppRoleManagementFeatureEnabled && (application.allowSharedAppRoleManagement ?? false)
+                    }
+                    roleAudience={ application.associatedRoles?.allowedAudience }
+                    onUpdate={ handleUpdate }
+                    readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                />
+            ) }
+            { isEnhancedOrganizationAuthenticationFeatureEnabled && isSharedAppRoleManagementFeatureEnabled &&
+                !isMyAccount && application.enhancedOrgAuthenticationEnabled && (
+                <SharedAppRoleManagementToggle
+                    appId={ application.id }
+                    isEnabled={ application.allowSharedAppRoleManagement ?? false }
+                    roleAudience={ application.associatedRoles?.allowedAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
                 />

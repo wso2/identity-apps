@@ -147,6 +147,7 @@ export interface rolesNS {
                     subOrganization: {
                         appNote: string;
                         orgNote: string;
+                        sharedAppNote: string;
                     }
                 };
             };

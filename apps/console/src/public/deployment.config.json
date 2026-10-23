@@ -2384,6 +2384,7 @@
         "isPasswordResetEnforcementScopeEnabled": false,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
+        "isSharedAppRoleManagementFeatureEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isTrustedAppConsentRequired": false,
         "isWSFedProtocolTemplateEnabled": true,
