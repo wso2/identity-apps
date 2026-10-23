@@ -54,6 +54,7 @@ export class MoesifDashboardConstants {
      */
     public static readonly TEMPLATES: Record<TenantTier, Record<string, unknown>> = {
         [ TenantTier.ENTERPRISE ]: premiumDashboardTemplate,
+        [ TenantTier.ENTERPRISE_B2B ]: premiumDashboardTemplate,
         [ TenantTier.ESSENTIALS ]: essentialsDashboardTemplate,
         [ TenantTier.FREE ]: freeDashboardTemplate,
         [ TenantTier.FREE_V2 ]: freeDashboardTemplate,
@@ -81,6 +82,7 @@ export class MoesifDashboardConstants {
      */
     public static readonly PLANS: Record<TenantTier, MoesifDashboardPlan> = {
         [ TenantTier.ENTERPRISE ]: MoesifDashboardPlan.PREMIUM,
+        [ TenantTier.ENTERPRISE_B2B ]: MoesifDashboardPlan.PREMIUM,
         [ TenantTier.ESSENTIALS ]: MoesifDashboardPlan.ESSENTIALS,
         [ TenantTier.FREE ]: MoesifDashboardPlan.FREE,
         [ TenantTier.FREE_V2 ]: MoesifDashboardPlan.FREE,
