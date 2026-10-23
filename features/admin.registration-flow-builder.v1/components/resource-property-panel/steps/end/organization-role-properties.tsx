@@ -28,15 +28,11 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { useRequiredScopes } from "@wso2is/access-control";
-import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
-import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import useSharedOrganizationRoles from "../../../../hooks/use-shared-organization-roles";
 
 interface OrganizationRolePropertiesPropsInterface extends IdentifiableComponentInterface {
     selectedRoleIds: string[];
@@ -49,47 +45,8 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
     ["data-componentid"]: componentId = "organization-role-properties"
 }: OrganizationRolePropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
-    const rolesFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state.config?.ui?.features?.userRolesV3?.enabled
-            ? state.config.ui.features.userRolesV3
-            : state.config?.ui?.features?.userRoles);
-    const hasRoleReadPermission: boolean = useRequiredScopes(rolesFeatureConfig?.scopes?.read);
-
-    const [ startIndex, setStartIndex ] = useState<number>(1);
-    const [ roles, setRoles ] = useState<RolesV2Interface[]>([]);
+    const { roles, sharedRoles, hasRoleReadPermission, isLoading, isLoaded, error } = useSharedOrganizationRoles();
     const [ inputValue, setInputValue ] = useState<string>("");
-
-    const { data, error, isLoading } = useGetRolesList<RolesV2ResponseInterface>(
-        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-        startIndex,
-        undefined,
-        "users,groups,permissions,associatedApplications",
-        hasRoleReadPermission
-    );
-
-    useEffect((): void => {
-        if (!data?.Resources?.length) {
-            return;
-        }
-
-        setRoles((previousRoles: RolesV2Interface[]): RolesV2Interface[] => {
-            const rolesById: Map<string, RolesV2Interface> = new Map(
-                previousRoles.map((role: RolesV2Interface) => [ role.id, role ])
-            );
-
-            data.Resources.forEach((role: RolesV2Interface): void => {
-                rolesById.set(role.id, role);
-            });
-
-            return [ ...rolesById.values() ];
-        });
-
-        const nextIndex: number = (data.startIndex ?? 1) + data.Resources.length;
-
-        if (nextIndex <= data.totalResults) {
-            setStartIndex(nextIndex);
-        }
-    }, [ data ]);
 
     const selectedRoles: RolesV2Interface[] = useMemo((): RolesV2Interface[] =>
         selectedRoleIds.map((roleId: string): RolesV2Interface =>
@@ -101,10 +58,12 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
             }), [ roles, selectedRoleIds ]);
 
     const options: RolesV2Interface[] = useMemo((): RolesV2Interface[] => [
-        ...roles,
+        ...sharedRoles,
         ...selectedRoles.filter((selected: RolesV2Interface) =>
-            !roles.some((role: RolesV2Interface) => role.id === selected.id))
-    ], [ roles, selectedRoles ]);
+            !sharedRoles.some((role: RolesV2Interface) => role.id === selected.id))
+    ], [ sharedRoles, selectedRoles ]);
+    const unavailableRoles: RolesV2Interface[] = isLoaded ? selectedRoles.filter((selected: RolesV2Interface) =>
+        !sharedRoles.some((role: RolesV2Interface) => role.id === selected.id)) : [];
 
     const getRoleLabel: (_role: RolesV2Interface) => string = (role: RolesV2Interface): string =>
         role.audience?.display ? `${role.displayName} (${role.audience.display})` : role.displayName;
@@ -155,7 +114,9 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
                 ) }
                 renderTags={ (value: RolesV2Interface[], getTagProps: AutocompleteRenderGetTagProps): ReactElement[] =>
                     value.map((role: RolesV2Interface, index: number): ReactElement => (
-                        <Chip { ...getTagProps({ index }) } key={ role.id } label={ getRoleLabel(role) } size="small" />
+                        <Chip { ...getTagProps({ index }) } key={ role.id } label={ getRoleLabel(role) } size="small"
+                            color={ unavailableRoles.some((unavailable: RolesV2Interface) => unavailable.id === role.id)
+                                ? "warning" : "default" } />
                     )) }
                 renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                     <TextField { ...params }
@@ -168,6 +129,13 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
                 data-componentid={ `${componentId}-select` }
             />
             <FormHelperText>{ t("flows:registrationFlow.steps.end.organizationRoles.hint") }</FormHelperText>
+            { unavailableRoles.length > 0 && (
+                <Alert severity="warning">
+                    { t("flows:registrationFlow.steps.end.organizationRoles.unavailable", {
+                        roles: unavailableRoles.map(getRoleLabel).join(", ")
+                    }) }
+                </Alert>
+            ) }
             { !hasRoleReadPermission && (
                 <Alert severity="warning">
                     { t("flows:registrationFlow.steps.end.organizationRoles.noPermission") }

@@ -436,6 +436,7 @@ export interface flowsNS {
                     hint: string;
                 };
                 organizationRoles: {
+                    unavailable: string;
                     label: string;
                     placeholder: string;
                     hint: string;
