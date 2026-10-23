@@ -1,5 +1,14 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.12.1
+
+### Patch Changes
+
+- [#10791](https://github.com/wso2/identity-apps/pull/10791) [`fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9`](https://github.com/wso2/identity-apps/commit/fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show only roles shared with new organizations in the role picker and warn when previously selected roles are no longer shared.
+
+- Updated dependencies [[`fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9`](https://github.com/wso2/identity-apps/commit/fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9)]:
+  - @wso2is/admin.organizations.v1@2.29.1
+
 ## 0.12.0
 
 ### Minor Changes
