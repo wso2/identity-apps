@@ -464,7 +464,7 @@ importers:
         specifier: ^1.0.213
         version: link:../../features/admin.sms-templates.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.230
+        specifier: ^1.5.231
         version: link:../../features/admin.subscription.v1
       '@wso2is/admin.tenants.v1':
         specifier: ^2.29.33
