@@ -19,15 +19,20 @@
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import { Action } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import Notification, { NotificationType } from "@wso2is/admin.flow-builder-core.v1/models/notification";
-import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, StepData, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { Node, useReactFlow } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import OrganizationAttributeConstants from "../constants/organization-attribute-constants";
+import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
 import collectOrganizationAttributeIdentifiers from "../utils/collect-organization-attribute-identifiers";
+import { parseOrganizationRoleIds } from "../utils/organization-role-utils";
+import useSharedOrganizationRoles from "./use-shared-organization-roles";
 
 const NOTIFICATION_ID: string = "organization-attribute-validation";
 const FEDERATION_NOTIFICATION_ID: string = "organization-federation-validation";
+const ROLE_NOTIFICATION_ID: string = "organization-role-validation";
 const FEDERATED_EXECUTORS: string[] = [
     ExecutionTypes.GoogleFederation,
     ExecutionTypes.AppleFederation,
@@ -60,6 +65,33 @@ const useOrganizationAttributeValidation = (): void => {
     const hasFederatedAuthentication: boolean = nodes.some((node: Node): boolean =>
         FEDERATED_EXECUTORS.includes((node.data?.action as Action)?.executor?.name)
     );
+    const selectedRoleIds: string[] = nodes.filter((node: Node): boolean => node.type === StepTypes.End)
+        .flatMap((node: Node): string[] => parseOrganizationRoleIds(
+            (node.data as StepData)?.action?.executor?.meta?.[RegistrationFlowExecutorConstants.ROLE_IDS_KEY]
+        ));
+    const { roles, sharedRoles, isLoaded, error } = useSharedOrganizationRoles(
+        hasOrganizationName && selectedRoleIds.length > 0
+    );
+    const unavailableRoles: string = isLoaded ? selectedRoleIds.filter((roleId: string): boolean =>
+        !sharedRoles.some((role: RolesV2Interface): boolean => role.id === roleId))
+        .map((roleId: string): string =>
+            roles.find((role: RolesV2Interface) => role.id === roleId)?.displayName ?? roleId)
+        .join(", ") : "";
+
+    useEffect(() => {
+        if (!unavailableRoles && !error) {
+            removeNotification(ROLE_NOTIFICATION_ID);
+
+            return;
+        }
+
+        addNotification(new Notification(
+            ROLE_NOTIFICATION_ID,
+            error ? t("flows:registrationFlow.steps.end.organizationRoles.fetchError") :
+                t("flows:registrationFlow.steps.end.organizationRoles.unavailable", { roles: unavailableRoles }),
+            NotificationType.WARNING
+        ));
+    }, [ unavailableRoles, error, t, addNotification, removeNotification ]);
 
     useEffect(() => {
         if (!hasOrganizationName || !hasFederatedAuthentication) {
@@ -97,6 +129,7 @@ const useOrganizationAttributeValidation = (): void => {
         return () => {
             removeNotification(NOTIFICATION_ID);
             removeNotification(FEDERATION_NOTIFICATION_ID);
+            removeNotification(ROLE_NOTIFICATION_ID);
         };
     }, [ removeNotification ]);
 };

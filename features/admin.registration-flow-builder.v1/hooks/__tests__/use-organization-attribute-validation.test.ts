@@ -18,7 +18,7 @@
 
 import { renderHook } from "@testing-library/react";
 import Notification, { NotificationType } from "@wso2is/admin.flow-builder-core.v1/models/notification";
-import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
 import RegistrationFlowExecutorConstants from "../../constants/registration-flow-executor-constants";
@@ -30,9 +30,11 @@ const mocks: {
     getNodes: Mock<() => Node[]>;
     removeNotification: Mock<(_id: string) => void>;
 } = vi.hoisted(() => ({ addNotification: vi.fn(), getNodes: vi.fn(), removeNotification: vi.fn() }));
+const useSharedOrganizationRolesMock: Mock = vi.hoisted(() => vi.fn());
 
 vi.mock("@xyflow/react", () => ({ useReactFlow: () => mocks }));
 vi.mock("@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status", () => ({ default: () => mocks }));
+vi.mock("../use-shared-organization-roles", () => ({ default: useSharedOrganizationRolesMock }));
 
 describe("useOrganizationAttributeValidation", () => {
     const organizationStep: Node = {
@@ -69,6 +71,8 @@ describe("useOrganizationAttributeValidation", () => {
         mocks.removeNotification.mockReset();
         mocks.getNodes.mockReset();
         mocks.getNodes.mockReturnValue([]);
+        useSharedOrganizationRolesMock.mockReset();
+        useSharedOrganizationRolesMock.mockReturnValue({ isLoaded: false, roles: [], sharedRoles: [] });
     });
 
     it("warns when organization fields are collected without an organization name", () => {
@@ -188,8 +192,33 @@ describe("useOrganizationAttributeValidation", () => {
         mocks.removeNotification.mockClear();
         unmount();
 
-        expect(mocks.removeNotification).toHaveBeenCalledTimes(2);
+        expect(mocks.removeNotification).toHaveBeenCalledTimes(3);
         expect(mocks.removeNotification).toHaveBeenCalledWith("organization-attribute-validation");
         expect(mocks.removeNotification).toHaveBeenCalledWith("organization-federation-validation");
+        expect(mocks.removeNotification).toHaveBeenCalledWith("organization-role-validation");
     });
+
+    it("warns about an unshared configured role without requiring the properties panel to be open", () => {
+        mocks.getNodes.mockReturnValue([ organizationNameStep, {
+            data: { action: { executor: { meta: { roleIds: JSON.stringify([ "role-a" ]) } } } },
+            id: "end", position: { x: 0, y: 0 }, type: StepTypes.End
+        } ]);
+        useSharedOrganizationRolesMock.mockReturnValue({ isLoaded: true, roles: [], sharedRoles: [] });
+        const { rerender } = renderHook(() => useOrganizationAttributeValidation());
+        const notification: Notification = mocks.addNotification.mock.calls[0][0];
+
+        expect(useSharedOrganizationRolesMock).toHaveBeenCalledWith(true);
+        expect(notification.getId()).toBe("organization-role-validation");
+        expect(notification.getType()).toBe(NotificationType.WARNING);
+        expect(notification.getMessage()).toBe("flows:registrationFlow.steps.end.organizationRoles.unavailablerole-a");
+
+        useSharedOrganizationRolesMock.mockReturnValue({
+            isLoaded: true, roles: [], sharedRoles: [ { id: "role-a" } ]
+        });
+        mocks.removeNotification.mockClear();
+        rerender();
+
+        expect(mocks.removeNotification).toHaveBeenCalledWith("organization-role-validation");
+    });
+
 });

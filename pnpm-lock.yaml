@@ -8185,6 +8185,9 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.2
         version: link:../admin.claims.v1
+      '@wso2is/admin.console-settings.v1':
+        specifier: workspace:^
+        version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.61.1
         version: link:../admin.core.v1
@@ -8197,6 +8200,9 @@ importers:
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: workspace:^
+        version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
         specifier: workspace:^
         version: link:../admin.roles.v2
@@ -8248,6 +8254,9 @@ importers:
       redux:
         specifier: ^4.0.4
         version: 4.2.1
+      swr:
+        specifier: ^2.1.5
+        version: 2.4.1(react@18.3.1)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
