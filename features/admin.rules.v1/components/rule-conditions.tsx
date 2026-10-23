@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Autocomplete, { AutocompleteInputChangeReason,
@@ -31,28 +32,45 @@ import { ListItemProps } from "@oxygen-ui/react/ListItem";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, MutableRefObject, ReactElement,
-    useEffect, useMemo, useRef, useState } from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, MutableRefObject,
+    ReactElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
+import ConditionValueInput, {
+    FIELD_TOGGLE_SPACE,
+    TEXT_BOX_WITH_FIELD_TOGGLE_SX
+} from "./condition-value-input";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import useRulesContext from "../hooks/use-rules-context";
+import {
+    OperatorConstraintsInterface,
+    getValueInput,
+    narrowOperators
+} from "../utils/operators";
+import { ExpressionChangeInterface, toConditionValue, toExpressionChanges } from "../utils/condition-value";
+import toQualifierOptions, { findQualifierResource, toResourceList } from "../utils/to-qualifier-options";
 import {
     ConditionExpressionMetaInterface,
     ExpressionValueInterface,
     LinkInterface,
-    ListDataInterface
+    ListDataInterface,
+    OperatorInterface,
+    OperatorValueInputType
 } from "../models/meta";
 import { ClaimResourceInterface, ResourceInterface } from "../models/resource";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionInterface,
+    ConditionValueType,
     ExpressionFieldTypes,
+    FieldOptionInterface,
+    QualifierOptionInterface,
     RuleConditionInterface,
     RuleConditionsInterface,
     RuleInterface
@@ -62,6 +80,99 @@ import "./rule-conditions.scss";
 /**
  * Value input autocomplete options interface.
  */
+/**
+ * Props interface of the qualifier input.
+ */
+interface ConditionQualifierInputPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
+    /**
+     * ID of the rule the expression belongs to.
+     */
+    ruleId: string;
+    /**
+     * ID of the condition group the expression belongs to.
+     */
+    conditionId: string;
+    /**
+     * ID of the expression.
+     */
+    expressionId: string;
+    /**
+     * The qualifier currently stored on the expression.
+     */
+    expressionQualifier: string;
+    /**
+     * How this field's qualifier is chosen, or undefined when the field takes no qualifier.
+     */
+    metaQualifier: ExpressionValueInterface;
+    /**
+     * The part of the expression the chosen qualifier is written to: its own qualifier, or the qualifier of the field
+     * its value is read from.
+     */
+    targetField?: ExpressionFieldTypes;
+}
+
+/**
+ * Props interface of the fetched qualifier input.
+ */
+interface QualifierReferenceAutocompletePropsInterface extends ConditionQualifierInputPropsInterface {
+    /**
+     * Endpoint the qualifier metadata links to for its list of values.
+     */
+    valuesUrl: string;
+}
+
+/**
+ * Props interface of the expression text field.
+ */
+interface ExpressionTextFieldPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
+    /**
+     * The value currently held on the expression.
+     */
+    storedValue: string;
+    /**
+     * Called with the new text on every keystroke.
+     */
+    onValueChange: (value: string) => void;
+}
+
+/**
+ * Props interface of the list value input.
+ */
+interface ConditionValuesInputPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
+    /**
+     * ID of the rule the expression belongs to.
+     */
+    ruleId: string;
+    /**
+     * ID of the condition group the expression belongs to.
+     */
+    conditionId: string;
+    /**
+     * ID of the expression.
+     */
+    expressionId: string;
+    /**
+     * The values currently held on the expression.
+     */
+    expressionValues: string[];
+    /**
+     * Shown at the end of the input, inside its box.
+     */
+    endAdornment?: ReactNode;
+}
+
 interface ValueInputAutocompleteOptionsInterface {
     id: string;
     label: string;
@@ -79,12 +190,16 @@ interface ComponentCommonPropsInterface extends IdentifiableComponentInterface {
     expressionId: string;
     expressionValue: string;
     ruleId: string;
+    /**
+     * Shown at the end of the input, inside its box, such as the toggle that reads the value from a field.
+     */
+    endAdornment?: ReactNode;
 }
 
 /**
- * Condition value input props interface.
+ * Condition literal input props interface.
  */
-interface ConditionValueInputProps extends ComponentCommonPropsInterface {
+interface ConditionLiteralInputPropsInterface extends ComponentCommonPropsInterface {
     metaValue: ExpressionValueInterface;
     findMetaValuesAgainst: ConditionExpressionMetaInterface;
     expressionField: string;
@@ -133,6 +248,10 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
     index: number;
     isConditionLast: boolean;
     isConditionExpressionRemovable: boolean;
+    /**
+     * Whether the group already has as many conditions as the server allows, so no more can be added with AND.
+     */
+    isAndLimitReached?: boolean;
     hiddenConditions?: string[];
     hiddenResources?: string[];
     hiddenValues?: string[];
@@ -145,6 +264,35 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
 }
+
+/**
+ * Rules condition component to recursive render.
+ *
+ * @param props - Props injected to the component.
+ * @returns Rule condition component.
+ */
+/**
+ * Value input autocomplete component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Value input autocomplete component.
+ */
+/**
+ * A select holding the field toggle keeps room for it at the end of its box, and moves its arrow in front of it.
+ */
+const SELECT_WITH_END_ADORNMENT_SX: Record<string, unknown> = {
+    "& .MuiSelect-icon": { right: (theme: Theme) => `calc(${ theme.spacing(FIELD_TOGGLE_SPACE) } + 7px)` },
+    pr: FIELD_TOGGLE_SPACE
+};
+
+/**
+ * An autocomplete with its own buttons, holding the field toggle, moves those buttons in front of the toggle and
+ * keeps room for both.
+ */
+const AUTOCOMPLETE_WITH_END_ADORNMENT_SX: Record<string, unknown> = {
+    "& .MuiAutocomplete-endAdornment": { right: (theme: Theme) => theme.spacing(FIELD_TOGGLE_SPACE) },
+    "&&& .MuiAutocomplete-inputRoot": { pr: FIELD_TOGGLE_SPACE + 8 }
+};
 
 /**
  * Debounced expression updater with an identity that survives re-renders.
@@ -176,13 +324,45 @@ const useDebouncedConditionExpressionChange = (): (
     }, 300), []);
 };
 
-
 /**
- * Value input autocomplete component.
+ * Free text input for one part of an expression.
  *
  * @param props - Props injected to the component.
- * @returns Value input autocomplete component.
+ * @returns The text field.
  */
+const ExpressionTextField: FunctionComponent<ExpressionTextFieldPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-text-field",
+    readonly,
+    storedValue,
+    onValueChange
+}: ExpressionTextFieldPropsInterface): ReactElement => {
+    const [ text, setText ] = useState<string>(storedValue ?? "");
+    const inputRef: MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        // While this field has focus the typed text is the newer of the two: the stored value is
+        // only catching up to an earlier keystroke, and adopting it would swallow everything typed
+        // since. Anything that changes the value from outside -- picking a different field, say --
+        // happens with the focus elsewhere, and is adopted.
+        if (document.activeElement !== inputRef.current) {
+            setText(storedValue ?? "");
+        }
+    }, [ storedValue ]);
+
+    return (
+        <TextField
+            disabled={ readonly }
+            value={ text }
+            inputRef={ inputRef }
+            data-componentid={ componentId }
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                setText(event.target.value);
+                onValueChange(event.target.value);
+            } }
+        />
+    );
+};
+
 const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
     ["data-componentid"]: componentId = "rules-condition-expression-input-value",
     readonly,
@@ -196,7 +376,8 @@ const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = (
     conditionId,
     expressionId,
     shouldFetch,
-    hiddenResources = EMPTY_ARRAY
+    hiddenResources = EMPTY_ARRAY,
+    endAdornment
 }: ValueInputAutocompleteProps) => {
 
     const { t } = useTranslation();
@@ -207,6 +388,8 @@ const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = (
     const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
     const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
     const [ open, setOpen ] = useState<boolean>(false);
+    // The option lists are loaded when the picker is first opened, not when the condition is shown.
+    const [ hasOpened, setHasOpened ] = useState<boolean>(false);
 
     const MORE_ITEMS: string = "more-items";
     const CLEAR_OPTION: string = "clear-option";
@@ -216,9 +399,9 @@ const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = (
         : initialResourcesLoadUrl;
 
     const { data: initialResources = [], isLoading: isInitialLoading } =
-        useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
+        useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch && hasOpened);
     const { data: filteredResources = [], isLoading: isFiltering } =
-        useGetResourceListOrResourceDetails(filterUrl, shouldFetch);
+        useGetResourceListOrResourceDetails(filterUrl, shouldFetch && hasOpened);
 
     useEffect(() => {
         if (resourceDetails) {
@@ -264,10 +447,14 @@ const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = (
     return (
         <Autocomplete
             className="autocomplete"
+            sx={ endAdornment ? AUTOCOMPLETE_WITH_END_ADORNMENT_SX : undefined }
             disabled={ readonly }
             data-componentid={ componentId }
             open={ open }
-            onOpen={ () => setOpen(true) }
+            onOpen={ () => {
+                setOpen(true);
+                setHasOpened(true);
+            } }
             onClose={ () => setOpen(false) }
             options={ [
                 ...options,
@@ -334,6 +521,7 @@ const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = (
                                 { isInitialLoading || isFiltering ? (
                                     <CircularProgress color="inherit" size={ 20 } />
                                 ) : null }
+                                { endAdornment }
                                 { params.InputProps.endAdornment }
                             </>
                         )
@@ -394,7 +582,8 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
     findMetaValuesAgainst,
     initialResourcesLoadUrl,
     filterBaseResourcesUrl,
-    hiddenResources = EMPTY_ARRAY
+    hiddenResources = EMPTY_ARRAY,
+    endAdornment
 }: ResourceListSelectProps) => {
 
     const { t } = useTranslation();
@@ -505,6 +694,7 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
                 fullWidth
                 aria-label="Attribute selection"
                 className="pt-2"
+                sx={ endAdornment ? AUTOCOMPLETE_WITH_END_ADORNMENT_SX : undefined }
                 componentsProps={ {
                     paper: {
                         elevation: 2
@@ -578,7 +768,13 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
                         placeholder={ t("rules:fields.autocomplete.placeholderText") }
                         value={ inputValue }
                         InputProps={ {
-                            ...params.InputProps
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    { endAdornment }
+                                    { params.InputProps.endAdornment }
+                                </>
+                            )
                         } }
                     />
                 ) }
@@ -616,6 +812,7 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
                     filterBaseResourcesUrl={ filterBaseResourcesUrl }
                     shouldFetch={ shouldFetch }
                     hiddenResources={ hiddenResources }
+                    endAdornment={ endAdornment }
                 />
             );
         }
@@ -625,6 +822,8 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
                 disabled={ readonly }
                 value={ expressionValue }
                 data-componentid={ componentId }
+                endAdornment={ endAdornment }
+                sx={ endAdornment ? SELECT_WITH_END_ADORNMENT_SX : undefined }
                 onChange={ (e: SelectChangeEvent) => {
                     updateConditionExpression(
                         e.target.value,
@@ -649,12 +848,189 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
 };
 
 /**
- * Condition value input component.
+ * Qualifier input backed by a list fetched from the endpoint named in the qualifier metadata.
  *
  * @param props - Props injected to the component.
- * @returns Condition value input component.
+ * @returns The qualifier autocomplete.
  */
-const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
+const QualifierReferenceAutocomplete: FunctionComponent<QualifierReferenceAutocompletePropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-qualifier",
+    readonly,
+    ruleId,
+    conditionId,
+    expressionId,
+    expressionQualifier,
+    metaQualifier,
+    valuesUrl,
+    targetField = ExpressionFieldTypes.Qualifier
+}: QualifierReferenceAutocompletePropsInterface) => {
+
+    const { updateConditionExpression } = useRulesContext();
+
+    const referenceAttribute: string = metaQualifier?.valueReferenceAttribute || "id";
+    const displayAttribute: string = metaQualifier?.valueDisplayAttribute || "name";
+
+    // The qualifiers are loaded when the picker is first opened, or straight away when a qualifier is already chosen,
+    // so its label can be shown. The list is cached by its URL, so every condition on the same field shares one
+    // request.
+    const [ hasOpened, setHasOpened ] = useState<boolean>(false);
+    const { data: fetchedResources, isLoading } =
+        useGetResourceListOrResourceDetails(valuesUrl, !!valuesUrl && (hasOpened || !!expressionQualifier));
+
+    const options: ValueInputAutocompleteOptionsInterface[] = React.useMemo(
+        () => toQualifierOptions(fetchedResources, referenceAttribute, displayAttribute),
+        [ fetchedResources, referenceAttribute, displayAttribute ]
+    );
+
+    // The stored qualifier is the reference attribute; show its label once the list has arrived, and
+    // fall back to the raw qualifier so a value set before this list loaded is never shown as blank.
+    const selected: ValueInputAutocompleteOptionsInterface =
+        options.find((option: ValueInputAutocompleteOptionsInterface) => option.id === expressionQualifier)
+        ?? (expressionQualifier ? { id: expressionQualifier, label: expressionQualifier } : null);
+
+    return (
+        <Autocomplete
+            className="autocomplete"
+            disabled={ readonly }
+            data-componentid={ componentId }
+            options={ options }
+            loading={ isLoading }
+            onOpen={ () => setHasOpened(true) }
+            value={ selected }
+            isOptionEqualToValue={ (
+                option: ValueInputAutocompleteOptionsInterface,
+                value: ValueInputAutocompleteOptionsInterface
+            ) => option.id === value?.id }
+            getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option?.label ?? "" }
+            onChange={ (_: React.SyntheticEvent, option: ValueInputAutocompleteOptionsInterface) => {
+                updateConditionExpression(
+                    option?.id ?? "",
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    targetField,
+                    true
+                );
+            } }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    InputProps={ {
+                        ...params.InputProps,
+                        endAdornment: (
+                            <>
+                                { isLoading && <CircularProgress color="inherit" size={ 16 } /> }
+                                { params.InputProps.endAdornment }
+                            </>
+                        )
+                    } }
+                />
+            ) }
+        />
+    );
+};
+
+/**
+ * Qualifier input for a field that names a family of values rather than a single one.
+ *
+ * @param props - Props injected to the component.
+ * @returns The qualifier input, or null when the field takes no qualifier.
+ */
+const ConditionQualifierInput: FunctionComponent<ConditionQualifierInputPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-qualifier",
+    readonly,
+    ruleId,
+    conditionId,
+    expressionId,
+    expressionQualifier,
+    metaQualifier,
+    targetField = ExpressionFieldTypes.Qualifier
+}: ConditionQualifierInputPropsInterface) => {
+
+    const { updateConditionExpression } = useRulesContext();
+    const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
+        useDebouncedConditionExpressionChange();
+
+    // A field that names a single value publishes no qualifier metadata, and so takes no qualifier.
+    if (!metaQualifier) {
+        return null;
+    }
+
+    if (metaQualifier.inputType === "input") {
+        return (
+            <ExpressionTextField
+                readonly={ readonly }
+                storedValue={ expressionQualifier }
+                data-componentid={ componentId }
+                onValueChange={ (value: string) => handleExpressionChangeDebounced(
+                    value,
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    targetField,
+                    true
+                ) }
+            />
+        );
+    }
+
+    if (metaQualifier.inputType === "options") {
+        if (metaQualifier.values?.length > 0) {
+            return (
+                <Select
+                    disabled={ readonly }
+                    value={ expressionQualifier ?? "" }
+                    data-componentid={ componentId }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            targetField,
+                            true
+                        );
+                    } }
+                >
+                    { metaQualifier.values.map((item: ListDataInterface, index: number) => (
+                        <MenuItem value={ item.name } key={ `${expressionId}-key-${index}` }>
+                            { item.displayName }
+                        </MenuItem>
+                    )) }
+                </Select>
+            );
+        }
+
+        const valuesUrl: string = metaQualifier.links?.find((link: LinkInterface) => link.rel === "values")?.href;
+
+        if (valuesUrl) {
+            return (
+                <QualifierReferenceAutocomplete
+                    readonly={ readonly }
+                    data-componentid={ componentId }
+                    ruleId={ ruleId }
+                    conditionId={ conditionId }
+                    expressionId={ expressionId }
+                    expressionQualifier={ expressionQualifier }
+                    metaQualifier={ metaQualifier }
+                    valuesUrl={ valuesUrl }
+                    targetField={ targetField }
+                />
+            );
+        }
+    }
+
+    return null;
+};
+
+/**
+ * Input for a literal value, in the style the field's value metadata asks for: free text, a fixed list,
+ * or a list fetched from the endpoint the metadata links to.
+ *
+ * @param props - Props injected to the component.
+ * @returns The literal input.
+ */
+const ConditionLiteralInput: FunctionComponent<ConditionLiteralInputPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-condition-expression-input-value",
     readonly,
     findMetaValuesAgainst,
@@ -666,8 +1042,9 @@ const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
     metaValue,
     setIsResourceMissing,
     hiddenResources = EMPTY_ARRAY,
-    hiddenValues = EMPTY_ARRAY
-}: ConditionValueInputProps) => {
+    hiddenValues = EMPTY_ARRAY,
+    endAdornment
+}: ConditionLiteralInputPropsInterface) => {
 
     const { updateConditionExpression } = useRulesContext();
     const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
@@ -675,20 +1052,18 @@ const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
 
     if (metaValue?.inputType === "input" || null) {
         return (
-            <TextField
-                disabled={ readonly }
-                value={ expressionValue }
+            <ExpressionTextField
+                readonly={ readonly }
+                storedValue={ expressionValue }
                 data-componentid={ componentId }
-                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
-                    handleExpressionChangeDebounced(
-                        e.target.value,
-                        ruleId,
-                        conditionId,
-                        expressionId,
-                        ExpressionFieldTypes.Value,
-                        true
-                    );
-                } }
+                onValueChange={ (value: string) => handleExpressionChangeDebounced(
+                    value,
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    ExpressionFieldTypes.Value,
+                    true
+                ) }
             />
         );
     }
@@ -713,6 +1088,8 @@ const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
                     disabled={ readonly }
                     value={ expressionValue }
                     data-componentid={ componentId }
+                    endAdornment={ endAdornment }
+                    sx={ endAdornment ? SELECT_WITH_END_ADORNMENT_SX : undefined }
                     onChange={ (e: SelectChangeEvent) => {
                         updateConditionExpression(
                             e.target.value,
@@ -757,6 +1134,7 @@ const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
                         initialResourcesLoadUrl={ initialResourcesLoadUrl }
                         filterBaseResourcesUrl={ filterBaseResourcesUrl }
                         hiddenResources={ hiddenResources }
+                        endAdornment={ endAdornment }
                     />
                 );
             }
@@ -768,6 +1146,334 @@ const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
     }
 
     return null;
+};
+
+/**
+ * Props interface of a source of the qualifiers of a field a value may be read from.
+ */
+interface ValueFieldOptionsSourcePropsInterface {
+    /**
+     * A field that names a family of values, listed from the endpoint its qualifier metadata links to.
+     */
+    meta: ConditionExpressionMetaInterface;
+    onOptions: (fieldName: string, options: QualifierOptionInterface[]) => void;
+}
+
+/**
+ * Lists the qualifiers of one field a value may be read from.
+ *
+ * @param props - Props injected to the component.
+ * @returns Nothing; the options are handed to `onOptions`.
+ */
+const ValueFieldOptionsSource: FunctionComponent<ValueFieldOptionsSourcePropsInterface> = ({
+    meta,
+    onOptions
+}: ValueFieldOptionsSourcePropsInterface): ReactElement => {
+    const valuesUrl: string = meta.qualifier?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
+    const referenceAttribute: string = meta.qualifier?.valueReferenceAttribute || "id";
+    const displayAttribute: string = meta.qualifier?.valueDisplayAttribute || "name";
+
+    const { data: fetchedResources } = useGetResourceListOrResourceDetails(valuesUrl, !!valuesUrl);
+
+    useEffect(() => {
+        onOptions(meta.field?.name, toResourceList(fetchedResources)
+            .filter((resource: Record<string, unknown>) => resource?.[referenceAttribute])
+            .map((resource: Record<string, unknown>): QualifierOptionInterface => ({
+                dataType: resource.dataType as string,
+                label: (resource[displayAttribute] || resource[referenceAttribute]) as string,
+                value: resource[referenceAttribute] as string
+            }))
+            .sort((a: QualifierOptionInterface, b: QualifierOptionInterface) => (a.label > b.label ? 1 : -1)));
+    }, [ fetchedResources, meta, referenceAttribute, displayAttribute ]);
+
+    return null;
+};
+
+/**
+ * Props interface of the condition value input wired to the rule.
+ */
+interface ConditionValueReferenceInputPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the rule is shown for reading only.
+     */
+    readonly?: boolean;
+    /**
+     * ID of the rule the expression belongs to.
+     */
+    ruleId: string;
+    /**
+     * ID of the condition group the expression belongs to.
+     */
+    conditionId: string;
+    /**
+     * The expression whose value is edited.
+     */
+    expression: ConditionExpressionInterface;
+    /**
+     * Data type of the expression's own field, when its qualifier states one.
+     */
+    leftDataType?: string;
+    /**
+     * Metadata of the expression's own field, which says how a literal of it is entered.
+     */
+    fieldMeta: ConditionExpressionMetaInterface;
+    /**
+     * The fields the value may be read from.
+     */
+    fieldMetas: ConditionExpressionMetaInterface[];
+    /**
+     * What the operator compares with: a single value, or a set for `in` and `notIn`.
+     */
+    valueInput: OperatorValueInputType;
+    /**
+     * Called to flag that a resource the value refers to no longer exists.
+     */
+    setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
+    /**
+     * Resources left out of the lists of values.
+     */
+    hiddenResources?: string[];
+    /**
+     * Values left out of the lists of values.
+     */
+    hiddenValues?: string[];
+}
+
+/**
+ * The value of a condition whose field may also be compared with another field: one input that takes a
+ * literal or a field.
+ *
+ * @param props - Props injected to the component.
+ * @returns The value input.
+ */
+const ConditionValueReferenceInput: FunctionComponent<ConditionValueReferenceInputPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-value",
+    readonly,
+    ruleId,
+    conditionId,
+    expression,
+    leftDataType,
+    fieldMeta,
+    fieldMetas,
+    valueInput,
+    setIsResourceMissing,
+    hiddenResources = EMPTY_ARRAY,
+    hiddenValues = EMPTY_ARRAY
+}: ConditionValueReferenceInputPropsInterface): ReactElement => {
+    const { updateConditionExpression } = useRulesContext();
+    const handleExpressionChangeDebounced: ReturnType<typeof useDebouncedConditionExpressionChange> =
+        useDebouncedConditionExpressionChange();
+
+    const [ listedQualifiers, setListedQualifiers ] = useState<Record<string, QualifierOptionInterface[]>>({});
+
+    const readsField: boolean = expression.valueField !== undefined;
+
+    const handleListedOptions: (fieldName: string, options: QualifierOptionInterface[]) => void = useCallback(
+        (fieldName: string, options: QualifierOptionInterface[]): void => {
+            setListedQualifiers((previous: Record<string, QualifierOptionInterface[]>) =>
+                ({ ...previous, [fieldName]: options }));
+        }, []);
+
+    const listedMetas: ConditionExpressionMetaInterface[] = fieldMetas.filter(
+        (meta: ConditionExpressionMetaInterface) => !(meta.qualifier?.values?.length > 0)
+            && meta.qualifier?.links?.some((link: LinkInterface) => link.rel === "values"));
+
+    const availableFields: FieldOptionInterface[] = useMemo((): FieldOptionInterface[] => fieldMetas
+        .map((meta: ConditionExpressionMetaInterface): FieldOptionInterface => {
+            const field: FieldOptionInterface = { label: meta.field?.displayName, name: meta.field?.name };
+
+            if (!meta.qualifier) {
+                return field;
+            }
+            if (meta.qualifier.values?.length > 0) {
+                return {
+                    ...field,
+                    qualifiers: meta.qualifier.values.map((item: ListDataInterface): QualifierOptionInterface => ({
+                        label: item.displayName,
+                        value: item.name
+                    }))
+                };
+            }
+            if (listedMetas.includes(meta)) {
+                return { ...field, qualifiers: listedQualifiers[meta.field?.name] ?? [] };
+            }
+
+            // Nothing lists the qualifiers of this field, so one is typed in.
+            return { ...field, isQualifierTyped: true, qualifiers: [] };
+        }), [ fieldMetas, listedQualifiers ]);
+
+    const value: ConditionValueType = toConditionValue(expression);
+
+    const handleChange: (next: ConditionValueType) => void = (next: ConditionValueType): void => {
+        // A literal is typed a letter at a time, so it is written once typing pauses; switching to or from
+        // a field is written at once.
+        if (!readsField && next.type === "literal") {
+            handleExpressionChangeDebounced(next.literal, ruleId, conditionId, expression.id,
+                ExpressionFieldTypes.Value, true);
+
+            return;
+        }
+
+        toExpressionChanges(expression, next).forEach((change: ExpressionChangeInterface) =>
+            updateConditionExpression(change.value, ruleId, conditionId, expression.id, change.fieldName, true));
+    };
+
+    // A literal entered with another input gets the field toggle at the end of that input's box.
+    const renderLiteralInput: (fieldToggle: ReactNode) => ReactElement = (fieldToggle: ReactNode): ReactElement => {
+        if (valueInput === "list") {
+            return (
+                <ConditionValuesInput
+                    readonly={ readonly }
+                    ruleId={ ruleId }
+                    conditionId={ conditionId }
+                    expressionId={ expression.id }
+                    expressionValues={ expression.values }
+                    endAdornment={ fieldToggle }
+                />
+            );
+        }
+        if (fieldMeta?.value?.inputType === "options") {
+            return (
+                <ConditionLiteralInput
+                    readonly={ readonly }
+                    conditionId={ conditionId }
+                    expressionField={ expression.field }
+                    expressionId={ expression.id }
+                    expressionValue={ expression.value }
+                    findMetaValuesAgainst={ fieldMeta }
+                    metaValue={ fieldMeta.value }
+                    ruleId={ ruleId }
+                    setIsResourceMissing={ setIsResourceMissing }
+                    hiddenResources={ hiddenResources }
+                    hiddenValues={ hiddenValues }
+                    endAdornment={ fieldToggle }
+                />
+            );
+        }
+
+        return undefined;
+    };
+
+    return (
+        <>
+            { /* The lists of qualifiers are needed only once the value is read from a field. */ }
+            { readsField && listedMetas.map((meta: ConditionExpressionMetaInterface) => (
+                <ValueFieldOptionsSource key={ meta.field?.name } meta={ meta } onOptions={ handleListedOptions } />
+            )) }
+            <ConditionValueInput
+                data-componentid={ componentId }
+                disabled={ readonly }
+                value={ value }
+                onChange={ handleChange }
+                leftField={ {
+                    name: expression.field,
+                    ...(expression.qualifier && { qualifier: expression.qualifier })
+                } }
+                leftDataType={ leftDataType }
+                availableFields={ availableFields }
+                renderLiteralInput={ renderLiteralInput }
+            />
+        </>
+    );
+};
+
+/**
+ * Input for the set of values `in` and `notIn` compare against.
+ *
+ * @param props - Props injected to the component.
+ * @returns The list value input.
+ */
+const ConditionValuesInput: FunctionComponent<ConditionValuesInputPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-values",
+    readonly,
+    ruleId,
+    conditionId,
+    expressionId,
+    expressionValues,
+    endAdornment
+}: ConditionValuesInputPropsInterface): ReactElement => {
+
+    const { t } = useTranslation();
+    const { updateConditionExpression } = useRulesContext();
+
+    const handleChange: (values: string[]) => void = (values: string[]): void => {
+        const entries: string[] = values
+            .flatMap((value: string) => value.split(","))
+            .map((value: string) => value.trim())
+            .filter((value: string) => value.length > 0);
+
+        updateConditionExpression(
+            Array.from(new Set(entries)),
+            ruleId,
+            conditionId,
+            expressionId,
+            ExpressionFieldTypes.Values,
+            true
+        );
+    };
+
+    return (
+        <Autocomplete
+            multiple
+            freeSolo
+            // Each value has its own remove button, so clearing them all at once makes way for the field toggle.
+            disableClearable={ !!endAdornment }
+            className="autocomplete"
+            disabled={ readonly }
+            data-componentid={ componentId }
+            options={ [] as string[] }
+            value={ expressionValues ?? [] }
+            onChange={ (_: React.SyntheticEvent, values: string[]) => handleChange(values) }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    inputProps={ { ...params.inputProps, "aria-label": t("rules:fields.valueInput.valueLabel") } }
+                    placeholder={ expressionValues?.length > 0 ? "" : t("rules:fields.valueInput.listPlaceholder") }
+                    sx={ endAdornment ? TEXT_BOX_WITH_FIELD_TOGGLE_SX : undefined }
+                    InputProps={ {
+                        ...params.InputProps,
+                        endAdornment: (
+                            <>
+                                { endAdornment }
+                                { params.InputProps.endAdornment }
+                            </>
+                        )
+                    } }
+                />
+            ) }
+        />
+    );
+};
+
+/**
+ * What the resource behind an expression's qualifier says about the values it holds.
+ *
+ * @param metaQualifier - How the field's qualifier is chosen.
+ * @param qualifier     - The qualifier on the expression.
+ * @returns The constraints, or undefined when the qualifier's resource states none.
+ */
+const useQualifierConstraints = (
+    metaQualifier: ExpressionValueInterface,
+    qualifier: string
+): OperatorConstraintsInterface | undefined => {
+    const valuesUrl: string = metaQualifier?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
+    const referenceAttribute: string = metaQualifier?.valueReferenceAttribute || "id";
+
+    const { data: fetchedResources } = useGetResourceListOrResourceDetails(valuesUrl, !!valuesUrl && !!qualifier);
+
+    return useMemo((): OperatorConstraintsInterface | undefined => {
+        const resource: Record<string, unknown> =
+            findQualifierResource(fetchedResources, referenceAttribute, qualifier);
+
+        if (!resource || (resource.multiValued === undefined && resource.dataType === undefined)) {
+            return undefined;
+        }
+
+        return {
+            dataType: resource.dataType as string,
+            multiValued: resource.multiValued === true || resource.multiValued === "true"
+        };
+    }, [ fetchedResources, referenceAttribute, qualifier ]);
 };
 
 /**
@@ -785,6 +1491,7 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
     index,
     isConditionLast,
     isConditionExpressionRemovable,
+    isAndLimitReached = false,
     hiddenConditions = EMPTY_ARRAY,
     hiddenResources = EMPTY_ARRAY,
     hiddenValues = EMPTY_ARRAY
@@ -794,8 +1501,8 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
     const {
         addNewRuleConditionExpression,
         conditionExpressionsMeta,
-        removeRuleConditionExpression,
-        updateConditionExpression
+        updateConditionExpression,
+        removeRuleConditionExpression
     } = useRulesContext();
 
     const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
@@ -803,6 +1510,45 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
     const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
         (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta?.field?.name === expression.field
     );
+
+    const qualifierConstraints: OperatorConstraintsInterface | undefined =
+        useQualifierConstraints(findMetaValuesAgainst?.qualifier, expression.qualifier);
+
+    // Offered only when the field publishes fields its value may be read from, so a field that
+    // publishes none -- every action and workflow field -- keeps its value input exactly as it was.
+    const valueFieldMetas: ConditionExpressionMetaInterface[] = useMemo(
+        (): ConditionExpressionMetaInterface[] => (findMetaValuesAgainst?.valueFieldNames ?? [])
+            .filter((name: string) => !hiddenConditions.includes(name))
+            .map((name: string) => conditionExpressionsMeta.find(
+                (meta: ConditionExpressionMetaInterface) => meta?.field?.name === name))
+            .filter(Boolean),
+        [ findMetaValuesAgainst, conditionExpressionsMeta, hiddenConditions ]
+    );
+    const readsField: boolean = expression.valueField !== undefined;
+    // What the chosen operator compares the field with: nothing, a set, or a single value.
+    const valueInput: OperatorValueInputType = getValueInput(expression.operator, findMetaValuesAgainst?.operators);
+
+    // The field publishes every operator any of its qualifiers could take; the chosen qualifier decides which
+    // of those apply.
+    const operators: OperatorInterface[] = useMemo(
+        () => narrowOperators(findMetaValuesAgainst?.operators, qualifierConstraints),
+        [ findMetaValuesAgainst?.operators, qualifierConstraints ]
+    );
+
+    useEffect(() => {
+        // An operator the newly chosen qualifier cannot take is cleared rather than left to fail on save.
+        if (qualifierConstraints && expression.operator
+            && !operators?.some((operator: ListDataInterface) => operator.name === expression.operator)) {
+            updateConditionExpression(
+                "",
+                ruleId,
+                conditionId,
+                expression.id,
+                ExpressionFieldTypes.Operator,
+                false
+            );
+        }
+    }, [ qualifierConstraints, operators, expression.operator ]);
 
     return (
         <Box
@@ -821,13 +1567,11 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
                     <AlertTitle
                         className="alert-title"
                     >
-                        <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
+                        <Trans i18nKey="actions:fields.rules.alerts.resourceNotFound.title">
                             The resource linked to this rule is no longer available.
                         </Trans>
                     </AlertTitle>
-                    <Trans
-                        i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
-                    >
+                    <Trans i18nKey="actions:fields.rules.alerts.resourceNotFound.description">
                         Please update to a valid resource.
                     </Trans>
                 </Alert>
@@ -854,6 +1598,17 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
                             ExpressionFieldTypes.Value,
                             true
                         );
+
+                        // A qualifier belongs to the field it was chosen for -- a claim URI means
+                        // nothing against a different field -- so it is cleared with the value.
+                        updateConditionExpression(
+                            "",
+                            ruleId,
+                            conditionId,
+                            expression.id,
+                            ExpressionFieldTypes.Qualifier,
+                            true
+                        );
                     } }
                 >
                     { conditionExpressionsMeta?.filter((item: ConditionExpressionMetaInterface) =>
@@ -865,6 +1620,18 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
                     )) }
                 </Select>
             </FormControl>
+            { findMetaValuesAgainst?.qualifier && (
+                <FormControl fullWidth size="small" sx={ { mt: 1 } }>
+                    <ConditionQualifierInput
+                        readonly={ readonly }
+                        ruleId={ ruleId }
+                        conditionId={ conditionId }
+                        expressionId={ expression.id }
+                        expressionQualifier={ expression.qualifier }
+                        metaQualifier={ findMetaValuesAgainst?.qualifier }
+                    />
+                </FormControl>
+            ) }
             <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
                 <Select
                     disabled={ readonly }
@@ -881,48 +1648,76 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
                         );
                     } }
                 >
-                    { findMetaValuesAgainst?.operators?.map((item: ListDataInterface, index: number) => (
+                    { operators?.map((item: ListDataInterface, index: number) => (
                         <MenuItem value={ item.name } key={ `${expression.id}-${index}` }>
                             { item.displayName }
                         </MenuItem>
                     )) }
                 </Select>
             </FormControl>
-            <FormControl fullWidth size="small">
-                <ConditionValueInput
-                    readonly={ readonly }
-                    conditionId={ conditionId }
-                    expressionField={ expression.field }
-                    expressionId={ expression.id }
-                    expressionValue={ expression.value }
-                    findMetaValuesAgainst={ findMetaValuesAgainst }
-                    metaValue={ findMetaValuesAgainst?.value }
-                    ruleId={ ruleId }
-                    setIsResourceMissing={ setIsResourceMissing }
-                    hiddenResources={ hiddenResources }
-                    hiddenValues={ hiddenValues }
-                />
-            </FormControl>
+            { valueInput !== "none" && (<FormControl fullWidth size="small">
+                { valueFieldMetas.length > 0 || readsField ? (
+                    <ConditionValueReferenceInput
+                        readonly={ readonly }
+                        ruleId={ ruleId }
+                        conditionId={ conditionId }
+                        expression={ expression }
+                        leftDataType={ qualifierConstraints?.dataType }
+                        fieldMeta={ findMetaValuesAgainst }
+                        fieldMetas={ valueFieldMetas }
+                        valueInput={ valueInput }
+                        setIsResourceMissing={ setIsResourceMissing }
+                        hiddenResources={ hiddenResources }
+                        hiddenValues={ hiddenValues }
+                    />
+                ) : valueInput === "list" ? (
+                    <ConditionValuesInput
+                        readonly={ readonly }
+                        ruleId={ ruleId }
+                        conditionId={ conditionId }
+                        expressionId={ expression.id }
+                        expressionValues={ expression.values }
+                    />
+                ) : (
+                    <ConditionLiteralInput
+                        readonly={ readonly }
+                        conditionId={ conditionId }
+                        expressionField={ expression.field }
+                        expressionId={ expression.id }
+                        expressionValue={ expression.value }
+                        findMetaValuesAgainst={ findMetaValuesAgainst }
+                        metaValue={ findMetaValuesAgainst?.value }
+                        ruleId={ ruleId }
+                        setIsResourceMissing={ setIsResourceMissing }
+                        hiddenResources={ hiddenResources }
+                        hiddenValues={ hiddenValues }
+                    />
+                ) }
+            </FormControl>) }
             { ((!readonly) || (readonly && !isConditionLast)) && (
                 <FormControl sx={ { mt: 1 } } size="small">
-                    <Button
-                        disabled={ readonly }
-                        size="small"
-                        variant="contained"
-                        color="secondary"
-                        onClick={ () => {
-                            addNewRuleConditionExpression(
-                                ruleId,
-                                conditionId,
-                                AdjoiningOperatorTypes.And,
-                                expression.id
-                            );
-                        } }
-                        className="add-button"
-                        startIcon={ !readonly ? <PlusIcon /> : null }
-                    >
-                        { t("rules:buttons.and") }
-                    </Button>
+                    <Tooltip title={ isAndLimitReached ? t("rules:limits.andLimitReached") : "" }>
+                        <span>
+                            <Button
+                                disabled={ readonly || isAndLimitReached }
+                                size="small"
+                                variant="contained"
+                                color="secondary"
+                                onClick={ () => {
+                                    addNewRuleConditionExpression(
+                                        ruleId,
+                                        conditionId,
+                                        AdjoiningOperatorTypes.And,
+                                        expression.id
+                                    );
+                                } }
+                                className="add-button"
+                                startIcon={ !readonly ? <PlusIcon /> : null }
+                            >
+                                { t("rules:buttons.and") }
+                            </Button>
+                        </span>
+                    </Tooltip>
                 </FormControl>
             ) }
 
@@ -940,13 +1735,6 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
         </Box>
     );
 };
-
-/**
- * Rules condition component to recursive render.
- *
- * @param props - Props injected to the component.
- * @returns Rule condition component.
- */
 const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-component-condition",
     readonly,
@@ -957,11 +1745,33 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
     const {
         addNewRuleConditionExpression,
-        hidden
+        hidden,
+        limits
     } = useRulesContext();
+
+    const maxAnd: number = limits?.maxExpressionsCombinedWithAnd;
+    const isOrLimitReached: boolean = !!limits?.maxRulesCombinedWithOr
+        && ruleConditions?.length >= limits.maxRulesCombinedWithOr;
 
     const { t } = useTranslation();
 
+    /**
+     * Debounced function to handle the change of the condition expression.
+     *
+     * @param changedValue - Changed value.
+     * @param ruleId - Rule id.
+     * @param conditionId - Condition id.
+     * @param expressionId - Expression id.
+     * @param fieldName - Field name.
+     * @returns Debounced function.
+     */
+
+    /**
+     * Condition value input component.
+     *
+     * @param props - Props injected to the component.
+     * @returns Condition value input component.
+     */
     return (
         <div data-componentid={ componentId }>
             { ruleConditions?.map(
@@ -985,6 +1795,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                                         condition.expressions.length > 1 ||
                                                         ruleInstance.rules.length > 1
                                                     }
+                                                    isAndLimitReached={
+                                                        !!maxAnd && condition.expressions.length >= maxAnd
+                                                    }
                                                     hiddenConditions={ hidden.conditions }
                                                     hiddenResources={ hidden.resources }
                                                     hiddenValues={ hidden.values }
@@ -997,22 +1810,26 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             { ((!readonly && (condition.expressions?.length > 0)) ||
                                 (readonly && (condition.expressions?.length !== index))) && (
                                 <Divider sx={ { mb: 1, mt: 2 } }>
-                                    <Button
-                                        disabled={ readonly }
-                                        size="small"
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={ () =>
-                                            addNewRuleConditionExpression(
-                                                ruleInstance.id,
-                                                condition.id,
-                                                AdjoiningOperatorTypes.Or
-                                            )
-                                        }
-                                        startIcon={ !readonly ? <PlusIcon /> : null }
-                                    >
-                                        { t("rules:buttons.or") }
-                                    </Button>
+                                    <Tooltip title={ isOrLimitReached ? t("rules:limits.orLimitReached") : "" }>
+                                        <span>
+                                            <Button
+                                                disabled={ readonly || isOrLimitReached }
+                                                size="small"
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={ () =>
+                                                    addNewRuleConditionExpression(
+                                                        ruleInstance.id,
+                                                        condition.id,
+                                                        AdjoiningOperatorTypes.Or
+                                                    )
+                                                }
+                                                startIcon={ !readonly ? <PlusIcon /> : null }
+                                            >
+                                                { t("rules:buttons.or") }
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
                                 </Divider>
                             ) }
                         </Fragment>
