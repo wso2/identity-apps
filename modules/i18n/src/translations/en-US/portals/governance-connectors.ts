@@ -635,6 +635,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                     friendlyName: "ELK Analytics",
                     warningModal: {
                         configure: "<1>Configure</1> ELK Analytics settings for proper functionality.",
+                        configureOptional: "If you enable the ELK rule, <1>configure</1> ELK Analytics settings.",
                         reassure: "You can update your settings anytime."
                     },
                     properties: {

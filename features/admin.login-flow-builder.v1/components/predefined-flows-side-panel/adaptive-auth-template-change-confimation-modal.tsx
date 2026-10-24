@@ -34,6 +34,10 @@ export interface AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
      */
     isELKRiskBased?: boolean;
     /**
+     * Can the template optionally use ELK Analytics.
+     */
+    isELKOptional?: boolean;
+    /**
      * Selected adaptive auth template to be changed.
      */
     selectedTemplate: AdaptiveAuthTemplateInterface;
@@ -60,6 +64,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
 ) => {
     const {
         isELKRiskBased,
+        isELKOptional,
         selectedTemplate,
         onELKConfigureClick,
         onTemplateChange,
@@ -139,6 +144,37 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                     The selected template will replace the existing script in the editor as well
                     as the login steps you configured. Click <Code>Confirm</Code> to proceed.
                 </Trans>
+                {
+                    isELKOptional && (
+                        <>
+                            <Text styles={ { marginTop: "1em" } }>
+                                <Trans
+                                    i18nKey={
+                                        "governanceConnectors:connectorCategories.otherSettings.connectors." +
+                                        "elasticAnalyticsEngine.warningModal.configureOptional"
+                                    }
+                                >
+                                    (If you enable the ELK rule, <Link
+                                        onClick={ onELKConfigureClick }
+                                        external={ false }
+                                    >
+                                        configure
+                                    </Link> ELK Analytics settings.)
+                                </Trans>
+                            </Text>
+                            <Text>
+                                <Trans
+                                    i18nKey={
+                                        "governanceConnectors:connectorCategories." +
+                                        "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
+                                    }
+                                >
+                                    You can update your settings anytime.
+                                </Trans> (<Code><GearIcon size={ 14 } /></Code>)
+                            </Text>
+                        </>
+                    )
+                }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

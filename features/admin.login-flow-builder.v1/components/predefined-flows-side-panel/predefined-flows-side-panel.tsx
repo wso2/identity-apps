@@ -88,6 +88,7 @@ import {
     EMAIL_OTP_SECOND_FACTOR_SEQUENCE,
     PUSH_AUTH_FIRST_FACTOR_SEQUENCE,
     PUSH_AUTH_SECOND_FACTOR_SEQUENCE,
+    RULE_BASED_TEMPLATE_NAME,
     SMS_OTP_PASSWORDLESS_SEQUENCE,
     SMS_OTP_SECOND_FACTOR_SEQUENCE
 } from "../../constants/template-constants";
@@ -690,7 +691,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                         </div>
                                         <div className="actions">
                                             {
-                                                template.name === ELK_RISK_BASED_TEMPLATE_NAME && (
+                                                (template.name === ELK_RISK_BASED_TEMPLATE_NAME
+                                                    || template.name === RULE_BASED_TEMPLATE_NAME) && (
                                                     <IconButton
                                                         size="small"
                                                         onClick={ () => {
@@ -847,6 +849,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 <AdaptiveAuthTemplateChangeConfirmationModal
                     onELKConfigureClick={ () => handleELKAnalyticsModalOpen() }
                     isELKRiskBased={ selectedAdaptiveAuthTemplate?.name === "ELK-Risk-Based" }
+                    isELKOptional={ selectedAdaptiveAuthTemplate?.name === RULE_BASED_TEMPLATE_NAME }
                     open={ showAdaptiveAuthTemplateChangeConfirmationModal }
                     onClose={ () => setShowAdaptiveAuthTemplateChangeConfirmationModal(false) }
                     selectedTemplate={ selectedAdaptiveAuthTemplate }
