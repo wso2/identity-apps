@@ -20,6 +20,16 @@
  * Interface for the Actions feature resource endpoints.
  */
 export interface WebhooksResourceEndpointsInterface {
+    /**
+     * Webhook resource as served by v1. Used while child organization subscriptions are disabled.
+     */
     webhooks: string;
+    /**
+     * Webhook resource as served by v2, which carries the per-channel organization fanout.
+     */
+    webhooksV2: string;
+    /**
+     * Metadata and event profile endpoints, unversioned in v2 and served from v1 in both modes.
+     */
     webhooksMetadata: string;
 }

@@ -19,7 +19,11 @@
 import { FormValidation } from "@wso2is/validation";
 import { TFunction } from "i18next";
 import { WebhooksConstants } from "../constants/webhooks-constants";
-import { WebhookConfigFormPropertyInterface } from "../models/webhooks";
+import { ChildOrgSubscriptionPolicy } from "../models/shared-access";
+import {
+    WebhookChannelFormValueInterface,
+    WebhookConfigFormPropertyInterface
+} from "../models/webhooks";
 
 /**
  * Validates webhook name field.
@@ -91,14 +95,19 @@ const validateWebhookSecret = (secret: string, isCreateFormState: boolean, t: TF
 };
 
 /**
- * Validates webhook channels field.
+ * Validates that at least one event channel is subscribed.
  *
- * @param channels - The channels object to validate.
+ * @param channels - The per-channel form state.
  * @param t - Translation function.
  * @returns Error message or undefined if valid.
  */
-const validateWebhookChannels = (channels: Record<string, boolean>, t: TFunction): string | undefined => {
-    const hasSelectedChannel: boolean = Object.values(channels || {}).some(Boolean);
+const validateWebhookChannels = (
+    channels: Record<string, WebhookChannelFormValueInterface>,
+    t: TFunction
+): string | undefined => {
+    const hasSelectedChannel: boolean = Object.values(channels || {}).some(
+        (channel: WebhookChannelFormValueInterface) => channel?.subscribed
+    );
 
     if (!hasSelectedChannel) {
         return t("webhooks:configForm.channels.validations.empty");
@@ -106,6 +115,55 @@ const validateWebhookChannels = (channels: Record<string, boolean>, t: TFunction
 
     return undefined;
 };
+
+/**
+ * Validates the organization selection of every subscribed channel.
+ *
+ * The API rejects an empty `organizations` array under `SELECTED_ORGS_ONLY`, so the same guard
+ * runs here to fail before the request and point at the offending channel.
+ *
+ * @param channels - The per-channel form state.
+ * @param t - Translation function.
+ * @returns Error messages keyed by channel key. Empty when every channel is valid.
+ */
+const validateChannelOrganizations = (
+    channels: Record<string, WebhookChannelFormValueInterface>,
+    t: TFunction
+): Record<string, string> => {
+    const errors: Record<string, string> = {};
+
+    Object.keys(channels || {}).forEach((key: string) => {
+        const channel: WebhookChannelFormValueInterface = channels[key];
+
+        if (!channel?.subscribed) {
+            return;
+        }
+
+        if (channel.subscriptionPolicy !== ChildOrgSubscriptionPolicy.SELECTED_ORGS_ONLY) {
+            return;
+        }
+
+        if (!(channel.organizations?.length > 0)) {
+            errors[key] = t("webhooks:configForm.channels.validations.noOrganizationsSelected");
+        }
+    });
+
+    return errors;
+};
+
+/**
+ * Shape of the errors produced by {@link validateWebhookForm}.
+ *
+ * `channelOrganizations` is not bound to a form field — it exists so the channel form can
+ * render the message against the offending accordion row while still marking the form invalid.
+ */
+export interface WebhookFormErrorsInterface {
+    name?: string;
+    endpoint?: string;
+    secret?: string;
+    channels?: string;
+    channelOrganizations?: Record<string, string>;
+}
 
 /**
  * Validates the complete webhook form.
@@ -119,8 +177,8 @@ export const validateWebhookForm = (
     values: WebhookConfigFormPropertyInterface,
     isCreateFormState: boolean,
     t: TFunction
-): Record<string, string> => {
-    const errors: Record<string, string> = {};
+): WebhookFormErrorsInterface => {
+    const errors: WebhookFormErrorsInterface = {};
 
     const nameError: string | undefined = validateWebhookName(values?.name, t);
 
@@ -137,6 +195,12 @@ export const validateWebhookForm = (
     const channelsError: string | undefined = validateWebhookChannels(values?.channels, t);
 
     if (channelsError) errors.channels = channelsError;
+
+    const channelOrganizationErrors: Record<string, string> = validateChannelOrganizations(values?.channels, t);
+
+    if (Object.keys(channelOrganizationErrors).length > 0) {
+        errors.channelOrganizations = channelOrganizationErrors;
+    }
 
     return errors;
 };

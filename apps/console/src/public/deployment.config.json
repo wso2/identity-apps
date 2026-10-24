@@ -2263,6 +2263,7 @@
             },
             "webhooks": {
                 "disabledFeatures": [
+                    "webhooks.childOrgSubscription",
                     "webhooks.settings"
                 ],
                 "enabled": true,
