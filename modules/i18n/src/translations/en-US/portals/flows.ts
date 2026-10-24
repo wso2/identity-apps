@@ -106,6 +106,15 @@ export const flows: flowsNS = {
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
+            flowHandoff: {
+                expiryTimeHint: "Set the time span that the handoff link would be valid, in seconds.",
+                expiryTimeLabel: "Handoff link expiry time",
+                expiryTimePlaceholder: "Enter expiry time",
+                targetUrlHint: "Link to the webpage that continues the flow from the handoff link. If not set, the " +
+                    "default URL of the flow is used.",
+                targetUrlLabel: "Target URL",
+                targetUrlPlaceholder: "https://myapp.com/account"
+            },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
             },
@@ -124,6 +133,11 @@ export const flows: flowsNS = {
             },
             tooltip: {
                 configurationHint: "Configure"
+            },
+            userVerification: {
+                tokenValidityPeriodHint: "Set the time span that a token is accepted after it is issued, in minutes.",
+                tokenValidityPeriodLabel: "Token validity period",
+                tokenValidityPeriodPlaceholder: "Enter the token validity period"
             }
         },
         labels: {
@@ -327,6 +341,9 @@ export const flows: flowsNS = {
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
+            },
+            userResolveRequiresFactors: {
+                message: "Profile update with Resolve User action requires at least one verification factor, such as Email OTP, SMS OTP or Magic Link, after the user is resolved."
             }
         },
         validationStatusLabels: {
@@ -388,6 +405,18 @@ export const flows: flowsNS = {
                 description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
                     hint: "Notify the user via email once the password recovery flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
+                }
+            }
+        }
+    },
+    profileUpdate: {
+        flowDisplayName: "Profile Update",
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the profile update flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once the profile update flow is successfully completed.",
                     label: "Send a notification email on flow completion"
                 }
             }

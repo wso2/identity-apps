@@ -481,6 +481,8 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
             [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
+            [ "PROFILE_UPDATE_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-profile-update-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],

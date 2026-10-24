@@ -26,6 +26,15 @@
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
             "type": "INVITED_USER_REGISTRATION",
             "disabled": false
+        },
+        {
+            "id": "profile-update",
+            "heading": "Profile Update",
+            "description": "Configure a customized profile update experience that verifies users before they change their profile attributes.",
+            "featureStatusKey": "flows.types.list.profileUpdate",
+            "path": "PROFILE_UPDATE_FLOW_BUILDER",
+            "type": "PROFILE_UPDATE",
+            "disabled": false
         }
     ]
 }
