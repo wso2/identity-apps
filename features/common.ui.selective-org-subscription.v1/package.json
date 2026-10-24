@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/common.ui.selective-org-subscription.v1",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "Organization tree picker for selecting a subset of child organizations, shared across WSO2 Identity Server console features.",
     "author": "WSO2",
     "license": "Apache-2.0",
