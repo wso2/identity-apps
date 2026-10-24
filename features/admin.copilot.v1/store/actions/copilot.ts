@@ -20,9 +20,11 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { I18n } from "@wso2is/i18n";
 import { Dispatch } from "redux";
 import {
+    type CopilotActionResult,
     type CopilotHistoryResponse,
     clearCopilotChatApi,
     getCopilotChatHistory,
+    respondToCopilotAction,
     sendCopilotChatMessage
 } from "../../api/copilot-api";
 
@@ -32,10 +34,12 @@ import {
 interface HistoryRecord {
     answer: string;
     question: string;
+    actions?: CopilotActionInterface[];
 }
 import {
     AddCopilotMessageActionInterface,
     ClearCopilotChatActionInterface,
+    CopilotActionInterface,
     CopilotActionTypes,
     CopilotContentType,
     CopilotMessageInterface,
@@ -44,6 +48,7 @@ import {
     SetCopilotChatHistoryActionInterface,
     SetCopilotContentTypeActionInterface,
     SetCopilotHistoryPaginationActionInterface,
+    SetCopilotMessageActionActionInterface,
     SetCopilotPanelLoadingActionInterface,
     SetCopilotPanelVisibilityActionInterface,
     SetCopilotStatusMessageActionInterface,
@@ -159,6 +164,77 @@ const updateCopilotMessage = (
 const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
     type: CopilotActionTypes.CLEAR_COPILOT_CHAT
 });
+
+/**
+ * Redux action to add or update an action card on a message.
+ *
+ * @param messageId - The message the card belongs to.
+ * @param action - The card, or the fields of it to update (matched by id).
+ * @returns An action of type `SET_COPILOT_MESSAGE_ACTION`.
+ */
+const setCopilotMessageAction = (
+    messageId: string,
+    action: Partial<CopilotActionInterface> & { id: string }
+): SetCopilotMessageActionActionInterface => ({
+    payload: { action, messageId },
+    type: CopilotActionTypes.SET_COPILOT_MESSAGE_ACTION
+});
+
+/**
+ * Action cards of a history record. Their turn has finished, so they are ready to use.
+ *
+ * @param record - History record.
+ * @returns The record's action cards, if any.
+ */
+const historyActions = (record: HistoryRecord): CopilotActionInterface[] | undefined =>
+    Array.isArray(record.actions)
+        ? record.actions.map((action: CopilotActionInterface) => ({ ...action, ready: true }))
+        : undefined;
+
+/**
+ * Redux thunk to confirm or cancel a change the copilot proposed, and show the outcome on its card.
+ *
+ * @param messageId - The message the card belongs to.
+ * @param actionId - The proposal id.
+ * @param decision - "confirm" or "cancel".
+ * @returns A thunk function.
+ */
+export const respondToCopilotActionCard = (
+    messageId: string,
+    actionId: string,
+    decision: "confirm" | "cancel"
+) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(setCopilotMessageAction(messageId, {
+            error: undefined,
+            id: actionId,
+            status: decision === "confirm" ? "EXECUTING" : "PENDING",
+            submitting: true
+        }));
+
+        try {
+            const result: CopilotActionResult = await respondToCopilotAction(actionId, decision);
+
+            dispatch(setCopilotMessageAction(messageId, {
+                error: result.error,
+                id: actionId,
+                resource: result.resource,
+                status: result.status,
+                submitting: false
+            }));
+        } catch (_error: unknown) {
+            dispatch(setCopilotMessageAction(messageId, {
+                error: {
+                    code: "REQUEST_FAILED",
+                    message: I18n.instance.t("console:common.copilot.actionCard.errors.default")
+                },
+                id: actionId,
+                status: "PENDING",
+                submitting: false
+            }));
+        }
+    };
+};
 
 /**
  * Redux action to set the copilot status message (agent step progress).
@@ -302,6 +378,7 @@ export const fetchCopilotHistory = () => {
 
                     // Add AI message
                     messages.push({
+                        actions: historyActions(record),
                         content: record.answer,
                         id: `hist-ai-${index}-${Date.now()}`,
                         sender: "copilot",
@@ -378,6 +455,7 @@ export const loadMoreCopilotHistory = () => {
                         type: "text"
                     });
                     olderMessages.push({
+                        actions: historyActions(record),
                         content: record.answer,
                         id: `hist-older-ai-${historyOffset + index}-${Date.now()}`,
                         sender: "copilot",
@@ -552,6 +630,24 @@ class StatusQueue {
 }
 
 /**
+ * Update every action card of a message.
+ */
+const setMessageActions = (
+    dispatch: Dispatch,
+    getState: () => AppState,
+    messageId: string,
+    update: Partial<CopilotActionInterface>
+): void => {
+    const message: CopilotMessageInterface | undefined = getState()?.copilot?.messages?.find(
+        (m: CopilotMessageInterface) => m.id === messageId
+    );
+
+    (message?.actions ?? []).forEach((action: CopilotActionInterface) => {
+        dispatch(setCopilotMessageAction(messageId, { ...update, id: action.id }));
+    });
+};
+
+/**
  * Redux thunk action to send a user message and get AI response via SSE streaming.
  * The answer types out token-by-token in real-time, like ChatGPT.
  * Status messages are queued with a minimum display time for smooth progression.
@@ -561,7 +657,7 @@ class StatusQueue {
  * @returns A thunk function.
  */
 export const sendCopilotMessage = (userMessage: string) => {
-    return async (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch, getState: () => AppState) => {
         const trimmedUserMessage: string = userMessage.trim();
 
         if (!trimmedUserMessage) {
@@ -607,6 +703,8 @@ export const sendCopilotMessage = (userMessage: string) => {
         const pendingTokens: string[] = [];
         let drainingStatus: boolean = false;
         let suggestionsTimeoutId: ReturnType<typeof setTimeout> | null = null;
+        // SUGGESTIONS is sent after the turn, with its proposals, is saved; a stream cut before it may not be.
+        let turnSaved: boolean = false;
 
         // Token batching: collect tokens within a 16ms window (one animation frame)
         // and dispatch them as a single concatenated string. This reduces Redux
@@ -627,6 +725,10 @@ export const sendCopilotMessage = (userMessage: string) => {
             await sendCopilotChatMessage(
                 trimmedUserMessage,
                 {
+                    onActionProposal: (proposal: CopilotActionInterface) => {
+                        if (signal.aborted) return;
+                        dispatch(setCopilotMessageAction(aiMessageId, proposal));
+                    },
                     onComplete: () => {
                         // Flush any tokens still waiting in the 16ms batch before finalizing.
                         if (tokenFlushTimer !== null) {
@@ -645,6 +747,7 @@ export const sendCopilotMessage = (userMessage: string) => {
                         statusQueue.enqueue(step);
                     },
                     onSuggestions: (suggestions: string[]) => {
+                        turnSaved = true;
                         if (signal.aborted) return;
 
                         // Cancel the safety-net timeout — suggestions arrived in time.
@@ -718,6 +821,11 @@ export const sendCopilotMessage = (userMessage: string) => {
                 await statusQueue.drain();
             }
 
+            // Cards can be used once the turn (and its history, with the proposals) is saved.
+            setMessageActions(dispatch, getState, aiMessageId, turnSaved
+                ? { ready: true }
+                : { ready: false, status: "UNAVAILABLE" });
+
             dispatch(setCopilotPanelLoading(false));
             dispatch(setCopilotStatusMessage(null));
 
@@ -734,6 +842,9 @@ export const sendCopilotMessage = (userMessage: string) => {
                 clearTimeout(suggestionsTimeoutId);
                 suggestionsTimeoutId = null;
             }
+
+            // A turn that failed isn't saved, so its proposals can't be relied on.
+            setMessageActions(dispatch, getState, aiMessageId, { ready: false, status: "UNAVAILABLE" });
 
             const errorName: string = error instanceof Error ? error.name : "";
             const errorMsg: string = error instanceof Error ? error.message : String(error);

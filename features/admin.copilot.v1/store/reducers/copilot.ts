@@ -18,6 +18,7 @@
 
 import { Reducer } from "redux";
 import {
+    CopilotActionInterface,
     CopilotActionTypes,
     CopilotActions,
     CopilotContentType,
@@ -141,6 +142,28 @@ export const copilotReducer: Reducer<CopilotPanelStateInterface> = (
                 ...state,
                 isLoadingMoreHistory: action.payload
             };
+        case CopilotActionTypes.SET_COPILOT_MESSAGE_ACTION: {
+            const { messageId, action: update } = action.payload;
+
+            return {
+                ...state,
+                messages: state.messages.map((message: CopilotMessageInterface) => {
+                    if (message.id !== messageId) {
+                        return message;
+                    }
+
+                    const actions: CopilotActionInterface[] = message.actions ?? [];
+                    const exists: boolean = actions.some((a: CopilotActionInterface) => a.id === update.id);
+
+                    return {
+                        ...message,
+                        actions: exists
+                            ? actions.map((a: CopilotActionInterface) => a.id === update.id ? { ...a, ...update } : a)
+                            : [ ...actions, update as CopilotActionInterface ]
+                    };
+                })
+            };
+        }
         default:
             return state;
     }
