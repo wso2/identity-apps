@@ -485,7 +485,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.verifiable-credentials.v1
       '@wso2is/admin.webhooks.v1':
-        specifier: ^1.1.6
+        specifier: ^1.2.0
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-requests.v1':
         specifier: workspace:^
@@ -503,7 +503,7 @@ importers:
         specifier: ^2.13.7
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.49.2
+        specifier: ^2.49.3
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
