@@ -25,6 +25,10 @@ export interface FlowBuilderCoreResourceEndpointsInterface {
      */
     flowMeta: string;
     /**
+     * API to get the fields that conditions in decision steps can use.
+     */
+    flowRuleMeta: string;
+    /**
      * API to get/delete/update a specific flow.
      */
     flow: string;

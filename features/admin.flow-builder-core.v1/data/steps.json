@@ -161,13 +161,13 @@
     {
         "resourceType": "STEP",
         "category": "DECISION",
-        "type": "RULE",
+        "type": "RULE_EVALUATION",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Rule",
-            "image": "assets/images/icons/decide.svg",
-            "showOnResourcePanel": false
+            "label": "Decision",
+            "image": "assets/images/icons/split-arrows.svg",
+            "showOnResourcePanel": true
         },
         "config": {}
     },

@@ -86,6 +86,26 @@ export const getValueInput = (operator: string, operators?: OperatorInterface[])
 };
 
 /**
+ * Whether an operator compares against a set of values.
+ *
+ * @param operator  - Operator name.
+ * @param operators - Operators the field publishes, if at hand.
+ * @returns true for `in` and `notIn`.
+ */
+export const isListOperator = (operator: string, operators?: OperatorInterface[]): boolean =>
+    getValueInput(operator, operators) === "list";
+
+/**
+ * Whether an operator checks the field alone, so a condition using it takes no value.
+ *
+ * @param operator  - Operator name.
+ * @param operators - Operators the field publishes, if at hand.
+ * @returns true for `isBlank`, `isNotBlank`, `isEmpty` and `isNotEmpty`.
+ */
+export const isValueLessOperator = (operator: string, operators?: OperatorInterface[]): boolean =>
+    getValueInput(operator, operators) === "none";
+
+/**
  * Narrows a field's operators to those the chosen qualifier actually supports.
  *
  * @param operators   - Operators the field publishes.

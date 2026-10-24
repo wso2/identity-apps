@@ -167,6 +167,24 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            decisionStepLimit: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
             disableFlow: {
                 genericError: {
                     description: string;

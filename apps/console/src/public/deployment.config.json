@@ -2324,6 +2324,11 @@
             }
         },
         "flowExecution": {
+            "conditionalBranching": {
+                "maxDecisionNodes": 20,
+                "maxExpressionsCombinedWithAnd": 5,
+                "maxRulesCombinedWithOr": 10
+            },
             "enableLegacyFlows": false,
             "enableLegacyInvitedUserRegistrationFlow": false,
             "enableLegacyPasswordRecoveryFlow": false,

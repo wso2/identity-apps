@@ -28,6 +28,7 @@ export const getFlowBuilderCoreResourceEndpoints = (
 ): FlowBuilderCoreResourceEndpointsInterface => {
     return {
         flow: `${ serverOrigin }/api/server/v1/flow`,
-        flowMeta: `${ serverOrigin }/api/server/v1/flow/meta`
+        flowMeta: `${ serverOrigin }/api/server/v1/flow/meta`,
+        flowRuleMeta: `${ serverOrigin }/api/server/v1/flow/meta/rule`
     };
 };
