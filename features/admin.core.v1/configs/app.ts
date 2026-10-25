@@ -498,6 +498,7 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.enabledFeatureOverridesInConsoleRolePermissions,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             flowExecution: {
+                conditionalBranching: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.conditionalBranching,
                 enableLegacyFlows:
                     window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows ?? true,
                 enableLegacyInvitedUserRegistrationFlow:

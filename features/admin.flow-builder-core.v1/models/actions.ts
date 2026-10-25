@@ -28,5 +28,9 @@ export type Actions = Partial<Element>[];
 export enum ActionTypes {
     Next = "NEXT",
     Previous = "PREVIOUS",
-    Executor = "EXECUTOR"
+    Executor = "EXECUTOR",
+    /**
+     * Chooses among the branches of a rule evaluation step.
+     */
+    Route = "ROUTE"
 }

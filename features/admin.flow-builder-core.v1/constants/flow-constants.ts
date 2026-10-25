@@ -28,6 +28,16 @@ class FlowConstants {
 
     // Maximum number of history items to keep
     public static readonly MAX_HISTORY_ITEMS: number = 20;
+
+    // Identifier that disables decision steps when listed in the disabled features of flows.
+    public static readonly CONDITIONAL_BRANCHING_FEATURE_ID: string = "flows.conditionalBranching";
+
+    // Limits on decision steps and their conditions, used when the deployment configuration sets none. They match the
+    // server's defaults; a server configured with other limits needs the same values under
+    // ui.flowExecution.conditionalBranching, as the server still validates them on save.
+    public static readonly DEFAULT_MAX_DECISION_NODES: number = 20;
+    public static readonly DEFAULT_MAX_RULES_COMBINED_WITH_OR: number = 10;
+    public static readonly DEFAULT_MAX_EXPRESSIONS_COMBINED_WITH_AND: number = 5;
 }
 
 export default FlowConstants;

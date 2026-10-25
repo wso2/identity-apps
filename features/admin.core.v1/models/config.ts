@@ -831,6 +831,23 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         enableLegacySelfRegistrationFlow?: boolean;
         enableLegacyInvitedUserRegistrationFlow?: boolean;
         enableLegacyPasswordRecoveryFlow?: boolean;
+        /**
+         * Limits of decision steps. They match the server's own configuration, which validates them on save.
+         */
+        conditionalBranching?: {
+            /**
+             * Maximum number of decision steps in a flow.
+             */
+            maxDecisionNodes?: number;
+            /**
+             * Maximum number of condition groups, combined with OR, in a branch's rule.
+             */
+            maxRulesCombinedWithOr?: number;
+            /**
+             * Maximum number of conditions, combined with AND, in a condition group.
+             */
+            maxExpressionsCombinedWithAnd?: number;
+        };
     };
     /**
      * Enable legacy session bound token behaviour.

@@ -18,7 +18,8 @@
 
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     Edge,
     MarkerType,
@@ -34,10 +35,25 @@ import {
     useUpdateNodeInternals
 } from "@xyflow/react";
 import { UpdateNodeInternals } from "@xyflow/system";
+import { AxiosError } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback, useEffect } from "react";
+import React, {
+    Dispatch,
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef
+} from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch as ReduxDispatch } from "redux";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
+import FlowConstants from "../../constants/flow-constants";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
@@ -47,13 +63,21 @@ import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
-import { Resource, ResourceTypes } from "../../models/resources";
-import { Step } from "../../models/steps";
+import { Resource, ResourceTypes, Resources } from "../../models/resources";
+import { Step, StepTypes } from "../../models/steps";
 import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import PluginRegistry from "../../plugins/plugin-registry";
 import autoAssignConnections from "../../utils/auto-assign-connections";
+import { reorderBranches } from "../../utils/branch-operations";
+import {
+    hasDecisionStep,
+    isRuleMetadataNotImplemented,
+    withoutDecisionSteps
+} from "../../utils/conditional-branching";
+import isDecisionStepLimitReached from "../../utils/decision-step-limit";
 import generateResourceId from "../../utils/generate-resource-id";
+import seedRuleDecisionBranches from "../../utils/seed-rule-decision-branches";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
 import ValidationPanel from "../validation-panel/validation-panel";
@@ -121,6 +145,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
+    const { t } = useTranslation();
+    const dispatch: ReduxDispatch = useDispatch();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const { deleteComponent } = useComponentDelete();
@@ -131,8 +157,45 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         isVersionHistoryPanelOpen,
         onResourceDropOnCanvas,
         isFlowMetadataLoading,
-        metadata
+        metadata,
+        ruleLimits,
+        isConditionalBranchingEnabled,
+        ruleMetadataError
     } = useAuthenticationFlowBuilderCore();
+
+    const alertedRuleMetadataError: MutableRefObject<AxiosError> = useRef<AxiosError>(null);
+
+    /**
+     * Says why decision steps cannot be configured, once per failed request, and only to a flow that has one: a flow
+     * without decision steps loses nothing but the palette entry.
+     */
+    useEffect(() => {
+        if (!ruleMetadataError || alertedRuleMetadataError.current === ruleMetadataError || !hasDecisionStep(nodes)) {
+            return;
+        }
+
+        alertedRuleMetadataError.current = ruleMetadataError;
+        const notification: string = isRuleMetadataNotImplemented(ruleMetadataError)
+            ? "conditionalBranchingDisabled"
+            : "ruleMetadataUnavailable";
+
+        dispatch(
+            addAlert({
+                description: t(`flows:core.notifications.${notification}.warning.description`),
+                level: AlertLevels.WARNING,
+                message: t(`flows:core.notifications.${notification}.warning.message`)
+            })
+        );
+    }, [ ruleMetadataError, nodes ]);
+
+    /**
+     * The palette leaves out the decision step when conditional branching is not available, while the canvas keeps
+     * every resource so that decision steps already in the flow still render.
+     */
+    const paletteResources: Resources = useMemo(
+        () => (isConditionalBranchingEnabled ? resources : withoutDecisionSteps(resources)),
+        [ resources, isConditionalBranchingEnabled ]
+    );
 
     useEffect(() => {
         if (aiGeneratedFlow) {
@@ -143,6 +206,28 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
         const sourceResource: any = cloneDeep(sourceData.dragged);
         const { clientX, clientY } = event?.nativeEvent;
+
+        if (sourceResource?.type === StepTypes.RuleEvaluation) {
+            if (!isConditionalBranchingEnabled) {
+                return;
+            }
+
+            const maxDecisionNodes: number = ruleLimits?.maxDecisionNodes
+                ?? FlowConstants.DEFAULT_MAX_DECISION_NODES;
+
+            if (isDecisionStepLimitReached(nodes, maxDecisionNodes)) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.decisionStepLimit.warning.description",
+                            { max: maxDecisionNodes }),
+                        level: AlertLevels.WARNING,
+                        message: t("flows:core.notifications.decisionStepLimit.warning.message")
+                    })
+                );
+
+                return;
+            }
+        }
 
         const position: XYPosition = screenToFlowPosition({
             x: clientX,
@@ -156,6 +241,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             id: generateResourceId(sourceResource.type.toLowerCase()),
             position
         };
+
+        // A rule decision is only valid with its default branch, so it is given one before it is
+        // handed to the flow specific decoration.
+        generatedStep = seedRuleDecisionBranches(generatedStep);
 
         // Decorate the step with any additional information
         generatedStep = onStepLoad(generatedStep);
@@ -241,6 +330,24 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         const { data: sourceData } = source;
         const { data: targetData } = target;
+
+        // Branch rows live in the property panel, which is inside this provider, so their drags
+        // arrive here too. They reorder the decision's branches rather than a view's components.
+        if (sourceData.isBranchReordering) {
+            updateNodeData(sourceData.stepId, (node: any) => {
+                const action: any = node?.data?.action ?? {};
+
+                return {
+                    action: {
+                        ...action,
+                        branches: reorderBranches(action.branches ?? [], (conditional: any[]) =>
+                            move(conditional, event))
+                    }
+                };
+            });
+
+            return;
+        }
 
         if (sourceData.isReordering) {
             updateNodeData(sourceData?.stepId, (node: any) => {
@@ -430,7 +537,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         <div className={ classNames("decorated-visual-flow", "react-flow-container") } data-componentid={ componentId }>
             <DragDropProvider onDragEnd={ handleDragEnd } onDragOver={ handleDragOver }>
                 <ResourcePanel
-                    resources={ resources }
+                    resources={ paletteResources }
                     open={ isResourcePanelOpen }
                     onAdd={ handleOnAdd }
                     disabled={ isFlowMetadataLoading }

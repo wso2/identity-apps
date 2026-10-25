@@ -17,6 +17,7 @@
  */
 
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { RuleFieldDefinitionInterface } from "./rule-expression";
 
 /**
  * Interface for common metadata.
@@ -168,4 +169,34 @@ export interface FlowExtensionConnectionInterface {
      * Optional icon URL for the connection.
      */
     iconUrl?: string;
+}
+
+/**
+ * Limits on decision steps and their conditions, read from the console's deployment configuration. They mirror the
+ * server's own configuration, which validates them when a flow is saved.
+ */
+export interface RuleLimitsInterface {
+    /**
+     * Maximum number of decision steps in a flow.
+     */
+    maxDecisionNodes: number;
+    /**
+     * Maximum number of condition groups in a branch condition, combined with OR.
+     */
+    maxRulesCombinedWithOr: number;
+    /**
+     * Maximum number of conditions in one group, combined with AND.
+     */
+    maxExpressionsCombinedWithAnd: number;
+}
+
+/**
+ * Metadata for the conditions of decision steps in a flow.
+ */
+export interface RuleMetadataInterface {
+    /**
+     * The fields a condition can be written against, with the operators each one accepts and how its value is
+     * entered.
+     */
+    ruleMetaData: RuleFieldDefinitionInterface[];
 }

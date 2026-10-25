@@ -50,9 +50,12 @@ export const toResourceList = (resources: unknown): Record<string, unknown>[] =>
         return [];
     }
 
+    // A response can hold other arrays besides its list, such as the `schemas` a SCIM list starts with, so the list
+    // is the first array that holds resources.
     const list: unknown[] = Array.isArray(resources)
         ? resources
-        : Object.values(resources).find((candidate: unknown): candidate is unknown[] => Array.isArray(candidate))
+        : Object.values(resources).find((candidate: unknown): candidate is unknown[] =>
+            Array.isArray(candidate) && candidate.some(isRecord))
             ?? [];
 
     return list.filter(isRecord);

@@ -167,6 +167,28 @@ export const flows: flowsNS = {
                     message: "Custom Text Preference Meta Fetch Error"
                 }
             },
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: "Conditional branching is not enabled on the server, so decision steps cannot "
+                        + "be configured. Decision steps already in the flow are kept, but the flow cannot be "
+                        + "saved with them.",
+                    message: "Conditional Branching Not Enabled"
+                }
+            },
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: "The fields decision step conditions can use could not be loaded, so decision "
+                        + "steps cannot be configured. Decision steps already in the flow are kept, but the flow "
+                        + "cannot be saved with them until the fields can be loaded.",
+                    message: "Decision Steps Unavailable"
+                }
+            },
+            decisionStepLimit: {
+                warning: {
+                    description: "A flow can have at most {{max}} decision steps.",
+                    message: "Decision Step Limit Reached"
+                }
+            },
             disableFlow: {
                 genericError: {
                     description: "An error occurred while disabling the {{flowType}} flow.",
@@ -323,6 +345,13 @@ export const flows: flowsNS = {
                 missingOrganizationName: "This flow collects organization attributes but no Organization "
                     + "Name, which is required to create an organization. Add an Organization Name field, "
                     + "or these values will be discarded at runtime."
+            },
+            ruleEvaluation: {
+                incompleteRules: "Complete the rules of the decision branches: {{branches}}. Each condition needs a "
+                    + "field, an operator and a value.",
+                noConditionalBranch: "Add at least one branch with a rule to the decision. A decision with only the "
+                    + "default branch has nothing to decide.",
+                unconnectedBranches: "Connect the decision branches to the step they lead to: {{branches}}."
             },
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",

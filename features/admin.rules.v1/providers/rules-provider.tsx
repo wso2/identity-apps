@@ -63,8 +63,13 @@ const toRuleValue = (
         return null;
     }
 
-    // Check if the ruleInstance has multiple rules
+    // Check if the ruleInstance has multiple rules. An editor opened without initial data has none until they are
+    // seeded, and is reported as having no value until then.
     if (ruleInstance.isMultipleRules) {
+        if (!Array.isArray(ruleInstance.rules)) {
+            return null;
+        }
+
         // Return RuleExecuteCollectionWithoutIdInterface if there are multiple rules
         return cleanInstance(Object.freeze(ruleInstance) as RuleExecuteCollectionInterface, true);
     }

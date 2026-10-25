@@ -167,6 +167,24 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            decisionStepLimit: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
             disableFlow: {
                 genericError: {
                     description: string;
@@ -322,6 +340,11 @@ export interface flowsNS {
             organizationAttributes: {
                 federatedAuthenticationNotSupported: string;
                 missingOrganizationName: string;
+            };
+            ruleEvaluation: {
+                incompleteRules: string;
+                noConditionalBranch: string;
+                unconnectedBranches: string;
             };
             userResolveExecutorFields: {
                 message: string;
