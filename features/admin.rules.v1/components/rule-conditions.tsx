@@ -19,10 +19,11 @@
 import { Theme } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Autocomplete, { AutocompleteInputChangeReason,
+import Autocomplete, { AutocompleteInputChangeReason, AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Divider from "@oxygen-ui/react/Divider";
 import Fab from "@oxygen-ui/react/Fab";
@@ -168,14 +169,74 @@ interface ConditionValuesInputPropsInterface extends IdentifiableComponentInterf
      */
     expressionValues: string[];
     /**
+     * How the field's values are chosen. A field whose values are listed from an endpoint has them picked from that
+     * list rather than typed.
+     */
+    metaValue?: ExpressionValueInterface;
+    /**
+     * Resources left out of the list of values.
+     */
+    hiddenResources?: string[];
+    /**
      * Shown at the end of the input, inside its box.
      */
     endAdornment?: ReactNode;
 }
 
+/**
+ * Props interface of the list value input whose values are picked from a linked list.
+ */
+interface ResourceValuesInputPropsInterface extends ConditionValuesInputPropsInterface {
+    /**
+     * Endpoint that lists the values.
+     */
+    valuesUrl: string;
+    /**
+     * Endpoint that searches the values, when the field publishes one.
+     */
+    filterUrl?: string;
+}
+
+/**
+ * Props interface of a source of the label and audience of one value picked from a linked list.
+ */
+interface ResourceValueLabelSourcePropsInterface {
+    /**
+     * The value, as stored on the expression.
+     */
+    id: string;
+    /**
+     * Endpoint that returns the resource the value refers to.
+     */
+    detailsUrl: string;
+    /**
+     * Attribute of the resource that holds its label.
+     */
+    displayAttribute: string;
+    /**
+     * Called with the value, labelled, once its resource has arrived.
+     */
+    onOption: (option: ResourceValueOptionInterface) => void;
+}
+
 interface ValueInputAutocompleteOptionsInterface {
     id: string;
     label: string;
+}
+
+/**
+ * A value picked from a linked list, with the audience of the role it is, so that roles of the same name can be
+ * told apart.
+ */
+interface ResourceValueOptionInterface extends ValueInputAutocompleteOptionsInterface {
+    /**
+     * Who the role is for, such as `organization` or `application`.
+     */
+    audience?: string;
+    /**
+     * The application or organization the role is for.
+     */
+    audienceDisplay?: string;
 }
 
 /**
@@ -632,6 +693,10 @@ const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
         }
     }, [ isResourceDetailsLoading, resourceDetailsError, resourcesDetails ]);
 
+    // The flag belongs to the expression, so it is cleared once a change of field, operator or value type
+    // takes this input away.
+    useEffect(() => () => setIsResourceMissing(false), []);
+
     useEffect(() => {
         if (expressionField === "claim" && fetchedResourcesList) {
             const initialOptions: ValueInputAutocompleteOptionsInterface[] =
@@ -1069,7 +1134,7 @@ const ConditionLiteralInput: FunctionComponent<ConditionLiteralInputPropsInterfa
     }
 
     if (metaValue?.inputType === "options") {
-        if (metaValue?.values?.length > 1) {
+        if (metaValue?.values?.length > 0) {
 
             // Set first value of the list if option is empty
             if (expressionValue === "") {
@@ -1328,6 +1393,8 @@ const ConditionValueReferenceInput: FunctionComponent<ConditionValueReferenceInp
                     conditionId={ conditionId }
                     expressionId={ expression.id }
                     expressionValues={ expression.values }
+                    metaValue={ fieldMeta?.value }
+                    hiddenResources={ hiddenResources }
                     endAdornment={ fieldToggle }
                 />
             );
@@ -1378,6 +1445,269 @@ const ConditionValueReferenceInput: FunctionComponent<ConditionValueReferenceInp
 };
 
 /**
+ * Who a role is for, as approval workflow rules show it: the audience, and for an application role the application.
+ *
+ * @param option - The value.
+ * @returns The audience, or undefined for a value that is not a role.
+ */
+const toAudienceLabel = (option: ResourceValueOptionInterface): string | undefined => {
+    if (!option?.audience) {
+        return undefined;
+    }
+
+    return option.audience.toLowerCase() === "application" && option.audienceDisplay
+        ? `${option.audience} | ${option.audienceDisplay}`
+        : option.audience;
+};
+
+/**
+ * Looks up a value that the first page of a linked list did not hold, and renders nothing.
+ *
+ * @param props - Props injected to the component.
+ * @returns Null.
+ */
+const ResourceValueLabelSource: FunctionComponent<ResourceValueLabelSourcePropsInterface> = ({
+    id,
+    detailsUrl,
+    displayAttribute,
+    onOption
+}: ResourceValueLabelSourcePropsInterface): ReactElement => {
+    const { data: resource } = useGetResourceListOrResourceDetails(detailsUrl, !!detailsUrl);
+
+    useEffect(() => {
+        const label: unknown = resource?.[displayAttribute];
+
+        if (typeof label === "string" && label) {
+            onOption({
+                audience: resource?.audience?.type,
+                audienceDisplay: resource?.audience?.display,
+                id,
+                label
+            });
+        }
+    }, [ resource ]);
+
+    return null;
+};
+
+/**
+ * Input for the set of values `in` and `notIn` compare against, picked from the list the field links to, such as
+ * the roles or groups of the organization.
+ *
+ * @param props - Props injected to the component.
+ * @returns The list value input.
+ */
+const ResourceValuesInput: FunctionComponent<ResourceValuesInputPropsInterface> = ({
+    ["data-componentid"]: componentId = "rules-condition-expression-input-values",
+    readonly,
+    ruleId,
+    conditionId,
+    expressionId,
+    expressionValues,
+    metaValue,
+    valuesUrl,
+    filterUrl,
+    hiddenResources = EMPTY_ARRAY,
+    endAdornment
+}: ResourceValuesInputPropsInterface): ReactElement => {
+
+    const { t } = useTranslation();
+    const { updateConditionExpression } = useRulesContext();
+
+    const referenceAttribute: string = metaValue?.valueReferenceAttribute || "id";
+    const displayAttribute: string = metaValue?.valueDisplayAttribute || "name";
+    const values: string[] = expressionValues ?? EMPTY_ARRAY;
+
+    // The list is loaded when the picker is first opened, or straight away when values are already chosen, so
+    // their labels can be shown.
+    const [ hasOpened, setHasOpened ] = useState<boolean>(false);
+    // What is typed, and the search it starts once typing pauses.
+    const [ searchText, setSearchText ] = useState<string>("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    // Every value seen, so a chosen value keeps its label and audience after a search changes the list.
+    const [ knownOptions, setKnownOptions ] = useState<Record<string, ResourceValueOptionInterface>>({});
+
+    const rememberOptions: (seen: ResourceValueOptionInterface[]) => void = useCallback(
+        (seen: ResourceValueOptionInterface[]): void => {
+            setKnownOptions((previous: Record<string, ResourceValueOptionInterface>) => {
+                const next: Record<string, ResourceValueOptionInterface> = { ...previous };
+
+                seen.forEach((option: ResourceValueOptionInterface) => {
+                    next[option.id] = option;
+                });
+
+                return next;
+            });
+        }, []);
+
+    const handleOption: (option: ResourceValueOptionInterface) => void = useCallback(
+        (option: ResourceValueOptionInterface): void => rememberOptions([ option ]), []);
+
+    const updateSearchQuery: ReturnType<typeof debounce> = useMemo(
+        () => debounce((text: string) => setSearchQuery(text), 300), []);
+
+    useEffect(() => () => updateSearchQuery.cancel(), []);
+
+    // Typing searches the server through the filter link, for values whose label contains what is typed.
+    const listUrl: string = searchQuery && filterUrl
+        ? filterUrl.replace(/filter=[^&]*/, `filter=${displayAttribute}+co+${encodeURIComponent(searchQuery)}`)
+        : valuesUrl;
+
+    const clearSearch: () => void = (): void => {
+        updateSearchQuery.cancel();
+        setSearchText("");
+        setSearchQuery("");
+    };
+
+    const { data: fetchedResources, isLoading } =
+        useGetResourceListOrResourceDetails(listUrl, hasOpened || values.length > 0);
+
+    const options: ResourceValueOptionInterface[] = useMemo((): ResourceValueOptionInterface[] => {
+        const resources: Map<unknown, Record<string, unknown>> = new Map(
+            toResourceList(fetchedResources).map((resource: Record<string, unknown>) =>
+                [ resource[referenceAttribute], resource ]));
+
+        return toQualifierOptions(fetchedResources, referenceAttribute, displayAttribute)
+            .filter((option: ValueInputAutocompleteOptionsInterface) => !hiddenResources.includes(option.id))
+            .map((option: ValueInputAutocompleteOptionsInterface): ResourceValueOptionInterface => {
+                // Only roles carry an audience.
+                const audience: { type?: string; display?: string } =
+                    resources.get(option.id)?.audience as { type?: string; display?: string };
+
+                return { ...option, audience: audience?.type, audienceDisplay: audience?.display };
+            });
+    }, [ fetchedResources, referenceAttribute, displayAttribute, hiddenResources ]);
+
+    useEffect(() => {
+        if (options.length === 0) {
+            return;
+        }
+
+        rememberOptions(options);
+    }, [ options ]);
+
+    // A chosen value the list does not hold, such as one past its first page, is looked up on its own once the
+    // list has arrived. A value whose resource is gone keeps showing what is stored.
+    const detailsBaseUrl: string = valuesUrl?.split("?")[0];
+    const unlabelledValues: string[] = isLoading
+        ? []
+        : values.filter((id: string) => !knownOptions[id]
+            && !options.some((option: ValueInputAutocompleteOptionsInterface) => option.id === id));
+
+    // Kept the same between renders: the autocomplete empties what is typed whenever it is handed a new value.
+    const selected: ResourceValueOptionInterface[] = useMemo(
+        (): ResourceValueOptionInterface[] => values.map(
+            (id: string): ResourceValueOptionInterface => knownOptions[id] ?? { id, label: id }),
+        [ values, knownOptions ]
+    );
+
+    return (
+        <>
+            { unlabelledValues.map((id: string) => (
+                <ResourceValueLabelSource
+                    key={ id }
+                    id={ id }
+                    detailsUrl={ `${detailsBaseUrl}/${encodeURIComponent(id)}` }
+                    displayAttribute={ displayAttribute }
+                    onOption={ handleOption }
+                />
+            )) }
+            <Autocomplete
+                multiple
+                disableCloseOnSelect
+                // Each value has its own remove button, so clearing them all at once makes way for the field toggle.
+                disableClearable={ !!endAdornment }
+                className="autocomplete"
+                disabled={ readonly }
+                data-componentid={ componentId }
+                options={ options }
+                value={ selected }
+                loading={ isLoading }
+                onOpen={ () => setHasOpened(true) }
+                // A search runs on the server, so the options it returns are shown as they come.
+                filterOptions={ filterUrl
+                    ? (listed: ValueInputAutocompleteOptionsInterface[]) => listed
+                    : undefined }
+                isOptionEqualToValue={ (
+                    option: ValueInputAutocompleteOptionsInterface,
+                    value: ValueInputAutocompleteOptionsInterface
+                ) => option.id === value?.id }
+                getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option?.label ?? "" }
+                // A role is shown with its audience, as approval workflow rules show it, since an organization role
+                // and an application role can share a name.
+                renderOption={ (props: HTMLAttributes<HTMLLIElement>, option: ResourceValueOptionInterface) => (
+                    <li { ...props } key={ option.id }>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            gap={ 1 }
+                            width="100%"
+                        >
+                            <span>{ option.label }</span>
+                            { option.audience && <Chip size="small" label={ toAudienceLabel(option) } /> }
+                        </Box>
+                    </li>
+                ) }
+                // A chosen role names its audience on hover, as approval workflows do, so two roles of the same
+                // name can be told apart before one is removed.
+                renderTags={ (chosen: ResourceValueOptionInterface[], getTagProps: AutocompleteRenderGetTagProps) =>
+                    chosen.map((option: ResourceValueOptionInterface, index: number) => {
+                        const tag: ReactElement = (
+                            <Chip { ...getTagProps({ index }) } key={ option.id } label={ option.label } />
+                        );
+
+                        return option.audience
+                            ? <Tooltip key={ option.id } title={ toAudienceLabel(option) }>{ tag }</Tooltip>
+                            : tag;
+                    }) }
+                // The search is kept while values are picked, so several can be chosen from one search, and is
+                // cleared when the list closes. The autocomplete's own resets are not followed for that reason.
+                inputValue={ searchText }
+                onInputChange={ (_: React.SyntheticEvent, text: string, reason: AutocompleteInputChangeReason) => {
+                    if (reason === "input") {
+                        setSearchText(text);
+                        updateSearchQuery(text);
+                    } else if (reason === "clear") {
+                        clearSearch();
+                    }
+                } }
+                onClose={ clearSearch }
+                onChange={ (_: React.SyntheticEvent, chosen: ResourceValueOptionInterface[]) => {
+                    rememberOptions(chosen);
+                    updateConditionExpression(
+                        chosen.map((option: ResourceValueOptionInterface) => option.id),
+                        ruleId,
+                        conditionId,
+                        expressionId,
+                        ExpressionFieldTypes.Values,
+                        true
+                    );
+                } }
+                renderInput={ (params: AutocompleteRenderInputParams) => (
+                    <TextField
+                        { ...params }
+                        inputProps={ { ...params.inputProps, "aria-label": t("rules:fields.valueInput.valueLabel") } }
+                        placeholder={ values.length > 0 ? "" : t("rules:fields.autocomplete.placeholderText") }
+                        sx={ endAdornment ? TEXT_BOX_WITH_FIELD_TOGGLE_SX : undefined }
+                        InputProps={ {
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    { isLoading && <CircularProgress color="inherit" size={ 16 } /> }
+                                    { endAdornment }
+                                    { params.InputProps.endAdornment }
+                                </>
+                            )
+                        } }
+                    />
+                ) }
+            />
+        </>
+    );
+};
+
+/**
  * Input for the set of values `in` and `notIn` compare against.
  *
  * @param props - Props injected to the component.
@@ -1390,11 +1720,35 @@ const ConditionValuesInput: FunctionComponent<ConditionValuesInputPropsInterface
     conditionId,
     expressionId,
     expressionValues,
+    metaValue,
+    hiddenResources = EMPTY_ARRAY,
     endAdornment
 }: ConditionValuesInputPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
     const { updateConditionExpression } = useRulesContext();
+
+    const valuesUrl: string = metaValue?.inputType === "options"
+        ? metaValue?.links?.find((link: LinkInterface) => link.rel === "values")?.href
+        : undefined;
+
+    if (valuesUrl) {
+        return (
+            <ResourceValuesInput
+                data-componentid={ componentId }
+                readonly={ readonly }
+                ruleId={ ruleId }
+                conditionId={ conditionId }
+                expressionId={ expressionId }
+                expressionValues={ expressionValues }
+                metaValue={ metaValue }
+                valuesUrl={ valuesUrl }
+                filterUrl={ metaValue?.links?.find((link: LinkInterface) => link.rel === "filter")?.href }
+                hiddenResources={ hiddenResources }
+                endAdornment={ endAdornment }
+            />
+        );
+    }
 
     const handleChange: (values: string[]) => void = (values: string[]): void => {
         const entries: string[] = values
@@ -1677,6 +2031,8 @@ const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
                         conditionId={ conditionId }
                         expressionId={ expression.id }
                         expressionValues={ expression.values }
+                        metaValue={ findMetaValuesAgainst?.value }
+                        hiddenResources={ hiddenResources }
                     />
                 ) : (
                     <ConditionLiteralInput

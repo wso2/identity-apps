@@ -27,6 +27,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import ErrorIcon from "./error-icon";
 import ValidationNotificationsList from "./validation-notifications-list";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "../../hooks/use-validation-status";
@@ -53,25 +54,6 @@ const ChevronsRight = ({ size = 16 }: { size: number }): ReactElement => (
     >
         <path d="m6 17 5-5-5-5"/>
         <path d="m13 17 5-5-5-5"/>
-    </svg>
-);
-
-const ErrorIcon = ({ size = 16 }: { size?: number }): ReactElement => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={ size }
-        height={ size }
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#c01616"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-circle-x-icon lucide-circle-x"
-    >
-        <circle cx="12" cy="12" r="10"/>
-        <path d="m15 9-6 6"/>
-        <path d="m9 9 6 6"/>
     </svg>
 );
 

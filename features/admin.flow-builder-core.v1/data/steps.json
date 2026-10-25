@@ -166,6 +166,7 @@
         "deprecated": false,
         "display": {
             "label": "Decision",
+            "displayname": "Decision",
             "image": "assets/images/icons/split-arrows.svg",
             "showOnResourcePanel": true
         },

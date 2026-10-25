@@ -16,8 +16,11 @@
  * under the License.
  */
 
-import { ConditionExpressionMetaInterface, ConditionExpressionsMetaDataInterface }
-    from "@wso2is/admin.rules.v1/models/meta";
+import {
+    ConditionExpressionMetaInterface,
+    ConditionExpressionsMetaDataInterface,
+    OperatorInterface
+} from "@wso2is/admin.rules.v1/models/meta";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionWithoutIdInterface,
@@ -45,12 +48,27 @@ const toFieldReference = (name: string, qualifier?: string): FieldReferenceInter
     qualifier ? { name, qualifier } : { name };
 
 /**
+ * Indexes the operators each field publishes by the field's name, so that what an operator takes is read from the
+ * server rather than from its name alone.
+ *
+ * @param metadata - The rule metadata as the flow metadata publishes it.
+ * @returns The published operators by field name.
+ */
+const toOperatorsByField = (metadata: RuleFieldDefinitionInterface[]): Map<string, OperatorInterface[]> =>
+    new Map((metadata ?? []).map((definition: RuleFieldDefinitionInterface): [ string, OperatorInterface[] ] =>
+        [ definition.field?.name, definition.operators ]));
+
+/**
  * Puts an atomic condition in the shape the rule editor holds.
  *
  * @param condition - The atomic condition as the flow API carries it.
+ * @param operators - The operators the condition's field publishes, if known.
  * @returns The editor's expression.
  */
-const toEditorCondition = (condition: AtomicConditionInterface): ConditionExpressionWithoutIdInterface => {
+const toEditorCondition = (
+    condition: AtomicConditionInterface,
+    operators?: OperatorInterface[]
+): ConditionExpressionWithoutIdInterface => {
     const base: ConditionExpressionWithoutIdInterface = {
         field: condition?.field?.name ?? "",
         ...(condition?.field?.qualifier !== undefined && { qualifier: condition.field.qualifier }),
@@ -58,7 +76,7 @@ const toEditorCondition = (condition: AtomicConditionInterface): ConditionExpres
     };
     const value: ConditionValueInterface = condition?.value;
 
-    if (isValueLessOperator(base.operator) && !value) {
+    if (isValueLessOperator(base.operator, operators) && !value) {
         // An operator that checks the field alone takes no value.
         return base;
     }
@@ -67,7 +85,7 @@ const toEditorCondition = (condition: AtomicConditionInterface): ConditionExpres
         return { ...base, valueField: value.field?.name ?? "", valueFieldQualifier: value.field?.qualifier ?? "" };
     }
 
-    if (isListOperator(base.operator)) {
+    if (isListOperator(base.operator, operators)) {
         return { ...base, values: Array.isArray(value?.literal) ? value.literal.map(String) : [] };
     }
 
@@ -83,12 +101,18 @@ const toEditorCondition = (condition: AtomicConditionInterface): ConditionExpres
  * Puts a branch's rule in the shape the rule editor holds.
  *
  * @param expression - The rule as the flow API carries it.
+ * @param metadata   - The rule metadata as the flow metadata publishes it.
  * @returns The editor's rule, or undefined for the default branch.
  */
-export const toEditorRule = (expression: BranchRuleInterface): RuleWithoutIdInterface | undefined => {
+export const toEditorRule = (
+    expression: BranchRuleInterface,
+    metadata?: RuleFieldDefinitionInterface[]
+): RuleWithoutIdInterface | undefined => {
     if (!expression) {
         return undefined;
     }
+
+    const operatorsByField: Map<string, OperatorInterface[]> = toOperatorsByField(metadata);
 
     return {
         condition: AdjoiningOperatorTypes.Or,
@@ -96,7 +120,8 @@ export const toEditorRule = (expression: BranchRuleInterface): RuleWithoutIdInte
         rules: (expression.conditions ?? []).map(
             (condition: ExpressionConditionInterface): RuleConditionWithoutIdInterface => ({
                 condition: AdjoiningOperatorTypes.And,
-                expressions: (condition.conditions ?? []).map(toEditorCondition)
+                expressions: (condition.conditions ?? []).map((atomic: AtomicConditionInterface) =>
+                    toEditorCondition(atomic, operatorsByField.get(atomic?.field?.name)))
             }) as RuleConditionWithoutIdInterface)
     } as RuleWithoutIdInterface;
 };
@@ -104,13 +129,19 @@ export const toEditorRule = (expression: BranchRuleInterface): RuleWithoutIdInte
 /**
  * Puts what the rule editor holds in the shape the flow API carries.
  *
- * @param rule - The editor's rule.
+ * @param rule     - The editor's rule.
+ * @param metadata - The rule metadata as the flow metadata publishes it.
  * @returns The rule, or undefined for the default branch.
  */
-export const fromEditorRule = (rule: RuleWithoutIdInterface): BranchRuleInterface | undefined => {
+export const fromEditorRule = (
+    rule: RuleWithoutIdInterface,
+    metadata?: RuleFieldDefinitionInterface[]
+): BranchRuleInterface | undefined => {
     if (!rule) {
         return undefined;
     }
+
+    const operatorsByField: Map<string, OperatorInterface[]> = toOperatorsByField(metadata);
 
     return {
         conditions: (rule.rules ?? []).map((condition: RuleConditionWithoutIdInterface): ExpressionConditionInterface => ({
@@ -118,14 +149,14 @@ export const fromEditorRule = (rule: RuleWithoutIdInterface): BranchRuleInterfac
                 (expression: ConditionExpressionWithoutIdInterface): AtomicConditionInterface => ({
                     field: toFieldReference(expression.field, expression.qualifier),
                     operator: expression.operator,
-                    ...(!isValueLessOperator(expression.operator) && {
+                    ...(!isValueLessOperator(expression.operator, operatorsByField.get(expression.field)) && {
                         value: expression.valueField !== undefined
                             ? {
                                 field: toFieldReference(expression.valueField, expression.valueFieldQualifier),
                                 type: "field"
                             }
                             : {
-                                literal: isListOperator(expression.operator)
+                                literal: isListOperator(expression.operator, operatorsByField.get(expression.field))
                                     ? (expression.values ?? [])
                                     : (expression.value ?? ""),
                                 type: "literal"

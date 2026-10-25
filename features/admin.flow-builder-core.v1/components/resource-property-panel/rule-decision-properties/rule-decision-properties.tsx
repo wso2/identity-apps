@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Popper from "@mui/material/Popper";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -41,6 +43,7 @@ import FlowConstants from "../../../constants/flow-constants";
 import VisualFlowConstants from "../../../constants/visual-flow-constants";
 import Handle from "../../dnd/handle";
 import Sortable from "../../dnd/sortable";
+import ErrorIcon from "../../validation-panel/error-icon";
 import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
 import { Action, Branch } from "../../../models/elements";
 import { BranchRuleInterface } from "../../../models/rule-expression";
@@ -72,6 +75,24 @@ interface RuleDecisionPropertiesPropsInterface extends IdentifiableComponentInte
 }
 
 /**
+ * Something that keeps a branch from being published, and how to put it right.
+ */
+interface BranchIssueInterface {
+    title: string;
+    description: string;
+}
+
+/**
+ * Props interface of {@link BranchIssues}
+ */
+interface BranchIssuesPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The issues of the branch, at least one.
+     */
+    issues: BranchIssueInterface[];
+}
+
+/**
  * Props interface of {@link BranchRow}
  */
 interface BranchRowPropsInterface extends IdentifiableComponentInterface {
@@ -88,18 +109,125 @@ interface BranchRowPropsInterface extends IdentifiableComponentInterface {
      */
     stepId: string;
     /**
-     * Where this branch leads, already rendered.
+     * What keeps the branch from being published, empty when nothing does.
      */
-    target: ReactElement;
-    /**
-     * Whether a condition of the branch is not filled in, which blocks publishing.
-     */
-    incomplete?: boolean;
+    issues: BranchIssueInterface[];
     /**
      * Opens this branch in the panel, where it is named and, unless it is the default, given conditions.
      */
     onOpen: () => void;
 }
+
+/**
+ * The error indicator of a branch row, which opens the list of the branch's issues above it.
+ *
+ * @param props - Props injected to the component.
+ * @returns The indicator and its popover.
+ */
+const BranchIssues: FunctionComponent<BranchIssuesPropsInterface> = ({
+    ["data-componentid"]: componentId = "rule-decision-branch-issues",
+    issues
+}: BranchIssuesPropsInterface): ReactElement => {
+    const anchorRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+    const [ isOpen, setIsOpen ] = useState<boolean>(false);
+    const [ arrowElement, setArrowElement ] = useState<HTMLSpanElement>(null);
+
+    const heading: string = issues.length === 1 ? "1 error" : `${issues.length} errors`;
+    const popoverId: string = `${componentId}-popover`;
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        const handleKeyDown = (event: KeyboardEvent): void => {
+            if (event.key === "Escape") {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [ isOpen ]);
+
+    return (
+        <>
+            { /* Put away while the popover is open, which already says what the hint would. */ }
+            <Tooltip title={ isOpen ? "" : `${heading} – click to view` } describeChild>
+                <IconButton
+                    ref={ anchorRef }
+                    size="small"
+                    className="rule-decision-row-issues"
+                    aria-label={ `${heading}, show details` }
+                    aria-expanded={ isOpen }
+                    aria-controls={ isOpen ? popoverId : undefined }
+                    onClick={ (event: React.MouseEvent<HTMLButtonElement>) => {
+                        // Only the issues open from here; the chevron opens the branch.
+                        event.stopPropagation();
+                        setIsOpen((previous: boolean) => !previous);
+                    } }
+                    data-componentid={ `${componentId}-toggle` }
+                >
+                    <ErrorIcon size={ 16 } />
+                </IconButton>
+            </Tooltip>
+            <Popper
+                id={ popoverId }
+                open={ isOpen }
+                anchorEl={ anchorRef.current }
+                // Above the row, so the branches below and the canvas beside the panel stay in view. It turns
+                // below only when there is no room above, and slides along to stay inside the window.
+                placement="top"
+                className="rule-decision-issues-popper"
+                modifiers={ [
+                    { name: "offset", options: { offset: [ 0, 10 ] } },
+                    { name: "flip", options: { fallbackPlacements: [ "bottom" ] } },
+                    { name: "preventOverflow", options: { padding: 8 } },
+                    { enabled: !!arrowElement, name: "arrow", options: { element: arrowElement, padding: 8 } }
+                ] }
+            >
+                <ClickAwayListener
+                    onClickAway={ (event: MouseEvent | TouchEvent) => {
+                        // The indicator toggles the popover itself, so a click on it is not a click away.
+                        if (anchorRef.current?.contains(event.target as HTMLElement)) {
+                            return;
+                        }
+                        setIsOpen(false);
+                    } }
+                >
+                    <Box
+                        className="rule-decision-issues"
+                        role="dialog"
+                        aria-label={ heading }
+                        data-componentid={ popoverId }
+                        // The popover is placed on the page, but its clicks still reach the row it belongs to,
+                        // which would open the branch.
+                        onClick={ (event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation() }
+                    >
+                        <span ref={ setArrowElement } className="rule-decision-issues-arrow" />
+                        <Stack direction="row" alignItems="center" gap={ 0.75 }>
+                            <ErrorIcon size={ 16 } />
+                            <Typography variant="subtitle2">{ heading }</Typography>
+                        </Stack>
+                        <ul className="rule-decision-issues-list">
+                            { issues.map((issue: BranchIssueInterface) => (
+                                <li key={ issue.title }>
+                                    <Typography variant="body2" className="rule-decision-issue-title">
+                                        { issue.title }
+                                    </Typography>
+                                    <Typography variant="caption" className="rule-decision-issue-description">
+                                        { issue.description }
+                                    </Typography>
+                                </li>
+                            )) }
+                        </ul>
+                    </Box>
+                </ClickAwayListener>
+            </Popper>
+        </>
+    );
+};
 
 /**
  * One row of the branch list.
@@ -112,8 +240,7 @@ const BranchRow: FunctionComponent<BranchRowPropsInterface> = ({
     branch,
     index,
     stepId,
-    target,
-    incomplete,
+    issues,
     onOpen
 }: BranchRowPropsInterface): ReactElement => {
     const handleRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
@@ -133,6 +260,13 @@ const BranchRow: FunctionComponent<BranchRowPropsInterface> = ({
             <Box
                 className={ isDefault ? "rule-decision-row rule-decision-row-default" : "rule-decision-row" }
                 data-componentid={ componentId }
+                onClick={ (event: React.MouseEvent<HTMLDivElement>) => {
+                    // The whole row opens the branch, except its drag handle, which only reorders it.
+                    if (handleRef.current?.contains(event.target as HTMLElement)) {
+                        return;
+                    }
+                    onOpen();
+                } }
             >
                 <Stack direction="row" alignItems="center" spacing={ 1 }>
                     { !isDefault && (
@@ -151,26 +285,24 @@ const BranchRow: FunctionComponent<BranchRowPropsInterface> = ({
                     >
                         { branch.name || "Untitled branch" }
                     </Typography>
-                    <Tooltip title={ isDefault ? "Edit branch" : "Edit conditions" }>
+                    { /* The row only flags the issues; what they are and how to fix them is in the popover. */ }
+                    { issues.length > 0 && (
+                        <BranchIssues issues={ issues } data-componentid={ `${componentId}-issues` } />
+                    ) }
+                    <Tooltip title={ isDefault ? "Edit branch" : "Edit rules" }>
                         <IconButton
                             size="small"
-                            onClick={ onOpen }
+                            onClick={ (event: React.MouseEvent<HTMLButtonElement>) => {
+                                // Opens the branch itself, so the row does not open it a second time.
+                                event.stopPropagation();
+                                onOpen();
+                            } }
                             data-componentid={ `${componentId}-open` }
                         >
                             <ChevronRightIcon size={ 14 } />
                         </IconButton>
                     </Tooltip>
                 </Stack>
-                { target }
-                { incomplete && (
-                    <Typography
-                        variant="caption"
-                        className="rule-decision-branch-target rule-decision-branch-target-empty"
-                        data-componentid={ `${componentId}-incomplete` }
-                    >
-                        Incomplete condition: each one needs a field, an operator and a value
-                    </Typography>
-                ) }
             </Box>
         </Box>
     );
@@ -228,10 +360,10 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
 
     useEffect(() => {
         // The property panel is permanent and only hidden, so it is never unmounted between one step
-        // and the next. Without this, selecting a second decision would open it on whichever branch
-        // was left open on the first.
+        // and the next. Every selection, the same decision's gear included, hands the panel a new
+        // resource and puts the step's own heading back, so the branch list is shown to match it.
         setOpenBranchId(null);
-    }, [ stepId ]);
+    }, [ resource ]);
 
     const openBranch: Branch = branches.find((branch: Branch) => branch.id === openBranchId);
 
@@ -334,21 +466,30 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
     };
 
     /**
-     * Renders the warning for a branch that leads nowhere, and nothing for one that does.
+     * Lists what keeps a branch from being published.
      *
-     * @param branchId - The branch to describe.
-     * @returns The warning, or null.
+     * @param branch - The branch to check.
+     * @returns The issues, empty when there are none.
      */
-    const renderTarget = (branchId: string): ReactElement => {
-        if (isConnected(branchId)) {
-            return null;
+    const getBranchIssues = (branch: Branch): BranchIssueInterface[] => {
+        const issues: BranchIssueInterface[] = [];
+
+        if (!isConnected(branch.id)) {
+            issues.push({
+                description: "Connect this branch from its port on the canvas.",
+                title: "Not connected"
+            });
         }
 
-        return (
-            <Typography variant="caption" className="rule-decision-branch-target-empty">
-                Not connected — drag from this branch's port on the canvas
-            </Typography>
-        );
+        // The default has no conditions, so only a branch with a rule can have an incomplete one.
+        if (branch.rule && !isRuleComplete(branch.rule, ruleMetadata?.ruleMetaData)) {
+            issues.push({
+                description: "Add a field, operator, and value.",
+                title: "Incomplete condition"
+            });
+        }
+
+        return issues;
     };
 
     const conditionalBranches: Branch[] = branches.filter((branch: Branch) => branch.rule);
@@ -388,7 +529,7 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
                     <RulesComponent
                         // The editor takes its data once, so it is remounted for each branch opened.
                         key={ openBranch.id }
-                        initialData={ toEditorRule(openBranch.rule) }
+                        initialData={ toEditorRule(openBranch.rule, ruleMetadata?.ruleMetaData) }
                         conditionExpressionsMetaData={ ruleMetaData }
                         isMultipleRules={ false }
                         limits={ {
@@ -399,7 +540,7 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
                         } }
                         executeText="Navigate"
                         onChange={ (editorRule: RuleWithoutIdInterface) =>
-                            handleRuleChange(openBranch.id, fromEditorRule(editorRule)) }
+                            handleRuleChange(openBranch.id, fromEditorRule(editorRule, ruleMetadata?.ruleMetaData)) }
                         data-componentid={ `${componentId}-detail-branch` }
                     />
                 ) : (
@@ -407,7 +548,6 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
                         Conditions cannot be edited: this flow published no branch metadata.
                     </Typography>
                 ) }
-                { renderTarget(openBranch.id) }
                 { !isDefaultOpen && (
                     <Box display="flex" justifyContent="flex-end">
                         <Tooltip title="Delete branch">
@@ -447,34 +587,33 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
                     branch={ branch }
                     index={ index }
                     stepId={ stepId }
-                    target={ renderTarget(branch.id) }
-                    incomplete={ !isRuleComplete(branch.rule, ruleMetadata?.ruleMetaData) }
+                    issues={ getBranchIssues(branch) }
                     onOpen={ () => setOpenBranchId(branch.id) }
                     data-componentid={ `${componentId}-branch-${branch.id}` }
                 />
             )) }
+            { /* Sits above the default, where the branch it adds goes: a new condition comes before the fallback. */ }
+            <Button
+                size="small"
+                variant="text"
+                className="rule-decision-add-branch"
+                startIcon={ <PlusIcon size={ 12 } /> }
+                onClick={ handleAddBranch }
+                data-componentid={ `${componentId}-add-branch` }
+            >
+                Add another branch
+            </Button>
             { defaultBranch && (
                 <BranchRow
                     key={ defaultBranch.id }
                     branch={ defaultBranch }
                     index={ null }
                     stepId={ stepId }
-                    target={ renderTarget(defaultBranch.id) }
+                    issues={ getBranchIssues(defaultBranch) }
                     onOpen={ () => setOpenBranchId(defaultBranch.id) }
                     data-componentid={ `${componentId}-branch-${defaultBranch.id}` }
                 />
             ) }
-            <Box>
-                <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={ <PlusIcon size={ 14 } /> }
-                    onClick={ handleAddBranch }
-                    data-componentid={ `${componentId}-add-branch` }
-                >
-                    New branch
-                </Button>
-            </Box>
         </Stack>
     );
 };

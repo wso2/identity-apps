@@ -30,6 +30,14 @@
         border: 1px solid var(--oxygen-palette-divider);
         border-radius: var(--oxygen-shape-borderRadius);
         padding: 10px 12px;
+        cursor: pointer;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+
+        /* The whole row opens the branch, so it reads as one control when pointed at. */
+        &:hover {
+            border-color: var(--oxygen-palette-text-secondary);
+            background-color: var(--oxygen-palette-action-hover);
+        }
 
         /* The handle is the only grab target, so the row itself stays clickable. */
         .dnd-action {
@@ -49,14 +57,10 @@
             font-style: italic;
         }
 
-        .rule-decision-branch-target {
-            display: block;
-            margin-top: 6px;
-            color: var(--oxygen-palette-text-secondary);
-        }
-
-        .rule-decision-branch-target-empty {
-            color: var(--oxygen-palette-error-main);
+        /* The icon the notification panel lists errors under, so an error reads the same in both places. */
+        .rule-decision-row-issues {
+            flex: 0 0 auto;
+            padding: 3px;
         }
     }
 
@@ -65,9 +69,22 @@
         border-style: dashed;
     }
 
-    .rule-decision-branch-target {
-        display: block;
-        color: var(--oxygen-palette-text-secondary);
+    /*
+     * Adding a branch is a step in the chain rather than a card of its own, so it is a small text action
+     * drawn into the gaps on either side, keeping it with the branches it sits between.
+     */
+    .rule-decision-add-branch {
+        align-self: flex-start;
+        min-height: 0;
+        margin: -8px 0;
+        padding: 2px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: none;
+
+        .MuiButton-startIcon {
+            margin-right: 4px;
+        }
     }
 
     .rule-decision-branch-target-empty {
@@ -176,6 +193,80 @@
             .MuiAutocomplete-root {
                 width: 100%;
             }
+        }
+    }
+}
+
+/*
+ * The errors of a branch, opened from its indicator. The popover is placed on the page rather than in the
+ * panel, so that the panel's edges do not clip it, and it is raised above the panel for the same reason.
+ */
+.rule-decision-issues-popper {
+    z-index: 1300;
+    max-width: 280px;
+
+    .rule-decision-issues {
+        padding: 12px 14px;
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        background-color: var(--oxygen-palette-background-paper);
+        box-shadow: var(--oxygen-shadows-4);
+
+        /* Only the icon is red: the popover explains what to fix, and need not alarm while doing it. */
+        .lucide-circle-x {
+            flex: 0 0 auto;
+        }
+    }
+
+    .rule-decision-issues-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .rule-decision-issue-title {
+        font-weight: 600;
+    }
+
+    .rule-decision-issue-description {
+        display: block;
+        color: var(--oxygen-palette-text-secondary);
+    }
+
+    /* A square turned on its corner, of which only the two outer edges are drawn, points at the indicator. */
+    .rule-decision-issues-arrow {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--oxygen-palette-divider);
+            background-color: var(--oxygen-palette-background-paper);
+            transform: rotate(45deg);
+        }
+    }
+
+    &[data-popper-placement^="top"] .rule-decision-issues-arrow {
+        bottom: -5px;
+
+        &::before {
+            border-top-color: transparent;
+            border-left-color: transparent;
+        }
+    }
+
+    &[data-popper-placement^="bottom"] .rule-decision-issues-arrow {
+        top: -5px;
+
+        &::before {
+            border-right-color: transparent;
+            border-bottom-color: transparent;
         }
     }
 }

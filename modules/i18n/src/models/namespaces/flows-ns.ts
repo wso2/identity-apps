@@ -341,6 +341,11 @@ export interface flowsNS {
                 federatedAuthenticationNotSupported: string;
                 missingOrganizationName: string;
             };
+            ruleEvaluation: {
+                incompleteRules: string;
+                noConditionalBranch: string;
+                unconnectedBranches: string;
+            };
             userResolveExecutorFields: {
                 message: string;
                 messageWithUserIdentifier: string;

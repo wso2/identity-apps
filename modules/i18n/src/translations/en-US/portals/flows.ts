@@ -346,6 +346,13 @@ export const flows: flowsNS = {
                     + "Name, which is required to create an organization. Add an Organization Name field, "
                     + "or these values will be discarded at runtime."
             },
+            ruleEvaluation: {
+                incompleteRules: "Complete the rules of the decision branches: {{branches}}. Each condition needs a "
+                    + "field, an operator and a value.",
+                noConditionalBranch: "Add at least one branch with a rule to the decision. A decision with only the "
+                    + "default branch has nothing to decide.",
+                unconnectedBranches: "Connect the decision branches to the step they lead to: {{branches}}."
+            },
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."

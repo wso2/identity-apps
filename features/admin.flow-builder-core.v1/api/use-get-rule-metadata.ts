@@ -46,14 +46,8 @@ const useGetRuleMetadata = <Data = RuleMetadataInterface, Error = RequestErrorIn
         url: `${store.getState().config.endpoints.flowRuleMeta}?flowType=${flowType}`
     };
 
-    // Fetched once per flow type: the fields and limits do not change while a flow is being built, so a decision
-    // step added later, or a panel mounted again, reads the cached response.
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null,
-        {
-            revalidateIfStale: false,
-            revalidateOnReconnect: false
-        }
+        shouldFetch ? requestConfig : null
     );
 
     return {
