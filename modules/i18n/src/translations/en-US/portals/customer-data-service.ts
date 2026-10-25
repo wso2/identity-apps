@@ -58,7 +58,7 @@ export const customerDataService: CustomerDataServiceNS = {
         configuration: {
             organizationSettings: {
                 description: "Select the organizations that can use Customer Data Service",
-                title: "Organization Settings"
+                title: "Organization Access Settings"
             },
             profileAttributes: {
                 description: "Manage the attributes that make up the customer profiles",
@@ -106,18 +106,18 @@ export const customerDataService: CustomerDataServiceNS = {
                 message: "You are about to allow all organizations to use Customer Data Service."
             },
             modeChange: {
-                content: "Customer Data Service removes the current access policy and creates a new one. For a moment, no other organization can use Customer Data Service.",
+                content: "Customer Data Service replaces the current organization access with the new one.",
                 header: "Change the organization access?",
                 message: "You are about to change between all organizations and selected organizations."
             }
         },
         description: "Select the organizations that can use Customer Data Service. This organization always uses it.",
-        heading: "Organization access",
+        heading: "Organization Access",
         includeChildOrganizations: "Allow its existing and future child organizations",
-        notSynced: "Sync the organizations first. Customer Data Service needs the organizations of the identity provider before you select the organizations that can use it.",
+        notSynced: "Sync the organizations first. Customer Data Service needs to sync organizations before you select the organizations that can use it.",
         notifications: {
             error: {
-                description: "Could not save the organization access.",
+                description: "Failed to save the organization access.",
                 message: "Organization access error"
             },
             noOrganizationsSelected: {
@@ -125,7 +125,7 @@ export const customerDataService: CustomerDataServiceNS = {
                 message: "No organizations selected"
             },
             success: {
-                description: "The organizations that can use Customer Data Service are saved.",
+                description: "The organization access has been saved successfully.",
                 message: "Organization access saved"
             }
         },
@@ -144,7 +144,7 @@ export const customerDataService: CustomerDataServiceNS = {
         notifications: {
             fetch: {
                 error: {
-                    description: "Could not get the organizations.",
+                    description: "Failed to load the organizations.",
                     message: "Something went wrong"
                 }
             }
@@ -152,23 +152,23 @@ export const customerDataService: CustomerDataServiceNS = {
         settingsFor: "Settings for"
     },
     organizationSettings: {
-        childOrganization: "This organization gets Customer Data Service from the root organization. Only the root organization can enable or disable it.",
+        childOrganization: "This organization gets the access to Customer Data Service from the root organization. Only the root organization can enable or disable it.",
         disabled: "Enable Customer Data Service on the Customer Data page. Then select the organizations that can use it.",
         page: {
             description: "Select the organizations that can use Customer Data Service",
-            title: "Organization Settings"
+            title: "Organization Access Settings"
         }
     },
     organizationSync: {
         failed: "The organization sync failed at {{time}}: {{error}}",
         notifications: {
             error: {
-                description: "Could not start the organization sync.",
+                description: "Failed to start the organization sync.",
                 message: "Organization sync error"
             }
         },
         sync: "Sync organizations",
-        syncing: "The sync started at {{time}}. Wait until it completes. This page updates every 3 seconds."
+        syncing: "The sync started at {{time}}. Wait until it completes."
     },
     organizations: {
         toggleHint: "Only the root organization can change this setting."
@@ -218,7 +218,7 @@ export const customerDataService: CustomerDataServiceNS = {
                         applicationIdentifier: {
                             childOrganizationHint: "Shows the applications of this organization and the applications that a parent organization shares with it.",
                             label: "Application",
-                            loadError: "Could not load the applications.",
+                            loadError: "Failed to load the applications.",
                             loading: "Loading applications…",
                             noOptions: "No applications found.",
                             placeholder: "Select an application",
@@ -741,11 +741,11 @@ export const customerDataService: CustomerDataServiceNS = {
         includeChildOrganizations: "Share with its existing and future child organizations",
         inherited: "Inherited",
         inheritedFrom: "Inherited from {{org}}",
-        inheritedNotice: "This organization inherits this attribute from {{org}}. The identity provider controls it.",
-        notShareable: "In this version, you can share only traits and application data attributes that are not complex and are not sub-attributes.",
+        inheritedNotice: "This organization inherits this attribute from {{org}}.",
+        notShareable: "You can share only traits and application data attributes that are not complex and are not sub-attributes.",
         notifications: {
             error: {
-                description: "Could not save the share settings.",
+                description: "Failed to save the share settings.",
                 message: "Share error"
             },
             noOrganizationsSelected: {
@@ -757,7 +757,7 @@ export const customerDataService: CustomerDataServiceNS = {
                 message: "Share stopped"
             },
             success: {
-                description: "The share settings of the {{resource}} are saved.",
+                description: "The share settings of the {{resource}} have been saved successfully.",
                 message: "Share settings saved"
             }
         },
@@ -776,7 +776,6 @@ export const customerDataService: CustomerDataServiceNS = {
         sharedBy: "Shared by {{org}}",
         sharedNotice: {
             attribute: "The organization {{org}} owns this attribute and shares it with this organization. You cannot change or delete it here.",
-            rule: "Rules that other organizations share run first, in the order of their owner. You cannot change them here.",
             ruleOwner: "The organization {{org}} owns this rule and shares it with this organization. You cannot change or delete it here."
         },
         tab: "Sharing"

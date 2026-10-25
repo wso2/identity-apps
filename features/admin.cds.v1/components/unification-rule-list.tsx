@@ -38,7 +38,7 @@ import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useMe
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
-import { Header, Icon, Label, Message } from "semantic-ui-react";
+import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
@@ -114,7 +114,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         () => [ ...filteredRules.filter(isSharedRule), ...ownedRules ],
         [ filteredRules, ownedRules ]
     );
-    const hasSharedRules: boolean = sortedRules.some(isSharedRule);
 
     const [ deletingRule, setDeletingRule ] = useState<UnificationRuleModel | null>(null);
     const [ togglingRule, setTogglingRule ] = useState<UnificationRuleModel | null>(null);
@@ -542,12 +541,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
 
     return (
         <>
-            { hasSharedRules && (
-                <Message info size="small" data-componentid="unification-rules-shared-notice">
-                    <Icon name="share alternate" />
-                    { t("customerDataService:sharing.sharedNotice.rule") }
-                </Message>
-            ) }
             <DataTable<UnificationRuleModel>
                 isLoading={ isLoading }
                 columns={ columns }

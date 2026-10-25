@@ -715,7 +715,6 @@ export interface CustomerDataServiceNS {
         sharedBy: string;
         sharedNotice: {
             attribute: string;
-            rule: string;
             ruleOwner: string;
         };
         tab: string;
