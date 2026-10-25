@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.49.4
+
+### Patch Changes
+
+- [#10784](https://github.com/wso2/identity-apps/pull/10784) [`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add decision steps to the flow builder, which route a flow to one of its branches by rules on the flow's data
+
 ## 2.49.3
 
 ### Patch Changes
