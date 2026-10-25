@@ -1045,7 +1045,6 @@ export const customerDataService: CustomerDataServiceNS = {
                     subheader: "The rule stops taking part in profile unification. You cannot undo this action."
                 }
             },
-            defaultRuleNotice: "This is the default rule on the user ID. You cannot change or delete it.",
             fields: {
                 attribute: {
                     hint: "The attribute of a rule cannot change. To use another attribute, create a new rule.",

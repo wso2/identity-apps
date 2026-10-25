@@ -22,7 +22,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { PageLayout } from "@wso2is/react-components";
+import { ContentLoader, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -50,7 +50,7 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
 
     const hasOrganizationUpdateScope: boolean = useRequiredScopes([ OrganizationManagementScopes.ORGANIZATION_UPDATE ]);
 
-    const { data: cdsConfig } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
+    const { data: cdsConfig, isLoading: isConfigLoading } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 
     const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
 
@@ -69,6 +69,7 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
     const syncStatusData: TreeSyncStatus = syncStatus as TreeSyncStatus;
     // A new key after each completed sync loads the access again.
     const syncKey: string = syncStatusData?.last_synced_at ?? "not-synced";
+    const isPageLoading: boolean = isConfigLoading || (isRootWithCDS && isSyncLoading);
 
     return (
         <PageLayout
@@ -81,7 +82,8 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
             } }
             data-componentid={ `${ componentId }-layout` }
         >
-            { isRootWithCDS && !isSyncLoading && (
+            { isPageLoading && <ContentLoader inline="centered" active /> }
+            { isRootWithCDS && !isPageLoading && (
                 <OrganizationAccess
                     key={ `access-${ syncKey }` }
                     canUpdate={ hasOrganizationUpdateScope }
@@ -95,7 +97,7 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
                     { t("customerDataService:organizationSettings.childOrganization") }
                 </Alert>
             ) }
-            { !isSubOrganization && !isCDSEnabled && (
+            { !isSubOrganization && !isCDSEnabled && !isPageLoading && (
                 <Alert severity="info" data-componentid={ `${ componentId }-disabled` }>
                     { t("customerDataService:organizationSettings.disabled") }
                 </Alert>

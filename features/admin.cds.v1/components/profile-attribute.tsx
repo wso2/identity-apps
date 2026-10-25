@@ -883,7 +883,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             canShareScope,
             isShareable,
             isSubOrganization,
-            isOrganizationManagementEnabled
+            isOrganizationManagementEnabled,
+            t
         ]
     );
 

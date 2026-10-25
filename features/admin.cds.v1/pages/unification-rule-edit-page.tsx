@@ -51,9 +51,6 @@ import { getPropertyScope } from "../utils/profile-attribute-utils";
 
 const FORM_ID: string = "unification-rule-edit-form";
 
-// The rule on this attribute is the default rule. CDS does not let it change.
-const DEFAULT_RULE_PROPERTY: string = "user_id";
-
 interface RouteParams {
     id: string;
 }
@@ -87,8 +84,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
     // Organization management: a rule that an ancestor organization shares is read-only here.
     const isShared: boolean = rule?.origin === "SHARED";
     const isSubOrganization: boolean = useIsSubOrganization();
-    const isDefaultRule: boolean = rule?.property_name === DEFAULT_RULE_PROPERTY;
-    const isReadOnly: boolean = isShared || isSubOrganization || isDefaultRule;
+    const isReadOnly: boolean = isShared || isSubOrganization;
     // Organization management: the owner organization shares the rule with its child organizations.
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
     const canShare: boolean = Boolean(rule) && !isShared && !isSubOrganization && isOrganizationManagementEnabled;
@@ -167,8 +163,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
         }
     };
 
-    const renderNotice = (content: string, icon: "share alternate" | "info circle", noticeId: string)
-        : ReactElement => (
+    const renderNotice = (content: string, noticeId: string): ReactElement => (
         <Grid.Row columns={ 1 }>
             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                 <Message
@@ -177,7 +172,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
                     info
                     data-componentid={ `${componentId}-${noticeId}` }
                 >
-                    <Icon name={ icon } />
+                    <Icon name="share alternate" />
                     <Message.Content className="tiny">{ content }</Message.Content>
                 </Message>
             </Grid.Column>
@@ -204,13 +199,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
                             { isShared && renderNotice(
                                 t("customerDataService:sharing.sharedNotice.ruleOwner",
                                     { org: rule.owner_org_handle }),
-                                "share alternate",
                                 "shared-notice"
-                            ) }
-                            { isDefaultRule && renderNotice(
-                                t("customerDataService:unificationRules.edit.defaultRuleNotice"),
-                                "info circle",
-                                "default-rule-notice"
                             ) }
 
                             <Grid.Row columns={ 1 }>
@@ -399,7 +388,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
                 { modalAlertComponent }
                 <ResourceTab
                     panes={ panes }
-                    activeIndex={ activeTabIndex }
+                    activeIndex={ Math.min(activeTabIndex, panes.length - 1) }
                     onTabChange={ handleTabChange }
                 />
             </TabPageLayout>

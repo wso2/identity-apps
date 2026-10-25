@@ -221,6 +221,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
             await mutatePolicies();
             onUpdate?.();
         } catch (error) {
+            mutatePolicies();
             const data: { code?: string; description?: string; message?: string } =
                 (error as AxiosError<{ code?: string; description?: string; message?: string }>)?.response?.data;
             const detail: string = data?.description

@@ -960,7 +960,6 @@ export interface CustomerDataServiceNS {
                     subheader: string;
                 };
             };
-            defaultRuleNotice: string;
             fields: {
                 attribute: {
                     hint: string;

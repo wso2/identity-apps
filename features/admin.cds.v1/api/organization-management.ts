@@ -23,7 +23,6 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import type {
     OrgAccessPolicy,
-    OrgAccessPolicyList,
     SharePolicy,
     SharePolicyList,
     SharePolicyRequest,
@@ -63,7 +62,7 @@ export const getSharingPoliciesEndpoint = (resource: ShareableResource): string 
  * @param policyId - The ID of the policy.
  * @returns The URL of the policy.
  */
-export const getSharePolicyEndpoint = (resource: ShareableResource, policyId: string): string =>
+const getSharePolicyEndpoint = (resource: ShareableResource, policyId: string): string =>
     `${ getSharingPoliciesEndpoint(resource) }/${ policyId }`;
 
 /**
@@ -141,23 +140,6 @@ export const deleteSharePolicy = (resource: ShareableResource, policyId: string)
     };
 
     return httpClient(requestConfig).then(() => undefined);
-};
-
-/**
- * GET /organizations/access-policies
- * Lists the organization access policy of the root. The list has a maximum of one policy.
- *
- * @returns The policies.
- */
-export const listOrganizationAccess = (): Promise<OrgAccessPolicyList> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: JSON_HEADERS,
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsOrganizationAccess
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as OrgAccessPolicyList);
 };
 
 /**
