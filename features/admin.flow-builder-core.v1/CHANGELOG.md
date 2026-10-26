@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.13.1
+
+### Patch Changes
+
+- [#10804](https://github.com/wso2/identity-apps/pull/10804) [`4c99902b93e4e51aa3756b9c342b7a667f5327db`](https://github.com/wso2/identity-apps/commit/4c99902b93e4e51aa3756b9c342b7a667f5327db) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show the required indicator on radio group labels in the registration flow designer and signup page.
+
 ## 0.13.0
 
 ### Minor Changes
