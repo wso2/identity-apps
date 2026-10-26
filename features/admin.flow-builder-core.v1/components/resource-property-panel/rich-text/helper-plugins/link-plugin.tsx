@@ -325,6 +325,9 @@ const LinkEditor = (): ReactElement => {
      */
     useEffect(() => {
         const scrollerElem: HTMLElement = document.body;
+        const scrollListenerOptions: AddEventListenerOptions = {
+            passive: true
+        };
 
         const update = (): void => {
             editor.getEditorState().read(() => {
@@ -333,11 +336,11 @@ const LinkEditor = (): ReactElement => {
         };
 
         window.addEventListener("resize", update);
-        scrollerElem.addEventListener("scroll", update);
+        scrollerElem.addEventListener("scroll", update, scrollListenerOptions);
 
         return () => {
             window.removeEventListener("resize", update);
-            scrollerElem.removeEventListener("scroll", update);
+            scrollerElem.removeEventListener("scroll", update, scrollListenerOptions);
         };
     }, [ editor, updateLinkEditor ]);
 
