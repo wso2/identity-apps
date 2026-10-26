@@ -257,35 +257,39 @@
                 const REDIRECTION_PARAMS_KEY = "redirectionParams";
 
                 /**
-                 * Collect the inputs to resume a flow with after an external redirection: the code and state, plus any
-                 * other parameter the executor declared as required in the redirection step and that the external
-                 * service appended to the return URL.
+                 * Read the parameters the executor of the last redirection step declared as required, and return them
+                 * from the return URL as the inputs to resume the flow with. Returns null unless every declared
+                 * parameter is present, as a return without code or state is not treated as a redirection either.
+                 * The saved list is removed on read, so it applies only to the page load right after the redirection.
                  */
-                const getRedirectionInputs = () => {
-                    const inputs = { code, state };
-                    let declaredParams = [];
+                const readRedirectionInputs = () => {
+                    let declaredParams = null;
 
                     try {
-                        declaredParams = JSON.parse(localStorage.getItem(REDIRECTION_PARAMS_KEY)) || [];
+                        declaredParams = JSON.parse(localStorage.getItem(REDIRECTION_PARAMS_KEY));
                     } catch (e) {
-                        declaredParams = [];
+                        declaredParams = null;
                     }
                     localStorage.removeItem(REDIRECTION_PARAMS_KEY);
 
-                    if (!Array.isArray(declaredParams)) {
-                        return inputs;
+                    if (!Array.isArray(declaredParams) || declaredParams.length === 0) {
+                        return null;
                     }
 
                     const queryParams = new URLSearchParams(window.location.search);
+                    const inputs = {};
 
-                    declaredParams.forEach((param) => {
-                        if (typeof param === "string" && !(param in inputs) && queryParams.has(param)) {
-                            inputs[param] = queryParams.get(param);
+                    for (const param of declaredParams) {
+                        if (typeof param !== "string" || !queryParams.get(param)) {
+                            return null;
                         }
-                    });
+                        inputs[param] = queryParams.get(param);
+                    }
 
                     return inputs;
                 };
+
+                const [ redirectionInputs ] = useState(readRedirectionInputs);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -294,7 +298,10 @@
                         setPostBody({
                             flowId: savedFlowId,
                             actionId: "",
-                            inputs: getRedirectionInputs()
+                            inputs: {
+                                code,
+                                state
+                            }
                         });
 
                         return;
@@ -311,7 +318,16 @@
                             }
                         });
                     }
-                }, [code, state, authError]);
+
+                    // Return from a redirection whose executor declared its own required params instead of code and state.
+                    if (code === "null" && authError === "null" && redirectionInputs) {
+                        setPostBody({
+                            flowId: savedFlowId,
+                            actionId: "",
+                            inputs: redirectionInputs
+                        });
+                    }
+                }, [code, state, authError, redirectionInputs]);
 
                 useEffect(() => {
                     if (mlt !== "null" && flowId !== "null") {
@@ -339,9 +355,9 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
+                    if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);
@@ -725,9 +741,11 @@
                                 setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId, sessionTtlMs: (ttlMs >= 30000 && ttlMs <= 180000 ? ttlMs : 0) });
                                 setLoading(false);
                             } else {
-                                // Remember what the executor expects back, so it can be forwarded when the flow resumes.
-                                localStorage.setItem(REDIRECTION_PARAMS_KEY,
-                                    JSON.stringify(flow.data.requiredParams || []));
+                                // Remember what the executor expects back, so the flow can resume with it on return.
+                                if (Array.isArray(flow.data.requiredParams) && flow.data.requiredParams.length > 0) {
+                                    localStorage.setItem(REDIRECTION_PARAMS_KEY,
+                                        JSON.stringify(flow.data.requiredParams));
+                                }
                                 setLoading(true);
                                 window.location.href = redirectURL;
                             }
