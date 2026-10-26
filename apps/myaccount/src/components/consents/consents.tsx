@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import flatten from "lodash-es/flatten";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
@@ -70,7 +70,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const { onAlertFired, ["data-testid"]: testId } = props;
 
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
-    const [ purposeDetailModels, setPurposeDetailModels ] = useState<PurposeModel[]>([]);
+    // Cache of purpose models, only read/written inside handlers, so a ref avoids unnecessary re-renders.
+    const purposeDetailModelsRef: MutableRefObject<PurposeModel[]> = useRef<PurposeModel[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
@@ -152,7 +153,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const response: PurposeModel[] = await fetchPurposesByIDs(purposesIds);
 
         // Set response value to the hook
-        setPurposeDetailModels(response);
+        purposeDetailModelsRef.current = response;
     };
 
     /**
@@ -211,7 +212,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const attachResidentIDPReceiptMissingPurposes = async (receipt: ConsentReceiptInterface): Promise<void> => {
 
         // Filter out the non-default purposes from the cached {@link purposeModels}
-        const allPurposeModelsExceptDefault: PurposeModel[] = purposeDetailModels.filter(
+        const allPurposeModelsExceptDefault: PurposeModel[] = purposeDetailModelsRef.current.filter(
             ({ purpose }: {
                 purpose: string
             }) => purpose !== ConsentConstants.DEFAULT_CONSENT
@@ -283,7 +284,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             });
         });
 
-        const allPurposesExceptDefault: PurposeModel[] = purposeDetailModels.filter(
+        const allPurposesExceptDefault: PurposeModel[] = purposeDetailModelsRef.current.filter(
             ({ purpose }: {
                 purpose: string
             }) => purpose !== ConsentConstants.DEFAULT_CONSENT
@@ -412,7 +413,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 await attachResidentIDPReceiptMissingPurposes(receipt);
                 await attachResidentIDPReceiptPurposes(receipt);
             } else {
-                const defaultPurpose: PurposeModel = purposeDetailModels.find(
+                const defaultPurpose: PurposeModel = purposeDetailModelsRef.current.find(
                     ({ purpose }: { purpose: string }) => purpose === ConsentConstants.DEFAULT_CONSENT
                 );
 
