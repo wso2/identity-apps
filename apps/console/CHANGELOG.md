@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.22.1
+
+### Patch Changes
+
+- [#10779](https://github.com/wso2/identity-apps/pull/10779) [`8c82133e03c71712d82f5bf7e30490009834f5bb`](https://github.com/wso2/identity-apps/commit/8c82133e03c71712d82f5bf7e30490009834f5bb) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Show the ELK Analytics configuration for the Rule-Based adaptive authentication template
+
+- Updated dependencies [[`8c82133e03c71712d82f5bf7e30490009834f5bb`](https://github.com/wso2/identity-apps/commit/8c82133e03c71712d82f5bf7e30490009834f5bb)]:
+  - @wso2is/admin.applications.v1@2.44.6
+  - @wso2is/i18n@2.50.1
+
 ## 4.22.0
 
 ### Minor Changes
