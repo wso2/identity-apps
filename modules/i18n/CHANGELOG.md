@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.50.0
+
+### Minor Changes
+
+- [#10795](https://github.com/wso2/identity-apps/pull/10795) [`b922925433ac6a902c49f6aa65f32622ae9d8622`](https://github.com/wso2/identity-apps/commit/b922925433ac6a902c49f6aa65f32622ae9d8622) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Show changes proposed by the Ask AI copilot as confirm cards. Nothing is changed until the user confirms; the card then shows whether the action was executed and links to the created resource.
+
 ## 2.49.4
 
 ### Patch Changes
