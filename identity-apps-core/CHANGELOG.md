@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.6.4
+
+### Patch Changes
+
+- [#10792](https://github.com/wso2/identity-apps/pull/10792) [`05db050336fb115ddf7497c425e71b4a6b370ec3`](https://github.com/wso2/identity-apps/commit/05db050336fb115ddf7497c425e71b4a6b370ec3) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add i18n strings for Incode identity verification errors to the accounts and authentication portals
+
 ## 5.6.3
 
 ### Patch Changes
