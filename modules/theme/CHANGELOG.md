@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.11.2
+
+### Patch Changes
+
+- [#10802](https://github.com/wso2/identity-apps/pull/10802) [`9e0935e4d069d8eeb9a34e3a02f82d97060e05da`](https://github.com/wso2/identity-apps/commit/9e0935e4d069d8eeb9a34e3a02f82d97060e05da) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Align organization handle validation rules with password validation styling in self-registration, including muted text, grey indicators, consistent spacing, and aligned wrapped text.
+
 ## 2.11.1
 
 ### Patch Changes
