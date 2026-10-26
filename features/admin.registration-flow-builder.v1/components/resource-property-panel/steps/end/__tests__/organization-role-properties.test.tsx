@@ -104,6 +104,16 @@ describe("OrganizationRoleProperties", () => {
         getSharedOrganizationsMock.mockResolvedValue({ data: sharing });
     });
 
+    it("shows the default role as a non-removable chip even without selected roles", () => {
+        renderRolePicker();
+
+        const chip: HTMLElement = screen.getByTestId(`${componentId}-default-role`);
+
+        expect(chip).toBeVisible();
+        expect(chip.querySelector(".MuiChip-deleteIcon")).not.toBeInTheDocument();
+        expect(onChange).not.toHaveBeenCalled();
+    });
+
     it("opens the role list above the input and outside the properties panel", async () => {
         const { container } = renderRolePicker();
 
@@ -139,10 +149,10 @@ describe("OrganizationRoleProperties", () => {
         fireEvent.mouseDown(getInput());
         await screen.findByRole("option", { name: /Auditor/ });
 
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
 
         fireEvent.change(getInput(), { target: { value: "Auditor" } });
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
         expect(screen.queryByRole("option", { name: /Manager/ })).not.toBeInTheDocument();
         fireEvent.click(screen.getByRole("option", { name: /Auditor/ }));
 
@@ -150,8 +160,8 @@ describe("OrganizationRoleProperties", () => {
         rerender(<OrganizationRoleProperties
             selectedRoleIds={ [ manager.id, auditor.id ] } onChange={ onChange }
         />);
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
-        expect(screen.getByText("Auditor (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
+        expect(screen.getByText("Auditor · Organization")).toBeInTheDocument();
         expect(getInput()).toHaveValue("");
     });
 
@@ -230,7 +240,7 @@ describe("OrganizationRoleProperties", () => {
         });
         rerender(<OrganizationRoleProperties selectedRoleIds={ [ manager.id ] } onChange={ onChange } />);
 
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
         expect(onChange).not.toHaveBeenCalled();
     });
 
@@ -246,8 +256,8 @@ describe("OrganizationRoleProperties", () => {
         expect(screen.queryByRole("option", { name: /Manager/ })).not.toBeInTheDocument();
         rerender(<OrganizationRoleProperties selectedRoleIds={ [ manager.id ] } onChange={ onChange } />);
 
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
-        expect(screen.getByText("flows:registrationFlow.steps.end.organizationRoles.unavailableManager (Organization)"))
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
+        expect(screen.getByText("flows:registrationFlow.steps.end.organizationRoles.unavailableManager · Organization"))
             .toBeInTheDocument();
         expect(onChange).not.toHaveBeenCalled();
         fireEvent.click(screen.getByRole("option", { name: /Manager/ }));
@@ -284,7 +294,7 @@ describe("OrganizationRoleProperties", () => {
 
         await screen.findByText("flows:registrationFlow.steps.end.organizationRoles.fetchError");
 
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
         expect(screen.queryByText("flows:registrationFlow.steps.end.organizationRoles.unavailable"))
             .not.toBeInTheDocument();
         expect(onChange).not.toHaveBeenCalled();

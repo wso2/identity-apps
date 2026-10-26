@@ -270,7 +270,7 @@ export const flows: flowsNS = {
         },
         steps: {
             end: {
-                flowCompletionProperties: "Flow Completion Properties"
+                flowCompletionProperties: "Flow completion properties"
             }
         },
         tooltips: {
@@ -445,9 +445,11 @@ export const flows: flowsNS = {
         steps: {
             emailConfirmation: "Email Confirmation",
             end: {
+                account: "Account",
                 accountActivation: {
                     activateImmediately: {
-                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification.",
+                        hint: "Automatically activate the user account upon creation, allowing immediate access "
+                            + "without waiting for verification.",
                         label: "Activate the account on creation"
                     }
                 },
@@ -458,28 +460,40 @@ export const flows: flowsNS = {
                 accountVerification: {
                     hint: "Require the user to confirm their account via email before granting access.",
                     label: "Verify the account on flow completion.",
-                    warning: "When the flow includes an email verification step (e.g. email OTP), this option will not be applied."
+                    warning: "When the flow includes an email verification step (e.g. email OTP), "
+                        + "this option will not be applied."
                 },
                 autoLogin: {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you "
+                    + "to control the user's final experience by selecting one of the following outcomes:",
+                organization: {
+                    hint: "Applies when this flow includes a step that creates an organization.",
+                    label: "Organization"
+                },
                 organizationRoles: {
+                    defaultRole: "{{role}} · Default",
                     fetchError: "Could not load roles or sharing settings. Your saved selections have been kept.",
-                    hint: "Assign these roles to the user in the new organization using existing sharing settings. "
-                        + "Unavailable roles are skipped without interrupting registration. "
-                        + "The default selfsignup role is kept.",
-                    label: "Roles in the new organization (optional)",
+                    hint: "Assign these roles to the user in the new organization. Only roles shared with all "
+                        + "existing and future organizations are available.",
+                    label: "Assign roles in the new organization (optional)",
                     noPermission: "You need permission to read roles to configure this selection.",
                     placeholder: "Search shared roles",
                     unavailable: "These configured roles are no longer shared with new organizations: {{roles}}. "
                         + "They will not be assigned. Remove them from this flow or update the sharing settings."
                 },
                 provisionTarget: {
-                    hint: "Create the user inside the organization this flow creates, instead of the "
-                        + "organization the flow is running in.",
-                    label: "Onboard the user to the new organization"
+                    currentOrganization: {
+                        hint: "The user stays in the current organization and is shared with the new organization.",
+                        label: "The organization this flow runs in"
+                    },
+                    label: "Create the user in",
+                    newOrganization: {
+                        hint: "Create the user in the organization this flow creates.",
+                        label: "The organization this flow creates"
+                    }
                 }
             }
         }
