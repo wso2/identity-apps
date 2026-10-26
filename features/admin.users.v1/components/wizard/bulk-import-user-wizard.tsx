@@ -1585,7 +1585,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             setSelectedUserStore(data.value.toString());
                         }
                     }
-                    tabIndex={ 1 }
+                    tabIndex={ 0 }
                     maxLength={ 60 }
                 />
             </Form.Field>

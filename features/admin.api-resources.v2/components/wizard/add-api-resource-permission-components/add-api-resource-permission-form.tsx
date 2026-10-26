@@ -113,7 +113,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             placeholder={ t("apiResources:tabs.scopes.form.fields." +
                                 "scope.placeholder") }
                             required={ true }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.permission.emptyValidate") }
                             validation={ async (value: string, validation: Validation) => {
@@ -170,7 +170,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
                                 "displayName.placeholder") }
                             required={ true }
-                            tabIndex={ 2 }
+                            tabIndex={ 0 }
                             requiredErrorMessage={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
                                 "displayName.emptyValidate") }
                             data-testid={ `${componentId}-displayName` }
@@ -189,7 +189,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             label={ t("apiResources:tabs.scopes.form.fields.description.label") }
                             placeholder={ t("apiResources:tabs.scopes.form.fields." +
                                 "description.placeholder") }
-                            tabIndex={ 3 }
+                            tabIndex={ 0 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>
