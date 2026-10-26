@@ -209,9 +209,9 @@ export function AgentSecretShowModal({
                             onClose();
                         }
                         }
-                        data-testid={ `${componentId}-done-button` }
+                        data-componentid={ `${componentId}-done-btn` }
                     >
-                            Done
+                            Close
                     </Button>
                 ) }
             </Modal.Actions>
