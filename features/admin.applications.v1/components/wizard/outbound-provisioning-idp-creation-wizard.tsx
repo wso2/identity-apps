@@ -95,7 +95,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 return;
             }
 
-            setCurrentWizardStep(currentWizardStep - 1);
+            setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
             setPartiallyCompletedStep(undefined);
         }, [ partiallyCompletedStep ]);
 

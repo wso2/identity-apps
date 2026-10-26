@@ -244,7 +244,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      * Moves to the previous step in the wizard
      */
     const previous = (): void => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
         setAlert(null);
     };
 

@@ -195,7 +195,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
@@ -482,7 +482,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep + 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 
