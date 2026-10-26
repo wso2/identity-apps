@@ -679,6 +679,7 @@ export interface governanceConnectorsNS {
                     friendlyName: string;
                     warningModal: {
                         configure: string;
+                        configureOptional: string;
                         reassure: string;
                     };
                     properties: {
