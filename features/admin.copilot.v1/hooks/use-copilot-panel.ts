@@ -26,6 +26,7 @@ import {
     clearCopilotChatWithApi,
     fetchCopilotHistory,
     loadMoreCopilotHistory,
+    respondToCopilotActionCard,
     sendCopilotMessage,
     setCopilotContentType,
     setCopilotPanelLoading,
@@ -113,6 +114,10 @@ interface UseCopilotPanelInterface {
      * The current status message (agent step progress), or null.
      */
     statusMessage: string | null;
+    /**
+     * Confirm or cancel a change the copilot proposed.
+     */
+    respondToAction: (messageId: string, actionId: string, decision: "confirm" | "cancel") => void;
 }
 
 /**
@@ -173,6 +178,11 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
         return dispatch(loadMoreCopilotHistory());
     }, [ dispatch ]);
 
+    const respondToAction: (messageId: string, actionId: string, decision: "confirm" | "cancel") => void =
+        useCallback((messageId: string, actionId: string, decision: "confirm" | "cancel") => {
+            dispatch(respondToCopilotActionCard(messageId, actionId, decision));
+        }, [ dispatch ]);
+
     return {
         addMessage,
         clearChat,
@@ -185,6 +195,7 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
         loadHistory,
         loadMoreHistory,
         messages: copilotState?.messages ?? [],
+        respondToAction,
         sendMessage,
         setContentType,
         setLoading,

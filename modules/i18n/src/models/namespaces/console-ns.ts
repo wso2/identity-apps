@@ -136,6 +136,26 @@ export interface ConsoleNS {
             documentation: {
                 content: string;
             };
+            actionCard: {
+                cancel: string;
+                cancelled: string;
+                confirm: string;
+                confirming: string;
+                errors: {
+                    alreadyHandled: string;
+                    default: string;
+                    expired: string;
+                };
+                expired: string;
+                expiresIn: string;
+                failed: string;
+                note: string;
+                notAvailable: string;
+                openResource: string;
+                reviewed: string;
+                succeeded: string;
+                unknown: string;
+            };
             chat: {
                 emptyChat: string;
                 inputLabel: string;
