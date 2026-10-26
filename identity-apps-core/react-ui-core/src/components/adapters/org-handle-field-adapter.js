@@ -392,7 +392,7 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
     const renderStatusIcon = (status) => {
         if (status === "pass") return <Icon name="check circle" color="green" />;
         if (status === "fail") return <Icon name="remove circle" color="red" />;
-        return <Icon name="circle" className="validation-icon" />;
+        return <Icon name="circle" inverted color="grey" />;
     };
 
     const uniqueIconName = criteriaStatus.unique === "fail"
@@ -423,11 +423,23 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
                 </Label>
             )}
             {hint && <Hint hint={hint} />}
-            <div className="org-handle-validation-criteria" style={{ marginTop: "0.5em", fontSize: "0.85em" }}>
-                <div>{renderStatusIcon(criteriaStatus.firstAlphabet)} Must start with a letter or number</div>
-                <div>{renderStatusIcon(criteriaStatus.length)} Must be {ORG_HANDLE_MIN_LENGTH}–{ORG_HANDLE_MAX_LENGTH - 1} characters</div>
-                <div>{renderStatusIcon(criteriaStatus.alphanumeric)} Only lowercase letters, numbers, hyphens, underscores, dots</div>
-                <div>{renderStatusIcon(criteriaStatus.unique)} Must be unique</div>
+            <div className="org-handle-validation-criteria validation-criteria mt-1">
+                <div className="org-handle-policy-description mb-2">
+                    {renderStatusIcon(criteriaStatus.firstAlphabet)}
+                    <p className="pl-4">Must start with a letter or number</p>
+                </div>
+                <div className="org-handle-policy-description mb-2">
+                    {renderStatusIcon(criteriaStatus.length)}
+                    <p className="pl-4">Must be {ORG_HANDLE_MIN_LENGTH}–{ORG_HANDLE_MAX_LENGTH - 1} characters</p>
+                </div>
+                <div className="org-handle-policy-description mb-2">
+                    {renderStatusIcon(criteriaStatus.alphanumeric)}
+                    <p className="pl-4">Only lowercase letters, numbers, hyphens, underscores, dots</p>
+                </div>
+                <div className="org-handle-policy-description mb-2">
+                    {renderStatusIcon(criteriaStatus.unique)}
+                    <p className="pl-4">Must be unique</p>
+                </div>
             </div>
         </>
     );
