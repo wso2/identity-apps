@@ -85,6 +85,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         state?.config?.ui?.asyncOperationStatusPollingInterval);
     const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
+    const isOrganizationCustomRolesFeatureEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isOrganizationCustomRolesFeatureEnabled);
 
     const isMyAccount: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId ||
@@ -164,14 +166,16 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
-                    isOrganizationCustomRolesEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    isOrganizationCustomRolesEnabled={
+                        isOrganizationCustomRolesFeatureEnabled && (application.organizationCustomRolesEnabled ?? false)
+                    }
                     roleAudience={ application.associatedRoles?.allowedAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
                 />
             ) }
-            { isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount &&
-                application.enhancedOrgAuthenticationEnabled && (
+            { isEnhancedOrganizationAuthenticationFeatureEnabled && isOrganizationCustomRolesFeatureEnabled &&
+                !isMyAccount && application.enhancedOrgAuthenticationEnabled && (
                 <OrganizationCustomRolesToggle
                     appId={ application.id }
                     isEnabled={ application.organizationCustomRolesEnabled ?? false }
