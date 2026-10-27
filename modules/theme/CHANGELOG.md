@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.11.3
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
 ## 2.11.2
 
 ### Patch Changes
