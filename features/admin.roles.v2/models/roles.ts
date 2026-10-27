@@ -188,9 +188,6 @@ export interface RolesV2Interface {
         systemRole?: boolean;
     };
     permissions?: string[];
-    /**
-     * Role properties. E.g. `isSharedRole` is true for roles inherited from a parent organization.
-     */
     properties?: RolePropertyInterface[];
     schemas?: string[];
 }

@@ -100,8 +100,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const { organizationType } = useGetCurrentOrganizationType();
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
-    // Shared applications exist only in sub organizations. Hence, request whether application roles can be created
-    // for them only in sub organizations.
+    // Request the custom roles flag only in sub organizations, where shared applications exist.
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
@@ -109,7 +108,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations" +
-        (isSubOrg ? ",sharedAppRoleManagementEnabled" : ""), null, null, applicationSearchQuery, true, true);
+        (isSubOrg ? ",organizationCustomRolesEnabled" : ""), null, null, applicationSearchQuery, true, true);
 
     const {
         data: rolesList,
@@ -148,10 +147,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                // Shared applications are listed only if their owner allows creating application roles for them.
+                // List shared applications only if organization custom roles are enabled.
                 if (application?.advancedConfigurations?.fragment === false
                     || (application?.advancedConfigurations?.fragment === true
-                        && application?.sharedAppRoleManagementEnabled === true)) {
+                        && application?.organizationCustomRolesEnabled === true)) {
                     options.push({
                         content: (
                             <ListItemText

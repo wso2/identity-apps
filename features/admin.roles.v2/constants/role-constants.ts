@@ -109,7 +109,7 @@ export class RoleConstants {
     public static readonly IS_SHARED_ROLE: string = "isSharedRole";
 
     /**
-     * Types of the management API resources, which are not available to roles in organizations.
+     * Management API resource types, which are not available in organizations.
      */
     public static readonly ORGANIZATION_RESTRICTED_API_RESOURCE_TYPES: string[] = [
         APIResourceCategories.TENANT,

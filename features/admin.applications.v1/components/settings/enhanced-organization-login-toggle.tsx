@@ -40,13 +40,11 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
      */
     isEnabled: boolean;
     /**
-     * Whether organizations are currently allowed to manage roles for the application. This requires
-     * enhanced organization login, hence it is disallowed together when enhanced organization login is disabled.
+     * Whether organization custom roles are enabled for the application.
      */
-    isSharedAppRoleManagementAllowed?: boolean;
+    isOrganizationCustomRolesEnabled?: boolean;
     /**
-     * Role audience of the application. With organization audience, disallowing role management for organizations
-     * does not delete their organization roles.
+     * Role audience of the application.
      */
     roleAudience?: string;
     /**
@@ -68,7 +66,7 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
 export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLoginTogglePropsInterface> = ({
     appId,
     isEnabled,
-    isSharedAppRoleManagementAllowed,
+    isOrganizationCustomRolesEnabled,
     onUpdate,
     readOnly,
     roleAudience,
@@ -82,11 +80,9 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
     const [ pendingValue, setPendingValue ] = useState<boolean>(false);
 
     const isOrganizationAudience: boolean = roleAudience?.toUpperCase() === RoleAudienceTypes.ORGANIZATION;
-    // Disabling enhanced organization login also disallows role management for organizations. With application
-    // audience, it deletes the application roles created by organizations. With organization audience, their
-    // organization roles are only no longer honoured for the application.
-    const isDisallowingRoleManagement: boolean = !pendingValue && !!isSharedAppRoleManagementAllowed;
-    const isDeletingOrganizationRoles: boolean = isDisallowingRoleManagement && !isOrganizationAudience;
+    // Disabling enhanced organization login also disables organization custom roles.
+    const isDisablingOrganizationCustomRoles: boolean = !pendingValue && !!isOrganizationCustomRolesEnabled;
+    const isDeletingOrganizationCustomRoles: boolean = isDisablingOrganizationCustomRoles && !isOrganizationAudience;
 
     const handleToggle: (_event: SyntheticEvent, data: CheckboxProps) => void = (
         _event: SyntheticEvent,
@@ -106,8 +102,8 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
 
         return updateApplicationConfigurations(appId, {
             enhancedOrgAuthenticationEnabled: newValue,
-            // Application role management for shared applications requires enhanced organization login.
-            ...(!newValue && isSharedAppRoleManagementAllowed ? { sharedAppRoleManagementEnabled: false } : {})
+            // Organization custom roles require enhanced organization login.
+            ...(!newValue && isOrganizationCustomRolesEnabled ? { organizationCustomRolesEnabled: false } : {})
         })
             .then((): void => {
                 dispatch(addAlert({
@@ -160,14 +156,13 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
             <ConfirmationModal
                 data-componentid={ `${componentId}-confirmation-modal` }
                 onClose={ (): void => setShowConfirmation(false) }
-                // With application audience, disabling while role management is allowed deletes the application
-                // roles created by organizations.
-                type={ isDeletingOrganizationRoles ? "negative" : "warning" }
+                // Deleting application custom roles needs a stronger confirmation.
+                type={ isDeletingOrganizationCustomRoles ? "negative" : "warning" }
                 open={ showConfirmation }
-                assertionHint={ isDeletingOrganizationRoles
-                    ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.assertionHint")
+                assertionHint={ isDeletingOrganizationCustomRoles
+                    ? t("applications:edit.sections.organizationCustomRoles.confirmation.assertionHint")
                     : undefined }
-                assertionType={ isDeletingOrganizationRoles ? "checkbox" : undefined }
+                assertionType={ isDeletingOrganizationCustomRoles ? "checkbox" : undefined }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onPrimaryActionClick={ (): void => {
@@ -182,11 +177,11 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning={ !isDeletingOrganizationRoles }
-                    negative={ isDeletingOrganizationRoles }
+                    warning={ !isDeletingOrganizationCustomRoles }
+                    negative={ isDeletingOrganizationCustomRoles }
                 >
-                    { isDeletingOrganizationRoles
-                        ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.disableMessage")
+                    { isDeletingOrganizationCustomRoles
+                        ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
                         : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
@@ -194,10 +189,10 @@ export const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganiza
                         { t("applications:edit.sections.enhancedOrganizationLogin" +
                             ".confirmation.content.0") }
                     </p>
-                    { isDisallowingRoleManagement && (
-                        <p data-componentid={ `${componentId}-shared-app-role-management-note` }>
+                    { isDisablingOrganizationCustomRoles && (
+                        <p data-componentid={ `${componentId}-organization-custom-roles-note` }>
                             { isOrganizationAudience
-                                ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.content" +
+                                ? t("applications:edit.sections.organizationCustomRoles.confirmation.content" +
                                     ".disableOrganizationAudience")
                                 : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.content.1") }
                         </p>

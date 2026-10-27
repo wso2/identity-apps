@@ -229,8 +229,7 @@ export class RoleManagementUtils {
     };
 
     /**
-     * Checks whether permissions of an API resource of the given type can be assigned to roles in organizations.
-     * Management API resources are not available to organizations, even when they are authorized for the application.
+     * Check whether an API resource type is available to roles in organizations.
      *
      * @param apiResourceType - Type of the API resource.
      * @returns True if the API resource is available to organizations.
