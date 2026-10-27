@@ -89,6 +89,8 @@ export const findTenantAssociation = async (
  */
 export const getTenantAssociation = (tenantDomain: string): Promise<TenantInfo | undefined> =>
     findTenantAssociation(
-        (limit: number, offset: number) => getAssociatedTenants(null, limit, offset),
+        // `undefined` rather than `null`: axios omits an undefined param but serializes a null one
+        // as an empty value, and there is no attribute selection to make here.
+        (limit: number, offset: number) => getAssociatedTenants(undefined, limit, offset),
         tenantDomain
     );

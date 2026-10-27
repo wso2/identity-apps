@@ -41,7 +41,7 @@ const EMPTY_BILLING_URLS: BillingURLsInterface = {
  * Billing links together with the tenant domain they were built for.
  */
 interface ResolvedBillingURLsInterface {
-    domain: string;
+    domain: string | undefined;
     urls: BillingURLsInterface;
 }
 
@@ -68,7 +68,7 @@ const tenantAssociationCache: Map<string, Promise<TenantInfo | undefined>> = new
  */
 const resolveTenantAssociation = (
     tenantDomain: string,
-    knownAssociation: TenantInfo
+    knownAssociation: TenantInfo | undefined
 ): Promise<TenantInfo | undefined> => {
     // An association from the store costs nothing and is authoritative, so it supersedes whatever
     // is cached — including the `undefined` an earlier failed lookup left behind.
@@ -136,7 +136,7 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
 
         let isActive: boolean = true;
 
-        const knownAssociation: TenantInfo = Array.isArray(associatedTenants)
+        const knownAssociation: TenantInfo | undefined = Array.isArray(associatedTenants)
             ? associatedTenants.find((tenant: TenantInfo) => tenant?.domain === tenantDomain)
             : undefined;
 
@@ -147,6 +147,14 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
             .then((urls: BillingURLsInterface) => {
                 if (isActive) {
                     setResolved({ domain: tenantDomain, urls });
+                }
+            })
+            .catch(() => {
+                // Nothing past the lookup is expected to throw, but a consumer rendering against a
+                // half-built config should fall back to the empty state rather than leave an
+                // unhandled rejection behind.
+                if (isActive) {
+                    setResolved(UNRESOLVED_BILLING_URLS);
                 }
             });
 

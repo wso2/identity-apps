@@ -281,22 +281,21 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             setCurrentTenant(_currentTenant);
         }
 
+        // The dropdown lists the tenants other than the current one. Derive that list rather than
+        // removing entries from `associatedTenants` in place: that array is the state itself, and
+        // it is mirrored into the store, so mutating it drops the current tenant from both.
+        const otherTenants: TenantInfo[] = Array.isArray(associatedTenants)
+            ? associatedTenants.filter((tenant: TenantInfo) => tenant !== currentTenant)
+            : associatedTenants;
+
         const association: TenantAssociationsInterface = {
-            associatedTenants: associatedTenants,
+            associatedTenants: otherTenants,
             currentTenant: currentTenant,
             defaultTenant: defaultTenant,
             username: email ?? username
         };
 
-        if (Array.isArray(association.associatedTenants)) {
-            // Remove the current tenant from the associated tenants list. Filter a copy rather
-            // than splicing in place: this array is the `associatedTenants` state itself, which is
-            // also mirrored into the store, and mutating it drops the current tenant from both.
-            const otherTenants: TenantInfo[] = association.associatedTenants.filter(
-                (tenant: TenantInfo) => tenant !== association.currentTenant
-            );
-
-            association.associatedTenants = otherTenants;
+        if (Array.isArray(otherTenants)) {
             setTempTenantAssociationsList(otherTenants);
         }
         setTenantAssociations(association);
