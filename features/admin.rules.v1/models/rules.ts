@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -125,14 +125,14 @@ export type ConditionExpressionWithoutIdInterface = Omit<ConditionExpressionInte
 /**
  * Interface to represent the rule condition data without `id`.
  */
-export type RuleConditionWithoutIdInterface = Omit<RuleConditionInterface, "id"> & {
+export type RuleConditionWithoutIdInterface = Omit<RuleConditionInterface, "id" | "expressions"> & {
     expressions: ConditionExpressionWithoutIdInterface[];
 };
 
 /**
  * Interface to represent the rule data without `id`.
  */
-export type RuleWithoutIdInterface = Omit<RuleInterface, "id"> & {
+export type RuleWithoutIdInterface = Omit<RuleInterface, "id" | "rules"> & {
     rules: RuleConditionWithoutIdInterface[];
 };
 

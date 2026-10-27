@@ -120,6 +120,9 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
     const hasConsentsReadPermission: boolean = useRequiredScopes(
         featureConfig?.consents?.scopes?.read
     );
+    const hasDevicePoliciesReadPermission: boolean = useRequiredScopes(
+        featureConfig?.devicePolicies?.scopes?.read
+    );
     const sessionManagementFeatureStatus: FeatureStatus = useCheckFeatureStatus(
         FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT"]);
 
@@ -191,6 +194,11 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
                     return false;
                 }
 
+                if (connector.id === ServerConfigurationsConstants.DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID
+                    && (!featureConfig?.devicePolicies?.enabled || !hasDevicePoliciesReadPermission)) {
+                    return false;
+                }
+
                 return true;
             });
 
@@ -203,6 +211,7 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
         UIConfig,
         allowedScopes,
         hasConsentsReadPermission,
+        hasDevicePoliciesReadPermission,
         isLegacyInvitedUserRegistrationEnabled,
         isLegacyPasswordRecoveryEnabled,
         isLegacySelfRegistrationEnabled,
