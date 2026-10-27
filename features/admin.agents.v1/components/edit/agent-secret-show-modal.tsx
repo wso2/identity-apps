@@ -209,7 +209,7 @@ export function AgentSecretShowModal({
                             onClose();
                         }
                         }
-                        data-componentid={ `${componentId}-done-btn` }
+                        data-testid={ `${componentId}-done-button` }
                     >
                             Close
                     </Button>
