@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.22.4
+
+### Patch Changes
+
+- [#10811](https://github.com/wso2/identity-apps/pull/10811) [`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Hide the groups, outbound provisioning, Just-in-Time provisioning and advanced tabs for Incode identity verification
+  connections
+- Updated dependencies [[`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e)]:
+  - @wso2is/admin.connections.v1@2.43.5
+  - @wso2is/admin.extensions.v1@2.44.3
+
 ## 4.22.3
 
 ### Patch Changes

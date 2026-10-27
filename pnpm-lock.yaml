@@ -356,7 +356,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.cli-settings.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.43.4
+        specifier: ^2.43.5
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
@@ -380,7 +380,7 @@ importers:
         specifier: ^2.28.3
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.44.2
+        specifier: ^2.44.3
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.fapi-security-policy.v1':
         specifier: workspace:^
@@ -3398,7 +3398,7 @@ importers:
         specifier: ^2.61.1
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.44.2
+        specifier: ^2.44.3
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.11.0
@@ -4801,7 +4801,7 @@ importers:
         specifier: ^2.31.6
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.43.2
+        specifier: ^2.43.5
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.59.2
