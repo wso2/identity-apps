@@ -33,7 +33,7 @@ const MAX_ASSOCIATED_TENANTS_PAGES: number = 100;
 /**
  * Fetches one page of the current user's tenant associations.
  */
-export type AssociatedTenantsPageFetcher = (_limit: number, _offset: number) => Promise<TenantRequestResponse>;
+type AssociatedTenantsPageFetcher = (_limit: number, _offset: number) => Promise<TenantRequestResponse>;
 
 /**
  * Walk the pages of a tenant association list looking for a single domain.
