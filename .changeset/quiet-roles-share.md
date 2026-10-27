@@ -6,4 +6,4 @@
 "@wso2is/i18n": patch
 ---
 
-Allow organizations to create application roles and use their organization roles for shared applications when the owner enables it
+Allow organizations to create application roles and use their organization roles for shared applications when the owner enables organization custom roles

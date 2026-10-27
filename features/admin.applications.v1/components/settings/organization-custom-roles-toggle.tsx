@@ -28,15 +28,15 @@ import { CheckboxProps } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../api/application";
 
 /**
- * Props interface for the SharedAppRoleManagementToggle component.
+ * Props interface for the OrganizationCustomRolesToggle component.
  */
-interface SharedAppRoleManagementTogglePropsInterface extends IdentifiableComponentInterface {
+interface OrganizationCustomRolesTogglePropsInterface extends IdentifiableComponentInterface {
     /**
      * ID of the application being configured.
      */
     appId: string;
     /**
-     * Whether organizations are currently allowed to manage roles for the application.
+     * Whether organization custom roles are currently enabled for the application.
      */
     isEnabled: boolean;
     /**
@@ -48,28 +48,25 @@ interface SharedAppRoleManagementTogglePropsInterface extends IdentifiableCompon
      */
     readOnly?: boolean;
     /**
-     * Role audience of the application. With organization audience, the organization roles of organizations are
-     * honoured for the application, and disallowing does not delete them.
+     * Role audience of the application.
      */
     roleAudience?: string;
 }
 
 /**
- * Toggle card to allow or disallow organizations to manage roles for the shared applications of an application.
- * With application audience roles, disallowing it deletes the application roles created by organizations, after
- * confirmation. With organization audience roles, disallowing it deletes no roles.
+ * Toggle to enable or disable organization custom roles for shared applications.
  *
  * @param props - Props injected to the component.
- * @returns Shared application role management toggle component.
+ * @returns Organization custom roles toggle component.
  */
-export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManagementTogglePropsInterface> = ({
+export const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTogglePropsInterface> = ({
     appId,
     isEnabled,
     onUpdate,
     readOnly,
     roleAudience,
     "data-componentid": componentId
-}: SharedAppRoleManagementTogglePropsInterface): ReactElement => {
+}: OrganizationCustomRolesTogglePropsInterface): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -78,8 +75,8 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
     const [ pendingValue, setPendingValue ] = useState<boolean>(false);
 
     const isOrganizationAudience: boolean = roleAudience?.toUpperCase() === RoleAudienceTypes.ORGANIZATION;
-    // Disallowing deletes the application roles created by organizations, but not their organization roles.
-    const isDeletingOrganizationRoles: boolean = !pendingValue && !isOrganizationAudience;
+    // Disabling deletes application custom roles, but not organization roles.
+    const isDeletingOrganizationCustomRoles: boolean = !pendingValue && !isOrganizationAudience;
 
     const handleToggle: (_event: SyntheticEvent, data: CheckboxProps) => void = (
         _event: SyntheticEvent,
@@ -98,17 +95,17 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
         setIsSubmitting(true);
 
         return updateApplicationConfigurations(appId, {
-            sharedAppRoleManagementEnabled: newValue
+            organizationCustomRolesEnabled: newValue
         })
             .then((): void => {
                 dispatch(addAlert({
                     description: t(
-                        "applications:edit.sections.sharedAppRoleManagement" +
+                        "applications:edit.sections.organizationCustomRoles" +
                         `.notifications.${direction}.success.description`
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "applications:edit.sections.sharedAppRoleManagement" +
+                        "applications:edit.sections.organizationCustomRoles" +
                         `.notifications.${direction}.success.message`
                     )
                 }));
@@ -117,12 +114,12 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
             .catch((): void => {
                 dispatch(addAlert({
                     description: t(
-                        "applications:edit.sections.sharedAppRoleManagement" +
+                        "applications:edit.sections.organizationCustomRoles" +
                         `.notifications.${direction}.error.description`
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "applications:edit.sections.sharedAppRoleManagement" +
+                        "applications:edit.sections.organizationCustomRoles" +
                         `.notifications.${direction}.error.message`
                     )
                 }));
@@ -137,8 +134,8 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
             <DangerZone
                 data-componentid={ componentId }
                 className="action-zone"
-                header={ t("applications:edit.sections.sharedAppRoleManagement.title") }
-                subheader={ t("applications:edit.sections.sharedAppRoleManagement.description") }
+                header={ t("applications:edit.sections.organizationCustomRoles.title") }
+                subheader={ t("applications:edit.sections.organizationCustomRoles.description") }
                 actionTitle=""
                 onActionClick={ (): void => undefined }
                 toggle={ {
@@ -151,13 +148,13 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
             <ConfirmationModal
                 data-componentid={ `${componentId}-confirmation-modal` }
                 onClose={ (): void => setShowConfirmation(false) }
-                // Disallowing deletes the application roles created by organizations. Hence, it needs an assertion.
-                type={ isDeletingOrganizationRoles ? "negative" : "warning" }
+                // Deleting application custom roles needs a stronger confirmation.
+                type={ isDeletingOrganizationCustomRoles ? "negative" : "warning" }
                 open={ showConfirmation }
-                assertionHint={ isDeletingOrganizationRoles
-                    ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.assertionHint")
+                assertionHint={ isDeletingOrganizationCustomRoles
+                    ? t("applications:edit.sections.organizationCustomRoles.confirmation.assertionHint")
                     : undefined }
-                assertionType={ isDeletingOrganizationRoles ? "checkbox" : undefined }
+                assertionType={ isDeletingOrganizationCustomRoles ? "checkbox" : undefined }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onPrimaryActionClick={ (): void => {
@@ -168,20 +165,20 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
-                    { t("applications:edit.sections.sharedAppRoleManagement.confirmation.header") }
+                    { t("applications:edit.sections.organizationCustomRoles.confirmation.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning={ !isDeletingOrganizationRoles }
-                    negative={ isDeletingOrganizationRoles }
+                    warning={ !isDeletingOrganizationCustomRoles }
+                    negative={ isDeletingOrganizationCustomRoles }
                 >
-                    { isDeletingOrganizationRoles
-                        ? t("applications:edit.sections.sharedAppRoleManagement.confirmation.disableMessage")
-                        : t("applications:edit.sections.sharedAppRoleManagement.confirmation.message") }
+                    { isDeletingOrganizationCustomRoles
+                        ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
+                        : t("applications:edit.sections.organizationCustomRoles.confirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
                     <p>
-                        { t("applications:edit.sections.sharedAppRoleManagement.confirmation.content." +
+                        { t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
                             (pendingValue ? "enable" : "disable") +
                             (isOrganizationAudience ? "OrganizationAudience" : "")) }
                     </p>
@@ -192,8 +189,8 @@ export const SharedAppRoleManagementToggle: FunctionComponent<SharedAppRoleManag
 };
 
 /**
- * Default props for the SharedAppRoleManagementToggle component.
+ * Default props for the OrganizationCustomRolesToggle component.
  */
-SharedAppRoleManagementToggle.defaultProps = {
-    "data-componentid": "shared-app-role-management-toggle"
+OrganizationCustomRolesToggle.defaultProps = {
+    "data-componentid": "organization-custom-roles-toggle"
 };

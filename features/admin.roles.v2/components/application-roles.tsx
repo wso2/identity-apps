@@ -82,15 +82,13 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      */
     readOnly?: boolean;
     /**
-     * Whether the application is a shared application in an organization. The role audience of a shared application
-     * is inherited from the main application, and the roles inherited from the parent organization are read only.
-     * The roles created by the organization can be removed, which deletes them.
+     * Whether the application is a shared application in an organization.
      */
     isSharedApplication?: boolean;
     /**
-     * Whether the organization is allowed to create application roles for the shared application.
+     * Whether organization custom roles are enabled for the shared application.
      */
-    allowRoleCreation?: boolean;
+    isOrganizationCustomRolesEnabled?: boolean;
     /**
      * Original template ID of the application for which the roles are created.
      */
@@ -107,7 +105,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 ): ReactElement => {
 
     const {
-        allowRoleCreation,
+        isOrganizationCustomRolesEnabled,
         isSharedApplication,
         onUpdate,
         originalTemplateId,
@@ -205,7 +203,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
-     * Resolve the roles inherited from the parent organization. Such roles have the `isSharedRole` property.
+     * Resolve the IDs of roles inherited from the parent organization.
      *
      * @param roles - Roles of the application.
      * @returns IDs of the inherited roles.
@@ -219,7 +217,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
-     * Check whether the given role of a shared application is inherited from the parent organization.
+     * Check whether the role is inherited from the parent organization.
      *
      * @param role - Role to check.
      * @returns True if the role is inherited.
@@ -228,15 +226,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         return isSharedApplication && inheritedRoleIds.has(role?.id);
     };
 
-    /**
-     * The roles of a shared application can be managed only if they are application audience roles, and the
-     * organization is allowed to create application roles for it or already has its own roles for the application.
-     * Organization audience roles of a shared application are managed in the roles of the organization, as removing
-     * them here would delete them from the organization. Otherwise, the roles are read only.
-     */
+    // Shared application roles are editable only for application audience custom roles.
     const isRoleAssignmentReadOnly: boolean = readOnly || (isSharedApplication
         && (roleAudience !== RoleAudienceTypes.APPLICATION
-            || (!allowRoleCreation
+            || (!isOrganizationCustomRolesEnabled
                 && !(initialSelectedRoles ?? []).some((role: BasicRoleInterface) => !isInheritedRole(role)))));
 
     /**
@@ -341,8 +334,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
-     * Handles the update of the roles of a shared application. The role association of a shared application cannot
-     * be updated. Removing a role created by the organization deletes the role, after confirmation.
+     * Handle shared application role updates, deleting removed custom roles after confirmation.
      */
     const handleSharedApplicationRolesUpdate = (): void => {
         const removedRoles: BasicRoleInterface[] = (initialSelectedRoles ?? []).filter(
@@ -350,10 +342,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 && !selectedRoles?.find((role: BasicRoleInterface) => role.id === initialRole.id));
 
         if (removedRoles.length === 0) {
-            /*
-             Every role of the shared application's audience is associated with the shared application. Hence,
-             there is nothing to add. Refresh the roles and the application to reflect the associated roles.
-             */
+            // Shared application roles are associated automatically, so only refresh them.
             getApplicationRoles(true);
             onUpdate(appId);
 
@@ -363,7 +352,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
-     * Deletes the given roles created by the organization for the shared application.
+     * Delete the given custom roles of the shared application.
      *
      * @param roles - Roles to delete.
      */
@@ -395,7 +384,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             .finally(() => {
                 setIsSubmitting(false);
                 setRolesToDelete([]);
-                // Refresh the roles of the application, including the deleted ones if the deletion failed.
+                // Refresh the roles, as some deletions may have failed.
                 getApplicationRoles(true);
                 onUpdate(appId);
             });
@@ -531,7 +520,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         <Grid.Column width={ 6 }>
                                             {
                                                 !readOnly &&
-                                                (!isSharedApplication || allowRoleCreation) &&
+                                                (!isSharedApplication || isOrganizationCustomRolesEnabled) &&
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
                                                 hasRoleCreatePermissions
                                                     && (
@@ -644,10 +633,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                         ? undefined
                                                         : getTagProps({ index }).onDelete
                                                 }
-                                                /*
-                                                 Non deletable chips are not rendered as a `ButtonBase`, hence they
-                                                 miss the Autocomplete tag font size. Match it for consistency.
-                                                 */
                                                 sx={
                                                     isInheritedRole(option)
                                                         ? {
@@ -787,16 +772,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         "rolesV2.switchRoleAudience.organizationConfirmationModal.content")
                     }
                     {
-                        // Application roles created by organizations are deleted as well, if they are allowed.
+                        // Switching to organization audience deletes application custom roles of organizations.
                         tempRoleAudience === RoleAudienceTypes.ORGANIZATION
                         && !isSharedApplication
-                        && application?.sharedAppRoleManagementEnabled
+                        && application?.organizationCustomRolesEnabled
                         && (
                             <p
                                 data-componentid={
-                                    `${ componentId }-switch-role-audience-shared-app-role-management-note` }
+                                    `${ componentId }-switch-role-audience-organization-custom-roles-note` }
                             >
-                                { t("applications:edit.sections.sharedAppRoleManagement.confirmation." +
+                                { t("applications:edit.sections.organizationCustomRoles.confirmation." +
                                     "audienceSwitch") }
                             </p>
                         )
@@ -828,7 +813,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
  * Default props for application roles tab component.
  */
 ApplicationRoles.defaultProps = {
-    allowRoleCreation: false,
+    isOrganizationCustomRolesEnabled: false,
     isSharedApplication: false,
     "data-componentid": "application-roles-tab",
     readOnly: true

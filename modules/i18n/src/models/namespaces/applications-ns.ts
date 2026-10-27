@@ -1144,7 +1144,7 @@ export interface ApplicationsNS {
                     };
                 };
             };
-            sharedAppRoleManagement: {
+            organizationCustomRoles: {
                 title: string;
                 description: string;
                 confirmation: {

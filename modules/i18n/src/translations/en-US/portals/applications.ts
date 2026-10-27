@@ -922,8 +922,8 @@ export const applications: ApplicationsNS = {
                     content: {
                         0: "This change may require manual updates to your application setup " +
                             "and configurations.",
-                        1: "Disabling enhanced organization login also stops organizations from managing " +
-                            "application roles for this application. The application roles created by " +
+                        1: "Disabling enhanced organization login also stops organizations from creating " +
+                            "custom application roles for this application. The application roles created by " +
                             "organizations will be permanently deleted, and users and groups assigned to them " +
                             "will lose the related permissions."
                     }
@@ -955,26 +955,26 @@ export const applications: ApplicationsNS = {
                     }
                 }
             },
-            sharedAppRoleManagement: {
-                title: "Allow organizations to manage roles",
-                description: "Enabling this lets organizations create application roles and use their organization " +
-                    "roles for this application, limited to its authorized permissions.",
+            organizationCustomRoles: {
+                title: "Allow organizations to create custom roles",
+                description: "Enabling this allows organizations to create custom application roles or use their own " +
+                    "organization roles for this application, limited to the application's authorized permissions.",
                 confirmation: {
                     assertionHint: "Please confirm your action.",
                     audienceSwitch: "The application roles created by organizations for this application will " +
                         "also be permanently deleted.",
                     header: "Are you sure?",
-                    message: "Changing this setting affects who can define roles for this application in " +
-                        "your organizations.",
+                    message: "Changing this setting affects whether organizations can create custom roles for " +
+                        "this application.",
                     disableMessage: "This action is irreversible and will permanently delete the application " +
                         "roles created by organizations.",
                     content: {
                         disableOrganizationAudience: "If you disallow this, the organization roles created by " +
                             "organizations will no longer be honoured for this application. The roles are not " +
                             "deleted, and roles shared from your organization are not affected.",
-                        enable: "Organization administrators will be able to create application roles and use " +
-                            "their organization roles for this application, limited to the permissions authorized " +
-                            "for this application.",
+                        enable: "Organization administrators will be able to create custom application roles and " +
+                            "use their own organization roles for this application, limited to the permissions " +
+                            "authorized for this application.",
                         disable: "If you disallow this, the application roles created by organizations for this " +
                             "application will be permanently deleted. Users and groups assigned to these roles " +
                             "will lose the related permissions. Roles shared from this application are not " +
@@ -987,24 +987,24 @@ export const applications: ApplicationsNS = {
                 notifications: {
                     enable: {
                         success: {
-                            message: "Role management allowed.",
-                            description: "Organizations can now manage roles for this application."
+                            message: "Organization custom roles enabled.",
+                            description: "Organizations can now create custom roles for this application."
                         },
                         error: {
-                            message: "Failed to allow role management.",
-                            description: "An error occurred while allowing organizations to manage roles. " +
+                            message: "Failed to enable organization custom roles.",
+                            description: "An error occurred while enabling organization custom roles. " +
                                 "Please try again."
                         }
                     },
                     disable: {
                         success: {
-                            message: "Role management disallowed.",
-                            description: "Organizations can no longer manage roles for this application."
+                            message: "Organization custom roles disabled.",
+                            description: "Organizations can no longer create custom roles for this application."
                         },
                         error: {
-                            message: "Failed to disallow role management.",
-                            description: "An error occurred while disallowing organizations from managing " +
-                                "roles. Please try again."
+                            message: "Failed to disable organization custom roles.",
+                            description: "An error occurred while disabling organization custom roles. " +
+                                "Please try again."
                         }
                     }
                 }
