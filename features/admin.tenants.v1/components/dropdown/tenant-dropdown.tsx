@@ -289,16 +289,30 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         };
 
         if (Array.isArray(association.associatedTenants)) {
-            // Remove the current tenant from the associated tenants list.
-            const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
+            // Remove the current tenant from the associated tenants list. Filter a copy rather
+            // than splicing in place: this array is the `associatedTenants` state itself, which is
+            // also mirrored into the store, and mutating it drops the current tenant from both.
+            const otherTenants: TenantInfo[] = association.associatedTenants.filter(
+                (tenant: TenantInfo) => tenant !== association.currentTenant
+            );
 
-            if (currentTenantIndex !== -1) {
-                association.associatedTenants.splice(currentTenantIndex, 1);
-            }
-            setTempTenantAssociationsList(association.associatedTenants);
+            association.associatedTenants = otherTenants;
+            setTempTenantAssociationsList(otherTenants);
         }
         setTenantAssociations(association);
     }, [ associatedTenants, defaultTenant, currentTenant ]);
+
+    /**
+     * Mirror every page the dropdown has loaded into the store.
+     *
+     * `state.auth.tenants` used to receive only the first page, so anything resolving the current
+     * tenant through it broke for users with more associations than one page holds.
+     */
+    useEffect(() => {
+        if (associatedTenants.length > 0) {
+            dispatch(setTenants<TenantInfo>(associatedTenants));
+        }
+    }, [ associatedTenants ]);
 
     const {
         data: deploymentUnitResponse,
@@ -412,14 +426,11 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
                         tenants.push(tenant);
                     });
-                    // Add tenants to the associatedTenants state, and keep the store in step with
-                    // it so consumers that read `state.auth.tenants` see every page, not just the
-                    // first one.
-                    const allAssociatedTenants: TenantInfo[] = [ ...associatedTenants, ...tenants ];
-
-                    dispatch(setTenants<TenantInfo>(allAssociatedTenants));
-                    setAssociatedTenants(allAssociatedTenants);
-                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
+                    // Append to whatever has been committed rather than to the array this closure
+                    // captured, so a second page requested before React commits the first cannot
+                    // drop or duplicate tenants.
+                    setAssociatedTenants((previousTenants: TenantInfo[]) => [ ...previousTenants, ...tenants ]);
+                    setAssociatedTenantsOffset((previousOffset: number) => previousOffset + associatedTenantsLimit);
                     setDefaultTenant(updatedDefaultTenant);
                     setCurrentTenant(updatedCurrentTenant);
                     setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);

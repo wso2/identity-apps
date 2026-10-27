@@ -67,9 +67,13 @@ export const findTenantAssociation = async (
 
         offset += associations.length;
 
+        const totalResults: number = response?.totalResults;
+
         // Stop once the API runs out of records, either by returning a short page or by reporting
-        // that everything has been seen.
-        if (associations.length < ASSOCIATED_TENANTS_PAGE_SIZE || offset >= (response?.totalResults ?? 0)) {
+        // that everything has been seen. `totalResults` is only trusted when it is actually a
+        // number — defaulting a missing one to zero would end the walk after the first full page.
+        if (associations.length < ASSOCIATED_TENANTS_PAGE_SIZE
+            || (Number.isFinite(totalResults) && offset >= totalResults)) {
             return undefined;
         }
     }

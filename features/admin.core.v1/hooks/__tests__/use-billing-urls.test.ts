@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RenderHookResult, renderHook, waitFor } from "@testing-library/react";
+import { RenderHookResult, act, renderHook, waitFor } from "@testing-library/react";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { ReactElement, ReactNode, createElement } from "react";
 import { Provider } from "react-redux";
@@ -40,10 +40,14 @@ const storeMock: { dispatch: () => void; getState: () => unknown; subscribe: () 
     subscribe: () => () => undefined
 };
 
-const wrapper = ({ children }: { children: ReactNode }): ReactElement =>
-    createElement(Provider, { store: storeMock as never }, children);
+const wrapper: (_props: { children: ReactNode }) => ReactElement = (
+    { children }: { children: ReactNode }
+): ReactElement => createElement(Provider, { store: storeMock as never }, children);
 
-const association = (domain: string, associationType: string = "MEMBER"): TenantInfo => ({
+const association: (_domain: string, _associationType?: string) => TenantInfo = (
+    domain: string,
+    associationType: string = "MEMBER"
+): TenantInfo => ({
     associationType,
     default: false,
     domain,
@@ -60,6 +64,17 @@ const renderBillingURLs = async (enabled?: boolean): Promise<RenderHookResult<Bi
     const { default: useBillingURLs } = await import("../use-billing-urls");
 
     return renderHook(() => (enabled === undefined ? useBillingURLs() : useBillingURLs(enabled)), { wrapper });
+};
+
+/**
+ * Lets the hook's lookup, URL building and state update all finish, so a test asserting that
+ * the URLs stayed empty cannot pass merely by reading the initial state.
+ */
+const settleBillingURLs: () => Promise<void> = async (): Promise<void> => {
+    await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+    });
 };
 
 describe("useBillingURLs", () => {
@@ -139,9 +154,64 @@ describe("useBillingURLs", () => {
         const { result } = await renderBillingURLs();
 
         await waitFor(() => expect(getTenantAssociationMock).toHaveBeenCalled());
+        // The lookup resolving is not the end of it — the URLs are built from its result after it
+        // settles, so let that finish before concluding they stayed empty.
+        await settleBillingURLs();
 
         expect(result.current.billingPortalURL).toBe("");
         expect(result.current.upgradeButtonURL).toBe("");
+    });
+
+    it("retries after a failed lookup instead of caching the failure", async () => {
+        // A rejected lookup used to be cached as a resolved `undefined`, so a transient network
+        // failure hid the billing links until the page was reloaded.
+        authStateMock.tenantDomain = "briefly-unreachable";
+        authStateMock.tenants = [];
+        getTenantAssociationMock.mockRejectedValueOnce(new Error("network"));
+        getTenantAssociationMock.mockResolvedValue(association("briefly-unreachable"));
+
+        vi.resetModules();
+
+        const { default: useBillingURLs } = await import("../use-billing-urls");
+        const failed: RenderHookResult<BillingURLsInterface, unknown> =
+            renderHook(() => useBillingURLs(), { wrapper });
+
+        await waitFor(() => expect(getTenantAssociationMock).toHaveBeenCalledTimes(1));
+        await settleBillingURLs();
+        expect(failed.result.current.billingPortalURL).toBe("");
+
+        const retried: RenderHookResult<BillingURLsInterface, unknown> =
+            renderHook(() => useBillingURLs(), { wrapper });
+
+        await waitFor(() => expect(retried.result.current.billingPortalURL)
+            .toBe("https://billing.example.com/id-of-briefly-unreachable"));
+        expect(getTenantAssociationMock).toHaveBeenCalledTimes(2);
+    });
+
+    it("drops the previous tenant's links when the tenant changes", async () => {
+        authStateMock.tenantDomain = "first-tenant";
+        authStateMock.tenants = [ association("first-tenant") ];
+
+        vi.resetModules();
+
+        const { default: useBillingURLs } = await import("../use-billing-urls");
+        const { result, rerender }: RenderHookResult<BillingURLsInterface, unknown> =
+            renderHook(() => useBillingURLs(), { wrapper });
+
+        await waitFor(() =>
+            expect(result.current.billingPortalURL).toBe("https://billing.example.com/id-of-first-tenant"));
+
+        // An in-place organization switch swaps the domain under a mounted header.
+        authStateMock.tenantDomain = "second-tenant";
+        authStateMock.tenants = [];
+        getTenantAssociationMock.mockResolvedValue(association("second-tenant"));
+        rerender();
+
+        // The first tenant's links must not survive the switch, not even while the new lookup runs.
+        expect(result.current.billingPortalURL).not.toBe("https://billing.example.com/id-of-first-tenant");
+
+        await waitFor(() =>
+            expect(result.current.billingPortalURL).toBe("https://billing.example.com/id-of-second-tenant"));
     });
 
     it("leaves the URLs empty and makes no request when billing links do not apply", async () => {
@@ -162,6 +232,7 @@ describe("useBillingURLs", () => {
         const { result } = await renderBillingURLs();
 
         await waitFor(() => expect(getTenantAssociationMock).toHaveBeenCalled());
+        await settleBillingURLs();
 
         expect(result.current.billingPortalURL).toBe("");
         expect(result.current.upgradeButtonURL).toBe("");

@@ -22,7 +22,7 @@ import { ASSOCIATED_TENANTS_PAGE_SIZE, findTenantAssociation } from "../tenant-a
 
 const fetchPage: Mock = vi.fn();
 
-const association = (index: number): TenantInfo => ({
+const association: (_index: number) => TenantInfo = (index: number): TenantInfo => ({
     associationType: "MEMBER",
     default: index === 0,
     domain: `tenant-${ index }`,
@@ -33,7 +33,7 @@ const association = (index: number): TenantInfo => ({
  * Serve `total` associations from a fake `tenant/me`, honouring the limit and offset it is called
  * with.
  */
-const servePages = (total: number): void => {
+const servePages: (_total: number) => void = (total: number): void => {
     fetchPage.mockImplementation((limit: number, offset: number): Promise<TenantRequestResponse> => {
         const page: TenantInfo[] = Array.from({ length: total }, (_: unknown, index: number) => association(index))
             .slice(offset, offset + limit);
@@ -88,6 +88,25 @@ describe("findTenantAssociation", () => {
 
         await expect(findTenantAssociation(fetchPage, "tenant-999")).resolves.toBeUndefined();
         expect(fetchPage).toHaveBeenCalledTimes(1);
+    });
+
+    it("keeps paging when the API omits totalResults", async () => {
+        // Defaulting a missing `totalResults` to zero would make `offset >= total` true straight
+        // after the first full page and end the walk there.
+        fetchPage.mockImplementation((limit: number, offset: number): Promise<TenantRequestResponse> => {
+            const page: TenantInfo[] = Array.from({ length: 40 }, (_: unknown, index: number) => association(index))
+                .slice(offset, offset + limit);
+
+            return Promise.resolve({
+                associatedTenants: page,
+                count: page.length,
+                startIndex: offset,
+                totalResults: undefined
+            } as TenantRequestResponse);
+        });
+
+        await expect(findTenantAssociation(fetchPage, "tenant-20")).resolves.toEqual(association(20));
+        expect(fetchPage).toHaveBeenCalledTimes(2);
     });
 
     it("gives up on an empty list", async () => {
