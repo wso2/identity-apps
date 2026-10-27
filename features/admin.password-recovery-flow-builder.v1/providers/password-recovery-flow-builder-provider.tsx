@@ -105,7 +105,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { toObject } = useReactFlow();
-    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { flowCompletionConfigs, setRefetchFlow } = useAuthenticationFlowBuilderCore();
     const { metadata } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewPasswordRecoveryPortalEnabled,
@@ -197,6 +197,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                     message: "Flow Updated Successfully"
                 })
             );
+
+            setRefetchFlow(true);
 
             return true;
         } catch (error) {
