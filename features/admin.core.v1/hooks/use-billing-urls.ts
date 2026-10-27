@@ -89,7 +89,12 @@ const resolveTenantAssociation = (
             // Drop a failed lookup so a later render can try again. A lookup that succeeded and
             // found nothing stays cached: that answer does not change within a session, and
             // retrying it on every render would put the duplicate traffic back.
-            tenantAssociationCache.delete(tenantDomain);
+            //
+            // Only drop this lookup's own entry. A store association arriving while the request
+            // was still in flight will have replaced it, and that newer entry must survive.
+            if (tenantAssociationCache.get(tenantDomain) === pending) {
+                tenantAssociationCache.delete(tenantDomain);
+            }
 
             return undefined;
         });

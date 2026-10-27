@@ -188,6 +188,46 @@ describe("useBillingURLs", () => {
         expect(getTenantAssociationMock).toHaveBeenCalledTimes(2);
     });
 
+    it("keeps a store association that arrived while a failing lookup was in flight", async () => {
+        // The rejection handler must only drop its own cache entry. If the store supplies the
+        // association first, the late rejection must not evict that newer, good entry.
+        authStateMock.tenantDomain = "raced-tenant";
+        authStateMock.tenants = [];
+
+        let failPendingLookup: () => void;
+
+        getTenantAssociationMock.mockReturnValueOnce(new Promise((_resolve: unknown, reject: (_e: Error) => void) => {
+            failPendingLookup = () => reject(new Error("network"));
+        }));
+        // Any refetch resolves normally, so an evicted entry shows up as a second call rather
+        // than as a crash.
+        getTenantAssociationMock.mockResolvedValue(association("raced-tenant"));
+
+        vi.resetModules();
+
+        const { default: useBillingURLs } = await import("../use-billing-urls");
+        const { rerender }: RenderHookResult<BillingURLsInterface, unknown> =
+            renderHook(() => useBillingURLs(), { wrapper });
+
+        await waitFor(() => expect(getTenantAssociationMock).toHaveBeenCalledTimes(1));
+
+        // The dropdown finishes loading and the association lands in the store.
+        authStateMock.tenants = [ association("raced-tenant") ];
+        rerender();
+        await settleBillingURLs();
+
+        // Only now does the original request fail.
+        failPendingLookup();
+        await settleBillingURLs();
+
+        // A fresh consumer must reuse the store-derived entry rather than fetching again.
+        authStateMock.tenants = [];
+        renderHook(() => useBillingURLs(), { wrapper });
+        await settleBillingURLs();
+
+        expect(getTenantAssociationMock).toHaveBeenCalledTimes(1);
+    });
+
     it("drops the previous tenant's links when the tenant changes", async () => {
         authStateMock.tenantDomain = "first-tenant";
         authStateMock.tenants = [ association("first-tenant") ];
