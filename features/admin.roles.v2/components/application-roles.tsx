@@ -148,6 +148,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
+    const isOrganizationCustomRolesFeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isOrganizationCustomRolesFeatureEnabled
+    );
+    const isCustomRoleCreationAllowed: boolean = isOrganizationCustomRolesFeatureEnabled
+        && isOrganizationCustomRolesEnabled;
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(
         userRolesV3FeatureEnabled
@@ -228,8 +233,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     // Shared application roles are editable only for application audience custom roles.
     const isRoleAssignmentReadOnly: boolean = readOnly || (isSharedApplication
-        && (roleAudience !== RoleAudienceTypes.APPLICATION
-            || (!isOrganizationCustomRolesEnabled
+        && (!isOrganizationCustomRolesFeatureEnabled
+            || roleAudience !== RoleAudienceTypes.APPLICATION
+            || (!isCustomRoleCreationAllowed
                 && !(initialSelectedRoles ?? []).some((role: BasicRoleInterface) => !isInheritedRole(role)))));
 
     /**
@@ -520,7 +526,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         <Grid.Column width={ 6 }>
                                             {
                                                 !readOnly &&
-                                                (!isSharedApplication || isOrganizationCustomRolesEnabled) &&
+                                                (!isSharedApplication || isCustomRoleCreationAllowed) &&
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
                                                 hasRoleCreatePermissions
                                                     && (
