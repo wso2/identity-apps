@@ -412,8 +412,13 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
                         tenants.push(tenant);
                     });
-                    // Add tenants to the associatedTenants state
-                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
+                    // Add tenants to the associatedTenants state, and keep the store in step with
+                    // it so consumers that read `state.auth.tenants` see every page, not just the
+                    // first one.
+                    const allAssociatedTenants: TenantInfo[] = [ ...associatedTenants, ...tenants ];
+
+                    dispatch(setTenants<TenantInfo>(allAssociatedTenants));
+                    setAssociatedTenants(allAssociatedTenants);
                     setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
                     setDefaultTenant(updatedDefaultTenant);
                     setCurrentTenant(updatedCurrentTenant);

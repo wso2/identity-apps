@@ -17,8 +17,8 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getAssociatedTenants } from "@wso2is/admin.tenants.v1/api/tenants";
-import { TenantInfo, TenantRequestResponse } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getTenantAssociation } from "@wso2is/admin.core.v1/utils/tenant-association-utils";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { MultiValueAttributeInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import moesif from "moesif-browser-js";
@@ -162,12 +162,8 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
                 // User ID fetch failed — analytics will work without User ID.
             });
 
-        getAssociatedTenants(undefined, 15, 0)
-            .then((response: TenantRequestResponse): void => {
-                const currentTenant: TenantInfo | undefined = response?.associatedTenants?.find(
-                    (tenant: TenantInfo) => tenant.domain === tenantDomain
-                );
-
+        getTenantAssociation(tenantDomain)
+            .then((currentTenant: TenantInfo | undefined): void => {
                 if (currentTenant?.id) {
                     moesif.identifyCompany(currentTenant.id);
                 }
