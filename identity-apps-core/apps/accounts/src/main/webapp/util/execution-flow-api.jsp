@@ -32,18 +32,18 @@
         }
 
         if (requestBody.length() > 0) {
-            Map<String, String> headerParams = new HashMap<>();
+            Map<String, List<String>> headerParams = new HashMap<>();
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames != null && headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
-                headerParams.put(headerName, request.getHeader(headerName));
+                headerParams.put(headerName, Collections.list(request.getHeaders(headerName)));
             }
 
-            Map<String, String> queryParams = new HashMap<>();
+            Map<String, List<String>> queryParams = new HashMap<>();
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
                 String paramName = paramNames.nextElement();
-                queryParams.put(paramName, request.getParameter(paramName));
+                queryParams.put(paramName, Arrays.asList(request.getParameterValues(paramName)));
             }
 
             FlowDataRetrievalClient flowDataRetrievalClient = new FlowDataRetrievalClient();
