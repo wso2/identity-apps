@@ -56,6 +56,7 @@ export class CommonAuthenticatorConstants {
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        INCODE_IDV: string;
         INTERNAL_CUSTOM_AUTHENTICATOR: string;
         IPROOV: string;
         LINKEDIN: string;
@@ -83,6 +84,7 @@ export class CommonAuthenticatorConstants {
             GITHUB: "github-idp",
             GOOGLE: "google-idp",
             HYPR: "hypr-idp",
+            INCODE_IDV: "incode-idv",
             INTERNAL_CUSTOM_AUTHENTICATOR: "internal-user-custom-authenticator",
             IPROOV: "iproov-idp",
             LINKEDIN: "linkedin-idp",
