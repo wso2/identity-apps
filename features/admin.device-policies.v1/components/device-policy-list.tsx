@@ -32,6 +32,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -39,7 +40,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { SemanticICONS } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import deleteDevicePolicy from "../api/delete-device-policy";
 import { DevicePolicyListItemInterface } from "../models/device-policy";
 
@@ -55,6 +56,10 @@ interface DevicePolicyListPropsInterface extends IdentifiableComponentInterface 
      * Device policies to show.
      */
     list: DevicePolicyListItemInterface[];
+    /**
+     * Callback to add a policy. The empty list offers no add action when not given.
+     */
+    onPolicyAdd?: () => void;
     /**
      * Callback to run after a policy is deleted.
      */
@@ -78,6 +83,7 @@ interface DevicePolicyListPropsInterface extends IdentifiableComponentInterface 
 const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = ({
     isLoading,
     list,
+    onPolicyAdd,
     onPolicyDelete,
     onSearchQueryClear,
     searchQuery,
@@ -210,6 +216,12 @@ const DevicePolicyList: FunctionComponent<DevicePolicyListPropsInterface> = ({
 
         return (
             <EmptyPlaceholder
+                action={ onPolicyAdd && (
+                    <PrimaryButton onClick={ onPolicyAdd } data-componentid={ `${ componentId }-add-button` }>
+                        <Icon name="add" />
+                        { t("devices:assurancePolicies.buttons.add") }
+                    </PrimaryButton>
+                ) }
                 image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
                 title={ t("devices:assurancePolicies.placeholders.empty.title") }

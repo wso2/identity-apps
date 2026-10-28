@@ -20,3 +20,18 @@
  * Policy type of device assurance policies in the policies API.
  */
 export const DEVICE_POLICY_TYPE: string = "DEVICE";
+
+/**
+ * Rule field that holds the device platform.
+ */
+export const DEVICE_PLATFORM_FIELD: string = "platform";
+
+/**
+ * Device platforms a policy can have rules for, in the order they are shown.
+ */
+export const DEVICE_PLATFORMS: string[] = [ "android", "ios", "macos", "windows" ];
+
+/**
+ * Maximum length of a device policy name.
+ */
+export const DEVICE_POLICY_NAME_MAX_LENGTH: number = 255;

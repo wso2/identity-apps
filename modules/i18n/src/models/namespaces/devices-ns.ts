@@ -30,6 +30,10 @@ export interface DevicesNS {
             placeholder: string;
         };
         backButton: string;
+        buttons: {
+            add: string;
+            edit: string;
+        };
         connector: {
             description: string;
             header: string;
@@ -100,6 +104,72 @@ export interface DevicesNS {
             };
             rules: {
                 empty: string;
+            };
+        };
+        wizard: {
+            create: {
+                heading: string;
+                subHeading: string;
+            };
+            edit: {
+                heading: string;
+                subHeading: string;
+            };
+            general: {
+                name: {
+                    editHint: string;
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                platforms: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+            };
+            notifications: {
+                create: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                update: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+            rules: {
+                empty: {
+                    addRule: string;
+                    description: string;
+                    title: string;
+                };
+                hint: string;
+                validations: {
+                    incomplete: string;
+                };
+            };
+            steps: {
+                general: string;
+                review: string;
+                rules: string;
             };
         };
     };
