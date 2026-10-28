@@ -48,7 +48,6 @@ jobs:
         strategy:
             matrix:
                 node-version: [lts/*]
-                maven-version: [3.8.6]
                 java-version: [21]
                 pnpm-version: [10.33.0]
         steps:
@@ -79,11 +78,10 @@ jobs:
                 distribution: "adopt"
                 cache: maven
 
-            - name: 🦩 Set up Maven
-              uses: stCarolas/setup-maven@v4
+            # Uses the Maven pre-installed on the runner image to avoid flaky downloads from archive.apache.org.
+            - name: 🦩 Verify Maven
               id: mvn-setup
-              with:
-                  maven-version: ${{ matrix.maven-version }}
+              run: mvn --version
 
             - name: 🥡 Setup pnpm
               uses: pnpm/action-setup@v4

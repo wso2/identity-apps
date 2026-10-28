@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 4.22.5
+
+### Patch Changes
+
+- [#10821](https://github.com/wso2/identity-apps/pull/10821) [`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove misleading aud claim information from the API resource and MCP server creation wizards
+
+- Updated dependencies [[`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18)]:
+  - @wso2is/admin.api-resources.v2@2.26.13
+
+## 4.22.4
+
+### Patch Changes
+
+- [#10811](https://github.com/wso2/identity-apps/pull/10811) [`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Hide the groups, outbound provisioning, Just-in-Time provisioning and advanced tabs for Incode identity verification
+  connections
+- Updated dependencies [[`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e)]:
+  - @wso2is/admin.connections.v1@2.43.5
+  - @wso2is/admin.extensions.v1@2.44.3
+
+## 4.22.3
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
 ## 4.22.2
 
 ### Patch Changes
