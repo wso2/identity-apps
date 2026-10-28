@@ -157,7 +157,7 @@ const ThresholdField: FunctionComponent<ThresholdFieldProps> = ({
                 max={ 1 }
                 step={ 0.01 }
                 disabled={ disabled }
-                onChange={ (_event: Event, next: number | number[]) =>
+                onChange={ (_event: Event, next: number | number[]): void =>
                     // Rounded to the step, and written the way a saved value reads, so dragging
                     // back to where it started does not count as a change.
                     onChange(String(Number(Math.min(Math.max(next as number, min), max).toFixed(2)))) }
@@ -170,14 +170,21 @@ const ThresholdField: FunctionComponent<ThresholdFieldProps> = ({
                 value={ value }
                 disabled={ disabled }
                 error={ !!error }
-                inputProps={ { "aria-labelledby": `${ id }-label`, max, min, step: 0.01 } }
-                onChange={ (event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.value) }
+                inputProps={ {
+                    // The error sits outside the TextField, so it is not linked automatically.
+                    "aria-describedby": error ? `${ id }-error` : undefined,
+                    "aria-labelledby": `${ id }-label`,
+                    max,
+                    min,
+                    step: 0.01
+                } }
+                onChange={ (event: React.ChangeEvent<HTMLInputElement>): void => onChange(event.target.value) }
                 sx={ { width: "100px" } }
                 data-componentid={ `${ componentId }-input` }
             />
         </Box>
         { error
-            ? <FormHelperText sx={ { ml: 0 } }>{ error }</FormHelperText>
+            ? <FormHelperText id={ `${ id }-error` } sx={ { ml: 0 } }>{ error }</FormHelperText>
             : <Hint compact>{ hint }</Hint> }
     </FormControl>
 );
