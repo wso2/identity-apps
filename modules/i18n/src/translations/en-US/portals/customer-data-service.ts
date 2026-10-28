@@ -719,31 +719,34 @@ export const customerDataService: CustomerDataServiceNS = {
             save: "Update",
             saving: "Updating..."
         },
-        description: "Every candidate pair is given a match score from 0 to 1, where 1 means the "
-            + "compared values are identical. These settings decide how high that score has to be "
-            + "before profiles are unified.",
+        description: "Configure when matching profiles require administrator review or can be unified "
+            + "automatically. Match scores range from 0 to 1, with higher scores indicating greater "
+            + "similarity.",
         errors: {
-            autoMergeRange: "The automatic unification score must be between 0 and 1.",
-            reviewRange: "The review score must be between 0 and 1.",
-            reviewTooHigh: "The review score must be at most {{highest}}. A match held back from automatic "
-                + "unification is scored just below that threshold, and it has to stay high enough to "
-                + "still be shared for review.",
-            reviewTooLow: "The review score must be above {{contradiction}}. It is also the bar a rule has "
+            autoMergeRange: "The automatic unification threshold must be between 0 and 1.",
+            reviewRange: "The review threshold must be between 0 and 1.",
+            reviewTooHigh: "The review threshold must be at most {{highest}}. A match held back from automatic "
+                + "unification is scored just below the automatic unification threshold, and it has to stay "
+                + "high enough to still be sent for review.",
+            reviewTooLow: "The review threshold must be above {{contradiction}}. It is also the bar a rule has "
                 + "to clear to count as agreeing, so a lower value lets barely-related values decide "
                 + "whether profiles are unified."
         },
         fields: {
             autoMerge: {
-                above: "When the match score is above",
-                hint: "A match score at or above this unifies the profiles without administrator review.",
-                label: "Unify profiles automatically",
-                never: "Never unify profiles automatically",
-                neverHint: "No profiles are unified without an administrator approving the match. The "
-                    + "score is still used: it sets the score given to a match held back by a "
-                    + "contradiction, and it limits how high the review score can be set."
+                above: "Automatically unify high-confidence matches",
+                aboveHint: "Unify profiles automatically when their match score reaches the configured threshold.",
+                never: "Always require administrator approval",
+                neverHint: "Matches <1>at or above the review threshold</1> are sent for administrator review "
+                    + "instead of being unified.",
+                threshold: "Automatic unification threshold",
+                thresholdHint: "Profiles scoring {{threshold}} to 1.00 are unified without review.",
+                thresholdHintMax: "Only profiles scoring exactly 1.00 are unified without review."
             },
             deterministicMatchDecisive: {
-                label: "An exact match is final",
+                hint: "Unify profiles immediately when an exact-match rule is satisfied. Other rules will not "
+                    + "be taken into consideration.",
+                label: "Automatically unify exact-rule matches",
                 offHint: "Other rules may object. Two profiles sharing an email but holding different phone "
                     + "numbers are shared for review instead of being unified. Tolerant rules are "
                     + "unaffected.",
@@ -751,9 +754,15 @@ export const customerDataService: CustomerDataServiceNS = {
                     + "rules being consulted."
             },
             manualReviewThreshold: {
-                hint: "A match score at or above this is shared for an administrator to review.",
-                label: "Share profiles for an administrator to review if the match is above"
+                hint: "Profiles scoring {{threshold}} to 1.00 are sent for review unless they qualify for "
+                    + "automatic unification. No action is taken on lower-scoring profiles.",
+                label: "Review threshold"
             }
+        },
+        groups: {
+            automatic: "Automatic unification",
+            outcome: "How matches will be handled",
+            review: "Administrator review"
         },
         heading: "Profile unification",
         notifications: {
@@ -765,6 +774,15 @@ export const customerDataService: CustomerDataServiceNS = {
                 description: "The matching settings have been updated.",
                 message: "Settings updated"
             }
+        },
+        outcome: {
+            auto: "Automatic unification",
+            below: "Below {{to}}",
+            between: "{{from}} to below {{to}}",
+            exactRule: "Exact-rule matches are automatically unified and other rules will not be considered.",
+            none: "No action",
+            review: "Administrator review",
+            toMax: "{{from}} to 1.00"
         },
         page: {
             backButton: "Go back to Customer Data",

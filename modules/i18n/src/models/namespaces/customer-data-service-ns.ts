@@ -658,12 +658,15 @@ export interface CustomerDataServiceNS {
         fields: {
             autoMerge: {
                 above: string;
-                hint: string;
-                label: string;
+                aboveHint: string;
                 never: string;
                 neverHint: string;
+                threshold: string;
+                thresholdHint: string;
+                thresholdHintMax: string;
             };
             deterministicMatchDecisive: {
+                hint: string;
                 label: string;
                 offHint: string;
                 onHint: string;
@@ -673,12 +676,12 @@ export interface CustomerDataServiceNS {
                 label: string;
             };
         };
-        heading: string;
-        page: {
-            backButton: string;
-            description: string;
-            title: string;
+        groups: {
+            automatic: string;
+            outcome: string;
+            review: string;
         };
+        heading: string;
         notifications: {
             saveFailed: {
                 description: string;
@@ -688,6 +691,20 @@ export interface CustomerDataServiceNS {
                 description: string;
                 message: string;
             };
+        };
+        outcome: {
+            auto: string;
+            below: string;
+            between: string;
+            exactRule: string;
+            none: string;
+            review: string;
+            toMax: string;
+        };
+        page: {
+            backButton: string;
+            description: string;
+            title: string;
         };
     };
     unificationRules: {
