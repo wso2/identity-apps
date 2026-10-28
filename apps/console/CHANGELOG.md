@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.22.5
+
+### Patch Changes
+
+- [#10821](https://github.com/wso2/identity-apps/pull/10821) [`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove misleading aud claim information from the API resource and MCP server creation wizards
+
+- Updated dependencies [[`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18)]:
+  - @wso2is/admin.api-resources.v2@2.26.13
+
 ## 4.22.4
 
 ### Patch Changes
