@@ -66,7 +66,14 @@ describe("buildCimdCallbackUrls", () => {
 
     it("combines several URIs into a regexp", () => {
         expect(buildCimdCallbackUrls([ "http://127.0.0.1:33418/", "https://vscode.dev/redirect" ]))
-            .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode.dev/redirect)" ]);
+            .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode\\.dev/redirect)" ]);
+    });
+
+    it("escapes every URI but loopback IPs, which IS matches on any port", () => {
+        expect(buildCimdCallbackUrls([ "http://[::1]/cb", "https://a.example/cb?x=1" ]))
+            .toEqual([ "regexp=(http://[::1]/cb|https://a\\.example/cb\\?x=1)" ]);
+        expect(new RegExp("^(" + buildCimdCallbackUrls([ "http://127.0.0.1:1/", "https://vscode.dev/r" ])[0]
+            .slice("regexp=(".length)).test("https://vscode-dev/r")).toBe(false);
     });
 
     it("does not modify the input", () => {
@@ -133,7 +140,7 @@ describe("buildCimdApplicationPayload", () => {
             known(VSCODE_CLIENT_ID));
 
         expect(payload.inboundProtocolConfiguration.oidc.callbackURLs)
-            .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode.dev/redirect)" ]);
+            .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode\\.dev/redirect)" ]);
         expect(payload.inboundProtocolConfiguration.oidc.publicClient).toBe(true);
         expect(payload.inboundProtocolConfiguration.oidc.allowedOrigins).toEqual([]);
         expect(payload.name).toBe("Visual Studio Code");
@@ -167,7 +174,7 @@ describe("buildCimdApplicationPayload", () => {
                         validateTokenBinding: false
                     },
                     allowedOrigins: [],
-                    callbackURLs: [ "regexp=(http://127.0.0.1:33418/|https://vscode.dev/redirect)" ],
+                    callbackURLs: [ "regexp=(http://127.0.0.1:33418/|https://vscode\\.dev/redirect)" ],
                     clientId: VSCODE_CLIENT_ID,
                     grantTypes: [ "authorization_code", "refresh_token" ],
                     pkce: { mandatory: true, supportPlainTransformAlgorithm: false },

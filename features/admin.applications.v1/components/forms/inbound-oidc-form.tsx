@@ -1818,8 +1818,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             if (!isPublicClient) {
                 let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+                // MCP client applications don't show the authentication method field, so keep the stored method.
+                const tokenEndpointAuthMethodValue: string = isMcpClientApplication
+                    ? initialValues?.clientAuthentication?.tokenEndpointAuthMethod
+                    : values.get("tokenEndpointAuthMethod") as string;
 
-                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                if (tokenEndpointAuthMethodValue === PRIVATE_KEY_JWT) {
                     tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
                 }
 
@@ -1828,7 +1832,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
                         tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
-                        tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                        tokenEndpointAuthMethod: tokenEndpointAuthMethodValue,
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
                 };

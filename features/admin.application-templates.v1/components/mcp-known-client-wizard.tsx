@@ -118,8 +118,8 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
             className="wizard minimal-application-create-wizard mcp-known-client-wizard"
             dimmer="blurring"
             closeOnDimmerClick={ false }
-            closeOnEscape
-            onClose={ onClose }
+            closeOnEscape={ !isCreating }
+            onClose={ () => !isCreating && onClose() }
             data-componentid={ componentId }
         >
             <ModalWithSidePanel.MainPanel>

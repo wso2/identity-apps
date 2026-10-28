@@ -34,6 +34,21 @@ export const getCimdKnownClient = (clientId: string): CimdKnownClientInterface |
 };
 
 /**
+ * Escapes a redirect URI so it matches only itself inside a `regexp=` callback. Loopback IP URIs stay as they are,
+ * because IS finds the literal loopback address in the pattern to accept any port.
+ *
+ * @param redirectUri - Redirect URI.
+ * @returns The redirect URI as a regular expression.
+ */
+const toCallbackPattern = (redirectUri: string): string => {
+    if (CimdConstants.LOOPBACK_IP_HOSTS.includes(new URL(redirectUri).hostname)) {
+        return redirectUri;
+    }
+
+    return redirectUri.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};
+
+/**
  * Builds the callback URL list in the format IS stores: a single URL as is, several as `regexp=(a|b)`.
  *
  * @param redirectUris - Redirect URIs.
@@ -41,7 +56,7 @@ export const getCimdKnownClient = (clientId: string): CimdKnownClientInterface |
  */
 export const buildCimdCallbackUrls = (redirectUris: string[]): string[] => {
     if (redirectUris.length > 1) {
-        return [ `${ CimdConstants.CALLBACK_URL_REGEXP_PREFIX }(${ redirectUris.join("|") })` ];
+        return [ `${ CimdConstants.CALLBACK_URL_REGEXP_PREFIX }(${ redirectUris.map(toCallbackPattern).join("|") })` ];
     }
 
     return [ ...redirectUris ];

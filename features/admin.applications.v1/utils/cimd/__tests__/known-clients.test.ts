@@ -20,6 +20,16 @@ import { CHATGPT_DOCUMENT, CLAUDE_DOCUMENT, VSCODE_DOCUMENT } from "./fixtures";
 import { CimdConstants } from "../constants";
 import { CimdKnownClientInterface } from "../models";
 
+interface PublishedDocumentInterface {
+    client_id: string;
+    client_name: string;
+    client_uri: string;
+    redirect_uris: string[];
+    token_endpoint_auth_method: string;
+    jwks_uri?: string;
+    grant_types: string[];
+}
+
 const SUPPORTED_GRANTS: string[] = [ "authorization_code", "refresh_token" ];
 const LOOPBACK_HOSTS: string[] = [ "127.0.0.1", "[::1]" ];
 
@@ -29,7 +39,7 @@ describe("CimdConstants.KNOWN_CLIENTS", () => {
         [ "chatgpt", CHATGPT_DOCUMENT ],
         [ "vscode", VSCODE_DOCUMENT ]
     ])("matches the published document of %s", (key: string, json: string) => {
-        const doc: Record<string, any> = JSON.parse(json);
+        const doc: PublishedDocumentInterface = JSON.parse(json);
         const client: CimdKnownClientInterface = CimdConstants.KNOWN_CLIENTS
             .find((known: CimdKnownClientInterface) => known.key === key);
 

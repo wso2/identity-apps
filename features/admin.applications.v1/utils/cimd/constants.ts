@@ -28,6 +28,8 @@ export class CimdConstants {
 
     public static readonly CALLBACK_URL_REGEXP_PREFIX: string = "regexp=";
 
+    public static readonly LOOPBACK_IP_HOSTS: string[] = [ "127.0.0.1", "[::1]" ];
+
     /**
      * MCP clients that can be registered from the MCP client template. Each entry copies the client's
      * published metadata document, with grants narrowed to the authorization code and refresh token grants.
