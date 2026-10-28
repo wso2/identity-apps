@@ -24,14 +24,16 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import useGetDevicePolicies from "../api/use-get-device-policies";
 import DevicePolicyList from "../components/device-policy-list";
+import DevicePolicyWizard from "../components/device-policy-wizard";
+import { DevicePolicyInterface } from "../models/device-policy";
 
 type DevicePoliciesPagePropsInterface = IdentifiableComponentInterface;
 
@@ -52,11 +54,13 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DevicePoliciesPagePropsInte
         (state: AppState) => state.config.ui.features?.devicePolicies
     );
     const hasReadPermission: boolean = useRequiredScopes(devicePoliciesFeatureConfig?.scopes?.read);
+    const hasCreatePermission: boolean = useRequiredScopes(devicePoliciesFeatureConfig?.scopes?.create);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ searchQuery, setSearchQuery ] = useState<string | undefined>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     const {
         data: policyList,
@@ -78,15 +82,16 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DevicePoliciesPagePropsInte
     }, [ policyListFetchError ]);
 
     /**
-     * The search box emits a SCIM style query such as `name co "value"`, but the policies endpoint
+     * The search box emits a SCIM style query such as `name co value`, but the policies endpoint
      * only accepts the value to match against the policy name.
      *
      * @param query - Search query.
      */
     const handlePolicyFilter = (query: string): void => {
-        const match: RegExpMatchArray = query?.match(/"([^"]*)"/);
+        const match: RegExpMatchArray | null = query?.match(/^name\s+co\s+(.*)$/);
+        const value: string = (match ? match[1] : query ?? "").trim().replace(/^"(.*)"$/, "$1");
 
-        setSearchQuery((match ? match[1] : query) || undefined);
+        setSearchQuery(value || undefined);
         setListOffset(0);
     };
 
@@ -116,6 +121,11 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DevicePoliciesPagePropsInte
         mutatePolicyList();
     };
 
+    const handlePolicyCreate = (policy: DevicePolicyInterface): void => {
+        setShowWizard(false);
+        history.push(AppConstants.getPaths().get("DEVICE_POLICY_EDIT").replace(":id", policy.id));
+    };
+
     const totalResults: number = policyList?.totalResults ?? 0;
 
     return (
@@ -123,6 +133,15 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DevicePoliciesPagePropsInte
             pageTitle={ t("devices:assurancePolicies.title") }
             title={ t("devices:assurancePolicies.title") }
             description={ t("devices:assurancePolicies.description") }
+            action={ hasCreatePermission && (totalResults > 0 || !!searchQuery) && (
+                <PrimaryButton
+                    onClick={ (): void => setShowWizard(true) }
+                    data-componentid={ `${ componentId }-add-button` }
+                >
+                    <Icon name="add" />
+                    { t("devices:assurancePolicies.buttons.add") }
+                </PrimaryButton>
+            ) }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
                 onClick: (): void => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")),
@@ -168,12 +187,20 @@ const DeviceAssurancePoliciesPage: FunctionComponent<DevicePoliciesPagePropsInte
                 <DevicePolicyList
                     isLoading={ isPolicyListLoading }
                     list={ policyList?.policies ?? [] }
+                    onPolicyAdd={ hasCreatePermission ? (): void => setShowWizard(true) : undefined }
                     onPolicyDelete={ handlePolicyDelete }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>
+            { showWizard && (
+                <DevicePolicyWizard
+                    onClose={ (): void => setShowWizard(false) }
+                    onSuccess={ handlePolicyCreate }
+                    data-componentid={ `${ componentId }-wizard` }
+                />
+            ) }
         </PageLayout>
     );
 };

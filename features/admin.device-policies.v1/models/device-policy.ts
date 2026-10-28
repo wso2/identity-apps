@@ -66,3 +66,35 @@ export interface DevicePolicyListResponseInterface {
     count: number;
     policies: DevicePolicyListItemInterface[];
 }
+
+export interface DevicePolicyExpressionRequestInterface {
+    field: string;
+    operator: string;
+    value: string;
+}
+
+export interface DevicePolicyRuleGroupRequestInterface {
+    condition: "AND";
+    expressions: DevicePolicyExpressionRequestInterface[];
+}
+
+export interface DevicePolicyRuleRequestInterface {
+    condition: "OR";
+    rules: DevicePolicyRuleGroupRequestInterface[];
+}
+
+export interface DevicePolicyResourceRequestInterface {
+    target: string;
+    resourceType: "RULE";
+    rule: DevicePolicyRuleRequestInterface;
+}
+
+export interface DevicePolicyCreateRequestInterface {
+    name: string;
+    type: string;
+    resources: DevicePolicyResourceRequestInterface[];
+}
+
+export interface DevicePolicyUpdateRequestInterface {
+    resources: DevicePolicyResourceRequestInterface[];
+}

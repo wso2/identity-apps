@@ -23,16 +23,11 @@ import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetDevicePolicyRuleMetadata from "../api/use-get-device-policy-rule-metadata";
-import {
-    DevicePolicyExpressionInterface,
-    DevicePolicyRuleGroupInterface,
-    DevicePolicyRuleInterface
-} from "../models/device-policy";
 
 /**
  * Props interface of {@link DevicePolicyRules}
@@ -45,7 +40,7 @@ interface DevicePolicyRulesPropsInterface extends IdentifiableComponentInterface
     /**
      * Rule of the platform.
      */
-    rule: DevicePolicyRuleInterface;
+    rule: RuleWithoutIdInterface;
 }
 
 /**
@@ -81,22 +76,7 @@ const DevicePolicyRules: FunctionComponent<DevicePolicyRulesPropsInterface> = ({
         }));
     }, [ ruleMetadataFetchError ]);
 
-    // The policies API wraps each value with its type, while the rules component works with plain values.
-    const ruleData: RuleWithoutIdInterface = useMemo(() => ({
-        condition: "OR",
-        rules: (rule?.rules ?? [])
-            .filter((group: DevicePolicyRuleGroupInterface) => group.expressions?.length > 0)
-            .map((group: DevicePolicyRuleGroupInterface) => ({
-                condition: "AND",
-                expressions: group.expressions.map((expression: DevicePolicyExpressionInterface) => ({
-                    field: expression.field,
-                    operator: expression.operator,
-                    value: expression.value?.value
-                }))
-            }))
-    }), [ rule ]);
-
-    if (ruleData.rules.length === 0) {
+    if (!(rule?.rules?.length > 0)) {
         return (
             <Typography variant="body2" data-componentid={ `${ componentId }-empty` }>
                 { t("devices:assurancePolicies.view.rules.empty") }
@@ -108,8 +88,13 @@ const DevicePolicyRules: FunctionComponent<DevicePolicyRulesPropsInterface> = ({
         return <ContentLoader data-componentid={ `${ componentId }-loader` } />;
     }
 
+    // The provider reads the rule only when it mounts, so it is mounted again when the rule changes.
     return (
-        <RulesProvider conditionExpressionsMetaData={ ruleMetadata ?? [] } initialData={ ruleData }>
+        <RulesProvider
+            key={ JSON.stringify(rule) }
+            conditionExpressionsMetaData={ ruleMetadata ?? [] }
+            initialData={ rule }
+        >
             <Rules readonly={ true } data-componentid={ componentId } />
         </RulesProvider>
     );

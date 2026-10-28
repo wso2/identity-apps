@@ -16,20 +16,30 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import {
+    AnimatedAvatar,
+    PrimaryButton,
+    ResourceTab,
+    ResourceTabPaneInterface,
+    TabPageLayout
+} from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import useGetDevicePolicy from "../api/use-get-device-policy";
 import DevicePolicyRules from "../components/device-policy-rules";
+import DevicePolicyWizard from "../components/device-policy-wizard";
 import { DEVICE_POLICY_TYPE } from "../constants/device-policy-constants";
 import { DevicePolicyInterface, DevicePolicyResourceInterface } from "../models/device-policy";
+import { toRuleData } from "../utils/device-policy-rule-utils";
 
 type DevicePolicyEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -47,9 +57,21 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const devicePoliciesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.devicePolicies
+    );
+    const hasUpdatePermission: boolean = useRequiredScopes(devicePoliciesFeatureConfig?.scopes?.update);
+
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+
     const policyId: string = match.params["id"]?.split("#")[0];
 
-    const { data: policy, error: policyFetchError, isLoading: isPolicyLoading } = useGetDevicePolicy(policyId);
+    const {
+        data: policy,
+        error: policyFetchError,
+        isLoading: isPolicyLoading,
+        mutate: mutatePolicy
+    } = useGetDevicePolicy(policyId);
 
     // The policies API also holds policies of other types; only device policies are shown here.
     const devicePolicy: DevicePolicyInterface = policy?.type === DEVICE_POLICY_TYPE ? policy : undefined;
@@ -78,7 +100,7 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
                     <DevicePolicyRules
                         key={ resource.target }
                         platform={ resource.target }
-                        rule={ resource.rule }
+                        rule={ toRuleData(resource.rule) }
                         data-componentid={ `${ componentId }-${ resource.target }-rules` }
                     />
                 </ResourceTab.Pane>
@@ -91,6 +113,14 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
             isLoading={ isPolicyLoading }
             title={ devicePolicy?.name }
             pageTitle={ t("devices:assurancePolicies.title") }
+            action={ hasUpdatePermission && devicePolicy && (
+                <PrimaryButton
+                    onClick={ (): void => setShowWizard(true) }
+                    data-componentid={ `${ componentId }-edit-button` }
+                >
+                    { t("devices:assurancePolicies.buttons.edit") }
+                </PrimaryButton>
+            ) }
             image={ (
                 <AnimatedAvatar
                     name={ devicePolicy?.name ?? "" }
@@ -110,6 +140,17 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
             data-componentid={ `${ componentId }-layout` }
         >
             <ResourceTab panes={ panes } data-componentid={ `${ componentId }-tabs` } />
+            { showWizard && (
+                <DevicePolicyWizard
+                    policy={ devicePolicy }
+                    onClose={ (): void => setShowWizard(false) }
+                    onSuccess={ (): void => {
+                        setShowWizard(false);
+                        mutatePolicy();
+                    } }
+                    data-componentid={ `${ componentId }-wizard` }
+                />
+            ) }
         </TabPageLayout>
     );
 };

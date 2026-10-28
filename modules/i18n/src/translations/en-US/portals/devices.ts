@@ -32,6 +32,10 @@ export const devices: DevicesNS = {
             placeholder: "Search by policy name"
         },
         backButton: "Go back to Login & Registration",
+        buttons: {
+            add: "New Policy",
+            edit: "Edit"
+        },
         connector: {
             description: "Define the device conditions users must meet on each platform.",
             header: "Device Assurance"
@@ -103,6 +107,73 @@ export const devices: DevicesNS = {
             },
             rules: {
                 empty: "No conditions are configured for this platform."
+            }
+        },
+        wizard: {
+            create: {
+                heading: "Create a Device Assurance Policy",
+                subHeading: "Define the device conditions users must meet on each platform."
+            },
+            edit: {
+                heading: "Edit {{name}}",
+                subHeading: "Change the platforms and device conditions of the policy."
+            },
+            general: {
+                name: {
+                    editHint: "The name of a policy cannot be changed.",
+                    hint: "A unique name to identify the policy.",
+                    label: "Policy Name",
+                    placeholder: "Enter a name for the policy",
+                    validations: {
+                        required: "Policy name is required."
+                    }
+                },
+                platforms: {
+                    hint: "Select the platforms this policy applies to. You will define the device " +
+                        "conditions for each of them in the next step.",
+                    label: "Platforms",
+                    validations: {
+                        required: "Select at least one platform."
+                    }
+                }
+            },
+            notifications: {
+                create: {
+                    genericError: {
+                        description: "An error occurred while creating the device assurance policy.",
+                        message: "Creation failed"
+                    },
+                    success: {
+                        description: "The device assurance policy has been created successfully.",
+                        message: "Policy created"
+                    }
+                },
+                update: {
+                    genericError: {
+                        description: "An error occurred while updating the device assurance policy.",
+                        message: "Update failed"
+                    },
+                    success: {
+                        description: "The device assurance policy has been updated successfully.",
+                        message: "Policy updated"
+                    }
+                }
+            },
+            rules: {
+                empty: {
+                    addRule: "Add Rule",
+                    description: "Add a rule with the conditions {{platform}} devices must meet.",
+                    title: "No rule is configured."
+                },
+                hint: "A device passes the policy when it meets any of the condition groups of its platform.",
+                validations: {
+                    incomplete: "Complete the rules of these platforms before continuing: {{platforms}}."
+                }
+            },
+            steps: {
+                general: "General",
+                review: "Review",
+                rules: "Rules"
             }
         }
     }
