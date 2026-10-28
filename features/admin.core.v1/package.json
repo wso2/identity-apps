@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.core.v1",
-    "version": "2.62.0",
+    "version": "2.62.1",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -68,7 +68,7 @@
         "@wso2is/common.ui.v1": "workspace:^",
         "@wso2is/core": "^2.13.5",
         "@wso2is/forms": "^2.12.0",
-        "@wso2is/i18n": "^2.51.0",
+        "@wso2is/i18n": "^2.52.0",
         "@wso2is/react-components": "^2.10.0",
         "axios": "^1.7.0",
         "classnames": "^2.2.6",

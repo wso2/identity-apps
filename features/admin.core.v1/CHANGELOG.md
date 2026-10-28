@@ -1,5 +1,13 @@
 # @wso2is/admin.core.v1
 
+## 2.62.1
+
+### Patch Changes
+
+- Updated dependencies [[`4329239b404cb7eafe34a2bd8e0f9045bb890250`](https://github.com/wso2/identity-apps/commit/4329239b404cb7eafe34a2bd8e0f9045bb890250)]:
+  - @wso2is/admin.device-policies.v1@0.2.0
+  - @wso2is/i18n@2.52.0
+
 ## 2.62.0
 
 ### Minor Changes
