@@ -19,33 +19,45 @@
 import cloneDeep from "lodash-es/cloneDeep";
 import mergeWith from "lodash-es/mergeWith";
 import { CimdConstants } from "./constants";
-import { CimdKnownClientInterface, CimdTokenEndpointAuthMethods } from "./models";
+import { CimdClientMetadataInterface, CimdTokenEndpointAuthMethods } from "./models";
 import { CertificateTypeInterface, MainApplicationInterface } from "../../models/application";
 import { OIDCDataInterface, SupportedAccessTokenBindingTypes } from "../../models/application-inbound";
 
 /**
- * Finds the known CIMD client registered with the given OAuth client ID.
+ * Checks whether an OAuth client ID is a Client Identifier URL, that is, an `https` URL. Callers also check that the
+ * application is an MCP client, since other applications may use a URL as a custom client ID.
  *
  * @param clientId - OAuth client ID of an application.
- * @returns The known client, or undefined when the client ID is not one of them.
+ * @returns True when the client ID is a Client Identifier URL.
  */
-export const getCimdKnownClient = (clientId: string): CimdKnownClientInterface | undefined => {
-    return CimdConstants.KNOWN_CLIENTS.find((client: CimdKnownClientInterface) => client.clientId === clientId);
+export const isCimdClientId = (clientId: string): boolean => {
+    if (!clientId) {
+        return false;
+    }
+
+    try {
+        return new URL(clientId).protocol === "https:";
+    } catch {
+        return false;
+    }
 };
 
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /**
- * Escapes a redirect URI so it matches only itself inside a `regexp=` callback. Loopback IP URIs stay as they are,
- * because IS finds the literal loopback address in the pattern to accept any port.
+ * Escapes a redirect URI so it matches only itself inside a `regexp=` callback. The `http://127.0.0.1` prefix stays
+ * literal, because IS finds the loopback address by that text to accept any port.
  *
  * @param redirectUri - Redirect URI.
  * @returns The redirect URI as a regular expression.
  */
 const toCallbackPattern = (redirectUri: string): string => {
-    if (CimdConstants.LOOPBACK_IP_HOSTS.includes(new URL(redirectUri).hostname)) {
-        return redirectUri;
+    if (redirectUri.startsWith(CimdConstants.IPV4_LOOPBACK_PREFIX)) {
+        return CimdConstants.IPV4_LOOPBACK_PREFIX
+            + escapeRegExp(redirectUri.substring(CimdConstants.IPV4_LOOPBACK_PREFIX.length));
     }
 
-    return redirectUri.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return escapeRegExp(redirectUri);
 };
 
 /**
@@ -67,14 +79,14 @@ const replaceArrays = (_target: unknown, source: unknown): unknown[] | undefined
 };
 
 /**
- * Builds the application create request body for a known CIMD client.
+ * Builds the application create request body for a CIMD client.
  *
- * @param reviewed - The known client.
+ * @param reviewed - The client's metadata, as checked by IS.
  * @param base - Optional template payload to merge over, for example the MCP client template.
  * @returns Application create request body.
  */
 export const buildCimdApplicationPayload = (
-    reviewed: CimdKnownClientInterface,
+    reviewed: CimdClientMetadataInterface,
     base?: MainApplicationInterface
 ): MainApplicationInterface => {
     const isPrivateKeyJwt: boolean =
@@ -99,7 +111,7 @@ export const buildCimdApplicationPayload = (
     };
     const cimdPayload: MainApplicationInterface = {
         inboundProtocolConfiguration: { oidc },
-        name: reviewed.name
+        name: reviewed.clientName
     };
 
     if (reviewed.clientUri) {

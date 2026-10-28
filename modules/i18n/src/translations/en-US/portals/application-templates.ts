@@ -35,7 +35,19 @@ export const applicationTemplates: applicationTemplatesNS = {
         hint: "A known client is registered in one click. For any other client, you set the redirect URL and " +
             "client type.",
         label: "Client",
-        other: "Other MCP client"
+        other: "Other MCP client",
+        previewError: {
+            disabled: "Client ID metadata documents are disabled in this deployment.",
+            documentNotRetrieved: "The client's metadata document could not be retrieved.",
+            generic: "An error occurred while reading the client's metadata document.",
+            invalidAuthentication: "The client's authentication method or key source is not supported.",
+            invalidClientId: "The client ID is not a valid client ID metadata document URL.",
+            invalidRedirectUri: "One of the client's redirect URLs is not allowed.",
+            message: "Could not add the client",
+            missingAuthorizationCode: "The client does not support the authorization code grant.",
+            tooManyPreviews: "Other clients are being added right now. Try again in a few seconds.",
+            valueTooLong: "A value in the client's metadata document is too long to store."
+        }
     },
     notifications: {
         fetchTemplate: {

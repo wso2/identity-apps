@@ -35,6 +35,18 @@ export interface applicationTemplatesNS {
         label: string;
         other: string;
         hint: string;
+        previewError: {
+            message: string;
+            invalidClientId: string;
+            documentNotRetrieved: string;
+            invalidRedirectUri: string;
+            invalidAuthentication: string;
+            missingAuthorizationCode: string;
+            valueTooLong: string;
+            disabled: string;
+            tooManyPreviews: string;
+            generic: string;
+        };
     };
     notifications: {
         fetchTemplateMetadata: {

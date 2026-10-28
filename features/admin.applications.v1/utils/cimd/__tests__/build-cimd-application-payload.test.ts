@@ -16,16 +16,48 @@
  * under the License.
  */
 
-import { CHATGPT_CLIENT_ID, CLAUDE_CLIENT_ID, VSCODE_CLIENT_ID } from "./fixtures";
 import { CertificateTypeInterface, MainApplicationInterface } from "../../../models/application";
 import {
     buildCimdApplicationPayload,
     buildCimdCallbackUrls,
-    getCimdKnownClient
+    isCimdClientId
 } from "../build-cimd-application-payload";
-import { CimdKnownClientInterface } from "../models";
+import { CimdClientMetadataInterface, CimdTokenEndpointAuthMethods } from "../models";
 
-const known = (clientId: string): CimdKnownClientInterface => structuredClone(getCimdKnownClient(clientId));
+const CLAUDE_CLIENT_ID: string = "https://claude.ai/oauth/mcp-oauth-client-metadata";
+const CHATGPT_CLIENT_ID: string = "https://chatgpt.com/oauth/client.json";
+const VSCODE_CLIENT_ID: string = "https://vscode.dev/oauth/client-metadata.json";
+
+// Preview responses, as IS returns them after reading each client's metadata document.
+const PREVIEWS: Record<string, CimdClientMetadataInterface> = {
+    [ CHATGPT_CLIENT_ID ]: {
+        clientId: CHATGPT_CLIENT_ID,
+        clientName: "ChatGPT",
+        clientUri: "https://chatgpt.com/",
+        grantTypes: [ "authorization_code", "refresh_token" ],
+        jwksUri: "https://chatgpt.com/oauth/jwks.json",
+        redirectUris: [ "https://chatgpt.com/connector_platform_oauth_redirect" ],
+        tokenEndpointAuthMethod: CimdTokenEndpointAuthMethods.PRIVATE_KEY_JWT
+    },
+    [ CLAUDE_CLIENT_ID ]: {
+        clientId: CLAUDE_CLIENT_ID,
+        clientName: "Claude",
+        clientUri: "https://claude.ai",
+        grantTypes: [ "authorization_code", "refresh_token" ],
+        redirectUris: [ "https://claude.ai/api/mcp/auth_callback" ],
+        tokenEndpointAuthMethod: CimdTokenEndpointAuthMethods.NONE
+    },
+    [ VSCODE_CLIENT_ID ]: {
+        clientId: VSCODE_CLIENT_ID,
+        clientName: "Visual Studio Code",
+        clientUri: "https://vscode.dev/product",
+        grantTypes: [ "authorization_code", "refresh_token" ],
+        redirectUris: [ "http://127.0.0.1:33418/", "https://vscode.dev/redirect" ],
+        tokenEndpointAuthMethod: CimdTokenEndpointAuthMethods.NONE
+    }
+};
+
+const preview = (clientId: string): CimdClientMetadataInterface => structuredClone(PREVIEWS[clientId]);
 
 const MCP_TEMPLATE_PAYLOAD: MainApplicationInterface = {
     advancedConfigurations: {
@@ -69,9 +101,9 @@ describe("buildCimdCallbackUrls", () => {
             .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode\\.dev/redirect)" ]);
     });
 
-    it("escapes every URI but loopback IPs, which IS matches on any port", () => {
-        expect(buildCimdCallbackUrls([ "http://[::1]/cb", "https://a.example/cb?x=1" ]))
-            .toEqual([ "regexp=(http://[::1]/cb|https://a\\.example/cb\\?x=1)" ]);
+    it("escapes every URI, keeping only the http://127.0.0.1 prefix literal for IS's loopback port matching", () => {
+        expect(buildCimdCallbackUrls([ "http://127.0.0.1/x)?(.*", "https://a.example/cb?x=1" ]))
+            .toEqual([ "regexp=(http://127.0.0.1/x\\)\\?\\(\\.\\*|https://a\\.example/cb\\?x=1)" ]);
         expect(new RegExp("^(" + buildCimdCallbackUrls([ "http://127.0.0.1:1/", "https://vscode.dev/r" ])[0]
             .slice("regexp=(".length)).test("https://vscode-dev/r")).toBe(false);
     });
@@ -85,7 +117,7 @@ describe("buildCimdCallbackUrls", () => {
 
 describe("buildCimdApplicationPayload", () => {
     it("builds a public client for Claude", () => {
-        expect(buildCimdApplicationPayload(known(CLAUDE_CLIENT_ID))).toEqual({
+        expect(buildCimdApplicationPayload(preview(CLAUDE_CLIENT_ID))).toEqual({
             accessUrl: "https://claude.ai",
             inboundProtocolConfiguration: {
                 oidc: {
@@ -107,7 +139,7 @@ describe("buildCimdApplicationPayload", () => {
     });
 
     it("builds a confidential client with a JWKS certificate for ChatGPT", () => {
-        expect(buildCimdApplicationPayload(known(CHATGPT_CLIENT_ID))).toEqual({
+        expect(buildCimdApplicationPayload(preview(CHATGPT_CLIENT_ID))).toEqual({
             accessUrl: "https://chatgpt.com/",
             advancedConfigurations: {
                 certificate: { type: "JWKS", value: "https://chatgpt.com/oauth/jwks.json" }
@@ -137,7 +169,7 @@ describe("buildCimdApplicationPayload", () => {
 
     it("builds a regexp callback for VS Code's two redirect URIs", () => {
         const payload: MainApplicationInterface = buildCimdApplicationPayload(
-            known(VSCODE_CLIENT_ID));
+            preview(VSCODE_CLIENT_ID));
 
         expect(payload.inboundProtocolConfiguration.oidc.callbackURLs)
             .toEqual([ "regexp=(http://127.0.0.1:33418/|https://vscode\\.dev/redirect)" ]);
@@ -148,7 +180,7 @@ describe("buildCimdApplicationPayload", () => {
     });
 
     it("omits accessUrl when there is no client URI", () => {
-        const reviewed: CimdKnownClientInterface = known(CLAUDE_CLIENT_ID);
+        const reviewed: CimdClientMetadataInterface = preview(CLAUDE_CLIENT_ID);
 
         delete reviewed.clientUri;
 
@@ -158,7 +190,7 @@ describe("buildCimdApplicationPayload", () => {
     it("merges a public client over a template, replacing lists and dropping secrets and keys", () => {
         const base: MainApplicationInterface = structuredClone(MCP_TEMPLATE_PAYLOAD);
         const payload: MainApplicationInterface = buildCimdApplicationPayload(
-            known(VSCODE_CLIENT_ID), base);
+            preview(VSCODE_CLIENT_ID), base);
 
         expect(payload).toEqual({
             accessUrl: "https://vscode.dev/product",
@@ -190,7 +222,7 @@ describe("buildCimdApplicationPayload", () => {
 
     it("merges a private_key_jwt client over a template", () => {
         const payload: MainApplicationInterface = buildCimdApplicationPayload(
-            known(CHATGPT_CLIENT_ID), MCP_TEMPLATE_PAYLOAD);
+            preview(CHATGPT_CLIENT_ID), MCP_TEMPLATE_PAYLOAD);
         const oidc: MainApplicationInterface["inboundProtocolConfiguration"]["oidc"] =
             payload.inboundProtocolConfiguration.oidc;
 
@@ -212,8 +244,8 @@ describe("buildCimdApplicationPayload", () => {
 
     it("never sets a client secret", () => {
         const payloads: MainApplicationInterface[] = [
-            buildCimdApplicationPayload(known(CLAUDE_CLIENT_ID)),
-            buildCimdApplicationPayload(known(CHATGPT_CLIENT_ID), MCP_TEMPLATE_PAYLOAD)
+            buildCimdApplicationPayload(preview(CLAUDE_CLIENT_ID)),
+            buildCimdApplicationPayload(preview(CHATGPT_CLIENT_ID), MCP_TEMPLATE_PAYLOAD)
         ];
 
         payloads.forEach((payload: MainApplicationInterface) => {
@@ -222,13 +254,20 @@ describe("buildCimdApplicationPayload", () => {
     });
 });
 
-describe("getCimdKnownClient", () => {
-    it("finds a known client by its exact client ID", () => {
-        expect(getCimdKnownClient(CLAUDE_CLIENT_ID)?.key).toBe("claude");
+describe("isCimdClientId", () => {
+    it("accepts an https URL", () => {
+        expect(isCimdClientId(CLAUDE_CLIENT_ID)).toBe(true);
+        expect(isCimdClientId("https://client.example")).toBe(true);
     });
 
-    it("returns undefined for any other client ID", () => {
-        expect(getCimdKnownClient(CLAUDE_CLIENT_ID + "/")).toBeUndefined();
-        expect(getCimdKnownClient("A1b2C3d4E5f6G7h8")).toBeUndefined();
+    it("rejects other schemes", () => {
+        expect(isCimdClientId("http://client.example/metadata.json")).toBe(false);
+        expect(isCimdClientId("urn:client:example")).toBe(false);
+    });
+
+    it("rejects a client ID that is not a URL", () => {
+        expect(isCimdClientId("A1b2C3d4E5f6G7h8")).toBe(false);
+        expect(isCimdClientId("")).toBe(false);
+        expect(isCimdClientId(undefined)).toBe(false);
     });
 });

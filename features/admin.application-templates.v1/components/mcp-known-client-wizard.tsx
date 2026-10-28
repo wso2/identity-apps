@@ -17,19 +17,38 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
+import { previewClientIdMetadataDocument } from "@wso2is/admin.applications.v1/api/application";
 import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import {
     buildCimdApplicationPayload,
+    CimdClientMetadataInterface,
     CimdConstants,
     CimdKnownClientInterface
 } from "@wso2is/admin.applications.v1/utils/cimd";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint, LinkButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Card, Grid, Icon } from "semantic-ui-react";
 import "./mcp-known-client-wizard.scss";
+
+/**
+ * Descriptions of the errors IS returns when it cannot read or accept a client's metadata document.
+ */
+const PREVIEW_ERROR_DESCRIPTIONS: Record<string, string> = {
+    "CIMD-60001": "applicationTemplates:mcpKnownClients.previewError.invalidClientId",
+    "CIMD-60002": "applicationTemplates:mcpKnownClients.previewError.documentNotRetrieved",
+    "CIMD-60003": "applicationTemplates:mcpKnownClients.previewError.invalidRedirectUri",
+    "CIMD-60004": "applicationTemplates:mcpKnownClients.previewError.invalidAuthentication",
+    "CIMD-60005": "applicationTemplates:mcpKnownClients.previewError.missingAuthorizationCode",
+    "CIMD-60006": "applicationTemplates:mcpKnownClients.previewError.valueTooLong",
+    "CIMD-60007": "applicationTemplates:mcpKnownClients.previewError.disabled",
+    "CIMD-60008": "applicationTemplates:mcpKnownClients.previewError.tooManyPreviews"
+};
 
 /**
  * Prop types of the `McpKnownClientWizard` component.
@@ -85,9 +104,18 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
-    const [ creatingClientKey, setCreatingClientKey ] = useState<string>(null);
+    const configuredClients: unknown = useSelector((state: AppState) =>
+        state?.config?.deployment?.extensions?.mcpKnownClients);
 
-    const isCreating: boolean = !!creatingClientKey;
+    const knownClients: CimdKnownClientInterface[] = (Array.isArray(configuredClients)
+        ? configuredClients as CimdKnownClientInterface[]
+        : CimdConstants.DEFAULT_KNOWN_CLIENTS)
+        .filter((client: CimdKnownClientInterface) => typeof client?.clientId === "string"
+            && typeof client?.name === "string");
+
+    const [ creatingClientId, setCreatingClientId ] = useState<string>(null);
+
+    const isCreating: boolean = !!creatingClientId;
 
     const handleClientSelect = (client: CimdKnownClientInterface): void => {
         if (isCreating) {
@@ -95,21 +123,36 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
         }
 
         setAlert(null);
-        setCreatingClientKey(client.key);
-        onSubmit(
-            buildCimdApplicationPayload(client, templatePayload),
-            (errorMsg: string, errorDescription: string) => {
-                setCreatingClientKey(null);
+        setCreatingClientId(client.clientId);
+        // Only a failed preview is reported as one; create errors come back through the onSubmit callback.
+        previewClientIdMetadataDocument(client.clientId)
+            .then(
+                (metadata: CimdClientMetadataInterface) => {
+                    onSubmit(
+                        buildCimdApplicationPayload(metadata, templatePayload),
+                        (errorMsg: string, errorDescription: string) => {
+                            setCreatingClientId(null);
 
-                if (errorMsg) {
+                            if (errorMsg) {
+                                setAlert({
+                                    description: errorDescription,
+                                    level: AlertLevels.ERROR,
+                                    message: errorMsg
+                                });
+                            }
+                        }
+                    );
+                },
+                (error: AxiosError<HttpErrorResponseDataInterface>) => {
+                    setCreatingClientId(null);
                     setAlert({
-                        description: errorDescription,
+                        description: t(PREVIEW_ERROR_DESCRIPTIONS[error?.response?.data?.code]
+                            ?? "applicationTemplates:mcpKnownClients.previewError.generic"),
                         level: AlertLevels.ERROR,
-                        message: errorMsg
+                        message: t("applicationTemplates:mcpKnownClients.previewError.message")
                     });
                 }
-            }
-        );
+            );
     };
 
     return (
@@ -143,19 +186,19 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
                                         { t("applicationTemplates:mcpKnownClients.label") }
                                     </label>
                                     <Card.Group itemsPerRow={ 3 } className="sub-templates">
-                                        { CimdConstants.KNOWN_CLIENTS.map((client: CimdKnownClientInterface) => (
+                                        { knownClients.map((client: CimdKnownClientInterface, index: number) => (
                                             <SelectionCard
-                                                key={ client.key }
+                                                key={ client.clientId }
                                                 size="auto"
                                                 className="sub-template-selection-card"
                                                 header={ <Typography variant="body1">{ client.name }</Typography> }
-                                                selected={ creatingClientKey === client.key }
-                                                disabled={ isCreating && creatingClientKey !== client.key }
+                                                selected={ creatingClientId === client.clientId }
+                                                disabled={ isCreating && creatingClientId !== client.clientId }
                                                 onClick={ () => handleClientSelect(client) }
                                                 contentTopBorder={ false }
                                                 showTooltips={ false }
                                                 renderDisabledItemsAsGrayscale={ false }
-                                                data-componentid={ `${ componentId }-client-${ client.key }` }
+                                                data-componentid={ `${ componentId }-client-${ index }` }
                                             />
                                         )) }
                                         <SelectionCard
@@ -175,7 +218,9 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
                                             data-componentid={ `${ componentId }-configure-manually` }
                                         />
                                     </Card.Group>
-                                    <Hint>{ t("applicationTemplates:mcpKnownClients.hint") }</Hint>
+                                    { knownClients.length > 0 && (
+                                        <Hint>{ t("applicationTemplates:mcpKnownClients.hint") }</Hint>
+                                    ) }
                                 </div>
                             </Grid.Column>
                         </Grid.Row>

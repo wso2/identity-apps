@@ -17,7 +17,7 @@
  */
 
 /**
- * Token endpoint authentication methods of the known CIMD clients.
+ * Token endpoint authentication methods of CIMD clients.
  */
 export enum CimdTokenEndpointAuthMethods {
     NONE = "none",
@@ -25,24 +25,30 @@ export enum CimdTokenEndpointAuthMethods {
 }
 
 /**
- * A known MCP client that identifies itself with a Client ID Metadata Document (CIMD).
- * The values are copied from the client's published document and reviewed before they are added.
+ * A known MCP client offered in the MCP client template, read from the deployment configuration.
  */
 export interface CimdKnownClientInterface {
+    name: string;
     /**
-     * Stable key for the client, used in component IDs.
+     * The Client Identifier URL.
      */
-    key: string;
+    clientId: string;
+}
+
+/**
+ * The values IS reads from a client's Client ID Metadata Document (CIMD) and checks before the client is created.
+ */
+export interface CimdClientMetadataInterface {
     /**
      * The Client Identifier URL. Stored as the OAuth client ID, byte for byte.
      */
     clientId: string;
-    name: string;
+    clientName: string;
     clientUri?: string;
     redirectUris: string[];
     tokenEndpointAuthMethod: CimdTokenEndpointAuthMethods;
     /**
-     * Only for `private_key_jwt`. Always on the client ID's origin.
+     * Only for `private_key_jwt`.
      */
     jwksUri?: string;
     grantTypes: string[];

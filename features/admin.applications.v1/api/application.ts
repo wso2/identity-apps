@@ -52,6 +52,7 @@ import {
 } from "../models/application-inbound";
 import { UpdateClaimConfiguration  } from "../models/endpoints";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import { CimdClientMetadataInterface } from "../utils/cimd/models";
 
 /**
  * TODO: move the error messages to a constant file.
@@ -707,6 +708,35 @@ export const createApplication = (application: MainApplicationInterface): Promis
             }
 
             return Promise.resolve(response);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieves a client's Client ID Metadata Document through IS and returns the values IS checked.
+ *
+ * @param clientId - The Client Identifier URL.
+ * @returns A promise containing the client's metadata.
+ */
+export const previewClientIdMetadataDocument = (clientId: string): Promise<CimdClientMetadataInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: { clientId },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/cimd/preview"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to preview the client ID metadata document."));
+            }
+
+            return Promise.resolve(response.data as CimdClientMetadataInterface);
         }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
