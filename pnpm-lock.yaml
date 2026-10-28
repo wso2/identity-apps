@@ -323,7 +323,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.analytics.v1
       '@wso2is/admin.api-resources.v2':
-        specifier: ^2.26.12
+        specifier: ^2.26.13
         version: link:../../features/admin.api-resources.v2
       '@wso2is/admin.application-templates.v1':
         specifier: ^1.6.2
