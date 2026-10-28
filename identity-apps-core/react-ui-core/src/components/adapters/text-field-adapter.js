@@ -44,6 +44,8 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
 
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(fieldValidations);
+    const hasValidationError = fieldErrors.length > 0
+        || Boolean(formState && formState.errors && formState.errors[identifier]);
 
     useEffect(() => {
         formStateHandler(component.config.identifier, value);
@@ -81,6 +83,8 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
             <label htmlFor={ identifier }>{ resolveElementText(translations, label) }</label>
             <Input
                 fluid
+                aria-invalid={ hasValidationError }
+                aria-describedby={ hasValidationError ? `${identifier}-error` : undefined }
                 className={ inputIconClass ? "left icon" : null }
                 placeholder={ resolveElementText(translations, placeholder) }
                 onChange={ handleChange }
