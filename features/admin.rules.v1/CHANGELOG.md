@@ -1,5 +1,14 @@
 # @wso2is/admin.rules.v1
 
+## 0.7.55
+
+### Patch Changes
+
+- [#10814](https://github.com/wso2/identity-apps/pull/10814) [`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device assurance policy list and view pages to the console
+
+- Updated dependencies [[`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443)]:
+  - @wso2is/admin.core.v1@2.62.0
+
 ## 0.7.54
 
 ### Patch Changes
