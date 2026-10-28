@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -326,6 +326,11 @@ export class I18nConstants {
     public static readonly AGENTS_NAMESPACE: string = I18nModuleConstants.AGENTS_NAMESPACE;
 
     /**
+     * Devices namespace.
+     */
+    public static readonly DEVICES_NAMESPACE: string = I18nModuleConstants.DEVICES_NAMESPACE;
+
+    /**
      * Flows namespace.
      */
     public static readonly FLOWS_NAMESPACE: string = I18nModuleConstants.FLOWS_NAMESPACE;
@@ -436,6 +441,7 @@ export class I18nConstants {
         [ I18nConstants.EXTERNAL_API_AUTHENTICATION_NAMESPACE, "portals" ],
         [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
+        [ I18nConstants.DEVICES_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
         [ I18nConstants.PRESENTATION_DEFINITIONS_NAMESPACE, "portals" ],

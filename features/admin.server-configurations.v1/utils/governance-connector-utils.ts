@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -375,6 +375,15 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
                         status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONSENTS_PREFERENCE_MANAGEMENT,
                         testId: "preference-management-card"
+                    },
+                    {
+                        description: I18n.instance.t("devices:assurancePolicies.connector.description"),
+                        header: I18n.instance.t("devices:assurancePolicies.connector.header"),
+                        id: ServerConfigurationsConstants.DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID,
+                        isCustom: false,
+                        name: "deviceAssurancePolicies",
+                        route: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
+                        testId: "device-assurance-policies-card"
                     }
                 ],
                 displayOrder: 1,

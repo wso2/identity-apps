@@ -126,6 +126,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             deleteSecret: "",
             deleteSecretType: "",
             deploymentUnits: "",
+            devicePolicies: "",
             entitlementPoliciesApi: "",
             entitlementPolicyCombiningAlgorithmApi: "",
             entitlementPolicyPublishApi: "",

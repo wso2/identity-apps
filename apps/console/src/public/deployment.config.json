@@ -1108,6 +1108,28 @@
                     ]
                 }
             },
+            "devicePolicies": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_policy_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_policy_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_policy_mgt_view"
+                    ],
+                    "update": [
+                        "internal_policy_mgt_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,

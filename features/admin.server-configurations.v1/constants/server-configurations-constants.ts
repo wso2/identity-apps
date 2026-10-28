@@ -417,6 +417,7 @@ export class ServerConfigurationsConstants {
 	 */
     public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso";
     public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management";
+    public static readonly DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID: string = "device-assurance-policies";
     public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed";
 
     /**

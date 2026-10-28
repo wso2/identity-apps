@@ -396,6 +396,11 @@ export class I18nModuleConstants {
     public static readonly AGENTS_NAMESPACE: string = "agents";
 
     /**
+     * Devices namespace.
+     */
+    public static readonly DEVICES_NAMESPACE: string = "devices";
+
+    /**
      * Common Users namespace.
      */
     public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
