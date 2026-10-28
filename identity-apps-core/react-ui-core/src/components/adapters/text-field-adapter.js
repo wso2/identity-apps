@@ -29,11 +29,21 @@ import ValidationError from "../validation-error";
 const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
     const { identifier, required, label, placeholder, validations, hint } = component.config;
+    const isEmailField = component.variant === "EMAIL";
+    const [ value, setValue ] = useState("");
+    const [ hasBlurred, setHasBlurred ] = useState(false);
+
+    const emailValidationRule = { name: "EmailFormatValidator", type: "RULE" };
+    const emailValidations = Array.isArray(validations)
+        ? validations.reduce((rules, rule) => rules.concat(rule), [])
+        : [];
+    const hasEmailValidation = emailValidations.some((rule) => rule && rule.name === "EmailFormatValidator");
+    const fieldValidations = isEmailField
+        ? [ ...emailValidations, ...(hasEmailValidation ? [] : [ emailValidationRule ]) ]
+        : validations;
 
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validations, value);
-
-    const [ value, setValue ] = useState("");
+    const { fieldErrors, validate } = useFieldValidation(fieldValidations);
 
     useEffect(() => {
         formStateHandler(component.config.identifier, value);
@@ -46,6 +56,24 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
         fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
+    const handleChange = (event) => {
+        const newValue = event.target.value;
+
+        setValue(newValue);
+
+        if (isEmailField && hasBlurred) {
+            handleFieldValidation(newValue);
+        }
+    };
+
+    const handleBlur = (event) => {
+        if (isEmailField) {
+            setHasBlurred(true);
+        }
+
+        handleFieldValidation(event.target.value);
+    };
+
     const inputIconClass = getInputIconClass(identifier);
 
     return (
@@ -55,8 +83,8 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 fluid
                 className={ inputIconClass ? "left icon" : null }
                 placeholder={ resolveElementText(translations, placeholder) }
-                onChange={ (e) => setValue(e.target.value) }
-                onBlur={ (e) => handleFieldValidation(e.target.value) }
+                onChange={ handleChange }
+                onBlur={ handleBlur }
                 name={ identifier }
                 icon={ getInputIconClass(identifier) }
             />
