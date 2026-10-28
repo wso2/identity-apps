@@ -271,6 +271,59 @@ export const flows: flowsNS = {
         steps: {
             end: {
                 flowCompletionProperties: "Flow completion properties"
+            },
+            start: {
+                declarations: {
+                    abTestingKey: "Every flow declares the abTestingKey variable: a number from 0 to 99 that " +
+                        "stays with the user's browser, sent when the flow starts. Without one, the flow uses its " +
+                        "initial value. Compare it in a condition, such as less than 20, to send a share of the " +
+                        "users down another branch.",
+                    add: {
+                        headers: "Add header",
+                        queryParams: "Add query parameter",
+                        variables: "Add variable"
+                    },
+                    dataTypes: {
+                        BOOLEAN: "Boolean",
+                        DECIMAL: "Decimal",
+                        INTEGER: "Integer",
+                        NUMBER_ARRAY: "Array of numbers",
+                        STRING: "String",
+                        STRING_ARRAY: "Array of strings"
+                    },
+                    description: "Declare the headers and query parameters the flow reads from each request, and " +
+                        "the variables it keeps. Decision steps can branch on them.",
+                    disabled: "Headers, query parameters and variables are not enabled on this server.",
+                    empty: {
+                        headers: "The flow does not read any headers.",
+                        queryParams: "The flow does not read any query parameters.",
+                        variables: "The flow does not declare any variables."
+                    },
+                    errors: {
+                        duplicate: "This name is already declared.",
+                        invalidName: "Use letters, digits and the allowed separators, up to 64 characters.",
+                        invalidVariableName: "Use only letters and digits, up to 255 characters.",
+                        reserved: "This name is reserved."
+                    },
+                    fields: {
+                        abTestingKeyValueHint: "A whole number from {{min}} to {{max}}. Only this value can change.",
+                        dataType: "Data type",
+                        initialValue: "Initial value (optional)",
+                        initialValueHint: "Press Enter to add each value.",
+                        name: "Name",
+                        noValue: "No value",
+                        clientWritable: "Allow app to set this value",
+                        clientWritableHint: "The app can set this value when the flow starts. Do not rely on it " +
+                            "for trust or access decisions."
+                    },
+                    limitReached: "This server allows up to {{max}}.",
+                    remove: "Remove",
+                    tabs: {
+                        headers: "Headers",
+                        queryParams: "Query Params",
+                        variables: "Variables"
+                    }
+                }
             }
         },
         tooltips: {

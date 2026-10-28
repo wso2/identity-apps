@@ -355,6 +355,54 @@ export interface flowsNS {
             end: {
                 flowCompletionProperties: string;
             };
+            start: {
+                declarations: {
+                    abTestingKey: string;
+                    add: {
+                        headers: string;
+                        queryParams: string;
+                        variables: string;
+                    };
+                    dataTypes: {
+                        BOOLEAN: string;
+                        DECIMAL: string;
+                        INTEGER: string;
+                        NUMBER_ARRAY: string;
+                        STRING: string;
+                        STRING_ARRAY: string;
+                    };
+                    description: string;
+                    disabled: string;
+                    empty: {
+                        headers: string;
+                        queryParams: string;
+                        variables: string;
+                    };
+                    errors: {
+                        duplicate: string;
+                        invalidName: string;
+                        invalidVariableName: string;
+                        reserved: string;
+                    };
+                    fields: {
+                        abTestingKeyValueHint: string;
+                        dataType: string;
+                        initialValue: string;
+                        initialValueHint: string;
+                        name: string;
+                        noValue: string;
+                        clientWritable: string;
+                        clientWritableHint: string;
+                    };
+                    limitReached: string;
+                    remove: string;
+                    tabs: {
+                        headers: string;
+                        queryParams: string;
+                        variables: string;
+                    };
+                };
+            };
         };
         validationStatusLabels: {
             error: string;

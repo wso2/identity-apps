@@ -18,10 +18,15 @@
 
 .start.MuiFab-root {
     z-index: 0;
-    pointer-events: none;
+    cursor: pointer;
     color: var(--oxygen-palette-common-white);
     border-radius: 30px;
     background: #63a9f3;
     box-shadow: none;
     padding: 0 2em;
+
+    &:hover {
+        background: #63a9f3;
+        box-shadow: none;
+    }
 }

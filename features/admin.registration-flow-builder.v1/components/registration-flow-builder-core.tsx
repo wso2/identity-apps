@@ -20,6 +20,7 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowDeclarationsInterface } from "@wso2is/admin.flow-builder-core.v1/models/declarations";
 import {
     BlockTypes,
     Branch,
@@ -279,9 +280,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
+    const generateSteps: (steps: Node[], declarations?: FlowDeclarationsInterface) => Node[] = useCallback((
+        steps: Node[],
+        declarations?: FlowDeclarationsInterface
+    ): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(declarations && { declarations }),
                 displayOnly: true
             },
             deletable: false,
@@ -719,7 +724,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     useLayoutEffect(() => {
         if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
             if (!isEmpty(registrationFlow?.steps)) {
-                const steps: Node[] = generateSteps(registrationFlow.steps);
+                const steps: Node[] = generateSteps(registrationFlow.steps, registrationFlow.inputs);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -728,6 +733,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
     }, [
         registrationFlow?.steps,
+        registrationFlow?.inputs,
         isRegistrationFlowFetchRequestLoading,
         isRegistrationFlowFetchRequestValidating,
         initialNodes

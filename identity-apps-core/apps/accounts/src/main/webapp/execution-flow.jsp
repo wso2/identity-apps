@@ -226,10 +226,46 @@
                 const pageSessionDataKey = "<%= sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : null %>";
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
+
+                // A number from 0 to 99 kept for this browser, so conditions on the abTestingKey variable send the
+                // same user down the same branch each time. Without one, the flow uses the key's initial value.
+                const abTestingKeyStorageKey = "wso2.ab.<%= Encode.forJavaScript(tenantDomain) %>";
+                const getAbTestingKey = () => {
+                    try {
+                        let abTestingKey = localStorage.getItem(abTestingKeyStorageKey);
+
+                        if (!/^\d{1,2}$/.test(abTestingKey || "")) {
+                            abTestingKey = String(Math.floor(Math.random() * 100));
+                            localStorage.setItem(abTestingKeyStorageKey, abTestingKey);
+                        }
+
+                        return abTestingKey;
+                    } catch (error) {
+                        return null;
+                    }
+                };
+
+                /**
+                 * Clears what the flow kept in the browser, except the A/B testing key, which outlives a flow.
+                 */
+                const clearFlowStorage = () => {
+                    const abTestingKey = localStorage.getItem(abTestingKeyStorageKey);
+
+                    localStorage.clear();
+                    if (abTestingKey) {
+                        localStorage.setItem(abTestingKeyStorageKey, abTestingKey);
+                    }
+                };
+
                 const extendedInputResolvers = [
                     (initiatingFlowType) => initiatingFlowType === "REGISTRATION" && anonymousProfileTracker !== "null"
                         ? { anonymous_profile_tracker: anonymousProfileTracker }
-                        : {}
+                        : {},
+                    () => {
+                        const abTestingKey = getAbTestingKey();
+
+                        return abTestingKey !== null ? { variables: { abTestingKey: Number(abTestingKey) } } : {};
+                    }
                 ];
                 const getExtendedFlowInputs = (initiatingFlowType) => {
                     const inputs = extendedInputResolvers.reduce(
@@ -300,6 +336,7 @@
                             applicationId: spId,
                             flowType: flowType,
                             inputs: {
+                                ...getExtendedFlowInputs(flowType).inputs,
                                 confirmationCode: confirmationCode
                             }
                         });
@@ -650,7 +687,7 @@
                                 return true;
                             }
 
-                            localStorage.clear();
+                            clearFlowStorage();
 
                             if (flow.type === "VIEW" && flow.data) {
                                 const components = flow.data.components || [];

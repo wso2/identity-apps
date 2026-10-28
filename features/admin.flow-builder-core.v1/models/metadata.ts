@@ -17,6 +17,7 @@
  */
 
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { DeclarationConfigsInterface } from "./declarations";
 import { RuleFieldDefinitionInterface } from "./rule-expression";
 
 /**
@@ -63,6 +64,10 @@ export interface MetadataInterface {
      * Is a Workflow engagement enabled?
      */
     workflowEnabled: boolean;
+    /**
+     * Whether flows may declare headers, query parameters and variables, and their limits.
+     */
+    inputConfigs?: DeclarationConfigsInterface;
 };
 
 /**

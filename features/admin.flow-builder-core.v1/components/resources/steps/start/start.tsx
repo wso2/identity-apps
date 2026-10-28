@@ -18,9 +18,11 @@
 
 import Fab from "@oxygen-ui/react/Fab";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Position } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import { Base } from "../../../../models/base";
 import { StaticStepTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./start.scss";
@@ -42,6 +44,20 @@ type StartPropsInterface = CommonStepFactoryPropsInterface & IdentifiableCompone
 const Start: FunctionComponent = ({
     ["data-componentid"]: componentId = "start"
 }: StartPropsInterface): ReactElement => {
+    const nodeId: string = useNodeId();
+    const { getNode } = useReactFlow();
+    const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+
+    /**
+     * Opens the property panel, where the headers, query parameters and variables of the flow are declared.
+     */
+    const handleOpenProperties = (): void => {
+        const step: Node = getNode(nodeId);
+
+        setLastInteractedStepId(nodeId);
+        setLastInteractedResource({ ...step, ...(step?.data ?? {}), id: nodeId } as unknown as Base);
+    };
+
     return (
         <div data-componentid={ componentId }>
             <Fab
@@ -49,6 +65,7 @@ const Start: FunctionComponent = ({
                 className="start"
                 variant="extended"
                 size="small"
+                onClick={ handleOpenProperties }
                 data-componentid={ `${componentId}-start-node` }
             >
                 Start

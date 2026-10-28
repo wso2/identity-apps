@@ -20,6 +20,7 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowDeclarationsInterface } from "@wso2is/admin.flow-builder-core.v1/models/declarations";
 import {
     BlockTypes,
     Branch,
@@ -272,9 +273,10 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         );
     };
 
-    const generateSteps = (steps: Node[]): Node[] => {
+    const generateSteps = (steps: Node[], declarations?: FlowDeclarationsInterface): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(declarations && { declarations }),
                 displayOnly: true
             },
             deletable: false,
@@ -655,7 +657,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     useLayoutEffect(() => {
         if (!isPasswordRecoveryFlowFetchRequestLoading && !isPasswordRecoveryFlowFetchRequestValidating) {
             if (!isEmpty(passwordRecoveryFlow?.steps)) {
-                const steps: Node[] = generateSteps(passwordRecoveryFlow.steps);
+                const steps: Node[] = generateSteps(passwordRecoveryFlow.steps, passwordRecoveryFlow.inputs);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -664,6 +666,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
     }, [
         passwordRecoveryFlow?.steps,
+        passwordRecoveryFlow?.inputs,
         isPasswordRecoveryFlowFetchRequestLoading,
         isPasswordRecoveryFlowFetchRequestValidating
     ]);

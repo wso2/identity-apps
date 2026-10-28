@@ -45,6 +45,7 @@ import Handle from "../../dnd/handle";
 import Sortable from "../../dnd/sortable";
 import ErrorIcon from "../../validation-panel/error-icon";
 import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
+import { FlowDeclarationsInterface } from "../../../models/declarations";
 import { Action, Branch } from "../../../models/elements";
 import { BranchRuleInterface } from "../../../models/rule-expression";
 import { Resource } from "../../../models/resources";
@@ -56,6 +57,7 @@ import {
     renameBranch,
     setBranchRule
 } from "../../../utils/branch-operations";
+import { START_STEP_ID, withDeclaredQualifiers } from "../../../utils/declarations";
 import {
     fromEditorRule,
     isRuleComplete,
@@ -348,10 +350,15 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
         setResourcePropertiesPanelHeading
     } = useAuthenticationFlowBuilderCore();
 
-    // The editor reads the shared branch metadata shape, which the flow's own metadata is mapped onto.
+    const startNode: Pick<Node, "data" | "type" | "id"> = useNodesData(START_STEP_ID);
+    const declarations: FlowDeclarationsInterface = startNode?.data?.declarations as FlowDeclarationsInterface;
+
+    // The editor reads the shared branch metadata shape, which the flow's own metadata is mapped onto. Conditions
+    // on what the flow declares pick from the declared names.
     const ruleMetaData: ConditionExpressionsMetaDataInterface = useMemo(
-        (): ConditionExpressionsMetaDataInterface => toEditorMetadata(ruleMetadata?.ruleMetaData),
-        [ ruleMetadata?.ruleMetaData ]
+        (): ConditionExpressionsMetaDataInterface =>
+            withDeclaredQualifiers(toEditorMetadata(ruleMetadata?.ruleMetaData), declarations),
+        [ ruleMetadata?.ruleMetaData, declarations ]
     );
 
     const [ openBranchId, setOpenBranchId ] = useState<string>(null);

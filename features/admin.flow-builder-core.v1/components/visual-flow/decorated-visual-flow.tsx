@@ -75,6 +75,7 @@ import {
     isRuleMetadataNotImplemented,
     withoutDecisionSteps
 } from "../../utils/conditional-branching";
+import { START_STEP_ID } from "../../utils/declarations";
 import isDecisionStepLimitReached from "../../utils/decision-step-limit";
 import generateResourceId from "../../utils/generate-resource-id";
 import seedRuleDecisionBranches from "../../utils/seed-rule-decision-branches";
@@ -507,7 +508,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         // Tracker: https://github.com/xyflow/xyflow/issues/2405
         setTimeout(() => {
             // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-            setNodes(() => {
+            setNodes((currentNodes: Node[]) => {
                 newNodes.forEach((node: Node) => {
                     updateNodeInternals(node.id);
 
@@ -524,7 +525,18 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     }
                 });
 
-                return newNodes;
+                // A template replaces the steps, not what the flow declares, which the start node keeps.
+                const declarations: unknown = currentNodes.find(
+                    (node: Node) => node.id === START_STEP_ID
+                )?.data?.declarations;
+
+                if (!declarations) {
+                    return newNodes;
+                }
+
+                return newNodes.map((node: Node) => node.id === START_STEP_ID
+                    ? { ...node, data: { ...node.data, declarations } }
+                    : node);
             });
 
             setEdges(() => [ ...newEdges ]);
