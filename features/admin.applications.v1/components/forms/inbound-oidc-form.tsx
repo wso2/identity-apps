@@ -127,6 +127,7 @@ import {
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import { getCimdKnownClient } from "../../utils/cimd";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
 import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
@@ -397,6 +398,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>(false);
     const [ isReactApplication, setIsReactApplication ] = useState<boolean>(false);
     const [ isNextJSApplication, setIsNextJSApplication ] = useState<boolean>(false);
+
+    // Known CIMD clients keep the redirect URLs, grants and authentication method from their metadata document.
+    const isCimdKnownClient: boolean = !!getCimdKnownClient(initialValues?.clientId);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
@@ -2500,7 +2504,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         )
                                         : (selectedGrantTypes ?? initialValues?.grantTypes)
                                 }
-                                readOnly={ readOnly }
+                                readOnly={ readOnly || isCimdKnownClient }
                                 enableReinitialize={ true }
                                 listen={ (values: Map<string, FormValue>) => handleGrantTypeChange(values) }
                                 data-testid={ `${ testId }-grant-type-checkbox-group` }
@@ -2809,7 +2813,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 productName: config.ui.productName
                                             })
                                     }
-                                    readOnly={ readOnly }
+                                    readOnly={ readOnly || isCimdKnownClient }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     data-testid={ `${ testId }-callback-url-input` }
@@ -3231,7 +3235,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 children={ isFAPIApplication ?
                                                     getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
                                                     : getAllowedList(metadata?.tokenEndpointAuthMethod) }
-                                                readOnly={ readOnly }
+                                                readOnly={ readOnly || isCimdKnownClient }
                                                 data-componentId={ `${ componentId }-client-auth-method-dropdown` }
                                             />
                                             <Hint>
@@ -5703,6 +5707,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && (!isSPAApplication))
                             && !isMobileApplication
                             && !isPublicClient
+                            && !isCimdKnownClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (!isEnforceClientSecretPermissionEnabled

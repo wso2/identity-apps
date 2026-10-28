@@ -31,6 +31,12 @@ export const applicationTemplates: applicationTemplatesNS = {
             description: "Choose the relevant application technology for easy configuration."
         }
     },
+    mcpKnownClients: {
+        hint: "A known client is registered in one click. For any other client, you set the redirect URL and " +
+            "client type.",
+        label: "Client",
+        other: "Other MCP client"
+    },
     notifications: {
         fetchTemplate: {
             error: {

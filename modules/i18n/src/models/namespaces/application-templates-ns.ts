@@ -31,6 +31,11 @@ export interface applicationTemplatesNS {
             description: string;
         };
     };
+    mcpKnownClients: {
+        label: string;
+        other: string;
+        hint: string;
+    };
     notifications: {
         fetchTemplateMetadata: {
             error: {
