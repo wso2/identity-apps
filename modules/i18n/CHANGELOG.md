@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.51.0
+
+### Minor Changes
+
+- [#10814](https://github.com/wso2/identity-apps/pull/10814) [`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device assurance policy list and view pages to the console
+
 ## 2.50.1
 
 ### Patch Changes
