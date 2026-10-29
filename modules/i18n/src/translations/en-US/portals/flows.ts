@@ -106,6 +106,15 @@ export const flows: flowsNS = {
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
+            flowHandoff: {
+                expiryTimeHint: "Set the time span that the handoff link would be valid, in seconds.",
+                expiryTimeLabel: "Handoff link expiry time",
+                expiryTimePlaceholder: "Enter expiry time",
+                targetUrlHint: "Link to the webpage that continues the flow from the handoff link. If not set, the " +
+                    "default URL of the flow is used.",
+                targetUrlLabel: "Target URL",
+                targetUrlPlaceholder: "https://myapp.com/account"
+            },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
             },
@@ -124,6 +133,11 @@ export const flows: flowsNS = {
             },
             tooltip: {
                 configurationHint: "Configure"
+            },
+            userVerification: {
+                tokenValidityPeriodHint: "Set the time span that a token is accepted after it is issued, in minutes.",
+                tokenValidityPeriodLabel: "Token validity period",
+                tokenValidityPeriodPlaceholder: "Enter the token validity period"
             }
         },
         labels: {

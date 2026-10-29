@@ -23,7 +23,9 @@
     &.github,
     &.confirmation-code,
     &.magic-link,
-    &.flow-extension {
+    &.flow-extension,
+    &.user-verification-executor,
+    &.flow-handoff-executor {
         img {
             filter: invert(100%);
         }
