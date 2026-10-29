@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 4.5.0
+
+### Minor Changes
+
+- [#10840](https://github.com/wso2/identity-apps/pull/10840) [`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self-service device management to My Account
+
+### Patch Changes
+
+- Updated dependencies [[`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5)]:
+  - @wso2is/i18n@2.56.0
+
 ## 4.4.4
 
 ### Patch Changes
