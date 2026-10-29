@@ -31,6 +31,52 @@ export const applicationTemplates: applicationTemplatesNS = {
             description: "Choose the relevant application technology for easy configuration."
         }
     },
+    mcpKnownClients: {
+        chooser: {
+            heading: "Which MCP client are you connecting?",
+            hint: "Known clients register in one click from the metadata document their vendor publishes.",
+            knownClients: "Known clients",
+            manual: {
+                description: "For your own MCP clients. You set the redirect URL and whether it is a public client.",
+                label: "I'll configure it myself"
+            },
+            metadataDocument: {
+                description: "Enter the client's metadata document URL. Its name and sign-in details come from " +
+                    "its vendor.",
+                label: "Another client with a Client ID Metadata Document"
+            },
+            otherClients: "Other clients"
+        },
+        document: {
+            applicationName: "Application name",
+            fetch: "Fetch document",
+            grants: "Grants",
+            heading: "Enter the client's metadata document",
+            hint: "The client's URL is its client ID. Its name and sign-in details come from its vendor.",
+            loopback: "Returns to the user's device",
+            placeholder: "The client's details appear here after you fetch its document.",
+            privateKeyJwt: "Private key JWT, keys at {{host}}",
+            publicClient: "Public client, no secret",
+            publishedBy: "Published by {{host}}",
+            redirectUris: "Redirect URIs",
+            signInType: "Sign-in type",
+            url: "Metadata document URL",
+            urlInvalid: "Enter an https URL.",
+            urlTooLong: "The URL must be 255 characters or fewer."
+        },
+        previewError: {
+            disabled: "Client ID metadata documents are not enabled for this organization.",
+            documentNotRetrieved: "The client's metadata document could not be retrieved.",
+            generic: "An error occurred while reading the client's metadata document.",
+            invalidAuthentication: "The client's authentication method or key source is not supported.",
+            invalidClientId: "The client ID is not a valid client ID metadata document URL.",
+            invalidRedirectUri: "One of the client's redirect URLs is not allowed.",
+            message: "Could not add the client",
+            missingAuthorizationCode: "The client does not support the authorization code grant.",
+            tooManyPreviews: "Other clients are being added right now. Try again in a few seconds.",
+            valueTooLong: "A value in the client's metadata document is too long to store."
+        }
+    },
     notifications: {
         fetchTemplate: {
             error: {

@@ -127,6 +127,7 @@ import {
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import { isCimdClientId } from "../../utils/cimd";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
 import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
@@ -397,6 +398,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>(false);
     const [ isReactApplication, setIsReactApplication ] = useState<boolean>(false);
     const [ isNextJSApplication, setIsNextJSApplication ] = useState<boolean>(false);
+
+    // CIMD clients keep the redirect URLs, grants and authentication method from their metadata document.
+    const isCimdClient: boolean = isMcpClientApplication && isCimdClientId(initialValues?.clientId);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
@@ -1814,8 +1818,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             if (!isPublicClient) {
                 let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+                // MCP client applications don't show the authentication method field, so keep the stored method.
+                const tokenEndpointAuthMethodValue: string = isMcpClientApplication
+                    ? initialValues?.clientAuthentication?.tokenEndpointAuthMethod
+                    : values.get("tokenEndpointAuthMethod") as string;
 
-                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                if (tokenEndpointAuthMethodValue === PRIVATE_KEY_JWT) {
                     tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
                 }
 
@@ -1824,7 +1832,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
                         tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
-                        tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                        tokenEndpointAuthMethod: tokenEndpointAuthMethodValue,
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
                 };
@@ -2500,7 +2508,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         )
                                         : (selectedGrantTypes ?? initialValues?.grantTypes)
                                 }
-                                readOnly={ readOnly }
+                                readOnly={ readOnly || isCimdClient }
                                 enableReinitialize={ true }
                                 listen={ (values: Map<string, FormValue>) => handleGrantTypeChange(values) }
                                 data-testid={ `${ testId }-grant-type-checkbox-group` }
@@ -2809,7 +2817,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 productName: config.ui.productName
                                             })
                                     }
-                                    readOnly={ readOnly }
+                                    readOnly={ readOnly || isCimdClient }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     data-testid={ `${ testId }-callback-url-input` }
@@ -3231,7 +3239,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 children={ isFAPIApplication ?
                                                     getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
                                                     : getAllowedList(metadata?.tokenEndpointAuthMethod) }
-                                                readOnly={ readOnly }
+                                                readOnly={ readOnly || isCimdClient }
                                                 data-componentId={ `${ componentId }-client-auth-method-dropdown` }
                                             />
                                             <Hint>
@@ -5703,6 +5711,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && (!isSPAApplication))
                             && !isMobileApplication
                             && !isPublicClient
+                            && !isCimdClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (!isEnforceClientSecretPermissionEnabled
