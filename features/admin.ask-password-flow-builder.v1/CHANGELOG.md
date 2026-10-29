@@ -1,5 +1,18 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.3.0
+
+### Minor Changes
+
+- [#10835](https://github.com/wso2/identity-apps/pull/10835) [`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device policy selection, authentication validation and a starter template for the device registration step in the registration flow builders
+
+### Patch Changes
+
+- Updated dependencies [[`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471)]:
+  - @wso2is/admin.flow-builder-core.v1@0.14.0
+  - @wso2is/admin.core.v1@2.63.1
+  - @wso2is/admin.flows.v1@1.0.184
+
 ## 1.2.0
 
 ### Minor Changes

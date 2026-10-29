@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 4.26.0
+
+### Minor Changes
+
+- [#10835](https://github.com/wso2/identity-apps/pull/10835) [`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device policy selection, authentication validation and a starter template for the device registration step in the registration flow builders
+
+### Patch Changes
+
+- Updated dependencies [[`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.14.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.3.0
+  - @wso2is/i18n@2.54.0
+  - @wso2is/admin.branding.v1@2.32.178
+  - @wso2is/admin.core.v1@2.63.1
+  - @wso2is/admin.email-management.v1@2.25.380
+  - @wso2is/admin.flows.v1@1.0.184
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.3.1
+  - @wso2is/admin.users.v1@2.39.1
+
 ## 4.25.0
 
 ### Minor Changes
