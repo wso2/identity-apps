@@ -389,6 +389,8 @@ export interface flowsNS {
                         invalidName: string;
                         invalidRuntimeValueName: string;
                         reserved: string;
+                        tooManyValues: string;
+                        valueTooLong: string;
                     };
                     fields: {
                         abTestingKeyValueHint: string;

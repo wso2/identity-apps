@@ -306,7 +306,9 @@ export const flows: flowsNS = {
                         duplicate: "This name is already defined.",
                         invalidName: "Use letters, digits and the allowed separators, up to 64 characters.",
                         invalidRuntimeValueName: "Use only letters and digits, up to 255 characters.",
-                        reserved: "This name is reserved."
+                        reserved: "This name is reserved.",
+                        tooManyValues: "Add up to {{max}} values.",
+                        valueTooLong: "Use up to {{max}} characters for each value."
                     },
                     fields: {
                         abTestingKeyValueHint: "A whole number from {{min}} to {{max}}. Only this value can change.",

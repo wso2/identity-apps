@@ -45,7 +45,8 @@ import {
     FlowVariablesInterface,
     RuntimeValueInterface,
     RuntimeValueType,
-    VariableDataTypes
+    VariableDataTypes,
+    VariableLimitsInterface
 } from "../../../models/variables";
 import { Resource } from "../../../models/resources";
 import {
@@ -80,6 +81,7 @@ interface VariableListPropsInterface extends IdentifiableComponentInterface {
     variables: RuntimeValueInterface[];
     dataTypes: VariableDataTypes[];
     max?: number;
+    valueLimits?: Pick<VariableLimitsInterface, "maxValueLength" | "maxArraySize">;
     onChange: (variables: RuntimeValueInterface[]) => void;
 }
 
@@ -98,6 +100,8 @@ interface VariableSectionInterface {
 interface InitialValueFieldPropsInterface extends IdentifiableComponentInterface {
     dataType: VariableDataTypes;
     value: RuntimeValueType;
+    maxValueLength?: number;
+    maxArraySize?: number;
     onChange: (value: RuntimeValueType) => void;
 }
 
@@ -120,11 +124,22 @@ const RUNTIME_VALUE_DATA_TYPES: VariableDataTypes[] = Object.values(VariableData
 const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     dataType,
     value,
+    maxValueLength,
+    maxArraySize,
     onChange,
     ["data-componentid"]: componentId = "initial-value-field"
 }: InitialValueFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const label: string = t("flows:core.steps.start.variables.fields.initialValue");
+
+    /**
+     * Whether a text is longer than the server allows for a value, or for an entry of an array value.
+     *
+     * @param text - Text of the value or entry.
+     * @returns True when it is too long.
+     */
+    const isTooLong: (text: string) => boolean = (text: string): boolean =>
+        maxValueLength !== undefined && text.length > maxValueLength;
 
     if (dataType === VariableDataTypes.BOOLEAN) {
         return (
@@ -146,6 +161,13 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     if (dataType === VariableDataTypes.STRING_ARRAY || dataType === VariableDataTypes.NUMBER_ARRAY) {
         const isNumeric: boolean = dataType === VariableDataTypes.NUMBER_ARRAY;
         const entries: string[] = Array.isArray(value) ? value.map((entry: string | number) => String(entry)) : [];
+        let entriesError: string | undefined;
+
+        if (maxArraySize !== undefined && entries.length > maxArraySize) {
+            entriesError = t("flows:core.steps.start.variables.errors.tooManyValues", { max: maxArraySize });
+        } else if (entries.some(isTooLong)) {
+            entriesError = t("flows:core.steps.start.variables.errors.valueTooLong", { max: maxValueLength });
+        }
 
         return (
             <Autocomplete
@@ -166,7 +188,8 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
                     <TextField
                         { ...params }
                         label={ label }
-                        helperText={ t("flows:core.steps.start.variables.fields.initialValueHint") }
+                        error={ !!entriesError }
+                        helperText={ entriesError ?? t("flows:core.steps.start.variables.fields.initialValueHint") }
                     />
                 ) }
                 data-componentid={ componentId }
@@ -175,12 +198,17 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     }
 
     const isNumber: boolean = dataType === VariableDataTypes.INTEGER || dataType === VariableDataTypes.DECIMAL;
+    const isValueTooLong: boolean = !isNumber && typeof value === "string" && isTooLong(value);
 
     return (
         <TextField
             size="small"
             fullWidth
             label={ label }
+            error={ isValueTooLong }
+            helperText={ isValueTooLong
+                ? t("flows:core.steps.start.variables.errors.valueTooLong", { max: maxValueLength })
+                : undefined }
             type={ isNumber ? "number" : "text" }
             inputProps={ dataType === VariableDataTypes.INTEGER ? { step: 1 } : undefined }
             value={ value === undefined || value === null ? "" : String(value) }
@@ -270,6 +298,7 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
     variables,
     dataTypes,
     max,
+    valueLimits,
     onChange,
     ["data-componentid"]: componentId = "variable-list"
 }: VariableListPropsInterface): ReactElement => {
@@ -404,6 +433,8 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
                                     <InitialValueField
                                         dataType={ variable.dataType ?? dataTypes[ 0 ] }
                                         value={ variable.value }
+                                        maxValueLength={ valueLimits?.maxValueLength }
+                                        maxArraySize={ valueLimits?.maxArraySize }
                                         onChange={ (value: RuntimeValueType) => update(index, { value }) }
                                         data-componentid={ `${componentId}-item-${index}-value` }
                                     />
@@ -541,6 +572,7 @@ const StartProperties: FunctionComponent<StartPropertiesPropsInterface> = ({
                                     variables={ list }
                                     dataTypes={ dataTypes }
                                     max={ max }
+                                    valueLimits={ variableLimits }
                                     onChange={ (next: RuntimeValueInterface[]) => updateVariables(kind, next) }
                                     data-componentid={ sectionId }
                                 />
