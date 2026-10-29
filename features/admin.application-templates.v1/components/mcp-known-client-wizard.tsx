@@ -16,20 +16,36 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { previewClientIdMetadataDocument } from "@wso2is/admin.applications.v1/api/application";
 import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import {
-    buildCimdApplicationPayload,
+    CimdClientIdUrlError,
     CimdClientMetadataInterface,
-    CimdKnownClientInterface
+    CimdKnownClientInterface,
+    CimdTokenEndpointAuthMethods,
+    buildCimdApplicationPayload,
+    validateCimdClientIdUrl
 } from "@wso2is/admin.applications.v1/utils/cimd";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Heading, Hint, LinkButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
+import {
+    Heading,
+    Hint,
+    LinkButton,
+    PrimaryButton,
+    SelectionCard,
+    useWizardAlert
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Grid, Icon } from "semantic-ui-react";
@@ -49,6 +65,19 @@ const PREVIEW_ERROR_DESCRIPTIONS: Record<string, string> = {
     "CIMD-60008": "applicationTemplates:mcpKnownClients.previewError.tooManyPreviews"
 };
 
+const URL_ERROR_DESCRIPTIONS: Record<CimdClientIdUrlError, string> = {
+    [ CimdClientIdUrlError.INVALID ]: "applicationTemplates:mcpKnownClients.document.urlInvalid",
+    [ CimdClientIdUrlError.TOO_LONG ]: "applicationTemplates:mcpKnownClients.document.urlTooLong"
+};
+
+/**
+ * How an MCP client that is not a known client is registered.
+ */
+enum OtherClientOption {
+    METADATA_DOCUMENT = "metadataDocument",
+    MANUAL = "manual"
+}
+
 /**
  * Prop types of the `McpKnownClientWizard` component.
  */
@@ -62,7 +91,7 @@ interface McpKnownClientWizardPropsInterface extends IdentifiableComponentInterf
      */
     templateDescription: string;
     /**
-     * Template payload the known client's values are merged over.
+     * Template payload the client's values are merged over.
      */
     templatePayload: MainApplicationInterface;
     /**
@@ -82,9 +111,19 @@ interface McpKnownClientWizardPropsInterface extends IdentifiableComponentInterf
     onClose: () => void;
 }
 
+const getHost = (url: string): string => {
+    try {
+        return new URL(url).host;
+    } catch {
+        return url;
+    }
+};
+
+const isLoopbackUri = (uri: string): boolean => uri.startsWith("http://127.0.0.1") || uri.startsWith("http://[::1]");
+
 /**
- * First step of the MCP client template: register a known MCP client that uses a Client ID Metadata Document
- * in one click, or continue with the template's own form.
+ * First step of the MCP client template: register a known MCP client in one click, register any other client from
+ * its Client ID Metadata Document, or continue with the template's own form.
  *
  * @param props - Props injected to the component.
  * @returns MCP known client wizard.
@@ -116,11 +155,37 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
             && client.name.trim().length > 0);
 
     const [ creatingClientId, setCreatingClientId ] = useState<string>(null);
+    const [ otherOption, setOtherOption ] = useState<OtherClientOption>(null);
+    const [ isDocumentStep, setIsDocumentStep ] = useState<boolean>(false);
+    const [ documentUrl, setDocumentUrl ] = useState<string>("");
+    const [ documentUrlError, setDocumentUrlError ] = useState<string>(null);
+    const [ metadata, setMetadata ] = useState<CimdClientMetadataInterface>(null);
+    const [ applicationName, setApplicationName ] = useState<string>("");
+    const [ isFetching, setIsFetching ] = useState<boolean>(false);
 
-    const isCreating: boolean = !!creatingClientId;
+    const isBusy: boolean = !!creatingClientId || isFetching;
+
+    const getPreviewErrorDescription = (error: AxiosError<HttpErrorResponseDataInterface>): string =>
+        t(PREVIEW_ERROR_DESCRIPTIONS[error?.response?.data?.code]
+            ?? "applicationTemplates:mcpKnownClients.previewError.generic");
+
+    const createApplication = (clientId: string, payload: MainApplicationInterface): void => {
+        setCreatingClientId(clientId);
+        onSubmit(payload, (errorMsg: string, errorDescription: string) => {
+            setCreatingClientId(null);
+
+            if (errorMsg) {
+                setAlert({
+                    description: errorDescription,
+                    level: AlertLevels.ERROR,
+                    message: errorMsg
+                });
+            }
+        });
+    };
 
     const handleClientSelect = (client: CimdKnownClientInterface): void => {
-        if (isCreating) {
+        if (isBusy) {
             return;
         }
 
@@ -129,27 +194,13 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
         // Only a failed preview is reported as one; create errors come back through the onSubmit callback.
         previewClientIdMetadataDocument(client.clientId)
             .then(
-                (metadata: CimdClientMetadataInterface) => {
-                    onSubmit(
-                        buildCimdApplicationPayload(metadata, templatePayload),
-                        (errorMsg: string, errorDescription: string) => {
-                            setCreatingClientId(null);
-
-                            if (errorMsg) {
-                                setAlert({
-                                    description: errorDescription,
-                                    level: AlertLevels.ERROR,
-                                    message: errorMsg
-                                });
-                            }
-                        }
-                    );
+                (reviewed: CimdClientMetadataInterface) => {
+                    createApplication(client.clientId, buildCimdApplicationPayload(reviewed, templatePayload));
                 },
                 (error: AxiosError<HttpErrorResponseDataInterface>) => {
                     setCreatingClientId(null);
                     setAlert({
-                        description: t(PREVIEW_ERROR_DESCRIPTIONS[error?.response?.data?.code]
-                            ?? "applicationTemplates:mcpKnownClients.previewError.generic"),
+                        description: getPreviewErrorDescription(error),
                         level: AlertLevels.ERROR,
                         message: t("applicationTemplates:mcpKnownClients.previewError.message")
                     });
@@ -157,14 +208,233 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
             );
     };
 
+    const handleContinue = (): void => {
+        if (otherOption === OtherClientOption.MANUAL) {
+            onConfigureManually();
+
+            return;
+        }
+
+        setAlert(null);
+        setIsDocumentStep(true);
+    };
+
+    const handleDocumentUrlChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        const url: string = event.target.value;
+        const urlError: CimdClientIdUrlError = validateCimdClientIdUrl(url.trim());
+
+        setDocumentUrl(url);
+        setMetadata(null);
+        // Only the length is shown while typing; the rest of the URL is checked when the document is fetched.
+        setDocumentUrlError(urlError === CimdClientIdUrlError.TOO_LONG ? t(URL_ERROR_DESCRIPTIONS[urlError]) : null);
+    };
+
+    const handleFetch = (): void => {
+        const url: string = documentUrl.trim();
+        const urlError: CimdClientIdUrlError = validateCimdClientIdUrl(url);
+
+        setAlert(null);
+        setMetadata(null);
+
+        if (urlError) {
+            setDocumentUrlError(t(URL_ERROR_DESCRIPTIONS[urlError]));
+
+            return;
+        }
+
+        setDocumentUrlError(null);
+        setIsFetching(true);
+        previewClientIdMetadataDocument(url)
+            .then(
+                (reviewed: CimdClientMetadataInterface) => {
+                    setMetadata(reviewed);
+                    setApplicationName(reviewed.clientName);
+                },
+                (error: AxiosError<HttpErrorResponseDataInterface>) => {
+                    setDocumentUrlError(getPreviewErrorDescription(error));
+                }
+            )
+            .finally(() => setIsFetching(false));
+    };
+
+    const handleCreate = (): void => {
+        setAlert(null);
+        createApplication(metadata.clientId, {
+            ...buildCimdApplicationPayload(metadata, templatePayload),
+            name: applicationName.trim()
+        });
+    };
+
+    const renderChooser = (): ReactElement => (
+        <div className="sub-template-selection">
+            <Heading as="h4">{ t("applicationTemplates:mcpKnownClients.chooser.heading") }</Heading>
+            { knownClients.length > 0 && (
+                <>
+                    <Hint>{ t("applicationTemplates:mcpKnownClients.chooser.hint") }</Hint>
+                    <label className="sub-templates-label">
+                        { t("applicationTemplates:mcpKnownClients.chooser.knownClients") }
+                    </label>
+                    <Card.Group itemsPerRow={ 3 } className="sub-templates">
+                        { knownClients.map((client: CimdKnownClientInterface, index: number) => (
+                            <SelectionCard
+                                key={ client.clientId }
+                                size="auto"
+                                className="sub-template-selection-card known-client-card"
+                                header={ <Typography variant="body1">{ client.name }</Typography> }
+                                description={ getHost(client.clientId) }
+                                selected={ creatingClientId === client.clientId }
+                                disabled={ isBusy && creatingClientId !== client.clientId }
+                                onClick={ () => handleClientSelect(client) }
+                                contentTopBorder={ false }
+                                showTooltips={ false }
+                                renderDisabledItemsAsGrayscale={ false }
+                                data-componentid={ `${ componentId }-client-${ index }` }
+                            />
+                        )) }
+                    </Card.Group>
+                </>
+            ) }
+            <label className="sub-templates-label">
+                { t("applicationTemplates:mcpKnownClients.chooser.otherClients") }
+            </label>
+            <RadioGroup
+                className="other-client-options"
+                value={ otherOption ?? "" }
+                onChange={ (_event: ChangeEvent<HTMLInputElement>, value: string) =>
+                    setOtherOption(value as OtherClientOption) }
+            >
+                { [ OtherClientOption.METADATA_DOCUMENT, OtherClientOption.MANUAL ].map(
+                    (option: OtherClientOption) => (
+                        <FormControlLabel
+                            key={ option }
+                            value={ option }
+                            disabled={ isBusy }
+                            className={ `other-client-option${ otherOption === option ? " selected" : "" }` }
+                            control={ <Radio /> }
+                            label={ (
+                                <>
+                                    <Typography variant="body1">
+                                        { t(`applicationTemplates:mcpKnownClients.chooser.${ option }.label`) }
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        { t(`applicationTemplates:mcpKnownClients.chooser.${ option }.description`) }
+                                    </Typography>
+                                </>
+                            ) }
+                            data-componentid={ `${ componentId }-${ option }` }
+                        />
+                    )) }
+            </RadioGroup>
+        </div>
+    );
+
+    const renderDocumentCard = (): ReactElement => (
+        <div className="cimd-document-card" data-componentid={ `${ componentId }-document` }>
+            <div className="cimd-document-card-header">
+                <Typography variant="body1">
+                    <Icon name="file alternate outline" />
+                    { metadata.clientName }
+                </Typography>
+                <Chip
+                    size="small"
+                    variant="outlined"
+                    label={ t("applicationTemplates:mcpKnownClients.document.publishedBy",
+                        { host: getHost(metadata.clientId) }) }
+                />
+            </div>
+            <dl className="cimd-document-card-details">
+                <dt>{ t("applicationTemplates:mcpKnownClients.document.signInType") }</dt>
+                <dd>
+                    { metadata.tokenEndpointAuthMethod === CimdTokenEndpointAuthMethods.PRIVATE_KEY_JWT
+                        ? t("applicationTemplates:mcpKnownClients.document.privateKeyJwt",
+                            { host: getHost(metadata.jwksUri) })
+                        : t("applicationTemplates:mcpKnownClients.document.publicClient") }
+                </dd>
+                <dt>{ t("applicationTemplates:mcpKnownClients.document.redirectUris") }</dt>
+                <dd>
+                    { metadata.redirectUris.map((uri: string) => (
+                        <code key={ uri }>
+                            { uri }
+                            { isLoopbackUri(uri) && (
+                                <Icon
+                                    name="laptop"
+                                    title={ t("applicationTemplates:mcpKnownClients.document.loopback") }
+                                    aria-label={ t("applicationTemplates:mcpKnownClients.document.loopback") }
+                                />
+                            ) }
+                        </code>
+                    )) }
+                </dd>
+                <dt>{ t("applicationTemplates:mcpKnownClients.document.grants") }</dt>
+                <dd>{ metadata.grantTypes.join(", ") }</dd>
+            </dl>
+        </div>
+    );
+
+    const renderDocumentStep = (): ReactElement => (
+        <div className="cimd-document-step">
+            <Heading as="h4">{ t("applicationTemplates:mcpKnownClients.document.heading") }</Heading>
+            <Hint>{ t("applicationTemplates:mcpKnownClients.document.hint") }</Hint>
+            <label className="sub-templates-label" htmlFor={ `${ componentId }-document-url-input` }>
+                { t("applicationTemplates:mcpKnownClients.document.url") }
+            </label>
+            <div className="cimd-document-url">
+                <TextField
+                    fullWidth
+                    size="small"
+                    type="url"
+                    id={ `${ componentId }-document-url-input` }
+                    placeholder="https://"
+                    value={ documentUrl }
+                    onChange={ handleDocumentUrlChange }
+                    onKeyDown={ (event: React.KeyboardEvent) => event.key === "Enter" && handleFetch() }
+                    error={ !!documentUrlError }
+                    helperText={ documentUrlError }
+                    disabled={ isBusy }
+                    data-componentid={ `${ componentId }-document-url` }
+                />
+                <Button
+                    variant="outlined"
+                    onClick={ handleFetch }
+                    disabled={ isBusy || !documentUrl.trim()
+                        || validateCimdClientIdUrl(documentUrl.trim()) === CimdClientIdUrlError.TOO_LONG }
+                    data-componentid={ `${ componentId }-fetch-document` }
+                >
+                    { t("applicationTemplates:mcpKnownClients.document.fetch") }
+                </Button>
+            </div>
+            { metadata
+                ? (
+                    <>
+                        { renderDocumentCard() }
+                        <TextField
+                            fullWidth
+                            size="small"
+                            label={ t("applicationTemplates:mcpKnownClients.document.applicationName") }
+                            value={ applicationName }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                setApplicationName(event.target.value) }
+                            disabled={ isBusy }
+                            data-componentid={ `${ componentId }-application-name` }
+                        />
+                    </>
+                )
+                : (
+                    <div className="cimd-document-placeholder">
+                        { t("applicationTemplates:mcpKnownClients.document.placeholder") }
+                    </div>
+                ) }
+        </div>
+    );
+
     return (
         <ModalWithSidePanel
             open
             className="wizard minimal-application-create-wizard mcp-known-client-wizard"
             dimmer="blurring"
             closeOnDimmerClick={ false }
-            closeOnEscape={ !isCreating }
-            onClose={ () => !isCreating && onClose() }
+            closeOnEscape={ !isBusy }
+            onClose={ () => !isBusy && onClose() }
             data-componentid={ componentId }
         >
             <ModalWithSidePanel.MainPanel>
@@ -183,47 +453,7 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
                         ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <div className="sub-template-selection">
-                                    <label className="sub-templates-label">
-                                        { t("applicationTemplates:mcpKnownClients.label") }
-                                    </label>
-                                    <Card.Group itemsPerRow={ 3 } className="sub-templates">
-                                        { knownClients.map((client: CimdKnownClientInterface, index: number) => (
-                                            <SelectionCard
-                                                key={ client.clientId }
-                                                size="auto"
-                                                className="sub-template-selection-card"
-                                                header={ <Typography variant="body1">{ client.name }</Typography> }
-                                                selected={ creatingClientId === client.clientId }
-                                                disabled={ isCreating && creatingClientId !== client.clientId }
-                                                onClick={ () => handleClientSelect(client) }
-                                                contentTopBorder={ false }
-                                                showTooltips={ false }
-                                                renderDisabledItemsAsGrayscale={ false }
-                                                data-componentid={ `${ componentId }-client-${ index }` }
-                                            />
-                                        )) }
-                                        <SelectionCard
-                                            size="auto"
-                                            className="sub-template-selection-card"
-                                            header={ (
-                                                <Typography variant="body1">
-                                                    <Icon name="add" />
-                                                    { t("applicationTemplates:mcpKnownClients.other") }
-                                                </Typography>
-                                            ) }
-                                            disabled={ isCreating }
-                                            onClick={ () => !isCreating && onConfigureManually() }
-                                            contentTopBorder={ false }
-                                            showTooltips={ false }
-                                            renderDisabledItemsAsGrayscale={ false }
-                                            data-componentid={ `${ componentId }-configure-manually` }
-                                        />
-                                    </Card.Group>
-                                    { knownClients.length > 0 && (
-                                        <Hint>{ t("applicationTemplates:mcpKnownClients.hint") }</Hint>
-                                    ) }
-                                </div>
+                                { isDocumentStep ? renderDocumentStep() : renderChooser() }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -232,9 +462,51 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <LinkButton floated="left" onClick={ onClose } disabled={ isCreating }>
-                                    { t("common:cancel") }
-                                </LinkButton>
+                                { isDocumentStep
+                                    ? (
+                                        <>
+                                            <LinkButton
+                                                floated="left"
+                                                onClick={ () => {
+                                                    setAlert(null);
+                                                    setIsDocumentStep(false);
+                                                } }
+                                                disabled={ isBusy }
+                                                data-componentid={ `${ componentId }-back` }
+                                            >
+                                                { t("common:back") }
+                                            </LinkButton>
+                                            <PrimaryButton
+                                                floated="right"
+                                                onClick={ handleCreate }
+                                                disabled={ isBusy || !metadata || !applicationName.trim() }
+                                                loading={ !!creatingClientId }
+                                                data-componentid={ `${ componentId }-create` }
+                                            >
+                                                { t("common:create") }
+                                            </PrimaryButton>
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <LinkButton
+                                                floated="left"
+                                                onClick={ onClose }
+                                                disabled={ isBusy }
+                                                data-componentid={ `${ componentId }-cancel` }
+                                            >
+                                                { t("common:cancel") }
+                                            </LinkButton>
+                                            <PrimaryButton
+                                                floated="right"
+                                                onClick={ handleContinue }
+                                                disabled={ isBusy || !otherOption }
+                                                data-componentid={ `${ componentId }-continue` }
+                                            >
+                                                { t("common:continue") }
+                                            </PrimaryButton>
+                                        </>
+                                    ) }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

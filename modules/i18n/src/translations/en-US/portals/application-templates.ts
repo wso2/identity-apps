@@ -32,10 +32,38 @@ export const applicationTemplates: applicationTemplatesNS = {
         }
     },
     mcpKnownClients: {
-        hint: "A known client is registered in one click. For any other client, you set the redirect URL and " +
-            "client type.",
-        label: "Client",
-        other: "Other MCP client",
+        chooser: {
+            heading: "Which MCP client are you connecting?",
+            hint: "Known clients register in one click from the metadata document their vendor publishes.",
+            knownClients: "Known clients",
+            manual: {
+                description: "For your own MCP clients. You set the redirect URL and whether it is a public client.",
+                label: "I'll configure it myself"
+            },
+            metadataDocument: {
+                description: "Enter the client's metadata document URL, for example a ChatGPT connector's. Its " +
+                    "name and sign-in details come from its vendor.",
+                label: "Another client with a Client ID Metadata Document"
+            },
+            otherClients: "Other clients"
+        },
+        document: {
+            applicationName: "Application name",
+            fetch: "Fetch document",
+            grants: "Grants",
+            heading: "Enter the client's metadata document",
+            hint: "The client's URL is its client ID. Its name and sign-in details come from its vendor.",
+            loopback: "Returns to the user's device",
+            placeholder: "The client's details appear here after you fetch its document.",
+            privateKeyJwt: "Private key JWT, keys at {{host}}",
+            publicClient: "Public client, no secret",
+            publishedBy: "Published by {{host}}",
+            redirectUris: "Redirect URIs",
+            signInType: "Sign-in type",
+            url: "Metadata document URL",
+            urlInvalid: "Enter an https URL.",
+            urlTooLong: "The URL must be 255 characters or fewer."
+        },
         previewError: {
             disabled: "Client ID metadata documents are not enabled for this organization.",
             documentNotRetrieved: "The client's metadata document could not be retrieved.",

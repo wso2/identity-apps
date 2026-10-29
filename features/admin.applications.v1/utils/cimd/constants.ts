@@ -26,4 +26,9 @@ export class CimdConstants {
     public static readonly CALLBACK_URL_REGEXP_PREFIX: string = "regexp=";
 
     public static readonly IPV4_LOOPBACK_PREFIX: string = "http://127.0.0.1";
+
+    /**
+     * Longest Client Identifier URL IS can store as a client ID, in UTF-8 bytes.
+     */
+    public static readonly MAX_CLIENT_ID_BYTES: number = 255;
 }

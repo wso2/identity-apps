@@ -19,3 +19,4 @@
 export * from "./build-cimd-application-payload";
 export * from "./constants";
 export * from "./models";
+export * from "./validate-cimd-client-id-url";

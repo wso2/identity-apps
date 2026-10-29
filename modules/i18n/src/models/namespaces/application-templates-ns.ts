@@ -32,9 +32,37 @@ export interface applicationTemplatesNS {
         };
     };
     mcpKnownClients: {
-        label: string;
-        other: string;
-        hint: string;
+        chooser: {
+            heading: string;
+            hint: string;
+            knownClients: string;
+            otherClients: string;
+            metadataDocument: {
+                label: string;
+                description: string;
+            };
+            manual: {
+                label: string;
+                description: string;
+            };
+        };
+        document: {
+            heading: string;
+            hint: string;
+            url: string;
+            urlInvalid: string;
+            urlTooLong: string;
+            fetch: string;
+            placeholder: string;
+            publishedBy: string;
+            signInType: string;
+            publicClient: string;
+            privateKeyJwt: string;
+            redirectUris: string;
+            loopback: string;
+            grants: string;
+            applicationName: string;
+        };
         previewError: {
             message: string;
             invalidClientId: string;

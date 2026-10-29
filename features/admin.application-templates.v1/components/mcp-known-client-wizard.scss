@@ -26,4 +26,89 @@
             justify-content: center;
         }
     }
+
+    .ui.cards > .ui.card.known-client-card .card-text-container {
+        flex-direction: column;
+        gap: 0.25em;
+    }
+
+    .other-client-options {
+        gap: 0.75em;
+
+        .other-client-option {
+            margin: 0;
+            padding: 0.75em 1em;
+            align-items: flex-start;
+            border: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            border-radius: 8px;
+
+            &.selected {
+                border-color: var(--oxygen-palette-primary-main, #ff7300);
+            }
+        }
+    }
+
+    .cimd-document-step {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .cimd-document-url {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75em;
+            margin-top: -0.5em;
+
+            > :first-child {
+                flex-grow: 1;
+            }
+
+            > button {
+                flex-shrink: 0;
+                height: 40px;
+                white-space: nowrap;
+            }
+        }
+
+        .cimd-document-placeholder {
+            padding: 2em;
+            text-align: center;
+            color: var(--oxygen-palette-text-secondary, #757575);
+            border: 1px dashed var(--oxygen-palette-divider, #d4d6dd);
+            border-radius: 8px;
+        }
+
+        .cimd-document-card {
+            border: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            border-radius: 8px;
+
+            .cimd-document-card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75em 1em;
+                border-bottom: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            }
+
+            .cimd-document-card-details {
+                display: grid;
+                grid-template-columns: 9em 1fr;
+                gap: 0.5em 1em;
+                margin: 0;
+                padding: 0.75em 1em;
+
+                dt {
+                    color: var(--oxygen-palette-text-secondary, #757575);
+                }
+
+                dd {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25em;
+                    margin: 0;
+                    word-break: break-all;
+                }
+            }
+        }
+    }
 }
