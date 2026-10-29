@@ -41,12 +41,12 @@ const useGetOAuth2InboundConfig = <Data = CimdOAuth2InboundConfigInterface, Erro
         url: `${ store.getState().config.endpoints.serverConfigurations }/authentication/inbound/oauth2`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };
