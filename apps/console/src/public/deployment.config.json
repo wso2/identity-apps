@@ -186,7 +186,7 @@
                 "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
-        "knownMcpClients": [
+        "mcpKnownClients": [
             {
                 "clientId": "https://claude.ai/oauth/mcp-oauth-client-metadata",
                 "name": "Claude"
