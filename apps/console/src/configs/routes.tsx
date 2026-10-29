@@ -1905,6 +1905,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/organization-settings")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "customerDataOrganizationSettings",
+                        name: "customerDataService:organizationSettings.page.title",
+                        path: AppConstants.getPaths().get("CDS_ORGANIZATION_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
                         component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attributes")),
                         exact: true,
                         icon: {
@@ -1985,6 +1997,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         id: "customerDataSettings",
                         name: "customerDataService:resolutionSettings.page.title",
                         path: AppConstants.getPaths().get("CUSTOMER_DATA_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-edit-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "editUnificationRule",
+                        name: "Edit Unification Rule",
+                        path: AppConstants.getPaths().get("UNIFICATION_RULE"),
                         protected: true,
                         showOnSidePanel: false
                     }
@@ -2091,6 +2115,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         id: "createUnificationRule",
                         name: "Create Unification Rule",
                         path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-edit-page")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "editUnificationRule",
+                        name: "Edit Unification Rule",
+                        path: AppConstants.getPaths().get("UNIFICATION_RULE"),
                         protected: true,
                         showOnSidePanel: false
                     }

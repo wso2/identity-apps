@@ -381,12 +381,15 @@ export class AppConstants {
             [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
             [ "CUSTOMER_DATA_PROFILE", `${AppConstants.getMainViewBasePath()}/customer-data` ],
+            [ "CDS_ORGANIZATION_SETTINGS",
+                `${AppConstants.getMainViewBasePath()}/customer-data/organization-settings` ],
             [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
             [ "CUSTOMER_DATA_SETTINGS", `${AppConstants.getMainViewBasePath()}/customer-data/settings` ],
             [ "CUSTOMER_DATA_REVIEW_TASKS", `${AppConstants.getMainViewBasePath()}/customer-data/review-tasks` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
             [ "UNIFICATION_RULE_CREATE", `${AppConstants.getMainViewBasePath()}/unification-rules/create` ],
+            [ "UNIFICATION_RULE", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
             [ "PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes` ],
             [ "PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:scope/:id` ],
             [ "PROFILE_ATTRIBUTE_CREATE", `${AppConstants.getMainViewBasePath()}/profile-attributes/create` ],
@@ -560,6 +563,11 @@ export class AppConstants {
         "branding": "v0.0.0",
         "consents": "v0.0.0",
         "consoleSettings": "v0.0.0",
+        // Organization management: a sub organization uses the Customer Data Service of its root organization.
+        "customerDataProfileAttributes": "v0.0.0",
+        "customerDataProfiles": "v0.0.0",
+        "customerDataService": "v0.0.0",
+        "customerDataUnificationRules": "v0.0.0",
         "emailTemplates": "v0.0.0",
         "flows": "v0.0.0",
         "gettingStarted": "v0.0.0",
@@ -630,6 +638,11 @@ export class AppConstants {
      * Route id of the verifiable credentials page.
      */
     public static readonly VC_TEMPLATES_ROUTE: string = "verifiable-credentials";
+
+    /**
+     * Route id of the customer data service landing page.
+     */
+    public static readonly CDS_ROUTE_ID: string = "customerDataService";
 
     /**
      * Route id of the customer data service page.
