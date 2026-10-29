@@ -65,7 +65,7 @@ type VariableKind = keyof FlowVariablesInterface;
 /**
  * Props interface of {@link StartProperties}
  */
-export interface StartPropertiesPropsInterface extends IdentifiableComponentInterface {
+interface StartPropertiesPropsInterface extends IdentifiableComponentInterface {
     /**
      * The start step.
      */

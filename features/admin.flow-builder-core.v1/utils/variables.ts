@@ -49,7 +49,7 @@ export const AB_TESTING_KEY_MAX: number = 99;
 /**
  * Condition fields that read the variables of the flow.
  */
-export const VariableFields: {
+const VariableFields: {
     REQUEST_HEADERS: string;
     RUNTIME_VALUES: string;
 } = {
