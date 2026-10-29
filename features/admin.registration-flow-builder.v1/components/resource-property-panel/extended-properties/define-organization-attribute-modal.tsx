@@ -41,7 +41,7 @@ interface DefineOrganizationAttributeModalPropsInterface extends IdentifiableCom
 }
 
 /**
- * Derive an identifier from a label: "Business Type Center" becomes "businessTypeCenter".
+ * Derive an identifier from a label: "Business Type" becomes "businessType".
  *
  * @param label - Label typed by the admin.
  * @returns A candidate identifier, empty when the label has no usable characters.
@@ -167,7 +167,7 @@ const DefineOrganizationAttributeModal: FunctionComponent<DefineOrganizationAttr
                         fullWidth
                         size="small"
                         label="Label"
-                        placeholder="e.g. Business Type Center"
+                        placeholder="e.g. Business Type"
                         value={ label }
                         onChange={ handleLabelChange }
                         data-componentid={ `${componentId}-label` }
@@ -176,7 +176,7 @@ const DefineOrganizationAttributeModal: FunctionComponent<DefineOrganizationAttr
                         fullWidth
                         size="small"
                         label="Identifier"
-                        placeholder="e.g. businessTypeCenter"
+                        placeholder="e.g. businessType"
                         value={ identifier }
                         onChange={ handleIdentifierChange }
                         error={ !!error }

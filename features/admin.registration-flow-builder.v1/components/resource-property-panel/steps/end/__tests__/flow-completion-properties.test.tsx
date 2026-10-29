@@ -31,12 +31,12 @@ const mocks: {
     useAuthenticationFlowBuilderCore: Mock;
     useNodesData: Mock;
     updateNodeData: Mock<(_id: string, _update: (_node: Node) => Record<string, unknown>) => void>;
-    useGetRolesList: Mock;
+    useSharedOrganizationRoles: Mock;
 } = vi.hoisted(() => ({
     updateNodeData: vi.fn(),
     useAuthenticationFlowBuilderCore: vi.fn(),
-    useGetRolesList: vi.fn(),
-    useNodesData: vi.fn()
+    useNodesData: vi.fn(),
+    useSharedOrganizationRoles: vi.fn()
 }));
 
 vi.mock("@xyflow/react", () => ({
@@ -49,7 +49,9 @@ vi.mock("@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builde
 vi.mock("@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config", () => ({
     default: () => ({ data: { flowCompletionConfigs: {} } })
 }));
-vi.mock("@wso2is/admin.roles.v2/api/use-get-roles-list", () => ({ default: mocks.useGetRolesList }));
+vi.mock("../../../../../hooks/use-shared-organization-roles", () => ({
+    default: mocks.useSharedOrganizationRoles
+}));
 
 describe("FlowCompletionProperties organization provisioning", () => {
     const componentId: string = "flow-completion-properties-component";
@@ -104,8 +106,14 @@ describe("FlowCompletionProperties organization provisioning", () => {
             metadata: { supportedFlowCompletionConfigs: [], workflowEnabled: false },
             setFlowCompletionConfigs: vi.fn()
         });
-        mocks.useGetRolesList.mockReset();
-        mocks.useGetRolesList.mockReturnValue({ data: roles, error: undefined, isLoading: false });
+        mocks.useSharedOrganizationRoles.mockReset();
+        mocks.useSharedOrganizationRoles.mockReturnValue({
+            hasRoleReadPermission: true,
+            isLoaded: true,
+            isLoading: false,
+            roles: roles.Resources,
+            sharedRoles: roles.Resources
+        });
     });
 
     it("shows organization settings only for the dispatch executor", () => {
@@ -120,14 +128,167 @@ describe("FlowCompletionProperties organization provisioning", () => {
         expect(mocks.updateNodeData).not.toHaveBeenCalled();
     });
 
+    it("groups account settings before organization settings without changing the saved target", () => {
+        renderProperties();
+
+        const headings: HTMLElement[] = screen.getAllByRole("heading");
+
+        expect(headings.map((heading: HTMLElement): string => heading.textContent)).toEqual([
+            "flows:registrationFlow.steps.end.account",
+            "flows:registrationFlow.steps.end.organization.label"
+        ]);
+        expect(screen.getByRole("radio", { name: /provisionTarget.currentOrganization.label/ })).toBeChecked();
+        expect(mocks.updateNodeData).not.toHaveBeenCalled();
+    });
+
+    it("uses the existing label and helper typography in both sections", () => {
+        mocks.useAuthenticationFlowBuilderCore.mockReturnValue({
+            flowCompletionConfigs: {},
+            lastInteractedStepId: endStep.id,
+            metadata: {
+                supportedFlowCompletionConfigs: [ "isEmailVerificationEnabled", "isAccountLockOnCreationEnabled",
+                    "isAutoLoginEnabled", "isFlowCompletionNotificationEnabled" ],
+                workflowEnabled: false
+            },
+            setFlowCompletionConfigs: vi.fn()
+        });
+        renderProperties();
+
+        const bodyStyle: CSSStyleDeclaration = window.getComputedStyle(
+            screen.getByText(/defines what happens once the flow is completed/)
+        );
+        const helperStyle: CSSStyleDeclaration = window.getComputedStyle(
+            screen.getByText("flows:registrationFlow.steps.end.accountVerification.hint")
+        );
+
+        [ "account", "organization.label", "accountVerification.label",
+            "accountActivation.activateImmediately.label", "autoLogin.label", "accountFlowCompletion.label",
+            "provisionTarget.label", "provisionTarget.newOrganization.label",
+            "provisionTarget.currentOrganization.label",
+            "organizationRoles.label" ].forEach((key: string): void => {
+            const style: CSSStyleDeclaration = window.getComputedStyle(
+                screen.getByText(`flows:registrationFlow.steps.end.${key}`)
+            );
+
+            expect(style.fontSize).toBe(bodyStyle.fontSize);
+            expect(style.fontWeight).toBe(bodyStyle.fontWeight);
+        });
+        [ "organization.hint", "organizationRoles.hint" ].forEach((key: string): void => {
+            const style: CSSStyleDeclaration = window.getComputedStyle(
+                screen.getByText(`flows:registrationFlow.steps.end.${key}`)
+            );
+
+            expect(style.fontSize).toBe(helperStyle.fontSize);
+            expect(style.fontWeight).toBe(helperStyle.fontWeight);
+        });
+    });
+
+    it("uses default helper text aligned with the organization option titles", () => {
+        renderProperties();
+
+        const helperStyle: CSSStyleDeclaration = window.getComputedStyle(
+            screen.getByText("flows:registrationFlow.steps.end.organization.hint")
+        );
+
+        [ "newOrganization", "currentOrganization" ].forEach((option: string): void => {
+            const description: HTMLElement = screen.getByText(
+                `flows:registrationFlow.steps.end.provisionTarget.${option}.hint`
+            );
+            const title: HTMLElement = screen.getByText(
+                `flows:registrationFlow.steps.end.provisionTarget.${option}.label`
+            );
+
+            expect(description).toHaveClass("MuiFormHelperText-root");
+            expect(window.getComputedStyle(description).fontSize).toBe(helperStyle.fontSize);
+            expect(window.getComputedStyle(description).marginLeft).toBe(window.getComputedStyle(title).marginLeft);
+        });
+    });
+
+    it("shows the email verification notice as a warning", () => {
+        mocks.useAuthenticationFlowBuilderCore.mockReturnValue({
+            flowCompletionConfigs: {},
+            lastInteractedStepId: endStep.id,
+            metadata: { supportedFlowCompletionConfigs: [ "isEmailVerificationEnabled" ], workflowEnabled: false },
+            setFlowCompletionConfigs: vi.fn()
+        });
+        renderProperties();
+
+        expect(screen.getByRole("alert")).toHaveClass("MuiAlert-standardWarning");
+        expect(screen.getByRole("alert"))
+            .toHaveTextContent("flows:registrationFlow.steps.end.accountVerification.warning");
+    });
+
+    it("keeps account activation slightly indented from the verification option", () => {
+        mocks.useAuthenticationFlowBuilderCore.mockReturnValue({
+            flowCompletionConfigs: {},
+            lastInteractedStepId: endStep.id,
+            metadata: {
+                supportedFlowCompletionConfigs: [ "isEmailVerificationEnabled", "isAccountLockOnCreationEnabled" ],
+                workflowEnabled: false
+            },
+            setFlowCompletionConfigs: vi.fn()
+        });
+        renderProperties();
+
+        const verificationOption: HTMLElement = screen.getByText(
+            "flows:registrationFlow.steps.end.accountVerification.hint"
+        ).parentElement as HTMLElement;
+        const activationOption: HTMLElement = screen.getByText(
+            "flows:registrationFlow.steps.end.accountActivation.activateImmediately.hint"
+        ).parentElement as HTMLElement;
+
+        expect(parseFloat(window.getComputedStyle(activationOption).marginLeft))
+            .toBeGreaterThan(parseFloat(window.getComputedStyle(verificationOption).marginLeft) || 0);
+    });
+
+    it("preserves account setting dependencies when email verification is disabled", () => {
+        const setFlowCompletionConfigs: Mock = vi.fn();
+
+        mocks.useAuthenticationFlowBuilderCore.mockReturnValue({
+            flowCompletionConfigs: {
+                isAccountLockOnCreationEnabled: "false",
+                isAutoLoginEnabled: "true",
+                isEmailVerificationEnabled: "true"
+            },
+            lastInteractedStepId: endStep.id,
+            metadata: { supportedFlowCompletionConfigs: [ "isEmailVerificationEnabled" ], workflowEnabled: false },
+            setFlowCompletionConfigs
+        });
+        renderProperties();
+
+        fireEvent.click(screen.getByRole("checkbox", { name: /accountVerification.label/ }));
+
+        expect(setFlowCompletionConfigs).toHaveBeenCalledWith({
+            isAccountLockOnCreationEnabled: "true",
+            isAutoLoginEnabled: "false",
+            isEmailVerificationEnabled: "false"
+        });
+        expect(mocks.updateNodeData).not.toHaveBeenCalled();
+    });
+
+    it("keeps the provision target label color unchanged when either radio option is focused", () => {
+        renderProperties();
+
+        const label: HTMLElement = screen.getByText("flows:registrationFlow.steps.end.provisionTarget.label");
+        const color: string = window.getComputedStyle(label).color;
+
+        screen.getAllByRole("radio").forEach((radio: HTMLElement): void => {
+            fireEvent.focus(radio);
+
+            expect(label).toHaveClass("Mui-focused");
+            expect(window.getComputedStyle(label).color).toBe(color);
+            fireEvent.blur(radio);
+        });
+    });
+
     it("sets the new-organization target without losing the action or executor metadata", () => {
         renderProperties();
 
-        const checkbox: HTMLElement = within(screen.getByTestId(`${componentId}-provision-target`))
-            .getByRole("checkbox");
+        const radio: HTMLElement = within(screen.getByTestId(`${componentId}-provision-target`))
+            .getByRole("radio", { name: /provisionTarget.newOrganization.label/ });
 
-        expect(checkbox).not.toBeChecked();
-        fireEvent.click(checkbox);
+        expect(radio).not.toBeChecked();
+        fireEvent.click(radio);
 
         expect(getUpdatedAction()).toEqual({
             ...endStep.data.action,
@@ -138,7 +299,7 @@ describe("FlowCompletionProperties organization provisioning", () => {
         });
     });
 
-    it("removes only the provision target when unchecked", () => {
+    it("removes only the provision target when the current organization is selected", () => {
         const node: Node = { ...endStep, data: { ...endStep.data, action: {
             ...endStep.data.action,
             executor: { ...endStep.data.action.executor,
@@ -148,11 +309,10 @@ describe("FlowCompletionProperties organization provisioning", () => {
         mocks.useNodesData.mockReturnValue(node);
         renderProperties();
 
-        const checkbox: HTMLElement = within(screen.getByTestId(`${componentId}-provision-target`))
-            .getByRole("checkbox");
+        const group: HTMLElement = screen.getByTestId(`${componentId}-provision-target`);
 
-        expect(checkbox).toBeChecked();
-        fireEvent.click(checkbox);
+        expect(within(group).getByRole("radio", { name: /provisionTarget.newOrganization.label/ })).toBeChecked();
+        fireEvent.click(within(group).getByRole("radio", { name: /provisionTarget.currentOrganization.label/ }));
 
         expect(getUpdatedAction(node)).toEqual(endStep.data.action);
     });
@@ -163,7 +323,7 @@ describe("FlowCompletionProperties organization provisioning", () => {
         const input: HTMLElement = within(screen.getByTestId(`${componentId}-organization-roles-input`))
             .getByRole("combobox");
 
-        expect(screen.getByText("Manager (Organization)")).toBeInTheDocument();
+        expect(screen.getByText("Manager · Organization")).toBeInTheDocument();
         fireEvent.change(input, { target: { value: "Auditor" } });
         fireEvent.click(screen.getByRole("option", { name: /Auditor/ }));
 

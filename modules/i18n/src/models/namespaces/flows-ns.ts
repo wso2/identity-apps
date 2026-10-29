@@ -434,6 +434,7 @@ export interface flowsNS {
         steps: {
             emailConfirmation: string;
             end: {
+                account: string;
                 description: string;
                 accountVerification: {
                     label: string;
@@ -456,9 +457,21 @@ export interface flowsNS {
                 };
                 provisionTarget: {
                     label: string;
+                    currentOrganization: {
+                        label: string;
+                        hint: string;
+                    };
+                    newOrganization: {
+                        label: string;
+                        hint: string;
+                    };
+                };
+                organization: {
+                    label: string;
                     hint: string;
                 };
                 organizationRoles: {
+                    defaultRole: string;
                     unavailable: string;
                     label: string;
                     placeholder: string;

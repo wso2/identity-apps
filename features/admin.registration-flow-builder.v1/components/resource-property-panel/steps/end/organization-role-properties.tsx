@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteInputChangeReason,
@@ -25,9 +26,12 @@ import Autocomplete, {
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import FormLabel from "@oxygen-ui/react/FormLabel";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
+import { SYSTEM_RESERVED_ROLES } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
@@ -66,11 +70,15 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
         !sharedRoles.some((role: RolesV2Interface) => role.id === selected.id)) : [];
 
     const getRoleLabel: (_role: RolesV2Interface) => string = (role: RolesV2Interface): string =>
-        role.audience?.display ? `${role.displayName} (${role.audience.display})` : role.displayName;
+        role.audience?.display ? `${role.displayName} · ${role.audience.display}` : role.displayName;
 
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
+            <FormLabel htmlFor={ `${componentId}-select` } sx={ { color: "text.primary" } }>
+                { t("flows:registrationFlow.steps.end.organizationRoles.label") }
+            </FormLabel>
             <Autocomplete
+                id={ `${componentId}-select` }
                 multiple
                 fullWidth
                 disableCloseOnSelect
@@ -120,15 +128,36 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
                     )) }
                 renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                     <TextField { ...params }
-                        label={ t("flows:registrationFlow.steps.end.organizationRoles.label") }
                         placeholder={ t("flows:registrationFlow.steps.end.organizationRoles.placeholder") }
+                        InputProps={ {
+                            ...params.InputProps,
+                            startAdornment: (
+                                <>
+                                    <Chip
+                                        icon={ <LockOutlinedIcon /> }
+                                        label={ t("flows:registrationFlow.steps.end.organizationRoles.defaultRole", {
+                                            role: SYSTEM_RESERVED_ROLES.SELF_SIGNUP
+                                        }) }
+                                        size="small"
+                                        color="primary"
+                                        variant="outlined"
+                                        sx={ { m: 0.5 } }
+                                        data-componentid={ `${componentId}-default-role` }
+                                    />
+                                    { params.InputProps.startAdornment }
+                                </>
+                            )
+                        } }
                         error={ !!error }
                         data-componentid={ `${componentId}-input` }
                     />
                 ) }
                 data-componentid={ `${componentId}-select` }
             />
-            <FormHelperText>{ t("flows:registrationFlow.steps.end.organizationRoles.hint") }</FormHelperText>
+            <Stack direction="row" gap={ 1 } alignItems="flex-start">
+                <Typography color="info.main"><CircleInfoIcon /></Typography>
+                <FormHelperText>{ t("flows:registrationFlow.steps.end.organizationRoles.hint") }</FormHelperText>
+            </Stack>
             { unavailableRoles.length > 0 && (
                 <Alert severity="warning">
                     { t("flows:registrationFlow.steps.end.organizationRoles.unavailable", {
