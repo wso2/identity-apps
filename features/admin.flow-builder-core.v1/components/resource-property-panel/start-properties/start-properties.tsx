@@ -41,7 +41,6 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, SyntheticEvent, us
 import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
 import {
-    FlowVariableInterface,
     FlowVariablesInterface,
     RuntimeValueInterface,
     RuntimeValueType,
@@ -50,11 +49,14 @@ import {
 } from "../../../models/variables";
 import { Resource } from "../../../models/resources";
 import {
-    AB_TESTING_KEY,
     AB_TESTING_KEY_MAX,
     AB_TESTING_KEY_MIN,
     HEADER_DATA_TYPES,
-    VariableNamePatterns
+    VariableNameError,
+    VariableValueError,
+    getVariableNameError,
+    getVariableValueError,
+    withAbTestingKeyFirst
 } from "../../../utils/variables";
 import "./start-properties.scss";
 
@@ -100,8 +102,7 @@ interface VariableSectionInterface {
 interface InitialValueFieldPropsInterface extends IdentifiableComponentInterface {
     dataType: VariableDataTypes;
     value: RuntimeValueType;
-    maxValueLength?: number;
-    maxArraySize?: number;
+    error?: string;
     onChange: (value: RuntimeValueType) => void;
 }
 
@@ -110,6 +111,7 @@ interface InitialValueFieldPropsInterface extends IdentifiableComponentInterface
  */
 interface AbTestingKeyItemPropsInterface extends IdentifiableComponentInterface {
     runtimeValue: RuntimeValueInterface;
+    isOutOfRange: boolean;
     onChange: (value: RuntimeValueType) => void;
 }
 
@@ -124,22 +126,12 @@ const RUNTIME_VALUE_DATA_TYPES: VariableDataTypes[] = Object.values(VariableData
 const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     dataType,
     value,
-    maxValueLength,
-    maxArraySize,
+    error,
     onChange,
     ["data-componentid"]: componentId = "initial-value-field"
 }: InitialValueFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const label: string = t("flows:core.steps.start.variables.fields.initialValue");
-
-    /**
-     * Whether a text is longer than the server allows for a value, or for an entry of an array value.
-     *
-     * @param text - Text of the value or entry.
-     * @returns True when it is too long.
-     */
-    const isTooLong: (text: string) => boolean = (text: string): boolean =>
-        maxValueLength !== undefined && text.length > maxValueLength;
 
     if (dataType === VariableDataTypes.BOOLEAN) {
         return (
@@ -161,13 +153,6 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     if (dataType === VariableDataTypes.STRING_ARRAY || dataType === VariableDataTypes.NUMBER_ARRAY) {
         const isNumeric: boolean = dataType === VariableDataTypes.NUMBER_ARRAY;
         const entries: string[] = Array.isArray(value) ? value.map((entry: string | number) => String(entry)) : [];
-        let entriesError: string | undefined;
-
-        if (maxArraySize !== undefined && entries.length > maxArraySize) {
-            entriesError = t("flows:core.steps.start.variables.errors.tooManyValues", { max: maxArraySize });
-        } else if (entries.some(isTooLong)) {
-            entriesError = t("flows:core.steps.start.variables.errors.valueTooLong", { max: maxValueLength });
-        }
 
         return (
             <Autocomplete
@@ -188,8 +173,8 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
                     <TextField
                         { ...params }
                         label={ label }
-                        error={ !!entriesError }
-                        helperText={ entriesError ?? t("flows:core.steps.start.variables.fields.initialValueHint") }
+                        error={ !!error }
+                        helperText={ error ?? t("flows:core.steps.start.variables.fields.initialValueHint") }
                     />
                 ) }
                 data-componentid={ componentId }
@@ -198,17 +183,14 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     }
 
     const isNumber: boolean = dataType === VariableDataTypes.INTEGER || dataType === VariableDataTypes.DECIMAL;
-    const isValueTooLong: boolean = !isNumber && typeof value === "string" && isTooLong(value);
 
     return (
         <TextField
             size="small"
             fullWidth
             label={ label }
-            error={ isValueTooLong }
-            helperText={ isValueTooLong
-                ? t("flows:core.steps.start.variables.errors.valueTooLong", { max: maxValueLength })
-                : undefined }
+            error={ !!error }
+            helperText={ error }
             type={ isNumber ? "number" : "text" }
             inputProps={ dataType === VariableDataTypes.INTEGER ? { step: 1 } : undefined }
             value={ value === undefined || value === null ? "" : String(value) }
@@ -236,13 +218,12 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
  */
 const AbTestingKeyItem: FunctionComponent<AbTestingKeyItemPropsInterface> = ({
     runtimeValue,
+    isOutOfRange,
     onChange,
     ["data-componentid"]: componentId = "ab-testing-key-item"
 }: AbTestingKeyItemPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const value: RuntimeValueType = runtimeValue.value;
-    const isOutOfRange: boolean = value !== undefined && value !== null && (!Number.isInteger(value)
-        || (value as number) < AB_TESTING_KEY_MIN || (value as number) > AB_TESTING_KEY_MAX);
 
     return (
         <Paper variant="outlined" sx={ { p: 1.5 } } data-componentid={ componentId }>
@@ -306,15 +287,14 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
     const isRuntimeValue: boolean = kind === "runtimeValues";
 
     /**
-     * Whether a row is the A/B testing key every flow has. The first runtime value of that name is the one.
+     * Whether a row is the A/B testing key every flow has. Runtime values are listed with it first, so a row named
+     * like it later is a row of its own, which cannot keep that name.
      *
      * @param index - Position of the variable.
      * @returns True for the A/B testing key.
      */
     const isSystemRuntimeValue: (index: number) => boolean = (index: number): boolean =>
-        isRuntimeValue && variables[ index ]?.name === AB_TESTING_KEY
-            && variables.findIndex((variable: FlowVariableInterface) =>
-                variable?.name === AB_TESTING_KEY) === index;
+        isRuntimeValue && index === 0;
 
     // The A/B testing key does not count towards the limit.
     const definedCount: number = variables.filter(
@@ -322,34 +302,32 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
     const isLimitReached: boolean = max !== undefined && definedCount >= max;
 
     /**
-     * The problem with a variable's name, if any. Header names are compared ignoring case, as HTTP does.
+     * The message for the problem with a variable's name, if any.
      *
      * @param index - Position of the variable.
      * @returns The error message, or undefined when the name is fine.
      */
     const getNameError: (index: number) => string | undefined = (index: number): string | undefined => {
-        const name: string = variables[ index ]?.name?.trim() ?? "";
+        const error: VariableNameError = getVariableNameError(kind, variables, index);
 
-        if (!name) {
-            return undefined;
-        }
-        if (!VariableNamePatterns[ kind ].test(name)) {
-            return t(isRuntimeValue
-                ? "flows:core.steps.start.variables.errors.invalidRuntimeValueName"
-                : "flows:core.steps.start.variables.errors.invalidName");
-        }
-        if (isRuntimeValue && name === AB_TESTING_KEY && !isSystemRuntimeValue(index)) {
-            return t("flows:core.steps.start.variables.errors.reserved");
-        }
+        return error ? t(`flows:core.steps.start.variables.errors.${error}`) : undefined;
+    };
 
-        const key: string = kind === "headers" ? name.toLowerCase() : name;
-        const isDuplicate: boolean = variables.some((variable: FlowVariableInterface, other: number) => {
-            const otherName: string = variable?.name?.trim() ?? "";
+    /**
+     * The message for the problem with a runtime value's initial value, if any.
+     *
+     * @param index - Position of the runtime value.
+     * @returns The error message, or undefined when the value is fine.
+     */
+    const getValueError: (index: number) => string | undefined = (index: number): string | undefined => {
+        const error: VariableValueError = getVariableValueError(
+            variables[ index ], valueLimits, isSystemRuntimeValue(index));
 
-            return other < index && (kind === "headers" ? otherName.toLowerCase() : otherName) === key;
-        });
-
-        return isDuplicate ? t("flows:core.steps.start.variables.errors.duplicate") : undefined;
+        return error
+            ? t(`flows:core.steps.start.variables.errors.${error}`, {
+                max: error === "tooManyValues" ? valueLimits?.maxArraySize : valueLimits?.maxValueLength
+            })
+            : undefined;
     };
 
     const update: (index: number, changes: Partial<RuntimeValueInterface>) => void = (
@@ -375,6 +353,7 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
                         <AbTestingKeyItem
                             key={ index }
                             runtimeValue={ variable }
+                            isOutOfRange={ !!getVariableValueError(variable, valueLimits, true) }
                             onChange={ (value: RuntimeValueType) => update(index, { value }) }
                             data-componentid={ `${componentId}-item-${index}` }
                         />
@@ -433,8 +412,7 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
                                     <InitialValueField
                                         dataType={ variable.dataType ?? dataTypes[ 0 ] }
                                         value={ variable.value }
-                                        maxValueLength={ valueLimits?.maxValueLength }
-                                        maxArraySize={ valueLimits?.maxArraySize }
+                                        error={ getValueError(index) }
                                         onChange={ (value: RuntimeValueType) => update(index, { value }) }
                                         data-componentid={ `${componentId}-item-${index}-value` }
                                     />
@@ -533,7 +511,9 @@ const StartProperties: FunctionComponent<StartPropertiesPropsInterface> = ({
     return (
         <Stack gap={ 2 } className="start-properties" data-componentid={ componentId }>
             { sections.map(({ kind, dataTypes, max }: VariableSectionInterface) => {
-                const list: RuntimeValueInterface[] = variables[ kind ] ?? [];
+                const list: RuntimeValueInterface[] = kind === "runtimeValues"
+                    ? withAbTestingKeyFirst(variables.runtimeValues)
+                    : variables.headers ?? [];
                 const sectionId: string = `${componentId}-${kind === "runtimeValues" ? "runtime-values" : kind}`;
 
                 return (

@@ -343,6 +343,7 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
     const edges: Edge[] = useEdges();
     const { setEdges, updateNodeData } = useReactFlow();
     const {
+        isVariablesEnabled,
         ruleMetadata,
         ruleLimits,
         setIsResourcePropertiesPanelFooterHidden,
@@ -357,8 +358,8 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
     // on the variables of the flow pick from their names.
     const ruleMetaData: ConditionExpressionsMetaDataInterface = useMemo(
         (): ConditionExpressionsMetaDataInterface =>
-            withVariableQualifiers(toEditorMetadata(ruleMetadata?.ruleMetaData), variables),
-        [ ruleMetadata?.ruleMetaData, variables ]
+            withVariableQualifiers(toEditorMetadata(ruleMetadata?.ruleMetaData), variables, isVariablesEnabled),
+        [ ruleMetadata?.ruleMetaData, variables, isVariablesEnabled ]
     );
 
     const [ openBranchId, setOpenBranchId ] = useState<string>(null);

@@ -28,6 +28,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import useVariablesValidation from "../../../../hooks/use-variables-validation";
 import { Base } from "../../../../models/base";
 import { StaticStepTypes } from "../../../../models/steps";
 import { FlowVariableInterface, FlowVariablesInterface } from "../../../../models/variables";
@@ -67,6 +68,8 @@ const Start: FunctionComponent = ({
     const node: Pick<Node, "data" | "type" | "id"> = useNodesData(nodeId);
     const { getNode } = useReactFlow();
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+
+    useVariablesValidation(node);
 
     const variables: FlowVariablesInterface = (node?.data?.variables ?? {}) as FlowVariablesInterface;
 

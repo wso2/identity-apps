@@ -350,6 +350,11 @@ export interface flowsNS {
                 message: string;
                 messageWithUserIdentifier: string;
             };
+            variables: {
+                invalid: string;
+                tooManyHeaders: string;
+                tooManyRuntimeValues: string;
+            };
         };
         steps: {
             end: {
@@ -385,9 +390,11 @@ export interface flowsNS {
                         runtimeValues: string;
                     };
                     errors: {
+                        abTestingKeyOutOfRange: string;
                         duplicate: string;
                         invalidName: string;
                         invalidRuntimeValueName: string;
+                        notAnInteger: string;
                         reserved: string;
                         tooManyValues: string;
                         valueTooLong: string;

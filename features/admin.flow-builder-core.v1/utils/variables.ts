@@ -28,6 +28,7 @@ import {
     FlowVariableInterface,
     FlowVariablesInterface,
     RuntimeValueInterface,
+    RuntimeValueType,
     VariableDataTypes,
     VariableLimitsInterface
 } from "../models/variables";
@@ -77,6 +78,145 @@ export const HEADER_DATA_TYPES: VariableDataTypes[] = [
 ];
 
 /**
+ * Problems with the name of a variable, named as their messages are under `flows:core.steps.start.variables.errors`.
+ */
+export type VariableNameError = "duplicate" | "invalidName" | "invalidRuntimeValueName" | "reserved";
+
+/**
+ * Problems with the initial value of a runtime value, named as their messages are under
+ * `flows:core.steps.start.variables.errors`.
+ */
+export type VariableValueError = "abTestingKeyOutOfRange" | "notAnInteger" | "tooManyValues" | "valueTooLong";
+
+/**
+ * The runtime values of a flow with its A/B testing key first, adding the key with its initial value when the flow
+ * does not have it yet. The key is then always the first runtime value, whatever names the other rows are given.
+ *
+ * @param runtimeValues - Runtime values of the flow.
+ * @returns The runtime values, starting with the A/B testing key.
+ */
+export const withAbTestingKeyFirst = (runtimeValues: RuntimeValueInterface[]): RuntimeValueInterface[] => {
+    const list: RuntimeValueInterface[] = runtimeValues ?? [];
+    const index: number = list.findIndex((runtimeValue: RuntimeValueInterface) =>
+        runtimeValue?.name?.trim() === AB_TESTING_KEY);
+
+    if (index === 0) {
+        return list;
+    }
+    if (index < 0) {
+        return [
+            { dataType: VariableDataTypes.INTEGER, name: AB_TESTING_KEY, value: AB_TESTING_KEY_MIN },
+            ...list
+        ];
+    }
+
+    return [ list[ index ], ...list.filter((_: RuntimeValueInterface, current: number) => current !== index) ];
+};
+
+/**
+ * The problem with the name of a variable, if any. Header names are compared ignoring case, as HTTP does.
+ *
+ * @param kind      - Kind of the variable.
+ * @param variables - Variables of that kind, with the A/B testing key first for runtime values.
+ * @param index     - Position of the variable.
+ * @returns The problem, or undefined when the name is fine or not given yet.
+ */
+export const getVariableNameError = (
+    kind: keyof FlowVariablesInterface,
+    variables: FlowVariableInterface[],
+    index: number
+): VariableNameError | undefined => {
+    const isHeader: boolean = kind === "headers";
+    const name: string = variables[ index ]?.name?.trim() ?? "";
+
+    if (!name) {
+        return undefined;
+    }
+    if (!VariableNamePatterns[ kind ].test(name)) {
+        return isHeader ? "invalidName" : "invalidRuntimeValueName";
+    }
+    if (!isHeader && name === AB_TESTING_KEY && index !== 0) {
+        return "reserved";
+    }
+
+    const key: string = isHeader ? name.toLowerCase() : name;
+    const isDuplicate: boolean = variables.some((variable: FlowVariableInterface, other: number) => {
+        const otherName: string = variable?.name?.trim() ?? "";
+
+        return other < index && (isHeader ? otherName.toLowerCase() : otherName) === key;
+    });
+
+    return isDuplicate ? "duplicate" : undefined;
+};
+
+/**
+ * The problem with the initial value of a runtime value, if any.
+ *
+ * @param runtimeValue   - The runtime value.
+ * @param limits         - Limits on values.
+ * @param isAbTestingKey - Whether it is the A/B testing key of the flow.
+ * @returns The problem, or undefined when the value is fine or not given.
+ */
+export const getVariableValueError = (
+    runtimeValue: RuntimeValueInterface,
+    limits: Pick<VariableLimitsInterface, "maxValueLength" | "maxArraySize">,
+    isAbTestingKey: boolean
+): VariableValueError | undefined => {
+    const value: RuntimeValueType = runtimeValue?.value;
+
+    if (value === undefined || value === null) {
+        return undefined;
+    }
+    if (isAbTestingKey) {
+        return Number.isInteger(value) && (value as number) >= AB_TESTING_KEY_MIN
+            && (value as number) <= AB_TESTING_KEY_MAX ? undefined : "abTestingKeyOutOfRange";
+    }
+
+    const isTooLong: (entry: string | number | boolean) => boolean = (entry: string | number | boolean): boolean =>
+        limits?.maxValueLength !== undefined && String(entry).length > limits.maxValueLength;
+
+    if (Array.isArray(value)) {
+        if (limits?.maxArraySize !== undefined && value.length > limits.maxArraySize) {
+            return "tooManyValues";
+        }
+
+        return value.some(isTooLong) ? "valueTooLong" : undefined;
+    }
+    if (runtimeValue.dataType === VariableDataTypes.INTEGER && !Number.isInteger(value)) {
+        return "notAnInteger";
+    }
+
+    return typeof value === "string" && isTooLong(value) ? "valueTooLong" : undefined;
+};
+
+/**
+ * The names of the variables that cannot be saved as they are, for the validation panel. A variable without a name
+ * is left out when the flow is saved, so it is not reported.
+ *
+ * @param variables - Variables of the flow.
+ * @param limits    - Limits on flow variables.
+ * @returns The names of the headers and runtime values that have a problem.
+ */
+export const getInvalidVariableNames = (
+    variables: FlowVariablesInterface,
+    limits: VariableLimitsInterface
+): string[] => {
+    const headers: FlowVariableInterface[] = variables?.headers ?? [];
+    const runtimeValues: RuntimeValueInterface[] = withAbTestingKeyFirst(variables?.runtimeValues);
+
+    const invalidHeaders: string[] = headers
+        .filter((_: FlowVariableInterface, index: number) => getVariableNameError("headers", headers, index))
+        .map((header: FlowVariableInterface) => header.name.trim());
+    const invalidRuntimeValues: string[] = runtimeValues
+        .filter((runtimeValue: RuntimeValueInterface, index: number) => runtimeValue?.name?.trim()
+            && (getVariableNameError("runtimeValues", runtimeValues, index)
+                || getVariableValueError(runtimeValue, limits, index === 0)))
+        .map((runtimeValue: RuntimeValueInterface) => runtimeValue.name.trim());
+
+    return [ ...new Set([ ...invalidHeaders, ...invalidRuntimeValues ]) ];
+};
+
+/**
  * The variables that have a name, with the name trimmed.
  *
  * @param variables - Variables as edited.
@@ -113,22 +253,25 @@ export const getVariablesPayload = (nodes: Node[]): FlowVariablesInterface | und
 
 /**
  * Offers the names of the flow's variables as the qualifiers of the condition fields that read them, so a condition
- * picks a defined header or runtime value instead of typing its name.
+ * picks a defined header or runtime value instead of typing its name. A field keeps its own input when the console
+ * has flow variables turned off, or when the flow defines no variable it could pick.
  *
  * @param metadata  - The rule editor's metadata.
  * @param variables - The variables of the flow.
+ * @param isEnabled - Whether the console has flow variables turned on.
  * @returns The metadata with the variable names as options.
  */
 export const withVariableQualifiers = (
     metadata: ConditionExpressionsMetaDataInterface,
-    variables: FlowVariablesInterface
+    variables: FlowVariablesInterface,
+    isEnabled: boolean
 ): ConditionExpressionsMetaDataInterface => {
-    if (!metadata) {
+    if (!metadata || !isEnabled) {
         return metadata;
     }
 
     const namesByField: Record<string, string[]> = {
-        [ VariableFields.RUNTIME_VALUES ]: (variables?.runtimeValues ?? []).map(
+        [ VariableFields.RUNTIME_VALUES ]: withAbTestingKeyFirst(variables?.runtimeValues).map(
             (runtimeValue: RuntimeValueInterface) => runtimeValue?.name
         ),
         [ VariableFields.REQUEST_HEADERS ]: (variables?.headers ?? []).map(
@@ -137,9 +280,10 @@ export const withVariableQualifiers = (
     };
 
     return metadata.map((meta: ConditionExpressionMetaInterface): ConditionExpressionMetaInterface => {
-        const names: string[] = namesByField[ meta.field?.name ];
+        const names: string[] = [ ...new Set((namesByField[ meta.field?.name ] ?? [])
+            .map((name: string) => name?.trim()).filter(Boolean)) ];
 
-        if (!names || !meta.qualifier) {
+        if (!names.length || !meta.qualifier) {
             return meta;
         }
 
@@ -148,8 +292,7 @@ export const withVariableQualifiers = (
             qualifier: {
                 ...meta.qualifier,
                 inputType: "options",
-                values: [ ...new Set(names.map((name: string) => name?.trim()).filter(Boolean)) ]
-                    .map((name: string) => ({ displayName: name, name }))
+                values: names.map((name: string) => ({ displayName: name, name }))
             }
         };
     });

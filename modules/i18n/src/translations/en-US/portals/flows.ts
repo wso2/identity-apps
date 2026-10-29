@@ -303,9 +303,11 @@ export const flows: flowsNS = {
                         runtimeValues: "The flow does not define any runtime values."
                     },
                     errors: {
+                        abTestingKeyOutOfRange: "Use a whole number from 0 to 99.",
                         duplicate: "This name is already defined.",
                         invalidName: "Use letters, digits and the allowed separators, up to 64 characters.",
                         invalidRuntimeValueName: "Use only letters and digits, up to 255 characters.",
+                        notAnInteger: "Use a whole number.",
                         reserved: "This name is reserved.",
                         tooManyValues: "Add up to {{max}} values.",
                         valueTooLong: "Use up to {{max}} characters for each value."
@@ -416,6 +418,12 @@ export const flows: flowsNS = {
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
+            },
+            variables: {
+                invalid: "Fix the flow variables on the Start step before saving: {{names}}.",
+                tooManyHeaders: "The flow reads more headers than this server allows. Keep up to {{max}}.",
+                tooManyRuntimeValues: "The flow defines more runtime values than this server allows. Keep up to "
+                    + "{{max}}."
             }
         },
         validationStatusLabels: {
