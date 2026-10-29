@@ -20,6 +20,7 @@ export * from "./applications";
 export * from "./account-recovery";
 export * from "./change-password";
 export * from "./consents";
+export * from "./devices";
 export * from "./linked-accounts";
 export * from "./multi-factor-authentication";
 export * from "./overview";
