@@ -143,7 +143,7 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
     const [ alert, setAlert, notification ] = useWizardAlert();
 
     const configuredClients: unknown = useSelector((state: AppState) =>
-        state?.config?.deployment?.extensions?.mcpKnownClients);
+        state?.config?.deployment?.extensions?.knownMcpClients);
 
     // Known clients come from the deployment config, so a vendor's new Client Identifier URL needs no code change.
     const knownClients: CimdKnownClientInterface[] = (Array.isArray(configuredClients)
