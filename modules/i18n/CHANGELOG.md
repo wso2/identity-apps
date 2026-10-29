@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.53.0
+
+### Minor Changes
+
+- [#10831](https://github.com/wso2/identity-apps/pull/10831) [`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a devices tab to the user edit page in the console
+
 ## 2.52.2
 
 ### Patch Changes
