@@ -1,5 +1,13 @@
 # @wso2is/admin.users.v1
 
+## 2.38.63
+
+### Patch Changes
+
+- Updated dependencies [[`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a)]:
+  - @wso2is/admin.cds.v1@1.7.2
+  - @wso2is/i18n@2.52.1
+
 ## 2.38.62
 
 ### Patch Changes

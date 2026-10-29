@@ -344,7 +344,7 @@ importers:
         specifier: ^2.32.177
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.7.0
+        specifier: ^1.7.2
         version: link:../../features/admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -476,7 +476,7 @@ importers:
         specifier: ^1.5.207
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.62
+        specifier: ^2.38.63
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.43
@@ -506,7 +506,7 @@ importers:
         specifier: ^2.13.7
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.52.0
+        specifier: ^2.52.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
@@ -10254,7 +10254,7 @@ importers:
         specifier: ^2.25.211
         version: link:../admin.authentication.v1
       '@wso2is/admin.cds.v1':
-        specifier: 1.7.1
+        specifier: 1.7.2
         version: link:../admin.cds.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.6
@@ -10311,7 +10311,7 @@ importers:
         specifier: ^2.12.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.49.4
+        specifier: ^2.52.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.6
