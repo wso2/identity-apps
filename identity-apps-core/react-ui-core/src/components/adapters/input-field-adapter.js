@@ -131,7 +131,7 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
                 />
             );
         case "HIDDEN":
-            // Carries a flow variable the client may set, such as an A/B testing key. It is not shown to the user.
+            // Carries a runtime value the app may set, such as an A/B testing key. It is not shown to the user.
             return null;
         default:
             return null;

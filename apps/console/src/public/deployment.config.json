@@ -2384,7 +2384,13 @@
             "enableLegacyFlows": false,
             "enableLegacyInvitedUserRegistrationFlow": false,
             "enableLegacyPasswordRecoveryFlow": false,
-            "enableLegacySelfRegistrationFlow": false
+            "enableLegacySelfRegistrationFlow": false,
+            "variables": {
+                "maxArraySize": 20,
+                "maxHeaders": 10,
+                "maxRuntimeValues": 20,
+                "maxValueLength": 255
+            }
         },
         "governanceConnectors": {
             "loginAttempts": {

@@ -16,51 +16,51 @@
  * under the License.
  */
 
-import Tabs from "@mui/material/Tabs";
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Fab from "@oxygen-ui/react/Fab";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
-import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
-import Tab from "@oxygen-ui/react/Tab";
-import TabPanel from "@oxygen-ui/react/TabPanel";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon, MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node, useNodesData, useReactFlow } from "@xyflow/react";
 import React, { ChangeEvent, FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
 import {
-    DeclarationConfigsInterface,
-    DeclarationInterface,
-    DeclaredDataTypes,
-    DeclaredValue,
-    FlowDeclarationsInterface,
-    VariableDeclarationInterface
-} from "../../../models/declarations";
+    FlowVariableInterface,
+    FlowVariablesInterface,
+    RuntimeValueInterface,
+    RuntimeValueType,
+    VariableDataTypes
+} from "../../../models/variables";
 import { Resource } from "../../../models/resources";
 import {
     AB_TESTING_KEY,
     AB_TESTING_KEY_MAX,
     AB_TESTING_KEY_MIN,
-    DeclarationNamePatterns,
-    REQUEST_VALUE_DATA_TYPES
-} from "../../../utils/declarations";
+    HEADER_DATA_TYPES,
+    VariableNamePatterns
+} from "../../../utils/variables";
+import "./start-properties.scss";
 
 /**
- * The kinds of declarations, by the list that holds them.
+ * The kinds of variables, by the list that holds them.
  */
-type DeclarationKind = keyof FlowDeclarationsInterface;
+type VariableKind = keyof FlowVariablesInterface;
 
 /**
  * Props interface of {@link StartProperties}
@@ -73,37 +73,46 @@ export interface StartPropertiesPropsInterface extends IdentifiableComponentInte
 }
 
 /**
- * Props interface of {@link DeclarationList}
+ * Props interface of {@link VariableList}
  */
-interface DeclarationListPropsInterface extends IdentifiableComponentInterface {
-    kind: DeclarationKind;
-    declarations: VariableDeclarationInterface[];
-    dataTypes: DeclaredDataTypes[];
+interface VariableListPropsInterface extends IdentifiableComponentInterface {
+    kind: VariableKind;
+    variables: RuntimeValueInterface[];
+    dataTypes: VariableDataTypes[];
     max?: number;
-    onChange: (declarations: VariableDeclarationInterface[]) => void;
+    onChange: (variables: RuntimeValueInterface[]) => void;
+}
+
+/**
+ * A collapsible section of the start properties, holding one kind of variable.
+ */
+interface VariableSectionInterface {
+    kind: VariableKind;
+    dataTypes: VariableDataTypes[];
+    max?: number;
 }
 
 /**
  * Props interface of {@link InitialValueField}
  */
 interface InitialValueFieldPropsInterface extends IdentifiableComponentInterface {
-    dataType: DeclaredDataTypes;
-    value: DeclaredValue;
-    onChange: (value: DeclaredValue) => void;
+    dataType: VariableDataTypes;
+    value: RuntimeValueType;
+    onChange: (value: RuntimeValueType) => void;
 }
 
 /**
  * Props interface of {@link AbTestingKeyItem}
  */
 interface AbTestingKeyItemPropsInterface extends IdentifiableComponentInterface {
-    declaration: VariableDeclarationInterface;
-    onChange: (value: DeclaredValue) => void;
+    runtimeValue: RuntimeValueInterface;
+    onChange: (value: RuntimeValueType) => void;
 }
 
-const VARIABLE_DATA_TYPES: DeclaredDataTypes[] = Object.values(DeclaredDataTypes);
+const RUNTIME_VALUE_DATA_TYPES: VariableDataTypes[] = Object.values(VariableDataTypes);
 
 /**
- * The initial value of a variable, edited as its type needs.
+ * The initial value of a runtime value, edited as its type needs.
  *
  * @param props - Props injected to the component.
  * @returns The InitialValueField component.
@@ -115,9 +124,9 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
     ["data-componentid"]: componentId = "initial-value-field"
 }: InitialValueFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
-    const label: string = t("flows:core.steps.start.declarations.fields.initialValue");
+    const label: string = t("flows:core.steps.start.variables.fields.initialValue");
 
-    if (dataType === DeclaredDataTypes.BOOLEAN) {
+    if (dataType === VariableDataTypes.BOOLEAN) {
         return (
             <Select
                 size="small"
@@ -127,15 +136,15 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
                     onChange(event.target.value === "" ? undefined : event.target.value === "true") }
                 data-componentid={ componentId }
             >
-                <MenuItem value="">{ t("flows:core.steps.start.declarations.fields.noValue") }</MenuItem>
+                <MenuItem value="">{ t("flows:core.steps.start.variables.fields.noValue") }</MenuItem>
                 <MenuItem value="true">true</MenuItem>
                 <MenuItem value="false">false</MenuItem>
             </Select>
         );
     }
 
-    if (dataType === DeclaredDataTypes.STRING_ARRAY || dataType === DeclaredDataTypes.NUMBER_ARRAY) {
-        const isNumeric: boolean = dataType === DeclaredDataTypes.NUMBER_ARRAY;
+    if (dataType === VariableDataTypes.STRING_ARRAY || dataType === VariableDataTypes.NUMBER_ARRAY) {
+        const isNumeric: boolean = dataType === VariableDataTypes.NUMBER_ARRAY;
         const entries: string[] = Array.isArray(value) ? value.map((entry: string | number) => String(entry)) : [];
 
         return (
@@ -157,7 +166,7 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
                     <TextField
                         { ...params }
                         label={ label }
-                        helperText={ t("flows:core.steps.start.declarations.fields.initialValueHint") }
+                        helperText={ t("flows:core.steps.start.variables.fields.initialValueHint") }
                     />
                 ) }
                 data-componentid={ componentId }
@@ -165,7 +174,7 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
         );
     }
 
-    const isNumber: boolean = dataType === DeclaredDataTypes.INTEGER || dataType === DeclaredDataTypes.DECIMAL;
+    const isNumber: boolean = dataType === VariableDataTypes.INTEGER || dataType === VariableDataTypes.DECIMAL;
 
     return (
         <TextField
@@ -173,7 +182,7 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
             fullWidth
             label={ label }
             type={ isNumber ? "number" : "text" }
-            inputProps={ dataType === DeclaredDataTypes.INTEGER ? { step: 1 } : undefined }
+            inputProps={ dataType === VariableDataTypes.INTEGER ? { step: 1 } : undefined }
             value={ value === undefined || value === null ? "" : String(value) }
             onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                 const text: string = event.target.value;
@@ -192,42 +201,45 @@ const InitialValueField: FunctionComponent<InitialValueFieldPropsInterface> = ({
 };
 
 /**
- * The A/B testing key every flow declares. Only its initial value, from 0 to 99, can change.
+ * The A/B testing key every flow has. Only its initial value, from 0 to 99, can change.
  *
  * @param props - Props injected to the component.
  * @returns The AbTestingKeyItem component.
  */
 const AbTestingKeyItem: FunctionComponent<AbTestingKeyItemPropsInterface> = ({
-    declaration,
+    runtimeValue,
     onChange,
     ["data-componentid"]: componentId = "ab-testing-key-item"
 }: AbTestingKeyItemPropsInterface): ReactElement => {
     const { t } = useTranslation();
-    const value: DeclaredValue = declaration.value;
+    const value: RuntimeValueType = runtimeValue.value;
     const isOutOfRange: boolean = value !== undefined && value !== null && (!Number.isInteger(value)
         || (value as number) < AB_TESTING_KEY_MIN || (value as number) > AB_TESTING_KEY_MAX);
 
     return (
         <Paper variant="outlined" sx={ { p: 1.5 } } data-componentid={ componentId }>
             <Stack gap={ 1.5 }>
+                <Alert severity="info" data-componentid={ `${componentId}-info` }>
+                    { t("flows:core.steps.start.variables.abTestingKey") }
+                </Alert>
                 <TextField
                     size="small"
                     fullWidth
                     disabled
-                    label={ t("flows:core.steps.start.declarations.fields.name") }
-                    value={ declaration.name }
-                    helperText={ t(`flows:core.steps.start.declarations.dataTypes.${DeclaredDataTypes.INTEGER}`) }
+                    label={ t("flows:core.steps.start.variables.fields.name") }
+                    value={ runtimeValue.name }
+                    helperText={ t(`flows:core.steps.start.variables.dataTypes.${VariableDataTypes.INTEGER}`) }
                     data-componentid={ `${componentId}-name` }
                 />
                 <TextField
                     size="small"
                     fullWidth
                     type="number"
-                    label={ t("flows:core.steps.start.declarations.fields.initialValue") }
+                    label={ t("flows:core.steps.start.variables.fields.initialValue") }
                     inputProps={ { max: AB_TESTING_KEY_MAX, min: AB_TESTING_KEY_MIN, step: 1 } }
                     value={ value === undefined || value === null ? "" : String(value) }
                     error={ isOutOfRange }
-                    helperText={ t("flows:core.steps.start.declarations.fields.abTestingKeyValueHint", {
+                    helperText={ t("flows:core.steps.start.variables.fields.abTestingKeyValueHint", {
                         max: AB_TESTING_KEY_MAX,
                         min: AB_TESTING_KEY_MIN
                     }) }
@@ -248,93 +260,93 @@ const AbTestingKeyItem: FunctionComponent<AbTestingKeyItemPropsInterface> = ({
 };
 
 /**
- * The headers, query parameters or variables a flow declares, one row each.
+ * The headers or runtime values of a flow, one row each.
  *
  * @param props - Props injected to the component.
- * @returns The DeclarationList component.
+ * @returns The VariableList component.
  */
-const DeclarationList: FunctionComponent<DeclarationListPropsInterface> = ({
+const VariableList: FunctionComponent<VariableListPropsInterface> = ({
     kind,
-    declarations,
+    variables,
     dataTypes,
     max,
     onChange,
-    ["data-componentid"]: componentId = "declaration-list"
-}: DeclarationListPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "variable-list"
+}: VariableListPropsInterface): ReactElement => {
     const { t } = useTranslation();
-    const isVariable: boolean = kind === "variables";
+    const isRuntimeValue: boolean = kind === "runtimeValues";
 
     /**
-     * Whether a row is the A/B testing key every flow declares. The first variable of that name is the one.
+     * Whether a row is the A/B testing key every flow has. The first runtime value of that name is the one.
      *
-     * @param index - Position of the declaration.
+     * @param index - Position of the variable.
      * @returns True for the A/B testing key.
      */
-    const isSystemVariable: (index: number) => boolean = (index: number): boolean =>
-        isVariable && declarations[ index ]?.name === AB_TESTING_KEY
-            && declarations.findIndex((declaration: DeclarationInterface) =>
-                declaration?.name === AB_TESTING_KEY) === index;
+    const isSystemRuntimeValue: (index: number) => boolean = (index: number): boolean =>
+        isRuntimeValue && variables[ index ]?.name === AB_TESTING_KEY
+            && variables.findIndex((variable: FlowVariableInterface) =>
+                variable?.name === AB_TESTING_KEY) === index;
 
     // The A/B testing key does not count towards the limit.
-    const declaredCount: number = declarations.filter(
-        (_: VariableDeclarationInterface, index: number) => !isSystemVariable(index)).length;
-    const isLimitReached: boolean = max !== undefined && declaredCount >= max;
+    const definedCount: number = variables.filter(
+        (_: RuntimeValueInterface, index: number) => !isSystemRuntimeValue(index)).length;
+    const isLimitReached: boolean = max !== undefined && definedCount >= max;
 
     /**
-     * The problem with a declaration's name, if any. Header names are compared ignoring case, as HTTP does.
+     * The problem with a variable's name, if any. Header names are compared ignoring case, as HTTP does.
      *
-     * @param index - Position of the declaration.
+     * @param index - Position of the variable.
      * @returns The error message, or undefined when the name is fine.
      */
     const getNameError: (index: number) => string | undefined = (index: number): string | undefined => {
-        const name: string = declarations[ index ]?.name?.trim() ?? "";
+        const name: string = variables[ index ]?.name?.trim() ?? "";
 
         if (!name) {
             return undefined;
         }
-        if (!DeclarationNamePatterns[ kind ].test(name)) {
-            return t(isVariable
-                ? "flows:core.steps.start.declarations.errors.invalidVariableName"
-                : "flows:core.steps.start.declarations.errors.invalidName");
+        if (!VariableNamePatterns[ kind ].test(name)) {
+            return t(isRuntimeValue
+                ? "flows:core.steps.start.variables.errors.invalidRuntimeValueName"
+                : "flows:core.steps.start.variables.errors.invalidName");
         }
-        if (isVariable && name === AB_TESTING_KEY && !isSystemVariable(index)) {
-            return t("flows:core.steps.start.declarations.errors.reserved");
+        if (isRuntimeValue && name === AB_TESTING_KEY && !isSystemRuntimeValue(index)) {
+            return t("flows:core.steps.start.variables.errors.reserved");
         }
 
         const key: string = kind === "headers" ? name.toLowerCase() : name;
-        const isDuplicate: boolean = declarations.some((declaration: DeclarationInterface, other: number) => {
-            const otherName: string = declaration?.name?.trim() ?? "";
+        const isDuplicate: boolean = variables.some((variable: FlowVariableInterface, other: number) => {
+            const otherName: string = variable?.name?.trim() ?? "";
 
             return other < index && (kind === "headers" ? otherName.toLowerCase() : otherName) === key;
         });
 
-        return isDuplicate ? t("flows:core.steps.start.declarations.errors.duplicate") : undefined;
+        return isDuplicate ? t("flows:core.steps.start.variables.errors.duplicate") : undefined;
     };
 
-    const update: (index: number, changes: Partial<VariableDeclarationInterface>) => void = (
+    const update: (index: number, changes: Partial<RuntimeValueInterface>) => void = (
         index: number,
-        changes: Partial<VariableDeclarationInterface>
+        changes: Partial<RuntimeValueInterface>
     ): void => {
-        onChange(declarations.map((declaration: VariableDeclarationInterface, current: number) =>
-            current === index ? { ...declaration, ...changes } : declaration));
+        onChange(variables.map((variable: RuntimeValueInterface, current: number) =>
+            current === index ? { ...variable, ...changes } : variable));
     };
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
-            { declaredCount === 0 && (
+            { definedCount === 0 && (
                 <Typography variant="body2" color="text.secondary">
-                    { t(`flows:core.steps.start.declarations.empty.${kind}`) }
+                    { t(`flows:core.steps.start.variables.empty.${kind}`) }
                 </Typography>
             ) }
-            { declarations.map((declaration: VariableDeclarationInterface, index: number) => {
+            { variables.map((variable: RuntimeValueInterface, index: number) => {
                 const nameError: string = getNameError(index);
 
-                if (isSystemVariable(index)) {
+                if (isSystemRuntimeValue(index)) {
                     return (
                         <AbTestingKeyItem
                             key={ index }
-                            declaration={ declaration }
-                            onChange={ (value: DeclaredValue) => update(index, { value }) }
+                            runtimeValue={ variable }
+                            onChange={ (value: RuntimeValueType) => update(index, { value }) }
                             data-componentid={ `${componentId}-item-${index}` }
                         />
                     );
@@ -344,72 +356,73 @@ const DeclarationList: FunctionComponent<DeclarationListPropsInterface> = ({
                     <Paper
                         key={ index }
                         variant="outlined"
-                        sx={ { p: 1.5 } }
+                        className="variable-item"
                         data-componentid={ `${componentId}-item-${index}` }
                     >
+                        <Tooltip title={ t("flows:core.steps.start.variables.remove") }>
+                            <Fab
+                                aria-label={ t("flows:core.steps.start.variables.remove") }
+                                size="small"
+                                className="variable-item-remove"
+                                onClick={ () => onChange(variables.filter(
+                                    (_: RuntimeValueInterface, current: number) => current !== index)) }
+                                data-componentid={ `${componentId}-item-${index}-remove` }
+                            >
+                                <MinusIcon className="variable-item-remove-icon" />
+                            </Fab>
+                        </Tooltip>
                         <Stack gap={ 1.5 }>
-                            <Stack direction="row" gap={ 1 } alignItems="flex-start">
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    label={ t("flows:core.steps.start.declarations.fields.name") }
-                                    value={ declaration.name ?? "" }
-                                    error={ !!nameError }
-                                    helperText={ nameError }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                        update(index, { name: event.target.value }) }
-                                    data-componentid={ `${componentId}-item-${index}-name` }
-                                />
-                                <Tooltip title={ t("flows:core.steps.start.declarations.remove") }>
-                                    <IconButton
-                                        onClick={ () => onChange(declarations.filter(
-                                            (_: VariableDeclarationInterface, current: number) => current !== index)) }
-                                        data-componentid={ `${componentId}-item-${index}-remove` }
-                                    >
-                                        <TrashIcon size={ 14 } />
-                                    </IconButton>
-                                </Tooltip>
-                            </Stack>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                label={ t("flows:core.steps.start.variables.fields.name") }
+                                value={ variable.name ?? "" }
+                                error={ !!nameError }
+                                helperText={ nameError }
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                    update(index, { name: event.target.value }) }
+                                data-componentid={ `${componentId}-item-${index}-name` }
+                            />
                             <Select
                                 size="small"
                                 fullWidth
-                                value={ declaration.dataType ?? dataTypes[ 0 ] }
-                                onChange={ (event: SelectChangeEvent<DeclaredDataTypes>) => update(index, {
-                                    dataType: event.target.value as DeclaredDataTypes,
-                                    ...(isVariable && { value: undefined })
+                                value={ variable.dataType ?? dataTypes[ 0 ] }
+                                onChange={ (event: SelectChangeEvent<VariableDataTypes>) => update(index, {
+                                    dataType: event.target.value as VariableDataTypes,
+                                    ...(isRuntimeValue && { value: undefined })
                                 }) }
                                 data-componentid={ `${componentId}-item-${index}-data-type` }
                             >
-                                { dataTypes.map((dataType: DeclaredDataTypes) => (
+                                { dataTypes.map((dataType: VariableDataTypes) => (
                                     <MenuItem key={ dataType } value={ dataType }>
-                                        { t(`flows:core.steps.start.declarations.dataTypes.${dataType}`) }
+                                        { t(`flows:core.steps.start.variables.dataTypes.${dataType}`) }
                                     </MenuItem>
                                 )) }
                             </Select>
-                            { isVariable && (
+                            { isRuntimeValue && (
                                 <>
                                     <InitialValueField
-                                        dataType={ declaration.dataType ?? dataTypes[ 0 ] }
-                                        value={ declaration.value }
-                                        onChange={ (value: DeclaredValue) => update(index, { value }) }
+                                        dataType={ variable.dataType ?? dataTypes[ 0 ] }
+                                        value={ variable.value }
+                                        onChange={ (value: RuntimeValueType) => update(index, { value }) }
                                         data-componentid={ `${componentId}-item-${index}-value` }
                                     />
                                     <Box>
                                         <FormControlLabel
                                             control={ (
                                                 <Checkbox
-                                                    checked={ !!declaration.clientWritable }
+                                                    checked={ !!variable.clientWritable }
                                                     onChange={ (event: ChangeEvent<HTMLInputElement>) =>
                                                         update(index, { clientWritable: event.target.checked }) }
                                                     data-componentid={
                                                         `${componentId}-item-${index}-client-writable` }
                                                 />
                                             ) }
-                                            label={ t("flows:core.steps.start.declarations.fields.clientWritable") }
+                                            label={ t("flows:core.steps.start.variables.fields.clientWritable") }
                                         />
-                                        { declaration.clientWritable && (
+                                        { variable.clientWritable && (
                                             <FormHelperText>
-                                                { t("flows:core.steps.start.declarations.fields.clientWritableHint") }
+                                                { t("flows:core.steps.start.variables.fields.clientWritableHint") }
                                             </FormHelperText>
                                         ) }
                                     </Box>
@@ -421,18 +434,19 @@ const DeclarationList: FunctionComponent<DeclarationListPropsInterface> = ({
             }) }
             <Box>
                 <Button
-                    variant="outlined"
+                    variant="text"
                     size="small"
-                    startIcon={ <PlusIcon size={ 14 } /> }
+                    className="variable-add"
+                    startIcon={ <PlusIcon size={ 12 } /> }
                     disabled={ isLimitReached }
-                    onClick={ () => onChange([ ...declarations, { dataType: dataTypes[ 0 ], name: "" } ]) }
+                    onClick={ () => onChange([ ...variables, { dataType: dataTypes[ 0 ], name: "" } ]) }
                     data-componentid={ `${componentId}-add` }
                 >
-                    { t(`flows:core.steps.start.declarations.add.${kind}`) }
+                    { t(`flows:core.steps.start.variables.add.${kind}`) }
                 </Button>
                 { isLimitReached && (
                     <FormHelperText>
-                        { t("flows:core.steps.start.declarations.limitReached", { max }) }
+                        { t("flows:core.steps.start.variables.limitReached", { max }) }
                     </FormHelperText>
                 ) }
             </Box>
@@ -441,8 +455,8 @@ const DeclarationList: FunctionComponent<DeclarationListPropsInterface> = ({
 };
 
 /**
- * Properties of the start step: the headers and query parameters the flow reads from each request, and the
- * variables it keeps. They are kept on the start node and saved with the flow.
+ * Properties of the start step: the variables of the flow, which are the headers it reads from each request and the
+ * runtime values it keeps. They are kept on the start node and saved with the flow.
  *
  * @param props - Props injected to the component.
  * @returns The StartProperties component.
@@ -455,90 +469,86 @@ const StartProperties: FunctionComponent<StartPropertiesPropsInterface> = ({
     const stepId: string = resource?.id;
     const node: Pick<Node, "data" | "type" | "id"> = useNodesData(stepId);
     const { updateNodeData } = useReactFlow();
-    const { metadata } = useAuthenticationFlowBuilderCore();
-    const [ activeTab, setActiveTab ] = useState<number>(0);
+    const { isVariablesEnabled, variableLimits } = useAuthenticationFlowBuilderCore();
+    const [ expandedKind, setExpandedKind ] = useState<VariableKind | false>(false);
 
-    const configs: DeclarationConfigsInterface = metadata?.inputConfigs;
-    const declarations: FlowDeclarationsInterface = (node?.data?.declarations ?? {}) as FlowDeclarationsInterface;
+    const variables: FlowVariablesInterface = (node?.data?.variables ?? {}) as FlowVariablesInterface;
 
-    const updateDeclarations: (kind: DeclarationKind, list: VariableDeclarationInterface[]) => void = (
-        kind: DeclarationKind,
-        list: VariableDeclarationInterface[]
+    const updateVariables: (kind: VariableKind, list: RuntimeValueInterface[]) => void = (
+        kind: VariableKind,
+        list: RuntimeValueInterface[]
     ): void => {
         updateNodeData(stepId, (current: Node) => ({
-            declarations: {
-                ...((current?.data?.declarations ?? {}) as FlowDeclarationsInterface),
+            variables: {
+                ...((current?.data?.variables ?? {}) as FlowVariablesInterface),
                 [ kind ]: list
             }
         }));
     };
 
-    if (configs && !configs.enabled) {
+    const sections: VariableSectionInterface[] = [
+        { dataTypes: HEADER_DATA_TYPES, kind: "headers", max: variableLimits?.maxHeaders },
+        { dataTypes: RUNTIME_VALUE_DATA_TYPES, kind: "runtimeValues", max: variableLimits?.maxRuntimeValues }
+    ];
+
+    if (!isVariablesEnabled) {
         return (
             <Alert severity="info" data-componentid={ `${componentId}-disabled` }>
-                { t("flows:core.steps.start.declarations.disabled") }
+                { t("flows:core.steps.start.variables.disabled") }
             </Alert>
         );
     }
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
-            <Typography variant="body2" color="text.secondary">
-                { t("flows:core.steps.start.declarations.description") }
-            </Typography>
-            <Tabs
-                value={ activeTab }
-                onChange={ (_: SyntheticEvent, tab: number) => setActiveTab(tab) }
-                variant="fullWidth"
-            >
-                <Tab
-                    label={ t("flows:core.steps.start.declarations.tabs.headers") }
-                    data-componentid={ `${componentId}-headers-tab` }
-                />
-                <Tab
-                    label={ t("flows:core.steps.start.declarations.tabs.queryParams") }
-                    data-componentid={ `${componentId}-query-params-tab` }
-                />
-                <Tab
-                    label={ t("flows:core.steps.start.declarations.tabs.variables") }
-                    data-componentid={ `${componentId}-variables-tab` }
-                />
-            </Tabs>
-            <TabPanel value={ activeTab } index={ 0 }>
-                <DeclarationList
-                    kind="headers"
-                    declarations={ declarations.headers ?? [] }
-                    dataTypes={ REQUEST_VALUE_DATA_TYPES }
-                    max={ configs?.maxHeaders }
-                    onChange={ (list: VariableDeclarationInterface[]) => updateDeclarations("headers", list) }
-                    data-componentid={ `${componentId}-headers` }
-                />
-            </TabPanel>
-            <TabPanel value={ activeTab } index={ 1 }>
-                <DeclarationList
-                    kind="queryParams"
-                    declarations={ declarations.queryParams ?? [] }
-                    dataTypes={ REQUEST_VALUE_DATA_TYPES }
-                    max={ configs?.maxQueryParams }
-                    onChange={ (list: VariableDeclarationInterface[]) => updateDeclarations("queryParams", list) }
-                    data-componentid={ `${componentId}-query-params` }
-                />
-            </TabPanel>
-            <TabPanel value={ activeTab } index={ 2 }>
-                <Stack gap={ 2 }>
-                    <Alert severity="info">
-                        { t("flows:core.steps.start.declarations.abTestingKey") }
-                    </Alert>
-                    <DeclarationList
-                        kind="variables"
-                        declarations={ declarations.variables ?? [] }
-                        dataTypes={ VARIABLE_DATA_TYPES }
-                        max={ configs?.maxVariables }
-                        onChange={ (list: VariableDeclarationInterface[]) => updateDeclarations("variables", list) }
-                        data-componentid={ `${componentId}-variables` }
-                    />
-                </Stack>
-            </TabPanel>
+        <Stack gap={ 2 } className="start-properties" data-componentid={ componentId }>
+            { sections.map(({ kind, dataTypes, max }: VariableSectionInterface) => {
+                const list: RuntimeValueInterface[] = variables[ kind ] ?? [];
+                const sectionId: string = `${componentId}-${kind === "runtimeValues" ? "runtime-values" : kind}`;
+
+                return (
+                    <Stack key={ kind } gap={ 1 }>
+                        <Box>
+                            <Typography variant="subtitle1" data-componentid={ `${sectionId}-heading` }>
+                                { t(`flows:core.steps.start.variables.headings.${kind}`) }
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                { t(`flows:core.steps.start.variables.descriptions.${kind}`) }
+                            </Typography>
+                        </Box>
+                        <Accordion
+                            disableGutters
+                            variant="outlined"
+                            expanded={ expandedKind === kind }
+                            onChange={ (_: SyntheticEvent, isExpanded: boolean) =>
+                                setExpandedKind(isExpanded ? kind : false) }
+                            className="variable-section"
+                            data-componentid={ sectionId }
+                        >
+                            <AccordionSummary
+                                expandIcon={ <ChevronDownIcon size={ 14 } /> }
+                                data-componentid={ `${sectionId}-summary` }
+                            >
+                                <Typography variant="body2" className="variable-section-title">
+                                    { t(`flows:core.steps.start.variables.tabs.${kind}`) }
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    { list.length }
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <VariableList
+                                    kind={ kind }
+                                    variables={ list }
+                                    dataTypes={ dataTypes }
+                                    max={ max }
+                                    onChange={ (next: RuntimeValueInterface[]) => updateVariables(kind, next) }
+                                    data-componentid={ sectionId }
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    </Stack>
+                );
+            }) }
         </Stack>
     );
 };

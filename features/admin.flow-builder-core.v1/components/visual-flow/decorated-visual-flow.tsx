@@ -75,7 +75,7 @@ import {
     isRuleMetadataNotImplemented,
     withoutDecisionSteps
 } from "../../utils/conditional-branching";
-import { START_STEP_ID } from "../../utils/declarations";
+import { START_STEP_ID } from "../../utils/variables";
 import isDecisionStepLimitReached from "../../utils/decision-step-limit";
 import generateResourceId from "../../utils/generate-resource-id";
 import seedRuleDecisionBranches from "../../utils/seed-rule-decision-branches";
@@ -525,17 +525,17 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     }
                 });
 
-                // A template replaces the steps, not what the flow declares, which the start node keeps.
-                const declarations: unknown = currentNodes.find(
+                // A template replaces the steps, not the variables of the flow, which the start node keeps.
+                const variables: unknown = currentNodes.find(
                     (node: Node) => node.id === START_STEP_ID
-                )?.data?.declarations;
+                )?.data?.variables;
 
-                if (!declarations) {
+                if (!variables) {
                     return newNodes;
                 }
 
                 return newNodes.map((node: Node) => node.id === START_STEP_ID
-                    ? { ...node, data: { ...node.data, declarations } }
+                    ? { ...node, data: { ...node.data, variables } }
                     : node);
             });
 

@@ -356,12 +356,16 @@ export interface flowsNS {
                 flowCompletionProperties: string;
             };
             start: {
-                declarations: {
+                node: {
+                    configure: string;
+                    heading: string;
+                    none: string;
+                };
+                variables: {
                     abTestingKey: string;
                     add: {
                         headers: string;
-                        queryParams: string;
-                        variables: string;
+                        runtimeValues: string;
                     };
                     dataTypes: {
                         BOOLEAN: string;
@@ -371,17 +375,19 @@ export interface flowsNS {
                         STRING: string;
                         STRING_ARRAY: string;
                     };
-                    description: string;
+                    descriptions: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
                     disabled: string;
                     empty: {
                         headers: string;
-                        queryParams: string;
-                        variables: string;
+                        runtimeValues: string;
                     };
                     errors: {
                         duplicate: string;
                         invalidName: string;
-                        invalidVariableName: string;
+                        invalidRuntimeValueName: string;
                         reserved: string;
                     };
                     fields: {
@@ -394,12 +400,15 @@ export interface flowsNS {
                         clientWritable: string;
                         clientWritableHint: string;
                     };
+                    headings: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
                     limitReached: string;
                     remove: string;
                     tabs: {
                         headers: string;
-                        queryParams: string;
-                        variables: string;
+                        runtimeValues: string;
                     };
                 };
             };

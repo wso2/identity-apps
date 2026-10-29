@@ -18,10 +18,10 @@
 
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
-import { FlowDeclarationsInterface } from "@wso2is/admin.flow-builder-core.v1/models/declarations";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-import { getDeclarationsPayload } from "@wso2is/admin.flow-builder-core.v1/utils/declarations";
+import { getVariablesPayload } from "@wso2is/admin.flow-builder-core.v1/utils/variables";
 import processBranchNavigation from "@wso2is/admin.flow-builder-core.v1/utils/process-branch-navigation";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -77,8 +77,8 @@ const processNavigation = (resource: Element, resourceId: string, navigations: R
 const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
-    const payload: { inputs?: FlowDeclarationsInterface; steps: any[] } = {
-        inputs: getDeclarationsPayload(flowNodes),
+    const payload: { variables?: FlowVariablesInterface; steps: any[] } = {
+        variables: getVariablesPayload(flowNodes),
         steps: []
     };
 

@@ -517,7 +517,8 @@ export class Config {
                 enableLegacySelfRegistrationFlow:
                     window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacySelfRegistrationFlow
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows
-                    ?? true
+                    ?? true,
+                variables: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.variables
             },
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,

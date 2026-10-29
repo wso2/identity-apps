@@ -17,9 +17,9 @@
  */
 
 /**
- * Type of value a declared header, query parameter or variable holds.
+ * Type of value a header or runtime value of a flow holds.
  */
-export enum DeclaredDataTypes {
+export enum VariableDataTypes {
     STRING = "STRING",
     INTEGER = "INTEGER",
     DECIMAL = "DECIMAL",
@@ -29,43 +29,40 @@ export enum DeclaredDataTypes {
 }
 
 /**
- * The value a declared variable starts with, of the variable's type.
+ * The value a runtime value starts with, of its type.
  */
-export type DeclaredValue = string | number | boolean | (string | number)[];
+export type RuntimeValueType = string | number | boolean | (string | number)[];
 
 /**
- * A header or query parameter the flow reads from each request.
+ * A variable of a flow: a header it reads from each request, or a runtime value it keeps.
  */
-export interface DeclarationInterface {
+export interface FlowVariableInterface {
     name: string;
-    dataType: DeclaredDataTypes;
+    dataType: VariableDataTypes;
 }
 
 /**
- * A variable the flow keeps.
+ * A runtime value the flow keeps.
  */
-export interface VariableDeclarationInterface extends DeclarationInterface {
-    value?: DeclaredValue;
+export interface RuntimeValueInterface extends FlowVariableInterface {
+    value?: RuntimeValueType;
     clientWritable?: boolean;
 }
 
 /**
- * What a flow declares besides its steps.
+ * The variables of a flow: the headers it reads from each request, and the runtime values it keeps.
  */
-export interface FlowDeclarationsInterface {
-    headers?: DeclarationInterface[];
-    queryParams?: DeclarationInterface[];
-    variables?: VariableDeclarationInterface[];
+export interface FlowVariablesInterface {
+    headers?: FlowVariableInterface[];
+    runtimeValues?: RuntimeValueInterface[];
 }
 
 /**
- * Whether flows may declare headers, query parameters and variables, and the limits they are saved against.
+ * The limits flow variables are saved against.
  */
-export interface DeclarationConfigsInterface {
-    enabled: boolean;
+export interface VariableLimitsInterface {
     maxHeaders: number;
-    maxQueryParams: number;
-    maxVariables: number;
+    maxRuntimeValues: number;
     maxValueLength: number;
     maxArraySize: number;
 }

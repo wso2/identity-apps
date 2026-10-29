@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FlowDeclarationsInterface } from "@wso2is/admin.flow-builder-core.v1/models/declarations";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
@@ -28,7 +28,7 @@ export interface AskPasswordFlow {
      */
     steps: Step[];
     /**
-     * Headers, query parameters and variables the flow declares.
+     * Headers and runtime values the flow defines.
      */
-    inputs?: FlowDeclarationsInterface;
+    variables?: FlowVariablesInterface;
 }

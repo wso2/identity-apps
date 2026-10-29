@@ -227,7 +227,7 @@
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
 
-                // A number from 0 to 99 kept for this browser, so conditions on the abTestingKey variable send the
+                // A number from 0 to 99 kept for this browser, so conditions on the abTestingKey runtime value send the
                 // same user down the same branch each time. Without one, the flow uses the key's initial value.
                 const abTestingKeyStorageKey = "wso2.ab.<%= Encode.forJavaScript(tenantDomain) %>";
                 const getAbTestingKey = () => {
@@ -264,7 +264,7 @@
                     () => {
                         const abTestingKey = getAbTestingKey();
 
-                        return abTestingKey !== null ? { variables: { abTestingKey: Number(abTestingKey) } } : {};
+                        return abTestingKey !== null ? { abTestingKey } : {};
                     }
                 ];
                 const getExtendedFlowInputs = (initiatingFlowType) => {
