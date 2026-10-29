@@ -279,9 +279,8 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
                             <SelectionCard
                                 key={ client.clientId }
                                 size="auto"
-                                className="sub-template-selection-card known-client-card"
+                                className="sub-template-selection-card"
                                 header={ <Typography variant="body1">{ client.name }</Typography> }
-                                description={ getHost(client.clientId) }
                                 selected={ creatingClientId === client.clientId }
                                 disabled={ isBusy && creatingClientId !== client.clientId }
                                 onClick={ () => handleClientSelect(client) }

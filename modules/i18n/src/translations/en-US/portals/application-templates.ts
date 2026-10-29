@@ -41,8 +41,8 @@ export const applicationTemplates: applicationTemplatesNS = {
                 label: "I'll configure it myself"
             },
             metadataDocument: {
-                description: "Enter the client's metadata document URL, for example a ChatGPT connector's. Its " +
-                    "name and sign-in details come from its vendor.",
+                description: "Enter the client's metadata document URL. Its name and sign-in details come from " +
+                    "its vendor.",
                 label: "Another client with a Client ID Metadata Document"
             },
             otherClients: "Other clients"
