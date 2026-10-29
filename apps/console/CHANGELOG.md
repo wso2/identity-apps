@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.28.1
+
+### Patch Changes
+
+- [#10843](https://github.com/wso2/identity-apps/pull/10843) [`a9957ddeebd3f594d263aa599c1f675b4b048247`](https://github.com/wso2/identity-apps/commit/a9957ddeebd3f594d263aa599c1f675b4b048247) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Bump console to pick up the latest i18n version
+
 ## 4.28.0
 
 ### Minor Changes
