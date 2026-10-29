@@ -111,7 +111,9 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
         ? configuredClients as CimdKnownClientInterface[]
         : [])
         .filter((client: CimdKnownClientInterface) => typeof client?.clientId === "string"
-            && typeof client?.name === "string");
+            && client.clientId.trim().length > 0
+            && typeof client?.name === "string"
+            && client.name.trim().length > 0);
 
     const [ creatingClientId, setCreatingClientId ] = useState<string>(null);
 
