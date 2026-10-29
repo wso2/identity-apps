@@ -28,6 +28,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
@@ -65,8 +66,25 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
     const unavailableRoles: RolesV2Interface[] = isLoaded ? selectedRoles.filter((selected: RolesV2Interface) =>
         !sharedRoles.some((role: RolesV2Interface) => role.id === selected.id)) : [];
 
-    const getRoleLabel: (_role: RolesV2Interface) => string = (role: RolesV2Interface): string =>
-        role.audience?.display ? `${role.displayName} (${role.audience.display})` : role.displayName;
+    const getRoleAudienceLabel: (_role: RolesV2Interface) => string = (role: RolesV2Interface): string => {
+        if (role.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            return t("roles:addRoleWizard.forms.roleBasicDetails.roleAudience.values.organization");
+        }
+        if (role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+            const applicationLabel: string = t(
+                "roles:addRoleWizard.forms.roleBasicDetails.roleAudience.values.application"
+            );
+
+            return `${applicationLabel}: ${role.audience.display}`;
+        }
+
+        return role.audience?.display ?? "";
+    };
+    const getRoleLabel: (_role: RolesV2Interface) => string = (role: RolesV2Interface): string => {
+        const audience: string = getRoleAudienceLabel(role);
+
+        return audience ? `${role.displayName} · ${audience}` : role.displayName;
+    };
 
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
@@ -107,7 +125,7 @@ const OrganizationRoleProperties: FunctionComponent<OrganizationRolePropertiesPr
                         <Stack>
                             <Typography variant="body2">{ role.displayName }</Typography>
                             <Typography variant="caption" color="text.secondary">
-                                { role.audience?.display }
+                                { getRoleAudienceLabel(role) }
                             </Typography>
                         </Stack>
                     </li>

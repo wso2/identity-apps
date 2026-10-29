@@ -17,6 +17,10 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationListInterface, ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationSharingPolicy, RoleSharingModes } from
     "@wso2is/admin.console-settings.v1/models/shared-access";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -26,13 +30,17 @@ import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { FeatureAccessConfigInterface, RoleConnectedApplicationInterface, RolesInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useSWR, { SWRResponse } from "swr";
 
-type OrganizationRoleInterface = RolesV2Interface & Pick<RolesInterface, "associatedApplications">;
 type SharedRoleInterface = OrganizationListInterface["sharingMode"]["roleSharing"]["roles"][number];
+
+interface SharedApplicationInterface extends OrganizationListInterface {
+    applicationId: string;
+    audienceType: string;
+}
 
 interface SharedOrganizationRolesInterface {
     roles: RolesV2Interface[];
@@ -57,7 +65,7 @@ const useSharedOrganizationRoles = (shouldFetch: boolean = true): SharedOrganiza
     const applicationsEndpoint: string = useSelector((state: AppState) => state.config.endpoints.applications);
     const hasRoleReadPermission: boolean = useRequiredScopes(rolesFeatureConfig?.scopes?.read);
     const [ startIndex, setStartIndex ] = useState<number>(1);
-    const [ roles, setRoles ] = useState<OrganizationRoleInterface[]>([]);
+    const [ roles, setRoles ] = useState<RolesV2Interface[]>([]);
     const { data, error, isLoading } = useGetRolesList<RolesV2ResponseInterface>(
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
         startIndex,
@@ -71,12 +79,12 @@ const useSharedOrganizationRoles = (shouldFetch: boolean = true): SharedOrganiza
             return;
         }
 
-        setRoles((previousRoles: OrganizationRoleInterface[]): OrganizationRoleInterface[] => {
-            const rolesById: Map<string, OrganizationRoleInterface> = new Map(
-                previousRoles.map((role: OrganizationRoleInterface) => [ role.id, role ])
+        setRoles((previousRoles: RolesV2Interface[]): RolesV2Interface[] => {
+            const rolesById: Map<string, RolesV2Interface> = new Map(
+                previousRoles.map((role: RolesV2Interface) => [ role.id, role ])
             );
 
-            data.Resources.forEach((role: OrganizationRoleInterface): void => {
+            data.Resources.forEach((role: RolesV2Interface): void => {
                 rolesById.set(role.id, role);
             });
 
@@ -91,36 +99,68 @@ const useSharedOrganizationRoles = (shouldFetch: boolean = true): SharedOrganiza
     }, [ data ]);
 
     const rolesLoaded: boolean = !!data && !isLoading && !error && roles.length >= data.totalResults;
-    const applicationIds: string[] = useMemo((): string[] => [ ...new Set(roles.flatMap(
-        (role: OrganizationRoleInterface): string[] =>
-            (role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION ? [ role.audience.value ] :
-                (role.associatedApplications ?? []).map((app: RoleConnectedApplicationInterface): string => app.value))
-                .filter(Boolean)
-    )) ].sort(), [ roles ]);
+    const hasOrganizationRoles: boolean = roles.some((role: RolesV2Interface): boolean =>
+        role.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION);
+    const applicationIds: string[] = useMemo((): string[] => [ ...new Set(roles
+        .filter((role: RolesV2Interface): boolean =>
+            role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION)
+        .map((role: RolesV2Interface): string => role.audience.value).filter(Boolean)) ].sort(), [ roles ]);
     const { data: sharing, error: sharingError, isLoading: sharingLoading }:
-        SWRResponse<OrganizationListInterface[], Error> =
-        useSWR<OrganizationListInterface[], Error>(
+        SWRResponse<SharedApplicationInterface[], Error> =
+        useSWR<SharedApplicationInterface[], Error>(
             shouldFetch && hasRoleReadPermission && rolesLoaded
-                ? [ "organization-role-sharing", applicationsEndpoint, ...applicationIds ] : null,
-            (): Promise<OrganizationListInterface[]> => Promise.all(applicationIds.map(
-                async (applicationId: string): Promise<OrganizationListInterface> => {
-                    const response: { data: OrganizationListInterface } = await getSharedOrganizations(
-                        undefined, applicationId,
-                        { attributes: "sharingMode", excludedAttributes: "roles", limit: 1, recursive: false }
-                    );
+                ? [ "organization-role-sharing", applicationsEndpoint, hasOrganizationRoles, ...applicationIds ] : null,
+            async (): Promise<SharedApplicationInterface[]> => {
+                const applicationAudiences: Map<string, string> = new Map(applicationIds.map(
+                    (applicationId: string): [string, string] => [ applicationId, RoleAudienceTypes.APPLICATION ]));
 
-                    return response.data;
+                // Organization-role associations are resolved at runtime, not stored on each role.
+                if (hasOrganizationRoles) {
+                    let offset: number = 0;
+                    let totalResults: number = 0;
+
+                    do {
+                        const page: ApplicationListInterface = await getApplicationList(
+                            UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT, offset, undefined, false,
+                            "associatedRoles.allowedAudience"
+                        );
+                        const applications: ApplicationListItemInterface[] = page.applications ?? [];
+
+                        if (applications.length === 0) {
+                            break;
+                        }
+                        applications.forEach((application: ApplicationListItemInterface): void => {
+                            if (application.associatedRoles?.allowedAudience?.toUpperCase()
+                                === RoleAudienceTypes.ORGANIZATION) {
+                                applicationAudiences.set(application.id, RoleAudienceTypes.ORGANIZATION);
+                            }
+                        });
+                        offset += applications.length;
+                        totalResults = page.totalResults ?? 0;
+                    } while (offset < totalResults);
                 }
-            )),
+
+                return Promise.all([ ...applicationAudiences ].map(
+                    async ([ applicationId, audienceType ]: [string, string]): Promise<SharedApplicationInterface> => {
+                        const response: { data: OrganizationListInterface } = await getSharedOrganizations(
+                            undefined, applicationId,
+                            { attributes: "sharingMode", excludedAttributes: "roles", limit: 1, recursive: false }
+                        );
+
+                        return { ...response.data, applicationId, audienceType };
+                    }
+                ));
+            },
             { shouldRetryOnError: false }
         );
     const sharedRoles: RolesV2Interface[] = useMemo((): RolesV2Interface[] => roles.filter(
-        (role: OrganizationRoleInterface): boolean => applicationIds.some((applicationId: string, index: number) => {
-            const sharingMode: OrganizationListInterface["sharingMode"] = sharing?.[index]?.sharingMode;
+        (role: RolesV2Interface): boolean => !!sharing?.some((application: SharedApplicationInterface): boolean => {
+            const sharingMode: OrganizationListInterface["sharingMode"] = application.sharingMode;
             const isAssociated: boolean = role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
-                ? role.audience.value === applicationId
-                : !!role.associatedApplications?.some((app: RoleConnectedApplicationInterface) =>
-                    app.value === applicationId);
+                ? role.audience.value === application.applicationId &&
+                    application.audienceType === RoleAudienceTypes.APPLICATION
+                : role.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION &&
+                    application.audienceType === RoleAudienceTypes.ORGANIZATION;
 
             if (!isAssociated || sharingMode?.policy !== ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
                 return false;
@@ -131,9 +171,9 @@ const useSharedOrganizationRoles = (shouldFetch: boolean = true): SharedOrganiza
                     !!sharingMode.roleSharing.roles?.some((sharedRole: SharedRoleInterface): boolean =>
                         sharedRole.displayName === role.displayName &&
                         sharedRole.audience.type.toUpperCase() === role.audience.type.toUpperCase() &&
-                        sharedRole.audience.display === role.audience.display));
+                        (!sharedRole.audience.display || sharedRole.audience.display === role.audience.display)));
         })
-    ), [ roles, applicationIds, sharing ]);
+    ), [ roles, sharing ]);
 
     return {
         error: error || sharingError,
