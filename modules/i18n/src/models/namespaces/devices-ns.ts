@@ -173,4 +173,72 @@ export interface DevicesNS {
             };
         };
     };
+    userDevices: {
+        confirmations: {
+            delete: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
+        list: {
+            actions: {
+                rename: string;
+            };
+            columns: {
+                actions: string;
+                name: string;
+                registeredAt: string;
+                status: string;
+            };
+            status: {
+                ACTIVE: string;
+                INACTIVE: string;
+            };
+        };
+        notifications: {
+            delete: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            fetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            update: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+        };
+        placeholders: {
+            empty: {
+                subtitles: {
+                    0: string;
+                };
+                title: string;
+            };
+        };
+        rename: {
+            heading: string;
+            name: {
+                label: string;
+                placeholder: string;
+            };
+        };
+    };
 }

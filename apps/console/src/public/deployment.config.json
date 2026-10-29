@@ -1130,6 +1130,26 @@
                     ]
                 }
             },
+            "devices": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [
+                        "internal_device_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:users"
+                    ],
+                    "read": [
+                        "internal_device_mgt_view"
+                    ],
+                    "update": [
+                        "internal_device_mgt_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
