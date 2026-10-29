@@ -25,6 +25,7 @@ import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, create
 import { Base } from "../models/base";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { MetadataInterface, RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
+import { VariableLimitsInterface } from "../models/variables";
 import { Resource } from "../models/resources";
 
 /**
@@ -141,6 +142,14 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Whether decision steps can be added, as the console and the server both allow conditional branching.
      */
     isConditionalBranchingEnabled?: boolean;
+    /**
+     * Whether flows may define variables, as the console allows them.
+     */
+    isVariablesEnabled?: boolean;
+    /**
+     * Limits on flow variables, from the console's deployment configuration.
+     */
+    variableLimits?: VariableLimitsInterface;
     /**
      * Configured i18n text from the branding or default fallback.
      */
@@ -288,6 +297,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         isFlowMetadataLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        isVariablesEnabled: true,
         isVersionHistoryPanelOpen: false,
         language: "",
         lastInteractedResource: null,

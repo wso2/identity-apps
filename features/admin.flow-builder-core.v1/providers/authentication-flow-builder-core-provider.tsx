@@ -65,11 +65,13 @@ import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models
 import { RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
+import { VariableLimitsInterface } from "../models/variables";
 import {
     isConditionalBranchingAvailable,
     isConditionalBranchingConfigured,
     resolveRuleLimits
 } from "../utils/conditional-branching";
+import { isVariablesEnabled as isVariablesConfigured, resolveVariableLimits } from "../utils/variables";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -173,6 +175,14 @@ const FlowContextWrapper = ({
     const ruleLimits: RuleLimitsInterface = useMemo(
         () => resolveRuleLimits(configuredRuleLimits),
         [ configuredRuleLimits ]
+    );
+    const isVariablesEnabled: boolean = isVariablesConfigured(flowsFeatureConfig);
+    const configuredVariableLimits: Partial<VariableLimitsInterface> = useSelector(
+        (state: AppState) => state.config.ui.flowExecution?.variables
+    );
+    const variableLimits: VariableLimitsInterface = useMemo(
+        () => resolveVariableLimits(configuredVariableLimits),
+        [ configuredVariableLimits ]
     );
 
     const {
@@ -621,6 +631,7 @@ const FlowContextWrapper = ({
                 isI18nSubmitting,
                 isResourcePanelOpen,
                 isResourcePropertiesPanelOpen,
+                isVariablesEnabled,
                 isVersionHistoryPanelOpen,
                 language,
                 lastInteractedResource: lastInteractedElementInternal,
@@ -639,6 +650,7 @@ const FlowContextWrapper = ({
                 ruleLimits,
                 ruleMetadata,
                 selectedAttributes,
+                variableLimits,
                 setFlowCompletionConfigs,
                 setFlowEdgeTypes,
                 setFlowNodeTypes,

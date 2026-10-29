@@ -350,10 +350,76 @@ export interface flowsNS {
                 message: string;
                 messageWithUserIdentifier: string;
             };
+            variables: {
+                invalid: string;
+                tooManyHeaders: string;
+                tooManyRuntimeValues: string;
+            };
         };
         steps: {
             end: {
                 flowCompletionProperties: string;
+            };
+            start: {
+                node: {
+                    configure: string;
+                    heading: string;
+                    none: string;
+                };
+                variables: {
+                    abTestingKey: string;
+                    add: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    dataTypes: {
+                        BOOLEAN: string;
+                        DECIMAL: string;
+                        INTEGER: string;
+                        NUMBER_ARRAY: string;
+                        STRING: string;
+                        STRING_ARRAY: string;
+                    };
+                    descriptions: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    disabled: string;
+                    empty: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    errors: {
+                        abTestingKeyOutOfRange: string;
+                        duplicate: string;
+                        invalidName: string;
+                        invalidRuntimeValueName: string;
+                        notAnInteger: string;
+                        reserved: string;
+                        tooManyValues: string;
+                        valueTooLong: string;
+                    };
+                    fields: {
+                        abTestingKeyValueHint: string;
+                        dataType: string;
+                        initialValue: string;
+                        initialValueHint: string;
+                        name: string;
+                        noValue: string;
+                        clientWritable: string;
+                        clientWritableHint: string;
+                    };
+                    headings: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    limitReached: string;
+                    remove: string;
+                    tabs: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                };
             };
         };
         validationStatusLabels: {

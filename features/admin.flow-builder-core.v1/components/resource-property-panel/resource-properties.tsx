@@ -32,8 +32,9 @@ import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
 import { Resource } from "../../models/resources";
-import { StepData } from "../../models/steps";
+import { StaticStepTypes, StepData } from "../../models/steps";
 import PluginRegistry from "../../plugins/plugin-registry";
+import StartProperties from "./start-properties/start-properties";
 import "./resource-properties.scss";
 
 /**
@@ -188,7 +189,9 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedResource ? (
                 <Stack gap={ 1 }>
-                    { lastInteractedResource && (
+                    { lastInteractedResource?.type === StaticStepTypes.Start ? (
+                        <StartProperties resource={ lastInteractedResource } />
+                    ) : (
                         <ResourceProperties
                             resource={ lastInteractedResource }
                             properties={ getFilteredProperties() }

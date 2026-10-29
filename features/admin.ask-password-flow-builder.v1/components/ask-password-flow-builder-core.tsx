@@ -20,6 +20,7 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import {
     BlockTypes,
     Branch,
@@ -287,9 +288,10 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         return isDeletable;
     };
 
-    const generateSteps = (steps: Node[]): Node[] => {
+    const generateSteps = (steps: Node[], variables?: FlowVariablesInterface): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(variables && { variables }),
                 displayOnly: true
             },
             deletable: false,
@@ -672,7 +674,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     useLayoutEffect(() => {
         if (!isAskPasswordFlowFetchRequestLoading && !isAskPasswordFlowFetchRequestValidating) {
             if (!isEmpty(askPasswordFlow?.steps)) {
-                const steps: Node[] = generateSteps(askPasswordFlow.steps);
+                const steps: Node[] = generateSteps(askPasswordFlow.steps, askPasswordFlow.variables);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -681,6 +683,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         }
     }, [
         askPasswordFlow?.steps,
+        askPasswordFlow?.variables,
         isAskPasswordFlowFetchRequestLoading,
         isAskPasswordFlowFetchRequestValidating
     ]);

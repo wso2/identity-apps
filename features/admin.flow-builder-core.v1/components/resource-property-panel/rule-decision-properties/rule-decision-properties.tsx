@@ -45,6 +45,7 @@ import Handle from "../../dnd/handle";
 import Sortable from "../../dnd/sortable";
 import ErrorIcon from "../../validation-panel/error-icon";
 import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
+import { FlowVariablesInterface } from "../../../models/variables";
 import { Action, Branch } from "../../../models/elements";
 import { BranchRuleInterface } from "../../../models/rule-expression";
 import { Resource } from "../../../models/resources";
@@ -56,6 +57,7 @@ import {
     renameBranch,
     setBranchRule
 } from "../../../utils/branch-operations";
+import { START_STEP_ID, withVariableQualifiers } from "../../../utils/variables";
 import {
     fromEditorRule,
     isRuleComplete,
@@ -341,6 +343,7 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
     const edges: Edge[] = useEdges();
     const { setEdges, updateNodeData } = useReactFlow();
     const {
+        isVariablesEnabled,
         ruleMetadata,
         ruleLimits,
         setIsResourcePropertiesPanelFooterHidden,
@@ -348,10 +351,15 @@ const RuleDecisionProperties: FunctionComponent<RuleDecisionPropertiesPropsInter
         setResourcePropertiesPanelHeading
     } = useAuthenticationFlowBuilderCore();
 
-    // The editor reads the shared branch metadata shape, which the flow's own metadata is mapped onto.
+    const startNode: Pick<Node, "data" | "type" | "id"> = useNodesData(START_STEP_ID);
+    const variables: FlowVariablesInterface = startNode?.data?.variables as FlowVariablesInterface;
+
+    // The editor reads the shared branch metadata shape, which the flow's own metadata is mapped onto. Conditions
+    // on the variables of the flow pick from their names.
     const ruleMetaData: ConditionExpressionsMetaDataInterface = useMemo(
-        (): ConditionExpressionsMetaDataInterface => toEditorMetadata(ruleMetadata?.ruleMetaData),
-        [ ruleMetadata?.ruleMetaData ]
+        (): ConditionExpressionsMetaDataInterface =>
+            withVariableQualifiers(toEditorMetadata(ruleMetadata?.ruleMetaData), variables, isVariablesEnabled),
+        [ ruleMetadata?.ruleMetaData, variables, isVariablesEnabled ]
     );
 
     const [ openBranchId, setOpenBranchId ] = useState<string>(null);

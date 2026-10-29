@@ -130,6 +130,9 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
                     fieldErrorHandler={formFieldError}
                 />
             );
+        case "HIDDEN":
+            // Carries a runtime value the app may set, such as an A/B testing key. It is not shown to the user.
+            return null;
         default:
             return null;
     }

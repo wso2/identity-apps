@@ -271,6 +271,68 @@ export const flows: flowsNS = {
         steps: {
             end: {
                 flowCompletionProperties: "Flow completion properties"
+            },
+            start: {
+                node: {
+                    configure: "Configure flow variables",
+                    heading: "Start",
+                    none: "None"
+                },
+                variables: {
+                    abTestingKey: "A number from 0 to 99 kept for each browser. Use it in a condition, such as " +
+                        "less than 20, to send a share of users down another branch.",
+                    add: {
+                        headers: "Add header",
+                        runtimeValues: "Add runtime value"
+                    },
+                    dataTypes: {
+                        BOOLEAN: "Boolean",
+                        DECIMAL: "Decimal",
+                        INTEGER: "Integer",
+                        NUMBER_ARRAY: "Array of numbers",
+                        STRING: "String",
+                        STRING_ARRAY: "Array of strings"
+                    },
+                    descriptions: {
+                        headers: "Headers the flow reads from each request",
+                        runtimeValues: "Values the flow keeps while it runs"
+                    },
+                    disabled: "Flow variables are not enabled on this server.",
+                    empty: {
+                        headers: "The flow does not read any headers.",
+                        runtimeValues: "The flow does not define any runtime values."
+                    },
+                    errors: {
+                        abTestingKeyOutOfRange: "Use a whole number from 0 to 99.",
+                        duplicate: "This name is already defined.",
+                        invalidName: "Use letters, digits and the allowed separators, up to 64 characters.",
+                        invalidRuntimeValueName: "Use only letters and digits, up to 255 characters.",
+                        notAnInteger: "Use a whole number.",
+                        reserved: "This name is reserved.",
+                        tooManyValues: "Add up to {{max}} values.",
+                        valueTooLong: "Use up to {{max}} characters for each value."
+                    },
+                    fields: {
+                        abTestingKeyValueHint: "A whole number from {{min}} to {{max}}. Only this value can change.",
+                        dataType: "Data type",
+                        initialValue: "Initial value (optional)",
+                        initialValueHint: "Press Enter to add each value.",
+                        name: "Name",
+                        noValue: "No value",
+                        clientWritable: "Allow app to set this value",
+                        clientWritableHint: "The app can set this value when the flow starts."
+                    },
+                    headings: {
+                        headers: "Request headers",
+                        runtimeValues: "Runtime values"
+                    },
+                    limitReached: "This server allows up to {{max}}.",
+                    remove: "Remove",
+                    tabs: {
+                        headers: "Headers",
+                        runtimeValues: "Runtime Values"
+                    }
+                }
             }
         },
         tooltips: {
@@ -356,6 +418,12 @@ export const flows: flowsNS = {
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
+            },
+            variables: {
+                invalid: "Fix the flow variables on the Start step before saving: {{names}}.",
+                tooManyHeaders: "The flow reads more headers than this server allows. Keep up to {{max}}.",
+                tooManyRuntimeValues: "The flow defines more runtime values than this server allows. Keep up to "
+                    + "{{max}}."
             }
         },
         validationStatusLabels: {

@@ -20,6 +20,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { getVariablesPayload } from "@wso2is/admin.flow-builder-core.v1/utils/variables";
 import processBranchNavigation from "@wso2is/admin.flow-builder-core.v1/utils/process-branch-navigation";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -76,6 +77,7 @@ const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
     const payload: any = {
+        variables: getVariablesPayload(flowNodes),
         steps: []
     };
 

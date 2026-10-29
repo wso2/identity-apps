@@ -858,6 +858,27 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
              */
             maxExpressionsCombinedWithAnd?: number;
         };
+        /**
+         * Limits of flow variables. They match the server's own configuration, which validates them on save.
+         */
+        variables?: {
+            /**
+             * Maximum number of headers a flow may define.
+             */
+            maxHeaders?: number;
+            /**
+             * Maximum number of runtime values a flow may define.
+             */
+            maxRuntimeValues?: number;
+            /**
+             * Maximum length of a value, or of an entry of an array value.
+             */
+            maxValueLength?: number;
+            /**
+             * Maximum number of entries in an array value.
+             */
+            maxArraySize?: number;
+        };
     };
     /**
      * Enable legacy session bound token behaviour.
