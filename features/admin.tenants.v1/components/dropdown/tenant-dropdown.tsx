@@ -281,21 +281,20 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             setCurrentTenant(_currentTenant);
         }
 
+        // Derive the list without the current tenant instead of splicing `associatedTenants`, which is state.
+        const otherTenants: TenantInfo[] = Array.isArray(associatedTenants)
+            ? associatedTenants.filter((tenant: TenantInfo) => tenant !== currentTenant)
+            : associatedTenants;
+
         const association: TenantAssociationsInterface = {
-            associatedTenants: associatedTenants,
+            associatedTenants: otherTenants,
             currentTenant: currentTenant,
             defaultTenant: defaultTenant,
             username: email ?? username
         };
 
-        if (Array.isArray(association.associatedTenants)) {
-            // Remove the current tenant from the associated tenants list.
-            const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
-
-            if (currentTenantIndex !== -1) {
-                association.associatedTenants.splice(currentTenantIndex, 1);
-            }
-            setTempTenantAssociationsList(association.associatedTenants);
+        if (Array.isArray(otherTenants)) {
+            setTempTenantAssociationsList(otherTenants);
         }
         setTenantAssociations(association);
     }, [ associatedTenants, defaultTenant, currentTenant ]);
@@ -412,9 +411,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
                         tenants.push(tenant);
                     });
-                    // Add tenants to the associatedTenants state
-                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
-                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
+                    // Functional updates, so a page loaded before the previous one commits is not dropped.
+                    setAssociatedTenants((previousTenants: TenantInfo[]) => [ ...previousTenants, ...tenants ]);
+                    setAssociatedTenantsOffset((previousOffset: number) => previousOffset + associatedTenantsLimit);
                     setDefaultTenant(updatedDefaultTenant);
                     setCurrentTenant(updatedCurrentTenant);
                     setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);
