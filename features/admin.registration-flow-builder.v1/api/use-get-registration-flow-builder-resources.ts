@@ -24,7 +24,7 @@ import useGetExtensionExecutorSteps
     from "@wso2is/admin.flow-builder-core.v1/api/use-get-extension-executor-steps";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
@@ -71,9 +71,15 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
                 FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.PRESENTATION_DEFINITIONS_FLOWS_TYPES_REGISTRATION
             );
 
+        // The device registration executor is listed only when it is enabled on the server.
+        const isDeviceRegistrationAvailable: boolean = extensionExecutorSteps.some(
+            (step: Step) => step?.data?.action?.executor?.name === ExecutionTypes.DeviceRegistration
+        );
+
         const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
             return (!isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI) &&
-                (!isOpenID4VPDisabled || template?.type !== TemplateTypes.BasicWallet);
+                (!isOpenID4VPDisabled || template?.type !== TemplateTypes.BasicWallet) &&
+                (isDeviceRegistrationAvailable || template?.type !== TemplateTypes.BasicDeviceRegistration);
         });
 
         const filteredWidgets: any[] = (widgets as any[]).filter((widget: any) => {

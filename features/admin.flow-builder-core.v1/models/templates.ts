@@ -32,5 +32,6 @@ export enum TemplateTypes {
     GeneratedWithAI = "GENERATE_WITH_AI",
     BasicPasskey = "BASIC_PASSKEY",
     Default = "DEFAULT",
-    BasicWallet = "BASIC_WALLET"
+    BasicWallet = "BASIC_WALLET",
+    BasicDeviceRegistration = "BASIC_DEVICE_REGISTRATION"
 }

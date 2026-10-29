@@ -21,6 +21,8 @@ import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+// eslint-disable-next-line max-len
+import DeviceRegistrationProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/device-registration-properties/device-registration-properties";
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
@@ -207,6 +209,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <FlowExtensionProperties
                             resource={ resource }
                             data-componentid="flow-extension-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.DeviceRegistration) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <DeviceRegistrationProperties
+                            resource={ resource }
+                            data-componentid="device-registration-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

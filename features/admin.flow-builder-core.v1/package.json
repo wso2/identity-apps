@@ -29,6 +29,7 @@
         "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.claims.v1": "^2.31.2",
         "@wso2is/admin.core.v1": "workspace:^",
+        "@wso2is/admin.device-policies.v1": "workspace:^",
         "@wso2is/admin.flows.v1": "workspace:^",
         "@wso2is/admin.organizations.v1": "workspace:^",
         "@wso2is/admin.registration-flow-builder.v1": "workspace:^",

@@ -149,7 +149,14 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
 
     if (isContributedByExtension) {
         return (
-            <ExtensionExecution resource={ resource } />
+            <ExtensionExecution
+                resource={ resource }
+                className={
+                    resource?.data?.action?.executor?.name === ExecutionTypes.DeviceRegistration
+                        ? "device-registration"
+                        : undefined
+                }
+            />
         );
     }
 

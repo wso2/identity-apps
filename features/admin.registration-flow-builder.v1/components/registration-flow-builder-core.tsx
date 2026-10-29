@@ -914,9 +914,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED and BASIC_WALLET template cases — auto-select the execution step
-        // so the IdP name property panel opens immediately after the template loads.
-        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet) {
+        // Handle BASIC_FEDERATED, BASIC_WALLET and BASIC_DEVICE_REGISTRATION template cases — auto-select the
+        // execution step so its property panel (IdP name or device policy) opens immediately after the template loads.
+        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet
+            || template.type === TemplateTypes.BasicDeviceRegistration) {
             const executionStep: Node | undefined = templateSteps.find(
                 (step: Node) => step.type === StepTypes.Execution
             );
