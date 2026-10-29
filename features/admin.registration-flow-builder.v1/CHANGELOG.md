@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.13.1
+
+### Patch Changes
+
+- [#10801](https://github.com/wso2/identity-apps/pull/10801) [`eab69a3987d89016248fab31b7df480ff6b5970b`](https://github.com/wso2/identity-apps/commit/eab69a3987d89016248fab31b7df480ff6b5970b) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Improve the self-registration flow completion properties layout and wording with grouped account and organization settings, user placement radio options, and a locked default role chip.
+
 ## 0.13.0
 
 ### Minor Changes
