@@ -36,6 +36,7 @@ import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpo
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getDevicePoliciesResourceEndpoints } from "@wso2is/admin.device-policies.v1/configs/endpoints";
+import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
@@ -415,6 +416,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getDevicePoliciesResourceEndpoints(this.resolveServerHost()),
+            ...getDevicesResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getPresentationDefinitionEndpoints(this.resolveServerHost()),

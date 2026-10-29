@@ -35,6 +35,7 @@ import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificat
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { DevicePoliciesResourceEndpointsInterface } from "@wso2is/admin.device-policies.v1/models/endpoints";
+import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
@@ -105,6 +106,10 @@ export interface FeatureConfigInterface {
      * Device assurance policies feature.
      */
     devicePolicies?: FeatureAccessConfigInterface;
+    /**
+     * Device management feature.
+     */
+    devices?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -966,6 +971,7 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     ApplicationsResourceEndpointsInterface,
     ConnectionResourceEndpointsInterface,
     DevicePoliciesResourceEndpointsInterface,
+    DevicesResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,

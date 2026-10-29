@@ -1367,6 +1367,36 @@
                 }
             },
             {% endif %}
+            {% if console.devices is defined %}
+            "devices": {
+                "disabledFeatures": [
+                    {% if console.devices.disabled_features is defined %}
+                    {% for feature in console.devices.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.devices.enabled is defined %} {{ console.devices.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.devices.scopes is defined %}
+                    {% for operation, scopes in console.devices.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.dynamic_client_registration is defined %}
             "dynamicClientRegistration": {
                 "disabledFeatures": [

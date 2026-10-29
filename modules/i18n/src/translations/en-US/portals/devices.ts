@@ -176,5 +176,74 @@ export const devices: DevicesNS = {
                 rules: "Rules"
             }
         }
+    },
+    userDevices: {
+        confirmations: {
+            delete: {
+                assertionHint: "Please confirm your action.",
+                content: "The user will need to register this device again to use it for device assurance. " +
+                    "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently remove the device."
+            }
+        },
+        list: {
+            actions: {
+                rename: "Rename"
+            },
+            columns: {
+                actions: "Actions",
+                name: "Device",
+                registeredAt: "Registered On",
+                status: "Status"
+            },
+            status: {
+                ACTIVE: "Active",
+                INACTIVE: "Inactive"
+            }
+        },
+        notifications: {
+            delete: {
+                genericError: {
+                    description: "An error occurred while removing the device.",
+                    message: "Removal failed"
+                },
+                success: {
+                    description: "The device has been removed successfully.",
+                    message: "Device removed"
+                }
+            },
+            fetch: {
+                genericError: {
+                    description: "An error occurred while retrieving the devices of the user.",
+                    message: "Retrieval failed"
+                }
+            },
+            update: {
+                genericError: {
+                    description: "An error occurred while renaming the device.",
+                    message: "Update failed"
+                },
+                success: {
+                    description: "The device has been renamed successfully.",
+                    message: "Device renamed"
+                }
+            }
+        },
+        placeholders: {
+            empty: {
+                subtitles: {
+                    0: "This user has not registered any devices yet."
+                },
+                title: "No devices"
+            }
+        },
+        rename: {
+            heading: "Rename Device",
+            name: {
+                label: "Device Name",
+                placeholder: "Enter a name for the device"
+            }
+        }
     }
 };
