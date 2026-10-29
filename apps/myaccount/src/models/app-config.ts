@@ -74,6 +74,7 @@ export interface ServiceResourceEndpointsInterface {
     brandingPreference: string;
     challenges: string;
     challengeAnswers: string;
+    devices: string;
     federatedAssociations: string;
     fidoEnd: string;
     fidoMetaData: string;

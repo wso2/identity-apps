@@ -109,6 +109,7 @@ export class Config {
             consentMgtV2: {
                 consents: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/consents`
             },
+            devices: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/devices`,
             federatedAssociations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn`,
