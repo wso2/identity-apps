@@ -177,6 +177,23 @@ export const devices: DevicesNS = {
             }
         }
     },
+    registrationStep: {
+        properties: {
+            description: "Register the user's device in this step. Select a device policy to allow only "
+                + "devices that comply with it.",
+            noPolicies: "No device policies found",
+            policy: {
+                hint: "Leave empty to register any device.",
+                label: "Device policy",
+                noPermission: "You do not have permission to view device policies.",
+                placeholder: "Select a device policy"
+            }
+        },
+        validation: {
+            authenticationRequired: "Device registration needs an authentication step, such as Email OTP, "
+                + "SMS OTP or Passkey, before it in the flow."
+        }
+    },
     userDevices: {
         confirmations: {
             delete: {

@@ -48,7 +48,8 @@ class VisualFlowConstants {
         TemplateTypes.BasicFederated,
         TemplateTypes.Blank,
         TemplateTypes.BasicPasskey,
-        TemplateTypes.BasicWallet
+        TemplateTypes.BasicWallet,
+        TemplateTypes.BasicDeviceRegistration
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [

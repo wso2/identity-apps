@@ -43,6 +43,8 @@ class RegistrationFlowExecutorConstants {
 
     public static readonly MAGIC_LINK_EXECUTOR: string = "MagicLinkExecutor";
 
+    public static readonly OPEN_ID_CONNECT_EXECUTOR: string = "OpenIDConnectExecutor";
+
     public static readonly USER_PROVISIONING_EXECUTOR: string = "UserProvisioningExecutor";
 
     /**

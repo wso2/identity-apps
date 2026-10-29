@@ -5453,6 +5453,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
+      '@wso2is/admin.device-policies.v1':
+        specifier: workspace:^
+        version: link:../admin.device-policies.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1

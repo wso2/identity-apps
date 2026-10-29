@@ -173,6 +173,21 @@ export interface DevicesNS {
             };
         };
     };
+    registrationStep: {
+        properties: {
+            description: string;
+            noPolicies: string;
+            policy: {
+                hint: string;
+                label: string;
+                noPermission: string;
+                placeholder: string;
+            };
+        };
+        validation: {
+            authenticationRequired: string;
+        };
+    };
     userDevices: {
         confirmations: {
             delete: {
