@@ -207,7 +207,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const associatedTenantsLimit: number = 15;
+    const associatedTenantsLimit: number = TenantConstants.ASSOCIATED_TENANTS_PAGE_SIZE;
 
     useEffect(() => {
         setAssociatedTenantsOffset(0);
@@ -281,37 +281,24 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             setCurrentTenant(_currentTenant);
         }
 
-        // The dropdown lists the tenants other than the current one. Derive that list rather than
-        // removing entries from `associatedTenants` in place: that array is the state itself, and
-        // it is mirrored into the store, so mutating it drops the current tenant from both.
-        const otherTenants: TenantInfo[] = Array.isArray(associatedTenants)
-            ? associatedTenants.filter((tenant: TenantInfo) => tenant !== currentTenant)
-            : associatedTenants;
-
         const association: TenantAssociationsInterface = {
-            associatedTenants: otherTenants,
+            associatedTenants: associatedTenants,
             currentTenant: currentTenant,
             defaultTenant: defaultTenant,
             username: email ?? username
         };
 
-        if (Array.isArray(otherTenants)) {
-            setTempTenantAssociationsList(otherTenants);
+        if (Array.isArray(association.associatedTenants)) {
+            // Remove the current tenant from the associated tenants list.
+            const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
+
+            if (currentTenantIndex !== -1) {
+                association.associatedTenants.splice(currentTenantIndex, 1);
+            }
+            setTempTenantAssociationsList(association.associatedTenants);
         }
         setTenantAssociations(association);
     }, [ associatedTenants, defaultTenant, currentTenant ]);
-
-    /**
-     * Mirror every page the dropdown has loaded into the store.
-     *
-     * `state.auth.tenants` used to receive only the first page, so anything resolving the current
-     * tenant through it broke for users with more associations than one page holds.
-     */
-    useEffect(() => {
-        if (associatedTenants.length > 0) {
-            dispatch(setTenants<TenantInfo>(associatedTenants));
-        }
-    }, [ associatedTenants ]);
 
     const {
         data: deploymentUnitResponse,
@@ -425,11 +412,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
                         tenants.push(tenant);
                     });
-                    // Append to whatever has been committed rather than to the array this closure
-                    // captured, so a second page requested before React commits the first cannot
-                    // drop or duplicate tenants.
-                    setAssociatedTenants((previousTenants: TenantInfo[]) => [ ...previousTenants, ...tenants ]);
-                    setAssociatedTenantsOffset((previousOffset: number) => previousOffset + associatedTenantsLimit);
+                    // Add tenants to the associatedTenants state
+                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
+                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
                     setDefaultTenant(updatedDefaultTenant);
                     setCurrentTenant(updatedCurrentTenant);
                     setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);

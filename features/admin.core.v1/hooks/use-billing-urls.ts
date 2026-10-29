@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import type { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import useGetTenantAssociation from "@wso2is/admin.tenants.v1/api/use-get-tenant-association";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { AppState } from "../store";
 import { CommonUtils } from "../utils/common-utils";
-import { getTenantAssociation } from "../utils/tenant-association-utils";
 
 /**
  * Billing links of the current tenant. Empty strings when the tenant has no billing portal, which
@@ -37,9 +36,6 @@ const EMPTY_BILLING_URLS: BillingURLsInterface = {
     upgradeButtonURL: ""
 };
 
-/**
- * Billing links together with the tenant domain they were built for.
- */
 interface ResolvedBillingURLsInterface {
     domain: string | undefined;
     urls: BillingURLsInterface;
@@ -51,66 +47,7 @@ const UNRESOLVED_BILLING_URLS: ResolvedBillingURLsInterface = {
 };
 
 /**
- * In-flight and resolved associations, keyed by tenant domain.
- *
- * Several components ask for the billing links on the same page — the header, the feature locked
- * banner, the free trial banner and the trial expiry wizard. Sharing the promise keeps that to a
- * single walk of `tenant/me` instead of one per consumer.
- */
-const tenantAssociationCache: Map<string, Promise<TenantInfo | undefined>> = new Map();
-
-/**
- * Resolve a tenant's association, reusing an in-flight or settled lookup for the same domain.
- *
- * @param tenantDomain - Domain of the tenant to resolve.
- * @param knownAssociation - The association already held in the store, if any.
- * @returns The association, or `undefined` if the user has none for that domain.
- */
-const resolveTenantAssociation = (
-    tenantDomain: string,
-    knownAssociation: TenantInfo | undefined
-): Promise<TenantInfo | undefined> => {
-    // An association from the store costs nothing and is authoritative, so it supersedes whatever
-    // is cached — including the `undefined` an earlier failed lookup left behind.
-    if (knownAssociation) {
-        const known: Promise<TenantInfo> = Promise.resolve(knownAssociation);
-
-        tenantAssociationCache.set(tenantDomain, known);
-
-        return known;
-    }
-
-    if (tenantAssociationCache.has(tenantDomain)) {
-        return tenantAssociationCache.get(tenantDomain);
-    }
-
-    const pending: Promise<TenantInfo | undefined> = getTenantAssociation(tenantDomain)
-        .catch(() => {
-            // Drop a failed lookup so a later render can try again. A lookup that succeeded and
-            // found nothing stays cached: that answer does not change within a session, and
-            // retrying it on every render would put the duplicate traffic back.
-            //
-            // Only drop this lookup's own entry. A store association arriving while the request
-            // was still in flight will have replaced it, and that newer entry must survive.
-            if (tenantAssociationCache.get(tenantDomain) === pending) {
-                tenantAssociationCache.delete(tenantDomain);
-            }
-
-            return undefined;
-        });
-
-    tenantAssociationCache.set(tenantDomain, pending);
-
-    return pending;
-};
-
-/**
  * Resolve the billing portal and upgrade URLs of the current tenant.
- *
- * The tenant association carries the tenant id the URLs are built from, so it has to be in hand
- * before anything can be rendered. `state.auth.tenants` holds it for most users, but it is only
- * ever filled with the first page of the association list, so a user with many tenants can be
- * working in one that is not there. In that case the association is fetched on its own.
  *
  * @param enabled - Whether billing links apply at all. Skips every request when false.
  * @returns The billing URLs, both empty until they resolve or if the tenant has no billing portal.
@@ -120,15 +57,14 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
 ): BillingURLsInterface => {
 
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
-    const associatedTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
 
-    // The domain is kept with the URLs so that an organization switch, which swaps `tenantDomain`
-    // under a mounted header, cannot leave the previous tenant's links on screen while the new
-    // association is still being resolved.
+    const { data: association } = useGetTenantAssociation(tenantDomain, enabled);
+
+    // Keyed by domain so an organization switch cannot show the previous tenant's links.
     const [ resolved, setResolved ] = useState<ResolvedBillingURLsInterface>(UNRESOLVED_BILLING_URLS);
 
     useEffect(() => {
-        if (!enabled || !tenantDomain) {
+        if (!enabled || !tenantDomain || !association) {
             setResolved(UNRESOLVED_BILLING_URLS);
 
             return;
@@ -136,23 +72,13 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
 
         let isActive: boolean = true;
 
-        const knownAssociation: TenantInfo | undefined = Array.isArray(associatedTenants)
-            ? associatedTenants.find((tenant: TenantInfo) => tenant?.domain === tenantDomain)
-            : undefined;
-
-        resolveTenantAssociation(tenantDomain, knownAssociation)
-            .then((association: TenantInfo | undefined) =>
-                CommonUtils.buildBillingURLs(tenantDomain, association ? [ association ] : [])
-            )
+        CommonUtils.buildBillingURLs(tenantDomain, [ association ])
             .then((urls: BillingURLsInterface) => {
                 if (isActive) {
                     setResolved({ domain: tenantDomain, urls });
                 }
             })
             .catch(() => {
-                // Nothing past the lookup is expected to throw, but a consumer rendering against a
-                // half-built config should fall back to the empty state rather than leave an
-                // unhandled rejection behind.
                 if (isActive) {
                     setResolved(UNRESOLVED_BILLING_URLS);
                 }
@@ -161,7 +87,7 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
         return () => {
             isActive = false;
         };
-    }, [ enabled, tenantDomain, associatedTenants ]);
+    }, [ enabled, tenantDomain, association ]);
 
     return enabled && resolved.domain === tenantDomain ? resolved.urls : EMPTY_BILLING_URLS;
 };

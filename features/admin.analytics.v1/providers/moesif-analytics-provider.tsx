@@ -17,8 +17,7 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getTenantAssociation } from "@wso2is/admin.core.v1/utils/tenant-association-utils";
-import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import useGetTenantAssociation from "@wso2is/admin.tenants.v1/api/use-get-tenant-association";
 import { MultiValueAttributeInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import moesif from "moesif-browser-js";
@@ -61,6 +60,31 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
     const isInitializedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isIdentifyingRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
+    const isCompanyIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
+
+    const { data: tenantAssociation } = useGetTenantAssociation(tenantDomain, !!moesifApplicationId);
+    const companyId: string | undefined = tenantAssociation?.id;
+
+    /**
+     * Identifies the company once the user has been identified and the tenant association is known.
+     */
+    const identifyCompany: () => void = useCallback((): void => {
+        if (!isIdentifiedRef.current || isCompanyIdentifiedRef.current || !companyId) {
+            return;
+        }
+
+        try {
+            moesif.identifyCompany(companyId);
+            isCompanyIdentifiedRef.current = true;
+        } catch (_error: unknown) {
+            // Analytics will work without Company ID.
+        }
+    }, [ companyId ]);
+
+    // The association can resolve after the first `track()` call.
+    useEffect(() => {
+        identifyCompany();
+    }, [ identifyCompany ]);
 
     // Initialize Moesif SDK on mount if application ID is configured.
     useEffect(() => {
@@ -162,18 +186,9 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
                 // User ID fetch failed — analytics will work without User ID.
             });
 
-        getTenantAssociation(tenantDomain)
-            .then((currentTenant: TenantInfo | undefined): void => {
-                if (currentTenant?.id) {
-                    moesif.identifyCompany(currentTenant.id);
-                }
-            })
-            .catch((): void => {
-                // Tenant UUID fetch failed — analytics will work without Company ID.
-            });
-
         isIdentifiedRef.current = true;
-    }, [ tenantDomain, resolveUserEmail ]);
+        identifyCompany();
+    }, [ resolveUserEmail, identifyCompany ]);
 
     /**
      * Fires a Moesif action event with optional metadata.
