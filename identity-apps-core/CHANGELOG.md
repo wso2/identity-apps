@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.7.0
+
+### Minor Changes
+
+- [#10838](https://github.com/wso2/identity-apps/pull/10838) [`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add flow variables for headers and runtime values, with an A/B testing key in the accounts portal
+
 ## 5.6.4
 
 ### Patch Changes
