@@ -32,7 +32,7 @@ export enum CimdClientIdUrlError {
  * @param url - Client Identifier URL.
  * @returns Length in bytes.
  */
-export const getCimdClientIdByteLength = (url: string): number => new TextEncoder().encode(url).length;
+const getCimdClientIdByteLength = (url: string): number => new TextEncoder().encode(url).length;
 
 /**
  * Checks a Client Identifier URL before it is previewed: an `https` URL of at most 255 bytes, the longest client ID
