@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { CimdKnownClientInterface } from "./models";
-
 /**
  * Constants for OAuth Client ID Metadata Document (CIMD) clients.
  */
@@ -28,14 +26,4 @@ export class CimdConstants {
     public static readonly CALLBACK_URL_REGEXP_PREFIX: string = "regexp=";
 
     public static readonly IPV4_LOOPBACK_PREFIX: string = "http://127.0.0.1";
-
-    /**
-     * Known MCP clients shown when the deployment config does not list its own in `extensions.mcpKnownClients`.
-     * Only the Client Identifier URLs: IS retrieves and checks each document when a client is chosen.
-     */
-    public static readonly DEFAULT_KNOWN_CLIENTS: CimdKnownClientInterface[] = [
-        { clientId: "https://claude.ai/oauth/mcp-oauth-client-metadata", name: "Claude" },
-        { clientId: "https://chatgpt.com/oauth/client.json", name: "ChatGPT" },
-        { clientId: "https://vscode.dev/oauth/client-metadata.json", name: "Visual Studio Code" }
-    ];
 }

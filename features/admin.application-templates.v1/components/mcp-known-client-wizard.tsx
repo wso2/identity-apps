@@ -22,7 +22,6 @@ import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/a
 import {
     buildCimdApplicationPayload,
     CimdClientMetadataInterface,
-    CimdConstants,
     CimdKnownClientInterface
 } from "@wso2is/admin.applications.v1/utils/cimd";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
@@ -107,9 +106,10 @@ export const McpKnownClientWizard: FunctionComponent<McpKnownClientWizardPropsIn
     const configuredClients: unknown = useSelector((state: AppState) =>
         state?.config?.deployment?.extensions?.mcpKnownClients);
 
+    // Known clients come from the deployment config, so a vendor's new Client Identifier URL needs no code change.
     const knownClients: CimdKnownClientInterface[] = (Array.isArray(configuredClients)
         ? configuredClients as CimdKnownClientInterface[]
-        : CimdConstants.DEFAULT_KNOWN_CLIENTS)
+        : [])
         .filter((client: CimdKnownClientInterface) => typeof client?.clientId === "string"
             && typeof client?.name === "string");
 

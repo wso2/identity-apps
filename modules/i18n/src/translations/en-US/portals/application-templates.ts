@@ -37,7 +37,7 @@ export const applicationTemplates: applicationTemplatesNS = {
         label: "Client",
         other: "Other MCP client",
         previewError: {
-            disabled: "Client ID metadata documents are disabled in this deployment.",
+            disabled: "Client ID metadata documents are not enabled for this organization.",
             documentNotRetrieved: "The client's metadata document could not be retrieved.",
             generic: "An error occurred while reading the client's metadata document.",
             invalidAuthentication: "The client's authentication method or key source is not supported.",

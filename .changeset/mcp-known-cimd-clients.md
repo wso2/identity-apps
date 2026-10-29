@@ -5,4 +5,4 @@
 "@wso2is/i18n": minor
 ---
 
-Let admins register Claude, ChatGPT and Visual Studio Code from the MCP Client template in one click. IS retrieves and checks each client's Client ID Metadata Document (CIMD), and the application is created from the values in that document.
+Let admins register known MCP clients, such as Claude and Visual Studio Code, from the MCP Client template in one click. IS retrieves and checks each client's Client ID Metadata Document (CIMD), and the application is created from the values in that document. The list of known clients comes from the deployment config (`extensions.mcpKnownClients`).

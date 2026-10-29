@@ -186,6 +186,16 @@
                 "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
+        "mcpKnownClients": [
+            {
+                "clientId": "https://claude.ai/oauth/mcp-oauth-client-metadata",
+                "name": "Claude"
+            },
+            {
+                "clientId": "https://vscode.dev/oauth/client-metadata.json",
+                "name": "Visual Studio Code"
+            }
+        ],
         "outboundProvisioningConnectors": [],
         "smsTemplates": [
             {
