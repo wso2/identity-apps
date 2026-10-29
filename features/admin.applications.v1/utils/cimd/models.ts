@@ -53,3 +53,10 @@ export interface CimdClientMetadataInterface {
     jwksUri?: string;
     grantTypes: string[];
 }
+
+/**
+ * The part of the organization's OAuth2 inbound configuration that turns on CIMD.
+ */
+export interface CimdOAuth2InboundConfigInterface {
+    enableClientIdMetadataDocument?: boolean;
+}

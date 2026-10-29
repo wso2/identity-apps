@@ -17,6 +17,7 @@
  */
 
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
+import useGetOAuth2InboundConfig from "@wso2is/admin.applications.v1/api/use-get-oauth2-inbound-config";
 import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
@@ -86,6 +87,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         isTemplateMetadataRequestLoading: isTemplateMetadataFetchRequestLoading
     } = useApplicationTemplateMetadata();
     const isApplicationSharable: boolean = useApplicationSharingEligibility();
+    const isMcpClientTemplate: boolean = templateData?.id === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION;
+    const {
+        data: oauth2InboundConfig,
+        isLoading: isOAuth2InboundConfigRequestLoading
+    } = useGetOAuth2InboundConfig(isMcpClientTemplate);
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -299,7 +305,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         );
     }
 
-    if (templateData?.id === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION && !isMcpClientConfiguredManually) {
+    // The client chooser registers clients from their metadata documents, so it is offered only when the
+    // organization has turned on CIMD. Otherwise, or if the setting cannot be read, the template's form opens.
+    if (isMcpClientTemplate && oauth2InboundConfig?.enableClientIdMetadataDocument === true
+        && !isMcpClientConfiguredManually) {
         return (
             <McpKnownClientWizard
                 templateName={ templateData?.name }
@@ -347,7 +356,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
             buttonText={ t("common:create") }
             onFormSubmit={ handleFormSubmission }
-            isLoading={ isTemplateDataFetchRequestLoading || isTemplateMetadataFetchRequestLoading }
+            isLoading={ isTemplateDataFetchRequestLoading || isTemplateMetadataFetchRequestLoading
+                || (isMcpClientTemplate && isOAuth2InboundConfigRequestLoading) }
             data-componentid={ componentId }
         />
     );
