@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.7.2
+
+### Patch Changes
+
+- [#10828](https://github.com/wso2/identity-apps/pull/10828) [`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Rework the Customer Data profile unification settings into automatic unification, administrator review and match handling sections, show the exact-rule auto-unification setting, and default the automatic unification threshold to 1
+
 ## 1.7.1
 
 ### Patch Changes
