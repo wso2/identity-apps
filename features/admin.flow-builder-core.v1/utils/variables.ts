@@ -61,7 +61,7 @@ const VariableFields: {
 /**
  * The names the server accepts, for each kind of variable.
  */
-export const VariableNamePatterns: {
+const VariableNamePatterns: {
     headers: RegExp;
     runtimeValues: RegExp;
 } = {
