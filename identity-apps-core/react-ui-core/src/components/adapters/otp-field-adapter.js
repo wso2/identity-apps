@@ -24,6 +24,7 @@ import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 import Hint from "../hint";
 import ValidationError from "../validation-error";
+import "./otp-field-adapter.css";
 
 /**
  * Strips characters that cannot be part of an OTP (whitespace, separators, etc.)
@@ -120,16 +121,13 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
             <label htmlFor={ `${ identifier }-otp-input` }>{ resolveElementText(translations, label) }</label>
             {
                 isSegmented ? (
-                    <div
-                        className="sms-otp-fields equal width fields segmented-otp-field"
-                        style={ { display: "flex", gap: "0.8rem", margin: "auto 0" } }
-                    >
+                    <div className="otp-field-segmented">
                         <input
                             { ...otpInputProps }
                             ref={ otpInputRef }
                             id={ `${ identifier }-otp-input` }
                             type="text"
-                            className="segmented-otp-input"
+                            className="otp-field-input"
                             maxLength={ otpLength }
                             onFocus={ () => setIsFocused(true) }
                             onSelect={ handleSelect }
@@ -140,12 +138,10 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                             Array.from({ length: otpLength }, (_, i) => (
                                 <div
                                     key={ i }
-                                    id={ `pincode-${ i + 1 }` }
                                     aria-hidden="true"
-                                    className={ classNames("text-center p-1 pb-3 pt-3", {
-                                        "active-pincode": isFocused && i === otpValue.length
+                                    className={ classNames("otp-field-digit", {
+                                        active: isFocused && i === otpValue.length
                                     }) }
-                                    style={ { width: "3.1rem" } }
                                 >
                                     { otpValue[i] || "·" }
                                 </div>
