@@ -51,6 +51,10 @@ export interface ApplicationBasicInterface {
     applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
     associatedRoles?: AssociatedRolesInterface;
+    /**
+     * Whether organizations can create custom roles for the shared applications.
+     */
+    organizationCustomRolesEnabled?: boolean;
 }
 
 export enum ApplicationAccessTypes {

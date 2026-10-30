@@ -684,6 +684,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enabledFeatureOverridesInConsoleRolePermissions?: string[];
     /**
+     * Whether the organization custom roles feature is enabled for the server.
+     */
+    isOrganizationCustomRolesFeatureEnabled?: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

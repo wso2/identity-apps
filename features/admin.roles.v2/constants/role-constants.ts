@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { APIResourceCategories } from "@wso2is/admin.api-resources.v2/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 
 export const APPLICATION_DOMAIN: string = "Application/";
@@ -106,6 +107,15 @@ export class RoleConstants {
      * Property key for shared role.
      */
     public static readonly IS_SHARED_ROLE: string = "isSharedRole";
+
+    /**
+     * Management API resource types, which are not available in organizations.
+     */
+    public static readonly ORGANIZATION_RESTRICTED_API_RESOURCE_TYPES: string[] = [
+        APIResourceCategories.TENANT,
+        APIResourceCategories.SYSTEM,
+        APIResourceCategories.CONSOLE_FEATURE
+    ];
 
     /**
      * Key word for impersonation role.

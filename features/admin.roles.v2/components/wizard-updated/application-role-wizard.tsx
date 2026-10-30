@@ -26,8 +26,10 @@ import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/mo
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
@@ -53,6 +55,7 @@ import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "se
 import { createRole, createRoleUsingV3Api } from "../../api/roles";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
+import { RoleManagementUtils } from "../../utils/role-management-utils";
 import { ScopeInterface } from "../../models/apiResources";
 import { Policy } from "../../models/policies";
 import {
@@ -129,6 +132,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         return ids;
     }, [ blockedAPIResourceEntries ]);
 
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
@@ -164,6 +170,11 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                 return;
             }
 
+            // Management API resources are not available to roles in organizations.
+            if (isSubOrg && !RoleManagementUtils.isAPIResourceAllowedInOrganization(apiResource?.type)) {
+                return;
+            }
+
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
@@ -178,7 +189,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds, isSubOrg ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.

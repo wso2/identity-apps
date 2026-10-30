@@ -2444,6 +2444,7 @@
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
         "isMultipleEmailsAndMobileNumbersEnabled": true,
+        "isOrganizationCustomRolesFeatureEnabled": true,
         "isPasswordInputValidationEnabled": true,
         "isPasswordResetEnforcementScopeEnabled": false,
         "isRequestPathAuthenticationEnabled": false,
