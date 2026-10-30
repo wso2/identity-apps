@@ -19,7 +19,7 @@
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.FlowDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.flow.v1.FlowExecutionResponse" %>
-<%@ page import="java.net.*, java.io.*, org.json.*" %>
+<%@ page import="java.net.*, java.io.*, java.util.*, org.json.*" %>
 <%@include file="../includes/init-url.jsp" %>
 
 <%
@@ -32,8 +32,23 @@
         }
 
         if (requestBody.length() > 0) {
+            Map<String, List<String>> headerParams = new HashMap<>();
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames != null && headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                headerParams.put(headerName, Collections.list(request.getHeaders(headerName)));
+            }
+
+            Map<String, List<String>> queryParams = new HashMap<>();
+            Enumeration<String> paramNames = request.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = paramNames.nextElement();
+                queryParams.put(paramName, Arrays.asList(request.getParameterValues(paramName)));
+            }
+
             FlowDataRetrievalClient flowDataRetrievalClient = new FlowDataRetrievalClient();
-            FlowExecutionResponse flowExecutionResponse = flowDataRetrievalClient.executeFlow(requestBody.toString(), tenantDomain);
+            FlowExecutionResponse flowExecutionResponse =
+                    flowDataRetrievalClient.executeFlow(requestBody.toString(), tenantDomain, headerParams, queryParams);
 
             int responseCode = flowExecutionResponse.getStatusCode();
             JSONObject responseObject = flowExecutionResponse.getResponse();
