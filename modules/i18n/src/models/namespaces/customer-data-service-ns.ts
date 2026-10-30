@@ -594,6 +594,29 @@ export interface CustomerDataServiceNS {
                 primaryAction: string;
             };
         };
+        explanation: {
+            match: {
+                agree: string;
+                differs: string;
+                inconclusive: string;
+                inconclusiveHint: string;
+                notCompared: string;
+                notComparedHint: string;
+            };
+            reasons: {
+                AUTO_MERGE_DISABLED: { label: string; sentence: string; };
+                AUTO_MERGE_FAILED: { label: string; sentence: string; };
+                BELOW_AUTO_MERGE_THRESHOLD: { label: string; sentence: string; };
+                COMMON_VALUE: { label: string; sentence: string; };
+                CONFLICTING_EVIDENCE: { label: string; sentence: string; };
+                DISCRIMINATING_MISMATCH: { label: string; sentence: string; };
+                MERGED_WITH_ANOTHER_PROFILE: { label: string; sentence: string; };
+                REJECTION_RECONSIDERED: { label: string; sentence: string; sentenceStronger: string; };
+                WEAK_SOLE_EVIDENCE: { label: string; sentence: string; };
+                unknown: { label: string; sentence: string; };
+            };
+            ruleHint: string;
+        };
         list: {
             actions: {
                 approve: string;
@@ -607,7 +630,6 @@ export interface CustomerDataServiceNS {
                 attributeMatch: string;
                 candidateProfile: string;
                 profile: string;
-                profileMatch: string;
             };
             evidenceMissing: string;
             noBreakdown: string;

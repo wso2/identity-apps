@@ -16,6 +16,24 @@
  * under the License.
  */
 
+/* The tints the other Customer Data screens already use for their labels: teal and blue for the
+   attribute scopes on the unification rules list, purple for the Application Data scope on the
+   attribute listing, amber and grey for fuzzy and exact matching. Red is the product's error
+   colour, since nothing else in Customer Data marks a difference. */
+$cds-teal: #00796b;
+$cds-teal-bg: #e0f2f1;
+$cds-blue: #0082c3;
+$cds-blue-bg: #dcf0fa;
+$cds-purple: #5e35b1;
+$cds-purple-bg: #ede7f6;
+$cds-amber: #b4700a;
+$cds-amber-bg: #fdf2e2;
+$cds-grey: #5a6360;
+$cds-grey-bg: #eceff0;
+$cds-grey-border: #c9cfcd;
+$cds-red: var(--oxygen-palette-error-main);
+$cds-red-bg: color-mix(in srgb, var(--oxygen-palette-error-main) 10%, transparent);
+
 /**
  * Every `.data-table-row` is styled as its own white, rounded, shadowed card with an even gap
  * above and below. A detail row inherits all of that, so an opened pair would read as two
@@ -27,6 +45,134 @@
     .data-table-cell .ui.header,
     .data-table-cell .sub.header {
         word-break: break-word;
+    }
+
+    /* Reasons about the whole pair open the review, ahead of the evidence they explain. */
+    /* The comparison's heading line: its caption, then the reasons the pair as a whole is in
+       review for. They wrap beneath the caption where the line is too narrow. */
+    .review-task-evidence-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem 0.75rem;
+        /* Starts at the attribute column, which is the detail's own first column. */
+        padding: 0 0.78571429em 0.6rem;
+    }
+
+    .review-task-context {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+
+        /* About the pair, not an attribute, so filled rather than outlined, and coloured by what
+           the review is due to: an earlier rejection, how the organization merges, or the matching
+           evidence itself — the last in the blue of the partial match it relates to. A reason this
+           Console does not recognize stays grey. */
+        .review-task-reason-chip.ui.label {
+            border-color: transparent;
+            background-color: $cds-grey-bg;
+            color: $cds-grey;
+
+            &.category-history {
+                background-color: $cds-purple-bg;
+                color: $cds-purple;
+            }
+
+            &.category-configuration,
+            &.category-operational {
+                background-color: $cds-amber-bg;
+                color: $cds-amber;
+            }
+
+            &.category-evidence {
+                background-color: $cds-blue-bg;
+                color: $cds-blue;
+            }
+        }
+    }
+
+    /* Every chip on the page shares one shape: the tinted label the other Customer Data screens
+       use. A verdict is filled, so it reads as a value; a reason is outlined, so it reads as a note
+       about one. */
+    .review-task-chip.ui.label {
+        margin: 0;
+        font-weight: 500;
+        cursor: default;
+        border: 1px solid transparent;
+        background-color: $cds-grey-bg;
+        color: $cds-grey;
+
+        &:focus-visible {
+            outline: 2px solid var(--oxygen-palette-primary-main);
+            outline-offset: 1px;
+        }
+    }
+
+    /* Verdicts, filled. Agreement in the attribute-scope teal and blue, a reading that counted
+       neither way in the fuzzy-matching amber, and no comparison in the exact-matching grey. A
+       difference takes the product's error colour, the one shade the other screens have no use for. */
+    .review-task-verdict-chip.ui.label {
+        font-variant-numeric: tabular-nums;
+
+        &.exact {
+            background-color: $cds-teal-bg;
+            color: $cds-teal;
+        }
+
+        &.agree {
+            background-color: $cds-blue-bg;
+            color: $cds-blue;
+        }
+
+        &.inconclusive {
+            background-color: $cds-amber-bg;
+            color: $cds-amber;
+        }
+
+        &.differs {
+            background-color: $cds-red-bg;
+            color: $cds-red;
+        }
+    }
+
+    /* Reasons, outlined in the tone of how they bear on the match. Neutral ones keep the grey. */
+    .review-task-reason-chip.ui.label {
+        background-color: transparent;
+        border-color: $cds-grey-border;
+
+        &.info {
+            border-color: $cds-blue;
+            color: $cds-blue;
+        }
+
+        &.caution {
+            border-color: $cds-amber;
+            color: $cds-amber;
+        }
+
+        &.critical {
+            border-color: $cds-red;
+            color: $cds-red;
+        }
+    }
+
+    /* A verdict and the reason that qualifies it, grouped with a small gap rather than spread
+       across the cell, so they read as one evaluation. */
+    .review-task-evaluation {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .review-task-attribute {
+        cursor: default;
+    }
+
+    /* A rule with nothing to compare stays listed — a missing value is part of the evidence —
+       but recedes, so the rules that did compare something lead. */
+    .review-task-evidence tr.not-compared td {
+        color: var(--oxygen-palette-grey-600);
     }
 
     .review-task-truncated {
@@ -132,8 +278,6 @@
     }
 
     .review-task-evidence-caption {
-        /* Starts at the attribute column, which is the detail's own first column. */
-        padding: 0 0.78571429em 0.6rem;
         font-size: 12px;
         font-weight: 500;
         color: var(--oxygen-palette-grey-600);

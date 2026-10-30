@@ -43,6 +43,7 @@ import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { resolveReviewTask } from "../api/review-tasks";
 import ReviewTaskList from "../components/review-task-list";
 import useReviewTaskProfiles from "../hooks/use-review-task-profiles";
+import { useFullProfileSchema } from "../hooks/use-profile-schema";
 import useReviewTasks from "../hooks/use-review-tasks";
 import {
     ResolveReviewTaskPayload,
@@ -50,6 +51,7 @@ import {
     ReviewTaskListResponse,
     ReviewTaskModel
 } from "../models/review-tasks";
+import { AttributeLabels, buildAttributeLabels, compareReviewTasks } from "../utils/review-task-utils";
 
 /**
  * The server's list endpoint takes a page size and nothing else — no offset, no sort order — so
@@ -84,14 +86,17 @@ const ReviewTasksPage: FunctionComponent<IdentifiableComponentInterface> = ({
 
     const tasks: ReviewTaskModel[] = data?.tasks ?? [];
 
-    // Strongest matches first: those are the pairs most likely to be the same person, and the
-    // ones worth a decision soonest. Equal scores fall back to age, so the order is stable
-    // rather than reshuffling between renders.
-    const sortedTasks: ReviewTaskModel[] = useMemo(() => [ ...tasks ].sort(
-        (a: ReviewTaskModel, b: ReviewTaskModel) =>
-            b.match_score - a.match_score
-                || (a.created_at ?? "").localeCompare(b.created_at ?? "")
-    ), [ tasks ]);
+    // Most alike first: those are the pairs most likely to be the same person, and the ones
+    // worth a decision soonest. Similarity, not the score that held the pair back — that score
+    // sits just under the merge threshold for every held pair, and would put pairs with
+    // conflicting evidence ahead of closer ones. Tasks raised before explanations were recorded
+    // go last, and equal similarity falls back to age, so the order is stable between renders.
+    const sortedTasks: ReviewTaskModel[] = useMemo(() => [ ...tasks ].sort(compareReviewTasks), [ tasks ]);
+
+    // Attributes are named as the schema names them. Without the schema — not loaded yet, or not
+    // viewable — they fall back to their own names, so the comparison never waits on it.
+    const { data: profileSchema } = useFullProfileSchema(cdsFeatureConfig?.enabled ?? false);
+    const attributeLabels: AttributeLabels = useMemo(() => buildAttributeLabels(profileSchema), [ profileSchema ]);
 
     const paginatedTasks: ReviewTaskModel[] = useMemo(
         () => sortedTasks.slice(offset, offset + listItemLimit),
@@ -196,7 +201,7 @@ const ReviewTasksPage: FunctionComponent<IdentifiableComponentInterface> = ({
             data-componentid={ `${ componentId }-layout` }
         >
             { /* No top action panel: there is nothing to search, and the only sort that makes
-                 sense here is by score, which the list already applies. A lone sort option
+                 sense here is by similarity, which the list already applies. A lone sort option
                  renders as a disabled dropdown, and the layout will not show the direction
                  toggle without one — so a control would be there to be looked at, not used. */ }
             <ListLayout
@@ -218,6 +223,7 @@ const ReviewTasksPage: FunctionComponent<IdentifiableComponentInterface> = ({
                     isLoading={ isLoading || isLoadingProfiles }
                     canResolve={ hasUpdateScopes }
                     onResolve={ handleResolve }
+                    attributeLabels={ attributeLabels }
                     data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>

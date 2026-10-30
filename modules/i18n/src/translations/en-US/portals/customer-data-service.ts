@@ -661,6 +661,71 @@ export const customerDataService: CustomerDataServiceNS = {
                 primaryAction: "Reject"
             }
         },
+        explanation: {
+            match: {
+                agree: "Match · {{score}}",
+                differs: "Different · {{score}}",
+                inconclusive: "Inconclusive · {{score}}",
+                inconclusiveHint: "The values are neither close enough to support the match nor different "
+                    + "enough to oppose it, so this comparison did not count either way.",
+                notCompared: "Not compared",
+                notComparedHint: "One profile has no usable value for this attribute, so it could not be "
+                    + "compared. It did not count for or against the match."
+            },
+            reasons: {
+                AUTO_MERGE_DISABLED: {
+                    label: "Automatic merge disabled",
+                    sentence: "These profiles qualified for an automatic merge, but automatic merging is "
+                        + "disabled for this organization."
+                },
+                AUTO_MERGE_FAILED: {
+                    label: "Automatic merge failed",
+                    sentence: "These profiles qualified for an automatic merge, but the merge could not be "
+                        + "completed."
+                },
+                BELOW_AUTO_MERGE_THRESHOLD: {
+                    label: "Below merge threshold",
+                    sentence: "The match on {{attribute}} scored {{score}}, below the automatic merge "
+                        + "threshold of {{threshold}}."
+                },
+                COMMON_VALUE: {
+                    label: "Common value",
+                    sentence: "The matching {{attribute}} is shared by {{count}} or more profiles, so on its "
+                        + "own it may be a coincidence."
+                },
+                CONFLICTING_EVIDENCE: {
+                    label: "Conflicting evidence",
+                    sentence: "The values for {{attributes}} differ, which conflicts with other rules."
+                },
+                DISCRIMINATING_MISMATCH: {
+                    label: "Key attribute differs",
+                    sentence: "The values for {{attributes}} differ. A difference here is strong evidence of "
+                        + "two different people."
+                },
+                MERGED_WITH_ANOTHER_PROFILE: {
+                    label: "Profile merged elsewhere",
+                    sentence: "These profiles qualified for an automatic merge, but the profile was merged "
+                        + "with another match first."
+                },
+                REJECTION_RECONSIDERED: {
+                    label: "Previously rejected",
+                    sentence: "An administrator rejected this pair at a similarity of {{score}}. It was "
+                        + "reconsidered because of a new match on {{attributes}}.",
+                    sentenceStronger: "An administrator rejected this pair at a similarity of {{score}}. It "
+                        + "was reconsidered because the match is now materially stronger."
+                },
+                WEAK_SOLE_EVIDENCE: {
+                    label: "Insufficient alone",
+                    sentence: "This is the only rule that agrees, and a match on {{attribute}} alone cannot "
+                        + "justify an automatic merge."
+                },
+                unknown: {
+                    label: "Held for review",
+                    sentence: "This pair was held for review."
+                }
+            },
+            ruleHint: "Rule \"{{rule}}\" on {{property}}"
+        },
         list: {
             actions: {
                 approve: "Merge",
@@ -671,10 +736,9 @@ export const customerDataService: CustomerDataServiceNS = {
             columns: {
                 actions: "Actions",
                 attribute: "Attribute",
-                attributeMatch: "Attribute match",
+                attributeMatch: "Match",
                 candidateProfile: "Candidate profile",
-                profile: "Profile",
-                profileMatch: "Profile match"
+                profile: "Profile"
             },
             evidenceMissing: "One of these profiles could not be loaded, so there is nothing to "
                 + "check the match against. Reload the page to try again.",
