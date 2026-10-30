@@ -74,7 +74,9 @@ export enum ExecutionTypes {
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",
     FlowExtension = "FlowExtensionExecutor",
-    DigitalWalletFederation = "PresentationExecutor"
+    DigitalWalletFederation = "PresentationExecutor",
+    // Contributed by the Authsignal connector; available only when the connector is deployed.
+    Authsignal = "AuthsignalExecutor"
 }
 
 export enum ExecutionStepViewTypes {
