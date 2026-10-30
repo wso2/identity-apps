@@ -176,7 +176,7 @@ const useFieldValidation = (validationConfig) => {
             }
 
             case "EmailFormatValidator": {
-                if (!validateWithRegex(value, DEFAULT_EMAIL_REGEX)) {
+                if (value && !validateWithRegex(value, DEFAULT_EMAIL_REGEX)) {
                     return "Must use a valid email address.";
                 }
 
