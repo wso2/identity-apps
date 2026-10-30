@@ -77,7 +77,7 @@ export const roles: rolesNS = {
                     cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed.",
                     orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
                     subOrganization: {
-                        appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles. You cannot associate the role with a shared application.",
+                        appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles. A shared application is listed only if its owner allows organizations to create application roles for it.",
                         orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles. You cannot associate the role with a shared application."
                     }
                 },

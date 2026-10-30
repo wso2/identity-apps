@@ -97,23 +97,24 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+
+    // Request the custom roles flag only in sub organizations, where shared applications exist.
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
-        applicationSearchQuery, true, true);
+    } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations" +
+        (isSubOrg ? ",organizationCustomRolesEnabled" : ""), null, null, applicationSearchQuery, true, true);
 
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
     } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
-
-    const { organizationType } = useGetCurrentOrganizationType();
-    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -146,7 +147,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                if (application?.advancedConfigurations?.fragment === false) {
+                // List shared applications only if organization custom roles are enabled.
+                if (application?.advancedConfigurations?.fragment === false
+                    || (application?.advancedConfigurations?.fragment === true
+                        && application?.organizationCustomRolesEnabled === true)) {
                     options.push({
                         content: (
                             <ListItemText

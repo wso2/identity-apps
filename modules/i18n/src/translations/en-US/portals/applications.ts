@@ -921,7 +921,11 @@ export const applications: ApplicationsNS = {
                         "Proceed with caution.",
                     content: {
                         0: "This change may require manual updates to your application setup " +
-                            "and configurations."
+                            "and configurations.",
+                        1: "Disabling enhanced organization login also stops organizations from creating " +
+                            "custom application roles for this application. The application roles created by " +
+                            "organizations will be permanently deleted, and users and groups assigned to them " +
+                            "will lose the related permissions."
                     }
                 },
                 notifications: {
@@ -946,6 +950,60 @@ export const applications: ApplicationsNS = {
                         error: {
                             message: "Failed to disable enhanced organization login.",
                             description: "An error occurred while disabling enhanced organization login. " +
+                                "Please try again."
+                        }
+                    }
+                }
+            },
+            organizationCustomRoles: {
+                title: "Allow organizations to create custom roles",
+                description: "Enabling this allows organizations to create custom application roles or use their own " +
+                    "organization roles for this application, limited to the application's authorized permissions.",
+                confirmation: {
+                    assertionHint: "Please confirm your action.",
+                    audienceSwitch: "The application roles created by organizations for this application will " +
+                        "also be permanently deleted.",
+                    header: "Are you sure?",
+                    message: "Changing this setting affects whether organizations can create custom roles for " +
+                        "this application.",
+                    disableMessage: "This action is irreversible and will permanently delete the application " +
+                        "roles created by organizations.",
+                    content: {
+                        disableOrganizationAudience: "If you disallow this, the organization roles created by " +
+                            "organizations will no longer be honoured for this application. The roles are not " +
+                            "deleted, and roles shared from your organization are not affected.",
+                        enable: "Organization administrators will be able to create custom application roles and " +
+                            "use their own organization roles for this application, limited to the permissions " +
+                            "authorized for this application.",
+                        disable: "If you disallow this, the application roles created by organizations for this " +
+                            "application will be permanently deleted. Users and groups assigned to these roles " +
+                            "will lose the related permissions. Roles shared from this application are not " +
+                            "affected. Please proceed with caution.",
+                        enableOrganizationAudience: "The organization roles created by organizations will be " +
+                            "honoured for this application, along with the roles shared from your organization. " +
+                            "Tokens only carry the permissions authorized for this application."
+                    }
+                },
+                notifications: {
+                    enable: {
+                        success: {
+                            message: "Organization custom roles enabled.",
+                            description: "Organizations can now create custom roles for this application."
+                        },
+                        error: {
+                            message: "Failed to enable organization custom roles.",
+                            description: "An error occurred while enabling organization custom roles. " +
+                                "Please try again."
+                        }
+                    },
+                    disable: {
+                        success: {
+                            message: "Organization custom roles disabled.",
+                            description: "Organizations can no longer create custom roles for this application."
+                        },
+                        error: {
+                            message: "Failed to disable organization custom roles.",
+                            description: "An error occurred while disabling organization custom roles. " +
                                 "Please try again."
                         }
                     }
@@ -1379,6 +1437,25 @@ export const applications: ApplicationsNS = {
                     title: "Create Application Role",
                     subTitle: "Create a new application role in the system.",
                     button: "New Role"
+                },
+                deleteSharedApplicationRoles: {
+                    confirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "The following roles created by your organization will be deleted: {{roles}}. " +
+                            "Users and groups assigned to these roles will lose the related permissions.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the selected roles."
+                    },
+                    notifications: {
+                        error: {
+                            description: "An error occurred while deleting the roles of the shared application.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The selected roles of the shared application were deleted successfully.",
+                            message: "Roles deleted"
+                        }
+                    }
                 }
             }
         }
