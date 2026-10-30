@@ -32,7 +32,7 @@ import MoesifAnalyticsContext, { MoesifAnalyticsContextInterface } from "../cont
  * to all child components via React context.
  *
  * - Initializes Moesif on mount if `moesifApplicationId` is configured in deployment config.
- * - User and company identification is deferred until the first `track()` call to avoid
+ * - User and tenant identification is deferred until the first `track()` call to avoid
  *   unnecessary API calls when no analytics events are fired in a session.
  */
 const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
@@ -60,31 +60,32 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
     const isInitializedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isIdentifyingRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
-    const isCompanyIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
+    const isTenantIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
     const { data: tenantAssociation } = useGetTenantAssociation(tenantDomain, !!moesifApplicationId);
-    const companyId: string | undefined = tenantAssociation?.id;
+    const tenantId: string | undefined = tenantAssociation?.id;
 
     /**
-     * Identifies the company once the user has been identified and the tenant association is known.
+     * Identifies the tenant (a "company" in Moesif) once the user has been identified and the
+     * tenant association is known.
      */
-    const identifyCompany: () => void = useCallback((): void => {
-        if (!isIdentifiedRef.current || isCompanyIdentifiedRef.current || !companyId) {
+    const identifyTenant: () => void = useCallback((): void => {
+        if (!isIdentifiedRef.current || isTenantIdentifiedRef.current || !tenantId) {
             return;
         }
 
         try {
-            moesif.identifyCompany(companyId);
-            isCompanyIdentifiedRef.current = true;
+            moesif.identifyCompany(tenantId);
+            isTenantIdentifiedRef.current = true;
         } catch (_error: unknown) {
-            // Analytics will work without Company ID.
+            // Analytics will work without the tenant ID.
         }
-    }, [ companyId ]);
+    }, [ tenantId ]);
 
     // The association can resolve after the first `track()` call.
     useEffect(() => {
-        identifyCompany();
-    }, [ identifyCompany ]);
+        identifyTenant();
+    }, [ identifyTenant ]);
 
     // Initialize Moesif SDK on mount if application ID is configured.
     useEffect(() => {
@@ -164,10 +165,10 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
     }, [ profileInfo?.emails ]);
 
     /**
-     * Lazily identifies the current user and company with Moesif.
+     * Lazily identifies the current user and tenant with Moesif.
      * Called on the first `track()` invocation to avoid API calls when no events are fired.
      */
-    const identifyUserAndCompany: () => void = useCallback((): void => {
+    const identifyUserAndTenant: () => void = useCallback((): void => {
         if (isIdentifiedRef.current || isIdentifyingRef.current) {
             return;
         }
@@ -187,12 +188,12 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
             });
 
         isIdentifiedRef.current = true;
-        identifyCompany();
-    }, [ resolveUserEmail, identifyCompany ]);
+        identifyTenant();
+    }, [ resolveUserEmail, identifyTenant ]);
 
     /**
      * Fires a Moesif action event with optional metadata.
-     * On the first call, lazily triggers user and company identification.
+     * On the first call, lazily triggers user and tenant identification.
      */
     const track: (_eventName: string, _metadata?: Record<string, unknown>) => void = useCallback(
         (eventName: string, metadata?: Record<string, unknown>): void => {
@@ -201,7 +202,7 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
             }
 
             if (!isIdentifiedRef.current) {
-                identifyUserAndCompany();
+                identifyUserAndTenant();
             }
 
             try {
@@ -210,7 +211,7 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
                 // Analytics failures must never block application functionality.
             }
         },
-        [ identifyUserAndCompany ]
+        [ identifyUserAndTenant ]
     );
 
     const contextValue: MoesifAnalyticsContextInterface = useMemo(
