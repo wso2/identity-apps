@@ -291,6 +291,44 @@
                 const [ walletQR, setWalletQR ] = useState(null);
                 const walletPollRef = useRef(null);
 
+                // Key of the parameters the executor of a redirection step expects back when the flow resumes.
+                const REDIRECTION_PARAMS_KEY = "redirectionParams";
+
+                /**
+                 * Read the parameters the executor of the last redirection step declared as required, and return them
+                 * from the return URL as the inputs to resume the flow with. Returns null unless every declared
+                 * parameter is present, as a return without code or state is not treated as a redirection either.
+                 * The saved list is removed on read, so it applies only to the page load right after the redirection.
+                 */
+                const readRedirectionInputs = () => {
+                    let declaredParams = null;
+
+                    try {
+                        declaredParams = JSON.parse(localStorage.getItem(REDIRECTION_PARAMS_KEY));
+                    } catch (e) {
+                        declaredParams = null;
+                    }
+                    localStorage.removeItem(REDIRECTION_PARAMS_KEY);
+
+                    if (!Array.isArray(declaredParams) || declaredParams.length === 0) {
+                        return null;
+                    }
+
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const inputs = {};
+
+                    for (const param of declaredParams) {
+                        if (typeof param !== "string" || !queryParams.get(param)) {
+                            return null;
+                        }
+                        inputs[param] = queryParams.get(param);
+                    }
+
+                    return inputs;
+                };
+
+                const [ redirectionInputs ] = useState(readRedirectionInputs);
+
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
 
@@ -318,7 +356,16 @@
                             }
                         });
                     }
-                }, [code, state, authError]);
+
+                    // Return from a redirection whose executor declared its own required params instead of code and state.
+                    if (code === "null" && authError === "null" && redirectionInputs) {
+                        setPostBody({
+                            flowId: savedFlowId,
+                            actionId: "",
+                            inputs: redirectionInputs
+                        });
+                    }
+                }, [code, state, authError, redirectionInputs]);
 
                 useEffect(() => {
                     if (mlt !== "null" && flowId !== "null") {
@@ -347,9 +394,9 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
+                    if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);
@@ -733,6 +780,11 @@
                                 setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId, sessionTtlMs: (ttlMs >= 30000 && ttlMs <= 180000 ? ttlMs : 0) });
                                 setLoading(false);
                             } else {
+                                // Remember what the executor expects back, so the flow can resume with it on return.
+                                if (Array.isArray(flow.data.requiredParams) && flow.data.requiredParams.length > 0) {
+                                    localStorage.setItem(REDIRECTION_PARAMS_KEY,
+                                        JSON.stringify(flow.data.requiredParams));
+                                }
                                 setLoading(true);
                                 window.location.href = redirectURL;
                             }

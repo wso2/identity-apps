@@ -103,6 +103,14 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            authsignal: {
+                description: "Configure the Authsignal flow that runs at this step.",
+                flowRef: {
+                    hint: "Action code of the flow in the Authsignal Portal. Leave empty to use the flow set in the Authsignal connector settings.",
+                    label: "Flow reference (optional)",
+                    placeholder: "Enter the Authsignal action code, e.g. sign-in"
+                }
+            },
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
