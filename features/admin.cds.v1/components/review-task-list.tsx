@@ -19,20 +19,37 @@
 import Collapse from "@oxygen-ui/react/Collapse";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ConfirmationModal, DataTable, EmptyPlaceholder } from "@wso2is/react-components";
+import { ConfirmationModal, DataTable, EmptyPlaceholder, Popup } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Header, Popup, Table } from "semantic-ui-react";
+import { Button, Header, Label, Table } from "semantic-ui-react";
 import { ProfileModel } from "../models/profiles";
-import { ReviewDecision, ReviewTaskModel } from "../models/review-tasks";
+import {
+    ReviewDecision,
+    ReviewReason,
+    ReviewRuleOutcome,
+    ReviewTaskModel,
+    RuleVerdict
+} from "../models/review-tasks";
+import {
+    AttributeLabels,
+    describeAttribute,
+    describeReason,
+    describeReasonLabel,
+    formatScore,
+    getPairReasons,
+    getReasonCategory,
+    getReasonTone,
+    getRowReasons,
+    orderRulesForComparison
+} from "../utils/review-task-utils";
 import "./review-task-list.scss";
 
 /**
- * A value that is absent reads as a dash rather than as blank space, so a gap in the evidence
- * is visibly a gap — an absent value is itself part of why a pair scored the way it did.
+ * An absent value is left blank. Beside a value on the other side, the gap speaks for itself.
  */
-const NO_VALUE: string = "—";
+const NO_VALUE: string = "";
 
 /**
  * Past this, a value is clipped and the whole of it moves into a tooltip. Long emails and
@@ -63,16 +80,20 @@ interface ReviewTaskListPropsInterface extends IdentifiableComponentInterface {
      * the request is in flight.
      */
     onResolve: (task: ReviewTaskModel, decision: ReviewDecision) => Promise<void>;
+    /**
+     * Display names for attributes, keyed by path, from the organization's profile schema. An
+     * attribute without one is shown by its name without the scope prefix.
+     */
+    attributeLabels?: AttributeLabels;
 }
 
 /**
  * The pairs awaiting a decision.
  *
- * A row is a pair and its overall score; opening it shows the attributes that were compared
- * and the values on each side, which is the only thing that can actually settle the question
- * the row asks. The two levels are separate because the overall score is the score of the rule
- * that decided, not a combination of the per-attribute ones — an attribute can read higher,
- * or zero, while the pair still scores what it scores.
+ * A row is a pair; opening it shows what each attribute held on either side and why the pair
+ * was held for review, which is what actually settles the question the row asks. The row
+ * carries no score: a pair held back from merging is scored just under the merge threshold
+ * whatever held it, so the number would say nothing the reasons do not say better.
  *
  * It is assembled from DataTable's own parts rather than from DataTable itself: that component
  * renders one row per item with no way to attach a detail row, and dropping to the parts keeps
@@ -85,6 +106,7 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
     isLoading,
     canResolve,
     onResolve,
+    attributeLabels = {},
     ["data-componentid"]: componentId = "cds-review-task-list"
 }: ReviewTaskListPropsInterface): ReactElement => {
 
@@ -135,12 +157,6 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
 
         return typeof value === "object" ? JSON.stringify(value) : String(value);
     };
-
-    /**
-     * Strips the scope prefix so the column reads `emailaddress` rather than
-     * `identity_attributes.emailaddress` — the same name the rule was written against.
-     */
-    const describeAttribute = (path: string): string => path.split(".").slice(1).join(".") || path;
 
     /**
      * Text that keeps to its column, with the whole of it a hover away when it does not fit.
@@ -204,16 +220,193 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
     };
 
     /**
-     * The attributes that were compared, and what sat on each side of the comparison.
+     * Whether a profile has a value at this path. An unloaded profile counts as having one: its
+     * row stays, showing that it could not be loaded, rather than silently disappearing.
+     */
+    const hasValue = (profileId: string, path: string): boolean => {
+        const profile: ProfileModel = profiles[profileId];
+
+        if (!profile) {
+            return true;
+        }
+
+        const value: unknown = get(profile, path);
+
+        return value !== undefined && value !== null && value !== "";
+    };
+
+    /**
+     * A reason as a chip, with the full explanation a hover or a focus away. The chip is what a
+     * reviewer scans; the explanation carries the specifics — which attributes, what score, what
+     * threshold — for when the chip alone does not settle it. Its tone says how the reason bears on
+     * the match.
+     */
+    const renderReasonChip = (task: ReviewTaskModel, shown: ReviewReason, key: string): ReactElement => {
+        return (
+            <Popup
+                key={ key }
+                on={ [ "hover", "focus" ] }
+                trigger={ (
+                    <Label
+                        basic
+                        size="mini"
+                        className={ `review-task-chip review-task-reason-chip ${ getReasonTone(shown) } `
+                            + `category-${ getReasonCategory(shown) }` }
+                        tabIndex={ 0 }
+                        data-componentid={ `${ componentId }-reason-${ task.id }-${ shown.code }` }
+                    >
+                        { describeReasonLabel(shown, t) }
+                    </Label>
+                ) }
+                content={ describeReason(task, shown, t, attributeLabels) }
+                position="top center"
+                inverted
+            />
+        );
+    };
+
+    /**
+     * The review context, beside the comparison's heading: reasons about the pair as a whole — the match falling short of the merge
+     * threshold, a rejection, automatic merging disabled, a merge that failed. One chip each.
+     */
+    const renderReviewContext = (task: ReviewTaskModel): ReactElement => {
+        const reasons: ReviewReason[] = getPairReasons(task);
+
+        if (reasons.length === 0) {
+            return null;
+        }
+
+        return (
+            <div
+                className="review-task-context"
+                data-componentid={ `${ componentId }-context-${ task.id }` }
+            >
+                { reasons.map((reason: ReviewReason, index: number) =>
+                    renderReasonChip(task, reason, `${ reason.code }-${ index }`)) }
+            </div>
+        );
+    };
+
+    /**
+     * A rule's verdict as a chip, in the tinted style the other Customer Data screens use for their
+     * labels. A verdict that needs explaining — one that counted neither way, or a comparison that
+     * could not be made — carries the explanation a hover or a focus away.
+     */
+    const renderVerdictChip = (label: string, hint: string, kind: string): ReactElement => {
+        const chip: ReactElement = (
+            <Label
+                size="mini"
+                className={ `review-task-chip review-task-verdict-chip ${ kind }` }
+                tabIndex={ hint ? 0 : undefined }
+            >
+                { label }
+            </Label>
+        );
+
+        if (!hint) {
+            return chip;
+        }
+
+        return (
+            <Popup
+                on={ [ "hover", "focus" ] }
+                trigger={ chip }
+                content={ hint }
+                position="top center"
+                inverted
+            />
+        );
+    };
+
+    /**
+     * What a rule found, as one chip that names the verdict and carries the score — "Match · 1",
+     * "Match · 0.97", "Inconclusive · 0.5", "Different · 0" — so the comparison reads down the column
+     * without decoding a number. A full score is still "Match", not "Exact match": a comparator can
+     * score 1 for values that are not literally the same, such as a name with its parts reordered.
+     * Its colour sets it apart from a partial match instead.
      *
-     * Attribute first: the values mean nothing until you know which attribute produced them.
-     * No decision is offered per attribute — these rows are the evidence behind the one
-     * decision the pair carries, not decisions of their own.
+     * A rule that could not compare anything says so, with no score: a 0 there would read as a
+     * difference. A task raised before explanations has no verdicts, so its scores stand alone.
+     */
+    const renderMatch = (rule: ReviewRuleOutcome): ReactElement => {
+        const key: string = "customerDataService:reviewTasks.explanation.match";
+
+        if (rule.verdict === RuleVerdict.UNKNOWN || (rule.verdict && rule.score === undefined)) {
+            return renderVerdictChip(t(`${ key }.notCompared`), t(`${ key }.notComparedHint`), "not-compared");
+        }
+
+        const score: string = formatScore(rule.score);
+
+        switch (rule.verdict) {
+            case RuleVerdict.AGREE:
+                return renderVerdictChip(t(`${ key }.agree`, { score }), null,
+                    (rule.score ?? 0) >= 1 ? "exact" : "agree");
+            case RuleVerdict.DISAGREE:
+                return renderVerdictChip(t(`${ key }.differs`, { score }), null, "differs");
+            case RuleVerdict.INCONCLUSIVE:
+                return renderVerdictChip(
+                    t(`${ key }.inconclusive`, { score }), t(`${ key }.inconclusiveHint`), "inconclusive");
+            default:
+                return renderVerdictChip(score, null, "score-only");
+        }
+    };
+
+    /**
+     * The attribute by the name an administrator knows, with the rule behind it a hover away for
+     * anyone who needs to trace the comparison back to its configuration.
+     */
+    const renderAttribute = (task: ReviewTaskModel, rule: ReviewRuleOutcome): ReactElement => {
+        const attribute: string = describeAttribute(rule.property_name, attributeLabels);
+
+        if (!task.explanation) {
+            return <span>{ attribute }</span>;
+        }
+
+        return (
+            <Popup
+                trigger={ <span className="review-task-attribute">{ attribute }</span> }
+                content={ t("customerDataService:reviewTasks.explanation.ruleHint", {
+                    property: rule.property_name,
+                    rule: rule.rule_name
+                }) }
+                position="top left"
+                inverted
+            />
+        );
+    };
+
+    /**
+     * The attributes that were compared, what sat on each side, and why the pair is in review.
+     *
+     * Reasons sit with what they explain. One about the pair as a whole goes beside the comparison's
+     * heading; one about particular rules goes in the Match cell of each rule it names, beside the
+     * verdict it qualifies. Reasons are placed by rule ID only, so no attribute is marked
+     * for what its type usually means — only for what the server reported about this pair.
+     *
+     * Rows run from what agreed, to what differed, to what could not be read either way, to what
+     * could not be compared. An attribute neither profile has is left out — it was never part of the
+     * comparison, and an empty row only pushes the evidence down. A task raised before the server
+     * recorded explanations has only its breakdown, so its rows carry scores alone.
      */
     const renderEvidence = (task: ReviewTaskModel): ReactElement => {
-        const comparisons: [ string, number ][] = Object.entries(task.score_breakdown ?? {});
+        const rules: ReviewRuleOutcome[] = orderRulesForComparison(task.explanation?.rules
+            ?? Object.entries(task.score_breakdown ?? {}).map(([ path, score ]: [ string, number ]) => ({
+                attribute_type: "",
+                match_strength: "",
+                mismatch_strength: "",
+                priority: 0,
+                property_name: path,
+                rule_id: path,
+                rule_name: path,
+                score,
+                unification_method: "",
+                verdict: null
+            })))
+            .filter((rule: ReviewRuleOutcome) =>
+                hasValue(task.incoming_profile_id, rule.property_name)
+                    || hasValue(task.candidate_profile_id, rule.property_name));
 
-        if (comparisons.length === 0) {
+        if (rules.length === 0) {
             return (
                 <Header as="h6" className="mt-0 mb-0" color="grey">
                     { t("customerDataService:reviewTasks.list.noBreakdown") }
@@ -223,8 +416,13 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
 
         return (
             <>
-                <div className="review-task-evidence-caption">
-                    { t("customerDataService:reviewTasks.caption") }
+                { /* What the pair is in review for sits on the comparison's own heading line,
+                     read together with the evidence rather than above it. */ }
+                <div className="review-task-evidence-header">
+                    <span className="review-task-evidence-caption">
+                        { t("customerDataService:reviewTasks.caption") }
+                    </span>
+                    { renderReviewContext(task) }
                 </div>
                 <Table
                     basic="very"
@@ -237,34 +435,48 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                             <Table.HeaderCell width={ 4 }>
                                 { t("customerDataService:reviewTasks.list.columns.profile") }
                             </Table.HeaderCell>
-                            <Table.HeaderCell width={ 5 }>
+                            <Table.HeaderCell width={ 4 }>
                                 { t("customerDataService:reviewTasks.list.columns.candidateProfile") }
                             </Table.HeaderCell>
-                            <Table.HeaderCell width={ 2 }>
+                            <Table.HeaderCell width={ 3 }>
                                 { t("customerDataService:reviewTasks.list.columns.attribute") }
                             </Table.HeaderCell>
-                            { /* Right, with the scores: centred, the heading floats visibly
-                                 left of the column it names. */ }
-                            <Table.HeaderCell width={ 2 } textAlign="right">
+                            <Table.HeaderCell width={ 5 }>
                                 { t("customerDataService:reviewTasks.list.columns.attributeMatch") }
                             </Table.HeaderCell>
-                            <Table.HeaderCell width={ 3 } />
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        { comparisons.map(([ path, score ]: [ string, number ]) => (
-                            <Table.Row key={ path }>
-                                <Table.Cell>
-                                    { renderTruncated(describeValue(task.incoming_profile_id, path)) }
-                                </Table.Cell>
-                                <Table.Cell>
-                                    { renderTruncated(describeValue(task.candidate_profile_id, path)) }
-                                </Table.Cell>
-                                <Table.Cell>{ describeAttribute(path) }</Table.Cell>
-                                <Table.Cell textAlign="right">{ score.toFixed(2) }</Table.Cell>
-                                <Table.Cell />
-                            </Table.Row>
-                        )) }
+                        { rules.map((rule: ReviewRuleOutcome) => {
+                            const reasons: ReviewReason[] = getRowReasons(task, rule);
+
+                            return (
+                                <Table.Row
+                                    key={ rule.rule_id }
+                                    className={ rule.verdict === RuleVerdict.UNKNOWN ? "not-compared" : undefined }
+                                    data-componentid={ `${ componentId }-rule-${ task.id }-${ rule.rule_id }` }
+                                >
+                                    <Table.Cell>
+                                        { renderTruncated(describeValue(task.incoming_profile_id, rule.property_name)) }
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        { renderTruncated(describeValue(task.candidate_profile_id, rule.property_name)) }
+                                    </Table.Cell>
+                                    <Table.Cell>{ renderAttribute(task, rule) }</Table.Cell>
+                                    { /* The verdict and the reasons that qualify it read as one
+                                         evaluation: side by side with a small gap, most informative
+                                         first, wrapping beneath where the cell is narrow. Every
+                                         reason the server named for the rule is shown. */ }
+                                    <Table.Cell>
+                                        <div className="review-task-evaluation">
+                                            { renderMatch(rule) }
+                                            { reasons.map((reason: ReviewReason) =>
+                                                renderReasonChip(task, reason, `${ rule.rule_id }-${ reason.code }`)) }
+                                        </div>
+                                    </Table.Cell>
+                                </Table.Row>
+                            );
+                        }) }
                     </Table.Body>
                 </Table>
             </>
@@ -317,14 +529,10 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                         <DataTable.HeaderCell width={ 5 }>
                             { t("customerDataService:reviewTasks.list.columns.candidateProfile") }
                         </DataTable.HeaderCell>
-                        { /* Reserved, and holding the attribute name in the detail below. Kept
-                             here rather than at the head of the row: the two grids still share
-                             one set of widths, but the spare column falls between two populated
-                             ones instead of opening the row with a gap. */ }
-                        <DataTable.HeaderCell width={ 2 } />
-                        <DataTable.HeaderCell width={ 2 } textAlign="right">
-                            { t("customerDataService:reviewTasks.list.columns.profileMatch") }
-                        </DataTable.HeaderCell>
+                        { /* Reserved: it held the pair's score, which the server no longer sends —
+                             a held pair's score sat just under the merge threshold whatever held
+                             it. The reasons are in the comparison below. */ }
+                        <DataTable.HeaderCell width={ 4 } />
                         { /* Only the label moves: the controls stay at the right edge of the
                              row, and the heading is offset in from that edge to sit over the
                              first of them rather than over the collapse icon. */ }
@@ -372,9 +580,6 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                                         { renderProfileCell(task.candidate_profile_id) }
                                     </DataTable.Cell>
                                     <DataTable.Cell />
-                                    <DataTable.Cell textAlign="right">
-                                        { task.match_score.toFixed(2) }
-                                    </DataTable.Cell>
                                     <DataTable.Cell textAlign="right" className="review-task-actions">
                                         { /* A disabled pair of buttons with no reason given is
                                              its own dead end, so the row says why. */ }
@@ -440,7 +645,7 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                                     className={ `review-task-detail-row${ isOpen ? " open" : "" }` }
                                     data-componentid={ `${ componentId }-detail-${ task.id }` }
                                 >
-                                    <DataTable.Cell colSpan={ 5 }>
+                                    <DataTable.Cell colSpan={ 4 }>
                                         <Collapse in={ isOpen } timeout="auto" unmountOnExit>
                                             <div className="review-task-detail">
                                                 { renderEvidence(task) }
