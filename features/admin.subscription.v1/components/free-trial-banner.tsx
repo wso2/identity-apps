@@ -71,8 +71,7 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
             (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
     );
 
-    const { upgradeButtonURL }: BillingURLsInterface =
-        useBillingURLs(saasFeatureStatus !== FeatureStatus.DISABLED && upgradeButtonEnabled);
+    const { upgradeButtonURL }: BillingURLsInterface = useBillingURLs(upgradeButtonEnabled);
 
     if (saasFeatureStatus === FeatureStatus.DISABLED || !tenantHasTrial) {
         return null;

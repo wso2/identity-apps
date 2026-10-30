@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useGetTenantAssociation from "@wso2is/admin.tenants.v1/api/use-get-tenant-association";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -47,9 +49,10 @@ const UNRESOLVED_BILLING_URLS: ResolvedBillingURLsInterface = {
 };
 
 /**
- * Resolve the billing portal and upgrade URLs of the current tenant.
+ * Resolve the billing portal and upgrade URLs of the current tenant. Billing links are a SaaS feature, so
+ * they stay empty when SaaS features are disabled for the tenant.
  *
- * @param enabled - Whether billing links apply at all. Skips every request when false.
+ * @param enabled - Whether the consumer needs billing links. Skips every request when false.
  * @returns The billing URLs, both empty until they resolve or if the tenant has no billing portal.
  */
 const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
@@ -57,14 +60,17 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
 ): BillingURLsInterface => {
 
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const { data: association } = useGetTenantAssociation(tenantDomain, enabled);
+    const isEnabled: boolean = enabled && saasFeatureStatus !== FeatureStatus.DISABLED;
+
+    const { data: association } = useGetTenantAssociation(tenantDomain, isEnabled);
 
     // Keyed by domain so an organization switch cannot show the previous tenant's links.
     const [ resolved, setResolved ] = useState<ResolvedBillingURLsInterface>(UNRESOLVED_BILLING_URLS);
 
     useEffect(() => {
-        if (!enabled || !tenantDomain || !association) {
+        if (!isEnabled || !tenantDomain || !association) {
             setResolved(UNRESOLVED_BILLING_URLS);
 
             return;
@@ -87,9 +93,9 @@ const useBillingURLs: (_enabled?: boolean) => BillingURLsInterface = (
         return () => {
             isActive = false;
         };
-    }, [ enabled, tenantDomain, association ]);
+    }, [ isEnabled, tenantDomain, association ]);
 
-    return enabled && resolved.domain === tenantDomain ? resolved.urls : EMPTY_BILLING_URLS;
+    return isEnabled && resolved.domain === tenantDomain ? resolved.urls : EMPTY_BILLING_URLS;
 };
 
 export default useBillingURLs;

@@ -17,6 +17,7 @@
  */
 
 import { RenderHookResult, act, renderHook, waitFor } from "@testing-library/react";
+import { FeatureStatus } from "@wso2is/access-control";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { ReactElement, ReactNode, createElement } from "react";
 import { Provider } from "react-redux";
@@ -24,6 +25,12 @@ import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
 import type { BillingURLsInterface } from "../use-billing-urls";
 
 const useGetTenantAssociationMock: Mock = vi.fn();
+const useCheckFeatureStatusMock: Mock = vi.fn();
+
+vi.mock("@wso2is/access-control", async (importOriginal: () => Promise<Record<string, unknown>>) => ({
+    ...(await importOriginal()),
+    useCheckFeatureStatus: (path: string) => useCheckFeatureStatusMock(path)
+}));
 
 vi.mock("@wso2is/admin.tenants.v1/api/use-get-tenant-association", () => ({
     default: (tenantDomain: string, shouldFetch?: boolean) => useGetTenantAssociationMock(tenantDomain, shouldFetch)
@@ -99,6 +106,8 @@ describe("useBillingURLs", () => {
         ({ default: useBillingURLs } = await import("../use-billing-urls"));
 
         useGetTenantAssociationMock.mockReset();
+        useCheckFeatureStatusMock.mockReset();
+        useCheckFeatureStatusMock.mockReturnValue(FeatureStatus.ENABLED);
         authStateMock.tenantDomain = undefined;
 
         window["AppUtils"] = {
@@ -161,6 +170,20 @@ describe("useBillingURLs", () => {
 
         expect(result.current.billingPortalURL).toBe("");
         expect(useGetTenantAssociationMock).toHaveBeenCalledWith("disabled-tenant", false);
+    });
+
+    it("leaves the URLs empty and skips fetching when SaaS features are disabled", async () => {
+        authStateMock.tenantDomain = "non-saas-tenant";
+        useCheckFeatureStatusMock.mockReturnValue(FeatureStatus.DISABLED);
+        serveAssociation((domain: string) => association(domain));
+
+        const { result } = renderBillingURLs();
+
+        await settleBillingURLs();
+
+        expect(result.current.billingPortalURL).toBe("");
+        expect(result.current.upgradeButtonURL).toBe("");
+        expect(useGetTenantAssociationMock).toHaveBeenCalledWith("non-saas-tenant", false);
     });
 
     it("drops the previous tenant's links when the tenant changes", async () => {

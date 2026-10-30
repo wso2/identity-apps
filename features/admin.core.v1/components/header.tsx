@@ -40,7 +40,7 @@ import {
     StackOverflowIcon,
     TalkingHeadsetIcon
 } from "@oxygen-ui/react-icons";
-import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -175,7 +175,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         gettingStartedFeatureConfig?.scopes?.feature
     );
 
-    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: UseSubscriptionInterface = useSubscription();
     const { tenantHasTrial } = useTrialDetails();
 
@@ -195,8 +194,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         setAnchorHelpMenu(null);
     };
 
-    const { billingPortalURL, upgradeButtonURL }: BillingURLsInterface =
-        useBillingURLs(saasFeatureStatus !== FeatureStatus.DISABLED);
+    const { billingPortalURL, upgradeButtonURL }: BillingURLsInterface = useBillingURLs();
     const [ openLanguageSwitcher, setOpenLanguageSwitcher ] = useState<boolean>(
         false
     );
