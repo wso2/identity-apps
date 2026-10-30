@@ -62,6 +62,18 @@ export class BrandingPreferenceUtils {
         // If the preference is of v1, create a `theme` object and set the defaults.
         if (!original.theme && additions.theme) {
             migratedThemePreference.theme = additions.theme;
+        } else if (migratedThemePreference.theme && additions.theme) {
+            // A stored `theme` object is not guaranteed to carry every predefined theme. The
+            // preference API accepts a `theme` object that only has `activeTheme`, and the
+            // preference is stored verbatim. The migrations below resolve `theme[<theme>].colors`
+            // for every predefined theme, so the missing ones are filled in with the defaults.
+            for (const theme in PredefinedThemes) {
+                if (!migratedThemePreference.theme[ PredefinedThemes[ theme ] ]) {
+                    migratedThemePreference.theme[ PredefinedThemes[ theme ] ] = cloneDeep(
+                        additions.theme[ PredefinedThemes[ theme ] ]
+                    );
+                }
+            }
         }
 
         for (const theme in PredefinedThemes) {
