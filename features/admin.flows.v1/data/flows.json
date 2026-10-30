@@ -30,7 +30,7 @@
         {
             "id": "profile-update",
             "heading": "Profile Update",
-            "description": "Configure a customized profile update experience that verifies users before they change their profile attributes.",
+            "description": "Configure a customized profile update experience with identity verification before users update their profile information.",
             "featureStatusKey": "flows.types.list.profileUpdate",
             "path": "PROFILE_UPDATE_FLOW_BUILDER",
             "type": "PROFILE_UPDATE",
