@@ -234,7 +234,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     /**
      * This function handles assigning the roles to the user.
      */
-    const assignUserRoles = async (users: UserBasicInterface[], roles: RolesInterface[]) => {
+    const assignUserRoles = async (users: UserBasicInterface[], roles: RolesInterface[]): Promise<void> => {
         const roleIds: string[] = [];
         const userList: {display: string, value: string}[] = [];
 
@@ -273,9 +273,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 roleIds.push(role.id);
             });
 
-            for (const roleId of roleIds) {
-                setIsSubmitting(true);
-
+            setIsSubmitting(true);
+            await Promise.all(roleIds.map(async (roleId: string): Promise<void> => {
                 await updateUsersForRoleFunction(roleId, roleData)
                     .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         if (!error.response || error.response.status === 401) {
@@ -316,7 +315,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     .finally(() => {
                         setIsSubmitting(false);
                     });
-            }
+            }));
             dispatch(addAlert({
                 description: t(
                     "extensions:manage.users.wizard.addAdmin.internal.updateRole.success.description"
@@ -334,7 +333,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     /**
      * Assigns the admin role to the user.
      */
-    const assignAdminRole = () => {
+    const assignAdminRole = (): void => {
         if (!selectedUser || !adminRoleId) {
             return;
         }
@@ -430,7 +429,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     /**
      * This function handles sending the invitation to the external admin user.
      */
-    const sendExternalInvitation = (invite: UserInviteInterface) => {
+    const sendExternalInvitation = (invite: UserInviteInterface): void => {
         if (invite != null) {
             setIsSubmitting(true);
 
@@ -612,7 +611,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     /**
      * This function handles sending the invitation to the external admin user.
      */
-    const sendInternalInvitation = (data: InternalAdminFormDataInterface) => {
+    const sendInternalInvitation = (data: InternalAdminFormDataInterface): void => {
         assignUserRoles(data?.checkedUsers, data?.selectedRoles);
     };
 

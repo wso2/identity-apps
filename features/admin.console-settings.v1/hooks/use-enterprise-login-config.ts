@@ -530,7 +530,6 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
             }
         }
 
-        const patchPromises: Promise<void>[] = [];
 
         const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> =
             userRolesV3FeatureEnabled ? getRoleByIdV3 : getRoleById;
@@ -541,47 +540,45 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
             ? assignGroupstoRoles
             : updateRoleDetails;
 
-        for (const role of (consoleRoles ?? [])) {
-            try {
-                const roleResponse: AxiosResponse =
-                    await getRoleByIdFunction(role.id);
-                const roleData: RolesInterface =
-                    roleResponse?.data ?? roleResponse;
-                const roleGroups: RoleGroupsInterface[] = roleData?.groups ?? [];
+        await Promise.all(
+            (consoleRoles ?? []).map(async (role: RolesInterface): Promise<void> => {
+                try {
+                    const roleResponse: AxiosResponse =
+                        await getRoleByIdFunction(role.id);
+                    const roleData: RolesInterface =
+                        roleResponse?.data ?? roleResponse;
+                    const roleGroups: RoleGroupsInterface[] = roleData?.groups ?? [];
 
-                const groupIdsToRemove: string[] = roleGroups
-                    .filter(
-                        (rg: RoleGroupsInterface) => idpGroupIds.has(rg.value)
-                    )
-                    .map((rg: RoleGroupsInterface) => rg.value);
+                    const groupIdsToRemove: string[] = roleGroups
+                        .filter(
+                            (rg: RoleGroupsInterface) => idpGroupIds.has(rg.value)
+                        )
+                        .map((rg: RoleGroupsInterface) => rg.value);
 
-                if (groupIdsToRemove.length === 0) {
-                    continue;
+                    if (groupIdsToRemove.length === 0) {
+                        return;
+                    }
+
+                    const operations: { op: string; path: string }[] = groupIdsToRemove.map(
+                        (groupId: string) => ({
+                            op: "remove",
+                            path: userRolesV3FeatureEnabled
+                                ? `value eq ${groupId}`
+                                : `groups[value eq ${groupId}]`
+                        })
+                    );
+
+                    const patchData: PatchRoleDataInterface = {
+                        Operations: operations,
+                        schemas: [ Schemas.PATCH_OP ]
+                    };
+
+                    await updateRoleFunction(role.id, patchData);
+                } catch {
+                    // Skip roles that fail to fetch.
                 }
-
-                const operations: { op: string; path: string }[] = groupIdsToRemove.map(
-                    (groupId: string) => ({
-                        op: "remove",
-                        path: userRolesV3FeatureEnabled
-                            ? `value eq ${groupId}`
-                            : `groups[value eq ${groupId}]`
-                    })
-                );
-
-                const patchData: PatchRoleDataInterface = {
-                    Operations: operations,
-                    schemas: [ Schemas.PATCH_OP ]
-                };
-
-                patchPromises.push(
-                    updateRoleFunction(role.id, patchData).then(() => undefined)
-                );
-            } catch {
-                // Skip roles that fail to fetch.
-            }
-        }
-
-        await Promise.all(patchPromises);
+            })
+        );
 
         const currentSteps: AuthenticationStepInterface[] =
             consoleAuthenticationSequence?.steps ?? [];
