@@ -1,5 +1,25 @@
 # @wso2is/myaccount
 
+## 4.5.0
+
+### Minor Changes
+
+- [#10840](https://github.com/wso2/identity-apps/pull/10840) [`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self-service device management to My Account
+
+### Patch Changes
+
+- Updated dependencies [[`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5)]:
+  - @wso2is/i18n@2.56.0
+
+## 4.4.4
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
+- Updated dependencies [[`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b)]:
+  - @wso2is/theme@2.11.3
+
 ## 4.4.3
 
 ### Patch Changes

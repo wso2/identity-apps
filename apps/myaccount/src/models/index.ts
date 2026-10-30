@@ -22,6 +22,7 @@ export * from "./applications";
 export * from "./auth";
 export * from "./authenticated-user";
 export * from "./consents";
+export * from "./devices";
 export * from "./locales";
 export * from "./profile";
 export * from "./security-questions";

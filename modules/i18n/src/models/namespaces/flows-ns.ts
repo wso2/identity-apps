@@ -175,6 +175,24 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
+            decisionStepLimit: {
+                warning: {
+                    description: string;
+                    message: string;
+                };
+            };
             disableFlow: {
                 genericError: {
                     description: string;
@@ -327,14 +345,89 @@ export interface flowsNS {
                     actionId: string;
                 };
             };
+            organizationAttributes: {
+                federatedAuthenticationNotSupported: string;
+                missingOrganizationName: string;
+            };
+            ruleEvaluation: {
+                incompleteRules: string;
+                noConditionalBranch: string;
+                unconnectedBranches: string;
+            };
             userResolveExecutorFields: {
                 message: string;
                 messageWithUserIdentifier: string;
+            };
+            variables: {
+                invalid: string;
+                tooManyHeaders: string;
+                tooManyRuntimeValues: string;
             };
         };
         steps: {
             end: {
                 flowCompletionProperties: string;
+            };
+            start: {
+                node: {
+                    configure: string;
+                    heading: string;
+                    none: string;
+                };
+                variables: {
+                    abTestingKey: string;
+                    add: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    dataTypes: {
+                        BOOLEAN: string;
+                        DECIMAL: string;
+                        INTEGER: string;
+                        NUMBER_ARRAY: string;
+                        STRING: string;
+                        STRING_ARRAY: string;
+                    };
+                    descriptions: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    disabled: string;
+                    empty: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    errors: {
+                        abTestingKeyOutOfRange: string;
+                        duplicate: string;
+                        invalidName: string;
+                        invalidRuntimeValueName: string;
+                        notAnInteger: string;
+                        reserved: string;
+                        tooManyValues: string;
+                        valueTooLong: string;
+                    };
+                    fields: {
+                        abTestingKeyValueHint: string;
+                        dataType: string;
+                        initialValue: string;
+                        initialValueHint: string;
+                        name: string;
+                        noValue: string;
+                        clientWritable: string;
+                        clientWritableHint: string;
+                    };
+                    headings: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                    limitReached: string;
+                    remove: string;
+                    tabs: {
+                        headers: string;
+                        runtimeValues: string;
+                    };
+                };
             };
         };
         validationStatusLabels: {
@@ -415,6 +508,7 @@ export interface flowsNS {
         steps: {
             emailConfirmation: string;
             end: {
+                account: string;
                 description: string;
                 accountVerification: {
                     label: string;
@@ -434,6 +528,30 @@ export interface flowsNS {
                 autoLogin: {
                     label: string;
                     hint: string;
+                };
+                provisionTarget: {
+                    label: string;
+                    currentOrganization: {
+                        label: string;
+                        hint: string;
+                    };
+                    newOrganization: {
+                        label: string;
+                        hint: string;
+                    };
+                };
+                organization: {
+                    label: string;
+                    hint: string;
+                };
+                organizationRoles: {
+                    defaultRole: string;
+                    unavailable: string;
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    fetchError: string;
+                    noPermission: string;
                 };
             };
         };

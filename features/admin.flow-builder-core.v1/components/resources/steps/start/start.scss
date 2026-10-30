@@ -16,12 +16,30 @@
  * under the License.
  */
 
-.start.MuiFab-root {
-    z-index: 0;
-    pointer-events: none;
-    color: var(--oxygen-palette-common-white);
-    border-radius: 30px;
-    background: #63a9f3;
-    box-shadow: none;
-    padding: 0 2em;
+.flow-builder-step {
+    &.flow-builder-start-step {
+        background: #63a9f3;
+        cursor: auto;
+
+        .flow-builder-start-step-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 220px;
+            padding: 12px 14px;
+            border-radius: 0 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius);
+        }
+
+        .flow-builder-start-step-section-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .flow-builder-start-step-name {
+            font-family: monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
 }

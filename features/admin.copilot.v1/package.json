@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.copilot.v1",
-    "version": "1.0.5",
+    "version": "1.1.0",
     "description": "WSO2 Identity Server Console - AI Copilot Feature",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -14,7 +14,7 @@
         "@oxygen-ui/react": "^2.4.5",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",
-        "@wso2is/i18n": "^2.39.0",
+        "@wso2is/i18n": "^2.50.0",
         "@wso2is/react-components": "^2.10.0",
         "axios": "1.7.9",
         "classnames": "^2.2.6",

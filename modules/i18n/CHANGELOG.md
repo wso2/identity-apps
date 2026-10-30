@@ -1,5 +1,119 @@
 # @wso2is/i18n
 
+## 2.56.0
+
+### Minor Changes
+
+- [#10840](https://github.com/wso2/identity-apps/pull/10840) [`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self-service device management to My Account
+
+## 2.55.1
+
+### Patch Changes
+
+- [#10838](https://github.com/wso2/identity-apps/pull/10838) [`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add flow variables for headers and runtime values, with an A/B testing key in the accounts portal
+
+## 2.55.0
+
+### Minor Changes
+
+- [#10826](https://github.com/wso2/identity-apps/pull/10826) [`32cefa73156035e070ea46c0318578d83544f4c6`](https://github.com/wso2/identity-apps/commit/32cefa73156035e070ea46c0318578d83544f4c6) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins register known MCP clients, such as Claude and Visual Studio Code, from the MCP Client template in one click. IS retrieves and checks each client's Client ID Metadata Document (CIMD), and the application is created from the values in that document. The list of known clients comes from the deployment config (`extensions.mcpKnownClients`). Any other client can be added from its metadata document URL, after the admin reviews what the document declares.
+
+## 2.54.0
+
+### Minor Changes
+
+- [#10835](https://github.com/wso2/identity-apps/pull/10835) [`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device policy selection, authentication validation and a starter template for the device registration step in the registration flow builders
+
+## 2.53.0
+
+### Minor Changes
+
+- [#10831](https://github.com/wso2/identity-apps/pull/10831) [`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a devices tab to the user edit page in the console
+
+## 2.52.2
+
+### Patch Changes
+
+- [#10801](https://github.com/wso2/identity-apps/pull/10801) [`eab69a3987d89016248fab31b7df480ff6b5970b`](https://github.com/wso2/identity-apps/commit/eab69a3987d89016248fab31b7df480ff6b5970b) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Improve the self-registration flow completion properties layout and wording with grouped account and organization settings, user placement radio options, and a locked default role chip.
+
+## 2.52.1
+
+### Patch Changes
+
+- [#10828](https://github.com/wso2/identity-apps/pull/10828) [`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Rework the Customer Data profile unification settings into automatic unification, administrator review and match handling sections, show the exact-rule auto-unification setting, and default the automatic unification threshold to 1
+
+## 2.52.0
+
+### Minor Changes
+
+- [#10825](https://github.com/wso2/identity-apps/pull/10825) [`4329239b404cb7eafe34a2bd8e0f9045bb890250`](https://github.com/wso2/identity-apps/commit/4329239b404cb7eafe34a2bd8e0f9045bb890250) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add create and edit wizards for device assurance policies in the console
+
+## 2.51.0
+
+### Minor Changes
+
+- [#10814](https://github.com/wso2/identity-apps/pull/10814) [`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device assurance policy list and view pages to the console
+
+## 2.50.1
+
+### Patch Changes
+
+- [#10779](https://github.com/wso2/identity-apps/pull/10779) [`8c82133e03c71712d82f5bf7e30490009834f5bb`](https://github.com/wso2/identity-apps/commit/8c82133e03c71712d82f5bf7e30490009834f5bb) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Show the ELK Analytics configuration for the Rule-Based adaptive authentication template
+
+## 2.50.0
+
+### Minor Changes
+
+- [#10795](https://github.com/wso2/identity-apps/pull/10795) [`b922925433ac6a902c49f6aa65f32622ae9d8622`](https://github.com/wso2/identity-apps/commit/b922925433ac6a902c49f6aa65f32622ae9d8622) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Show changes proposed by the Ask AI copilot as confirm cards. Nothing is changed until the user confirms; the card then shows whether the action was executed and links to the created resource.
+
+## 2.49.4
+
+### Patch Changes
+
+- [#10784](https://github.com/wso2/identity-apps/pull/10784) [`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add decision steps to the flow builder, which route a flow to one of its branches by rules on the flow's data
+
+## 2.49.3
+
+### Patch Changes
+
+- [#10752](https://github.com/wso2/identity-apps/pull/10752) [`e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f`](https://github.com/wso2/identity-apps/commit/e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add per-channel child organization subscription policy to webhooks, behind the `webhooks.childOrgSubscription` feature flag.
+
+## 2.49.2
+
+### Patch Changes
+
+- [#10783](https://github.com/wso2/identity-apps/pull/10783) [`f474346a773b8dfe06d2bc8599c39f764f04d7b1`](https://github.com/wso2/identity-apps/commit/f474346a773b8dfe06d2bc8599c39f764f04d7b1) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support value-less and list operators, field keys and comparison with another field in the rule condition editor
+
+## 2.49.1
+
+### Patch Changes
+
+- [#10791](https://github.com/wso2/identity-apps/pull/10791) [`fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9`](https://github.com/wso2/identity-apps/commit/fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show only roles shared with new organizations in the role picker and warn when previously selected roles are no longer shared.
+
+## 2.49.0
+
+### Minor Changes
+
+- [#10746](https://github.com/wso2/identity-apps/pull/10746) [`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add organization onboarding fields, provisioning settings, role selection, and organization attribute selection in flow-extension access configuration.
+
+## 2.48.3
+
+### Patch Changes
+
+- [#10774](https://github.com/wso2/identity-apps/pull/10774) [`f80a40efb001c359431e94b455f957c1a6551186`](https://github.com/wso2/identity-apps/commit/f80a40efb001c359431e94b455f957c1a6551186) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add an SMS OTP setting to allow mobile number enrollment during login
+
+## 2.48.2
+
+### Patch Changes
+
+- [#10768](https://github.com/wso2/identity-apps/pull/10768) [`ecd1da6d007f1b889f94490ee9d422de2dad97af`](https://github.com/wso2/identity-apps/commit/ecd1da6d007f1b889f94490ee9d422de2dad97af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Allow local attribute names containing "/", "-" and more than one "." in the attribute creation wizard, matching what the claim management API accepts, while keeping the identity claim prefix reserved.
+
+## 2.48.1
+
+### Patch Changes
+
+- [#10730](https://github.com/wso2/identity-apps/pull/10730) [`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Load further groups by scrolling in the user group assignment dialog, count the selected groups against every group the user can be assigned, and keep the selection across searches
+
 ## 2.48.0
 
 ### Minor Changes

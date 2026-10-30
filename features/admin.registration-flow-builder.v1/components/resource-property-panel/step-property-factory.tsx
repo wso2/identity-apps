@@ -20,9 +20,7 @@ import CommonStepPropertyFactory, {
     CommonStepPropertyFactoryPropsInterface
     // eslint-disable-next-line max-len
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/common-step-property-factory";
-import { StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import React, { FunctionComponent, ReactElement } from "react";
-import RulesProperties from "./nodes/rules-properties";
 
 /**
  * Props interface of {@link StepPropertyFactory}
@@ -42,20 +40,17 @@ const StepPropertyFactory: FunctionComponent<StepPropertyFactoryPropsInterface> 
     onChange,
     ...rest
 }: StepPropertyFactoryPropsInterface): ReactElement | null => {
-    switch (resource.type) {
-        case StepTypes.Rule:
-            return <RulesProperties />;
-        default:
-            return (
-                <CommonStepPropertyFactory
-                    resource={ resource }
-                    propertyKey={ propertyKey }
-                    propertyValue={ propertyValue }
-                    onChange={ onChange }
-                    { ...rest }
-                />
-            );
-    }
+    // No step type in this flow overrides the common property rendering yet. Add a switch on
+    // `resource.type` here when one does.
+    return (
+        <CommonStepPropertyFactory
+            resource={ resource }
+            propertyKey={ propertyKey }
+            propertyValue={ propertyValue }
+            onChange={ onChange }
+            { ...rest }
+        />
+    );
 };
 
 export default StepPropertyFactory;

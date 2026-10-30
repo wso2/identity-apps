@@ -1,5 +1,83 @@
 # @wso2is/admin.users.v1
 
+## 2.39.2
+
+### Patch Changes
+
+- Updated dependencies [[`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5)]:
+  - @wso2is/admin.core.v1@2.63.2
+  - @wso2is/admin.flow-builder-core.v1@0.15.0
+  - @wso2is/i18n@2.55.1
+  - @wso2is/admin.flows.v1@1.0.185
+
+## 2.39.1
+
+### Patch Changes
+
+- Updated dependencies [[`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471)]:
+  - @wso2is/admin.flow-builder-core.v1@0.14.0
+  - @wso2is/i18n@2.54.0
+  - @wso2is/admin.core.v1@2.63.1
+  - @wso2is/admin.flows.v1@1.0.184
+
+## 2.39.0
+
+### Minor Changes
+
+- [#10831](https://github.com/wso2/identity-apps/pull/10831) [`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a devices tab to the user edit page in the console
+
+### Patch Changes
+
+- Updated dependencies [[`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e)]:
+  - @wso2is/admin.devices.v1@0.1.0
+  - @wso2is/admin.core.v1@2.63.0
+  - @wso2is/i18n@2.53.0
+
+## 2.38.63
+
+### Patch Changes
+
+- Updated dependencies [[`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a)]:
+  - @wso2is/admin.cds.v1@1.7.2
+  - @wso2is/i18n@2.52.1
+
+## 2.38.62
+
+### Patch Changes
+
+- Updated dependencies [[`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f)]:
+  - @wso2is/admin.core.v1@2.61.2
+  - @wso2is/admin.flow-builder-core.v1@0.13.0
+  - @wso2is/i18n@2.49.4
+  - @wso2is/admin.flows.v1@1.0.183
+
+## 2.38.61
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-builder-core.v1@0.12.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.core.v1@2.61.1
+  - @wso2is/admin.flows.v1@1.0.182
+
+## 2.38.60
+
+### Patch Changes
+
+- Updated dependencies [[`f296568a23ae2df505a3d5aa36afdb8b43eb46fc`](https://github.com/wso2/identity-apps/commit/f296568a23ae2df505a3d5aa36afdb8b43eb46fc)]:
+  - @wso2is/admin.cds.v1@1.7.1
+
+## 2.38.59
+
+### Patch Changes
+
+- [#10730](https://github.com/wso2/identity-apps/pull/10730) [`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Load further groups by scrolling in the user group assignment dialog, count the selected groups against every group the user can be assigned, and keep the selection across searches
+
+- Updated dependencies [[`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436)]:
+  - @wso2is/admin.groups.v1@2.27.131
+  - @wso2is/i18n@2.48.1
+
 ## 2.38.58
 
 ### Patch Changes

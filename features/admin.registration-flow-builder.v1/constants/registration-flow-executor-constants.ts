@@ -42,6 +42,30 @@ class RegistrationFlowExecutorConstants {
     public static readonly GOOGLE_EXECUTOR: string = "GoogleExecutor";
 
     public static readonly MAGIC_LINK_EXECUTOR: string = "MagicLinkExecutor";
+
+    public static readonly OPEN_ID_CONNECT_EXECUTOR: string = "OpenIDConnectExecutor";
+
+    public static readonly USER_PROVISIONING_EXECUTOR: string = "UserProvisioningExecutor";
+
+    /**
+     * Swapped onto the END step in place of `USER_PROVISIONING_EXECUTOR` when the flow collects an
+     * organization name. Provisions the user first, then the organization.
+     */
+    public static readonly PROVISIONING_DISPATCH_EXECUTOR: string = "ProvisioningDispatchExecutor";
+
+    /**
+     * Executor config key read by `ProvisioningDispatchExecutor` to decide where the user is
+     * provisioned.
+     */
+    public static readonly PROVISION_TARGET_KEY: string = "provisionTarget";
+
+    public static readonly ROLE_IDS_KEY: string = "roleIds";
+
+    /**
+     * Value of {@link PROVISION_TARGET_KEY} that provisions the user inside the organization the flow
+     * creates. Absent means the user is provisioned in the organization the flow is executing in.
+     */
+    public static readonly NEW_ORGANIZATION_PROVISION_TARGET: string = "NEW_ORGANIZATION";
 }
 
 export default RegistrationFlowExecutorConstants;

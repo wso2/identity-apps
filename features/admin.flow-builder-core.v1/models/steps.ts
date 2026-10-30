@@ -54,7 +54,7 @@ export enum StepCategories {
 
 export enum StepTypes {
     View = "VIEW",
-    Rule = "RULE",
+    RuleEvaluation = "RULE_EVALUATION",
     Execution = "EXECUTION",
     End = "END",
 }
@@ -75,6 +75,7 @@ export enum ExecutionTypes {
     MagicLinkExecutor = "MagicLinkExecutor",
     FlowExtension = "FlowExtensionExecutor",
     DigitalWalletFederation = "PresentationExecutor",
+    DeviceRegistration = "DeviceRegistrationExecutor",
     // Contributed by the Authsignal connector; available only when the connector is deployed.
     Authsignal = "AuthsignalExecutor"
 }

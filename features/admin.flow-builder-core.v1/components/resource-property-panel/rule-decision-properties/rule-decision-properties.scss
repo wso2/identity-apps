@@ -1,0 +1,272 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.rule-decision-properties {
+    /* The keyword sits above the branch's box, so the list reads like the if / else chain it is tried as. */
+    .rule-decision-row-keyword {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: var(--oxygen-palette-text-secondary);
+    }
+
+    .rule-decision-row {
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        padding: 10px 12px;
+        cursor: pointer;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+
+        /* The whole row opens the branch, so it reads as one control when pointed at. */
+        &:hover {
+            border-color: var(--oxygen-palette-text-secondary);
+            background-color: var(--oxygen-palette-action-hover);
+        }
+
+        /* The handle is the only grab target, so the row itself stays clickable. */
+        .dnd-action {
+            flex: 0 0 auto;
+            color: var(--oxygen-palette-text-secondary);
+        }
+
+        .rule-decision-row-name {
+            flex: 1 1 auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* A branch with no name yet reads as placeholder text rather than as a title. */
+        .rule-decision-row-name-unset {
+            color: var(--oxygen-palette-text-secondary);
+            font-style: italic;
+        }
+
+        /* The icon the notification panel lists errors under, so an error reads the same in both places. */
+        .rule-decision-row-issues {
+            flex: 0 0 auto;
+            padding: 3px;
+        }
+    }
+
+    /* The default is not one more branch, it is what happens when none of them hold. */
+    .rule-decision-row-default {
+        border-style: dashed;
+    }
+
+    /*
+     * Adding a branch is a step in the chain rather than a card of its own, so it is a small text action
+     * drawn into the gaps on either side, keeping it with the branches it sits between.
+     */
+    .rule-decision-add-branch {
+        align-self: flex-start;
+        min-height: 0;
+        margin: -8px 0;
+        padding: 2px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: none;
+
+        .MuiButton-startIcon {
+            margin-right: 4px;
+        }
+    }
+
+    .rule-decision-branch-target-empty {
+        color: var(--oxygen-palette-error-main);
+    }
+
+    /*
+     * The shared branch editor is sized for a full page. In this narrow panel its controls are made
+     * compact, here only, so actions and approval workflows keep the editor as it is.
+     */
+    .rules-component {
+        font-size: 13px;
+
+        .MuiInputBase-root,
+        .MuiSelect-select,
+        .MuiAutocomplete-input,
+        .MuiTypography-root,
+        .MuiChip-label {
+            font-size: 13px;
+        }
+
+        .MuiSelect-select,
+        .MuiOutlinedInput-input {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        /*
+         * An autocomplete keeps its own input padding and adds some around it, which makes it taller than a select
+         * or a plain text box. Both are brought in line, so every box in a condition is the same height, and the value
+         * box does not change height when it switches between a typed value and a field reference.
+         */
+        .MuiAutocomplete-root .MuiOutlinedInput-root {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            .MuiAutocomplete-input {
+                padding-top: 6px;
+                padding-bottom: 6px;
+            }
+        }
+
+        .MuiButton-root {
+            font-size: 12px;
+            min-height: 0;
+            padding: 2px 10px;
+        }
+
+        /*
+         * The panel is the frame already, so the rule's own card adds only a border and an indent. The right
+         * edge keeps room for each condition's remove button, which sits half outside its box.
+         */
+        .MuiCard-root {
+            border: none;
+            box-shadow: none;
+            padding: 0 10px 0 0;
+            background: transparent;
+        }
+
+        /*
+         * The editor pins Clear Rule absolutely over the card's corner, where it crowds the first condition in
+         * this narrow panel. Here the card is a grid instead: Clear Rule takes the right of the first row, level
+         * with the "Navigate If" heading, and everything else spans the full width below.
+         */
+        .MuiCard-root {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 8px;
+
+            > * {
+                grid-column: 1 / -1;
+            }
+
+            > :first-child {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            /* The heading keeps a margin below it, so the button takes the same one to sit level with it. */
+            > .clear-button {
+                grid-column: 2;
+                grid-row: 1;
+                position: static;
+                align-self: center;
+                margin: 0 0 16px;
+            }
+        }
+
+        /*
+         * Each condition is a column with one gap between its controls, rather than the mix of top and
+         * bottom margins each control brings on its own. Controls keep their natural width.
+         */
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+
+            > .MuiFormControl-root {
+                margin: 0;
+            }
+
+            /* The value is the longest thing a condition holds, so its input takes the full width. */
+            > .MuiFormControl-fullWidth,
+            .MuiTextField-root,
+            .MuiAutocomplete-root {
+                width: 100%;
+            }
+        }
+    }
+}
+
+/*
+ * The errors of a branch, opened from its indicator. The popover is placed on the page rather than in the
+ * panel, so that the panel's edges do not clip it, and it is raised above the panel for the same reason.
+ */
+.rule-decision-issues-popper {
+    z-index: 1300;
+    max-width: 280px;
+
+    .rule-decision-issues {
+        padding: 12px 14px;
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        background-color: var(--oxygen-palette-background-paper);
+        box-shadow: var(--oxygen-shadows-4);
+
+        /* Only the icon is red: the popover explains what to fix, and need not alarm while doing it. */
+        .lucide-circle-x {
+            flex: 0 0 auto;
+        }
+    }
+
+    .rule-decision-issues-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .rule-decision-issue-title {
+        font-weight: 600;
+    }
+
+    .rule-decision-issue-description {
+        display: block;
+        color: var(--oxygen-palette-text-secondary);
+    }
+
+    /* A square turned on its corner, of which only the two outer edges are drawn, points at the indicator. */
+    .rule-decision-issues-arrow {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--oxygen-palette-divider);
+            background-color: var(--oxygen-palette-background-paper);
+            transform: rotate(45deg);
+        }
+    }
+
+    &[data-popper-placement^="top"] .rule-decision-issues-arrow {
+        bottom: -5px;
+
+        &::before {
+            border-top-color: transparent;
+            border-left-color: transparent;
+        }
+    }
+
+    &[data-popper-placement^="bottom"] .rule-decision-issues-arrow {
+        top: -5px;
+
+        &::before {
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+        }
+    }
+}

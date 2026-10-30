@@ -20,7 +20,8 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/s
 import AdaptiveAuthTemplateInfoModal from "@wso2is/admin.login-flow-builder.v1/\
 components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
-    ELK_RISK_BASED_TEMPLATE_NAME
+    ELK_RISK_BASED_TEMPLATE_NAME,
+    RULE_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
 import {
     getConnectorDetails,
@@ -446,7 +447,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                     />
                                     <div className="actions">
                                         {
-                                            template.name === ELK_RISK_BASED_TEMPLATE_NAME && (
+                                            (template.name === ELK_RISK_BASED_TEMPLATE_NAME
+                                                || template.name === RULE_BASED_TEMPLATE_NAME) && (
                                                 <Tooltip
                                                     compact
                                                     trigger={ (

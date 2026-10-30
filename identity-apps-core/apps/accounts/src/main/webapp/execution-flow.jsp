@@ -226,10 +226,48 @@
                 const pageSessionDataKey = "<%= sessionDataKey != null ? Encode.forJavaScript(sessionDataKey) : null %>";
 
                 const anonymousProfileTracker = "<%= Encode.forJavaScript(anonymousProfileTracker) != null ? Encode.forJavaScript(anonymousProfileTracker) : null %>";
+
+                // A number from 0 to 99 kept for this browser, so conditions on the abTestingKey runtime value send the
+                // same user down the same branch each time. Without one, the flow uses the key's initial value.
+                const abTestingKeyStoragePrefix = "wso2.ab.";
+                const abTestingKeyStorageKey = abTestingKeyStoragePrefix + "<%= Encode.forJavaScript(tenantDomain) %>";
+                const getAbTestingKey = () => {
+                    try {
+                        let abTestingKey = localStorage.getItem(abTestingKeyStorageKey);
+
+                        if (!/^\d{1,2}$/.test(abTestingKey || "")) {
+                            abTestingKey = String(Math.floor(Math.random() * 100));
+                            localStorage.setItem(abTestingKeyStorageKey, abTestingKey);
+                        }
+
+                        return abTestingKey;
+                    } catch (error) {
+                        return null;
+                    }
+                };
+
+                /**
+                 * Clears what the flow kept in the browser, except the A/B testing keys, which outlive a flow. Those
+                 * of every tenant are kept, as tenants on the same origin share the storage.
+                 */
+                const clearFlowStorage = () => {
+                    const abTestingKeys = Object.keys(localStorage)
+                        .filter((key) => key.startsWith(abTestingKeyStoragePrefix))
+                        .map((key) => [ key, localStorage.getItem(key) ]);
+
+                    localStorage.clear();
+                    abTestingKeys.forEach(([ key, value ]) => localStorage.setItem(key, value));
+                };
+
                 const extendedInputResolvers = [
                     (initiatingFlowType) => initiatingFlowType === "REGISTRATION" && anonymousProfileTracker !== "null"
                         ? { anonymous_profile_tracker: anonymousProfileTracker }
-                        : {}
+                        : {},
+                    () => {
+                        const abTestingKey = getAbTestingKey();
+
+                        return abTestingKey !== null ? { abTestingKey } : {};
+                    }
                 ];
                 const getExtendedFlowInputs = (initiatingFlowType) => {
                     const inputs = extendedInputResolvers.reduce(
@@ -347,6 +385,7 @@
                             applicationId: spId,
                             flowType: flowType,
                             inputs: {
+                                ...getExtendedFlowInputs(flowType).inputs,
                                 confirmationCode: confirmationCode
                             }
                         });
@@ -697,7 +736,7 @@
                                 return true;
                             }
 
-                            localStorage.clear();
+                            clearFlowStorage();
 
                             if (flow.type === "VIEW" && flow.data) {
                                 const components = flow.data.components || [];
@@ -983,10 +1022,16 @@
             ReactDOM.render(
                 createElement(
                     GlobalContextProvider,
-                    { globalData: <%= reactGlobalContextJson %> },
+                    {
+                        globalData: Object.assign(
+                            {},
+                            <%= StringUtils.isNotBlank(reactGlobalContextJson) ? reactGlobalContextJson : "{}" %>,
+                            { organizations: { checkHandleUrl: "<%= accountsBaseURL %>" + "/util/org-handle-check-api.jsp" } }
+                        )
+                    },
                     createElement(
                         I18nProvider,
-                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= i18nJsonString %> },
+                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= StringUtils.isNotBlank(i18nJsonString) ? i18nJsonString : "{}" %> },
                         createElement(Content)
                     )
                 ),

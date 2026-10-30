@@ -24,6 +24,8 @@ import {
 // eslint-disable-next-line max-len
 import AuthsignalProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/authsignal-properties/authsignal-properties";
 // eslint-disable-next-line max-len
+import DeviceRegistrationProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/device-registration-properties/device-registration-properties";
+// eslint-disable-next-line max-len
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
@@ -33,12 +35,13 @@ import useExtensionExecutor from "@wso2is/admin.flow-builder-core.v1/hooks/use-e
 import { ExtensionExecutorInterface } from "@wso2is/admin.flow-builder-core.v1/models/metadata";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
+// eslint-disable-next-line max-len
+import RuleDecisionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/rule-decision-properties/rule-decision-properties";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import PreferenceManagementExtendedProperties from "./extended-properties/preference-management-extended-properties";
 import PolicyConsentExtendedProperties from "./extended-properties/policy-consent-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
-import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import FederationProperties from "./steps/execution/federation-properties";
@@ -169,6 +172,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 <>
                     { renderElementId() }
                     <FieldExtendedProperties
+                        key={ resource.id }
                         resource={ resource }
                         data-componentid="field-extended-properties"
                         onChange={ onChange }
@@ -193,13 +197,10 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 </>
             );
         case StepCategories.Decision:
-            if (resource.type === StepTypes.Rule) {
-                return (
-                    <>
-                        { renderElementId() }
-                        <RulesProperties />
-                    </>
-                );
+            if (resource.type === StepTypes.RuleEvaluation) {
+                // The id is rendered by the branch list itself, so that opening a branch leaves the
+                // panel showing only that branch.
+                return <RuleDecisionProperties resource={ resource } />;
             }
 
             break;
@@ -211,6 +212,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <FlowExtensionProperties
                             resource={ resource }
                             data-componentid="flow-extension-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.DeviceRegistration) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <DeviceRegistrationProperties
+                            resource={ resource }
+                            data-componentid="device-registration-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

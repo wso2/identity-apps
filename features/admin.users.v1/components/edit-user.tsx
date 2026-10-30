@@ -22,6 +22,7 @@ import { ProfileListItem } from "@wso2is/admin.cds.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { UserDevices } from "@wso2is/admin.devices.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
@@ -142,6 +143,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(
         usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.update
     );
+    const devicesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.devices
+    );
+    const hasDevicesReadPermission: boolean = useRequiredScopes(devicesFeatureConfig?.scopes?.read);
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -342,6 +347,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             });
         }
 
+        if (devicesFeatureConfig?.enabled && hasDevicesReadPermission) {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.5"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserDevices userId={ user?.id } />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
         return _panes;
     }, [
         user,
@@ -350,6 +366,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isSAASDeployment,
         hasSharedAccessReadPermission,
         hasSharedAccessUpdatePermission,
+        devicesFeatureConfig,
+        hasDevicesReadPermission,
         connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,

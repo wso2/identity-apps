@@ -528,20 +528,23 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         setIsSubmitting(true);
 
         try {
-            // Both fields are required by the server, so they are always sent. With tolerant
-            // matching switched off the rule is pinned to an exact match on a plain value,
-            // which is what the server stored before typed matching existed.
+            // The matching fields are sent only where tolerant matching is switched on. A
+            // server that predates typed matching rejects unknown fields rather than
+            // ignoring them, so sending them pinned to their defaults fails the request
+            // outright; omitting them produces the body such a server has always taken, and
+            // a server that does understand them derives the same exact-match-on-a-plain-
+            // value rule from their absence.
             const payload: CreateUnificationRulePayload = {
-                attribute_type: isFuzzyUnificationEnabled
-                    ? formData.attributeType
-                    : UnificationAttributeType.PRIMITIVE_EXACT,
                 is_active: formData.isActive,
                 priority: Number(formData.priority),
                 property_name: buildPropertyName(formData.scope, formData.attribute),
                 rule_name: formData.ruleName,
-                unification_method: isFuzzyUnificationEnabled
-                    ? formData.unificationMethod
-                    : UnificationMethod.DETERMINISTIC
+                ...(isFuzzyUnificationEnabled
+                    ? {
+                        attribute_type: formData.attributeType,
+                        unification_method: formData.unificationMethod
+                    }
+                    : {})
             };
 
             await createUnificationRule(payload);

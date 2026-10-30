@@ -1,5 +1,20 @@
 # @wso2is/admin.claims.v1
 
+## 2.31.8
+
+### Patch Changes
+
+- [#10768](https://github.com/wso2/identity-apps/pull/10768) [`ecd1da6d007f1b889f94490ee9d422de2dad97af`](https://github.com/wso2/identity-apps/commit/ecd1da6d007f1b889f94490ee9d422de2dad97af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Allow local attribute names containing "/", "-" and more than one "." in the attribute creation wizard, matching what the claim management API accepts, while keeping the identity claim prefix reserved.
+
+- Updated dependencies [[`ecd1da6d007f1b889f94490ee9d422de2dad97af`](https://github.com/wso2/identity-apps/commit/ecd1da6d007f1b889f94490ee9d422de2dad97af)]:
+  - @wso2is/i18n@2.48.2
+
+## 2.31.7
+
+### Patch Changes
+
+- [#10764](https://github.com/wso2/identity-apps/pull/10764) [`af9f98110a208b72d0c9191807a07427810fdea0`](https://github.com/wso2/identity-apps/commit/af9f98110a208b72d0c9191807a07427810fdea0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Filter the attribute mapping edit row with the full dialect list and refresh the mapped attributes after an inline edit.
+
 ## 2.31.6
 
 ### Patch Changes

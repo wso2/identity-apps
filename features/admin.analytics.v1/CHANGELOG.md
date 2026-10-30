@@ -1,5 +1,14 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.16
+
+### Patch Changes
+
+- [#10789](https://github.com/wso2/identity-apps/pull/10789) [`a87688d032257ac580d4bd042335e3c92bf250e7`](https://github.com/wso2/identity-apps/commit/a87688d032257ac580d4bd042335e3c92bf250e7) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add the Enterprise-B2B tenant tier and map it to the premium Moesif dashboard
+
+- Updated dependencies [[`a87688d032257ac580d4bd042335e3c92bf250e7`](https://github.com/wso2/identity-apps/commit/a87688d032257ac580d4bd042335e3c92bf250e7)]:
+  - @wso2is/admin.subscription.v1@1.5.231
+
 ## 0.0.15
 
 ### Patch Changes

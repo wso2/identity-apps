@@ -1,5 +1,318 @@
 # @wso2is/console
 
+## 4.28.1
+
+### Patch Changes
+
+- [#10843](https://github.com/wso2/identity-apps/pull/10843) [`a9957ddeebd3f594d263aa599c1f675b4b048247`](https://github.com/wso2/identity-apps/commit/a9957ddeebd3f594d263aa599c1f675b4b048247) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Bump console to pick up the latest i18n version
+
+## 4.28.0
+
+### Minor Changes
+
+- [#10838](https://github.com/wso2/identity-apps/pull/10838) [`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add flow variables for headers and runtime values, with an A/B testing key in the accounts portal
+
+### Patch Changes
+
+- Updated dependencies [[`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5)]:
+  - @wso2is/admin.core.v1@2.63.2
+  - @wso2is/admin.registration-flow-builder.v1@0.15.0
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.4.0
+  - @wso2is/i18n@2.55.1
+  - @wso2is/admin.branding.v1@2.32.179
+  - @wso2is/admin.email-management.v1@2.25.381
+  - @wso2is/admin.flows.v1@1.0.185
+  - @wso2is/admin.users.v1@2.39.2
+
+## 4.27.0
+
+### Minor Changes
+
+- [#10826](https://github.com/wso2/identity-apps/pull/10826) [`32cefa73156035e070ea46c0318578d83544f4c6`](https://github.com/wso2/identity-apps/commit/32cefa73156035e070ea46c0318578d83544f4c6) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins register known MCP clients, such as Claude and Visual Studio Code, from the MCP Client template in one click. IS retrieves and checks each client's Client ID Metadata Document (CIMD), and the application is created from the values in that document. The list of known clients comes from the deployment config (`extensions.mcpKnownClients`). Any other client can be added from its metadata document URL, after the admin reviews what the document declares.
+
+### Patch Changes
+
+- Updated dependencies [[`32cefa73156035e070ea46c0318578d83544f4c6`](https://github.com/wso2/identity-apps/commit/32cefa73156035e070ea46c0318578d83544f4c6)]:
+  - @wso2is/admin.application-templates.v1@1.7.0
+  - @wso2is/admin.applications.v1@2.45.0
+  - @wso2is/i18n@2.55.0
+
+## 4.26.0
+
+### Minor Changes
+
+- [#10835](https://github.com/wso2/identity-apps/pull/10835) [`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device policy selection, authentication validation and a starter template for the device registration step in the registration flow builders
+
+### Patch Changes
+
+- Updated dependencies [[`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.14.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.3.0
+  - @wso2is/i18n@2.54.0
+  - @wso2is/admin.branding.v1@2.32.178
+  - @wso2is/admin.core.v1@2.63.1
+  - @wso2is/admin.email-management.v1@2.25.380
+  - @wso2is/admin.flows.v1@1.0.184
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.3.1
+  - @wso2is/admin.users.v1@2.39.1
+
+## 4.25.0
+
+### Minor Changes
+
+- [#10831](https://github.com/wso2/identity-apps/pull/10831) [`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a devices tab to the user edit page in the console
+
+### Patch Changes
+
+- Updated dependencies [[`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e)]:
+  - @wso2is/admin.core.v1@2.63.0
+  - @wso2is/admin.users.v1@2.39.0
+  - @wso2is/i18n@2.53.0
+
+## 4.24.2
+
+### Patch Changes
+
+- [#10801](https://github.com/wso2/identity-apps/pull/10801) [`eab69a3987d89016248fab31b7df480ff6b5970b`](https://github.com/wso2/identity-apps/commit/eab69a3987d89016248fab31b7df480ff6b5970b) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Improve the self-registration flow completion properties layout and wording with grouped account and organization settings, user placement radio options, and a locked default role chip.
+
+- Updated dependencies [[`eab69a3987d89016248fab31b7df480ff6b5970b`](https://github.com/wso2/identity-apps/commit/eab69a3987d89016248fab31b7df480ff6b5970b)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.13.1
+  - @wso2is/i18n@2.52.2
+
+## 4.24.1
+
+### Patch Changes
+
+- [#10828](https://github.com/wso2/identity-apps/pull/10828) [`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Rework the Customer Data profile unification settings into automatic unification, administrator review and match handling sections, show the exact-rule auto-unification setting, and default the automatic unification threshold to 1
+
+- Updated dependencies [[`d1055546586111ca48b8a44d3860b9d7feff955a`](https://github.com/wso2/identity-apps/commit/d1055546586111ca48b8a44d3860b9d7feff955a)]:
+  - @wso2is/admin.cds.v1@1.7.2
+  - @wso2is/i18n@2.52.1
+  - @wso2is/admin.users.v1@2.38.63
+
+## 4.24.0
+
+### Minor Changes
+
+- [#10825](https://github.com/wso2/identity-apps/pull/10825) [`4329239b404cb7eafe34a2bd8e0f9045bb890250`](https://github.com/wso2/identity-apps/commit/4329239b404cb7eafe34a2bd8e0f9045bb890250) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add create and edit wizards for device assurance policies in the console
+
+### Patch Changes
+
+- Updated dependencies [[`4329239b404cb7eafe34a2bd8e0f9045bb890250`](https://github.com/wso2/identity-apps/commit/4329239b404cb7eafe34a2bd8e0f9045bb890250)]:
+  - @wso2is/admin.device-policies.v1@0.2.0
+  - @wso2is/i18n@2.52.0
+  - @wso2is/admin.core.v1@2.62.1
+
+## 4.23.0
+
+### Minor Changes
+
+- [#10814](https://github.com/wso2/identity-apps/pull/10814) [`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device assurance policy list and view pages to the console
+
+### Patch Changes
+
+- Updated dependencies [[`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443)]:
+  - @wso2is/admin.device-policies.v1@0.1.0
+  - @wso2is/admin.server-configurations.v1@2.40.0
+  - @wso2is/admin.core.v1@2.62.0
+  - @wso2is/i18n@2.51.0
+
+## 4.22.5
+
+### Patch Changes
+
+- [#10821](https://github.com/wso2/identity-apps/pull/10821) [`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove misleading aud claim information from the API resource and MCP server creation wizards
+
+- Updated dependencies [[`ac00a92c49ba77382e34a309ce84192d5fd46c18`](https://github.com/wso2/identity-apps/commit/ac00a92c49ba77382e34a309ce84192d5fd46c18)]:
+  - @wso2is/admin.api-resources.v2@2.26.13
+
+## 4.22.4
+
+### Patch Changes
+
+- [#10811](https://github.com/wso2/identity-apps/pull/10811) [`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Hide the groups, outbound provisioning, Just-in-Time provisioning and advanced tabs for Incode identity verification
+  connections
+- Updated dependencies [[`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e)]:
+  - @wso2is/admin.connections.v1@2.43.5
+  - @wso2is/admin.extensions.v1@2.44.3
+
+## 4.22.3
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
+## 4.22.2
+
+### Patch Changes
+
+- [#10804](https://github.com/wso2/identity-apps/pull/10804) [`4c99902b93e4e51aa3756b9c342b7a667f5327db`](https://github.com/wso2/identity-apps/commit/4c99902b93e4e51aa3756b9c342b7a667f5327db) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show the required indicator on radio group labels in the registration flow designer and signup page.
+
+## 4.22.1
+
+### Patch Changes
+
+- [#10779](https://github.com/wso2/identity-apps/pull/10779) [`8c82133e03c71712d82f5bf7e30490009834f5bb`](https://github.com/wso2/identity-apps/commit/8c82133e03c71712d82f5bf7e30490009834f5bb) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Show the ELK Analytics configuration for the Rule-Based adaptive authentication template
+
+- Updated dependencies [[`8c82133e03c71712d82f5bf7e30490009834f5bb`](https://github.com/wso2/identity-apps/commit/8c82133e03c71712d82f5bf7e30490009834f5bb)]:
+  - @wso2is/admin.applications.v1@2.44.6
+  - @wso2is/i18n@2.50.1
+
+## 4.22.0
+
+### Minor Changes
+
+- [#10795](https://github.com/wso2/identity-apps/pull/10795) [`b922925433ac6a902c49f6aa65f32622ae9d8622`](https://github.com/wso2/identity-apps/commit/b922925433ac6a902c49f6aa65f32622ae9d8622) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Show changes proposed by the Ask AI copilot as confirm cards. Nothing is changed until the user confirms; the card then shows whether the action was executed and links to the created resource.
+
+### Patch Changes
+
+- Updated dependencies [[`b922925433ac6a902c49f6aa65f32622ae9d8622`](https://github.com/wso2/identity-apps/commit/b922925433ac6a902c49f6aa65f32622ae9d8622)]:
+  - @wso2is/admin.copilot.v1@1.1.0
+  - @wso2is/i18n@2.50.0
+
+## 4.21.0
+
+### Minor Changes
+
+- [#10784](https://github.com/wso2/identity-apps/pull/10784) [`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add decision steps to the flow builder, which route a flow to one of its branches by rules on the flow's data
+
+### Patch Changes
+
+- Updated dependencies [[`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.2.0
+  - @wso2is/admin.core.v1@2.61.2
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.3.0
+  - @wso2is/admin.registration-flow-builder.v1@0.13.0
+  - @wso2is/i18n@2.49.4
+  - @wso2is/admin.branding.v1@2.32.177
+  - @wso2is/admin.email-management.v1@2.25.379
+  - @wso2is/admin.flows.v1@1.0.183
+  - @wso2is/admin.users.v1@2.38.62
+
+## 4.20.5
+
+### Patch Changes
+
+- [#10752](https://github.com/wso2/identity-apps/pull/10752) [`e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f`](https://github.com/wso2/identity-apps/commit/e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add per-channel child organization subscription policy to webhooks, behind the `webhooks.childOrgSubscription` feature flag.
+
+- Updated dependencies [[`e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f`](https://github.com/wso2/identity-apps/commit/e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f)]:
+  - @wso2is/admin.webhooks.v1@1.2.0
+  - @wso2is/i18n@2.49.3
+
+## 4.20.4
+
+### Patch Changes
+
+- [#10796](https://github.com/wso2/identity-apps/pull/10796) [`d86e22bc107d065e7303291785ab3c2dcbfdb5e2`](https://github.com/wso2/identity-apps/commit/d86e22bc107d065e7303291785ab3c2dcbfdb5e2) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! -
+
+## 4.20.3
+
+### Patch Changes
+
+- [#10783](https://github.com/wso2/identity-apps/pull/10783) [`f474346a773b8dfe06d2bc8599c39f764f04d7b1`](https://github.com/wso2/identity-apps/commit/f474346a773b8dfe06d2bc8599c39f764f04d7b1) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support value-less and list operators, field keys and comparison with another field in the rule condition editor
+
+- Updated dependencies [[`f474346a773b8dfe06d2bc8599c39f764f04d7b1`](https://github.com/wso2/identity-apps/commit/f474346a773b8dfe06d2bc8599c39f764f04d7b1)]:
+  - @wso2is/i18n@2.49.2
+
+## 4.20.2
+
+### Patch Changes
+
+- [#10791](https://github.com/wso2/identity-apps/pull/10791) [`fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9`](https://github.com/wso2/identity-apps/commit/fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show only roles shared with new organizations in the role picker and warn when previously selected roles are no longer shared.
+
+- Updated dependencies [[`fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9`](https://github.com/wso2/identity-apps/commit/fe6151ffdc8ab350d6e4d63cde0b4d9ccf9398d9)]:
+  - @wso2is/admin.organizations.v1@2.29.1
+  - @wso2is/admin.registration-flow-builder.v1@0.12.1
+  - @wso2is/i18n@2.49.1
+
+## 4.20.1
+
+### Patch Changes
+
+- [#10789](https://github.com/wso2/identity-apps/pull/10789) [`a87688d032257ac580d4bd042335e3c92bf250e7`](https://github.com/wso2/identity-apps/commit/a87688d032257ac580d4bd042335e3c92bf250e7) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add the Enterprise-B2B tenant tier and map it to the premium Moesif dashboard
+
+- Updated dependencies [[`a87688d032257ac580d4bd042335e3c92bf250e7`](https://github.com/wso2/identity-apps/commit/a87688d032257ac580d4bd042335e3c92bf250e7)]:
+  - @wso2is/admin.analytics.v1@0.0.16
+  - @wso2is/admin.subscription.v1@1.5.231
+  - @wso2is/admin.onboarding.v1@1.0.97
+
+## 4.20.0
+
+### Minor Changes
+
+- [#10746](https://github.com/wso2/identity-apps/pull/10746) [`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add organization onboarding fields, provisioning settings, role selection, and organization attribute selection in flow-extension access configuration.
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-extensions.v1@0.2.0
+  - @wso2is/admin.registration-flow-builder.v1@0.12.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.220
+  - @wso2is/admin.branding.v1@2.32.176
+  - @wso2is/admin.core.v1@2.61.1
+  - @wso2is/admin.email-management.v1@2.25.378
+  - @wso2is/admin.flows.v1@1.0.182
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.4
+  - @wso2is/admin.users.v1@2.38.61
+  - @wso2is/admin.connections.v1@2.43.4
+
+## 4.19.7
+
+### Patch Changes
+
+- [#10785](https://github.com/wso2/identity-apps/pull/10785) [`aa0d7778c0299d290e95d092d79359c84cd0c25a`](https://github.com/wso2/identity-apps/commit/aa0d7778c0299d290e95d092d79359c84cd0c25a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Move the rule condition components to module level so they keep their state across renders
+
+## 4.19.6
+
+### Patch Changes
+
+- [#10774](https://github.com/wso2/identity-apps/pull/10774) [`f80a40efb001c359431e94b455f957c1a6551186`](https://github.com/wso2/identity-apps/commit/f80a40efb001c359431e94b455f957c1a6551186) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add an SMS OTP setting to allow mobile number enrollment during login
+
+- Updated dependencies [[`f80a40efb001c359431e94b455f957c1a6551186`](https://github.com/wso2/identity-apps/commit/f80a40efb001c359431e94b455f957c1a6551186)]:
+  - @wso2is/i18n@2.48.3
+
+## 4.19.5
+
+### Patch Changes
+
+- [#10768](https://github.com/wso2/identity-apps/pull/10768) [`ecd1da6d007f1b889f94490ee9d422de2dad97af`](https://github.com/wso2/identity-apps/commit/ecd1da6d007f1b889f94490ee9d422de2dad97af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Allow local attribute names containing "/", "-" and more than one "." in the attribute creation wizard, matching what the claim management API accepts, while keeping the identity claim prefix reserved.
+
+- Updated dependencies [[`ecd1da6d007f1b889f94490ee9d422de2dad97af`](https://github.com/wso2/identity-apps/commit/ecd1da6d007f1b889f94490ee9d422de2dad97af)]:
+  - @wso2is/admin.claims.v1@2.31.8
+  - @wso2is/i18n@2.48.2
+
+## 4.19.4
+
+### Patch Changes
+
+- [#10764](https://github.com/wso2/identity-apps/pull/10764) [`af9f98110a208b72d0c9191807a07427810fdea0`](https://github.com/wso2/identity-apps/commit/af9f98110a208b72d0c9191807a07427810fdea0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Filter the attribute mapping edit row with the full dialect list and refresh the mapped attributes after an inline edit.
+
+- Updated dependencies [[`af9f98110a208b72d0c9191807a07427810fdea0`](https://github.com/wso2/identity-apps/commit/af9f98110a208b72d0c9191807a07427810fdea0)]:
+  - @wso2is/admin.claims.v1@2.31.7
+
+## 4.19.3
+
+### Patch Changes
+
+- [#10765](https://github.com/wso2/identity-apps/pull/10765) [`a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3`](https://github.com/wso2/identity-apps/commit/a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve the registration and recovery redirect URIs in the connection create wizard help panel using the
+  accounts portal hostname configured under `[accounts]` in the deployment.toml, falling back to the custom
+  server host when it is not configured
+- Updated dependencies [[`a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3`](https://github.com/wso2/identity-apps/commit/a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3)]:
+  - @wso2is/admin.connections.v1@2.43.3
+
+## 4.19.2
+
+### Patch Changes
+
+- [#10730](https://github.com/wso2/identity-apps/pull/10730) [`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Load further groups by scrolling in the user group assignment dialog, count the selected groups against every group the user can be assigned, and keep the selection across searches
+
+- Updated dependencies [[`1c6e588dd4013290ed1215ac51e0018f354ed436`](https://github.com/wso2/identity-apps/commit/1c6e588dd4013290ed1215ac51e0018f354ed436)]:
+  - @wso2is/admin.groups.v1@2.27.131
+  - @wso2is/admin.users.v1@2.38.59
+  - @wso2is/i18n@2.48.1
+
 ## 4.19.1
 
 ### Patch Changes

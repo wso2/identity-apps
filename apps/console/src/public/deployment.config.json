@@ -186,6 +186,16 @@
                 "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
+        "mcpKnownClients": [
+            {
+                "clientId": "https://claude.ai/oauth/mcp-oauth-client-metadata",
+                "name": "Claude"
+            },
+            {
+                "clientId": "https://vscode.dev/oauth/client-metadata.json",
+                "name": "Visual Studio Code"
+            }
+        ],
         "outboundProvisioningConnectors": [],
         "smsTemplates": [
             {
@@ -1108,6 +1118,48 @@
                     ]
                 }
             },
+            "devicePolicies": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_policy_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_policy_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_policy_mgt_view"
+                    ],
+                    "update": [
+                        "internal_policy_mgt_update"
+                    ]
+                }
+            },
+            "devices": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [
+                        "internal_device_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:users"
+                    ],
+                    "read": [
+                        "internal_device_mgt_view"
+                    ],
+                    "update": [
+                        "internal_device_mgt_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1200,6 +1252,10 @@
                     },
                     {
                         "feature": "flows.types.list.registration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.registration.organizationOnboarding",
                         "flag": ""
                     },
                     {
@@ -2259,6 +2315,7 @@
             },
             "webhooks": {
                 "disabledFeatures": [
+                    "webhooks.childOrgSubscription",
                     "webhooks.settings"
                 ],
                 "enabled": true,
@@ -2319,10 +2376,21 @@
             }
         },
         "flowExecution": {
+            "conditionalBranching": {
+                "maxDecisionNodes": 20,
+                "maxExpressionsCombinedWithAnd": 5,
+                "maxRulesCombinedWithOr": 10
+            },
             "enableLegacyFlows": false,
             "enableLegacyInvitedUserRegistrationFlow": false,
             "enableLegacyPasswordRecoveryFlow": false,
-            "enableLegacySelfRegistrationFlow": false
+            "enableLegacySelfRegistrationFlow": false,
+            "variables": {
+                "maxArraySize": 20,
+                "maxHeaders": 10,
+                "maxRuntimeValues": 20,
+                "maxValueLength": 255
+            }
         },
         "governanceConnectors": {
             "loginAttempts": {

@@ -98,7 +98,9 @@ export interface CDSConfigUpdateRequest {
  * Defaults the server applies when an organisation has never set a value.
  *
  * Both toggles default on so that an organisation upgrading keeps the behaviour it had:
- * reading an absent setting as "off" would silently reroute merges it was relying on.
+ * reading an absent setting as "off" would silently reroute merges it was relying on. The
+ * automatic threshold defaults to 1, so only a perfect score — an exact match — is unified
+ * unattended and every tolerant match is reviewed until the organisation lowers it.
  */
 export const CDS_RESOLUTION_DEFAULTS: {
     autoMergeEnabled: boolean;
@@ -107,7 +109,7 @@ export const CDS_RESOLUTION_DEFAULTS: {
     deterministicMatchDecisive: boolean;
 } = {
     autoMergeEnabled: true,
-    autoMergeThreshold: 0.95,
+    autoMergeThreshold: 1,
     deterministicMatchDecisive: true,
     manualReviewThreshold: 0.75
 };

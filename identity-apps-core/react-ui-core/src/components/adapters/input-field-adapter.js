@@ -27,6 +27,7 @@ import PasswordFieldAdapter from "./password-field-adapter";
 import PhoneNumberFieldAdapter from "./phone-number-field-adapter";
 import RadioFieldAdapter from "./radio-field-adapter";
 import TextFieldAdapter from "./text-field-adapter";
+import OrgHandleFieldAdapter from "./org-handle-field-adapter";
 
 const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldError }) => {
     switch (component.variant) {
@@ -120,6 +121,18 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
                     fieldErrorHandler={ formFieldError }
                 />
             );
+        case "ORG_HANDLE":
+            return (
+                <OrgHandleFieldAdapter
+                    component={component}
+                    formState={formState}
+                    formStateHandler={formStateHandler}
+                    fieldErrorHandler={formFieldError}
+                />
+            );
+        case "HIDDEN":
+            // Carries a runtime value the app may set, such as an A/B testing key. It is not shown to the user.
+            return null;
         default:
             return null;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -347,6 +347,26 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "sessionManagement",
                     name: "sessionManagement:title",
                     path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.device-policies.v1/pages/device-assurance-policies")),
+                    exact: true,
+                    id: "devicePolicies",
+                    name: "devices:assurancePolicies.title",
+                    path: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.device-policies.v1/pages/device-policy-edit")),
+                    exact: true,
+                    id: "devicePolicies",
+                    name: "devices:assurancePolicies.title",
+                    path: AppConstants.getPaths().get("DEVICE_POLICY_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 },

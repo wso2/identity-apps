@@ -108,6 +108,10 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      * Whether to propagate OTP delivery failures to the user's login page.
      */
     SmsOTP_NotifySmsSendingFailure: boolean;
+    /**
+     * Whether to ask users without a mobile number to enroll one during login.
+     */
+    SmsOTP_EnrollUserInAuthenticationFlow?: boolean;
 }
 
 /**
@@ -138,6 +142,10 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      * Whether to propagate OTP delivery failures to the user's login page.
      */
     SmsOTP_NotifySmsSendingFailure: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Mobile number enrollment during login field.
+     */
+    SmsOTP_EnrollUserInAuthenticationFlow?: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -652,6 +660,23 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 width={ 12 }
                 data-componentid={ `${ testId }-show-failure-reason` }
             />
+            {
+                initialValues?.SmsOTP_EnrollUserInAuthenticationFlow !== undefined && (
+                    <Field.Checkbox
+                        ariaLabel="Enroll mobile number during login"
+                        name="SmsOTP_EnrollUserInAuthenticationFlow"
+                        label={
+                            t("authenticationProvider:forms.authenticatorSettings" +
+                                ".smsOTP.enrollUserInAuthenticationFlow.label")
+                        }
+                        hint={ t("authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.enrollUserInAuthenticationFlow.hint") }
+                        readOnly={ readOnly }
+                        width={ 12 }
+                        data-componentid={ `${ testId }-enroll-user-in-authentication-flow` }
+                    />
+                )
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

@@ -1,5 +1,102 @@
 # @wso2is/admin.core.v1
 
+## 2.63.2
+
+### Patch Changes
+
+- [#10838](https://github.com/wso2/identity-apps/pull/10838) [`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add flow variables for headers and runtime values, with an A/B testing key in the accounts portal
+
+- Updated dependencies [[`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5)]:
+  - @wso2is/admin.flow-builder-core.v1@0.15.0
+  - @wso2is/admin.registration-flow-builder.v1@0.15.0
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.4.0
+  - @wso2is/i18n@2.55.1
+  - @wso2is/admin.branding.v1@2.32.179
+  - @wso2is/admin.flows.v1@1.0.185
+  - @wso2is/admin.users.v1@2.39.2
+
+## 2.63.1
+
+### Patch Changes
+
+- Updated dependencies [[`eeacfebf1353235777742e170ea2f21b8e7e7471`](https://github.com/wso2/identity-apps/commit/eeacfebf1353235777742e170ea2f21b8e7e7471)]:
+  - @wso2is/admin.flow-builder-core.v1@0.14.0
+  - @wso2is/admin.registration-flow-builder.v1@0.14.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.3.0
+  - @wso2is/i18n@2.54.0
+  - @wso2is/admin.branding.v1@2.32.178
+  - @wso2is/admin.flows.v1@1.0.184
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.3.1
+  - @wso2is/admin.users.v1@2.39.1
+
+## 2.63.0
+
+### Minor Changes
+
+- [#10831](https://github.com/wso2/identity-apps/pull/10831) [`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a devices tab to the user edit page in the console
+
+### Patch Changes
+
+- Updated dependencies [[`d65b384d67c8cde92c5a28396b03c4a0bccc746e`](https://github.com/wso2/identity-apps/commit/d65b384d67c8cde92c5a28396b03c4a0bccc746e)]:
+  - @wso2is/admin.devices.v1@0.1.0
+  - @wso2is/admin.users.v1@2.39.0
+  - @wso2is/i18n@2.53.0
+
+## 2.62.1
+
+### Patch Changes
+
+- Updated dependencies [[`4329239b404cb7eafe34a2bd8e0f9045bb890250`](https://github.com/wso2/identity-apps/commit/4329239b404cb7eafe34a2bd8e0f9045bb890250)]:
+  - @wso2is/admin.device-policies.v1@0.2.0
+  - @wso2is/i18n@2.52.0
+
+## 2.62.0
+
+### Minor Changes
+
+- [#10814](https://github.com/wso2/identity-apps/pull/10814) [`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add device assurance policy list and view pages to the console
+
+### Patch Changes
+
+- Updated dependencies [[`f469c62110b3dc6ec52dcdf911ef0fbddda45443`](https://github.com/wso2/identity-apps/commit/f469c62110b3dc6ec52dcdf911ef0fbddda45443)]:
+  - @wso2is/admin.device-policies.v1@0.1.0
+  - @wso2is/admin.rules.v1@0.7.55
+  - @wso2is/admin.server-configurations.v1@2.40.0
+  - @wso2is/i18n@2.51.0
+
+## 2.61.2
+
+### Patch Changes
+
+- [#10784](https://github.com/wso2/identity-apps/pull/10784) [`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add decision steps to the flow builder, which route a flow to one of its branches by rules on the flow's data
+
+- Updated dependencies [[`82708b9dd3a1b64b899c0149b8f7d08b248bd62f`](https://github.com/wso2/identity-apps/commit/82708b9dd3a1b64b899c0149b8f7d08b248bd62f)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.2.0
+  - @wso2is/admin.flow-builder-core.v1@0.13.0
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.3.0
+  - @wso2is/admin.registration-flow-builder.v1@0.13.0
+  - @wso2is/admin.rules.v1@0.7.54
+  - @wso2is/i18n@2.49.4
+  - @wso2is/admin.branding.v1@2.32.177
+  - @wso2is/admin.flows.v1@1.0.183
+  - @wso2is/admin.users.v1@2.38.62
+
+## 2.61.1
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-builder-core.v1@0.12.0
+  - @wso2is/admin.registration-flow-builder.v1@0.12.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.220
+  - @wso2is/admin.branding.v1@2.32.176
+  - @wso2is/admin.flows.v1@1.0.182
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.2.4
+  - @wso2is/admin.users.v1@2.38.61
+  - @wso2is/admin.connections.v1@2.43.4
+
 ## 2.61.0
 
 ### Minor Changes

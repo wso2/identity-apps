@@ -25,6 +25,28 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
+ * Roots of the server's APIs that do not live under the server API, such as SCIM. A link to one of them carries
+ * its root, so it is resolved against the server rather than the server API.
+ */
+const SERVER_ROOT_PATHS: string[] = [ "/scim2/", "/api/" ];
+
+/**
+ * Resolves a link from the rule metadata to the URL it is fetched from.
+ *
+ * @param endpointPath - The link.
+ * @returns The URL.
+ */
+const resolveEndpointUrl = (endpointPath: string): string => {
+    const { apiRoot, serverHost } = store.getState().config.endpoints;
+
+    if (SERVER_ROOT_PATHS.some((root: string) => endpointPath?.startsWith(root))) {
+        return serverHost + endpointPath;
+    }
+
+    return apiRoot + endpointPath;
+};
+
+/**
  * Hook to get the resources list.
  *
  * This function calls the GET method of the provided endpoints to get the resources list, such as applications,
@@ -44,7 +66,7 @@ const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInt
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.apiRoot + endpointPath
+        url: resolveEndpointUrl(endpointPath)
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(

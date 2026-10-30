@@ -947,6 +947,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     validations: {
                         required: "Notify users on OTP delivery failure is a required field."
                     }
+                },
+                enrollUserInAuthenticationFlow: {
+                    hint: "Ask users who do not have a mobile number to add and verify one during login. " +
+                        "Applies only when the user has already signed in with another authenticator in the " +
+                        "same login flow.",
+                    label: "Allow mobile number enrollment during login"
                 }
             },
             push: {

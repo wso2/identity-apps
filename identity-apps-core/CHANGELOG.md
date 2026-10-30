@@ -1,5 +1,56 @@
 # @wso2is/identity-apps-core
 
+## 5.7.0
+
+### Minor Changes
+
+- [#10838](https://github.com/wso2/identity-apps/pull/10838) [`c894cac48f1f9682f0718d71742986c10c0701b5`](https://github.com/wso2/identity-apps/commit/c894cac48f1f9682f0718d71742986c10c0701b5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add flow variables for headers and runtime values, with an A/B testing key in the accounts portal
+
+## 5.6.4
+
+### Patch Changes
+
+- [#10792](https://github.com/wso2/identity-apps/pull/10792) [`05db050336fb115ddf7497c425e71b4a6b370ec3`](https://github.com/wso2/identity-apps/commit/05db050336fb115ddf7497c425e71b4a6b370ec3) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add i18n strings for Incode identity verification errors to the accounts and authentication portals
+
+## 5.6.3
+
+### Patch Changes
+
+- [#10802](https://github.com/wso2/identity-apps/pull/10802) [`9e0935e4d069d8eeb9a34e3a02f82d97060e05da`](https://github.com/wso2/identity-apps/commit/9e0935e4d069d8eeb9a34e3a02f82d97060e05da) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Align organization handle validation rules with password validation styling in self-registration, including muted text, grey indicators, consistent spacing, and aligned wrapped text.
+
+- Updated dependencies [[`9e0935e4d069d8eeb9a34e3a02f82d97060e05da`](https://github.com/wso2/identity-apps/commit/9e0935e4d069d8eeb9a34e3a02f82d97060e05da)]:
+  - @wso2is/theme@2.11.2
+
+## 5.6.2
+
+### Patch Changes
+
+- [#10804](https://github.com/wso2/identity-apps/pull/10804) [`4c99902b93e4e51aa3756b9c342b7a667f5327db`](https://github.com/wso2/identity-apps/commit/4c99902b93e4e51aa3756b9c342b7a667f5327db) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show the required indicator on radio group labels in the registration flow designer and signup page.
+
+## 5.6.1
+
+### Patch Changes
+
+- [#10796](https://github.com/wso2/identity-apps/pull/10796) [`d86e22bc107d065e7303291785ab3c2dcbfdb5e2`](https://github.com/wso2/identity-apps/commit/d86e22bc107d065e7303291785ab3c2dcbfdb5e2) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! -
+
+## 5.6.0
+
+### Minor Changes
+
+- [#10746](https://github.com/wso2/identity-apps/pull/10746) [`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Add organization onboarding fields, provisioning settings, role selection, and organization attribute selection in flow-extension access configuration.
+
+## 5.5.6
+
+### Patch Changes
+
+- [#10722](https://github.com/wso2/identity-apps/pull/10722) [`a411639116b0b581244c110c85a946803408b12f`](https://github.com/wso2/identity-apps/commit/a411639116b0b581244c110c85a946803408b12f) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add messages for enrolling a mobile number during SMS OTP authentication
+
+## 5.5.5
+
+### Patch Changes
+
+- [#10770](https://github.com/wso2/identity-apps/pull/10770) [`bc8fbf5a3fa84498742a572e92bad3cd13f195f3`](https://github.com/wso2/identity-apps/commit/bc8fbf5a3fa84498742a572e92bad3cd13f195f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Resolve console roles in the 7.0.0 permission format without failing or dropping their scopes.
+
 ## 5.5.4
 
 ### Patch Changes

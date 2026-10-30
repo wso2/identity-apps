@@ -166,6 +166,9 @@
             }
         }
         {% endif %}
+        {% if accounts is defined and accounts.hostname is defined %}
+        ,"accountsPortalURL": "https://{{ accounts.hostname }}{{ accounts.path | default('/accounts') }}"
+        {% endif %}
     },
     "session": {
         {% if console.session.params is defined %}
@@ -1319,6 +1322,66 @@
                 "scopes": {
                     {% if console.console_settings.scopes is defined %}
                     {% for operation, scopes in console.console_settings.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.device_policies is defined %}
+            "devicePolicies": {
+                "disabledFeatures": [
+                    {% if console.device_policies.disabled_features is defined %}
+                    {% for feature in console.device_policies.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.device_policies.enabled is defined %} {{ console.device_policies.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.device_policies.scopes is defined %}
+                    {% for operation, scopes in console.device_policies.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.devices is defined %}
+            "devices": {
+                "disabledFeatures": [
+                    {% if console.devices.disabled_features is defined %}
+                    {% for feature in console.devices.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.devices.enabled is defined %} {{ console.devices.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.devices.scopes is defined %}
+                    {% for operation, scopes in console.devices.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -2778,9 +2841,21 @@
             {% if console.flows is defined %}
             "flows": {
                 "disabledFeatures": [
+                    {% set ns = namespace(has_items=false) %}
+                    {% if flow_execution.conditional_branching.enable is defined and flow_execution.conditional_branching.enable == false %}
+                    "flows.conditionalBranching"
+                    {% set ns.has_items = true %}
+                    {% endif %}
+                    {% if flow_execution.variables.enable is defined and flow_execution.variables.enable == false %}
+                    {% if ns.has_items %},{% endif %}
+                    "flows.variables"
+                    {% set ns.has_items = true %}
+                    {% endif %}
                     {% if console.flows.disabled_features is defined %}
                     {% for feature in console.flows.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% if ns.has_items %},{% endif %}
+                    "{{ feature }}"
+                    {% set ns.has_items = true %}
                     {% endfor %}
                     {% endif %}
                 ],
@@ -3247,7 +3322,18 @@
             {% endif %}
         },
         "flowExecution": {
-            "enableLegacyFlows": {{ flow_execution.enable_legacy_flows }}
+            "conditionalBranching": {
+                "maxDecisionNodes": {% if flow_execution.conditional_branching.max_rule_evaluation_nodes is defined %}{{ flow_execution.conditional_branching.max_rule_evaluation_nodes }}{% else %}20{% endif %},
+                "maxExpressionsCombinedWithAnd": {% if flow_execution.conditional_branching.max_expressions_combined_with_and is defined %}{{ flow_execution.conditional_branching.max_expressions_combined_with_and }}{% else %}5{% endif %},
+                "maxRulesCombinedWithOr": {% if flow_execution.conditional_branching.max_rules_combined_with_or is defined %}{{ flow_execution.conditional_branching.max_rules_combined_with_or }}{% else %}10{% endif %}
+            },
+            "enableLegacyFlows": {{ flow_execution.enable_legacy_flows }},
+            "variables": {
+                "maxArraySize": {% if flow_execution.variables.max_array_size is defined %}{{ flow_execution.variables.max_array_size }}{% else %}20{% endif %},
+                "maxHeaders": {% if flow_execution.variables.max_headers is defined %}{{ flow_execution.variables.max_headers }}{% else %}10{% endif %},
+                "maxRuntimeValues": {% if flow_execution.variables.max_runtime_values is defined %}{{ flow_execution.variables.max_runtime_values }}{% else %}20{% endif %},
+                "maxValueLength": {% if flow_execution.variables.max_value_length is defined %}{{ flow_execution.variables.max_value_length }}{% else %}255{% endif %}
+            }
         },
         "enableLegacySessionBoundTokenBehaviour": {{ oauth.enable_legacy_session_bound_token_behaviour }}
     }

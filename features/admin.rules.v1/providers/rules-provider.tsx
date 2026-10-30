@@ -17,10 +17,16 @@
  */
 
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { MutableRefObject, ReactNode, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import RulesContext, { HiddenConfigurationInterface } from "../contexts/rules-context";
-import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
+import RulesContext, { HiddenConfigurationInterface, RuleLimitsInterface } from "../contexts/rules-context";
+import {
+    ConditionExpressionMetaInterface,
+    ConditionExpressionsMetaDataInterface,
+    OperatorInterface,
+    OperatorValueInputType,
+    RuleExecutionMetaDataInterface
+} from "../models/meta";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionInterface,
@@ -34,6 +40,7 @@ import {
 } from "../models/rules";
 import addIds from "../utils/add-ids";
 import cleanInstance from "../utils/clean-instance";
+import { getValueInput } from "../utils/operators";
 
 interface RuleContextRefInterface extends RuleExecuteCollectionInterface {
     isMultipleRules: boolean;
@@ -49,25 +56,141 @@ const RuleContextRef: { ruleInstance: RuleContextRefInterface | undefined } = {
  *
  * @returns RuleInstanceData
  */
-export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface => {
-    if (!RuleContextRef.ruleInstance) {
+const toRuleValue = (
+    ruleInstance: RuleContextRefInterface
+): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface => {
+    if (!ruleInstance) {
         return null;
     }
 
-    // Check if the ruleInstance has multiple rules
-    if (RuleContextRef.ruleInstance.isMultipleRules) {
+    // Check if the ruleInstance has multiple rules. An editor opened without initial data has none until they are
+    // seeded, and is reported as having no value until then.
+    if (ruleInstance.isMultipleRules) {
+        if (!Array.isArray(ruleInstance.rules)) {
+            return null;
+        }
+
         // Return RuleExecuteCollectionWithoutIdInterface if there are multiple rules
-        return cleanInstance(
-            Object.freeze(RuleContextRef.ruleInstance) as RuleExecuteCollectionInterface, true
-        );
+        return cleanInstance(Object.freeze(ruleInstance) as RuleExecuteCollectionInterface, true);
     }
 
-    if (RuleContextRef.ruleInstance?.rules?.length > 0) {
+    if (ruleInstance?.rules?.length > 0) {
         // Return RuleWithoutIdInterface when there is only a single rule
-        return cleanInstance(Object.freeze(RuleContextRef.ruleInstance)?.rules[0]) as RuleInterface;
+        return cleanInstance(Object.freeze(ruleInstance)?.rules[0]) as RuleInterface;
     }
 
     return null;
+};
+
+/**
+ * Method to get the context value
+ *
+ * @returns RuleInstanceData
+ */
+export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface =>
+    toRuleValue(RuleContextRef.ruleInstance);
+
+/**
+ * Applies one edit to an expression.
+ *
+ * @param expression   - The expression being edited.
+ * @param fieldName    - The part of it that changed.
+ * @param changedValue - The new value of that part.
+ * @param operators    - Operators the expression's field publishes, which say what each one takes.
+ * @returns The edited expression.
+ */
+const applyExpressionChange = (
+    expression: ConditionExpressionInterface,
+    fieldName: ExpressionFieldTypes,
+    changedValue: string | string[],
+    operators?: OperatorInterface[]
+): ConditionExpressionInterface => {
+    const { value: _value, values: _values, ...withoutValue } = expression;
+    const { valueField: _valueField, valueFieldQualifier: _valueFieldQualifier, ...withoutAnyValue } = withoutValue;
+    const readsField: boolean = expression.valueField !== undefined;
+    const valueInput: OperatorValueInputType = getValueInput(expression.operator, operators);
+
+    const withEnteredValue = (base: ConditionExpressionInterface): ConditionExpressionInterface => {
+        const baseInput: OperatorValueInputType = getValueInput(base.operator, operators);
+
+        if (baseInput === "none") {
+            return base;
+        }
+
+        return baseInput === "list" ? { ...base, values: [] } : { ...base, value: "" };
+    };
+
+    if (fieldName === ExpressionFieldTypes.Qualifier && !changedValue) {
+        // Clearing a qualifier removes it: a field that takes no qualifier -- every action field -- must not be
+        // sent one, not even an empty one, and the API rejects it if it is.
+        const { qualifier: _qualifier, ...withoutQualifier } = expression;
+
+        return withoutQualifier;
+    }
+
+    if (fieldName === ExpressionFieldTypes.Operator) {
+        const nextInput: OperatorValueInputType = getValueInput(changedValue as string, operators);
+
+        if (nextInput === "none") {
+            // An operator that checks the field alone takes no value, whether entered or read.
+            return { ...withoutAnyValue, operator: changedValue as string };
+        }
+        if (readsField) {
+            return { ...expression, operator: changedValue as string };
+        }
+
+        return nextInput === "list"
+            ? { ...withoutAnyValue, operator: changedValue as string, values: expression.values ?? [] }
+            : { ...withoutAnyValue, operator: changedValue as string, value: expression.value ?? "" };
+    }
+
+    if (valueInput === "none") {
+        if (fieldName === ExpressionFieldTypes.Field) {
+            return { ...withoutAnyValue, field: changedValue as string };
+        }
+        if ([ ExpressionFieldTypes.Value, ExpressionFieldTypes.Values, ExpressionFieldTypes.ValueSource,
+            ExpressionFieldTypes.ValueField, ExpressionFieldTypes.ValueFieldQualifier ].includes(fieldName)) {
+            // A condition that checks the field alone has no value to set.
+            return expression;
+        }
+    }
+
+    if (fieldName === ExpressionFieldTypes.ValueSource) {
+        return changedValue === "field"
+            ? { ...withoutAnyValue, valueField: expression.valueField ?? "", valueFieldQualifier: "" }
+            : withEnteredValue(withoutAnyValue);
+    }
+
+    if (fieldName === ExpressionFieldTypes.ValueField) {
+        // A qualifier picks a value within the field it was chosen for, so a new field starts without one.
+        return { ...withoutAnyValue, valueField: changedValue as string, valueFieldQualifier: "" };
+    }
+
+    if (fieldName === ExpressionFieldTypes.ValueFieldQualifier) {
+        return { ...expression, valueFieldQualifier: changedValue as string };
+    }
+
+    if (fieldName === ExpressionFieldTypes.Field && readsField) {
+        return withEnteredValue({ ...withoutAnyValue, field: changedValue as string });
+    }
+
+    if (valueInput === "list") {
+        if (fieldName === ExpressionFieldTypes.Field) {
+            // A new field starts from an empty set, as it would from an empty value.
+            return { ...withoutValue, field: changedValue as string, values: [] };
+        }
+        if (fieldName === ExpressionFieldTypes.Value) {
+            // A single value has no place on a set comparison; it is what a field change resets.
+            return expression;
+        }
+    }
+
+    if (readsField && fieldName === ExpressionFieldTypes.Value) {
+        // An entered value has no place on a comparison with another field.
+        return expression;
+    }
+
+    return { ...expression, [fieldName]: changedValue };
 };
 
 /**
@@ -78,6 +201,7 @@ export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface 
  * @param initialData - RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface
  * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
  * @param hidden - HiddenConfigurationInterface
+ * @param limits - RuleLimitsInterface
  * @returns RulesProvider
  */
 export const RulesProvider = ({
@@ -86,14 +210,18 @@ export const RulesProvider = ({
     isMultipleRules = false,
     conditionExpressionsMetaData,
     ruleExecutionMetaData,
-    hidden = { conditions: [], resources: [], values: [] }
+    onChange,
+    hidden = { conditions: [], resources: [], values: [] },
+    limits = {}
 }: {
     children: ReactNode;
     isMultipleRules?: boolean;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
     initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
     ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
+    onChange?: (rule: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface) => void;
     hidden?: HiddenConfigurationInterface;
+    limits?: RuleLimitsInterface;
 }) => {
     let RuleExecutionData: any = addIds(initialData);
 
@@ -119,6 +247,33 @@ export const RulesProvider = ({
         ...ruleComponentInstance,
         isMultipleRules
     };
+
+    // Held in a ref so that a caller passing a fresh closure on every render does not restart the
+    // effect below, which would report a change on every render rather than on every edit.
+    const onChangeRef: MutableRefObject<typeof onChange> = useRef(onChange);
+
+    onChangeRef.current = onChange;
+
+    // What was last reported, so that mounting an editor -- or re-rendering it with the same rule --
+    // is not mistaken for an edit.
+    const lastReportedRef: MutableRefObject<string> = useRef<string>(null);
+
+    useEffect(() => {
+        const value: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface =
+            toRuleValue({ ...ruleComponentInstance, isMultipleRules });
+        const serialized: string = JSON.stringify(value);
+
+        if (lastReportedRef.current === null) {
+            lastReportedRef.current = serialized;
+
+            return;
+        }
+
+        if (serialized !== lastReportedRef.current) {
+            lastReportedRef.current = serialized;
+            onChangeRef.current?.(value);
+        }
+    }, [ ruleComponentInstance ]);
 
     useEffect(() => {
         // If the initial data is not provided, add a new rule execution.
@@ -158,13 +313,28 @@ export const RulesProvider = ({
      * @returns Rule Expression
      */
     const getNewConditionExpressionInstance = (): ConditionExpressionInterface => {
+        const operators: OperatorInterface[] = conditionExpressionsMetaData?.[0]?.operators;
+        const operator: string = operators?.[0]?.name;
+        const valueInput: OperatorValueInputType = getValueInput(operator, operators);
+
         return {
             field: conditionExpressionsMetaData?.[0]?.field?.name,
             id: uuidv4(),
-            operator: conditionExpressionsMetaData?.[0]?.operators?.[0]?.name,
-            value: ""
+            operator,
+            ...(valueInput === "single" && { value: "" }),
+            ...(valueInput === "list" && { values: [] })
         };
     };
+
+    /**
+     * The operators a field publishes, which say what value each of them takes.
+     *
+     * @param fieldName - Name of the field.
+     * @returns The field's operators, or undefined when the metadata has none for it.
+     */
+    const operatorsOf = (fieldName: string): OperatorInterface[] | undefined =>
+        conditionExpressionsMetaData?.find(
+            (meta: ConditionExpressionMetaInterface) => meta?.field?.name === fieldName)?.operators;
 
     /**
      * Method to get a new rule.
@@ -289,7 +459,7 @@ export const RulesProvider = ({
      * @param fieldName - ExpressionFieldTypes
      */
     const handleConditionExpressionValueChange = (
-        changedValue: string,
+        changedValue: string | string[],
         ruleId: string,
         conditionId: string,
         expressionId: string,
@@ -314,10 +484,9 @@ export const RulesProvider = ({
                                         expressions: condition.expressions.map(
                                             (expression: ConditionExpressionInterface) => {
                                                 if (expression.id === expressionId) {
-                                                    return {
-                                                        ...expression,
-                                                        [fieldName]: changedValue
-                                                    };
+                                                    return applyExpressionChange(
+                                                        expression, fieldName, changedValue,
+                                                        operatorsOf(expression.field));
                                                 }
 
                                                 return expression;
@@ -451,6 +620,7 @@ export const RulesProvider = ({
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
                 hidden: hidden,
                 isMultipleRules: isMultipleRules,
+                limits: limits,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,
                 ruleExecuteCollection: ruleComponentInstance,

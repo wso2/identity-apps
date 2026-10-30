@@ -394,7 +394,8 @@ export const stopSharingApplication = (
  */
 export const getSharedOrganizations = (
     currentOrganizationId: string,
-    applicationId: string
+    applicationId: string,
+    params?: Record<string, string | number | boolean>
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -403,6 +404,7 @@ export const getSharedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params,
         url: `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 

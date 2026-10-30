@@ -29,11 +29,11 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
-import { AlertLevels, Claim } from "@wso2is/core/models";
+import { AlertLevels, Claim, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { EdgeTypes, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import dayjs from "dayjs";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
@@ -55,14 +55,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ValidationProvider from "./validation-provider";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
+import useGetRuleMetadata from "../api/use-get-rule-metadata";
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { ValidationConfig } from "../context/validation-context";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
+import { RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
+import { VariableLimitsInterface } from "../models/variables";
+import {
+    isConditionalBranchingAvailable,
+    isConditionalBranchingConfigured,
+    resolveRuleLimits
+} from "../utils/conditional-branching";
+import { isVariablesEnabled as isVariablesConfigured, resolveVariableLimits } from "../utils/variables";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -118,6 +127,8 @@ const FlowContextWrapper = ({
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
     const [ isVersionHistoryPanelOpen, setIsVersionHistoryPanelOpen ] = useState<boolean>(false);
     const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
+    const [ isResourcePropertiesPanelFooterHidden, setIsResourcePropertiesPanelFooterHidden ] =
+        useState<boolean>(false);
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
     const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
@@ -145,6 +156,35 @@ const FlowContextWrapper = ({
         flowType,
         !!flowType
     );
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    // Read as soon as the flow is opened, so whether decision steps can be added is known before one is offered.
+    const { data: ruleMetadata, error: ruleMetadataError } = useGetRuleMetadata<RuleMetadataInterface, AxiosError>(
+        flowType,
+        !!flowType && isConditionalBranchingConfigured(flowsFeatureConfig)
+    );
+    const isConditionalBranchingEnabled: boolean = isConditionalBranchingAvailable(
+        flowsFeatureConfig,
+        ruleMetadata,
+        ruleMetadataError
+    );
+    const configuredRuleLimits: Partial<RuleLimitsInterface> = useSelector(
+        (state: AppState) => state.config.ui.flowExecution?.conditionalBranching
+    );
+    const ruleLimits: RuleLimitsInterface = useMemo(
+        () => resolveRuleLimits(configuredRuleLimits),
+        [ configuredRuleLimits ]
+    );
+    const isVariablesEnabled: boolean = isVariablesConfigured(flowsFeatureConfig);
+    const configuredVariableLimits: Partial<VariableLimitsInterface> = useSelector(
+        (state: AppState) => state.config.ui.flowExecution?.variables
+    );
+    const variableLimits: VariableLimitsInterface = useMemo(
+        () => resolveVariableLimits(configuredVariableLimits),
+        [ configuredVariableLimits ]
+    );
+
     const {
         data: textPreference,
         error: textPreferenceFetchError,
@@ -585,11 +625,13 @@ const FlowContextWrapper = ({
                 isAutoSaveLocalHistoryEnabled,
                 isAutoSavingLocalHistory,
                 isBrandingEnabled,
+                isConditionalBranchingEnabled,
                 isCustomI18nKey,
                 isFlowMetadataLoading,
                 isI18nSubmitting,
                 isResourcePanelOpen,
                 isResourcePropertiesPanelOpen,
+                isVariablesEnabled,
                 isVersionHistoryPanelOpen,
                 language,
                 lastInteractedResource: lastInteractedElementInternal,
@@ -601,8 +643,14 @@ const FlowContextWrapper = ({
                 primaryI18nScreen,
                 refetchFlow,
                 resourcePropertiesPanelHeading,
+                isResourcePropertiesPanelFooterHidden,
+                setIsResourcePropertiesPanelFooterHidden,
+                ruleMetadataError,
                 restoreFromHistory,
+                ruleLimits,
+                ruleMetadata,
                 selectedAttributes,
+                variableLimits,
                 setFlowCompletionConfigs,
                 setFlowEdgeTypes,
                 setFlowNodeTypes,

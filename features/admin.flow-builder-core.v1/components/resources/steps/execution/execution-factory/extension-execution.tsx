@@ -32,13 +32,19 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of ExtensionExecution.
  */
-type ExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface & IdentifiableComponentInterface;
+interface ExtensionExecutionPropsInterface extends ExecutionMinimalPropsInterface, IdentifiableComponentInterface {
+    /**
+     * Additional class name of the execution, used to style the icon.
+     */
+    className?: string;
+}
 
 /**
  * Canvas node for an executor contributed by an extension deployed on the server.
  */
 const ExtensionExecution = ({
     resource,
+    className,
     "data-componentid": componentId = "extension-execution"
 }: ExtensionExecutionPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -102,13 +108,13 @@ const ExtensionExecution = ({
             display="flex"
             gap={ 1 }
             data-componentid={ componentId }
-            className="flow-builder-execution extension-execution"
+            className={ `flow-builder-execution extension-execution${ className ? ` ${ className }` : "" }` }
         >
             <img
                 src={ iconSrc }
                 alt={ displayName }
                 height="20"
-                style={ { filter: isDefaultIcon ? "invert(1)" : "none", objectFit: "contain" } }
+                style={ { filter: isDefaultIcon ? "invert(1)" : undefined, objectFit: "contain" } }
                 onError={ () => setHasIconFailed(true) }
             />
             <Typography variant="body1">{ displayName }</Typography>

@@ -35,6 +35,8 @@ import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1"
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
+import { getDevicePoliciesResourceEndpoints } from "@wso2is/admin.device-policies.v1/configs/endpoints";
+import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
@@ -329,6 +331,7 @@ export class Config {
                 I18nConstants.WEBHOOKS_NAMESPACE,
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
                 I18nConstants.AGENTS_NAMESPACE,
+                I18nConstants.DEVICES_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.PRESENTATION_DEFINITIONS_NAMESPACE,
@@ -412,6 +415,8 @@ export class Config {
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
+            ...getDevicePoliciesResourceEndpoints(this.resolveServerHost()),
+            ...getDevicesResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getFlowExtensionResourceEndpoints(this.resolveServerHost()),
             ...getPresentationDefinitionEndpoints(this.resolveServerHost()),
@@ -498,6 +503,7 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.enabledFeatureOverridesInConsoleRolePermissions,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             flowExecution: {
+                conditionalBranching: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.conditionalBranching,
                 enableLegacyFlows:
                     window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows ?? true,
                 enableLegacyInvitedUserRegistrationFlow:
@@ -511,7 +517,8 @@ export class Config {
                 enableLegacySelfRegistrationFlow:
                     window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacySelfRegistrationFlow
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows
-                    ?? true
+                    ?? true,
+                variables: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.variables
             },
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,

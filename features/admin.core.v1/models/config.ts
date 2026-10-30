@@ -34,6 +34,8 @@ import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/mode
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
+import { DevicePoliciesResourceEndpointsInterface } from "@wso2is/admin.device-policies.v1/models/endpoints";
+import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
@@ -100,6 +102,14 @@ export interface FeatureConfigInterface {
      * Agent management feature.
      */
     agents?: FeatureAccessConfigInterface;
+    /**
+     * Device assurance policies feature.
+     */
+    devicePolicies?: FeatureAccessConfigInterface;
+    /**
+     * Device management feature.
+     */
+    devices?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -831,6 +841,44 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         enableLegacySelfRegistrationFlow?: boolean;
         enableLegacyInvitedUserRegistrationFlow?: boolean;
         enableLegacyPasswordRecoveryFlow?: boolean;
+        /**
+         * Limits of decision steps. They match the server's own configuration, which validates them on save.
+         */
+        conditionalBranching?: {
+            /**
+             * Maximum number of decision steps in a flow.
+             */
+            maxDecisionNodes?: number;
+            /**
+             * Maximum number of condition groups, combined with OR, in a branch's rule.
+             */
+            maxRulesCombinedWithOr?: number;
+            /**
+             * Maximum number of conditions, combined with AND, in a condition group.
+             */
+            maxExpressionsCombinedWithAnd?: number;
+        };
+        /**
+         * Limits of flow variables. They match the server's own configuration, which validates them on save.
+         */
+        variables?: {
+            /**
+             * Maximum number of headers a flow may define.
+             */
+            maxHeaders?: number;
+            /**
+             * Maximum number of runtime values a flow may define.
+             */
+            maxRuntimeValues?: number;
+            /**
+             * Maximum length of a value, or of an entry of an array value.
+             */
+            maxValueLength?: number;
+            /**
+             * Maximum number of entries in an array value.
+             */
+            maxArraySize?: number;
+        };
     };
     /**
      * Enable legacy session bound token behaviour.
@@ -943,6 +991,8 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     RolesResourceEndpointsInterface,
     ApplicationsResourceEndpointsInterface,
     ConnectionResourceEndpointsInterface,
+    DevicePoliciesResourceEndpointsInterface,
+    DevicesResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,

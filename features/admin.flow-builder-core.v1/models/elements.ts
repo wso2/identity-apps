@@ -17,14 +17,41 @@
  */
 
 import { Base } from "./base";
+import { BranchRuleInterface } from "./rule-expression";
 
 export interface Executor {
     name?: string;
     [ key: string ]: any;
 }
 
+/**
+ * One outgoing branch of a rule decision step.
+ */
+export interface Branch {
+    /**
+     * Identifier for this branch, stable across saves. Doubles as the node's source handle id.
+     */
+    id: string;
+    /**
+     * Label shown on the canvas and cited in server validation messages.
+     */
+    name: string;
+    /**
+     * ID of the step taken when this branch is selected.
+     */
+    next?: string;
+    /**
+     * The rule under which this branch is taken, in the flow API's shape. Absent on the default branch.
+     */
+    rule?: BranchRuleInterface;
+}
+
 export interface Action {
     executor?: Executor;
+    /**
+     * Outgoing branches of a rule decision step, in evaluation order.
+     */
+    branches?: Branch[];
     [ key: string ]: any;
 }
 
@@ -71,7 +98,8 @@ export enum InputVariants {
     Telephone = "TELEPHONE",
     Checkbox = "CHECKBOX",
     OTP = "OTP",
-    Choice = "CHOICE"
+    Choice = "CHOICE",
+    OrgHandler = "ORG_HANDLE"
 }
 
 export enum ButtonVariants {

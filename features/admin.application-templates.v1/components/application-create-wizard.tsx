@@ -17,6 +17,7 @@
  */
 
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
+import useGetOAuth2InboundConfig from "@wso2is/admin.applications.v1/api/use-get-oauth2-inbound-config";
 import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
@@ -46,6 +47,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ModalProps } from "semantic-ui-react";
+import { McpKnownClientWizard } from "./mcp-known-client-wizard";
 import { ApplicationTemplateConstants } from "../constants/templates";
 import useApplicationTemplate from "../hooks/use-application-template";
 import useApplicationTemplateMetadata from "../hooks/use-application-template-metadata";
@@ -85,6 +87,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         isTemplateMetadataRequestLoading: isTemplateMetadataFetchRequestLoading
     } = useApplicationTemplateMetadata();
     const isApplicationSharable: boolean = useApplicationSharingEligibility();
+    const isMcpClientTemplate: boolean = templateData?.id === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION;
+    const {
+        data: oauth2InboundConfig,
+        isLoading: isOAuth2InboundConfigRequestLoading
+    } = useGetOAuth2InboundConfig(isMcpClientTemplate);
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -92,6 +99,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [ showApplicationShareModal, setShowApplicationShareModal ] = useState<boolean>(false);
     const [ lastCreatedApplicationId, setLastCreatedApplicationId ] = useState<string>(null);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+    const [ isMcpClientConfiguredManually, setIsMcpClientConfiguredManually ] = useState<boolean>(false);
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isClientSecretHashEnabled);
@@ -203,7 +211,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             (values.inboundProtocolConfiguration as InboundProtocolsInterface).oidc.allowedOrigins = allowedOrigins;
         }
 
-        createApplication(values as unknown as MainApplicationInterface)
+        submitApplication(values as unknown as MainApplicationInterface, isApplicationSharingEnabled, callback);
+    };
+
+    /**
+     * Creates the application and moves to its edit page, or to the sharing modal when sharing is enabled.
+     *
+     * @param application - Application create request body.
+     * @param isApplicationSharingEnabled - Whether to share the application after it is created.
+     * @param callback - Callback function to execute after the request is complete.
+     */
+    const submitApplication = (
+        application: MainApplicationInterface,
+        isApplicationSharingEnabled: boolean,
+        callback: (errorMsg: string, errorDescription: string) => void
+    ): void => {
+        createApplication(application)
             .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
                     eventPublisher.publish("application-register-new-application", {
@@ -282,6 +305,26 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         );
     }
 
+    // The client chooser registers clients from their metadata documents, so it is offered only when the
+    // organization has turned on CIMD. Otherwise, or if the setting cannot be read, the template's form opens.
+    if (isMcpClientTemplate && oauth2InboundConfig?.enableClientIdMetadataDocument === true
+        && !isMcpClientConfiguredManually) {
+        return (
+            <McpKnownClientWizard
+                templateName={ templateData?.name }
+                templateDescription={ templateData?.description }
+                templatePayload={ formInitialValues as unknown as MainApplicationInterface }
+                onConfigureManually={ () => setIsMcpClientConfiguredManually(true) }
+                onSubmit={ (
+                    payload: MainApplicationInterface,
+                    callback: (errorMsg: string, errorDescription: string) => void
+                ) => submitApplication(payload, false, callback) }
+                onClose={ onClose }
+                data-componentid={ `${ componentId }-mcp-known-client` }
+            />
+        );
+    }
+
     if (showApplicationShareModal) {
         return (
             <ApplicationShareModal
@@ -313,7 +356,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
             buttonText={ t("common:create") }
             onFormSubmit={ handleFormSubmission }
-            isLoading={ isTemplateDataFetchRequestLoading || isTemplateMetadataFetchRequestLoading }
+            isLoading={ isTemplateDataFetchRequestLoading || isTemplateMetadataFetchRequestLoading
+                || (isMcpClientTemplate && isOAuth2InboundConfigRequestLoading) }
             data-componentid={ componentId }
         />
     );

@@ -1,5 +1,31 @@
 # @wso2is/admin.connections.v1
 
+## 2.43.5
+
+### Patch Changes
+
+- [#10811](https://github.com/wso2/identity-apps/pull/10811) [`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Hide the groups, outbound provisioning, Just-in-Time provisioning and advanced tabs for Incode identity verification
+  connections
+- Updated dependencies [[`d507890c640533f892f92547556c52b2dd3c936e`](https://github.com/wso2/identity-apps/commit/d507890c640533f892f92547556c52b2dd3c936e)]:
+  - @wso2is/admin.extensions.v1@2.44.3
+
+## 2.43.4
+
+### Patch Changes
+
+- Updated dependencies [[`15dfc4d39d846c90072e69d8759eeac0f216e5d4`](https://github.com/wso2/identity-apps/commit/15dfc4d39d846c90072e69d8759eeac0f216e5d4)]:
+  - @wso2is/admin.flow-extensions.v1@0.2.0
+  - @wso2is/i18n@2.49.0
+  - @wso2is/admin.core.v1@2.61.1
+
+## 2.43.3
+
+### Patch Changes
+
+- [#10765](https://github.com/wso2/identity-apps/pull/10765) [`a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3`](https://github.com/wso2/identity-apps/commit/a315ed636e51a1614c6a5f2f6d491c5c2a0e35f3) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Resolve the registration and recovery redirect URIs in the connection create wizard help panel using the
+  accounts portal hostname configured under `[accounts]` in the deployment.toml, falling back to the custom
+  server host when it is not configured
+
 ## 2.43.2
 
 ### Patch Changes

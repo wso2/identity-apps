@@ -20,10 +20,12 @@ import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-pr
 import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { EdgeTypes, NodeTypes } from "@xyflow/react";
+import { AxiosError } from "axios";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
-import { MetadataInterface } from "../models/metadata";
+import { MetadataInterface, RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
+import { VariableLimitsInterface } from "../models/variables";
 import { Resource } from "../models/resources";
 
 /**
@@ -46,6 +48,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * The heading for the element properties panel.
      */
     resourcePropertiesPanelHeading: ReactNode;
+    /**
+     * Whether the properties panel should hide its own footer actions.
+     */
+    isResourcePropertiesPanelFooterHidden: boolean;
     /**
      * The primary i18n screen for the flow.
      */
@@ -93,6 +99,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     setResourcePropertiesPanelHeading: Dispatch<SetStateAction<ReactNode>>;
     /**
+     * Hides or shows the footer of the element properties panel.
+     */
+    setIsResourcePropertiesPanelFooterHidden: Dispatch<SetStateAction<boolean>>;
+    /**
      * Function to set the state of the element panel.
      *
      * @param isOpen - Boolean indicating whether the element panel should be open.
@@ -116,6 +126,30 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Metadata for the current flow builder.
      */
     metadata?: MetadataInterface;
+    /**
+     * Fields and limits for the conditions of decision steps in the current flow.
+     */
+    ruleMetadata?: RuleMetadataInterface;
+    /**
+     * Limits on decision steps and their conditions, from the console's deployment configuration.
+     */
+    ruleLimits?: RuleLimitsInterface;
+    /**
+     * Error of the rule metadata request, if it failed.
+     */
+    ruleMetadataError?: AxiosError;
+    /**
+     * Whether decision steps can be added, as the console and the server both allow conditional branching.
+     */
+    isConditionalBranchingEnabled?: boolean;
+    /**
+     * Whether flows may define variables, as the console allows them.
+     */
+    isVariablesEnabled?: boolean;
+    /**
+     * Limits on flow variables, from the console's deployment configuration.
+     */
+    variableLimits?: VariableLimitsInterface;
     /**
      * Configured i18n text from the branding or default fallback.
      */
@@ -258,10 +292,12 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         isAutoSaveLocalHistoryEnabled: true,
         isAutoSavingLocalHistory: false,
         isBrandingEnabled: false,
+        isConditionalBranchingEnabled: true,
         isCustomI18nKey: () => false,
         isFlowMetadataLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        isVariablesEnabled: true,
         isVersionHistoryPanelOpen: false,
         language: "",
         lastInteractedResource: null,
@@ -273,7 +309,10 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         primaryI18nScreen: PreviewScreenType.COMMON,
         refetchFlow: false,
         resourcePropertiesPanelHeading: null,
+        isResourcePropertiesPanelFooterHidden: false,
         restoreFromHistory: () => Promise.resolve(false),
+        ruleLimits: null,
+        ruleMetadata: null,
         selectedAttributes: {},
         setFlowCompletionConfigs: () => {},
         setFlowEdgeTypes: () => {},
@@ -287,6 +326,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLocalHistoryAutoSaveEnabled: () => {},
         setRefetchFlow: () => {},
         setResourcePropertiesPanelHeading: () => {},
+        setIsResourcePropertiesPanelFooterHidden: () => {},
         setSelectedAttributes: () => {},
         supportedLocales: {},
         triggerLocalHistoryAutoSave: () => Promise.resolve(false)

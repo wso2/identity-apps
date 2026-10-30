@@ -92,6 +92,10 @@ CreateConnectionWizardHelpPropsInterface> = (
 
     const { deploymentConfig } = useDeploymentConfig();
 
+    // Resolved from `[accounts]` in deployment.toml when the accounts portal is served on a separate host.
+    const accountsPortalURL: string = (deploymentConfig?.extensions?.accountsPortalURL as string)
+        || deploymentConfig.customServerHost + "/accounts";
+
     const overrideFieldValue = (value: string): string => {
         switch (value) {
             case "domain_name":
@@ -101,9 +105,9 @@ CreateConnectionWizardHelpPropsInterface> = (
             case "redirect_uri":
                 return value.replace(value, deploymentConfig.customServerHost + "/commonauth");
             case "registration_redirect_uri":
-                return value.replace(value, deploymentConfig.customServerHost + "/accounts/register");
+                return value.replace(value, accountsPortalURL + "/register");
             case "recovery_redirect_uri":
-                return value.replace(value, deploymentConfig.customServerHost + "/accounts/recovery");
+                return value.replace(value, accountsPortalURL + "/recovery");
             default:
                 return value;
         }
