@@ -7,6 +7,7 @@
         "features/admin.server-configurations.v1/dynamic-connector.tsx",
         "features/admin.applications.v1/components/application-danger-zone.tsx",
         "features/admin.extensions.v1/configs/components/application-general-tab-overide.tsx",
+        "features/admin.subscription.v1/hooks/use-trial-expiry-wizard.ts",
         "features/admin.connections.v1/resources/guides/**"
     ],
     "ignoreIssues": {
@@ -15,6 +16,7 @@
         "features/admin.applications.v1/models/application-inbound.ts": ["enumMembers"],
         "features/admin.extensions.v1/configs/models/application.ts": ["enumMembers"],
         "features/admin.flow-builder-core.v1/components/resource-property-panel/choice-options-property-field.tsx": ["types"],
+        "features/admin.subscription.v1/models/trial-expiry.ts": ["types"],
         "modules/core/src/models/http.ts": ["enumMembers"],
         "modules/forms/src/components/adapters/file-picker-adapter.tsx": ["enumMembers"],
         "features/admin.users.v1/components/guests/models/invite.ts": ["enumMembers"],
@@ -108,7 +110,9 @@
                 "**/*.{ts,tsx}"
             ],
             "ignoreDependencies": [
-                "@wso2is/admin.feature-gate.v1"
+                "@wso2is/admin.feature-gate.v1",
+                "@wso2is/admin.subscription.v1",
+                "@oxygen-ui/react-icons"
             ]
         },
         "features/admin.email-and-sms.v1": {

@@ -431,7 +431,7 @@ export const updateFederatedAuthenticators = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators/"
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators"
     };
 
     return httpClient(requestConfig)

@@ -16,14 +16,21 @@
  * under the License.
  */
 
+import { Theme, alpha, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import Divider from "@oxygen-ui/react/Divider";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel, { FormControlLabelProps } from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import FormLabel from "@oxygen-ui/react/FormLabel";
 import Link from "@oxygen-ui/react/Link";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { BuildingAltIcon, UserIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -33,19 +40,44 @@ import { CommonResourcePropertiesPropsInterface } from
     "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { Action } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
+import { StepData } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Node, useNodesData, useReactFlow } from "@xyflow/react";
 import isEmpty from "lodash-es/isEmpty";
+import omit from "lodash-es/omit";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import RegistrationFlowExecutorConstants from "../../../../constants/registration-flow-executor-constants";
+import { parseOrganizationRoleIds } from "../../../../utils/organization-role-utils";
+import OrganizationRoleProperties from "./organization-role-properties";
 
 /**
  * Props interface of {@link FlowCompletionProperties}
  */
 type FlowCompletionPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
+
+const ProvisionTargetOption: FunctionComponent<FormControlLabelProps> = styled(FormControlLabel)(
+    ({ theme }: { theme: Theme }) => ({
+        "& .MuiRadio-root": {
+            paddingTop: 0
+        },
+        "&:has(input:checked)": {
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            borderColor: theme.palette.primary.main
+        },
+        alignItems: "flex-start",
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: theme.shape.borderRadius,
+        margin: 0,
+        padding: theme.spacing(1)
+    })
+);
 
 /**
  * Flow completion step properties component.
@@ -57,8 +89,75 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
     ["data-componentid"]: componentId = "flow-completion-properties-component"
 }: FlowCompletionPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
-    const { flowCompletionConfigs, setFlowCompletionConfigs, metadata } = useAuthenticationFlowBuilderCore();
+    const { flowCompletionConfigs, setFlowCompletionConfigs, metadata, lastInteractedStepId } =
+        useAuthenticationFlowBuilderCore();
     const { data: registrationFlowConfig } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { updateNodeData } = useReactFlow();
+    const endStep: Pick<Node, "data"> = useNodesData(lastInteractedStepId);
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
+        flowsFeatureConfig,
+        "flows.registration.organizationOnboarding"
+    );
+
+    const executorName: string = (endStep?.data as StepData)?.action?.executor?.name;
+    const provisionTarget: unknown = (endStep?.data as StepData)?.action?.executor?.meta?.[
+        RegistrationFlowExecutorConstants.PROVISION_TARGET_KEY
+    ];
+    const selectedRoleIds: string[] = parseOrganizationRoleIds((endStep?.data as StepData)?.action?.executor?.meta?.[
+        RegistrationFlowExecutorConstants.ROLE_IDS_KEY
+    ]);
+
+    /**
+     * Writes the provision target onto the END step's executor. The key is removed for the current organization, so a
+     * flow that does not target the new organization carries no provision target at all.
+     */
+    const handleProvisionTargetChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        const provisionInNewOrganization: boolean = event.target.value ===
+            RegistrationFlowExecutorConstants.NEW_ORGANIZATION_PROVISION_TARGET;
+
+        updateNodeData(lastInteractedStepId, (node: Node) => {
+            const action: Action = (node?.data as StepData)?.action;
+            const meta: Record<string, unknown> = action?.executor?.meta || {};
+
+            return {
+                action: {
+                    ...action,
+                    executor: {
+                        ...action?.executor,
+                        meta: provisionInNewOrganization
+                            ? {
+                                ...meta,
+                                [RegistrationFlowExecutorConstants.PROVISION_TARGET_KEY]:
+                                    RegistrationFlowExecutorConstants.NEW_ORGANIZATION_PROVISION_TARGET
+                            }
+                            : omit(meta, RegistrationFlowExecutorConstants.PROVISION_TARGET_KEY)
+                    }
+                }
+            };
+        });
+    };
+
+    const handleRoleIdsChange: (_roleIds: string[]) => void = (roleIds: string[]): void => {
+        updateNodeData(lastInteractedStepId, (node: Node) => {
+            const action: Action = (node?.data as StepData)?.action;
+            const meta: Record<string, unknown> = action?.executor?.meta || {};
+
+            return {
+                action: {
+                    ...action,
+                    executor: {
+                        ...action?.executor,
+                        meta: roleIds.length > 0
+                            ? { ...meta, [RegistrationFlowExecutorConstants.ROLE_IDS_KEY]: JSON.stringify(roleIds) }
+                            : omit(meta, RegistrationFlowExecutorConstants.ROLE_IDS_KEY)
+                    }
+                }
+            };
+        });
+    };
 
     const approvalFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.approvalWorkflows
@@ -105,7 +204,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                     ) }
                 </Alert>
             ) }
-            <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
+            <Stack direction="row" gap={ 1 } alignItems="center">
+                <UserIcon />
+                <Typography component="h6" variant="body1">
+                    { t("flows:registrationFlow.steps.end.account") }
+                </Typography>
+            </Stack>
+            <Stack gap={ 2 }>
                 { metadata?.supportedFlowCompletionConfigs?.includes("isEmailVerificationEnabled") && (
                     <Box>
                         <FormControlLabel
@@ -137,7 +242,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             { t("flows:registrationFlow.steps.end.accountVerification.hint") }
                         </FormHelperText>
                         { !metadata?.workflowEnabled && (
-                            <Alert severity="warning">
+                            <Alert severity="warning" sx={ { mt: 2 } }>
                                 { t("flows:registrationFlow.steps.end.accountVerification.warning") }
                             </Alert>
                         ) }
@@ -222,7 +327,82 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         </FormHelperText>
                     </Box>
                 ) }
-            </Box>
+            </Stack>
+            { isOrganizationOnboardingEnabled &&
+                executorName === RegistrationFlowExecutorConstants.PROVISIONING_DISPATCH_EXECUTOR && (
+                <>
+                    <Divider />
+                    <Stack gap={ 1 }>
+                        <Stack direction="row" gap={ 1 } alignItems="center">
+                            <BuildingAltIcon />
+                            <Typography component="h6" variant="body1">
+                                { t("flows:registrationFlow.steps.end.organization.label") }
+                            </Typography>
+                        </Stack>
+                        <FormHelperText>
+                            { t("flows:registrationFlow.steps.end.organization.hint") }
+                        </FormHelperText>
+                    </Stack>
+                    <FormControl data-componentid={ `${componentId}-provision-target` }>
+                        <FormLabel
+                            id={ `${componentId}-provision-target-label` }
+                            sx={ {
+                                "&.Mui-focused": { color: "text.primary" },
+                                color: "text.primary"
+                            } }
+                        >
+                            { t("flows:registrationFlow.steps.end.provisionTarget.label") }
+                        </FormLabel>
+                        <RadioGroup
+                            aria-labelledby={ `${componentId}-provision-target-label` }
+                            value={ provisionTarget ===
+                                RegistrationFlowExecutorConstants.NEW_ORGANIZATION_PROVISION_TARGET
+                                ? RegistrationFlowExecutorConstants.NEW_ORGANIZATION_PROVISION_TARGET : "" }
+                            onChange={ handleProvisionTargetChange }
+                            sx={ { gap: 1, mt: 1 } }
+                        >
+                            <ProvisionTargetOption
+                                value={ RegistrationFlowExecutorConstants.NEW_ORGANIZATION_PROVISION_TARGET }
+                                control={ <Radio /> }
+                                label={ (
+                                    <Stack gap={ 0.5 }>
+                                        <Typography>
+                                            { t("flows:registrationFlow.steps.end.provisionTarget."
+                                                + "newOrganization.label") }
+                                        </Typography>
+                                        <FormHelperText sx={ { m: 0 } }>
+                                            { t("flows:registrationFlow.steps.end.provisionTarget."
+                                                + "newOrganization.hint") }
+                                        </FormHelperText>
+                                    </Stack>
+                                ) }
+                            />
+                            <ProvisionTargetOption
+                                value=""
+                                control={ <Radio /> }
+                                label={ (
+                                    <Stack gap={ 0.5 }>
+                                        <Typography>
+                                            { t("flows:registrationFlow.steps.end.provisionTarget."
+                                                + "currentOrganization.label") }
+                                        </Typography>
+                                        <FormHelperText sx={ { m: 0 } }>
+                                            { t("flows:registrationFlow.steps.end.provisionTarget."
+                                                + "currentOrganization.hint") }
+                                        </FormHelperText>
+                                    </Stack>
+                                ) }
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                    <OrganizationRoleProperties
+                        key={ lastInteractedStepId }
+                        selectedRoleIds={ selectedRoleIds }
+                        onChange={ handleRoleIdsChange }
+                        data-componentid={ `${componentId}-organization-roles` }
+                    />
+                </>
+            ) }
         </Stack>
     );
 };

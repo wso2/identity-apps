@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,11 +23,12 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
 } from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { FapiProfile, useGetFapiConfig } from "@wso2is/admin.fapi-security-policy.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -88,13 +89,10 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
+import { Button, Container, Divider, DropdownProps, Form, Grid, Icon, Label, List, Radio, Table } from "semantic-ui-react";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
-import {
-    ApplicationFeatureDictionaryKeys,
-    ApplicationManagementConstants
-} from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
 import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
@@ -104,6 +102,8 @@ import OIDCWebApplicationTemplate from
 import SinglePageApplicationTemplate from
     "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import useAllowedIssuers from "../../hooks/use-allowed-issuers";
+import useClientSecretManagement from "../../hooks/use-client-secret-management";
+import { useFapiProfileConstraints } from "@wso2is/admin.fapi-security-policy.v1";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -127,7 +127,9 @@ import {
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import { isCimdClientId } from "../../utils/cimd";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
+import ClientSecretsSection from "../client-secrets/client-secrets-section";
 import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 import "./inbound-oidc-form.scss";
 
@@ -246,6 +248,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.config?.ui?.features?.applications?.properties?.maxGracefulRefreshTokenRotationValidityPeriod as number);
     const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.organizations);
+    const isFapiFeatureEnabled: boolean = useSelector(
+        (state: AppState): boolean => state.config.ui.features?.fapi?.enabled ?? false);
     const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
@@ -254,22 +258,38 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
     );
-    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
-        applicationFeatureConfig,
-        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
-    );
     const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
         organizationsFeatureConfig,
         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION")
     );
 
-    const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
-    const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
+    const {
+        isEnforceClientSecretPermissionEnabled,
+        hasClientSecretReadPermission,
+        hasClientSecretCreatePermission,
+        maxSecretCount
+    } = useClientSecretManagement();
 
-    const { isFAPIApplication } = initialValues;
+    const { isFAPIApplication, fapiProfile: initialFapiProfile } = initialValues;
+    const [ selectedFapiProfile, setSelectedFapiProfile ] = useState<FapiProfile | null>(
+        isFAPIApplication ? (initialFapiProfile ?? null) : null
+    );
+    const fapiConstraints = useFapiProfileConstraints(
+        isFapiFeatureEnabled && isFAPIApplication ? selectedFapiProfile : null
+    );
+
+    const {
+        data: fapiConfig,
+        isLoading: isFapiConfigLoading,
+        error: fapiConfigFetchError
+    } = useGetFapiConfig(isFapiFeatureEnabled && isFAPIApplication);
+    const serverSupportedFapiProfiles: FapiProfile[] = fapiConfig?.supportedProfiles ?? [];
+    const isSelectedFapiProfileUnsupported: boolean =
+        isFAPIApplication
+        && selectedFapiProfile !== null
+        && serverSupportedFapiProfiles.length > 0
+        && !serverSupportedFapiProfiles.includes(selectedFapiProfile);
+
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
@@ -369,6 +389,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const notificationChannels: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const cibaSkipUserValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const cibaAllowFederatedUsers: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenExchangeRestrictScopeIssuanceForFederatedTokens: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -377,6 +398,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>(false);
     const [ isReactApplication, setIsReactApplication ] = useState<boolean>(false);
     const [ isNextJSApplication, setIsNextJSApplication ] = useState<boolean>(false);
+
+    // CIMD clients keep the redirect URLs, grants and authentication method from their metadata document.
+    const isCimdClient: boolean = isMcpClientApplication && isCimdClientId(initialValues?.clientId);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
@@ -388,6 +412,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
     const [ showCibaFields, setShowCibaFields ] = useState<boolean>(false);
+    const [ showTokenExchangeFields, setShowTokenExchangeFields ] = useState<boolean>(false);
     const [ isSkipUserValidationEnabled, setIsSkipUserValidationEnabled ] = useState<boolean>(
         initialValues?.cibaAuthenticationRequest?.skipUserValidation ?? false
     );
@@ -503,6 +528,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const PRIVATE_KEY_JWT: string = "private_key_jwt";
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
 
+    // Sync the selected FAPI profile whenever initialValues changes (e.g., after form save/reload).
+    useEffect((): void => {
+        setSelectedFapiProfile(
+            initialValues?.isFAPIApplication
+                ? (initialValues?.fapiProfile ?? null)
+                : null
+        );
+    }, [ initialValues?.isFAPIApplication, initialValues?.fapiProfile ]);
+
+    useEffect(() => {
+        if (!fapiConfigFetchError) {
+            return;
+        }
+        dispatch(addAlert({
+            description: t("applications:notifications.fetchFapiConfig.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.fetchFapiConfig.genericError.message")
+        }));
+    }, [ fapiConfigFetchError ]);
+
     useEffect(() => {
         if (sharedOrganizationsList || orgType === OrganizationType.SUBORGANIZATION) {
             return;
@@ -595,8 +640,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ claims, externalClaims ]);
 
-    useEffect(() => {
-        if (!initialValues.accessToken.accessTokenAttributes) {
+    useEffect((): void => {
+        if (!initialValues?.accessToken?.accessTokenAttributes) {
+            setSelectedAccessTokenAttributes(undefined);
+
             return;
         }
         const selectedAttributes: ExternalClaim[] = initialValues.accessToken.accessTokenAttributes
@@ -605,9 +652,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
         setSelectedAccessTokenAttributes(selectedAttributes);
+    }, [ accessTokenAttributes, JSON.stringify(initialValues?.accessToken?.accessTokenAttributes) ]);
+
+    useEffect((): void => {
         setAccessTokenAttributesEnabled(ApplicationManagementUtils.isAppVersionAllowed(
             application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
-    }, [ accessTokenAttributes, application ]);
+    }, [ application?.applicationVersion ]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -745,6 +795,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         setShowCibaFields(
             selectedGrantTypes?.includes(ApplicationManagementConstants.CIBA_GRANT) ?? false
+        );
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        setShowTokenExchangeFields(
+            selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE) ?? false
         );
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -985,6 +1041,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "jwt":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.type.valueDescriptions.jwt");
+            case "opaque":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.opaque");
             case "dpop":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.bindingType.valueDescriptions.dpop");
@@ -1128,11 +1187,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (metadataProp) {
             metadataProp.options.map((ele: string) => {
                 if ((ele === "Default") && !isBinding) {
+                    const issuerClass: string = config?.ui?.defaultTokenIssuerClass;
+                    let defaultTokenTypeLabel: string = "Default";
+                    let defaultTokenTypeHint: string | undefined = undefined;
+
+                    if (!issuerClass
+                        || issuerClass === ApplicationManagementConstants.DEFAULT_OPAQUE_TOKEN_ISSUER_CLASS) {
+                        defaultTokenTypeLabel = "Opaque";
+                        defaultTokenTypeHint = getMetadataHints("opaque");
+                    }
+
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele)
+                            content: defaultTokenTypeHint
                         },
-                        label: "Opaque",
+                        label: defaultTokenTypeLabel,
                         value: ele
                     });
                 // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with
@@ -1163,6 +1232,35 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             if (b.label === SupportedAccessTokenBindingTypes.NONE) return 1;
 
             return a.label.localeCompare(b.label);
+        });
+    };
+
+    /**
+     * Applies FAPI profile constraints to a list of token binding type radio options.
+     * Options not permitted by the active FAPI profile are marked as disabled
+     * and annotated with a per-option constraint hint shown on hover.
+     *
+     * @param opts - Full list of token binding type radio options.
+     * @returns The list with FAPI-restricted options disabled.
+     */
+    const applyFapiBindingConstraints = (opts: RadioChild[]): RadioChild[] => {
+        if (!isFAPIApplication || !fapiConstraints.allowedBindingTypes) {
+            return opts;
+        }
+
+        return opts.map((opt: RadioChild): RadioChild => {
+            if (fapiConstraints.allowedBindingTypes.includes(opt.value)) {
+                return opt;
+            }
+
+            return {
+                ...opt,
+                disabled: true,
+                hint: {
+                    content: t("fapiSecurityPolicy:constraints.tokenBindingType.hint"),
+                    header: ""
+                }
+            };
         });
     };
 
@@ -1415,6 +1513,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
                 if (hideRefreshTokenGrantType && grant.value === "refresh_token") {
                     grant.disabled = true;
+                }
+
+                // Disable grant types that are not permitted by the active FAPI profile.
+                if (fapiConstraints.disabledGrantTypes.includes(name)) {
+                    grant.disabled = true;
+                    grant.hint = {
+                        content: t("fapiSecurityPolicy:constraints.grantTypes.hint"),
+                        header: ""
+                    };
                 }
 
                 allowedList.push(grant);
@@ -1683,6 +1790,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 };
             }
 
+            if (showTokenExchangeFields) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    tokenExchange: {
+                        restrictScopeIssuanceForFederatedTokens:
+                            values.get("tokenExchangeRestrictScopeIssuanceForFederatedTokens")?.length > 0
+                    }
+                };
+            }
+
             // Remove fields not applicable for M2M applications.
             if (isM2MApplication) {
                 inboundConfigFormValues = {
@@ -1701,8 +1818,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             if (!isPublicClient) {
                 let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+                // MCP client applications don't show the authentication method field, so keep the stored method.
+                const tokenEndpointAuthMethodValue: string = isMcpClientApplication
+                    ? initialValues?.clientAuthentication?.tokenEndpointAuthMethod
+                    : values.get("tokenEndpointAuthMethod") as string;
 
-                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                if (tokenEndpointAuthMethodValue === PRIVATE_KEY_JWT) {
                     tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
                 }
 
@@ -1711,7 +1832,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
                         tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
-                        tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                        tokenEndpointAuthMethod: tokenEndpointAuthMethodValue,
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
                 };
@@ -1739,6 +1860,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     clientId: initialValues.clientId
+                };
+            }
+
+            if (isFAPIApplication && selectedFapiProfile) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    fapiProfile: selectedFapiProfile,
+                    isFAPIApplication: true
                 };
             }
 
@@ -1966,6 +2095,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     }
                 };
             }
+        }
+
+        if (isFAPIApplication && selectedFapiProfile) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                fapiProfile: selectedFapiProfile,
+                isFAPIApplication: true
+            };
         }
 
         return { inbound: { ...inboundConfigFormValues } };
@@ -2248,6 +2385,104 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </StickyBar>
                 )
             }
+            { /* Form Section: FAPI Profile */ }
+            {
+                isFapiFeatureEnabled
+                && isFAPIApplication
+                && !isSystemApplication
+                && !isDefaultApplication
+                && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">
+                                    { t("applications:forms.inboundOIDC.sections" +
+                                        ".fapiProfile.heading") }
+                                </Heading>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 } data-componentid={ `${ componentId }-fapi-profile` }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                { ([
+                                    { labelKey: "fapi1Advanced", value: "FAPI1_ADVANCED" as FapiProfile },
+                                    { labelKey: "fapi2Security", value: "FAPI2_SECURITY" as FapiProfile }
+                                ]).map(({ labelKey, value }: { labelKey: string; value: FapiProfile }):
+                                    ReactElement => {
+                                    const profileLabel: string = t(
+                                        `fapiSecurityPolicy:form.profiles.options.${labelKey}.label`
+                                    );
+                                    const isUnsupportedProfile: boolean = isSelectedFapiProfileUnsupported && 
+                                        selectedFapiProfile === value;
+
+                                    const radioLabel: ReactElement = (
+                                        <label>
+                                            { profileLabel }
+                                            {
+                                                isUnsupportedProfile ? (
+                                                    <Icon
+                                                        name="warning sign"
+                                                        color="yellow"
+                                                        className="ml-1"
+                                                    />
+                                                ) : (
+                                                    <Icon
+                                                        name="info circle"
+                                                        size="small"
+                                                        color="grey"
+                                                        className="ml-1"
+                                                    />
+                                                )
+                                            }
+                                        </label>
+                                    );
+
+                                    const radioField: ReactElement = (
+                                        <Form.Field key={ value }>
+                                            <Radio
+                                                label={ radioLabel }
+                                                name="fapiProfile"
+                                                value={ value }
+                                                checked={ selectedFapiProfile === value }
+                                                onChange={ (): void => setSelectedFapiProfile(value) }
+                                                disabled={ readOnly || isFapiConfigLoading }
+                                                data-componentid={
+                                                    `${ componentId }-fapi-profile-${ labelKey }`
+                                                }
+                                            />
+                                        </Form.Field>
+                                    );
+
+                                    return (
+                                        <Popup
+                                            key={ value }
+                                            content={
+                                                isUnsupportedProfile
+                                                    ? t(
+                                                        "applications:forms.inboundOIDC.sections.fapiProfile.unsupportedProfile",
+                                                        { profile: profileLabel }
+                                                    )
+                                                    : t(
+                                                        `fapiSecurityPolicy:form.profiles.options.${ labelKey }.hint`
+                                                    )
+                                            }
+                                            trigger={ radioField }
+                                        />
+                                    );
+                                }) }
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.sections" +
+                                        ".fapiProfile.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
             {
                 !isSystemApplication && !isDefaultApplication && (
                     <Grid.Row columns={ 2 }>
@@ -2265,8 +2500,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".validations.empty")
                                 }
                                 children={ getAllowedGranTypeList(metadata?.allowedGrantTypes) }
-                                value={ selectedGrantTypes ?? initialValues?.grantTypes }
-                                readOnly={ readOnly }
+                                value={
+                                    fapiConstraints.disabledGrantTypes.length > 0
+                                        ? (selectedGrantTypes ?? initialValues?.grantTypes ?? []).filter(
+                                            (g: string): boolean =>
+                                                !fapiConstraints.disabledGrantTypes.includes(g)
+                                        )
+                                        : (selectedGrantTypes ?? initialValues?.grantTypes)
+                                }
+                                readOnly={ readOnly || isCimdClient }
                                 enableReinitialize={ true }
                                 listen={ (values: Map<string, FormValue>) => handleGrantTypeChange(values) }
                                 data-testid={ `${ testId }-grant-type-checkbox-group` }
@@ -2575,7 +2817,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 productName: config.ui.productName
                                             })
                                     }
-                                    readOnly={ readOnly }
+                                    readOnly={ readOnly || isCimdClient }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     data-testid={ `${ testId }-callback-url-input` }
@@ -2717,29 +2959,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".fields.pkce.validations.empty")
                                     }
                                     type="checkbox"
-                                    value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
+                                    value={ fapiConstraints.isPKCEMandatory
+                                        ? [ ENABLE_PKCE_CHECKBOX_VALUE ]
+                                        : (initialValues?.pkce && findPKCE(initialValues.pkce)) }
                                     listen={ pkceValuesChangeListener }
                                     children={ (!isSPAApplication && !isMobileApplication && !isMcpClientApplication
                                         && !isReactApplication)
                                         ? [
                                             {
+                                                hint: fapiConstraints.isPKCEMandatory
+                                                    ? {
+                                                        content: t("fapiSecurityPolicy:constraints.pkce.hint"),
+                                                        header: ""
+                                                    }
+                                                    : undefined,
                                                 label: t("applications:forms.inboundOIDC" +
                                                     ".sections.pkce.fields.pkce.children.mandatory.label"),
                                                 value: ENABLE_PKCE_CHECKBOX_VALUE
                                             },
-                                            {
-                                                disabled: !enablePKCE,
-                                                hint: {
-                                                    content: t("applications:forms." +
-                                                        "inboundOIDC.sections.pkce.description", {
-                                                        productName: config.ui.productName
-                                                    }),
-                                                    header: "PKCE 'Plain'"
-                                                },
-                                                label: t("applications:forms.inboundOIDC" +
-                                                    ".sections.pkce.fields.pkce.children.plainAlg.label"),
-                                                value: SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE
-                                            }
+                                            ...(!fapiConstraints.isPlainPKCEDisallowed ? [
+                                                {
+                                                    disabled: !enablePKCE,
+                                                    hint: {
+                                                        content: t("applications:forms." +
+                                                            "inboundOIDC.sections.pkce.description", {
+                                                            productName: config.ui.productName
+                                                        }),
+                                                        header: "PKCE 'Plain'"
+                                                    },
+                                                    label: t("applications:forms.inboundOIDC" +
+                                                        ".sections.pkce.fields.pkce.children.plainAlg.label"),
+                                                    value: SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE
+                                                }
+                                            ] : [])
                                         ] : [
                                             {
                                                 label: t("applications:forms.inboundOIDC" +
@@ -2747,7 +2999,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 value: ENABLE_PKCE_CHECKBOX_VALUE
                                             }
                                         ] }
-                                    readOnly={ readOnly || isMcpClientApplication }
+                                    readOnly={ readOnly || isMcpClientApplication || fapiConstraints.isPKCEMandatory }
                                     data-testid={ `${ testId }-pkce-checkbox-group` }
                                 />
                                 <Hint>
@@ -2766,6 +3018,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isDefaultApplication
                 && !isM2MApplication
                 && !isSubOrganization()
+                && !fapiConstraints.isHybridFlowDisabled
                 && (
                     <Grid.Row columns={ 2 } data-componentid={ testId + "-hybrid-flow" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2801,10 +3054,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ]
                                 }
                                 type="checkbox"
-                                value = { initialValues?.hybridFlow?.enable? [
-                                    ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ] : [] }
+                                value={ fapiConstraints.isHybridFlowDisabled
+                                    ? []
+                                    : (initialValues?.hybridFlow?.enable
+                                        ? [ ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ]
+                                        : [])
+                                }
                                 listen={ hybridFlowConfigValuesChangeListener }
-                                readOnly={ readOnly }
+                                readOnly={ readOnly || fapiConstraints.isHybridFlowDisabled }
                                 data-testid={ `${ testId }--hybridFlow-enable-checkbox` }
                             />
                         </Grid.Column>
@@ -2814,6 +3071,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 showHybridFlowEnableConfig
                 && enableHybridFlowResponseTypeField
+                && !fapiConstraints.isHybridFlowDisabled
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2849,6 +3107,46 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         showEmptyLinkText
                                     > hybrid flow </DocumentationLink> response type.
                                 </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
+            {
+                showTokenExchangeFields && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Heading as="h4">
+                                { t("applications:forms.inboundOIDC.fields.tokenExchange.heading") }
+                            </Heading>
+                            <Field
+                                ref={ tokenExchangeRestrictScopeIssuanceForFederatedTokens }
+                                name="tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                required={ false }
+                                type="checkbox"
+                                value={
+                                    initialValues?.tokenExchange?.restrictScopeIssuanceForFederatedTokens
+                                        ? [ "tokenExchangeRestrictScopeIssuanceForFederatedTokens" ]
+                                        : []
+                                }
+                                children={ [
+                                    {
+                                        label: t("applications:forms.inboundOIDC.fields." +
+                                            "tokenExchange.restrictScopeIssuanceForFederatedTokens.label"),
+                                        value: "tokenExchangeRestrictScopeIssuanceForFederatedTokens"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                data-componentid={ `${ testId }-token-exchange-restrict-scopes-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.fields." +
+                                    "tokenExchange.restrictScopeIssuanceForFederatedTokens.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -2941,7 +3239,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 children={ isFAPIApplication ?
                                                     getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
                                                     : getAllowedList(metadata?.tokenEndpointAuthMethod) }
-                                                readOnly={ readOnly }
+                                                readOnly={ readOnly || isCimdClient }
                                                 data-componentId={ `${ componentId }-client-auth-method-dropdown` }
                                             />
                                             <Hint>
@@ -2964,14 +3262,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             type="checkbox"
                                             disabled={ isPublicClient }
                                             value={
-                                                initialValues?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt ?
-                                                    [ "tokenEndpointAllowReusePvtKeyJwt" ]
-                                                    : [] }
-                                            readOnly={ readOnly }
+                                                fapiConstraints.isPrivateKeyJwtReuseDisabled
+                                                    ? []
+                                                    : (initialValues?.clientAuthentication
+                                                        ?.tokenEndpointAllowReusePvtKeyJwt
+                                                        ? [ "tokenEndpointAllowReusePvtKeyJwt" ]
+                                                        : [])
+                                            }
+                                            readOnly={ readOnly || fapiConstraints.isPrivateKeyJwtReuseDisabled }
                                             data-componentId={
                                                 `${ componentId }-client-auth-pvt-key-jwt-reuse-checkbox` }
                                             children={ [
                                                 {
+                                                    hint: fapiConstraints.isPrivateKeyJwtReuseDisabled
+                                                        ? {
+                                                            content: t("fapiSecurityPolicy:constraints.pvtKeyJwt.hint"),
+                                                            header: ""
+                                                        }
+                                                        : undefined,
                                                     label: t("applications:forms.inboundOIDC.sections" +
                                                         ".clientAuthentication.fields.reusePvtKeyJwt.label"),
                                                     value: "tokenEndpointAllowReusePvtKeyJwt"
@@ -3088,17 +3396,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 name={ "requirePushAuthorizationRequest" }
                                 required={ false }
                                 type="checkbox"
-                                value={ initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
+                                value={ fapiConstraints.isPARRequired
                                     ? [ "requirePushAuthorizationRequest" ]
-                                    : [] }
+                                    : (initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
+                                        ? [ "requirePushAuthorizationRequest" ]
+                                        : []) }
                                 children={ [
                                     {
+                                        hint: fapiConstraints.isPARRequired
+                                            ? {
+                                                content: t("fapiSecurityPolicy:constraints.par.hint"),
+                                                header: ""
+                                            }
+                                            : undefined,
                                         label: t("applications:forms.inboundOIDC.sections" +
                                             ".pushedAuthorization.fields.requirePushAuthorizationRequest.label"),
                                         value: "requirePushAuthorizationRequest"
                                     }
                                 ] }
-                                readOnly={ readOnly }
+                                readOnly={ readOnly || fapiConstraints.isPARRequired }
                                 data-componentId={ `${ componentId }-pushed-authorization-checkbox` }
                             />
                             <Hint>
@@ -3465,8 +3781,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ?? SupportedAccessTokenBindingTypes.NONE
                                 }
                                 type="radio"
-                                children={ getAllowedListForAccessToken(metadata?.accessTokenBindingType, true) }
-                                readOnly={ readOnly || isFAPIApplication }
+                                children={
+                                    applyFapiBindingConstraints(
+                                        getAllowedListForAccessToken(metadata?.accessTokenBindingType, true)
+                                    )
+                                }
+                                readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                                 listen={ (values: Map<string, FormValue>) => {
                                     setCurrentBindingType(values.get("bindingType") as string);
@@ -3490,8 +3810,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Code withBackground>access_token</Code>
                                     and the
                                     <Code withBackground>refresh_token</Code>
-                                    to the login session and issue a new token per session. When the application
-                                    session ends, the tokens will also be revoked.
+                                    to the productName login session and issue a new token per session. The tokens
+                                    are revoked when that login session is explicitly terminated, either through a
+                                    logout request or through the session management API. Session expiry alone does
+                                    not revoke the tokens.
                                 </Trans>
                             </Hint>
                         </Grid.Column>
@@ -3522,6 +3844,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                         children={ [
                                             {
+                                                hint: isFAPIApplication
+                                                    ? {
+                                                        content: t("fapiSecurityPolicy:constraints.validateBinding.hint"),
+                                                        header: ""
+                                                    }
+                                                    : undefined,
                                                 label: t("applications:forms.inboundOIDC" +
                                                 ".sections.accessToken.fields.validateBinding.label"),
                                                 value: "validateTokenBinding"
@@ -3809,6 +4137,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("applications:forms.inboundOIDC.sections" +
                                         ".refreshToken.heading") }
                                 </Heading>
+                                { !fapiConstraints.isRefreshTokenRenewalDisabled && (
+                                <>
                                 <Field
                                     ref={ refreshToken }
                                     name="RefreshToken"
@@ -3851,6 +4181,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         exchanged. The existing token will be invalidated.
                                     </Trans>
                                 </Hint>
+                                </>) }
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -5380,6 +5711,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && (!isSPAApplication))
                             && !isMobileApplication
                             && !isPublicClient
+                            && !isCimdClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (!isEnforceClientSecretPermissionEnabled
@@ -5389,14 +5721,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
-                                                {
-                                                    t("applications:forms.inboundOIDC.fields" +
-                                                        ".clientSecret.label")
-                                                }
+                                                { t("applications:forms.inboundOIDC.fields.clientSecret.label") }
                                             </label>
                                             {
-                                                isClientSecretHashEnabled
+                                                maxSecretCount > 1
                                                     ? (
+                                                        <ClientSecretsSection
+                                                            appId={ application?.id }
+                                                            clientId={ initialValues?.clientId }
+                                                            clientSecret={ initialValues?.clientSecret }
+                                                            clientSecretExpiresAt={
+                                                                initialValues?.clientSecretExpiresAt
+                                                            }
+                                                            multipleClientSecretsConfigured={
+                                                                initialValues?.multipleClientSecretsConfigured
+                                                            }
+                                                            hideSecretValue={ isClientSecretHashEnabled }
+                                                            onUpdate={ onUpdate }
+                                                            readOnly={ readOnly }
+                                                            data-componentid={
+                                                                `${ componentId }-client-secrets-section`
+                                                            }
+                                                        />
+                                                    )
+                                                    : isClientSecretHashEnabled
+                                                        ? (
                                                         <>
                                                             <Message
                                                                 visible

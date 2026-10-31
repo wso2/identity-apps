@@ -39,7 +39,11 @@ import { AnyAction } from "redux";
 import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
-import { UnificationRuleModel } from "../models/unification-rules";
+import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
+import {
+    UnificationMethod,
+    UnificationRuleModel
+} from "../models/unification-rules";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 
 interface UnificationRulesListProps {
@@ -271,6 +275,8 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         }
     };
 
+    const isFuzzyUnificationEnabled: boolean = useFuzzyUnificationEnabled();
+
     const columns: TableColumnInterface[] = [
         {
             dataIndex: "rule_name",
@@ -328,6 +334,35 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             title: t("customerDataService:unificationRules.list.columns.attribute"),
             width: 5
         },
+        ...(isFuzzyUnificationEnabled ? [ {
+            dataIndex: "unification_method",
+            id: "unification_method",
+            key: "unification_method",
+            render: (rule: UnificationRuleModel) => {
+                // Only whether the rule tolerates variation. The attribute type is left out
+                // on purpose: the column beside this one already names the attribute, and
+                // restating that `emailaddress` holds an email address says nothing.
+                //
+                // A rule created before typed matching carries no method at all. The server
+                // reads that as an exact match, so show what it does rather than a blank.
+                const isFuzzy: boolean = rule.unification_method === UnificationMethod.FUZZY;
+
+                return (
+                    <Label
+                        size="mini"
+                        style={ isFuzzy
+                            ? { backgroundColor: "#fdf2e2", color: "#b4700a", fontWeight: 500 }
+                            : { backgroundColor: "#eceff0", color: "#5a6360", fontWeight: 500 } }
+                    >
+                        { isFuzzy
+                            ? t("customerDataService:unificationRules.list.matching.fuzzy")
+                            : t("customerDataService:unificationRules.list.matching.deterministic") }
+                    </Label>
+                );
+            },
+            title: t("customerDataService:unificationRules.list.columns.matching"),
+            width: 2
+        } ] : []),
         {
             dataIndex: "priority",
             id: "priority",

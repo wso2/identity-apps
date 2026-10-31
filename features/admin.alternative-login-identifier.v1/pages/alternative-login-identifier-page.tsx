@@ -62,9 +62,11 @@ import {
     ContentLoader,
     DangerZone,
     DangerZoneGroup,
+    DocumentationLink,
     EmphasizedSegment,
     Message,
-    PageLayout } from "@wso2is/react-components";
+    PageLayout,
+    useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -93,6 +95,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
 
     const { ["data-componentid"]: componentId } = props;
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const categoryId: string = ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID;
@@ -102,6 +105,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(undefined);
     const availiableLoginIdentifierAttributes: string[] =
         [
@@ -354,7 +358,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         const revertRequest: RevertGovernanceConnectorConfigInterface = {
             properties: connector?.properties?.map((property: ConnectorPropertyInterface) => property.name)
         };
@@ -368,7 +372,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                 handleRevertError();
             })
             .finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
             });
     };
 
@@ -599,6 +603,11 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                             description={ (
                                 <>
                                     { t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.description") }
+                                    <DocumentationLink
+                                        link={ getLink("manage.accountLogin.alternativeLoginIdentifiers.learnMore") }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
                                 </>
                             ) }
                             data-componentid={ `${componentId}-page-layout` }
@@ -710,6 +719,8 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting }
                                         data-testid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>

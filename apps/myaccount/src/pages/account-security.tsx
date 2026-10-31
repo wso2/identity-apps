@@ -40,6 +40,7 @@ import {
     AccountRecoveryComponent,
     ChangePassword,
     Consents,
+    DevicesComponent,
     LoginVerifyingData,
     MultiFactorAuthentication,
     UserSessionsComponent
@@ -93,6 +94,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userstore, setUserstore ] = useState<string>(null);
+    const [ isDeviceManagementDisabled, setIsDeviceManagementDisabled ] = useState<boolean>(false);
 
     const consentControl: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const accountSecurity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -263,6 +265,22 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                                 <div ref={ accountActivity }>
                                     <UserSessionsComponent onAlertFired={ handleAlerts } />
                                 </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { !isDeviceManagementDisabled
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(
+                        accessConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_DEVICES")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <DevicesComponent
+                                    onAlertFired={ handleAlerts }
+                                    onFeatureDisabled={ () => setIsDeviceManagementDisabled(true) }
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }

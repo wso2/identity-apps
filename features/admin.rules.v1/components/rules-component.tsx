@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleExecutionComponent from "./rules";
-import { HiddenConfigurationInterface } from "../contexts/rules-context";
+import { HiddenConfigurationInterface, RuleLimitsInterface } from "../contexts/rules-context";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
@@ -52,6 +52,21 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
      * Hidden configuration for filtering UI components.
      */
     hidden?: HiddenConfigurationInterface;
+
+    /**
+     * Limits the rule is kept within, as the server validates them. Not enforced when absent.
+     */
+    limits?: RuleLimitsInterface;
+
+    /**
+     * Optional text shown before "If" in place of "Execute" (e.g., "Navigate").
+     */
+    executeText?: string;
+
+    /**
+     * Called whenever the rule changes, with this editor's own value.
+     */
+    onChange?: (rule: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface) => void;
 }
 
 /**
@@ -74,17 +89,23 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
     conditionExpressionsMetaData,
     isMultipleRules,
     ruleExecutionMetaData,
-    hidden
+    onChange,
+    hidden,
+    limits,
+    executeText
 }: RulesComponentPropsWithValidation): ReactElement => (
     <RulesProvider
         initialData={ initialData }
         isMultipleRules={ isMultipleRules }
         conditionExpressionsMetaData={ conditionExpressionsMetaData }
         ruleExecutionMetaData={ ruleExecutionMetaData }
+        onChange={ onChange }
         hidden={ hidden }
+        limits={ limits }
     >
         <RuleExecutionComponent
             data-componentid={ componentId }
+            executeText={ executeText }
         />
     </RulesProvider>
 );

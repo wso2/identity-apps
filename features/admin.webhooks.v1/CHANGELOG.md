@@ -1,5 +1,31 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.2.0
+
+### Minor Changes
+
+- [#10752](https://github.com/wso2/identity-apps/pull/10752) [`e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f`](https://github.com/wso2/identity-apps/commit/e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add per-channel child organization subscription policy to webhooks, behind the `webhooks.childOrgSubscription` feature flag.
+
+### Patch Changes
+
+- Updated dependencies [[`e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f`](https://github.com/wso2/identity-apps/commit/e9224cc9fe1c7708a3c9c8f9cdcaf8f6e3f0bf6f)]:
+  - @wso2is/common.ui.selective-org-subscription.v1@1.0.0
+
+## 1.1.6
+
+### Patch Changes
+
+- [#10527](https://github.com/wso2/identity-apps/pull/10527) [`8ee07b1d5f4613a21a6e91e082df7e09393e0747`](https://github.com/wso2/identity-apps/commit/8ee07b1d5f4613a21a6e91e082df7e09393e0747) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix webhook secret field password autocomplete
+
+## 1.1.5
+
+### Patch Changes
+
+- [#10440](https://github.com/wso2/identity-apps/pull/10440) [`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8) Thanks [@dannguyen24](https://github.com/dannguyen24)! - Replace inline array default props with module-level constants to prevent unnecessary re-renders
+
+- Updated dependencies [[`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8)]:
+  - @wso2is/core@2.13.6
+
 ## 1.1.4
 
 ### Patch Changes

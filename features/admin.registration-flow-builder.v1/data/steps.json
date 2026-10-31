@@ -75,18 +75,15 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Flow Extension",
-            "image": "assets/images/icons/flow-extension.svg",
+            "label": "Passkey View",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "data": {
             "action": {
                 "type": "EXECUTOR",
                 "executor": {
-                    "name": "FlowExtensionExecutor",
-                    "meta": {
-                        "actionId": ""
-                    }
+                    "name": "FIDO2Executor"
                 },
                 "next": ""
             }
@@ -99,15 +96,18 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Passkey View",
-            "image": "assets/images/icons/fingerprint.svg",
+            "label": "Digital Wallet",
+            "image": "connections/assets/images/logos/wallet.svg",
             "showOnResourcePanel": true
         },
         "data": {
             "action": {
                 "type": "EXECUTOR",
                 "executor": {
-                    "name": "FIDO2Executor"
+                    "name": "PresentationExecutor",
+                    "meta": {
+                        "idpName": ""
+                    }
                 },
                 "next": ""
             }
@@ -176,5 +176,70 @@
                 }
             ]
         }
+    },
+    {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+        "label": "Organization Onboarding View",
+        "image": "assets/images/icons/building-icon.svg",
+        "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+        "components": [
+            {
+                "category": "BLOCK",
+                "type": "FORM",
+                "config": {},
+                "id": "{{ID}}",
+                "components": [
+                    {
+                        "id": "{{ID}}",
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "TEXT",
+                        "config": {
+                            "type": "text",
+                            "hint": "Enter your organization name",
+                            "label": "Organization Name",
+                            "required": true,
+                            "placeholder": "e.g. Acme Corporation",
+                            "identifier": "organizationName",
+                            "identifierType": "ORGANIZATION"
+                        }
+                    },
+                    {
+                        "id": "{{ID}}",
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "ORG_HANDLE",
+                        "config": {
+                            "label": "Organization Handle",
+                            "identifier": "organizationHandle",
+                            "linkedTo": "organizationName",
+                            "identifierType": "ORGANIZATION"
+                        }
+                    },
+                    {
+                        "id": "{{ID}}",
+                        "category": "ACTION",
+                        "type": "BUTTON",
+                        "variant": "PRIMARY",
+                        "config": {
+                            "type": "submit",
+                            "text": "Create Organization"
+                        },
+                        "action": {
+                                "type": "NEXT"
+                        }
+                    }
+                ]
+            }
+        ]
     }
+}
 ]

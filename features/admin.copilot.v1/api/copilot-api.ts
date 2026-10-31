@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { CopilotActionInterface, CopilotActionStatus } from "../store/types/copilot-action-types";
 
 /**
  * Get an axios instance with automatic token handling.
@@ -47,12 +48,13 @@ interface CopilotChatResponse {
 /**
  * Server-Sent Events (SSE) event types from the backend.
  */
-type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR" | "SUGGESTIONS_LOADING" | "SUGGESTIONS";
+type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR" | "SUGGESTIONS_LOADING" | "SUGGESTIONS"
+    | "ACTION_PROPOSAL";
 
 /**
  * Interface for a parsed Server-Sent Events (SSE) event from the backend.
  */
-interface SSEEvent {
+interface SSEEvent extends Partial<CopilotActionInterface> {
     type: SSEEventType;
     content?: string | string[]; // Can be string for token, or array of strings for suggestions.
     message?: string;
@@ -74,6 +76,8 @@ interface StreamCallbacks {
     onSuggestionsLoading?: () => void;
     /** Called when follow-up suggestions are generated */
     onSuggestions?: (suggestions: string[]) => void;
+    /** Called when the copilot proposes a change for the user to confirm */
+    onActionProposal?: (proposal: CopilotActionInterface) => void;
 }
 
 /**
@@ -100,6 +104,8 @@ export interface CopilotHistoryResponse {
     history: {
         question: string;
         answer: string;
+        /** Changes proposed in that turn, with their latest state. */
+        actions?: CopilotActionInterface[];
     }[];
     /** Total number of history records stored for the user. */
     total: number;
@@ -166,6 +172,22 @@ const parseSSEChunk = (chunk: string, buffer: string): { events: SSEEvent[]; rem
 
     return { events, remaining };
 };
+
+/**
+ * Build an action card from an ACTION_PROPOSAL event, keeping only the fields the card uses.
+ */
+const toActionProposal = (event: SSEEvent): CopilotActionInterface => ({
+    action: event.action,
+    expires_at: event.expires_at,
+    fields: Array.isArray(event.fields) ? event.fields : [],
+    id: event.id,
+    ready: false,
+    risk: event.risk,
+    status: "PENDING",
+    summary: event.summary,
+    title: event.title,
+    warnings: Array.isArray(event.warnings) ? event.warnings.map(String) : undefined
+});
 
 /**
  * Send a chat message using Server-Sent Events (SSE) streaming.
@@ -284,6 +306,13 @@ export const sendCopilotChatMessage = async (
 
                                 break;
 
+                            case "ACTION_PROPOSAL":
+                                if (callbacks?.onActionProposal && event.id) {
+                                    callbacks.onActionProposal(toActionProposal(event));
+                                }
+
+                                break;
+
                             case "ERROR":
                                 if (callbacks?.onError) {
                                     callbacks.onError(event.message || "Unknown server error");
@@ -345,6 +374,13 @@ export const sendCopilotChatMessage = async (
                             callbacks.onSuggestions(
                                 event.content.map((s: string) => s.replace(/^["']|["']$/g, ""))
                             );
+                        }
+
+                        break;
+
+                    case "ACTION_PROPOSAL":
+                        if (callbacks?.onActionProposal && event.id) {
+                            callbacks.onActionProposal(toActionProposal(event));
                         }
 
                         break;
@@ -481,5 +517,66 @@ export const getCopilotChatHistory = async (
                     error.message ||
                     "Failed to fetch history"
             );
+        });
+};
+
+/**
+ * Outcome of confirming or cancelling a proposed change.
+ */
+export interface CopilotActionResult {
+    status: CopilotActionStatus;
+    resource?: { type: string; id: string };
+    error?: { code: string; message: string };
+}
+
+/**
+ * Confirm or cancel a change the copilot proposed. The backend runs exactly what the card showed;
+ * nothing the Console sends can change it. Requests that were refused without running anything
+ * (expired, already handled, not found) are mapped to a card state as well.
+ *
+ * @param actionId - Id of the proposal, from the ACTION_PROPOSAL event.
+ * @param decision - "confirm" or "cancel".
+ * @returns The outcome to show on the card.
+ */
+export const respondToCopilotAction = async (
+    actionId: string,
+    decision: "confirm" | "cancel"
+): Promise<CopilotActionResult> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: {},
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "correlation-id": `corr-${Date.now()}`,
+            "x-request-id": crypto.randomUUID()
+        },
+        method: HttpMethods.POST,
+        url: `${getCopilotBaseUrl()}/actions/${encodeURIComponent(actionId)}/${decision}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => response.data as CopilotActionResult)
+        .catch((error: AxiosError) => {
+            const status: number | undefined = error?.response?.status;
+            const data: Record<string, string> = (error?.response?.data as Record<string, string>) || {};
+            const failure: { code: string; message: string } = {
+                code: data.code ?? "REQUEST_FAILED",
+                message: data.message ?? error.message
+            };
+
+            if (status === 409 && data.status) {
+                // Another tab or request is running it, or it stopped mid-way: its outcome isn't known here.
+                return data.status === "EXECUTING"
+                    ? { status: "UNKNOWN" as CopilotActionStatus }
+                    : { error: failure, status: data.status as CopilotActionStatus };
+            }
+            if (status === 410) {
+                return { error: failure, status: "EXPIRED" as CopilotActionStatus };
+            }
+            if (status === 404) {
+                return { error: failure, status: "UNAVAILABLE" as CopilotActionStatus };
+            }
+
+            throw new Error(failure.message || "Failed to process the request");
         });
 };

@@ -112,6 +112,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
     const [ connectorId, setConnectorId ] = useState<string>(undefined);
     const [ enableForm, setEnableForm ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -330,7 +331,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         const revertRequest: RevertGovernanceConnectorConfigInterface = {
             properties: []
         };
@@ -347,12 +348,13 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 handleRevertError();
             })
             .finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
                 loadConnectorDetails();
             });
     };
 
     const onBotDetectionRevert = async () => {
+        setIsReverting(true);
         const ssoPropertiesToRevert: RevertGovernanceConnectorConfigInterface = {
             properties: [
                 serverConfigurationConfig.connectorToggleName[ connector?.name ] ?? connector?.name,
@@ -395,6 +397,7 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 handleRevertError();
             })
             .finally(() => {
+                setIsReverting(false);
                 loadConnectorDetails();
             });
     };
@@ -573,8 +576,25 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                 return "Enable self-service username recovery for users on the login page." +
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Configure alternative login identifiers and allow users to use username or configured" +
-                    " login identifier in login and recovery flows.";
+                return (<>
+                    { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                        "multiattributeLoginHandler.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.accountLogin.alternativeLoginIdentifiers.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
+            case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
+                return (<>
+                    { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                        "adminForcedPasswordReset.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.accountRecovery.adminInitiatedPasswordReset.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";
@@ -867,6 +887,8 @@ const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
                                     onActionClick={ () => connectorId ===
                                         ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ?
                                         onBotDetectionRevert() : onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-testid={ `${ testId }-${ connectorId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

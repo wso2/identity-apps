@@ -19,3 +19,26 @@
 import { Claim } from "@wso2is/core/models";
 
 export type Attribute = Claim;
+
+/**
+ * A selectable organization attribute — either a core organization field or a custom
+ * key defined by an admin while building the flow.
+ */
+export interface OrganizationAttribute {
+    /**
+     * Attribute key persisted as `config.identifier` in the flow definition.
+     */
+    claimURI: string;
+    displayName: string;
+    description?: string;
+    dataType?: string;
+    required?: boolean;
+}
+
+/**
+ * Enum for attribute type — distinguishes user profile attributes from organization attributes.
+ */
+export enum AttributeType {
+    User = "USER",
+    Organization = "ORGANIZATION"
+}

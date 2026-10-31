@@ -114,6 +114,7 @@ export const workflowRequests: workflowRequestsNS = {
         deleteRole: "Delete Role",
         deleteUser: "Delete User",
         deleteUserClaims: "Delete User Claims",
+        updateGroupUsers: "Update Group Users",
         selfRegisterUser: "Self Register User",
         updateRoleName: "Update Role Name",
         updateRoleUsers: "Update Role Users",

@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "භූමිකාව මකන්න",
             deleteUser: "පරිශීලකයෙකු මකන්න",
             selfRegisterUser: "ස්වයං ලියාපදිංචි පරිශීලක",
+            updateGroupsOfUser: "කණ්ඩායමේ පරිශීලකයන් යාවත්කාලීන කරන්න",
             updateRolesOfUser: "භූමිකාවේ පරිශීලකයන් යාවත්කාලීන කරන්න"
         },
         placeholders: {
@@ -231,6 +232,21 @@ export const common: CommonNS = {
     lessThanOrEqual: "සමඟ හෝ අඩු",
     lightMode: "දීප්තිමත් තේමාව",
     loading: "පූරණය වෙමින් පවතී",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "අන්තර්ගත භාෂා",
+                hint: "මෙම භාෂා සියලුම පරිශීලක-මුහුණත සත්‍යාපන සහ ගිණුම් ප්‍රතිසාධන තිර මෙන්ම මගේ ගිණුම් පෝට්ලය තුළද සහාය දක්වයි.",
+                subHeading: "පෙරනිමියෙන් සහාය දක්වන භාෂා"
+            },
+            other: {
+                heading: "අමතර භාෂා",
+                subHeading: "මෙම අච්චුව සඳහා ලබා ගත හැකි වෙනත් භාෂා"
+            }
+        },
+        label: "භාෂාව",
+        placeholder: "භාෂාව තෝරන්න"
+    },
     loginTime: "පිවිසුම් කාලය",
     logout: "වරන්න",
     makePrimary: "ප්‍රාථමික කරන්න",

@@ -548,7 +548,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LOGO_IMAGE = () => {
+    const LogoImage = () => {
         return (
             <Image
                 src={ resolveAppLogoFilePath(
@@ -556,8 +556,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                         window["AppUtils"].getConfig().ui.appLogoPath,
                     `${window["AppUtils"].getConfig().clientOrigin}/` +
                         `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
+                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) !== ""
+                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) + "/"
                                 : ""
                         }libs/themes/` +
                         config.ui.theme.name
@@ -630,8 +630,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 className={ isSAASDeployment ? "is-header saas-header" : "is-header" }
                 brand={ {
                     logo: {
-                        desktop: <LOGO_IMAGE />,
-                        mobile: <LOGO_IMAGE />
+                        desktop: <LogoImage />,
+                        mobile: <LogoImage />
                     },
                     onClick: () =>
                         hasGettingStartedViewPermission &&

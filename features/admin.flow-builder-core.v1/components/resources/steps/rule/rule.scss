@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,50 +16,41 @@
  * under the License.
  */
 
-:root {
-    --wso2is-flow-builder-rule-background-color: #002e58;
-    --wso2is-flow-builder-rule-remove-button-color: var(--oxygen-palette-grey-500);
-    --wso2is-flow-builder-rule-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
-    --wso2is-flow-builder-rule-content-box-width: 150px;
-}
-
+/**
+ * The frame, the dark action panel and the white content box all come from `.flow-builder-step`,
+ * which this node carries alongside this class, so a decision reads as the same kind of thing as
+ * every other step. Only what is particular to rules belongs here.
+ */
 .flow-builder-rule {
-    background-color: var(--wso2is-flow-builder-rule-background-color);
-    border-radius: var(--oxygen-shape-borderRadius);
+    .flow-builder-rule-list {
+        width: 100%;
+        padding: 8px 0;
 
-    .flow-builder-rule-content {
-        display: flex;
-        flex-flow: column nowrap;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-        text-align: left;
-
-        .flow-builder-rule-content-box {
-            padding: 32px;
-            width: var(--wso2is-flow-builder-rule-content-box-width);
-            cursor: auto;
-        }
-    }
-
-    .flow-builder-rule-action-panel {
-        padding: 20px 20px;
-        height: auto;
-
-        .flow-builder-rule-id {
-            color: var(--oxygen-palette-primary-contrastText);
+        /* A line between each rule, so the ports read as separate outputs of one node. */
+        .flow-builder-rule-item + .flow-builder-rule-item {
+            border-top: 1px solid var(--oxygen-palette-divider);
         }
 
-        .flow-builder-rule-remove-button {
-            border: 2px solid var(--wso2is-flow-builder-rule-remove-button-color);
-            padding: 2px;
-            margin-left: 20px;
-            color: var(--wso2is-flow-builder-rule-remove-button-color);
+        .flow-builder-rule-item {
+            /* The handle is absolutely positioned against its closest positioned ancestor, so each
+               row owns its own port rather than every port stacking at the middle of the node. */
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
 
-            &:hover {
-                border-color: var(--wso2is-flow-builder-rule-remove-button-hover-color);
-                color: var(--wso2is-flow-builder-rule-remove-button-hover-color);
+            .flow-builder-rule-item-name {
+                flex: 1 1 auto;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
+        }
+
+        /* The default is not one more rule, it is what happens when none of them hold. */
+        .flow-builder-rule-item-default {
+            font-style: italic;
+            color: var(--oxygen-palette-text-secondary);
         }
     }
 }

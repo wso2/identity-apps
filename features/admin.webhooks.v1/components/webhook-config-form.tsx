@@ -18,7 +18,6 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
@@ -29,7 +28,7 @@ import WebhookChannelConfigForm from "./webhook-channel-config-form";
 import WebhookEndpointConfigForm from "./webhook-endpoint-config-form";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import { WebhookChannelSubscriptionInterface, WebhookConfigFormPropertyInterface } from "../models/webhooks";
-import { validateWebhookForm } from "../utils/form-field-validation-utils";
+import { WebhookFormErrorsInterface, validateWebhookForm } from "../utils/form-field-validation-utils";
 import "./webhook-config-form.scss";
 
 interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
@@ -73,6 +72,19 @@ interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
      * Flag to indicate if the form is in WebSub Hub adopter mode.
      */
     isWebSubHubAdopterMode?: boolean;
+    /**
+     * ID of the webhook being edited. Absent while creating.
+     */
+    webhookId?: string;
+    /**
+     * Whether the organization has child organizations. Drives whether the per-channel
+     * subscription policy is offered at all.
+     */
+    isChildOrganizationsAvailable?: boolean;
+    /**
+     * Whether child organization subscription is switched on for this deployment.
+     */
+    isChildOrgSubscriptionEnabled?: boolean;
 }
 
 const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
@@ -86,6 +98,9 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
     isSubmitting,
     hideSubmitButton,
     isWebSubHubAdopterMode,
+    webhookId,
+    isChildOrganizationsAvailable = false,
+    isChildOrgSubscriptionEnabled = false,
     ["data-componentid"]: _componentId = "webhook-config-form"
 }: WebhookConfigFormInterface): ReactElement => {
     const { t } = useTranslation();
@@ -99,7 +114,7 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
         </Box>
     );
 
-    const renderFormFields = (): ReactElement => {
+    const renderFormFields = (errors?: WebhookFormErrorsInterface): ReactElement => {
         if (isLoading) {
             return renderLoadingPlaceholders();
         }
@@ -113,11 +128,14 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                     isWebSubHubAdopterMode={ isWebSubHubAdopterMode }
                     data-componentid={ `${_componentId}-endpoint-config-form` }
                 />
-                <Divider className="divider-container" />
                 <WebhookChannelConfigForm
                     channelConfigs={ channelConfigs }
                     channelSubscriptions={ channelSubscriptions }
                     isReadOnly={ isReadOnly }
+                    webhookId={ webhookId }
+                    isChildOrganizationsAvailable={ isChildOrganizationsAvailable }
+                    isChildOrgSubscriptionEnabled={ isChildOrgSubscriptionEnabled }
+                    channelOrganizationErrors={ errors?.channelOrganizations }
                     data-componentid={ `${_componentId}-channel-config-form` }
                 />
             </>
@@ -128,7 +146,7 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
         onSubmit?.(values);
     };
 
-    const validateForm = (values: WebhookConfigFormPropertyInterface): Record<string, string> => {
+    const validateForm = (values: WebhookConfigFormPropertyInterface): WebhookFormErrorsInterface => {
         return validateWebhookForm(values, isCreateFormState, t);
     };
 
@@ -138,7 +156,7 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                 onSubmit={ handleFormSubmit }
                 validate={ validateForm }
                 initialValues={ initialValues }
-                render={ ({ handleSubmit, submitting, invalid }: FormRenderProps) => (
+                render={ ({ handleSubmit, submitting, invalid, errors }: FormRenderProps) => (
                     <Box component="form" onSubmit={ handleSubmit }>
                         <EmphasizedSegment
                             className="form-wrapper"
@@ -146,7 +164,7 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                             data-componentid={ `${_componentId}-section` }
                         >
                             <Box className="form-container with-max-width">
-                                { renderFormFields() }
+                                { renderFormFields(errors as WebhookFormErrorsInterface) }
                                 { !isLoading && !hideSubmitButton && (
                                     <Button
                                         size="medium"

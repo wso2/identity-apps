@@ -44,7 +44,8 @@ import {
     SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
 } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import {
-    ELK_RISK_BASED_TEMPLATE_NAME
+    ELK_RISK_BASED_TEMPLATE_NAME,
+    RULE_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -1241,6 +1242,37 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         The selected template will replace the existing script in the editor and the step
                         configuration. Your current progress will be lost. Click <Code>Confirm</Code> to proceed.
                     </Trans>
+                    {
+                        selectedAdaptiveAuthTemplate.name === RULE_BASED_TEMPLATE_NAME && (
+                            <>
+                                <Text styles={ { marginTop: "1em" } }>
+                                    <Trans
+                                        i18nKey={
+                                            "governanceConnectors:connectorCategories.otherSettings.connectors." +
+                                            "elasticAnalyticsEngine.warningModal.configureOptional"
+                                        }
+                                    >
+                                        (If you enable the ELK rule, <Link
+                                            onClick={ () => setIsELKConfigureClicked(true) }
+                                            external={ false }
+                                        >
+                                            configure
+                                        </Link> ELK Analytics settings.)
+                                    </Trans>
+                                </Text>
+                                <Text>
+                                    <Trans
+                                        i18nKey={
+                                            "governanceConnectors:connectorCategories." +
+                                            "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
+                                        }
+                                    >
+                                        You can update your settings anytime.
+                                    </Trans> (<Code><GearIcon size={ 14 } /></Code>)
+                                </Text>
+                            </>
+                        )
+                    }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );

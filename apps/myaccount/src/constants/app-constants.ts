@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,7 +77,7 @@ export class AppConstants {
      * @returns The app base name.
      */
     public static getAppBasename(): string {
-        return window["AppUtils"].getConfig().appBase;
+        return window["AppUtils"].getConfig().appBaseWithProxy;
     }
 
     /**
@@ -200,6 +200,7 @@ export class AppConstants {
         .set("SECURITY_MFA_TOTP", "security.mfa.totp")
         .set("SECURITY_MFA_BACKUP_CODE", "security.mfa.backupCode")
         .set("SECURITY_ACTIVE_SESSIONS", "security.activeSessions")
+        .set("SECURITY_DEVICES", "security.devices")
         .set("SECURITY_CONSENTS", "security.manageConsents")
         .set("SECURITY_LOGIN_VERIFY_DATA", "security.loginVerifyData")
         .set("SECURITY_LOGIN_VERIFY_DATA_TYPINGDNA", "security.loginVerifyData.typingDNA")

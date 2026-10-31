@@ -34,4 +34,37 @@ describe("ApplicationManagementUtils", () => {
             expect(result).toBe("https://example.com");
         });
     });
+
+    describe("buildCallBackUrlWithRegExp", () => {
+        it("should return a single plain URL unchanged", () => {
+            const input: string = "https://example.com/cb";
+
+            expect(ApplicationManagementUtils.buildCallBackUrlWithRegExp(input)).toBe("https://example.com/cb");
+        });
+
+        it("should wrap a comma-separated list of URLs in a regexp", () => {
+            const input: string = "https://a.example.com/cb,https://b.example.com/cb";
+
+            expect(ApplicationManagementUtils.buildCallBackUrlWithRegExp(input))
+                .toBe("regexp=(https://a.example.com/cb|https://b.example.com/cb)");
+        });
+
+        it("should persist an already-wrapped regex verbatim", () => {
+            const input: string = "regexp=(https://(127.0.0.1|localhost)(:.[0-9]{0,4})?/cb)";
+
+            expect(ApplicationManagementUtils.buildCallBackUrlWithRegExp(input)).toBe(input);
+        });
+
+        it("should preserve quote characters inside a wrapped regex (no stripping)", () => {
+            const input: string = "regexp=(https://example.com/[\"'])";
+
+            expect(ApplicationManagementUtils.buildCallBackUrlWithRegExp(input)).toBe(input);
+        });
+
+        it("should strip surrounding quote literals from a non-wrapped value", () => {
+            const input: string = "\"https://example.com/cb\"";
+
+            expect(ApplicationManagementUtils.buildCallBackUrlWithRegExp(input)).toBe("https://example.com/cb");
+        });
+    });
 });

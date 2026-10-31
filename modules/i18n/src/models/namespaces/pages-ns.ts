@@ -91,6 +91,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    fapiSecurityPolicy: {
+        title: string;
+        subTitle: string;
+    };
     organizations: {
         title: string;
         subTitle: string;
@@ -100,6 +104,10 @@ export interface pagesNS {
         subTitle: string;
     };
     oidcScopes: {
+        title: string;
+        subTitle: string;
+    };
+    verifiablePresentationSettings: {
         title: string;
         subTitle: string;
     };

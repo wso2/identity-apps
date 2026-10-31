@@ -17,8 +17,13 @@
  */
 
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
+import { CDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/models/config";
+import { getCDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/utils/application-identifier-utils";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
@@ -32,8 +37,42 @@ import { history } from "../helpers/history";
 import { AppState } from "../store";
 import { addForceExpandedParent } from "../utils/route-utils";
 
-/** Added or removed as a system application when CDS is toggled. */
+/**
+ * Console system application client ID (reserved consumer key). Also the
+ * identifier registered with CDS in legacy `client_id` mode.
+ */
 const CDS_CONSOLE_APP: string = "CONSOLE";
+
+/**
+ * Resolves the identifier used to register the Console as a CDS system application,
+ * honoring the configured CDS application identifier type.
+ *
+ * In `client_id` mode this is the Console client ID (`CONSOLE`). In `app_id` mode
+ * the Console application UUID is looked up via the application list API.
+ *
+ * @returns The Console system application identifier for the configured mode.
+ * @throws If the Console application UUID cannot be resolved in `app_id` mode.
+ */
+const resolveConsoleSystemApplicationIdentifier = async (): Promise<string> => {
+    if (getCDSApplicationIdentifierType() !== CDSApplicationIdentifierType.APP_ID) {
+        return CDS_CONSOLE_APP;
+    }
+
+    // Console is a system portal, so system portals must NOT be excluded from the lookup.
+    const response: ApplicationListInterface = await getApplicationList(
+        1,
+        0,
+        `clientId eq ${CDS_CONSOLE_APP}`,
+        false
+    );
+    const consoleApplicationId: string | undefined = response?.applications?.[0]?.id;
+
+    if (!consoleApplicationId) {
+        throw new Error("Unable to resolve the Console application UUID for the CDS system application list.");
+    }
+
+    return consoleApplicationId;
+};
 
 /**
  * Preview features list item interface.
@@ -99,7 +138,9 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
         const items: PreviewFeaturesListInterface[] = [];
 
-        if (cdsFeatureConfig?.enabled && hasCDSScopes) {
+        // In the unified Customer Data Profile view, CDS is enabled from its own page,
+        // so it is not offered as a preview feature.
+        if (cdsFeatureConfig?.enabled && hasCDSScopes && !isCDSUnifiedProfileViewEnabled()) {
             items.push({
                 action: t("customerDataService:common.featurePreview.action"),
                 description: t("customerDataService:common.featurePreview.description"),
@@ -160,13 +201,19 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     const handleCDSToggle: (enable: boolean) => Promise<void> = useCallback(
         async (enable: boolean): Promise<void> => {
             const currentApps: string[] = cdsConfig?.system_applications ?? [];
-            const nextApps: string[] = enable
-                ? currentApps.length === 0
-                    ? [ CDS_CONSOLE_APP ]
-                    : currentApps
-                : currentApps.filter((app: string) => app !== CDS_CONSOLE_APP);
 
             try {
+                // Resolve the Console system application identifier for the configured mode.
+                // Aborts the toggle if the UUID cannot be resolved in `app_id` mode so that a
+                // wrong identifier is never written to the CDS system application list.
+                const consoleAppIdentifier: string = await resolveConsoleSystemApplicationIdentifier();
+
+                const nextApps: string[] = enable
+                    ? currentApps.includes(consoleAppIdentifier)
+                        ? currentApps
+                        : [ ...currentApps, consoleAppIdentifier ]
+                    : currentApps.filter((app: string) => app !== consoleAppIdentifier);
+
                 await updateCDSConfig({
                     cds_enabled: enable,
                     system_applications: nextApps
@@ -210,11 +257,8 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
     const canUsePreviewFeatures: boolean =
-        (
-            saasFeatureStatus === FeatureStatus.ENABLED &&
-            previewFeaturesFeatureStatus === FeatureStatus.ENABLED
-        ) ||
-        cdsFeatureConfig?.enabled === true &&
+        saasFeatureStatus === FeatureStatus.ENABLED &&
+        previewFeaturesFeatureStatus === FeatureStatus.ENABLED &&
         hasAccessiblePreviewFeatures;
 
     return {

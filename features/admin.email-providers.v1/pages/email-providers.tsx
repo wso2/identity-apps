@@ -673,6 +673,34 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                         });
                     }
                 }
+                if (values.authType === AuthType.PASSWORD_CREDENTIAL) {
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.CLIENT_ID,
+                        value: values.clientId
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.CLIENT_SECRET,
+                        value: values.clientSecret
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.USERNAME,
+                        value: values.userName
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.PASSWORD,
+                        value: values.password
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.TOKEN_ENDPOINT,
+                        value: values.tokenEndpoint
+                    });
+                    if (values.scopes) {
+                        updateValues.properties.push({
+                            key: EmailProviderConstants.SCOPES,
+                            value: values.scopes
+                        });
+                    }
+                }
                 if (values.authType === AuthType.BEARER) {
                     updateValues.properties.push({
                         key: EmailProviderConstants.ACCESS_TOKEN,
@@ -771,6 +799,26 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 }
                 if (!values?.clientSecret) {
                     error.clientSecret = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.tokenEndpoint) {
+                    error.tokenEndpoint = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (values?.scopes && values.scopes.length > scopesMaxLength) {
+                    error.scopes = t("extensions:develop.emailProviders.form.validations.scopesExceedsMaxLength");
+                }
+            }
+            if (values?.authType === AuthType.PASSWORD_CREDENTIAL) {
+                if (!values?.clientId) {
+                    error.clientId = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.clientSecret) {
+                    error.clientSecret = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.userName) {
+                    error.userName = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.password) {
+                    error.password = t("extensions:develop.emailProviders.form.validations.required");
                 }
                 if (!values?.tokenEndpoint) {
                     error.tokenEndpoint = t("extensions:develop.emailProviders.form.validations.required");

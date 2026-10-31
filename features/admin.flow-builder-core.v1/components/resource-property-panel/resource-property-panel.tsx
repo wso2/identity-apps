@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
@@ -71,6 +72,7 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
 
     const {
         resourcePropertiesPanelHeading,
+        isResourcePropertiesPanelFooterHidden,
         setIsOpenResourcePropertiesPanel,
         lastInteractedStepId,
         lastInteractedResource
@@ -132,30 +134,33 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 <div className="flow-builder-right-panel content full-height">
                     <ResourceProperties />
                 </div>
-                { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
+                { !isResourcePropertiesPanelFooterHidden
+                    && (lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined) && (
                     <Box
                         display="flex"
                         justifyContent="flex-end"
                         alignItems="right"
                         className="flow-builder-right-panel footer"
                     >
-                        { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
-                            <Button
-                                variant="outlined"
-                                onClick={ () => {
-                                    if (lastInteractedResource.resourceType === ResourceTypes.Step) {
-                                        deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
-                                    } else {
-                                        onComponentDelete(lastInteractedStepId, lastInteractedResource);
-                                    }
+                        { (lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined) && (
+                            <Tooltip title={ "Delete" }>
+                                <Button
+                                    variant="outlined"
+                                    onClick={ () => {
+                                        if (lastInteractedResource.resourceType === ResourceTypes.Step) {
+                                            deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
+                                        } else {
+                                            onComponentDelete(lastInteractedStepId, lastInteractedResource);
+                                        }
 
-                                    setIsOpenResourcePropertiesPanel(false);
-                                } }
-                                className="flow-builder-right-panel footer-secondary-action icon-button"
-                                color="error"
-                            >
-                                <TrashIcon size={ 14 } />
-                            </Button>
+                                        setIsOpenResourcePropertiesPanel(false);
+                                    } }
+                                    className="flow-builder-right-panel footer-secondary-action icon-button"
+                                    color="error"
+                                >
+                                    <TrashIcon size={ 14 } />
+                                </Button>
+                            </Tooltip>
                         ) }
                     </Box>
                 ) }

@@ -27,6 +27,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
@@ -34,10 +36,10 @@ import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from
 import { useSelector } from "react-redux";
 import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
-import { Element, ElementTypes } from "../../models/elements";
+import { Element, ElementTypes, InputVariants } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
 import { Step, StepTypes, ViewStepVariants } from "../../models/steps";
-import { Template } from "../../models/templates";
+import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
 
@@ -157,8 +159,20 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
 
     const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
 
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flows
+    );
+    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
+        flowsFeatureConfig,
+        "flows.registration.organizationOnboarding"
+    );
+
     const elements: Element[] = unfilteredElements.filter((element: Element) => {
         if (element.display?.showOnResourcePanel === false) {
+            return false;
+        }
+
+        if (!isOrganizationOnboardingEnabled && element.variant === InputVariants.OrgHandler) {
             return false;
         }
 
@@ -177,6 +191,14 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
             return false;
         }
 
+        if (!isOrganizationOnboardingEnabled && step.data?.components?.some(
+            (component: Element) => component.components?.some(
+                (field: Element) => field.config?.identifierType === "ORGANIZATION"
+            )
+        )) {
+            return false;
+        }
+
         if (step.type === StepTypes.View
             && (step.variant === ViewStepVariants.PolicyConsent
                 || step.variant === ViewStepVariants.PreferenceManagement)
@@ -187,7 +209,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
         return true;
     });
     const templates: Template[] = unfilteredTemplates.filter(
-        (template: Template) => template.display?.showOnResourcePanel !== false
+        (template: Template) => template.display?.showOnResourcePanel !== false &&
+            (isOrganizationOnboardingEnabled || template.type !== TemplateTypes.BasicOrganization)
     );
     const AITemplates: Template[] = unfilteredTemplates.filter(
         (template: Template) => template.type === "GENERATE_WITH_AI");

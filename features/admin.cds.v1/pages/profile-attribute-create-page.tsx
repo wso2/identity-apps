@@ -34,7 +34,6 @@ import Stepper from "@oxygen-ui/react/Stepper";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -57,6 +56,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Message } from "semantic-ui-react";
 import { createSchemaAttributes, fetchProfileSchemaByScope } from "../api/profile-attributes";
+import { CDSApplicationInterface, useCDSApplications } from "../hooks/use-cds-applications";
 import { APPLICATION_DATA, TRAITS } from "../models/constants";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
@@ -68,13 +68,6 @@ import type {
     ValueType
 } from "../models/profile-attributes";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
-
-// Minimal local interface covering only the fields consumed in this file.
-interface AppListItemInterface {
-    name: string;
-    clientId?: string;
-    issuer?: string;
-}
 
 const StepActionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
@@ -159,8 +152,6 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
         const [ isNameAvailable, setIsNameAvailable ] = useState<boolean | null>(
             initialValues?.name ? true : null
         );
-        const [ appIdentifierOptions, setAppIdentifierOptions ] =
-            useState<ApplicationIdentifierOptionInterface[]>([]);
 
         const debounceTimer: React.MutableRefObject<ReturnType<typeof setTimeout> | null> =
             useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -168,15 +159,29 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
         const shouldFetchApplications: boolean = scope === APPLICATION_DATA;
 
         const {
-            data: applicationListData,
+            applications,
             isLoading: isLoadingAppIds
-        } = useApplicationList(
-            "advancedConfigurations,templateId,clientId,issuer",
-            null,
-            null,
-            null,
-            shouldFetchApplications,
-            true
+        } = useCDSApplications(shouldFetchApplications);
+
+        // The application name is always shown as the label while the config-resolved
+        // identifier (app UUID or client ID) is submitted to the CDS APIs.
+        const appIdentifierOptions: ApplicationIdentifierOptionInterface[] = useMemo(
+            (): ApplicationIdentifierOptionInterface[] => {
+                if (scope !== APPLICATION_DATA) return [];
+
+                return applications
+                    .map((app: CDSApplicationInterface): ApplicationIdentifierOptionInterface => ({
+                        label: app.name,
+                        value: app.identifier
+                    }))
+                    .sort(
+                        (
+                            a: ApplicationIdentifierOptionInterface,
+                            b: ApplicationIdentifierOptionInterface
+                        ): number => a.label.localeCompare(b.label)
+                    );
+            },
+            [ scope, applications ]
         );
 
         const scopeOptions: { value: ScopeValue; label: string }[] = useMemo(() => [
@@ -202,35 +207,6 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
             return `${scope}.${name.trim()}`;
         }, [ scope, applicationIdentifier, name ]);
-
-        useEffect((): void => {
-            if (scope !== APPLICATION_DATA) {
-                setAppIdentifierOptions([]);
-
-                return;
-            }
-
-            if (!(applicationListData as { applications?: AppListItemInterface[] })?.applications) {
-                return;
-            }
-
-            const appList: { applications?: AppListItemInterface[] } =
-                applicationListData as { applications?: AppListItemInterface[] };
-            const options: ApplicationIdentifierOptionInterface[] = (appList.applications ?? [])
-                .map((app: AppListItemInterface): ApplicationIdentifierOptionInterface | null => {
-                    const id: string = app.clientId || app.issuer || "";
-
-                    if (!id) return null;
-
-                    return { label: id, value: id };
-                })
-                .filter(
-                    (opt: ApplicationIdentifierOptionInterface | null):
-                        opt is ApplicationIdentifierOptionInterface => opt !== null
-                );
-
-            setAppIdentifierOptions(options);
-        }, [ scope, applicationListData ]);
 
         useEffect((): (() => void) => {
             setIsNameAvailable(null);

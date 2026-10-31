@@ -1,5 +1,16 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.29.0
+
+### Minor Changes
+
+- [#10598](https://github.com/wso2/identity-apps/pull/10598) [`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add Password Credential authentication option to SMS and Email provider forms
+
+### Patch Changes
+
+- Updated dependencies [[`f897c5891eadca1cb22bced2a0b9657017c36198`](https://github.com/wso2/identity-apps/commit/f897c5891eadca1cb22bced2a0b9657017c36198)]:
+  - @wso2is/admin.core.v1@2.59.0
+
 ## 2.28.3
 
 ### Patch Changes

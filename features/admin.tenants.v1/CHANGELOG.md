@@ -1,5 +1,24 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.33
+
+### Patch Changes
+
+- [#10580](https://github.com/wso2/identity-apps/pull/10580) [`0a908a7aafd983c09c0f8079e6e2aad698c52883`](https://github.com/wso2/identity-apps/commit/0a908a7aafd983c09c0f8079e6e2aad698c52883) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix `minLength`/`maxLength` translation placeholders not being resolved in the organization name validation messages of the add organization wizard.
+
+- Updated dependencies [[`04e57eacb51efb572a908840a34a016e20ea791a`](https://github.com/wso2/identity-apps/commit/04e57eacb51efb572a908840a34a016e20ea791a), [`7c3a6c93f81830c2b38aab4da313ddc0c02f6848`](https://github.com/wso2/identity-apps/commit/7c3a6c93f81830c2b38aab4da313ddc0c02f6848)]:
+  - @wso2is/react-components@2.10.5
+  - @wso2is/admin.users.v1@2.38.49
+
+## 2.29.32
+
+### Patch Changes
+
+- [#10434](https://github.com/wso2/identity-apps/pull/10434) [`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add support to enable advanced analytics
+
+- Updated dependencies [[`c79e405add29a540778f7461efb1d37180f6e55a`](https://github.com/wso2/identity-apps/commit/c79e405add29a540778f7461efb1d37180f6e55a)]:
+  - @wso2is/admin.core.v1@2.57.24
+
 ## 2.29.31
 
 ### Patch Changes

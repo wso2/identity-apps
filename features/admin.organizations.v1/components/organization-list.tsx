@@ -30,6 +30,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -168,6 +169,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const { onSignIn } = useSignIn();
 
@@ -238,6 +240,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 );
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onOrganizationDelete();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {

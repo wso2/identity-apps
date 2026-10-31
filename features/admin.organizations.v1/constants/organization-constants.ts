@@ -24,7 +24,8 @@ export enum OrganizationFeatureDictionaryKeys {
     OrganizationApplicationInboundAuthCode = "ORGANIZATION_APPLICATION_INBOUND_AUTH_CODE",
     OrganizationApplicationLoginFlow = "ORGANIZATION_APPLICATION_LOGIN_FLOW",
     OrganizationApplicationAdvancedSettings = "ORGANIZATION_APPLICATION_ADVANCED_SETTINGS",
-    OrganizationApplicationTokenIssuerSelection = "ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION"
+    OrganizationApplicationTokenIssuerSelection = "ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION",
+    OrganizationFapiSecurityPolicy = "ORGANIZATION_FAPI_SECURITY_POLICY"
 }
 export class OrganizationManagementConstants {
 
@@ -44,7 +45,9 @@ export class OrganizationManagementConstants {
         .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationAdvancedSettings,
             "organizations.application.advanced.settings")
         .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationTokenIssuerSelection,
-            "organizations.application.token.issuer.selection");
+            "organizations.application.token.issuer.selection")
+        .set(OrganizationFeatureDictionaryKeys.OrganizationFapiSecurityPolicy,
+            "organizations.fapiSecurityPolicy");
 
     /**
      * Super organization id as per alpha pack 2

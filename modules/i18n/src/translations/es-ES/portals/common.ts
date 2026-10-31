@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "Eliminar rol",
             deleteUser: "Eliminar usuario",
             selfRegisterUser: "Auto registro",
+            updateGroupsOfUser: "Actualizar usuarios del grupo",
             updateRolesOfUser: "Actualizar roles de usuario"
         },
         placeholders: {
@@ -231,6 +232,21 @@ export const common: CommonNS = {
     lessThanOrEqual: "Menor que o igual a",
     lightMode: "Modo de luz",
     loading: "Cargando",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "Idiomas integrados",
+                hint: "Estos idiomas son compatibles en todas las pantallas de autenticación y recuperación de cuenta de cara al usuario, así como en el portal Mi Cuenta.",
+                subHeading: "Idiomas admitidos de forma predeterminada"
+            },
+            other: {
+                heading: "Idiomas adicionales",
+                subHeading: "Otros idiomas disponibles para esta plantilla"
+            }
+        },
+        label: "Idioma",
+        placeholder: "Seleccionar idioma"
+    },
     loginTime: "Hora de inicio de sesión",
     logout: "Cerrar sesión",
     makePrimary: "Hacer primario",

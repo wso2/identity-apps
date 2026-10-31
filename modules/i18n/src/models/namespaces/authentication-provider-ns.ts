@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -52,6 +52,11 @@ export interface AuthenticationProviderNS {
             content: string;
             assertionHint: string;
         };
+        deleteIDPWithSharedOrganizations: {
+            header: string;
+            message: string;
+            content: string;
+        };
         deleteAuthenticator: {
             header: string;
             message: string;
@@ -65,6 +70,12 @@ export interface AuthenticationProviderNS {
             assertionHint: string;
         };
         deleteCertificate: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        };
+        enableMultipleDeviceProgressiveEnrollment: {
             header: string;
             message: string;
             content: string;
@@ -249,6 +260,12 @@ export interface AuthenticationProviderNS {
                     };
                 };
             };
+            dynamicOptions: {
+                disabled: string;
+                empty: string;
+                loading: string;
+                unavailable: string;
+            };
             emailOTP: {
                 enableBackupCodes: {
                     hint: string;
@@ -308,6 +325,13 @@ export interface AuthenticationProviderNS {
                     };
                 };
                 useAlphanumericChars: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                notifyEmailSendingFailure: {
                     hint: string;
                     label: string;
                     validations: {
@@ -374,7 +398,17 @@ export interface AuthenticationProviderNS {
                         range: string;
                     };
                 };
-
+                notifySmsSendingFailure: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                enrollUserInAuthenticationFlow: {
+                    hint: string;
+                    label: string;
+                };
             };
             push: {
                 hint: string;
@@ -410,6 +444,45 @@ export interface AuthenticationProviderNS {
                 enableProgressiveEnrollment: {
                     hint: string;
                     label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                enableDeviceRegistrationNotification: {
+                    hint: string;
+                    label: string;
+                };
+                deviceRegistrationNotificationType: {
+                    options: {
+                        email: string;
+                        push: string;
+                    };
+                };
+                enableMultipleDeviceEnrollment: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                maximumDeviceLimit: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                deviceManagementSettings: {
+                    label: string;
+                };
+                enableMultipleDeviceProgressiveEnrollment: {
+                    hint: string;
+                    label: string;
+                    securityWarning: string;
                     validations: {
                         required: string;
                     };
@@ -647,6 +720,18 @@ export interface AuthenticationProviderNS {
                         };
                     };
                     placeholder: string;
+                };
+                tenant: {
+                    guide: string;
+                    guideHeading: string;
+                    hint: string;
+                    info: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                        required: string;
+                    };
                 };
             };
             hypr: {
@@ -1457,6 +1542,110 @@ export interface AuthenticationProviderNS {
                 };
             };
         };
+        digitalWallet: {
+            title: string;
+            subTitle: string;
+            tabs: {
+                general: string;
+                attributes: string;
+            };
+            form: {
+                name: {
+                    label: string;
+                    placeholder: string;
+                    defaultValue: string;
+                    hint: string;
+                    validations: {
+                        required: string;
+                        maxLength: string;
+                        minLength: string;
+                    };
+                };
+                description: {
+                    defaultValue: string;
+                    hint: string;
+                };
+                presentationDefinition: {
+                    label: string;
+                    placeholder: string;
+                    loadingPlaceholder: string;
+                    emptyPlaceholder: string;
+                    hint: string;
+                };
+            };
+            notifications: {
+                noPresentationDefinition: {
+                    message: string;
+                    description: string;
+                };
+            };
+            claimMapping: {
+                form: {
+                    credentialType: {
+                        label: string;
+                        hint: string;
+                    };
+                    credentialFormat: {
+                        label: string;
+                        hint: string;
+                        options: {
+                            dcSdJwt: string;
+                        };
+                    };
+                    requestedAttributes: {
+                        label: string;
+                        hint: string;
+                        emptyPlaceholder: string;
+                    };
+                };
+                notifications: {
+                    fetchFailed: {
+                        message: string;
+                        description: string;
+                    };
+                    updateSuccess: {
+                        message: string;
+                        description: string;
+                    };
+                    updateFailed: {
+                        message: string;
+                        description: string;
+                    };
+                    missingCredentialType: {
+                        message: string;
+                        description: string;
+                    };
+                    noClaimPaths: {
+                        header: string;
+                        description: string;
+                        action: string;
+                    };
+                };
+                heading: string;
+                subheading: string;
+                pdClaimAttribute: {
+                    label: string;
+                    tooltip: string;
+                };
+            };
+            noPdModal: {
+                heading: string;
+                subHeading: string;
+                description: string;
+            };
+            wizardHelp: {
+                heading: string;
+                subHeading: string;
+                name: {
+                    heading: string;
+                    hint: string;
+                };
+                presentationDefinition: {
+                    heading: string;
+                    hint: string;
+                };
+            };
+        };
     };
     list: {
         actions: string;
@@ -1504,6 +1693,10 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            microsoftTenantError: {
                 message: string;
                 description: string;
             };
@@ -1954,6 +2147,20 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
         };
+        updatePushAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         updateGenericAuthenticator: {
             error: {
                 message: string;
@@ -2090,6 +2297,71 @@ export interface AuthenticationProviderNS {
                 content: string;
                 header: string;
                 subHeader: string;
+            };
+        };
+    };
+    sharedConnection: {
+        label: string;
+    };
+    sharedAccess: {
+        tabName: string;
+        title: string;
+        subTitle: string;
+        shareAllInfo: string;
+        sharingSettingsLabel: string;
+        shareWithFutureChildOrgs: string;
+        selectAnOrganizationToManage: string;
+        toManageOrganizationSelectLeftPanel: string;
+        modes: {
+            doNotShare: string;
+            shareWithAll: string;
+            shareWithSelected: string;
+        };
+        shareAllWarningModal: {
+            assertionHint: string;
+            description: string;
+            header: string;
+            message: string;
+        };
+        shareTypeSwitchModal: {
+            description: string;
+            header: string;
+            message: string;
+            preserveStateLabel1: string;
+            preserveStateLabel2: string;
+            resetToDefaultLabel1: string;
+            resetToDefaultLabel2: string;
+        };
+        notifications: {
+            noOrganizationsSelected: {
+                message: string;
+                description: string;
+            };
+            fetchOrganizations: {
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            share: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            unshare: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
             };
         };
     };

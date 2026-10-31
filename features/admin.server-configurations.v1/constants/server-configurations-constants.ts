@@ -417,6 +417,7 @@ export class ServerConfigurationsConstants {
 	 */
     public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso";
     public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management";
+    public static readonly DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID: string = "device-assurance-policies";
     public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed";
 
     /**
@@ -475,6 +476,7 @@ export class ServerConfigurationsConstants {
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
     public static readonly ISSUER_USAGE_SCOPE: string = "issuer-usage-scope";
+    public static readonly FAPI_SECURITY_POLICY: string = "fapi-security-policy";
 
     /**
      * Login Security Category Constants.

@@ -49,7 +49,7 @@ const RadioFieldAdapter = ({ component, formState, formStateHandler, fieldErrorH
     };
 
     return (
-        <div>
+        <>
             <label>{ resolveElementText(translations, label) }</label>
             <Form.Group grouped>
                 {
@@ -74,7 +74,7 @@ const RadioFieldAdapter = ({ component, formState, formStateHandler, fieldErrorH
                     errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors } }
                 />
             }
-        </div>
+        </>
     );
 };
 

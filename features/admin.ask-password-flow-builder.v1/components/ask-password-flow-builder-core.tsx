@@ -20,8 +20,10 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import {
     BlockTypes,
+    Branch,
     ButtonTypes,
     ButtonVariants,
     Element,
@@ -138,7 +140,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StepTypes.End;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
-        "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
+        "Prompt for a unique username and password, ensuring the password meets basic complexity branches.",
         "In the first step provide option to Sign up with Password or Sign up with Email",
         "Gather basic personal details (e.g., first name, last name) plus an email and password up front.",
         "Offer the option to Sign up with password or Sign up with Google. If the password " +
@@ -286,9 +288,10 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         return isDeletable;
     };
 
-    const generateSteps = (steps: Node[]): Node[] => {
+    const generateSteps = (steps: Node[], variables?: FlowVariablesInterface): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(variables && { variables }),
                 displayOnly: true
             },
             deletable: false,
@@ -451,8 +454,32 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
             // Check if the step has an action with a next step
             if (step.data?.action) {
-                // If next points to a valid step, create that edge
-                if (stepIds.includes(step.data.action.next)) {
+                // A rule decision carries one outgoing edge per branch instead of a single next
+                // step, each hung off a handle named for the branch it belongs to.
+                if (step.data.action.branches) {
+                    (step.data.action.branches as Branch[]).forEach((branch: Branch) => {
+                        if (!branch.next || !stepIds.includes(branch.next)) {
+                            return;
+                        }
+
+                        edges.push({
+                            animated: false,
+                            id: `${step.id}-${branch.id}`,
+                            markerEnd: {
+                                type: MarkerType.Arrow
+                            },
+                            source: step.id,
+                            sourceHandle:
+                                `${branch.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
+                            target: branch.next,
+                            type: "base-edge"
+                        });
+
+                        if (branch.next === userOnboardStepId) {
+                            userOnboardEdgeCreated = true;
+                        }
+                    });
+                } else if (stepIds.includes(step.data.action.next)) {
                     edges.push({
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
@@ -647,7 +674,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     useLayoutEffect(() => {
         if (!isAskPasswordFlowFetchRequestLoading && !isAskPasswordFlowFetchRequestValidating) {
             if (!isEmpty(askPasswordFlow?.steps)) {
-                const steps: Node[] = generateSteps(askPasswordFlow.steps);
+                const steps: Node[] = generateSteps(askPasswordFlow.steps, askPasswordFlow.variables);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -656,6 +683,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         }
     }, [
         askPasswordFlow?.steps,
+        askPasswordFlow?.variables,
         isAskPasswordFlowFetchRequestLoading,
         isAskPasswordFlowFetchRequestValidating
     ]);

@@ -79,6 +79,8 @@
     }
 
     String pushEnrollData = Encode.forHtmlAttribute(request.getParameter("pushEnrollData"));
+
+    boolean canGoBack = Boolean.parseBoolean(Encode.forJava(request.getParameter("canGoBack")));
 %>
 
 <% request.setAttribute("pageName", "push-enroll"); %>
@@ -174,6 +176,16 @@
                                         class="ui primary fluid large button" disabled>
                             </div>
 
+                            <% if (canGoBack) { %>
+                                <div class="text-center mt-1">
+                                    <button type="button"
+                                            class="ui primary basic button link-button"
+                                            id="backToAuthBtn">
+                                        <%=i18n(resourceBundle, customText, "push.enroll.back")%>
+                                    </button>
+                                </div>
+                            <% } %>
+
                             <div class="text-center mt-1">
                                 <%
                                     String multiOptionURI = request.getParameter("multiOptionURI");
@@ -259,6 +271,11 @@
                 checkbox.prop('checked',false);
                 continueBtn.click(function() {
                     document.getElementById("scenario").value = "PUSH_DEVICE_ENROLLMENT";
+                    registerForm.submit();
+                });
+                // Back button: cancel the in-progress enrollment and resume the previously paused push challenge.
+                $("#backToAuthBtn").click(function() {
+                    document.getElementById("scenario").value = "CANCEL_PUSH_DEVICE_ENROLLMENT";
                     registerForm.submit();
                 });
                 showQR();

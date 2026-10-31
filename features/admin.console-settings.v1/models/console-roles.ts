@@ -62,16 +62,31 @@ export interface APIResourceCollectionInterface {
 
 /**
  * Represents the details of an API resource collection.
+ *
+ * The `write` field is present in older API versions and is ignored by the granular-permissions
+ * code path. New API responses replace it with `create`, `update`, and `delete`.
  */
 interface APIResourceCollectionDetailsInterface {
     /**
      * Set of read scopes.
      */
-    read: APIResourceCollectionPermissionCategoryInterface[],
+    read: APIResourceCollectionPermissionCategoryInterface[];
     /**
-     * Set of write scopes.
+     * Set of write scopes. Legacy field to support backward compatibility.
      */
-    write: APIResourceCollectionPermissionCategoryInterface[],
+    write?: APIResourceCollectionPermissionCategoryInterface[];
+    /**
+     * Set of create scopes.
+     */
+    create?: APIResourceCollectionPermissionCategoryInterface[];
+    /**
+     * Set of update scopes.
+     */
+    update?: APIResourceCollectionPermissionCategoryInterface[];
+    /**
+     * Set of delete scopes.
+     */
+    delete?: APIResourceCollectionPermissionCategoryInterface[];
 }
 
 /**

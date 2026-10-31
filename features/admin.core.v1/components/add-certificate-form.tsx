@@ -35,7 +35,7 @@ interface AddCertificateFormProps extends IdentifiableComponentInterface {
     /**
      * Flag to trigger the form submission.
      */
-    triggerSubmit: boolean;
+    triggerSubmit?: boolean;
     /**
      * Callback to handle form submission.
      *

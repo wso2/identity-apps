@@ -31,6 +31,51 @@ export interface applicationTemplatesNS {
             description: string;
         };
     };
+    mcpKnownClients: {
+        chooser: {
+            heading: string;
+            hint: string;
+            knownClients: string;
+            otherClients: string;
+            metadataDocument: {
+                label: string;
+                description: string;
+            };
+            manual: {
+                label: string;
+                description: string;
+            };
+        };
+        document: {
+            heading: string;
+            hint: string;
+            url: string;
+            urlInvalid: string;
+            urlTooLong: string;
+            fetch: string;
+            placeholder: string;
+            publishedBy: string;
+            signInType: string;
+            publicClient: string;
+            privateKeyJwt: string;
+            redirectUris: string;
+            loopback: string;
+            grants: string;
+            applicationName: string;
+        };
+        previewError: {
+            message: string;
+            invalidClientId: string;
+            documentNotRetrieved: string;
+            invalidRedirectUri: string;
+            invalidAuthentication: string;
+            missingAuthorizationCode: string;
+            valueTooLong: string;
+            disabled: string;
+            tooManyPreviews: string;
+            generic: string;
+        };
+    };
     notifications: {
         fetchTemplateMetadata: {
             error: {

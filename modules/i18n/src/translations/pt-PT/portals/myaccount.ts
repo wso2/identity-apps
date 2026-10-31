@@ -1052,6 +1052,7 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "Pode utilizar os pedidos de início de sessão gerados pela sua aplicação autenticadora configurada para autenticação de dois fatores. Se não tiver acesso à aplicação, pode configurar uma nova aplicação autenticadora aqui.",
                 "deleteHint": "Remover",
                 "description": "Pode usar a aplicação autenticadora push para receber notificações de início de sessão como notificações push para autenticação de dois fatores.",
+                "deviceLimitReachedHint": "Limite máximo de dispositivos ({{limit}}) atingido",
                 "heading": "Autenticador Push",
                 "hint": "Ver",
                 "modals": {
@@ -1082,6 +1083,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "O dispositivo registado foi removido com sucesso",
                             "message": "Dispositivo removido com sucesso"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Ocorreu um erro ao obter a configuração do autenticador push.",
+                            "message": "Algo correu mal"
                         }
                     },
                     "deviceListFetchError": {
@@ -1193,7 +1200,7 @@ export const myAccount: MyAccountNS = {
                 profileStatus: {
                     completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
                     description: "Gerencie seu perfil",
-                    header: "Seu perfil do {{productName}}",
+                    header: "Seu perfil",
                     profileText: "Detalhes do seu perfil pessoal",
                     readOnlyDescription:"Ver seu perfil",
                     userSourceText: "(Conectado via {{source}})"

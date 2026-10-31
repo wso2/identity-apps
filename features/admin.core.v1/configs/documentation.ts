@@ -59,26 +59,23 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             addAPIResource: {
                 rbacInfoBox: {
                     learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                        + "#role-based-access-control"
                 },
                 requiredAuthorization: {
                     learnMore: documentationBaseUrl + "/guides/api-authorization/"
-                        + "#authorize-the-api-resource-to-an-app"
+                        + "#authorize-apps-to-consume-api-resources"
                 }
             },
-            learnMore: documentationBaseUrl + "/guides/api-authorization/#register-an-api-resource"
+            learnMore: documentationBaseUrl + "/guides/api-authorization/#register-a-business-api"
         },
         applications: {
             apiAuthorization: {
-                learnMore: documentationBaseUrl + "/guides/api-authorization/#authorize-the-api-resource-to-an-app",
+                learnMore: documentationBaseUrl + "/guides/api-authorization/#authorize-apps-to-consume-api-resources",
                 policies: {
                     noPolicy: {
                         learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                            + "#no-authorization-policy"
                     },
                     rbac: {
                         learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/"
-                            + "#role-based-access-control"
                     }
                 }
             },
@@ -98,7 +95,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 },
                 attributeManagement: {
                     manageOIDCScopes: documentationBaseUrl + "/guides/users/attributes/manage-scopes"
-                        + "/#how-to-request-scope-to-request-user-attributes"
+                        + "/#use-scopes-to-request-attributes"
                 },
                 common: {
                     advanced: {
@@ -154,7 +151,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                     quickStart: {
                         applicationScopes: {
                             learnMore: documentationBaseUrl + "/guides/authentication/user-attributes/"
-                                + "enable-attributes-for-oidc-app/#application-requests-with-scopes"
+                                + "enable-attributes-for-oidc-app/#application-requests-attributes"
                         },
                         customConfig: {
                             learnMore: documentationBaseUrl + "/guides/authentication/oidc/implement-auth-code"
@@ -170,7 +167,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                         version100: {
                             removeUsernameFromIntrospectionRespForAppTokens: {
                                 documentationLink: documentationBaseUrl + "/guides/authentication/oidc"
-                                    + "/token-validation-resource-server/#application-access-token-response"
+                                    + "/token-validation-resource-server/#application-tokens"
                             },
                             useClientIdAsSubClaimOfAppTokens: {
                                 documentationLink: documentationBaseUrl + "/guides/authentication/user-attributes"
@@ -305,6 +302,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             learnMore: documentationBaseUrl + "/guides/branding/"
         },
+        cliSettings: {
+            learnMore: undefined
+        },
         connections: {
             edit: {
                 advancedSettings: {
@@ -411,6 +411,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             learnMore: documentationBaseUrl + "/references/email-templates/"
         },
+        emailProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-email-provider/"
+        },
         eventPublishing: {
             learnMore: documentationBaseUrl + "/guides/asgardeo-events/"
         },
@@ -423,6 +426,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: undefined
             }
         },
+        pushProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-push-provider/"
+        },
         smsCustomization: {
             form: {
                 smsBody: {
@@ -430,6 +436,9 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 }
             },
             learnMore: undefined
+        },
+        smsProviders: {
+            learnMore: documentationBaseUrl + "/guides/notification-channels/configure-sms-provider/"
         },
         webhooks: {
             learnMore: documentationBaseUrl + "/guides/webhooks/understanding-webhooks/"
@@ -439,7 +448,21 @@ export const DocumentationLinks: DocumentationLinksInterface = {
         accountDisable: {
             learnMore: documentationBaseUrl + "/guides/account-configurations/account-disabling/"
         },
+        accountLogin: {
+            alternativeLoginIdentifiers: {
+                learnMore: documentationBaseUrl
+                    + "/guides/user-accounts/account-login/configure-login-identifiers/"
+            },
+            usernameValidation: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/account-login/username-validation/"
+            }
+        },
         accountRecovery: {
+            adminInitiatedPasswordReset: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/account-recovery/admin-initiated-password-reset/"
+            },
             passwordRecovery: {
                 learnMore: documentationBaseUrl + "/guides/user-accounts/password-recovery/"
             }
@@ -458,14 +481,33 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl + "/guides/users/attributes/manage-scim2-attribute-mappings/"
             }
         },
+        consentManagement: {
+            policyManagement: {
+                learnMore: documentationBaseUrl + "/guides/consent-management/policy-consent/"
+            },
+            preferenceManagement: {
+                learnMore: documentationBaseUrl + "/guides/consent-management/preference-management-consent/"
+            }
+        },
         groups: {
             learnMore: documentationBaseUrl + "/guides/users/manage-groups/",
             roles: {
                 learnMore: documentationBaseUrl + "/guides/users/manage-groups/#assign-roles-to-groups"
             }
         },
+        impersonation: {
+            learnMore: documentationBaseUrl + "/guides/authorization/user-impersonation/"
+        },
         insights: {
             learnMore: documentationBaseUrl + "/guides/organization-insights/"
+        },
+        internalNotificationSending: {
+            learnMore: documentationBaseUrl + "/guides/account-configurations/notification-settings/"
+        },
+        issuerUsageScope: {
+            learnMore: documentationBaseUrl + "/guides/organization-management/"
+                + "select-token-issuer-for-organization-apps/"
+                + "#control-root-token-issuer-access-for-child-organizations"
         },
         loginSecurity: {
             botDetection: {
@@ -475,6 +517,10 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl
                     + "/guides/user-accounts/account-security/login-attempts-security/"
             },
+            sessionManagement: {
+                learnMore: documentationBaseUrl
+                    + "/guides/account-configurations/login-security/session-management/"
+            },
             siftConnector: {
                 learnMore: documentationBaseUrl + "/guides/account-configurations/login-security/"
                     + "sift-fraud-detection/"
@@ -483,11 +529,21 @@ export const DocumentationLinks: DocumentationLinksInterface = {
         logs: {
             learnMore: documentationBaseUrl + "/guides/asgardeo-logs/"
         },
+        organizationDiscovery: {
+            learnMore: documentationBaseUrl + "/guides/organization-management/organization-discovery/"
+                + "email-domain-based-organization-discovery/"
+        },
         organizations: {
             learnMore: documentationBaseUrl + "/guides/organization-management/"
         },
+        outboundProvisioning: {
+            learnMore: documentationBaseUrl + "/guides/users/outbound-provisioning/setup-outbound-provisioning/"
+        },
         privateKeyJWT: {
             learnMore: documentationBaseUrl + "/guides/authentication/oidc/private-key-jwt-client-auth"
+        },
+        saml2WebSso: {
+            learnMore: documentationBaseUrl + "/guides/authentication/saml/"
         },
         selfRegistration: {
             learnMore: documentationBaseUrl + "/guides/user-self-service/self-register/"
@@ -504,7 +560,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
             },
             userStoreProperties: {
                 learnMore: documentationBaseUrl + "/guides/users/user-stores/configure-a-user-store/"
-                    + "#set-up-the-remote-user-store/"
+                    + "#set-up-the-remote-user-store"
             },
             userStoresList: {
                 learnMore: documentationBaseUrl + "/guides/users/user-stores/"
@@ -515,7 +571,7 @@ export const DocumentationLinks: DocumentationLinksInterface = {
                 learnMore: documentationBaseUrl + "/guides/users/"
             },
             bulkUsers: {
-                learnMore: documentationBaseUrl + "/guides/users/manage-users/#onboard-multiple-user"
+                learnMore: documentationBaseUrl + "/guides/users/onboard-users/#onboard-multiple-users"
             },
             collaboratorAccounts: {
                 adminSettingsLearnMore: documentationBaseUrl

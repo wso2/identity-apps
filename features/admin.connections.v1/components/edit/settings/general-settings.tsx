@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, TestableComponentInterface,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -42,6 +43,7 @@ import {
     useGetConnections
 } from "../../../api/connections";
 import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
+import useGetIdpShare from "../../../api/share/idp/use-get-idp-share";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectedAppInterface, ConnectedAppsInterface, ConnectionInterface, CustomAuthConnectionInterface }
     from "../../../models/connection";
@@ -104,6 +106,11 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * Loading Component.
      */
     loader: () => ReactElement;
+    /**
+     * When the connection is a shared identity provider, only the enable/disable
+     * connection option is shown and all other general settings are hidden.
+     */
+    isSharedConnection?: boolean;
 }
 
 /**
@@ -127,10 +134,12 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isCustomAuthenticator,
         templateType,
         loader: Loader,
+        isSharedConnection,
         ["data-testid"]: testId
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -141,6 +150,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] = useState<boolean>(
         false
     );
+    const [ showDeleteErrorDueToSharedOrgsModal, setShowDeleteErrorDueToSharedOrgsModal ] = useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
@@ -149,11 +159,41 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
+    const isEnterpriseConnection: boolean = [
+        ConnectionTemplateIds.ENTERPRISE,
+        ConnectionTemplateIds.OIDC,
+        ConnectionTemplateIds.SAML
+    ].includes(templateType);
+
+    const enterpriseConnectionToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_ENTERPRISE_TOGGLE_ENABLE
+    );
+    const isEnterpriseConnectionToggleEnableFeatureLocked: boolean = isEnterpriseConnection
+        && enterpriseConnectionToggleEnableFeatureStatus === FeatureStatus.DISABLED;
+
     const { data: idpList, isLoading: isIdPListRequestLoading, error: idpListError } = useGetConnections();
 
     const {
         data: connectedAppsOfLocalAuthenticator
     } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
+
+    // Fetch the sharing status of the identity provider so that deletion can be blocked while it is
+    // still shared with organizations. Only relevant for real identity providers when organization
+    // management is enabled (custom/local authenticators and shared connections cannot be shared).
+    const { data: idpShareData } = useGetIdpShare({
+        attributes: "sharingMode",
+        identityProviderId: editingIDP?.id,
+        shouldFetch: isOrganizationManagementEnabled
+            && !isCustomAuthenticator
+            && !isCustomLocalAuthenticator
+            && !isSharedConnection
+            && !!editingIDP?.id
+    });
+
+    const isSharedWithOrganizations: boolean = !!idpShareData?.sharingMode?.policy
+        || idpShareData?.organizations?.length > 0;
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -196,6 +236,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * This method handles the initiation of the delete action for federated authenticators.
      */
     const handleIdentityProviderDeleteInitiation = (): void => {
+        // Block deletion while the connection is still shared with organizations.
+        if (isSharedWithOrganizations) {
+            setShowDeleteErrorDueToSharedOrgsModal(true);
+
+            return;
+        }
+
         setIsAppsLoading(true);
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
@@ -306,6 +353,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 );
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onDelete();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
@@ -495,7 +543,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     return !isLoading && !isIdPListRequestLoading ? (
         <>
-            { !isCustomAuthenticator ? (
+            { !isSharedConnection && (!isCustomAuthenticator ? (
                 <GeneralDetailsForm
                     isSaml={ isSaml }
                     isOidc={ isOidc }
@@ -521,7 +569,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     isReadOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
-            ) }
+            )) }
             <Divider hidden />
             <Show
                 when={
@@ -545,20 +593,24 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             onActionClick={ undefined }
                             toggle={ {
                                 checked: editingIDP.isEnabled,
+                                disableHint: t("console:common.featureLockedTooltip.toggleEnable"),
+                                disabled: isEnterpriseConnectionToggleEnableFeatureLocked,
                                 onChange: handleConnectorDisable
                             } }
                             data-testid={ `${testId}-disable-idp-danger-zone` }
                         />
                     </Show>
-                    <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
-                        <DangerZone
-                            actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
-                            header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
-                            subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
-                            onActionClick={ handleConnectorDeleteInitiation }
-                            data-testid={ `${testId}-delete-idp-danger-zone` }
-                        />
-                    </Show>
+                    { !isSharedConnection && (
+                        <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
+                            <DangerZone
+                                actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
+                                header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
+                                subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
+                                onActionClick={ handleConnectorDeleteInitiation }
+                                data-testid={ `${testId}-delete-idp-danger-zone` }
+                            />
+                        </Show>
+                    ) }
                 </DangerZoneGroup>
             </Show>
             { showDeleteConfirmationModal && (
@@ -616,6 +668,35 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 ))
                             ) }
                         </List>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showDeleteErrorDueToSharedOrgsModal && (
+                <ConfirmationModal
+                    onClose={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                    type="negative"
+                    open={ showDeleteErrorDueToSharedOrgsModal }
+                    secondaryAction={ t("common:close") }
+                    onSecondaryActionClick={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                    data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation` }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-header` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-message` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${testId}-delete-idp-shared-orgs-confirmation-content` }
+                    >
+                        { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

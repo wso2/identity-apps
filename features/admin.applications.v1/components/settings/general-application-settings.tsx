@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useRefreshAllFeatures from "@wso2is/admin.feature-gate.v1/hooks/use-refresh-all-features";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
@@ -147,6 +149,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const refreshAllFeatures: () => Promise<void> = useRefreshAllFeatures();
 
     const { t } = useTranslation();
 
@@ -155,6 +158,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const hasApplicationsUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.applications?.scopes?.update
     );
+
+    const applicationToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TOGGLE_ENABLE
+    );
+    const isApplicationToggleEnableFeatureLocked: boolean =
+        applicationToggleEnableFeatureStatus === FeatureStatus.DISABLED;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
@@ -179,6 +188,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 }));
 
                 setShowDeleteConfirmationModal(false);
+                refreshAllFeatures();
                 onDelete();
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
@@ -336,6 +346,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 onActionClick={ undefined }
                                 toggle={ {
                                     checked: !application.applicationEnabled,
+                                    disableHint: t("console:common.featureLockedTooltip.toggleEnable"),
+                                    disabled: isApplicationToggleEnableFeatureLocked,
                                     onChange: handleAppEnableDisableToggleChange
                                 } }
                                 data-testid={ `${ componentId }-danger-zone-disable` }

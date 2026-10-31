@@ -586,11 +586,13 @@
             font-size: 14px;
         }
 
-        .password-policy-description i {
+        .password-policy-description i,
+        .org-handle-policy-description i {
             float: left;
         }
 
-        .password-policy-description {
+        .password-policy-description,
+        .org-handle-policy-description {
             font-size: 13px;
             color: grey;
         }
@@ -876,7 +878,8 @@ p.login-portal-app-consent-request.larger-font {
     }
 }
 
-.password-policy-description {
+.password-policy-description,
+.org-handle-policy-description {
     font-size: 13px;
     color: grey;
 }

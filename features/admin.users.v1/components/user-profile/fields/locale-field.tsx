@@ -16,14 +16,19 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import CountryFlag from "@oxygen-ui/react/CountryFlag";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import TextField from "@oxygen-ui/react/TextField";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { CommonUtils } from "@wso2is/core/utils";
 import { FinalFormField, SelectFieldAdapter } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo } from "react";
+import { FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { LocaleJoiningSymbol, UserManagementConstants } from "../../../constants/user-management-constants";
@@ -42,6 +47,15 @@ interface LocaleListItemInterface {
 };
 
 /**
+ * Interface for a raw locale metadata entry
+ */
+interface LocaleMetaInterface {
+    code: string;
+    flag?: string;
+    name: string;
+}
+
+/**
  * User profile locale field component.
  */
 const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
@@ -57,36 +71,142 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
 }: LocaleFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
+    const enableLegacyLocaleDropdown: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableLegacyLocaleDropdown
+    );
+
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
 
+    const allSupportedLocales: { [ key: string ]: LocaleMetaInterface } = CommonUtils.getLocaleList();
+
     /**
-     * Prepares the supported i18n languages array for the locale dropdown options.
+     * Locale metadata used to populate the dropdown options. Limited to the languages bundled
+     * with the product UI when `enableLegacyLocaleDropdown` is enabled, otherwise the full
+     * locale catalog from `@wso2is/core`.
      */
-    const supportedI18nLanguagesArray: LocaleListItemInterface[] = useMemo(() => {
-        return supportedI18nLanguages
-            ? Object.keys(supportedI18nLanguages).map((key: string) => ({
-                "data-componentId": `${ componentId }-profile-form-locale-dropdown-${
-                    supportedI18nLanguages[key].code }`,
-                flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
-                key: supportedI18nLanguages[key].code,
-                text:
-                    supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
-                        ? supportedI18nLanguages[key].code
-                        : `${supportedI18nLanguages[key].name}, ${supportedI18nLanguages[key].code}`,
-                value: supportedI18nLanguages[key].code
-            }))
-            : [];
-    }, [ supportedI18nLanguages ]);
+    const localeOptionsSource: { [ key: string ]: LocaleMetaInterface } = enableLegacyLocaleDropdown
+        ? supportedI18nLanguages
+        : allSupportedLocales;
 
     const normalizedLocale: string = normalizeLocaleFormat(initialValue,
-        LocaleJoiningSymbol.HYPHEN, true, supportedI18nLanguages);
+        LocaleJoiningSymbol.HYPHEN, true, localeOptionsSource);
 
-    const selectedLocale: LocaleListItemInterface = supportedI18nLanguagesArray.find(
+    /**
+     * Validates the field value.
+     *
+     * @param value - Selected value.
+     * @returns A non-empty error message if the value is not valid else undefined.
+     */
+    const validateField = (value: string): string | undefined => {
+        if (isEmpty(value) && isRequired) {
+            return (
+                t("user:profile.forms.generic.inputs.validations.required", { fieldName: fieldLabel })
+            );
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Prepares the locale options for the dropdown.
+     */
+    const localeOptionsArray: LocaleListItemInterface[] = useMemo(() => {
+        return localeOptionsSource
+            ? Object.keys(localeOptionsSource).map((key: string) => ({
+                "data-componentId": `${ componentId }-profile-form-locale-dropdown-${
+                    localeOptionsSource[key].code }`,
+                flag: localeOptionsSource[key].flag ?? UserManagementConstants.GLOBE,
+                key: localeOptionsSource[key].code,
+                text:
+                    localeOptionsSource[key].name === UserManagementConstants.GLOBE
+                        ? localeOptionsSource[key].code
+                        : `${localeOptionsSource[key].name}, ${localeOptionsSource[key].code}`,
+                value: localeOptionsSource[key].code
+            }))
+            : [];
+    }, [ localeOptionsSource ]);
+
+    const selectedLocale: LocaleListItemInterface = localeOptionsArray.find(
         (locale: LocaleListItemInterface) =>
             locale.value === normalizedLocale
     );
+
+    /**
+     * The full locale catalog is too large for a plain dropdown to be searchable, so it's
+     * rendered with an Autocomplete instead. The displayed value is derived directly from
+     * `input.value` on every render (rather than mirrored into local state) so it can never
+     * drift out of sync with the react-final-form field state, e.g. once the profile data or
+     * `supportedI18nLanguages` resolve after this field has already mounted.
+     */
+    if (!enableLegacyLocaleDropdown) {
+        return (
+            <FinalFormField
+                name={ fieldName }
+                initialValue={ selectedLocale?.value as string }
+                validate={ validator ?? validateField }
+                validateFields={ validateFields }
+            >
+                { ({ input, meta }: FieldRenderProps<string>): ReactElement => {
+                    const isError: boolean = (meta.error || meta.submitError) && meta.touched;
+                    const selectedOption: LocaleListItemInterface = localeOptionsArray.find(
+                        (locale: LocaleListItemInterface) => locale.value === input.value
+                    ) ?? null;
+
+                    return (
+                        <Autocomplete
+                            disablePortal
+                            fullWidth
+                            size="small"
+                            disabled={ isReadOnly || isUpdating }
+                            disableClearable={ isRequired }
+                            options={ localeOptionsArray }
+                            value={ selectedOption }
+                            isOptionEqualToValue={ (option: LocaleListItemInterface, value: LocaleListItemInterface) =>
+                                option.value === value.value
+                            }
+                            getOptionLabel={ (option: LocaleListItemInterface) => option.text ?? "" }
+                            onChange={ (_event: SyntheticEvent, option: LocaleListItemInterface | null) => {
+                                input.onChange(option?.value ?? "");
+                            } }
+                            onBlur={ input.onBlur }
+                            renderOption={ (props: React.ComponentProps<"li">, option: LocaleListItemInterface) => (
+                                <li { ...props } key={ option.key }>
+                                    <ListItem
+                                        className="p-0"
+                                        data-componentid={
+                                            `${componentId}-profile-form-locale-dropdown-${option.value}`
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            <CountryFlag countryCode={ option.flag } />
+                                        </ListItemIcon>
+                                        <ListItemText>{ option.text }</ListItemText>
+                                    </ListItem>
+                                </li>
+                            ) }
+                            renderInput={ (params: AutocompleteRenderInputParams) => (
+                                <TextField
+                                    { ...params }
+                                    label={ fieldLabel }
+                                    required={ isRequired }
+                                    error={ isError }
+                                    helperText={ isError ? (meta.error || meta.submitError) : undefined }
+                                    placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                        { fieldName: fieldLabel })
+                                    }
+                                    size="small"
+                                    variant="outlined"
+                                />
+                            ) }
+                            data-componentid={ `${ componentId }-input` }
+                        />
+                    );
+                } }
+            </FinalFormField>
+        );
+    }
 
     return (
         <FinalFormField
@@ -98,9 +218,9 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
             placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                 { fieldName: fieldLabel })
             }
-            validator={ validator }
+            validate={ validator ?? validateField }
             validateFields={ validateFields }
-            options={ supportedI18nLanguagesArray?.map(
+            options={ localeOptionsArray?.map(
                 ({ key, flag, text: countryName, value }: LocaleListItemInterface) => {
                     return {
                         text: (

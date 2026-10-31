@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -24,6 +29,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import PlanLimitExceededAlert from "@wso2is/admin.feature-gate.v1/components/plan-limit-exceeded-alert";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import { FlowExtensionTags } from "@wso2is/admin.flow-extensions.v1/models/flow-extension";
 import {
     IdVPTemplateTags
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
@@ -90,8 +98,28 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
             ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
+    const enterpriseConnectionToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_ENTERPRISE_TOGGLE_ENABLE
+    );
+    const isEnterpriseConnectionToggleEnableFeatureLocked: boolean =
+        enterpriseConnectionToggleEnableFeatureStatus === FeatureStatus.DISABLED;
+
+    const hasConnectionCreatePermissions: boolean = useRequiredScopes(
+        identityProvidersFeatureConfig?.scopes?.create);
+    const hasFlowExtensionCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.create);
     const hasIdVPReadPermissions: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.read);
+    const hasFlowExtensionReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.read);
+    // The Flow Extension create option requires both the capability to be enabled and the create scope.
+    const isFlowExtensionCreatable: boolean = Boolean(
+        featureConfig?.flowExtensions?.enabled
+        && isFeatureEnabled(featureConfig?.flowExtensions, "flowExtensions.list")
+        && hasFlowExtensionCreatePermissions);
+    // Show the "New Connection" button when the user can create a connection or a flow extension.
+    const canCreateConnectionOrFlowExtension: boolean =
+        hasConnectionCreatePermissions || isFlowExtensionCreatable;
 
     const [ searchInputs, setSearchInputs ] = useState<SearchInputsInterface>({
         filterTags: [],
@@ -122,7 +150,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         true,
         isIdVPFeatureEnabled && hasIdVPReadPermissions,
         !isLocalEmailOTPAuthenticatorEnabled,
-        !isLocalSMSOTPAuthenticatorEnabled
+        !isLocalSMSOTPAuthenticatorEnabled,
+        hasFlowExtensionReadPermissions
     );
 
     /**
@@ -173,8 +202,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             return AuthenticatorMeta.getAllowedFilterTags().includes(tag);
         });
 
+        if (hasFlowExtensionReadPermissions) {
+            _filteredTags.push(FlowExtensionTags.FLOW_EXTENSION);
+        }
+
         return _filteredTags;
-    }, [ isAuthenticatorTagsFetchRequestLoading ]);
+    }, [ isAuthenticatorTagsFetchRequestLoading, hasFlowExtensionReadPermissions ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -224,7 +257,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 (!isCombinedConnectionListFetchRequestLoading) &&
                 !(!searchInputs?.searchQuery && combinedConnectionList?.length <= 0)) &&
                 (
-                    <Show when={ featureConfig?.identityProviders?.scopes?.create }>
+                    canCreateConnectionOrFlowExtension && (
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("connections-click-new-connection-button");
@@ -235,7 +268,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                             <Icon name="add" />
                             { t("authenticationProvider:buttons.addIDP") }
                         </PrimaryButton>
-                    </Show>
+                    )
                 )
             }
             title={ t("console:develop.pages.authenticationProvider.title") }
@@ -250,7 +283,21 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             data-testid={ `${ testId }-page-layout` }
             actionColumnWidth={ 4 }
             headingColumnWidth={ 12 }
+            contentTopMargin={ !isEnterpriseConnectionToggleEnableFeatureLocked }
         >
+            { isEnterpriseConnectionToggleEnableFeatureLocked && (
+                <PlanLimitExceededAlert
+                    title={ t("console:common.planLimitExceededAlert.enterpriseConnections.title") }
+                    description={ t("console:common.planLimitExceededAlert.enterpriseConnections.description") }
+                    upgradeResolutionKey={
+                        "console:common.planLimitExceededAlert.enterpriseConnections.upgradeResolution"
+                    }
+                    stayResolutionKey={
+                        "console:common.planLimitExceededAlert.enterpriseConnections.stayResolution"
+                    }
+                    data-componentid={ `${ testId }-plan-limit-exceeded-alert` }
+                />
+            ) }
             <GridLayout
                 search={ (
                     <SearchWithFilterLabels

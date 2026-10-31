@@ -48,6 +48,47 @@ export interface CustomerDataServiceNS {
         };
     };
 
+    landing: {
+        page: {
+            description: string;
+            title: string;
+        };
+        enable: {
+            label: string;
+        };
+        configuration: {
+            profileAttributes: {
+                description: string;
+                title: string;
+            };
+            reviewTasks: {
+                description: string;
+                title: string;
+            };
+            unificationRules: {
+                description: string;
+                title: string;
+            };
+        };
+        profiles: {
+            description: string;
+            heading: string;
+        };
+        backButton: string;
+        notifications: {
+            update: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+    };
+
     profileAttributes: {
         create: {
             forms: {
@@ -100,6 +141,7 @@ export interface CustomerDataServiceNS {
                             label: string;
                             loading: string;
                             noOptions: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -206,6 +248,10 @@ export interface CustomerDataServiceNS {
             };
             fields: {
                 applicationIdentifier: {
+                    hint: string;
+                    label: string;
+                };
+                applicationName: {
                     hint: string;
                     label: string;
                 };
@@ -528,8 +574,139 @@ export interface CustomerDataServiceNS {
         ProfileAttributes: string;
         Profiles: string;
         UnificationRules: string;
+        customerDataProfile: string;
     };
 
+    reviewTasks: {
+        buttons: {
+            retry: string;
+        };
+        caption: string;
+        confirmations: {
+            confirm: {
+                content: string;
+                header: string;
+                primaryAction: string;
+            };
+            reject: {
+                content: string;
+                header: string;
+                primaryAction: string;
+            };
+        };
+        list: {
+            actions: {
+                approve: string;
+                collapse: string;
+                expand: string;
+                reject: string;
+            };
+            columns: {
+                actions: string;
+                attribute: string;
+                attributeMatch: string;
+                candidateProfile: string;
+                profile: string;
+                profileMatch: string;
+            };
+            evidenceMissing: string;
+            noBreakdown: string;
+            unresolved: string;
+        };
+        notifications: {
+            approved: {
+                description: string;
+                message: string;
+            };
+            rejected: {
+                description: string;
+                message: string;
+            };
+            resolveFailed: {
+                description: string;
+                message: string;
+            };
+        };
+        page: {
+            backButton: string;
+            description: string;
+            title: string;
+        };
+        placeholders: {
+            empty: {
+                subtitle: string;
+                title: string;
+            };
+            error: {
+                subtitle: string;
+                title: string;
+            };
+        };
+    };
+    resolutionSettings: {
+        buttons: {
+            save: string;
+            saving: string;
+        };
+        description: string;
+        errors: {
+            autoMergeRange: string;
+            reviewRange: string;
+            reviewTooHigh: string;
+            reviewTooLow: string;
+        };
+        fields: {
+            autoMerge: {
+                above: string;
+                aboveHint: string;
+                never: string;
+                neverHint: string;
+                threshold: string;
+                thresholdHint: string;
+                thresholdHintMax: string;
+            };
+            deterministicMatchDecisive: {
+                hint: string;
+                label: string;
+                offHint: string;
+                onHint: string;
+            };
+            manualReviewThreshold: {
+                hint: string;
+                label: string;
+            };
+        };
+        groups: {
+            automatic: string;
+            outcome: string;
+            review: string;
+        };
+        heading: string;
+        notifications: {
+            saveFailed: {
+                description: string;
+                message: string;
+            };
+            saved: {
+                description: string;
+                message: string;
+            };
+        };
+        outcome: {
+            auto: string;
+            below: string;
+            between: string;
+            exactRule: string;
+            none: string;
+            review: string;
+            toMax: string;
+        };
+        page: {
+            backButton: string;
+            description: string;
+            title: string;
+        };
+    };
     unificationRules: {
         common: {
             notifications: {
@@ -570,7 +747,29 @@ export interface CustomerDataServiceNS {
                     rulesLoadFailedHint: string;
                     scopeAriaLabel: string;
                 };
+                attributeType: {
+                    deterministicHint: string;
+                    fuzzyHint: string;
+                    label: string;
+                    options: {
+                        DATE: string;
+                        EMAIL: string;
+                        FUZZY_STRING: string;
+                        LOCATION: string;
+                        NAME: string;
+                        PHONE: string;
+                        PRIMITIVE_EXACT: string;
+                        UNIQUE_ID: string;
+                    };
+                };
                 isActive: {
+                    label: string;
+                };
+                matching: {
+                    deterministic: string;
+                    deterministicHint: string;
+                    fuzzy: string;
+                    fuzzyHint: string;
                     label: string;
                 };
                 priority: {
@@ -636,6 +835,7 @@ export interface CustomerDataServiceNS {
             columns: {
                 attribute: string;
                 enabled: string;
+                matching: string;
                 priority: string;
                 rule: string;
             };
@@ -694,6 +894,10 @@ export interface CustomerDataServiceNS {
                         message: string;
                     };
                 };
+            };
+            matching: {
+                deterministic: string;
+                fuzzy: string;
             };
             page: {
                 description: string;

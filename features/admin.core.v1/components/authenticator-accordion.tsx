@@ -29,7 +29,8 @@ import sortBy from "lodash-es/sortBy";
 import React, {
     Fragment,
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    ReactNode
 } from "react";
 
 /**
@@ -97,7 +98,7 @@ interface AuthenticatorAccordionItemInterface {
     /**
      * Title of the authenticator.
      */
-    title: string;
+    title: ReactNode;
     /**
      * Additional Options for the title.
      */

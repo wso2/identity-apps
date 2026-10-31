@@ -21,10 +21,10 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import { WebhookResponseInterface } from "../models/webhooks";
+import { getWebhooksEndpoint } from "../utils/api-version-utils";
 
 /**
  * Hook to get the webhook configuration by id.
@@ -41,7 +41,7 @@ const useGetWebhookById = <Data = WebhookResponseInterface, Error = RequestError
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.webhooks}/${webhookId}`
+        url: `${getWebhooksEndpoint()}/${webhookId}`
     };
 
     const shouldFetch: boolean = !isEmpty(webhookId) && webhookId !== "new";

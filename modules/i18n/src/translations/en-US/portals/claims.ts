@@ -98,8 +98,11 @@ export const claims: ClaimsNS = {
                 attributeName: {
                     validation: {
                         alreadyExists: "An Attribute already exists with the given Attribute name.",
-                        invalid: "Attribute name can only contain alphanumeric characters "
-                            +"and _. And must be of length between 3 to 30 characters."
+                        invalid: "Attribute name can only contain letters, numbers and the characters _ . - "
+                            + "and / (as a separator between non-empty segments), and must not exceed "
+                            + "{{maxLength}} characters.",
+                        reserved: "Attribute names starting with identity/ are reserved for system "
+                            + "attributes and cannot be added from the Console."
                     }
                 }
             },

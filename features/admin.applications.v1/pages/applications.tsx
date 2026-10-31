@@ -17,7 +17,12 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    Show,
+    useCheckFeatureStatus
+} from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getGeneralIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -29,6 +34,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import PlanLimitExceededAlert from "@wso2is/admin.feature-gate.v1/components/plan-limit-exceeded-alert";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -149,6 +156,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
 
     const { organizationType } = useGetCurrentOrganizationType();
+
+    const applicationToggleEnableFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TOGGLE_ENABLE
+    );
+    const isApplicationToggleEnableFeatureLocked: boolean =
+        applicationToggleEnableFeatureStatus === FeatureStatus.DISABLED;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -656,6 +669,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
                 data-testid={ `${ testId }-page-layout` }
             >
+                { isApplicationToggleEnableFeatureLocked && (
+                    <PlanLimitExceededAlert
+                        title={ t("console:common.planLimitExceededAlert.applications.title") }
+                        description={ t("console:common.planLimitExceededAlert.applications.description") }
+                        upgradeResolutionKey="console:common.planLimitExceededAlert.applications.upgradeResolution"
+                        stayResolutionKey="console:common.planLimitExceededAlert.applications.stayResolution"
+                        data-componentid={ `${ testId }-plan-limit-exceeded-alert` }
+                    />
+                ) }
                 {
                     !isMyAccountApplicationDataFetchRequestLoading
                         && myAccountApplicationData?.applications?.length !== 0

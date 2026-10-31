@@ -48,6 +48,10 @@ export interface StrictIdentityProviderInterface {
     groups?: IdentityProviderGroupInterface[];
     templateId?: string;
     tags?: string[];
+    /**
+     * Whether the identity provider is a shared (shadow) connection resolved from a parent organization.
+     */
+    isShared?: boolean;
 }
 
 export interface IdentityProviderInterface extends StrictIdentityProviderInterface {
@@ -508,6 +512,10 @@ export interface GenericAuthenticatorInterface extends StrictGenericAuthenticato
      * The list of tags that the authenticator can be categorized under.
      */
     tags?: string[];
+    /**
+     * Whether the underlying connection is a shared (shadow) connection from a parent organization.
+     */
+    isShared?: boolean;
 }
 
 /**
@@ -844,4 +852,34 @@ export interface FIDOConfigsInterface extends FIDOConnectorConfigsInterface{
      * Fido configuration name.
      */
     name: string;
+}
+
+/**
+ * Interface for push device management configuration.
+ */
+export interface PushDeviceMgtConfigInterface {
+    /**
+     * Whether multiple device enrollment is enabled.
+     */
+    enableMultipleDeviceEnrollment: boolean;
+    /**
+     * Maximum number of devices a user can enroll.
+     */
+    maximumDeviceLimit: number;
+    /**
+     * Whether to notify the user when a device is registered.
+     */
+    enableDeviceRegistrationNotifications: boolean;
+    /**
+     * Channels used to deliver the device registration notification.
+     */
+    deviceRegistrationNotificationChannels: DeviceRegistrationNotificationChannel[];
+}
+
+/**
+ * Channels supported for device registration notifications.
+ */
+export enum DeviceRegistrationNotificationChannel {
+    EMAIL = "EMAIL",
+    PUSH_NOTIFICATION = "PUSH_NOTIFICATION"
 }

@@ -25,7 +25,15 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/forms";
-import { ContentLoader, DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    DocumentationLink,
+    EmphasizedSegment,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,11 +76,13 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
     const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ impersonationConfig, setImpersonationConfig ] =
         useState<ImpersonationConfigFormValuesInterface>(undefined);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
 
     const {
         data: originalImpersonationConfig,
@@ -149,7 +159,7 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
     };
 
     const onConfigRevert = () => {
-        setIsSubmitting(true);
+        setIsReverting(true);
         revertImpersonationConfigurations().then(() => {
             dispatch(
                 addAlert({
@@ -171,7 +181,7 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
                 })
             );
         }).finally(() => {
-            setIsSubmitting(false);
+            setIsReverting(false);
             mutateImpersonationConfig();
         });
     };
@@ -184,7 +194,14 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
         <PageLayout
             title={ t("impersonation:title") }
             pageTitle={ t("impersonation:title") }
-            description={ t("impersonation:description") }
+            description={ (
+                <>
+                    { t("impersonation:description") }
+                    <DocumentationLink link={ getLink("manage.impersonation.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")
@@ -254,6 +271,8 @@ const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurati
                                     header= { t("governanceConnectors:dangerZone.heading") }
                                     subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                     onActionClick={ () => onConfigRevert() }
+                                    isButtonLoading={ isReverting }
+                                    isButtonDisabled={ isReverting }
                                     data-testid={ `${ componentId }-danger-zone` }
                                 />
                             </DangerZoneGroup>

@@ -67,7 +67,57 @@ export enum CopilotActionTypes {
     /**
      * Action type to set the isLoadingMoreHistory flag independently of pagination metadata.
      */
-    SET_IS_LOADING_MORE_HISTORY = "SET_IS_LOADING_MORE_HISTORY"
+    SET_IS_LOADING_MORE_HISTORY = "SET_IS_LOADING_MORE_HISTORY",
+    /**
+     * Action type to add or update an action card on a copilot message.
+     */
+    SET_COPILOT_MESSAGE_ACTION = "SET_COPILOT_MESSAGE_ACTION"
+}
+
+/**
+ * State of a change the copilot proposed. EXPIRED and UNAVAILABLE are only set by the Console.
+ */
+export type CopilotActionStatus = "PENDING" | "EXECUTING" | "SUCCEEDED" | "FAILED" | "UNKNOWN" | "PARTIAL"
+    | "CANCELLED" | "EXPIRED" | "UNAVAILABLE";
+
+/**
+ * One field of an action card. Rendered by `type`, never by `key`.
+ */
+export interface CopilotActionFieldInterface {
+    key: string;
+    label: string;
+    type: "text" | "enum" | "url" | "url_list" | "text_list" | "boolean" | "reference" | "reference_list"
+        | "secret" | string;
+    value?: unknown;
+    required?: boolean;
+    editable?: boolean;
+    options?: { value: string; label: string }[];
+}
+
+/**
+ * A change the copilot proposed, shown as a card the user confirms or cancels.
+ */
+export interface CopilotActionInterface {
+    id: string;
+    action: string;
+    title: string;
+    summary: string;
+    fields: CopilotActionFieldInterface[];
+    /** ISO 8601 time after which the proposal can no longer be confirmed. */
+    expires_at: string;
+    status: CopilotActionStatus;
+    /** "elevated": the user ticks that they reviewed the card before confirming. */
+    risk?: string;
+    /** Shown above the fields while the card is pending. */
+    warnings?: string[];
+    /** What a create action created (only when the server returned 201 with its id). */
+    resource?: { type: string; id: string };
+    /** Why the action wasn't executed. */
+    error?: { code: string; message: string };
+    /** Buttons are enabled once the turn that proposed it has finished. */
+    ready?: boolean;
+    /** A confirm or cancel request is in progress. */
+    submitting?: boolean;
 }
 
 /**
@@ -82,6 +132,8 @@ export interface CopilotMessageInterface {
     suggestions?: string[];
     /** True while the backend is generating suggestions — used to show skeleton placeholders. */
     suggestionsLoading?: boolean;
+    /** Changes proposed in this message, shown as cards. */
+    actions?: CopilotActionInterface[];
 }
 
 /**
@@ -223,6 +275,17 @@ export interface SetIsLoadingMoreHistoryActionInterface {
 }
 
 /**
+ * Add or update (by id) an action card on a message.
+ */
+export interface SetCopilotMessageActionActionInterface {
+    payload: {
+        messageId: string;
+        action: Partial<CopilotActionInterface> & { id: string };
+    };
+    type: CopilotActionTypes.SET_COPILOT_MESSAGE_ACTION;
+}
+
+/**
  * Export action interfaces.
  */
 export type CopilotActions = SetCopilotPanelVisibilityActionInterface
@@ -236,4 +299,5 @@ export type CopilotActions = SetCopilotPanelVisibilityActionInterface
     | SetCopilotStatusMessageActionInterface
     | SetCopilotHistoryPaginationActionInterface
     | PrependCopilotMessagesActionInterface
-    | SetIsLoadingMoreHistoryActionInterface;
+    | SetIsLoadingMoreHistoryActionInterface
+    | SetCopilotMessageActionActionInterface;

@@ -27,25 +27,16 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { PageLayout } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithMultipleFilters } from "../components/advanced-search-with-multiple-filters";
-import ProfilesList from "../components/profile-list";
-import { useCDSProfiles } from "../hooks/use-profiles";
-import { ProfileListItem } from "../models/profiles";
-
-const DEFAULT_PAGE_SIZE: number = 10;
-
-const DEFAULT_LIST_FIELDS: string[] = [
-    "identity_attributes.username",
-    "identity_attributes.givenname",
-    "identity_attributes.lastname"
-];
+import ProfilesSection from "../components/profiles-section";
+import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
-    const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -194,47 +185,16 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             title={ t("customerDataService:profiles.page.title") }
             pageTitle={ t("customerDataService:profiles.page.pageTitle") }
             description={ t("customerDataService:profiles.page.description") }
-            data-testid="profiles-page-layout"
-        >
-            <ListLayout
-                currentListSize={ profileList?.length ?? 0 }
-                listItemLimit={ pageSize }
-                onItemsPerPageDropdownChange={ handleItemsPerPageChange }
-                onPageChange={ handlePaginationChange }
-                totalPages={ virtualTotalPages }
-                totalListSize={ (activePage - 1) * pageSize + (profileList?.length ?? 0) }
-                showPagination={ true }
-                isLoading={ isLoading }
-                data-testid="profiles-list-layout"
-                paginationOptions={ {
-                    disableNextButton: !hasNext,
-                    disablePreviousButton: !hasPrev,
-                    showItemsPerPageDropdown: true
-                } }
-                advancedSearch={
-                    (<AdvancedSearchWithMultipleFilters
-                        onFilter={ handleRuleSearch }
-                        placeholder={ t("customerDataService:profiles.list.search.placeholder") }
-                        defaultSearchAttribute="profile_id"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        scopes={ [ "identity_attributes", "traits", "application_data" ] }
-                        enableQuerySearch={ true }
-                    />)
+            backButton={ isCDSUnifiedProfileViewEnabled()
+                ? {
+                    onClick: () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE")),
+                    text: t("customerDataService:landing.backButton")
                 }
-            >
-                { showPlaceholders() ?? (
-                    <div className="cds-profiles-list-surface">
-                        <ProfilesList
-                            profiles={ profileList }
-                            isLoading={ isLoading }
-                            onRefresh={ () => mutate() }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                        />
-                    </div>
-                ) }
-            </ListLayout>
+                : undefined
+            }
+            data-componentid="profiles-page-layout"
+        >
+            <ProfilesSection />
         </PageLayout>
     );
 };

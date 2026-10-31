@@ -26,7 +26,14 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
-import { DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import {
+    DangerZone,
+    DangerZoneGroup,
+    DocumentationLink,
+    EmphasizedSegment,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -65,8 +72,10 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
     const dispatch : Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ sessionManagementConfig , setSessionManagementConfig ] =
         useState<SessionManagementConfigFormValuesInterface>(undefined);
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -255,7 +264,7 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
     };
 
     const onConfigRevert = (): void => {
-        setIsSubmitting(true);
+        setIsReverting(true);
 
         const updateValues: PatchData[] = [
             {
@@ -288,7 +297,7 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
             .catch(() => {
                 handleRevertError();
             }).finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
             });
     };
 
@@ -336,7 +345,16 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
         <PageLayout
             title={ t("sessionManagement:title") }
             pageTitle={ t("sessionManagement:title") }
-            description={ t("sessionManagement:description") }
+            description={ (
+                <>
+                    { t("sessionManagement:description") }
+                    <DocumentationLink
+                        link={ getLink("manage.loginSecurity.sessionManagement.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")
@@ -517,6 +535,8 @@ const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettings
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting }
                                         data-componentid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>

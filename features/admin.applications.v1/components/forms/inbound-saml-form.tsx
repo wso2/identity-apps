@@ -1214,7 +1214,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 );
                                             }
 
-                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                            if (!URLUtils.isAbsoluteURI(value)) {
                                                 return false;
                                             }
 
@@ -1224,6 +1224,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         } }
                                         showError={ showAudienceError }
                                         setShowError={ setAudienceError }
+                                        skipInternalValidation
                                         hint={
                                             t("applications:forms.inboundSAML.sections" +
                                                 ".assertion.fields.audience.hint")

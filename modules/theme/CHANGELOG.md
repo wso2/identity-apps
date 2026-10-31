@@ -1,5 +1,43 @@
 # @wso2is/theme
 
+## 2.11.3
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
+## 2.11.2
+
+### Patch Changes
+
+- [#10802](https://github.com/wso2/identity-apps/pull/10802) [`9e0935e4d069d8eeb9a34e3a02f82d97060e05da`](https://github.com/wso2/identity-apps/commit/9e0935e4d069d8eeb9a34e3a02f82d97060e05da) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Align organization handle validation rules with password validation styling in self-registration, including muted text, grey indicators, consistent spacing, and aligned wrapped text.
+
+## 2.11.1
+
+### Patch Changes
+
+- [#10614](https://github.com/wso2/identity-apps/pull/10614) [`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add console support for the Daon TrustX connection templates: hide the tabs the templates do not use,
+  resolve the registration and recovery redirect URIs in the create wizard help panel, and ship the
+  connection logo
+
+## 2.11.0
+
+### Minor Changes
+
+- [#10615](https://github.com/wso2/identity-apps/pull/10615) [`48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11`](https://github.com/wso2/identity-apps/commit/48bc2416dfc2a2e40699f1fd8e95ddd4893e0a11) Thanks [@Zeta201](https://github.com/Zeta201)! - Add UI implementation for OpenID4VP digital wallet authentication, including presentation definitions management, trusted issuer configuration, digital wallet connection wizard, and flow builder canvas support.
+
+## 2.10.8
+
+### Patch Changes
+
+- [#10428](https://github.com/wso2/identity-apps/pull/10428) [`6bb48ef7c7308065172e95a1dff385b43959e63b`](https://github.com/wso2/identity-apps/commit/6bb48ef7c7308065172e95a1dff385b43959e63b) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix role mapping dropdown menu height in dynamic field
+
+## 2.10.7
+
+### Patch Changes
+
+- [#10444](https://github.com/wso2/identity-apps/pull/10444) [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b) Thanks [@savindi7](https://github.com/savindi7)! - Add tenant ID field in Microsoft Connection.
+
 ## 2.10.6
 
 ### Patch Changes

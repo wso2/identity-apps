@@ -1,5 +1,22 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.7.0
+
+### Minor Changes
+
+- [#10826](https://github.com/wso2/identity-apps/pull/10826) [`32cefa73156035e070ea46c0318578d83544f4c6`](https://github.com/wso2/identity-apps/commit/32cefa73156035e070ea46c0318578d83544f4c6) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins register known MCP clients, such as Claude and Visual Studio Code, from the MCP Client template in one click. IS retrieves and checks each client's Client ID Metadata Document (CIMD), and the application is created from the values in that document. The list of known clients comes from the deployment config (`extensions.mcpKnownClients`). Any other client can be added from its metadata document URL, after the admin reviews what the document declares.
+
+### Patch Changes
+
+- Updated dependencies [[`32cefa73156035e070ea46c0318578d83544f4c6`](https://github.com/wso2/identity-apps/commit/32cefa73156035e070ea46c0318578d83544f4c6)]:
+  - @wso2is/admin.applications.v1@2.45.0
+
+## 1.6.2
+
+### Patch Changes
+
+- [#10579](https://github.com/wso2/identity-apps/pull/10579) [`81a20ad8b2981fcd4656df8030ff630e2859abfa`](https://github.com/wso2/identity-apps/commit/81a20ad8b2981fcd4656df8030ff630e2859abfa) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - show Enforce Fapi checkbox only when fapi feature is disabled
+
 ## 1.6.1
 
 ### Patch Changes

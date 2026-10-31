@@ -1,0 +1,63 @@
+{
+    "private": true,
+    "name": "@wso2is/common.ui.selective-org-subscription.v1",
+    "version": "1.0.0",
+    "description": "Organization tree picker for selecting a subset of child organizations, shared across WSO2 Identity Server console features.",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/wso2/identity-apps/tree/master/features/common.ui.selective-org-subscription.v1#readme",
+    "bugs": {
+        "url": "https://github.com/wso2/identity-apps/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wso2/identity-apps",
+        "directory": "features/common.ui.selective-org-subscription.v1"
+    },
+    "keywords": [
+        "wso2",
+        "identity-server",
+        "features",
+        "common.ui",
+        "common.ui.selective-org-subscription",
+        "v1"
+    ],
+    "dependencies": {
+        "@mui/material": "catalog:",
+        "@mui/x-tree-view": "^8.5.2",
+        "@oxygen-ui/react": "catalog:",
+        "@wso2is/admin.core.v1": "^2.57.6",
+        "@wso2is/admin.organizations.v1": "^2.28.2",
+        "@wso2is/core": "^2.13.6",
+        "lodash-es": "^4.17.21",
+        "react-infinite-scroll-component": "^6.1.0",
+        "react-redux": "^7.2.9",
+        "redux": "^4.0.4"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+        "@rollup/plugin-image": "^3.0.3",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@svgr/rollup": "^6.2.1",
+        "@testing-library/jest-dom": "^5.11.9",
+        "@types/lodash-es": "^4.17.4",
+        "@types/node": "^13.9.2",
+        "@types/react": "^18.0.18",
+        "@types/webpack-env": "^1.16.0",
+        "rollup": "^4.17.2",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "rollup-plugin-scss": "^4.0.0",
+        "rollup-plugin-svg": "^2.0.0",
+        "typescript": "^5.1.6"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

@@ -44,6 +44,7 @@ interface AttributeMappingListProps extends TestableComponentInterface {
         oldMapping: ConnectionCommonClaimMappingInterface,
         mapping: ConnectionCommonClaimMappingInterface
     ) => void;
+    allowedMappedValues?: string[];
     readOnly?: boolean;
 }
 
@@ -55,6 +56,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         availableAttributesList,
         attributeMappingsListToShow,
         alreadyMappedAttributesList,
+        allowedMappedValues,
         onMappingDeleted,
         onMappingEdited,
         noDataPlaceholder,
@@ -104,6 +106,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                                     <Table.Cell colSpan="3">
                                         <AttributeMappingListItem
                                             mapping={ mapping }
+                                            allowedMappedValues={ allowedMappedValues }
                                             availableAttributeList={ availableAttributesList }
                                             alreadyMappedAttributesList={ alreadyMappedAttributesList }
                                             onSubmit={ (editedMapping: ConnectionCommonClaimMappingInterface) =>

@@ -79,6 +79,7 @@ const AccountDisablePage: FC<AccountDisablePageInterface> = (
         ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID);
 
     const [ isAccountDisableEnabled, setIsAccountDisableEnabled ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
 
     useEffect(() => {
         const accountDisableProperty: UpdateGovernanceConnectorConfigPropertyInterface =
@@ -113,6 +114,7 @@ const AccountDisablePage: FC<AccountDisablePageInterface> = (
     }, [ accountDisableFetchRequestError ]);
 
     const onConfigRevert = (): void => {
+        setIsReverting(true);
         const revertData: RevertGovernanceConnectorConfigInterface = {
             properties: [
                 ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
@@ -156,6 +158,7 @@ const AccountDisablePage: FC<AccountDisablePageInterface> = (
                 );
             })
             .finally(() => {
+                setIsReverting(false);
                 mutateAccountDisableFetchRequest();
             }
             );
@@ -318,6 +321,8 @@ const AccountDisablePage: FC<AccountDisablePageInterface> = (
                             header= { t("governanceConnectors:dangerZone.heading") }
                             subheader= { t("governanceConnectors:dangerZone.subHeading") }
                             onActionClick={ () => onConfigRevert() }
+                            isButtonLoading={ isReverting }
+                            isButtonDisabled={ isReverting }
                             data-testid={ `${ componentId }-danger-zone` }
                         />
                     </DangerZoneGroup>

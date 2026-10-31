@@ -38,7 +38,31 @@ export const rules: rulesNS = {
             moreItemsMessage: "Only the recent resources are listed. Type to search for others ...",
             placeholderText: "Please select a resource or type to search ...",
             selectPlaceholderText: "Please select a resource"
+        },
+        valueInput: {
+            fieldLabel: "Field",
+            fieldPlaceholder: "Select a field",
+            fieldPopover: {
+                close: "Close",
+                title: "Field value"
+            },
+            fieldToggle: {
+                disable: "Use a typed value",
+                enable: "Compare with a field"
+            },
+            listPlaceholder: "Type a value and press Enter",
+            noMatchingFields: "No matching fields",
+            noMatchingQualifiers: "No matching attributes",
+            placeholder: "Enter a value",
+            qualifierLabel: "Attribute",
+            qualifierPlaceholder: "Select an attribute",
+            qualifierTypedPlaceholder: "Enter an attribute",
+            valueLabel: "Value"
         }
+    },
+    limits: {
+        andLimitReached: "A condition group has the most conditions allowed.",
+        orLimitReached: "The rule has the most condition groups allowed."
     },
     texts: {
         execute: "Execute",

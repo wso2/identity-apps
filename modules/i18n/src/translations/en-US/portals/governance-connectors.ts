@@ -420,6 +420,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 },
                 multiattributeLoginHandler: {
                     friendlyName: "Multi Attribute Login",
+                    description: "Configure alternative login identifiers and allow users to use username or configured login identifier in login and recovery flows.",
                     properties: {
                         accountMultiattributeloginHandlerEnable: {
                             hint: "Enable using multiple attributes as login identifier",
@@ -508,6 +509,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 },
                 adminForcedPasswordReset: {
                     friendlyName: "Password Reset",
+                    description: "Enable administrators to initiate password reset process for users.",
                     properties: {
                         recoveryAdminPasswordResetRecoveryLink: {
                             hint: "User gets notified with a link to reset password",
@@ -633,6 +635,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                     friendlyName: "ELK Analytics",
                     warningModal: {
                         configure: "<1>Configure</1> ELK Analytics settings for proper functionality.",
+                        configureOptional: "If you enable the ELK rule, <1>configure</1> ELK Analytics settings.",
                         reassure: "You can update your settings anytime."
                     },
                     properties: {

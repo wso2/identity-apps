@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { GlobalVariablesContextInterface } from "@wso2is/admin.core.v1/context/global-variables-context";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
@@ -24,6 +26,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
@@ -31,11 +34,14 @@ import {
     AttributeSettings,
     AuthenticatorSettings,
     ConnectedApps,
+    DigitalCredentialsClaimMappingSettings,
+    DigitalWalletGeneralSettings,
     GeneralSettings,
     IdentityProviderGroupsTab,
     OutboundProvisioningSettings
 } from "./settings";
 import CustomAuthenticatorSettings from "./settings/custom-authenticator-settings";
+import IdentityProviderSharedAccess from "./settings/identity-provider-shared-access";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import {
     CommonAuthenticatorConstants,
@@ -119,6 +125,10 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      * Connection setting section meta data.
      */
     connectionSettingsMetaData?: any;
+    /**
+     * When true, the Advanced tab is hidden for this connection.
+     */
+    hideAdvancedTab?: boolean;
 }
 
 /**
@@ -144,10 +154,17 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isAutomaticTabRedirectionEnabled,
         setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
+        hideAdvancedTab,
         ["data-testid"]: testId
     } = props;
 
+    const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const { isOrganizationManagementEnabled }: GlobalVariablesContextInterface = useGlobalVariables();
+
+    // Shared identity providers (flagged via the `isShared` attribute) expose a limited set of editable options.
+    const isSharedConnection: boolean = !!identityProvider?.isShared;
+
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         featureConfig?.identityProviders,
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
@@ -172,9 +189,22 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
+    // Connection sharing is governed by the top-level `connectionSharing` feature so it can be reused
+    // across connection types (identity providers, custom authenticators, flow extensions, etc.).
+    const connectionSharingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.connectionSharing;
+    const isConnectionSharingEnabled: boolean = connectionSharingFeatureConfig?.enabled ?? false;
+    const hasConnectionSharingReadPermissions: boolean = useRequiredScopes(
+        connectionSharingFeatureConfig?.scopes?.read
+    );
+    const hasConnectionSharingUpdatePermissions: boolean = useRequiredScopes(
+        connectionSharingFeatureConfig?.scopes?.update
+    );
+
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+    const isDigitalCredentialsConnection: boolean =
+        identityProvider?.templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.DIGITAL_WALLET;
     const isEnterpriseConnection: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
             FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
@@ -232,6 +262,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-general-settings` }
                 isReadOnly={ isReadOnly }
+                isSharedConnection={ isSharedConnection }
                 loader={ Loader }
             />
         </ResourceTab.Pane>
@@ -309,6 +340,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 onUpdate={ onUpdate }
                 data-testid={ `${testId}-outbound-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                isSharedConnection={ isSharedConnection }
                 loader={ Loader }
             />
         </ResourceTab.Pane>
@@ -362,11 +394,48 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <IdentityProviderGroupsTab
                 editingIDP={ identityProvider }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isReadOnly || isSharedConnection }
                 isLoading={ isLoading }
                 loader={ Loader }
                 isOIDC={ isOidc }
                 data-componentid={ `${testId}-groups-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const SharedAccessTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <IdentityProviderSharedAccess
+                identityProvider={ identityProvider }
+                isReadOnly={ isReadOnly || !hasConnectionSharingUpdatePermissions }
+                data-componentid={ `${testId}-shared-access` }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const DigitalCredentialsConfigurationTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <DigitalWalletGeneralSettings
+                editingIDP={ identityProvider }
+                isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ onUpdate }
+                data-componentid={ `${testId}-digital-wallet-general-settings` }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const DigitalCredentialsClaimMappingTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <DigitalCredentialsClaimMappingSettings
+                identityProvider={ identityProvider }
+                isLoading={ isLoading }
+                isReadOnly={ isReadOnly }
+                onUpdate={ onUpdate }
+                loader={ Loader }
+                data-componentid={ `${ testId }-digital-credentials-claim-mapping` }
             />
         </ResourceTab.Pane>
     );
@@ -430,6 +499,60 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
 
+        if (isDigitalCredentialsConnection) {
+            if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+                panes.push(...tabPaneExtensions);
+            }
+
+            panes.push({
+                "data-tabid": "digital-credentials-configuration",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.general"),
+                render: DigitalCredentialsConfigurationTabPane
+            });
+
+            panes.push({
+                "data-tabid": "digital-credentials-claim-mapping",
+                menuItem: t("authenticationProvider:templates.digitalWallet.tabs.attributes"),
+                render: DigitalCredentialsClaimMappingTabPane
+            });
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) &&
+                hasApplicationReadPermissions
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
+                    menuItem: "Connected Apps",
+                    render: ConnectedAppsTabPane
+                });
+            }
+
+            if (
+                shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
+                identityProviderConfig.editIdentityProvider.showJitProvisioning
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
+                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                    render: JITProvisioningSettingsTabPane
+                });
+            }
+
+            if (
+                !hideAdvancedTab &&
+                shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
+                identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            ) {
+                panes.push({
+                    "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
+                    menuItem: "Advanced",
+                    render: AdvancedSettingsTabPane
+                });
+            }
+
+            return panes;
+        }
+
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
         }
@@ -442,7 +565,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) {
+        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator
+            && !isSharedConnection) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.SETTINGS,
                 menuItem: "Settings",
@@ -527,11 +651,35 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
+        // Shared Access tab is shown for real identity provider connections (not shared ones,
+        // trusted token issuers, custom authenticators or the organization enterprise authenticator)
+        // when organization management is enabled and the connection sharing sub-feature is enabled
+        // and the user has read access to it. Trusted token issuers are not allowed to be shared.
         if (
+            shouldShowTab(type, ConnectionTabTypes.SHARED_ACCESS) &&
+            isOrganizationManagementEnabled &&
+            isConnectionSharingEnabled &&
+            hasConnectionSharingReadPermissions &&
+            !isSharedConnection &&
+            !isTrustedTokenIssuer &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator &&
+            !isCustomLocalAuthenticator
+        ) {
+            panes.push({
+                "data-tabid": ConnectionUIConstants.TabIds.SHARED_ACCESS,
+                menuItem: "Shared Access",
+                render: SharedAccessTabPane
+            });
+        }
+
+        if (
+            !hideAdvancedTab &&
             shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
             identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
             !isOrganizationEnterpriseAuthenticator &&
-            !isCustomAuthenticator
+            !isCustomAuthenticator &&
+            !isSharedConnection
         ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
@@ -586,6 +734,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             !isExpertMode &&
             !isCustomAuthenticator &&
             !isOutboundProvisioningConnection &&
+            !isDigitalCredentialsConnection &&
             !tabPaneExtensions)
     ) {
         return <Loader />;

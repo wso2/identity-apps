@@ -545,6 +545,101 @@ export const myAccount: MyAccountNS = {
                 "maintain an uninterrupted continuous session while providing smooth and personalized services. To " +
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
+        devices: {
+            actions: {
+                activate: "Activate",
+                deactivate: "Deactivate",
+                delete: "Delete",
+                more: "More actions for {{name}}",
+                rename: "Rename"
+            },
+            list: {
+                registeredOn: "Registered on {{date}}"
+            },
+            modals: {
+                deactivateConfirmation: {
+                    content: "You can activate the device again at any time.",
+                    heading: "Deactivate device?",
+                    message: "Once deactivated, this device can no longer be used for device checks when you " +
+                        "sign in.",
+                    primaryAction: "Deactivate"
+                },
+                deleteConfirmation: {
+                    content: "The device will be removed from your account and can no longer be used for device " +
+                        "checks when you sign in. To use it again, you need to register it again.",
+                    heading: "Delete device?",
+                    message: "This action is irreversible.",
+                    primaryAction: "Delete"
+                },
+                rename: {
+                    heading: "Rename device",
+                    label: "Device name",
+                    placeholder: "Enter a name for the device",
+                    primaryAction: "Save",
+                    validations: {
+                        maxLength: "Device name must not exceed {{max}} characters.",
+                        required: "Device name is required."
+                    }
+                }
+            },
+            notifications: {
+                activateDevice: {
+                    genericError: {
+                        description: "Something went wrong while activating the device.",
+                        message: "Couldn't activate the device"
+                    },
+                    success: {
+                        description: "The device was activated successfully.",
+                        message: "Device activated"
+                    }
+                },
+                deactivateDevice: {
+                    genericError: {
+                        description: "Something went wrong while deactivating the device.",
+                        message: "Couldn't deactivate the device"
+                    },
+                    success: {
+                        description: "The device was deactivated successfully.",
+                        message: "Device deactivated"
+                    }
+                },
+                deleteDevice: {
+                    genericError: {
+                        description: "Something went wrong while deleting the device.",
+                        message: "Couldn't delete the device"
+                    },
+                    success: {
+                        description: "The device was deleted successfully.",
+                        message: "Device deleted"
+                    }
+                },
+                fetchDevices: {
+                    genericError: {
+                        description: "Something went wrong while retrieving your devices.",
+                        message: "Couldn't retrieve your devices"
+                    }
+                },
+                renameDevice: {
+                    genericError: {
+                        description: "Something went wrong while renaming the device.",
+                        message: "Couldn't rename the device"
+                    },
+                    success: {
+                        description: "The device was renamed successfully.",
+                        message: "Device renamed"
+                    }
+                }
+            },
+            pagination: {
+                next: "Next",
+                previous: "Previous",
+                summary: "{{start}}-{{end}} of {{total}}"
+            },
+            status: {
+                active: "Active",
+                inactive: "Inactive"
+            }
+        },
         federatedAssociations: {
             deleteConfirmation: "This will remove the linked social account from your local account. " +
                 "Do you want to continue removing?",
@@ -1049,6 +1144,7 @@ export const myAccount: MyAccountNS = {
                 deleteHint: "Remove",
                 description: "You can use the push authenticator app to get login prompts as push notifications for " +
                     "two-factor authentication.",
+                deviceLimitReachedHint: "Maximum device limit of {{limit}} reached",
                 heading: "Push Authenticator",
                 hint: "View",
                 modals: {
@@ -1067,6 +1163,12 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 notifications: {
+                    configFetchError: {
+                        genericError: {
+                            description: "An error occurred while retrieving the push authenticator configuration.",
+                            message: "Something went wrong"
+                        }
+                    },
                     delete: {
                         error: {
                             description: "{{error}}",
@@ -1190,7 +1292,7 @@ export const myAccount: MyAccountNS = {
                 profileStatus: {
                     completionPercentage: "Your profile completion is at {{percentage}}%",
                     description: "Manage your profile",
-                    header: "Your {{productName}} Profile",
+                    header: "Your Profile",
                     profileText: "Details of your personal profile",
                     readOnlyDescription: "View your profile",
                     userSourceText: "(Signed up via {{source}})"
@@ -1927,6 +2029,13 @@ export const myAccount: MyAccountNS = {
                 "You can use this password to sign in to {{productName}} in addition " +
                 "to social login.",
             heading: "Create Password"
+        },
+        devices: {
+            actionTitles: {
+                empty: "No registered devices"
+            },
+            description: "Review and manage the devices registered to your account",
+            heading: "Devices"
         },
         federatedAssociations: {
             description: "View your accounts from other connections that are linked with this account",

@@ -61,7 +61,7 @@ interface InfiniteScrollContainerPropsInterface
 }
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
-    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+    import("@wso2is/admin.core.v1/components/monaco-editor/monaco-editor")
 );
 
 /**

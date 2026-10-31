@@ -1,5 +1,11 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.43
+
+### Patch Changes
+
+- [#10731](https://github.com/wso2/identity-apps/pull/10731) [`e5807609f2de7ae8bb6eb4a32331cb44ff87d146`](https://github.com/wso2/identity-apps/commit/e5807609f2de7ae8bb6eb4a32331cb44ff87d146) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Stop the Console from crashing when the user store list API returns an unexpected payload
+
 ## 2.27.42
 
 ### Patch Changes

@@ -25,7 +25,8 @@ span.ui.text.color.red{
     color:@red;
 }
 
-.password-policy-description i {
+.password-policy-description i,
+.org-handle-policy-description i {
     float: left
 }
 

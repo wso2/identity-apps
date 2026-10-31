@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "பாத்திரத்தை நீக்கவும்",
             deleteUser: "பயனரை நீக்கவும்",
             selfRegisterUser: "சுய பதிவு பயனர்",
+            updateGroupsOfUser: "குழுவின் பயனர்களைப் புதுப்பிக்கவும்",
             updateRolesOfUser: "பாத்திரப் பயனர்களை புதுப்பிக்கவும்"
         },
         placeholders: {
@@ -232,6 +233,21 @@ export const common: CommonNS = {
     lessThanOrEqual: "சமம் அல்லது அதற்கு குறைவு",
     lightMode: "ஒளி தீம்",
     loading: "ஏற்றுகிறது",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "உள்ளமைந்த மொழிகள்",
+                hint: "இந்த மொழிகள் அனைத்து பயனர்-முகப்பு அங்கீகார மற்றும் கணக்கு மீட்பு திரைகளிலும், எனது கணக்கு போர்ட்டலிலும் ஆதரிக்கப்படுகின்றன.",
+                subHeading: "இயல்பாக ஆதரிக்கப்படும் மொழிகள்"
+            },
+            other: {
+                heading: "கூடுதல் மொழிகள்",
+                subHeading: "இந்த வார்ப்புருவிற்குக் கிடைக்கும் பிற மொழிகள்"
+            }
+        },
+        label: "மொழி",
+        placeholder: "மொழியைத் தேர்ந்தெடுக்கவும்"
+    },
     loginTime: "நுழைந்த நேரம்",
     logout: "வெளியேறு",
     makePrimary:"முதன்மை உருவாக்கு",

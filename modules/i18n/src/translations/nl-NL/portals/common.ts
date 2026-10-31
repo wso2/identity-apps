@@ -109,6 +109,7 @@ export const common: CommonNS = {
             deleteRole: "Rol verwijderen",
             deleteUser: "Gebruiker verwijderen",
             selfRegisterUser: "Zelfregistratie van gebruiker",
+            updateGroupsOfUser: "Gebruikers van de groep bijwerken",
             updateRolesOfUser: "Gebruikers van de rol bijwerken"
         },
         placeholders: {
@@ -232,6 +233,21 @@ export const common: CommonNS = {
     lessThanOrEqual: "Kleiner dan of gelijk aan",
     lightMode: "Lichte modus",
     loading: "Laden",
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: "Ingebouwde talen",
+                hint: "Deze talen worden ondersteund in alle gebruikersgerichte authenticatie- en accountherstelschermen en in het Mijn Account-portaal.",
+                subHeading: "Standaard ondersteunde talen"
+            },
+            other: {
+                heading: "Extra talen",
+                subHeading: "Andere talen die beschikbaar zijn voor deze sjabloon"
+            }
+        },
+        label: "Taal",
+        placeholder: "Selecteer taal"
+    },
     loginTime: "Aanmeldtijd",
     logout: "Afmelden",
     makePrimary: "Als primair instellen",

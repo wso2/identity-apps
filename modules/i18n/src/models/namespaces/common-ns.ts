@@ -104,6 +104,7 @@ export interface CommonNS {
             deleteRole: string;
             deleteUser: string;
             selfRegisterUser: string;
+            updateGroupsOfUser: string;
             updateRolesOfUser: string;
         }
         placeholders: {
@@ -218,6 +219,21 @@ export interface CommonNS {
     lessThanOrEqual: string;
     lightMode: string;
     loading: string;
+    localeDropdown: {
+        groups: {
+            default: {
+                heading: string;
+                hint: string;
+                subHeading: string;
+            };
+            other: {
+                heading: string;
+                subHeading: string;
+            };
+        };
+        label: string;
+        placeholder: string;
+    };
     loginTime: string;
     logout: string;
     maximize: string;

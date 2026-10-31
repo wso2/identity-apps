@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
@@ -26,11 +28,13 @@ import {
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import deleteFlowExtension from "@wso2is/admin.flow-extensions.v1/api/delete-flow-extension";
 import {
     deleteIdentityVerificationProvider
 } from "@wso2is/admin.identity-verification-providers.v1/api/identity-verification-provider";
@@ -82,7 +86,9 @@ import {
     ConnectionInterface,
     ConnectionTypes
 } from "../models/connection";
+import { IdPShareListResponseInterface } from "../models/identity-provider-sharing";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
+import { getIdPShare } from "../api/share/idp/use-get-idp-share";
 
 /**
  * Proptypes for the Authenticators Grid component.
@@ -178,7 +184,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         showDeleteErrorDueToConnectedAppsModal,
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
+    const [ showDeleteErrorDueToSharedOrgsModal, setShowDeleteErrorDueToSharedOrgsModal ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -187,6 +196,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const hasConnectionDeletePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.delete);
     const hasIdVPDeletePermission: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.delete
+    );
+    const hasFlowExtensionDeletePermission: boolean = useRequiredScopes(
+        featureConfig?.flowExtensions?.scopes?.delete
     );
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -209,6 +221,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         switch (connectionType) {
             case ConnectionTypes.IDVP:
                 history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id));
+
+                break;
+
+            case ConnectionTypes.FLOW_EXTENSION:
+                history.push(AppConstants.getPaths().get("FLOW_EXTENSION_EDIT").replace(":id", id));
 
                 break;
 
@@ -247,8 +264,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const handleAuthenticatorDelete = async (idpId: string, connectionType: string,
         isCustomLocalAuthenticator?: boolean): Promise<void> => {
 
-        // If the connection is an Identity Verification Provider, then skip checking for connected apps.
-        if (connectionType === ConnectionTypes.IDVP) {
+        // Identity Verification Providers and Flow Extensions have no connected apps to check.
+        if (connectionType === ConnectionTypes.IDVP || connectionType === ConnectionTypes.FLOW_EXTENSION) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
             );
@@ -304,6 +321,18 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * @param idpId - Identity provider id.
      */
     const handleFederatedAuthenticatorDelete = async (idpId: string): Promise<void> => {
+        // Block deletion while the connection is still shared with organizations.
+        if (isOrganizationManagementEnabled) {
+            const shareData: IdPShareListResponseInterface = await getIdPShare(idpId);
+            const isSharedWithOrganizations: boolean = shareData?.organizations?.length > 0;
+
+            if (isSharedWithOrganizations) {
+                setShowDeleteErrorDueToSharedOrgsModal(true);
+
+                return;
+            }
+        }
+
         setIsConnectedAppsLoading(true);
 
         getConnectedApps(idpId)
@@ -383,6 +412,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         if(connectionType === ConnectionTypes.IDVP) {
             deleteAuthenticator = deleteIdentityVerificationProvider;
+        } else if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
+            deleteAuthenticator = deleteFlowExtension;
         } else if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(deletingIDP)) {
             deleteAuthenticator = deleteCustomAuthenticator;
         } else {
@@ -493,6 +524,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return hasIdVPDeletePermission;
         }
 
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
+            return hasFlowExtensionDeletePermission;
+        }
+
         if (!hasConnectionDeletePermission) {
             return false;
         }
@@ -519,6 +554,12 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return connection?.image ? ConnectionsManagementUtils
                 .resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
                 : getConnectionIcons().default;
+        }
+
+        if (connection.type === ConnectionTypes.FLOW_EXTENSION) {
+            return connection?.image
+                ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
+                : AuthenticatorMeta.getFlowExtensionIcon();
         }
 
         if ((connection?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
@@ -578,6 +619,14 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             .isOrganizationSSOConnection((authenticator as ConnectionInterface)
                                 .federatedAuthenticators?.defaultAuthenticatorId);
 
+                        // Shared identity providers are flagged via the `isShared` attribute in the API response.
+                        const isSharedConnection: boolean = !!authenticator.isShared;
+
+                        const resourceName: string = isIdP
+                            ? authenticator.name
+                            : (authenticator as AuthenticatorInterface).displayName
+                                || (authenticator as AuthenticatorInterface).name;
+
                         return (
                             <Fragment key={ index }>
                                 <ResourceGrid.Card
@@ -608,14 +657,27 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     ) }
                                     showActions={ true }
                                     showResourceEdit={ true }
-                                    showResourceDelete={ isDeleteEnabled(authenticator) }
+                                    showResourceDelete={ !isSharedConnection && isDeleteEnabled(authenticator) }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
-                                        isIdP
-                                            ? authenticator.name
-                                            : (authenticator as AuthenticatorInterface).displayName
-                                                    || (authenticator as AuthenticatorInterface).name
+                                        isSharedConnection
+                                            ? (
+                                                <Box
+                                                    sx={ {
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                        gap: 1
+                                                    } }
+                                                >
+                                                    { resourceName }
+                                                    <Chip
+                                                        label={ t("authenticationProvider:sharedConnection.label") }
+                                                        size="small"
+                                                    />
+                                                </Box>
+                                            )
+                                            : resourceName
                                     }
                                     resourceCategory={
                                         AuthenticatorMeta.getAuthenticatorCategory(
@@ -712,6 +774,37 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         })
                                 }
                             </List>
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                showDeleteErrorDueToSharedOrgsModal && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                        type="negative"
+                        open={ showDeleteErrorDueToSharedOrgsModal }
+                        secondaryAction={ t("common:close") }
+                        onSecondaryActionClick={ (): void => setShowDeleteErrorDueToSharedOrgsModal(false) }
+                        data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation` }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-header` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            negative
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-message` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-componentid={ `${ testId }-delete-idp-shared-orgs-confirmation-content` }
+                        >
+                            { t("authenticationProvider:confirmations.deleteIDPWithSharedOrganizations.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

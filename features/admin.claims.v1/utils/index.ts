@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./attribute-name-utils";
 export * from "./resolve-type";

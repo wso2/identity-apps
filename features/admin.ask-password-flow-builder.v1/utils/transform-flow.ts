@@ -18,8 +18,11 @@
 
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { getVariablesPayload } from "@wso2is/admin.flow-builder-core.v1/utils/variables";
+import processBranchNavigation from "@wso2is/admin.flow-builder-core.v1/utils/process-branch-navigation";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
 import omit from "lodash-es/omit";
@@ -74,7 +77,8 @@ const processNavigation = (resource: Element, resourceId: string, navigations: R
 const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
-    const payload: { steps: any[] } = {
+    const payload: { variables?: FlowVariablesInterface; steps: any[] } = {
+        variables: getVariablesPayload(flowNodes),
         steps: []
     };
 
@@ -139,7 +143,10 @@ const transformFlow = (flowState: any) => {
         }
 
         if (step?.data?.action) {
-            step.data = processNavigation(step.data, step.id, stepNavigationMap);
+            // A rule decision routes through its branches, so it has no single next step.
+            step.data = step.data.action.branches
+                ? processBranchNavigation(step.data, stepNavigationMap)
+                : processNavigation(step.data, step.id, stepNavigationMap);
         }
 
         payload.steps.push(step);

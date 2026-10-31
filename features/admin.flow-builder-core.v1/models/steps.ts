@@ -54,7 +54,7 @@ export enum StepCategories {
 
 export enum StepTypes {
     View = "VIEW",
-    Rule = "RULE",
+    RuleEvaluation = "RULE_EVALUATION",
     Execution = "EXECUTION",
     End = "END",
 }
@@ -73,13 +73,16 @@ export enum ExecutionTypes {
     PasskeyEnrollment = "FIDO2Executor",
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",
-    FlowExtension = "FlowExtensionExecutor"
+    FlowExtension = "FlowExtensionExecutor",
+    DigitalWalletFederation = "PresentationExecutor",
+    DeviceRegistration = "DeviceRegistrationExecutor"
 }
 
 export enum ExecutionStepViewTypes {
     Default = "Execution",
     MagicLinkView = "Magic Link View",
-    PasskeyView = "Passkey View"
+    PasskeyView = "Passkey View",
+    WalletView = "Digital Wallet"
 }
 
 export enum ViewStepVariants {

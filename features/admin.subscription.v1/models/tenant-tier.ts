@@ -26,6 +26,7 @@ export enum TenantTier {
     ESSENTIALS = "Essentials",
     PROFESSIONAL = "Professional",
     ENTERPRISE = "Enterprise",
+    ENTERPRISE_B2B = "Enterprise-B2B",
     PYG = "PYG",
     PYG_TRIAL = "PYG-Trial"
 }

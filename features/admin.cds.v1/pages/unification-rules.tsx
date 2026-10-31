@@ -39,6 +39,7 @@ import { useUnificationRules } from "../hooks/use-unification-rules";
 import { DEFAULT_PAGE_SIZE } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
+import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 interface EnrichedRule extends UnificationRuleModel {
     property_scope: string;
@@ -150,11 +151,19 @@ const ProfileUnificationRulePage: React.FC = () => {
     const hasSearchQuery: boolean = (searchQuery?.trim()?.length ?? 0) > 0;
     const hasSearchResults: boolean = filteredRules.length > 0;
 
+    const backButton: { onClick: () => void; text: string } | undefined = isCDSUnifiedProfileViewEnabled()
+        ? {
+            onClick: () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE")),
+            text: t("customerDataService:landing.backButton")
+        }
+        : undefined;
+
     if (error) {
         return (
             <PageLayout
                 title={ t("customerDataService:unificationRules.list.page.title") }
                 description={ t("customerDataService:unificationRules.list.page.description") }
+                backButton={ backButton }
             >
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().genericError }
@@ -179,6 +188,7 @@ const ProfileUnificationRulePage: React.FC = () => {
             <PageLayout
                 title={ t("customerDataService:unificationRules.list.page.title") }
                 description={ t("customerDataService:unificationRules.list.page.description") }
+                backButton={ backButton }
                 action={ hasRules ? (
                     <PrimaryButton onClick={ handleAddRule }>
                         <Icon name="add" />

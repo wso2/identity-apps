@@ -19,9 +19,11 @@
 .flow-builder-execution {
 
     &.apple,
+    &.digital-wallet,
     &.github,
     &.confirmation-code,
     &.magic-link,
+    &.device-registration,
     &.flow-extension {
         img {
             filter: invert(100%);

@@ -172,6 +172,8 @@ export class ClaimManagementConstants {
         "http://wso2.org/vc/claim"
     ];
 
+    public static readonly IDENTITY_CLAIM_URI_PREFIX: string = "http://wso2.org/claims/identity/";
+
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
 
     public static readonly OIDC: string = "oidc";
@@ -301,6 +303,21 @@ export class ClaimManagementConstants {
      * Default scim2 custom user schema URI.
      */
     public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:schemas:extension:custom:User";
+
+    /**
+     * Allowed format of a local attribute name: letters, digits, _, ., - and / as a segment separator.
+     */
+    public static readonly LOCAL_ATTRIBUTE_NAME_REGEX: RegExp = /^[\w.-]+(\/[\w.-]+)*$/;
+
+    /**
+     * Maximum length of a local attribute name, so that the generated SCIM mapping fits the 255 character URI limit.
+     */
+    public static readonly LOCAL_ATTRIBUTE_NAME_MAX_LENGTH: number = 216;
+
+    /**
+     * Attribute name prefix reserved for identity claims, which cannot be created from the Console.
+     */
+    public static readonly IDENTITY_CLAIM_NAME_PREFIX: string = "identity/";
 }
 
 /**

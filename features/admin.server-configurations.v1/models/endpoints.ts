@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     captchaForSSOLogin: string;
     governanceConnectorCategories: string;
     impersonationConfigurations: string;
+    openid4vpConfigurations: string;
     loginPolicies: string;
     multiFactorAuthenticators: string;
     passiveStsConfigurations: string;
@@ -42,4 +43,5 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     serverSupportedSchemas: string;
     fraudDetectionConfigurations: string;
     issuerUsageScope: string;
+    fapiConfigurations: string;
 }

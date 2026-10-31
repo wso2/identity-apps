@@ -68,6 +68,7 @@ import React, {
     ReactNode,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -151,6 +152,14 @@ export interface AddAuthenticatorModalPropsInterface extends TestableComponentIn
 const CARDS_PER_ROW: SemanticWIDTHS = 3;
 
 /**
+ * Connection template IDs that should be hidden from the Add Authenticator modal because they are
+ * not applicable as login flow authenticators.
+ */
+const HIDDEN_CONNECTION_TEMPLATE_IDS: string[] = [
+    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
+];
+
+/**
  * Authenticator side panel component.
  *
  * @param props - Props injected to the component.
@@ -228,6 +237,15 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         isLoading: isConnectionTemplatesFetchRequestLoading,
         error: connectionTemplatesFetchRequestError
     } = useGetConnectionTemplates(null, null, null, showAddNewAuthenticatorView, true);
+
+    /**
+     * Connection templates excluding the ones that should not be shown in the Add Authenticator modal.
+     * See {@link HIDDEN_CONNECTION_TEMPLATE_IDS}.
+     */
+    const filteredConnectionTemplates: ConnectionTemplateInterface[] = useMemo(() =>
+        connectionTemplates?.filter((template: ConnectionTemplateInterface) =>
+            !HIDDEN_CONNECTION_TEMPLATE_IDS.includes(template.id)
+        ), [ connectionTemplates ]);
 
     /**
      * Handle error from fetching IdP templates.
@@ -536,7 +554,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 <Divider hidden/>
                 <ResourceGrid
                     isLoading={ isConnectionTemplatesFetchRequestLoading }
-                    isEmpty={ connectionTemplates?.length === 0 }
+                    isEmpty={ filteredConnectionTemplates?.length === 0 }
                     emptyPlaceholder={ (
                         <EmptyPlaceholder
                             image={ getEmptyPlaceholderIllustrations().newList }
@@ -558,7 +576,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     ) }
                 >
                     {
-                        connectionTemplates?.map((
+                        filteredConnectionTemplates?.map((
                             template: ConnectionTemplateInterface,
                             templateIndex: number
                         ) => {

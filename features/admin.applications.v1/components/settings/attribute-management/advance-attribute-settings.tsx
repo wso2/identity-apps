@@ -32,6 +32,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
+import { filterSubjectAttributeOptions } from "./subject-attribute-options";
 import { ApplicationManagementConstants } from "../../../constants/application-management";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -49,6 +50,21 @@ import { ApplicationManagementUtils } from "../../../utils/application-managemen
 interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     claimConfigurations: ClaimConfigurationInterface;
     dropDownOptions: any;
+    /**
+     * Option representing the application's default subject identifier, shown disabled while no alternate is
+     * assigned.
+     */
+    defaultSubjectOption?: DropdownOptionsInterface;
+    /**
+     * Whether the mapping the stored subject attribute relied on is gone in this session (its row removed, or
+     * attribute name mapping no longer in effect).
+     */
+    isStoredSubjectMappingRemoved?: boolean;
+    /**
+     * Mapped attribute name that was the subject attribute when its mapping row was removed in this session; the
+     * subject returns to the default while it still equals this name.
+     */
+    removedSubjectMapping?: string;
     setSubmissionValues: any;
     setSelectedValue: any;
     defaultSubjectAttribute: string;
@@ -88,6 +104,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         applicationTemplateId,
         claimConfigurations,
         dropDownOptions,
+        defaultSubjectOption,
+        isStoredSubjectMappingRemoved,
+        removedSubjectMapping,
         setSubmissionValues,
         setSelectedValue,
         defaultSubjectAttribute,
@@ -106,6 +125,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
+    // Short name of the default subject identifier of the application, shown in the hint (userid or username).
+    const defaultSubjectAttributeName: string = defaultSubjectAttribute?.split("/").pop();
+
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.applications?.disabledFeatures);
 
@@ -119,8 +141,29 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         useState<boolean>(initialSubject?.useMappedLocalSubject);
     const [ mandateLinkedLocalAccount, setMandateLinkedLocalAccount ] =
         useState<boolean>(initialSubject?.mappedLocalSubjectMandatory);
+    const [ subjectIncludeUserDomain, setSubjectIncludeUserDomain ] =
+        useState<boolean>(initialSubject?.includeUserDomain);
+    const [ subjectIncludeTenantDomain, setSubjectIncludeTenantDomain ] =
+        useState<boolean>(initialSubject?.includeTenantDomain);
 
     useEffect(() => {
+        if (removedSubjectMapping && selectedSubjectValue === removedSubjectMapping) {
+            // The row of the mapped attribute that is the subject was removed, as confirmed by the user.
+            setSelectedSubjectValue(defaultSubjectAttribute);
+
+            return;
+        }
+        if (isStoredSubjectMappingRemoved && selectedSubjectValue
+            && selectedSubjectValue !== defaultSubjectAttribute
+            && (dropDownOptions ?? []).findIndex(
+                (option: DropdownOptionsInterface) => option?.value === selectedSubjectValue
+            ) < 0) {
+            // The mapping the stored subject relied on is gone (its row was removed or attribute name mapping is
+            // no longer in effect), so the selection returns to the default even when nothing is left to map.
+            setSelectedSubjectValue(defaultSubjectAttribute);
+
+            return;
+        }
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
             if (selectedSubjectValueLocalClaim) {
                 const index: number = dropDownOptions.findIndex(
@@ -135,10 +178,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             (option: DropdownOptionsInterface) => option?.key === defaultSubjectAttribute
                         );
 
+                    // The dropdown lists alternates only, so when the previous pick is gone fall back to the
+                    // application's default subject identifier rather than to the first alternate.
                     setSelectedSubjectValue(
                         defaultSubjectClaimIndex > -1
                             ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
-                            : dropDownOptions[ 0 ]?.value
+                            : defaultSubjectAttribute
                     );
                 }
             } else if (selectedSubjectValue) {
@@ -151,18 +196,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
                     setSelectedSubjectValue(selectedSubjectValue);
                 }
-            } else {
-                setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
+            } else if (initialSubject) {
+                setSelectedSubjectValue(initialSubject?.claim?.uri || defaultSubjectAttribute);
             }
         } else if (selectedSubjectValue) {
+            // Fall back to the default only for a value the user could have picked. The subject configured on the
+            // server is kept even when the dropdown does not offer it, so that a save never replaces it silently.
             if (dropDownOptions && dropDownOptions.length > 0 &&
+                selectedSubjectValue !== initialSubject?.claim?.uri &&
                 dropDownOptions.findIndex(
                     (option: DropdownOptionsInterface) => option?.value === selectedSubjectValue
                 ) < 0) {
                 setSelectedSubjectValue(defaultSubjectAttribute);
             }
-        } else {
-            setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
+        } else if (initialSubject) {
+            // Wait for the application's subject configuration before assuming the default.
+            setSelectedSubjectValue(initialSubject?.claim?.uri || defaultSubjectAttribute);
         }
     }, [ dropDownOptions ]);
 
@@ -243,9 +292,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const submitValues = (values: Record<string, any>) => {
         const settingValues: {
             role: RoleInterface;
-            subject: SubjectInterface
-            oidc: OIDCDataInterface
+            subject: SubjectInterface;
+            oidc: OIDCDataInterface;
+            isSubjectClaimExplicit: boolean;
         } = {
+            isSubjectClaimExplicit: showSubjectAttribute,
             oidc: {
                 ...oidcInitialValues,
                 subject: {
@@ -260,8 +311,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             },
             subject: {
                 claim: getSelectedDropDownValue(dropDownOptions, values.subjectAttribute),
-                includeTenantDomain: !!values.subjectIncludeTenantDomain,
-                includeUserDomain: !!values.subjectIncludeUserDomain,
+                includeTenantDomain: !!subjectIncludeTenantDomain,
+                includeUserDomain: !!subjectIncludeUserDomain,
                 mappedLocalSubjectMandatory: mandateLinkedLocalAccount,
                 useMappedLocalSubject: validateLinkedLocalAccount
             }
@@ -289,7 +340,23 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         // as sending an empty value for subject results in issues.
         // Ref: https://github.com/wso2/product-is/issues/19054
         if (!settingValues?.subject?.claim || settingValues?.subject?.claim === "") {
-            settingValues.subject.claim = claimConfigurations.subject.claim.uri;
+            settingValues.subject.claim = claimConfigurations?.subject?.claim?.uri ?? defaultSubjectAttribute;
+        }
+
+        // Preserve the configured role claim URI when the resolved value is empty, as the User Attributes tab does
+        // not expose a control to manage it and sending an empty value overwrites the persisted configuration.
+        if ((!settingValues?.role?.claim || settingValues?.role?.claim === "")
+            && claimConfigurations?.role?.claim?.uri
+            && claimConfigurations?.role?.claim?.uri !== "http://wso2.org/claims/role") {
+            settingValues.role.claim = claimConfigurations.role.claim.uri;
+        }
+
+        // Preserve the configured role userstore-domain flag when its checkbox is not rendered,
+        // as the tab exposes no control to manage it and sending false overwrites the persisted value.
+        if ((!config.showIncludeUserstoreDomainRole || !UIConfig?.legacyMode?.roleMapping)
+            && settingValues?.role?.includeUserDomain === false
+            && claimConfigurations?.role?.includeUserDomain !== undefined) {
+            settingValues.role.includeUserDomain = claimConfigurations.role.includeUserDomain;
         }
 
         setSubmissionValues(settingValues);
@@ -320,12 +387,32 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     /**
+     * Resolves the hidden status of the disabled dropdown that shows the application's default subject identifier
+     * while no alternate is assigned.
+     * @returns The hidden status
+     */
+    const resolveDefaultDropDownHiddenStatus = (): boolean => {
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+            || showSubjectAttribute
+            || disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+            || !defaultSubjectOption;
+    };
+
+    /**
+     * This function resolves the hidden status of the include user domain and include tenant domain options.
+     * @returns The hidden status.
+     */
+    const resolveIncludeDomainOptionsHiddenStatus = (): boolean => {
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute;
+    };
+
+    /**
      * This function resolves the hidden status of the subject attribute section.
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
         return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-                (onlyOIDCConfigured && !showSubjectAttribute)
+                !showSubjectAttribute
         ;
     };
 
@@ -335,6 +422,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const mandateLinkedAccountCheckboxHandler = (value: boolean) => {
         setMandateLinkedLocalAccount(value);
+    };
+
+    const subjectIncludeUserDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeUserDomain(value);
+    };
+
+    const subjectIncludeTenantDomainChangeHandler = (value: boolean) => {
+        setSubjectIncludeTenantDomain(value);
     };
 
     /**
@@ -364,7 +459,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ".subject.fields.subjectAttribute.hintOIDC"
                             }
                         >
-                            Select which of the shared attributes you want to use as the subject identifier of the
+                            Select the attribute you want to use as the subject identifier of the
                             user. This represents the <Code withBackground>sub</Code> claim of the
                             <Code withBackground>id_token</Code>.
                         </Trans>
@@ -380,7 +475,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ".subject.fields.subjectAttribute.hintSAML"
                             }
                         >
-                            Select which of the shared attributes you want to use as the subject identifier of the
+                            Select the attribute you want to use as the subject identifier of the
                             user. This represents the <Code withBackground>subject</Code> element of the SAML
                             assertion.
                         </Trans>
@@ -445,9 +540,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
-                            { (onlyOIDCConfigured &&
-                                !disabledFeatures?.includes(
-                                    "applications.attributes.alternativeSubjectIdentifier")) && (
+                            { !disabledFeatures?.includes(
+                                "applications.attributes.alternativeSubjectIdentifier") && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Checkbox
@@ -467,12 +561,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         />
                                         <Hint>
                                             <Trans
-                                                i18nKey={ t("applications:forms." +
-                                                    "advancedAttributeSettings.sections.subject.fields." +
-                                                    "hint") }
+                                                i18nKey={
+                                                    "applications:forms.advancedAttributeSettings.sections." +
+                                                    "subject.fields.alternateSubjectAttribute.hint"
+                                                }
+                                                values={ { defaultSubjectAttribute: defaultSubjectAttributeName } }
                                             >
                                                 This option will allow to use an alternate attribute as the subject
-                                                identifier instead of the <Code withBackground>userid</Code>.
+                                                identifier instead of the <Code withBackground>
+                                                    { defaultSubjectAttributeName }
+                                                </Code>.
                                             </Trans>
                                         </Hint>
                                     </Grid.Column>
@@ -489,6 +587,30 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
+                            {
+                                !resolveDefaultDropDownHiddenStatus() && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.Dropdown
+                                                ariaLabel="Default subject attribute"
+                                                name="defaultSubjectAttribute"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectAttribute.label")
+                                                }
+                                                value={ defaultSubjectAttribute }
+                                                options={ [ defaultSubjectOption ] }
+                                                disabled={ true }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                                                data-componentid={ `${ componentId }-subject-attribute-dropdown` }
+                                                enableReinitialize={ true }
+                                                hint={ resolveSubjectAttributeHint() }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
                             {
                                 !resolveDropDownHiddenStatus() && (
                                     <Grid.Row columns={ 1 }>
@@ -507,6 +629,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 required={ claimMappingOn }
                                                 value={ selectedSubjectValue }
                                                 options={ dropDownOptions }
+                                                search={ filterSubjectAttributeOptions }
+                                                selectOnBlur={ false }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ componentId }-subject-attribute-dropdown` }
                                                 data-componentid={ `${ componentId }-subject-attribute-dropdown` }
@@ -520,20 +644,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             {
                                 !(disabledFeatures?.includes("applications.attributes" +
-                                        ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                        ".alternativeSubjectIdentifier") ||
+                                    resolveIncludeDomainOptionsHiddenStatus()) && (
                                     <Grid.Row
                                         columns={ 1 }
                                         data-componentid="application-edit-user-attributes-include-user-domain"
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeUserDomainChangeHandler }
                                                 ariaLabel="Subject include user domain"
                                                 name="subjectIncludeUserDomain"
                                                 label={ t("applications:forms.advancedAttributeSettings." +
                                                     "sections.subject.fields.subjectIncludeUserDomain.label") }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                                    subjectIncludeUserDomain ? [ "includeUserDomain" ] : [] }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
                                                 hint={
@@ -547,13 +673,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             {
                                 !(disabledFeatures?.includes("applications.attributes" +
-                                    ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                    ".alternativeSubjectIdentifier") ||
+                                    resolveIncludeDomainOptionsHiddenStatus()) && (
                                     <Grid.Row
                                         columns={ 1 }
                                         data-componentid="application-edit-user-attributes-include-tenant-domain"
                                     >
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
+                                                listen={ subjectIncludeTenantDomainChangeHandler }
                                                 ariaLabel="Subject include tenant domain"
                                                 name="subjectIncludeTenantDomain"
                                                 label={
@@ -562,7 +690,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 }
                                                 required={ false }
                                                 value={
-                                                    initialSubject?.includeTenantDomain
+                                                    subjectIncludeTenantDomain
                                                         ? [ "includeTenantDomain" ]
                                                         : []
                                                 }

@@ -401,7 +401,9 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
     const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
 
     const handleInsertPolicyLink: () => void = (): void => {
-        if (isValidPolicyUrl) {
+        if (isLink) {
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+        } else if (isValidPolicyUrl) {
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, policyUrl);
         }
     };
@@ -419,6 +421,9 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
      * based on whether a URL exists, whether it is valid, and whether text is selected.
      */
     const policyLinkTooltip: () => string = (): string => {
+        if (isLink) {
+            return t("consents:policyConsents.wizard.create.form.description.removePolicyLink");
+        }
         if (!policyUrl) {
             return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
         }
@@ -479,43 +484,42 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                     <ItalicIcon />
                 </ToolbarIconButton>
                 <ToolbarDivider component="span" />
-                <ToolbarPolicyLinkButton
-                    component="button"
-                    type="button"
-                    className={ isLink ? "active" : undefined }
-                    disabled={ disabled || (!hasSelection && !isLink) }
-                    onClick={ handleLinkButtonClick }
-                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
-                >
-                    <OxygenLinkIcon />
-                    { t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
-                </ToolbarPolicyLinkButton>
-                { policyUrl !== undefined && (
-                    <>
-                        <ToolbarDivider component="span" />
-                        { /*
-                         * Wrap in a <span> so the Tooltip still shows on a disabled button.
-                         * MUI/Oxygen Tooltip requires a non-disabled child to trigger.
-                         */ }
-                        <Tooltip
-                            title={ policyLinkTooltip() }
-                            placement="top"
-                            arrow
-                        >
-                            <span>
-                                <ToolbarPolicyLinkButton
-                                    component="button"
-                                    type="button"
-                                    disabled={ disabled || !hasSelection || !isValidPolicyUrl }
-                                    onClick={ handleInsertPolicyLink }
-                                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertPolicyLink") }
-                                >
-                                    <OxygenLinkIcon />
-                                    { t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkShort") }
-                                </ToolbarPolicyLinkButton>
-                            </span>
-                        </Tooltip>
-                    </>
+                { policyUrl === undefined ? (
+                    <ToolbarPolicyLinkButton
+                        component="button"
+                        type="button"
+                        className={ isLink ? "active" : undefined }
+                        disabled={ disabled || (!hasSelection && !isLink) }
+                        onClick={ handleLinkButtonClick }
+                        aria-label={ t(
+                            "consents:policyConsents.wizard.create.form.description.insertCustomLinkShort"
+                        ) }
+                    >
+                        <OxygenLinkIcon />
+                        { t("consents:policyConsents.wizard.create.form.description.insertCustomLinkShort") }
+                    </ToolbarPolicyLinkButton>
+                ) : (
+                    <Tooltip
+                        title={ policyLinkTooltip() }
+                        placement="top"
+                        arrow
+                    >
+                        <span>
+                            <ToolbarPolicyLinkButton
+                                component="button"
+                                type="button"
+                                className={ isLink ? "active" : undefined }
+                                disabled={ disabled || (!isLink && (!hasSelection || !isValidPolicyUrl)) }
+                                onClick={ handleInsertPolicyLink }
+                                aria-label={ t(
+                                    "consents:policyConsents.wizard.create.form.description.insertPolicyLink"
+                                ) }
+                            >
+                                <OxygenLinkIcon />
+                                { t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkShort") }
+                            </ToolbarPolicyLinkButton>
+                        </span>
+                    </Tooltip>
                 ) }
             </ToolbarMainRow>
         </Paper>
@@ -678,7 +682,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     />
                     <HistoryPlugin />
                     <LinkPlugin />
-                    <ConsentFloatingLinkEditor />
+                    { variant === "preference" && <ConsentFloatingLinkEditor /> }
                     <HtmlSyncPlugin
                         initialHtml={ value }
                         onChange={ onChange }

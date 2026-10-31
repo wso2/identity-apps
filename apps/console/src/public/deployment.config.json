@@ -34,10 +34,16 @@
                 "settingsEnabled": false
             },
             "moesif": {
+                "advancedAnalyticsUpgradeEnabled": false,
                 "dashboardEnabled": false,
-                "embeddedPortalUrl": ""
+                "embeddedPortalUrl": "",
+                "moesifTermsOfServiceUrl": "https://www.moesif.com/terms/",
+                "termsOfServiceUrl": ""
             }
         },
+        "cdsApplicationIdentifierType": "client_id",
+        "cdsHost": "",
+        "cdsUnifiedProfileView": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
             {
@@ -178,6 +184,16 @@
                 "description": "This email is sent when the user changes the email address",
                 "displayName": "Email Update Verification",
                 "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
+            }
+        ],
+        "mcpKnownClients": [
+            {
+                "clientId": "https://claude.ai/oauth/mcp-oauth-client-metadata",
+                "name": "Claude"
+            },
+            {
+                "clientId": "https://vscode.dev/oauth/client-metadata.json",
+                "name": "Visual Studio Code"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -583,8 +599,10 @@
                 ],
                 "enabled": true,
                 "properties": {
+                    "makeSubjectMandatory": true,
                     "maxGracefulRefreshTokenReuseLimit": 5,
-                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60,
+                    "multipleClientSecretsMaxCount": 2
                 },
                 "featureFlags": [
                     {
@@ -658,10 +676,9 @@
                         "featureFlags": [],
                         "scopes": {
                             "create": [ "internal_application_mgt_client_secret_create" ],
-                            "delete": [],
+                            "delete": [ "internal_application_mgt_client_secret_delete" ],
                             "feature": [],
-                            "read": [ "internal_application_mgt_client_secret_view" ],
-                            "update": []
+                            "read": [ "internal_application_mgt_client_secret_view" ]
                         }
                     },
                     "applicationInternalAPIAuthorization": {
@@ -871,6 +888,57 @@
                     ]
                 }
             },
+            "cliSettings": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "properties": {
+                    "applicationName": "",
+                    "clientId": ""
+                },
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:cliSettings"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_user_mgt_list"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update",
+                        "internal_role_mgt_update",
+                        "internal_role_mgt_users_update"
+                    ]
+                }
+            },
+            "connectionSharing": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_idp_share"
+                    ],
+                    "delete": [
+                        "internal_idp_unshare"
+                    ],
+                    "feature": [
+                        "console:connectionSharing"
+                    ],
+                    "read": [
+                        "internal_idp_shared_access_view",
+                        "internal_organization_view"
+                    ],
+                    "update": [
+                        "internal_idp_share",
+                        "internal_idp_unshare"
+                    ]
+                }
+            },
             "consents": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -887,10 +955,16 @@
                         "console:consents"
                     ],
                     "read": [
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
                         "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_app_view",
                         "internal_consent_mgt_purpose_view"
                     ],
                     "update": [
+                        "internal_branding_preference_policy_update",
+                        "internal_consent_mgt_purpose_app_create",
+                        "internal_consent_mgt_purpose_app_delete",
                         "internal_consent_mgt_purpose_update"
                     ]
                 }
@@ -898,7 +972,8 @@
             "consoleSettings": {
                 "disabledFeatures": [
                     "consoleSettings.invitedExternalAdmins",
-                    "consoleSettings.privilegedUsers"
+                    "consoleSettings.privilegedUsers",
+                    "consoleSettings.useGranularConsolePermissions"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1043,6 +1118,48 @@
                     ]
                 }
             },
+            "devicePolicies": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_policy_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_policy_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_policy_mgt_view"
+                    ],
+                    "update": [
+                        "internal_policy_mgt_update"
+                    ]
+                }
+            },
+            "devices": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [
+                        "internal_device_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:users"
+                    ],
+                    "read": [
+                        "internal_device_mgt_view"
+                    ],
+                    "update": [
+                        "internal_device_mgt_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1138,6 +1255,10 @@
                         "flag": ""
                     },
                     {
+                        "feature": "flows.registration.organizationOnboarding",
+                        "flag": ""
+                    },
+                    {
                         "feature": "flows.types.list.passwordRecovery",
                         "flag": ""
                     },
@@ -1152,6 +1273,40 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
+                }
+            },
+            "flowExtensions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flowExtensions",
+                        "flag": ""
+                    }
+                ],
+                "properties": {
+                    "nonModifiablePaths": [
+                        "/user/claims[uri=http://wso2.org/claims/userid]",
+                        "/user/claims[uri=http://wso2.org/claims/created]"
+                    ]
+                },
+                "scopes": {
+                    "create": [
+                        "internal_flow_extension_create"
+                    ],
+                    "delete": [
+                        "internal_flow_extension_delete"
+                    ],
+                    "feature": [
+                        "console:flowExtensions"
+                    ],
+                    "read": [
+                        "internal_flow_extension_view",
+                        "internal_claim_meta_view"
+                    ],
+                    "update": [
+                        "internal_flow_extension_update"
+                    ]
                 }
             },
             "gettingStarted": {
@@ -1254,6 +1409,11 @@
                 ],
                 "enabled": true,
                 "featureFlags": [],
+                "properties": {
+                    "maxPushDeviceLimitPerUser": 10,
+                    "multiplePushDeviceSupportEnabled": true,
+                    "pushDeviceRegistrationNotificationsEnabled": true
+                },
                 "scopes": {
                     "create": [
                         "internal_idp_create"
@@ -1348,6 +1508,14 @@
                     },
                     {
                         "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "consents.policyConsents",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "consents.preferenceManagement",
                         "flag": ""
                     }
                 ],
@@ -1555,6 +1723,44 @@
                     "feature": [],
                     "read": [],
                     "update": []
+                }
+            },
+            "presentationDefinitions": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_presentation_definition_create"
+                    ],
+                    "delete": [
+                        "internal_presentation_definition_delete"
+                    ],
+                    "feature": [
+                        "console:presentation_definitions"
+                    ],
+                    "read": [
+                        "internal_presentation_definition_view"
+                    ],
+                    "update": [
+                        "internal_presentation_definition_update"
+                    ]
+                },
+                "subFeatures": {
+                    "verifiablePresentationSettings": {
+                        "disabledFeatures": [],
+                        "enabled": false,
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "read": [
+                                "internal_config_view"
+                            ],
+                            "update": [
+                                "internal_config_update"
+                            ]
+                        }
+                    }
                 }
             },
             "pushProviders": {
@@ -2109,6 +2315,7 @@
             },
             "webhooks": {
                 "disabledFeatures": [
+                    "webhooks.childOrgSubscription",
                     "webhooks.settings"
                 ],
                 "enabled": true,
@@ -2155,13 +2362,35 @@
                     "read": [],
                     "update": []
                 }
+            },
+            "fapi": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
             }
         },
         "flowExecution": {
+            "conditionalBranching": {
+                "maxDecisionNodes": 20,
+                "maxExpressionsCombinedWithAnd": 5,
+                "maxRulesCombinedWithOr": 10
+            },
             "enableLegacyFlows": false,
             "enableLegacyInvitedUserRegistrationFlow": false,
             "enableLegacyPasswordRecoveryFlow": false,
-            "enableLegacySelfRegistrationFlow": false
+            "enableLegacySelfRegistrationFlow": false,
+            "variables": {
+                "maxArraySize": 20,
+                "maxHeaders": 10,
+                "maxRuntimeValues": 20,
+                "maxValueLength": 255
+            }
         },
         "governanceConnectors": {
             "loginAttempts": {
@@ -2201,6 +2430,7 @@
         "isClaimUniquenessValidationEnabled": false,
         "isClientSecretHashEnabled": false,
         "isCookieConsentBannerEnabled": true,
+        "isCustomClaimDialectRoutingEnabled": false,
         "isCustomClaimMappingEnabled": true,
         "isCustomClaimMappingMergeEnabled": true,
         "isDefaultDialectEditingEnabled": false,
@@ -2249,6 +2479,7 @@
                 "accountSecurity": "v1.0.0",
                 "actions": "v0.0.0",
                 "admin-forced-password-reset": "v1.0.0",
+                "agents": "v1.0.0",
                 "apiResources": "v0.0.0",
                 "applications": "v0.0.0",
                 "approvalWorkflows": "v0.0.0",
@@ -2269,6 +2500,7 @@
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",
+                "presentationDefinitions": "v0.0.0",
                 "residentOutboundProvisioning": "v0.0.0",
                 "roles": "v0.0.0",
                 "self-registration-connector": "v1.0.0",

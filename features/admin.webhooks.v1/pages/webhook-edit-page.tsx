@@ -30,8 +30,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -56,6 +56,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import changeWebhookStatus from "../api/change-webhook-status";
 import createWebhook from "../api/create-webhook";
 import deleteWebhook from "../api/delete-webhook";
@@ -69,7 +72,6 @@ import { WebhooksConstants } from "../constants/webhooks-constants";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import {
-    WebhookChannelSubscriptionInterface,
     WebhookConfigFormPropertyInterface,
     WebhookCreateRequestInterface,
     WebhookResponseInterface,
@@ -78,7 +80,14 @@ import {
 } from "../models/webhooks";
 import { AdapterUtils } from "../utils/adapter-utils";
 import { useHandleWebhookError, useHandleWebhookSuccess } from "../utils/alert-utils";
-import { mapEventProfileApiToUI, mapFormDataToChannels } from "../utils/model-mapper-utils";
+import { isChildOrgSubscriptionEnabled } from "../utils/api-version-utils";
+import {
+    getSubscribedChannels,
+    mapEventProfileApiToUI,
+    mapFormDataToChannelUris,
+    mapFormDataToSubscribedChannels,
+    mapSubscribedChannelsToFormData
+} from "../utils/model-mapper-utils";
 
 import "./webhook-edit-page.scss";
 
@@ -139,6 +148,10 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     const showWebhookTokenEventHandler: boolean = isFeatureEnabled(
         webhooksFeatureConfig, WebhooksConstants.FEATURE_DICTIONARY.get("TOKEN_EVENT_HANDLER"));
 
+    // Decides both the UI and the API version, and must be turned on together with the server's
+    // Webhooks.ChildOrganizationSubscriptionEnabled: v2 reports no channels until it is.
+    const isChildOrgSubscriptionEnabledForTenant: boolean = isChildOrgSubscriptionEnabled(webhooksFeatureConfig);
+
     // API hooks
     const {
         data: webhook,
@@ -158,6 +171,28 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         isLoading: isWebhooksMetadataLoading,
         error: webhooksMetadataError
     } = useGetWebhooksMetadata();
+
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
+
+    // One organization answers the only question asked: whether there are any children at all.
+    const { data: childOrganizations } = useGetOrganizations<OrganizationListInterface>(
+        isOrganizationManagementEnabled,
+        null,
+        1,
+        null,
+        null,
+        false,
+        false
+    );
+
+    const isChildOrganizationsAvailable: boolean = useMemo(() => {
+        if (!isOrganizationManagementEnabled) {
+            return false;
+        }
+
+        return childOrganizations?.organizations?.length > 0;
+    }, [ childOrganizations, isOrganizationManagementEnabled ]);
+
 
     // Alert handlers
     const handleSuccess: ReturnType<typeof useHandleWebhookSuccess> = useHandleWebhookSuccess();
@@ -188,46 +223,18 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
 
 
     const webhookInitialValues: WebhookConfigFormPropertyInterface = useMemo(() => {
-        const baseFormValues: WebhookConfigFormPropertyInterface = {
-            channels: {},
-            endpoint: "",
-            id: "",
-            name: "",
-            secret: ""
+        const isEditing: boolean = Boolean(webhook) && !isCreateMode;
+
+        return {
+            channels: mapSubscribedChannelsToFormData(
+                channelConfigs,
+                isEditing ? getSubscribedChannels(webhook) : undefined
+            ),
+            endpoint: isEditing ? webhook.endpoint : "",
+            id: isEditing ? webhook.id : "",
+            name: isEditing ? webhook.name : "",
+            secret: isEditing ? webhook.secret || "" : ""
         };
-
-        if (channelConfigs.length === 0) {
-            return baseFormValues;
-        }
-
-        const initializeChannels = (isSubscribed: (channelUri: string) => boolean = () => false) => {
-            channelConfigs.forEach((config: { key: string; channelUri: string }) => {
-                baseFormValues.channels[config.key] = isSubscribed(config.channelUri);
-            });
-        };
-
-        if (webhook && !isCreateMode) {
-            const formValues: WebhookConfigFormPropertyInterface = {
-                ...baseFormValues,
-                endpoint: webhook.endpoint,
-                id: webhook.id,
-                name: webhook.name,
-                secret: webhook.secret || ""
-            };
-
-            initializeChannels(
-                (channelUri: string) =>
-                    webhook.channelsSubscribed?.some(
-                        (sub: WebhookChannelSubscriptionInterface) => sub.channelUri === channelUri
-                    ) || false
-            );
-
-            return { ...formValues, channels: baseFormValues.channels };
-        } else {
-            initializeChannels();
-
-            return baseFormValues;
-        }
     }, [ webhook, isCreateMode, channelConfigs ]);
 
     // Helper functions
@@ -311,13 +318,17 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     // Event handlers
     const handleWebhookSubmit: (formData: WebhookConfigFormPropertyInterface) => void = useCallback(
         (formData: WebhookConfigFormPropertyInterface): void => {
-            const selectedChannelUris: string[] = mapFormDataToChannels(formData, channelConfigs);
+            // v2 takes the channels as objects carrying their fanout; v1 takes bare URIs and is
+            // the only version that accepts `status` on update.
+            const channelsPayload: Pick<WebhookUpdateRequestInterface, "subscribedChannels" | "channelsSubscribed"> =
+                isChildOrgSubscriptionEnabledForTenant
+                    ? { subscribedChannels: mapFormDataToSubscribedChannels(formData, channelConfigs) }
+                    : { channelsSubscribed: mapFormDataToChannelUris(formData, channelConfigs) };
 
             if (isCreateMode) {
                 if (!hasWebhookCreatePermissions) return;
 
                 const webhookCreatePayload: WebhookCreateRequestInterface = {
-                    channelsSubscribed: selectedChannelUris,
                     endpoint: formData.endpoint || "",
                     eventProfile: {
                         name: eventProfile.profile,
@@ -325,7 +336,8 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                     },
                     name: formData.name,
                     secret: formData.secret,
-                    status: isActive ? WebhookStatus.ACTIVE : WebhookStatus.INACTIVE
+                    status: isActive ? WebhookStatus.ACTIVE : WebhookStatus.INACTIVE,
+                    ...channelsPayload
                 };
 
                 setIsSubmitting(true);
@@ -343,16 +355,21 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             } else {
                 if (!hasWebhookUpdatePermissions) return;
 
+                // v2 changes status through the activate and deactivate sub-resources, which the
+                // toggle already drives; v1 has none, so there it rides along with the update.
                 const webhookUpdatePayload: WebhookUpdateRequestInterface = {
-                    channelsSubscribed: selectedChannelUris,
                     endpoint: formData.endpoint || "",
                     eventProfile: {
                         name: eventProfile.profile,
                         uri: eventProfile.uri
                     },
                     name: formData.name,
-                    status: isActive ? WebhookStatus.ACTIVE : WebhookStatus.INACTIVE
+                    ...channelsPayload
                 };
+
+                if (!isChildOrgSubscriptionEnabledForTenant) {
+                    webhookUpdatePayload.status = isActive ? WebhookStatus.ACTIVE : WebhookStatus.INACTIVE;
+                }
 
                 // Only include secret if it has a value (user is updating it)
                 if (formData.secret && formData.secret.trim() !== "") {
@@ -375,6 +392,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         },
         [
             channelConfigs,
+            isChildOrgSubscriptionEnabledForTenant,
             isCreateMode,
             hasWebhookCreatePermissions,
             hasWebhookUpdatePermissions,
@@ -669,7 +687,10 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                         <WebhookConfigForm
                             initialValues={ webhookInitialValues }
                             channelConfigs={ channelConfigs }
-                            channelSubscriptions={ webhook?.channelsSubscribed || [] }
+                            channelSubscriptions={ getSubscribedChannels(webhook) || [] }
+                            webhookId={ webhookId }
+                            isChildOrganizationsAvailable={ isChildOrganizationsAvailable }
+                            isChildOrgSubscriptionEnabled={ isChildOrgSubscriptionEnabledForTenant }
                             isLoading={ isLoading }
                             isReadOnly={ isFormReadOnly() }
                             isCreateFormState={ isCreateMode }

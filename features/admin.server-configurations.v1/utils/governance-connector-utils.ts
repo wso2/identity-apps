@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -359,6 +359,7 @@ export class GovernanceConnectorUtils {
                         isCustom: false,
                         name: "policyConsents",
                         route: AppConstants.getPaths().get("POLICY_CONSENTS"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONSENTS_POLICY_CONSENTS,
                         testId: "policy-consents-card"
                     },
                     {
@@ -372,7 +373,17 @@ export class GovernanceConnectorUtils {
                         isCustom: false,
                         name: "preferenceManagement",
                         route: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONSENTS_PREFERENCE_MANAGEMENT,
                         testId: "preference-management-card"
+                    },
+                    {
+                        description: I18n.instance.t("devices:assurancePolicies.connector.description"),
+                        header: I18n.instance.t("devices:assurancePolicies.connector.header"),
+                        id: ServerConfigurationsConstants.DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID,
+                        isCustom: false,
+                        name: "deviceAssurancePolicies",
+                        route: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
+                        testId: "device-assurance-policies-card"
                     }
                 ],
                 displayOrder: 1,
@@ -475,6 +486,15 @@ export class GovernanceConnectorUtils {
                         status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                             .LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE,
                         testId: "issuer-usage-scope-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:fapiSecurityPolicy.subTitle"),
+                        header: I18n.instance.t("pages:fapiSecurityPolicy.title"),
+                        id: ServerConfigurationsConstants.FAPI_SECURITY_POLICY,
+                        route: AppConstants.getPaths().get("FAPI_SECURITY_POLICY"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_FAPI_SECURITY_POLICY,
+                        testId: "fapi-security-policy-card"
                     }
                 ],
                 displayOrder: 0,

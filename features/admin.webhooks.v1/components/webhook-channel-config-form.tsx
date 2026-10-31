@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,15 @@
  */
 
 import "./webhook-channel-config-form.scss";
-import { Box, FormGroup, Grid, Typography } from "@mui/material";
+import Box from "@oxygen-ui/react/Box";
+import FormLabel from "@oxygen-ui/react/FormLabel";
+import Typography from "@oxygen-ui/react/Typography";
+import { EMPTY_ARRAY } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField } from "@wso2is/forms";
-import CheckboxAdapter from "@wso2is/forms/src/components/adapters/checkbox-field-adapter";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
+import WebhookChannelAccordionItem from "./webhook-channel-accordion-item";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import { ChannelStatus, WebhookChannelSubscriptionInterface } from "../models/webhooks";
 
@@ -40,17 +42,40 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
      * Current channel subscriptions with status.
      */
     channelSubscriptions?: WebhookChannelSubscriptionInterface[];
+    /**
+     * ID of the webhook being edited. Absent while creating.
+     */
+    webhookId?: string;
+    /**
+     * Whether the organization has child organizations.
+     */
+    isChildOrganizationsAvailable?: boolean;
+    /**
+     * Whether child organization subscription is switched on for this deployment.
+     */
+    isChildOrgSubscriptionEnabled?: boolean;
+    /**
+     * Organization selection validation messages, keyed by channel key.
+     */
+    channelOrganizationErrors?: Record<string, string>;
 }
 
 const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterface> = ({
     channelConfigs,
     isReadOnly,
-    channelSubscriptions = [],
+    channelSubscriptions = EMPTY_ARRAY,
+    webhookId,
+    isChildOrganizationsAvailable = false,
+    isChildOrgSubscriptionEnabled = false,
+    channelOrganizationErrors,
     ["data-componentid"]: _componentId = "webhook-channel-config-form"
 }: WebhookChannelConfigFormInterface): ReactElement => {
-    const defaultChannels: WebhookChannelConfigInterface[] = channelConfigs;
 
     const { t } = useTranslation();
+
+    // Expansion is held here rather than per row so that opening one channel closes the
+    // previously open one.
+    const [ expandedChannelKey, setExpandedChannelKey ] = useState<string>(null);
 
     /**
      * Get channel status for a given channel URI.
@@ -125,71 +150,38 @@ const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterf
         );
     };
 
-    const renderChannelCheckbox = (channel: WebhookChannelConfigInterface): ReactElement => {
-        return (
-            <Box key={ channel.key } className="channel-checkbox-container">
-                <Box className="checkbox-control">
-                    <FinalFormField
-                        ariaLabel={ channel.name }
-                        data-componentid={ `${_componentId}-${channel.key}-checkbox` }
-                        name={ `channels.${channel.key}` }
-                        component={ CheckboxAdapter }
-                        disabled={ isReadOnly }
-                        label={
-                            (<Box className="checkbox-label">
-                                <Box className="channel-name-container">
-                                    <Typography variant="body1" component="span" className="channel-name">
-                                        { channel.name }
-                                    </Typography>
-                                    { renderStatusIndicator(channel) }
-                                </Box>
-                                <Typography variant="caption" component="div" className="channel-description">
-                                    { channel.description }
-                                </Typography>
-                            </Box>)
-                        }
-                    />
-                </Box>
-            </Box>
-        );
-    };
-
-    const renderChannelSelection = (): ReactElement => {
-        const leftColumnChannels: WebhookChannelConfigInterface[] = defaultChannels.slice(0,
-            Math.ceil(defaultChannels.length / 2));
-        const rightColumnChannels: WebhookChannelConfigInterface[] = defaultChannels.slice(
-            Math.ceil(defaultChannels.length / 2)
-        );
-
-        return (
-            <Grid container spacing={ 3 } className="channel-grid">
-                <Grid item xs={ 12 } md={ 6 }>
-                    <FormGroup>
-                        { leftColumnChannels.map((channel: WebhookChannelConfigInterface) =>
-                            renderChannelCheckbox(channel)) }
-                    </FormGroup>
-                </Grid>
-                <Grid item xs={ 12 } md={ 6 }>
-                    <FormGroup>
-                        { rightColumnChannels.map(
-                            (channel: WebhookChannelConfigInterface) =>
-                                renderChannelCheckbox(channel)
-                        ) }
-                    </FormGroup>
-                </Grid>
-            </Grid>
-        );
-    };
-
     return (
         <div className="webhook-channel-config-form">
-            <Typography variant="h6" className="heading-container">
+            <FormLabel component="legend" required className="heading-container">
                 { t("webhooks:configForm.channels.heading") }
-            </Typography>
+            </FormLabel>
             <Typography variant="body2" color="text.secondary" className="section-description">
                 { t("webhooks:configForm.channels.subHeading") }
             </Typography>
-            { renderChannelSelection() }
+            <Box className="channel-accordion-list" data-componentid={ `${_componentId}-accordion-list` }>
+                { channelConfigs.map((channel: WebhookChannelConfigInterface) => (
+                    <WebhookChannelAccordionItem
+                        key={ channel.key }
+                        channel={ channel }
+                        isReadOnly={ isReadOnly }
+                        isExpanded={ expandedChannelKey === channel.key }
+                        onExpandedChange={ (expanded: boolean) =>
+                            setExpandedChannelKey(expanded ? channel.key : null) }
+                        webhookId={ webhookId }
+                        isChildOrganizationsAvailable={ isChildOrganizationsAvailable }
+                        isChildOrgSubscriptionEnabled={ isChildOrgSubscriptionEnabled }
+                        storedSubscriptionPolicy={
+                            channelSubscriptions.find(
+                                (sub: WebhookChannelSubscriptionInterface) =>
+                                    sub.channelUri === channel.channelUri
+                            )?.childOrgSubscription?.subscriptionPolicy
+                        }
+                        statusIndicator={ renderStatusIndicator(channel) }
+                        organizationsError={ channelOrganizationErrors?.[channel.key] }
+                        data-componentid={ _componentId }
+                    />
+                )) }
+            </Box>
         </div>
     );
 };

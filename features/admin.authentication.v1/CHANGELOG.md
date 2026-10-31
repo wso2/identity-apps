@@ -1,5 +1,24 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.212
+
+### Patch Changes
+
+- [#10688](https://github.com/wso2/identity-apps/pull/10688) [`ac6c1919738a2d331e914d6356c89f0ed3df2ece`](https://github.com/wso2/identity-apps/commit/ac6c1919738a2d331e914d6356c89f0ed3df2ece) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix B2B organization switch failing when the Console is served on a hostname different from the Identity Server
+
+- Updated dependencies [[`2c37f26f43c1fa345acab92115e18c82f49fa24d`](https://github.com/wso2/identity-apps/commit/2c37f26f43c1fa345acab92115e18c82f49fa24d), [`f88857e0bce6e59be712b785e5be03d3fd2fd330`](https://github.com/wso2/identity-apps/commit/f88857e0bce6e59be712b785e5be03d3fd2fd330)]:
+  - @wso2is/admin.core.v1@2.59.6
+
+## 2.25.211
+
+### Patch Changes
+
+- [#10492](https://github.com/wso2/identity-apps/pull/10492) [`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add seperate host support for CDS
+
+- Updated dependencies [[`31a1e7fd14857e6f49415ab7a37edda4d50d66f4`](https://github.com/wso2/identity-apps/commit/31a1e7fd14857e6f49415ab7a37edda4d50d66f4)]:
+  - @wso2is/admin.core.v1@2.57.25
+  - @wso2is/admin.users.v1@2.38.41
+
 ## 2.25.210
 
 ### Patch Changes

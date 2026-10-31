@@ -57,8 +57,36 @@ export const webhooks: webhooksNS = {
                 unsubscriptionError: "unsubscription request error"
             },
             subHeading: "Select the events you want to receive webhook notifications for.",
+            subscriptionPolicy: {
+                allOrganizations: "Subscribe this event to all child organizations",
+                collapseAll: "Collapse all",
+                expandAll: "Expand all",
+                heading: "Subscription Policy",
+                noOrganizations: "No child organizations are available to select.",
+                none: "Do not subscribe this event in any child organization",
+                selectedOrganizations: "Subscribe this event for the selected child organizations",
+                subHeading: "Configure how this event should be subscribed across child organizations",
+                switchModal: {
+                    description: "Choose how you want to proceed:",
+                    header: "Switch to selected organizations",
+                    message: "You are about to narrow this event from every child organization to " +
+                        "an explicitly selected few.",
+                    preserveDescription: "Start from the organizations currently receiving this " +
+                        "event, then remove the ones you no longer want.",
+                    preserveLabel: "Keep the current organizations",
+                    resetDescription: "Start from an empty selection and choose the organizations " +
+                        "from scratch.",
+                    resetLabel: "Start fresh",
+                    tooManyOrganizations: "This event currently reaches more than {{count}} child " +
+                        "organizations, which is more than can be selected explicitly. Choose " +
+                        "\"Start fresh\" and pick the organizations you need.",
+                    tooManyOrganizationsHeading: "Too many organizations to carry over"
+                }
+            },
             validations: {
-                empty: "At least one event must be selected."
+                empty: "At least one event must be selected.",
+                noOrganizationsSelected: "Select at least one child organization, or change the subscription policy so " +
+                    "this event is not subscribed to any child organization."
             }
         },
         fields: {
@@ -148,6 +176,13 @@ export const webhooks: webhooksNS = {
                 description: "{{description}}",
                 genericDescription: "Something went wrong while fetching the event profile.",
                 message: "Failed to fetch event profile."
+            }
+        },
+        fetchOrganizations: {
+            error: {
+                description: "{{description}}",
+                genericDescription: "Something went wrong while fetching the subscribed organizations.",
+                message: "Failed to fetch organizations."
             }
         },
         fetchWebhook: {

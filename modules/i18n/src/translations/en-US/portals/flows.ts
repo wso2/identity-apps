@@ -46,6 +46,9 @@ export const flows: flowsNS = {
         elements: {
             richText: {
                 linkEditor: {
+                    linkTargetHint: "Allow admin to control whether links open in the same tab or new tab",
+                    linkTargetLabel: "Open link in new tab",
+                    newTabHint: "Link will open in a new browser tab",
                     placeholder: "Enter link URL here...",
                     predefinedUrls: {
                         applicationAccessUrl: "Application Access URL",
@@ -55,6 +58,7 @@ export const flows: flowsNS = {
                         supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
+                    sameTabHint: "Link will open in the same browser tab",
                     urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
@@ -109,6 +113,7 @@ export const flows: flowsNS = {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
                 default: "Execution",
+                digitalWallet: "Digital Wallet",
                 facebook: "Facebook",
                 flowExtension: "Flow Extension",
                 github: "GitHub",
@@ -160,6 +165,28 @@ export const flows: flowsNS = {
                 genericError: {
                     description: "An error occurred while fetching the custom text preference metadata.",
                     message: "Custom Text Preference Meta Fetch Error"
+                }
+            },
+            conditionalBranchingDisabled: {
+                warning: {
+                    description: "Conditional branching is not enabled on the server, so decision steps cannot "
+                        + "be configured. Decision steps already in the flow are kept, but the flow cannot be "
+                        + "saved with them.",
+                    message: "Conditional Branching Not Enabled"
+                }
+            },
+            ruleMetadataUnavailable: {
+                warning: {
+                    description: "The fields decision step conditions can use could not be loaded, so decision "
+                        + "steps cannot be configured. Decision steps already in the flow are kept, but the flow "
+                        + "cannot be saved with them until the fields can be loaded.",
+                    message: "Decision Steps Unavailable"
+                }
+            },
+            decisionStepLimit: {
+                warning: {
+                    description: "A flow can have at most {{max}} decision steps.",
+                    message: "Decision Step Limit Reached"
                 }
             },
             disableFlow: {
@@ -243,7 +270,69 @@ export const flows: flowsNS = {
         },
         steps: {
             end: {
-                flowCompletionProperties: "Flow Completion Properties"
+                flowCompletionProperties: "Flow completion properties"
+            },
+            start: {
+                node: {
+                    configure: "Configure flow variables",
+                    heading: "Start",
+                    none: "None"
+                },
+                variables: {
+                    abTestingKey: "A number from 0 to 99 kept for each browser. Use it in a condition, such as " +
+                        "less than 20, to send a share of users down another branch.",
+                    add: {
+                        headers: "Add header",
+                        runtimeValues: "Add runtime value"
+                    },
+                    dataTypes: {
+                        BOOLEAN: "Boolean",
+                        DECIMAL: "Decimal",
+                        INTEGER: "Integer",
+                        NUMBER_ARRAY: "Array of numbers",
+                        STRING: "String",
+                        STRING_ARRAY: "Array of strings"
+                    },
+                    descriptions: {
+                        headers: "Headers the flow reads from each request",
+                        runtimeValues: "Values the flow keeps while it runs"
+                    },
+                    disabled: "Flow variables are not enabled on this server.",
+                    empty: {
+                        headers: "The flow does not read any headers.",
+                        runtimeValues: "The flow does not define any runtime values."
+                    },
+                    errors: {
+                        abTestingKeyOutOfRange: "Use a whole number from 0 to 99.",
+                        duplicate: "This name is already defined.",
+                        invalidName: "Use letters, digits and the allowed separators, up to 64 characters.",
+                        invalidRuntimeValueName: "Use only letters and digits, up to 255 characters.",
+                        notAnInteger: "Use a whole number.",
+                        reserved: "This name is reserved.",
+                        tooManyValues: "Add up to {{max}} values.",
+                        valueTooLong: "Use up to {{max}} characters for each value."
+                    },
+                    fields: {
+                        abTestingKeyValueHint: "A whole number from {{min}} to {{max}}. Only this value can change.",
+                        dataType: "Data type",
+                        initialValue: "Initial value (optional)",
+                        initialValueHint: "Press Enter to add each value.",
+                        name: "Name",
+                        noValue: "No value",
+                        clientWritable: "Allow app to set this value",
+                        clientWritableHint: "The app can set this value when the flow starts."
+                    },
+                    headings: {
+                        headers: "Request headers",
+                        runtimeValues: "Runtime values"
+                    },
+                    limitReached: "This server allows up to {{max}}.",
+                    remove: "Remove",
+                    tabs: {
+                        headers: "Headers",
+                        runtimeValues: "Runtime Values"
+                    }
+                }
             }
         },
         tooltips: {
@@ -311,9 +400,30 @@ export const flows: flowsNS = {
                     variant: "Typography must have a variant defined for proper text styling."
                 }
             },
+            organizationAttributes: {
+                federatedAuthenticationNotSupported: "Organization onboarding is currently supported only with "
+                    + "username and password registration. Remove federated authentication from this flow, "
+                    + "or remove the organization onboarding fields.",
+                missingOrganizationName: "This flow collects organization attributes but no Organization "
+                    + "Name, which is required to create an organization. Add an Organization Name field, "
+                    + "or these values will be discarded at runtime."
+            },
+            ruleEvaluation: {
+                incompleteRules: "Complete the rules of the decision branches: {{branches}}. Each condition needs a "
+                    + "field, an operator and a value.",
+                noConditionalBranch: "Add at least one branch with a rule to the decision. A decision with only the "
+                    + "default branch has nothing to decide.",
+                unconnectedBranches: "Connect the decision branches to the step they lead to: {{branches}}."
+            },
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
+            },
+            variables: {
+                invalid: "Fix the flow variables on the Start step before saving: {{names}}.",
+                tooManyHeaders: "The flow reads more headers than this server allows. Keep up to {{max}}.",
+                tooManyRuntimeValues: "The flow defines more runtime values than this server allows. Keep up to "
+                    + "{{max}}."
             }
         },
         validationStatusLabels: {
@@ -403,9 +513,11 @@ export const flows: flowsNS = {
         steps: {
             emailConfirmation: "Email Confirmation",
             end: {
+                account: "Account",
                 accountActivation: {
                     activateImmediately: {
-                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification.",
+                        hint: "Automatically activate the user account upon creation, allowing immediate access "
+                            + "without waiting for verification.",
                         label: "Activate the account on creation"
                     }
                 },
@@ -416,13 +528,41 @@ export const flows: flowsNS = {
                 accountVerification: {
                     hint: "Require the user to confirm their account via email before granting access.",
                     label: "Verify the account on flow completion.",
-                    warning: "When the flow includes an email verification step (e.g. email OTP), this option will not be applied."
+                    warning: "When the flow includes an email verification step (e.g. email OTP), "
+                        + "this option will not be applied."
                 },
                 autoLogin: {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:"
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you "
+                    + "to control the user's final experience by selecting one of the following outcomes:",
+                organization: {
+                    hint: "Applies when this flow includes a step that creates an organization.",
+                    label: "Organization"
+                },
+                organizationRoles: {
+                    defaultRole: "{{role}} · Default",
+                    fetchError: "Could not load roles or sharing settings. Your saved selections have been kept.",
+                    hint: "Assign these roles to the user in the new organization. Only roles shared with all "
+                        + "existing and future organizations are available.",
+                    label: "Assign roles in the new organization (optional)",
+                    noPermission: "You need permission to read roles to configure this selection.",
+                    placeholder: "Search shared roles",
+                    unavailable: "These configured roles are no longer shared with new organizations: {{roles}}. "
+                        + "They will not be assigned. Remove them from this flow or update the sharing settings."
+                },
+                provisionTarget: {
+                    currentOrganization: {
+                        hint: "The user stays in the current organization and is shared with the new organization.",
+                        label: "The organization this flow runs in"
+                    },
+                    label: "Create the user in",
+                    newOrganization: {
+                        hint: "Create the user in the organization this flow creates.",
+                        label: "The organization this flow creates"
+                    }
+                }
             }
         }
     }

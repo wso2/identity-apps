@@ -34,7 +34,7 @@ export const getDialects = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.claims}/`
+        url: `${store.getState().config.endpoints.claims}`
     };
 
     return httpClient(requestConfig)
@@ -58,7 +58,7 @@ export const getClaimsForDialect = (dialectID: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/`
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
     };
 
     return httpClient(requestConfig)

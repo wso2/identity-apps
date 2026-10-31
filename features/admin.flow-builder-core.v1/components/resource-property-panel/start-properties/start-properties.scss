@@ -1,0 +1,102 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/* Sized as the rule editor is in the Decision Properties panel, so the two panels read the same. */
+.start-properties {
+    font-size: 13px;
+
+    .MuiInputBase-root,
+    .MuiSelect-select,
+    .MuiAutocomplete-input,
+    .MuiTypography-root,
+    .MuiFormControlLabel-label,
+    .MuiFormHelperText-root,
+    .MuiAlert-message,
+    .MuiChip-label {
+        font-size: 13px;
+    }
+
+    .MuiSelect-select,
+    .MuiOutlinedInput-input {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    .MuiAutocomplete-root .MuiOutlinedInput-root {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .MuiAutocomplete-input {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+    }
+
+    /* Adding an item is a small text action, as adding a branch is in the Decision Properties panel. */
+    .variable-add {
+        min-height: 0;
+        padding: 2px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: none;
+
+        .MuiButton-startIcon {
+            margin-right: 4px;
+        }
+    }
+}
+
+.variable-section {
+    border-radius: var(--oxygen-shape-borderRadius);
+
+    /* Sections stack with a gap of their own, so they read as separate bars rather than one joined block. */
+    &::before {
+        display: none;
+    }
+
+    .variable-section-title {
+        flex: 1 1 auto;
+        font-weight: 500;
+    }
+
+    .MuiAccordionSummary-content {
+        align-items: center;
+        gap: 8px;
+        margin-right: 8px;
+    }
+}
+
+.variable-item {
+    position: relative;
+    padding: 12px;
+
+    /* Removing an item sits on its top right edge, as removing a condition does in the rule builder. */
+    .variable-item-remove {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 25px;
+        height: 25px;
+        min-height: 25px;
+        font-size: 1rem;
+
+        .variable-item-remove-icon {
+            font-size: 1rem;
+        }
+    }
+}

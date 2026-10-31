@@ -18,7 +18,6 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods,
     HttpErrorResponseDataInterface
@@ -26,6 +25,7 @@ import { HttpMethods,
 import { AxiosError, AxiosResponse } from "axios";
 import { WebhooksConstants } from "../constants/webhooks-constants";
 import { WebhookResponseInterface, WebhookUpdateRequestInterface } from "../models/webhooks";
+import { getWebhooksEndpoint } from "../utils/api-version-utils";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -46,7 +46,7 @@ const updateWebhook = (
     const requestConfig: RequestConfigInterface = {
         data: webhookData,
         method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.webhooks}/${webhookId}`
+        url: `${getWebhooksEndpoint()}/${webhookId}`
     };
 
     return httpClient(requestConfig)

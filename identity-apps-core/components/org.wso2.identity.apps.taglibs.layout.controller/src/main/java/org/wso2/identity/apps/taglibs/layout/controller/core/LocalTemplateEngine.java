@@ -24,6 +24,7 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Default
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Parser;
 
 import java.io.IOException;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.Writer;
 import java.net.URL;
@@ -69,6 +70,10 @@ public class LocalTemplateEngine implements TemplateEngine {
 
         if (executor == null && compiledObject == null) {
             try (ObjectInputStream objectReader = new ObjectInputStream(layoutFile.openStream())) {
+                objectReader.setObjectInputFilter(ObjectInputFilter.Config.createFilter(
+                        "org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.*" +
+                        ";java.lang.String" +
+                        ";!*"));
                 compiledObject = (ExecutableIdentifier) objectReader.readObject();
                 executor = new DefaultExecutor(data);
             } catch (IOException | ClassNotFoundException exception) {

@@ -60,7 +60,7 @@ interface WizardHelpInterface {
     /**
      * Help content fields.
      */
-    fields?: { fieldName: string, hint: string }[];
+    fields?: { fieldName: string, hint: string | ReactElement }[];
 }
 
 /**
@@ -92,6 +92,10 @@ CreateConnectionWizardHelpPropsInterface> = (
 
     const { deploymentConfig } = useDeploymentConfig();
 
+    // Resolved from `[accounts]` in deployment.toml when the accounts portal is served on a separate host.
+    const accountsPortalURL: string = (deploymentConfig?.extensions?.accountsPortalURL as string)
+        || deploymentConfig.customServerHost + "/accounts";
+
     const overrideFieldValue = (value: string): string => {
         switch (value) {
             case "domain_name":
@@ -100,6 +104,10 @@ CreateConnectionWizardHelpPropsInterface> = (
                 return value.replace(value, deploymentConfig.customServerHost);
             case "redirect_uri":
                 return value.replace(value, deploymentConfig.customServerHost + "/commonauth");
+            case "registration_redirect_uri":
+                return value.replace(value, accountsPortalURL + "/register");
+            case "recovery_redirect_uri":
+                return value.replace(value, accountsPortalURL + "/recovery");
             default:
                 return value;
         }
@@ -198,15 +206,24 @@ CreateConnectionWizardHelpPropsInterface> = (
 
     return (
         <div data-testid={ testId }>
-            { renderPreRequisites() }
-            <Divider hidden/>
+            { wizardHelp.message && renderPreRequisites() }
+            { wizardHelp.message && <Divider hidden/> }
             {
-                wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
+                wizardHelp?.fields?.map((
+                    field: { fieldName: string, hint: string | ReactElement },
+                    index: number,
+                    fields: { fieldName: string, hint: string | ReactElement }[]
+                ) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        { /* eslint-disable-next-line react/no-danger */ }
-                        <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field?.hint) } }/>
-                        <Divider />
+                        {
+                            typeof field?.hint === "string"
+                                ? (
+                                    <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field.hint) } } />
+                                )
+                                : <p>{ field.hint }</p>
+                        }
+                        { index < fields.length - 1 && <Divider /> }
                     </div>
                 ))
             }

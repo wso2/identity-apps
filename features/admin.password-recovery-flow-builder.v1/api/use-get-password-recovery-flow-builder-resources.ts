@@ -17,8 +17,12 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useGetExtensionExecutorSteps
+    from "@wso2is/admin.flow-builder-core.v1/api/use-get-extension-executor-steps";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
@@ -39,12 +43,16 @@ const useGetPasswordRecoveryFlowBuilderResources = <Data = Resources, Error = Re
 ): RequestResultInterface<Data, Error> => {
     const { data: coreResources } = useGetFlowBuilderCoreResources();
 
+    // Executors contributed by extensions deployed on the server. Appended to the palette at runtime.
+    const extensionExecutorSteps: Step[] = useGetExtensionExecutorSteps(FlowTypes.PASSWORD_RECOVERY);
+
     return {
         data: ({
             ...coreResources,
             steps: [
                 ...coreResources?.steps,
-                ...steps
+                ...steps,
+                ...extensionExecutorSteps
             ],
             templates: [
                 ...coreResources?.templates,

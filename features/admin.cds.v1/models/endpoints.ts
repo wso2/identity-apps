@@ -21,6 +21,11 @@ export interface CustomerDataServiceEndpointsInterface {
      * API to get the list of all the profiles and create a new profile.
      */
     cdsProfiles: string;
+
+    /**
+     * Review tasks raised for pairs the engine was not confident enough to unify on its own.
+     */
+    cdsReviewTasks: string;
     /**
      * API to get the profile schema.
      */

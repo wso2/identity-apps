@@ -413,6 +413,7 @@ const useSignIn = (): UseSignInInterface => {
                 let authorizationEndpoint: string = response.authorizationEndpoint;
                 let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
                 let tokenEndpoint: string = response.tokenEndpoint;
+                let issuer: string = response.issuer;
 
                 // If `authorize` endpoint is overridden, save that in the session.
                 if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
@@ -436,6 +437,12 @@ const useSignIn = (): UseSignInInterface => {
                         tokenEndpoint,
                         window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
                     );
+                }
+
+                // If `issuer` is overridden, honour it. Unlike the endpoints above, the issuer is
+                // not tenant qualified, hence it is taken as configured.
+                if (window["AppUtils"].getConfig().idpConfigs?.issuer) {
+                    issuer = window["AppUtils"].getConfig().idpConfigs.issuer;
                 }
 
                 if (isPrivilegedUser) {
@@ -544,6 +551,7 @@ const useSignIn = (): UseSignInInterface => {
                         authorizationEndpoint: authorizationEndpoint,
                         checkSessionIframe: oidcSessionIframeEndpoint,
                         endSessionEndpoint: logoutUrl.split("?")[0],
+                        issuer: issuer,
                         tokenEndpoint: tokenEndpoint
                     },
                     signOutRedirectURL: signOutRedirectURL?.href

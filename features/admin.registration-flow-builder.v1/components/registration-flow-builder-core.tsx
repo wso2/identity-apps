@@ -20,8 +20,10 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import {
     BlockTypes,
+    Branch,
     ButtonTypes,
     ButtonVariants,
     Element,
@@ -76,6 +78,8 @@ import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
+import useOrganizationAttributeValidation from "../hooks/use-organization-attribute-validation";
+import useOrganizationProvisioningExecutor from "../hooks/use-organization-provisioning-executor";
 import DEFAULT_END_NODE_TEMPLATE from "../migrations/templates/default-end-node.json";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
@@ -138,11 +142,14 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const { steps, templates } = resources;
 
+    useOrganizationProvisioningExecutor();
+    useOrganizationAttributeValidation();
+
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
-        "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
+        "Prompt for a unique username and password, ensuring the password meets basic complexity branches.",
         "In the first step provide option to Sign up with Password or Sign up with Email",
         "Gather basic personal details (e.g., first name, last name) plus an email and password up front.",
         "Offer the option to Sign up with password or Sign up with Google. If the password " +
@@ -273,9 +280,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
+    const generateSteps: (steps: Node[], variables?: FlowVariablesInterface) => Node[] = useCallback((
+        steps: Node[],
+        variables?: FlowVariablesInterface
+    ): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(variables && { variables }),
                 displayOnly: true
             },
             deletable: false,
@@ -453,8 +464,32 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             // Check if the step has an action with a next step
             if (step.data?.action) {
-                // If next points to a valid step, create that edge
-                if (stepIds.includes(step.data.action.next)) {
+                // A rule decision carries one outgoing edge per branch instead of a single next
+                // step, each hung off a handle named for the branch it belongs to.
+                if (step.data.action.branches) {
+                    (step.data.action.branches as Branch[]).forEach((branch: Branch) => {
+                        if (!branch.next || !stepIds.includes(branch.next)) {
+                            return;
+                        }
+
+                        edges.push({
+                            animated: false,
+                            id: `${step.id}-${branch.id}`,
+                            markerEnd: {
+                                type: MarkerType.Arrow
+                            },
+                            source: step.id,
+                            sourceHandle:
+                                `${branch.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
+                            target: branch.next,
+                            type: "base-edge"
+                        });
+
+                        if (branch.next === userOnboardStepId) {
+                            userOnboardEdgeCreated = true;
+                        }
+                    });
+                } else if (stepIds.includes(step.data.action.next)) {
                     edges.push({
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
@@ -689,7 +724,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     useLayoutEffect(() => {
         if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
             if (!isEmpty(registrationFlow?.steps)) {
-                const steps: Node[] = generateSteps(registrationFlow.steps);
+                const steps: Node[] = generateSteps(registrationFlow.steps, registrationFlow.variables);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -698,6 +733,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
     }, [
         registrationFlow?.steps,
+        registrationFlow?.variables,
         isRegistrationFlowFetchRequestLoading,
         isRegistrationFlowFetchRequestValidating,
         initialNodes
@@ -884,14 +920,16 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED template case
-        if (template.type === TemplateTypes.BasicFederated) {
-            const googleExecutionStep: Node | undefined = templateSteps.find(
+        // Handle BASIC_FEDERATED, BASIC_WALLET and BASIC_DEVICE_REGISTRATION template cases — auto-select the
+        // execution step so its property panel (IdP name or device policy) opens immediately after the template loads.
+        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet
+            || template.type === TemplateTypes.BasicDeviceRegistration) {
+            const executionStep: Node | undefined = templateSteps.find(
                 (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleExecutionStep) {
-                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
+            if (executionStep) {
+                return [ templateSteps, templateEdges, executionStep as Resource, executionStep.id ];
             }
         }
 

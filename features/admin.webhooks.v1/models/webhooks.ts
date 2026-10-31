@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,13 @@
  */
 
 import { EventProfileReferenceInterface } from "./event-profile";
+import { ChildOrgSubscriptionPolicy } from "./shared-access";
 
 /**
  * Enum for webhook status.
+ *
+ * On read, the derived aggregate of the per-channel statuses, so it may be partial while they
+ * settle. Set on create, then changed through the activate and deactivate sub-resources.
  */
 export enum WebhookStatus {
     ACTIVE = "ACTIVE",
@@ -32,6 +36,7 @@ export enum ChannelStatus {
     SUBSCRIPTION_PENDING = "SUBSCRIPTION_PENDING",
     SUBSCRIPTION_ACCEPTED = "SUBSCRIPTION_ACCEPTED",
     SUBSCRIPTION_ERROR = "SUBSCRIPTION_ERROR",
+    UNSUBSCRIPTION_PENDING = "UNSUBSCRIPTION_PENDING",
     UNSUBSCRIPTION_ACCEPTED = "UNSUBSCRIPTION_ACCEPTED",
     UNSUBSCRIPTION_ERROR = "UNSUBSCRIPTION_ERROR"
 }
@@ -51,17 +56,78 @@ export interface WebhookEventProfileInterface {
 }
 
 /**
- * Interface for webhook channel subscription with status.
+ * A child organization receiving events for a channel. Requests supply `orgId` only; the
+ * sub-resource returns the same objects with the name and parent resolved.
+ */
+export interface OrganizationReferenceInterface {
+    /**
+     * Organization ID. Only this organization is subscribed — its own children are not
+     * included, and children created later are not added.
+     */
+    orgId: string;
+    /**
+     * Organization name. Read-only.
+     */
+    orgName?: string;
+    /**
+     * Immediate parent organization, for reconstructing the hierarchy. Read-only.
+     *
+     * May reference an organization absent from the same response, either because it is not
+     * itself subscribed or because it falls on another page.
+     */
+    parentOrgId?: string;
+}
+
+/**
+ * Child organization fanout configuration for a single channel.
+ */
+export interface ChildOrgSubscriptionInterface {
+    /**
+     * Fanout policy. Round-trips between request and response.
+     */
+    subscriptionPolicy: ChildOrgSubscriptionPolicy;
+    /**
+     * Explicit organizations to receive events. Accepted only under `SELECTED_ORGS_ONLY`.
+     *
+     * Write-only and preserved when omitted. Must be non-empty when supplied: clearing fanout is
+     * expressed by setting the policy to `NONE`, never by an empty array.
+     */
+    organizations?: OrganizationReferenceInterface[];
+    /**
+     * Link to the paginated child organizations receiving events for this channel.
+     *
+     * Returned by the channel resource only, never by the webhook representation.
+     */
+    organizationsRef?: string;
+}
+
+/**
+ * A subscribed channel as it appears on the webhook resource.
+ *
+ * Maps to `WebhookSubscription` in the Webhook Management API v2.
  */
 export interface WebhookChannelSubscriptionInterface {
     /**
-     * Channel URI.
+     * Channel URI to subscribe to.
      */
     channelUri: string;
     /**
-     * Subscription status.
+     * Per-channel child organization fanout.
      */
-    status: ChannelStatus;
+    childOrgSubscription?: ChildOrgSubscriptionInterface;
+    /**
+     * Unique identifier of this subscribed channel, used to address the channel resource.
+     * Read-only.
+     */
+    channelId?: string;
+    /**
+     * Link to this subscribed channel. Read-only.
+     */
+    self?: string;
+    /**
+     * Status of the subscription. Read-only.
+     */
+    status?: ChannelStatus;
 }
 
 /**
@@ -81,21 +147,28 @@ export interface WebhookCreateRequestInterface {
      */
     name: string;
     /**
-     * List of subscribed channel URIs.
+     * Channels to subscribe to, each with its optional organization fanout. Sent to v2 only.
      */
-    channelsSubscribed: string[];
+    subscribedChannels?: WebhookChannelSubscriptionInterface[];
     /**
-     * Secret for webhook authentication.
+     * Channel URIs to subscribe to. The v1 form of `subscribedChannels`, carrying no fanout.
      */
-    secret: string;
+    channelsSubscribed?: string[];
     /**
-     * Status of the webhook.
+     * Secret used to sign webhook payloads.
      */
-    status: WebhookStatus;
+    secret?: string;
+    /**
+     * Desired webhook status on create.
+     */
+    status?: WebhookStatus;
 }
 
 /**
  * Interface for webhook update request payload.
+ *
+ * A full replacement: an omitted writable property is cleared, except the write-only `secret`
+ * and `organizations`. `status` is accepted by v1 only.
  */
 export interface WebhookUpdateRequestInterface {
     /**
@@ -111,17 +184,21 @@ export interface WebhookUpdateRequestInterface {
      */
     name: string;
     /**
-     * List of subscribed channel URIs.
+     * The channels this webhook should be subscribed to. Replaced wholesale. Sent to v2 only.
      */
-    channelsSubscribed: string[];
+    subscribedChannels?: WebhookChannelSubscriptionInterface[];
     /**
-     * Secret for webhook authentication (optional for updates).
+     * Channel URIs to subscribe to. The v1 form of `subscribedChannels`, carrying no fanout.
+     */
+    channelsSubscribed?: string[];
+    /**
+     * Secret for webhook authentication. Omitting it preserves the stored secret.
      */
     secret?: string;
     /**
-     * Status of the webhook.
+     * Desired webhook status. Accepted by v1 only.
      */
-    status: WebhookStatus;
+    status?: WebhookStatus;
 }
 
 /**
@@ -153,21 +230,67 @@ export interface WebhookResponseInterface {
      */
     name: string;
     /**
-     * List of subscribed channels with status.
+     * Subscribed channels with their status and fanout policy, as returned by v2. The
+     * organizations themselves are not included — follow each channel's `self` link.
      */
-    channelsSubscribed: WebhookChannelSubscriptionInterface[];
+    subscribedChannels?: WebhookChannelSubscriptionInterface[];
     /**
-     * Secret for webhook authentication.
+     * Subscribed channels as returned by v1, carrying the URI and status but no fanout policy.
+     */
+    channelsSubscribed?: WebhookChannelSubscriptionInterface[];
+    /**
+     * Secret for webhook authentication. Never returned by the API.
      */
     secret?: string;
     /**
-     * Status of the webhook.
+     * Aggregate status derived from the per-channel subscription statuses.
      */
     status: WebhookStatus;
     /**
      * Adapter type (e.g., "websubhub").
      */
     adapter?: string;
+}
+
+/**
+ * Paginated list of the child organizations currently receiving events for a channel.
+ *
+ * Read-only, never sent back: it holds one page, so echoing it into a write would unsubscribe
+ * every organization outside that page.
+ */
+export interface SubscribedOrganizationListInterface {
+    /**
+     * Channel URI this list belongs to.
+     */
+    channelUri: string;
+    /**
+     * Fanout policy configured for this channel, so the list can be read without a second call.
+     */
+    subscriptionPolicy: ChildOrgSubscriptionPolicy;
+    /**
+     * Total number of child organizations subscribed to this channel.
+     */
+    totalResults: number;
+    /**
+     * Index of the first record in this response.
+     */
+    startIndex: number;
+    /**
+     * Number of records returned in this response.
+     */
+    count: number;
+    /**
+     * The child organizations on this page, ordered parents before children.
+     */
+    organizations: OrganizationReferenceInterface[];
+}
+
+/**
+ * Navigation link.
+ */
+interface WebhookLinkInterface {
+    href: string;
+    rel: string;
 }
 
 /**
@@ -212,6 +335,18 @@ export interface WebhookListResponseInterface {
      * Array of webhooks from API.
      */
     webhooks: WebhookListItemInterface[];
+    /**
+     * Index of the first record in this response.
+     */
+    startIndex?: number;
+    /**
+     * Number of records returned in this response.
+     */
+    count?: number;
+    /**
+     * Navigation links. Contains `next` and `previous` where applicable.
+     */
+    links?: WebhookLinkInterface[];
 }
 
 /**
@@ -222,6 +357,31 @@ export interface WebhookListInterface extends WebhookListResponseInterface {
      * Total number of results.
      */
     totalResults: number;
+}
+
+/**
+ * Per-channel form state.
+ */
+export interface WebhookChannelFormValueInterface {
+    /**
+     * Identifier of the stored channel subscription, when the channel is already subscribed.
+     *
+     * Needed to address the channel organizations sub-resource, which is the only place the
+     * selected organizations can be read back from.
+     */
+    channelId?: string;
+    /**
+     * Whether the channel is subscribed.
+     */
+    subscribed: boolean;
+    /**
+     * Child organization fanout policy for this channel.
+     */
+    subscriptionPolicy: ChildOrgSubscriptionPolicy;
+    /**
+     * IDs of the explicitly selected organizations. Only meaningful under `SELECTED_ORGS_ONLY`.
+     */
+    organizations: string[];
 }
 
 /**
@@ -245,9 +405,9 @@ export interface WebhookConfigFormPropertyInterface {
      */
     secret: string;
     /**
-     * Selected event channels/types.
+     * Per-channel subscription state, keyed by channel config key.
      */
     channels: {
-        [key: string]: boolean;
+        [key: string]: WebhookChannelFormValueInterface;
     };
 }

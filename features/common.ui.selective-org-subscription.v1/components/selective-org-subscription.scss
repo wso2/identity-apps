@@ -1,0 +1,73 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.selective-org-subscription-container {
+    border: 1px solid var(--oxygen-palette-grey-300);
+    border-radius: var(--oxygen-shape-borderRadius);
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+
+    .selective-org-subscription-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 4px;
+        margin-bottom: 4px;
+
+        // Oxygen sets `fontSize: 1rem` and `padding: 8px 16px` on the button root, which beats the
+        // `size="small"` variant, so these are pinned down explicitly. They are a secondary
+        // affordance above a short tree — at default size they cost more height than a row of it.
+        .MuiButton-root {
+            min-width: 0;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+    }
+
+    .selective-org-subscription-scroll-panel {
+        // Fixed rather than max-height: the panel is nested inside a form, so a box that grows
+        // and shrinks as nodes expand shifts everything below it, including the submit button.
+        //
+        // Clamped rather than a bare viewport unit: `vh` alone collapses the panel to a couple of
+        // rows on a short laptop screen and sprawls on a tall monitor. Deliberately shallower than
+        // the 300px role based picker: this tree sits inside an accordion row rather than filling a
+        // panel, so a tall box reads as empty space rather than as room to scroll.
+        height: clamp(100px, 13vh, 160px);
+
+        // Both axes. Each nesting level indents 34px (the tree item's 16px margin plus 18px
+        // padding), so a deep hierarchy runs out of width long before it runs out of height.
+        overflow: auto;
+
+        // Without these the tree wraps to fit the panel instead of overflowing it, so the
+        // horizontal scrollbar never appears and deep labels are crushed instead.
+        .MuiRichTreeView-root {
+            min-width: max-content;
+        }
+
+        .MuiTreeItem-label {
+            white-space: nowrap;
+        }
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}

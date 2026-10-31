@@ -464,6 +464,7 @@ export interface governanceConnectorsNS {
                 };
                 multiattributeLoginHandler: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         accountMultiattributeloginHandlerEnable: {
                             hint: string;
@@ -552,6 +553,7 @@ export interface governanceConnectorsNS {
                 };
                 adminForcedPasswordReset: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         recoveryAdminPasswordResetRecoveryLink: {
                             hint: string;
@@ -677,6 +679,7 @@ export interface governanceConnectorsNS {
                     friendlyName: string;
                     warningModal: {
                         configure: string;
+                        configureOptional: string;
                         reassure: string;
                     };
                     properties: {

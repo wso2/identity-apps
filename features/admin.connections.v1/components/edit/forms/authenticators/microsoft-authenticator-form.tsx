@@ -34,6 +34,11 @@ import {
     CommonAuthenticatorFormPropertyInterface
 } from "../../../../models/authenticators";
 import { CommonPluggableComponentMetaPropertyInterface } from "../../../../models/connection";
+import {
+    applyMicrosoftTenantToEndpoint,
+    extractMicrosoftTenant,
+    isMicrosoftTenantValid
+} from "../../../../utils/microsoft-authenticator-utils";
 
 /**
  * Interface for Microsoft Authenticator Form props.
@@ -105,6 +110,10 @@ interface MicrosoftAuthenticatorFormInitialValuesInterface {
      * Microsoft Authenticator scope values.
      */
     Scopes: string;
+    /**
+     * Directory (tenant) segment of the Microsoft authorization/token endpoints.
+     */
+    microsoftTenant: string;
 }
 
 /**
@@ -208,9 +217,36 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
             };
         });
 
+        // Derive the Directory (tenant) value from the configured authorization endpoint and seed it
+        // as a virtual form field. It is applied back to both endpoints on submit.
+        const authorizationEndpoint: string = originalInitialValues.properties.find(
+            (property: CommonAuthenticatorFormPropertyInterface) =>
+                property.key === FederatedAuthenticatorConstants.AUTHORIZATION_ENDPOINT_URL_KEY
+        )?.value;
+
+        resolvedInitialValues = {
+            ...resolvedInitialValues,
+            microsoftTenant: extractMicrosoftTenant(authorizationEndpoint)
+        };
+
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
+
+    /**
+     * Validates the Directory (tenant) field. Empty is handled by the field's `required` flag;
+     * non-empty values must be a recognised tenant (keyword, GUID, or domain).
+     *
+     * @param value - The user-entered tenant value.
+     * @returns An error message when invalid, otherwise `undefined`.
+     */
+    const validateMicrosoftTenant = (value: string): string | undefined => {
+        if (!isEmpty(value) && !isMicrosoftTenantValid(value)) {
+            return t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.invalid");
+        }
+
+        return undefined;
+    };
 
     /**
      * Prepare form values for submitting.
@@ -225,13 +261,43 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         const properties: any[] = [];
 
         for (const [ key, value ] of Object.entries(values)) {
-            if (key !== undefined) {
-                properties.push({
-                    key: key,
-                    value: value
-                });
+            // The tenant field is virtual; it is applied to the endpoints below, not saved as-is.
+            if (key === undefined || key === "microsoftTenant") {
+                continue;
             }
+
+            properties.push({ key, value });
         }
+
+        // Apply the selected tenant to the authorization/token endpoints, preserving the rest of
+        // each existing endpoint URL. An empty value falls back to the `common` default.
+        const tenant: string = (values?.microsoftTenant ?? "").toString().trim()
+            || FederatedAuthenticatorConstants.MICROSOFT_DEFAULT_TENANT;
+        const endpointFallbacks: { fallback: string; key: string }[] = [
+            {
+                fallback: FederatedAuthenticatorConstants.MICROSOFT_AUTHORIZE_ENDPOINT,
+                key: FederatedAuthenticatorConstants.AUTHORIZATION_ENDPOINT_URL_KEY
+            },
+            {
+                fallback: FederatedAuthenticatorConstants.MICROSOFT_TOKEN_ENDPOINT,
+                key: FederatedAuthenticatorConstants.TOKEN_ENDPOINT_URL_KEY
+            }
+        ];
+
+        endpointFallbacks.forEach(({ fallback, key }: { fallback: string; key: string }) => {
+            const existingValue: string = originalInitialValues?.properties?.find(
+                (property: CommonAuthenticatorFormPropertyInterface) => property.key === key
+            )?.value;
+            const resolvedValue: string = applyMicrosoftTenantToEndpoint(existingValue, fallback, tenant);
+            const existingProperty: { key: string; value: string } =
+                properties.find((property: { key: string; value: string }) => property.key === key);
+
+            if (existingProperty) {
+                existingProperty.value = resolvedValue;
+            } else {
+                properties.push({ key, value: resolvedValue });
+            }
+        });
 
         return {
             ...originalInitialValues,
@@ -406,6 +472,49 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 width={ 16 }
                 data-testid={ `${ testId }-client-secret` }
+            />
+            <Field.Input
+                ariaLabel="Microsoft authenticator directory tenant ID"
+                inputType="default"
+                name="microsoftTenant"
+                label={ t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.label") }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.placeholder")
+                }
+                hint={ (
+                    <>
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings.microsoft.tenant.hint"
+                            }
+                        >
+                            Keep <Code>common</Code> to allow sign-in from any Microsoft organization, or
+                            enter your Directory (tenant) ID or domain (e.g. <Code>contoso.onmicrosoft.com</Code>)
+                            to restrict sign-in to a single organization.
+                        </Trans>
+                        { " " }
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings.microsoft.tenant.info"
+                            }
+                        >
+                            If your Microsoft app registration uses &quot;Accounts in this organizational
+                            directory only&quot; (single-tenant), enter your tenant ID here. Leaving
+                            <Code>common</Code> will cause every sign-in through this connection to fail.
+                        </Trans>
+                    </>
+                ) }
+                required={ true }
+                requiredErrorMessage={
+                    t("authenticationProvider:forms.authenticatorSettings.microsoft.tenant.validations.required")
+                }
+                validation={ (value: string) => validateMicrosoftTenant(value?.toString()) }
+                readOnly={ readOnly }
+                value={ initialValues?.microsoftTenant }
+                maxLength={ 256 }
+                minLength={ 1 }
+                width={ 16 }
+                data-testid={ `${ testId }-directory-tenant` }
             />
             <Field.Input
                 ariaLabel="Microsoft authenticator authorized redirect URL"

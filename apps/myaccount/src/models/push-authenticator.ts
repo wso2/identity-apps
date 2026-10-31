@@ -22,3 +22,38 @@ export interface PushAuthRegisteredDevice {
     name: string;
     provider: string;
 }
+
+/**
+ * Resolved push device management configuration used internally by the UI.
+ */
+export interface PushDeviceMgtConfigInterface {
+    enableMultipleDeviceEnrollment: boolean;
+    maximumDeviceLimit: number;
+}
+
+/**
+ * A single property entry in a ConfigPreferenceResponse.
+ * Values are always returned as strings by the preferences API.
+ */
+interface ConfigPreferencePropertyInterface {
+    name: string;
+    value: string;
+}
+
+/**
+ * One resource block in the POST /configs/preferences response.
+ */
+export interface ConfigPreferenceResponseInterface {
+    resourceType: string;
+    resourceName: string;
+    attributeNames: ConfigPreferencePropertyInterface[];
+}
+
+/**
+ * One item in the POST /configs/preferences request body.
+ */
+export interface ConfigPreferenceRequestInterface {
+    resourceType: string;
+    resourceName: string;
+    attributeNames: string[];
+}

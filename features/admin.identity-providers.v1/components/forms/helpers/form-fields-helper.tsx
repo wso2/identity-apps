@@ -205,11 +205,11 @@ const getUserIdClaimRadioButtonField = (
     const options: StrictRadioChild[] = [
         {
             label: "Use NameID as the User Identifier",
-            value: "true"
+            value: "false"
         },
         {
             label: "User Identifier found among claims",
-            value: "false"
+            value: "true"
         }
     ];
 
@@ -704,6 +704,7 @@ export enum FieldType {
  * commonly used constants.
  */
 export enum CommonConstants {
+    STRING = "STRING",
     BOOLEAN = "BOOLEAN",
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",

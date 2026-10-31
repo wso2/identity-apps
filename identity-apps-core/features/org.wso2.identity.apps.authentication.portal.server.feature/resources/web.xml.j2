@@ -209,6 +209,18 @@
     {% endif %}
     <!-- *************** End of Layout Store URL Configuration ********************** -->
 
+    <!-- *************** App Level Custom Layout Inheritance Configuration ********************** -->
+    <!-- When an application inherits its branding from an ancestor organization, the custom layout is read
+         from the organization & the application the branding was resolved from. Set this to false to read it
+         from the requesting organization & application instead, which is how it behaved before this fix. -->
+    {% if webappscommon.inherit_app_level_custom_layout is defined %}
+    <context-param>
+        <param-name>inheritAppLevelCustomLayout</param-name>
+        <param-value>{{ webappscommon.inherit_app_level_custom_layout }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of App Level Custom Layout Inheritance Configuration ********************** -->
+
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>

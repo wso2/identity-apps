@@ -15,9 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 5 180 190" width="100%" height="100%">
-  <rect width="100%" height="100%" fill="transparent" />
-
+<svg class="icon" width="16" height="16" viewBox="15 5 180 190" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g stroke="#000" stroke-linecap="round" stroke-linejoin="round">
 
     <polyline points="45,145 75,90 115,90 145,35" fill="none" stroke-width="8" />
@@ -26,7 +24,6 @@
     <circle cx="75" cy="90" r="14" fill="#f0f0f0" stroke-width="8" />
     <circle cx="115" cy="90" r="14" fill="#f0f0f0" stroke-width="8" />
     <circle cx="145" cy="35" r="14" fill="#f0f0f0" stroke-width="8" />
-
 
     <g transform="translate(125, 125) rotate(-45)">
 

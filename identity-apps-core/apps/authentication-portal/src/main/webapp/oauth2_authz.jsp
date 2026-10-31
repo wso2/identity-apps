@@ -46,6 +46,7 @@
 <%
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
+    String requestedActorName = request.getParameter("requestedActorName");
 
     String scopeMetaData = request.getParameter("scopeMetadata");
     List<String> scopesWithMetadata = new ArrayList<>();
@@ -133,12 +134,27 @@
                       <div class="field light-font">
                         <div>
                             <h4 class="app-name-container">
-                                <strong id="app-name"
-                                        class="text-capitalize text-typography primary login-portal-app-font"
-                                        data-content=<%=Encode.forHtml(request.getParameter("application"))%>>
-                                    <%=Encode.forHtml(request.getParameter("application"))%>
-                                </strong>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
+                                <% if (StringUtils.isNotBlank(requestedActorName)) { %>
+                                    <strong id="agent-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(requestedActorName)%>">
+                                        <%=Encode.forHtml(requestedActorName)%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.via")%>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.obo.agent.suffix")%>
+                                <% } else { %>
+                                    <strong id="app-name"
+                                            class="text-capitalize text-typography primary login-portal-app-font"
+                                            data-content="<%=Encode.forHtmlAttribute(request.getParameter("application"))%>">
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                    </strong>
+                                    <%=i18n(resourceBundle, customText, "request.permission.profile")%>
+                                <% } %>
                             </h4>
                         </div>
                     </div>
@@ -162,7 +178,7 @@
                                 if (CollectionUtils.isNotEmpty(openIdScopes) || CollectionUtils.isNotEmpty(scopesWithMetadata) ) {
                         %>
                         <div style="text-align: left;">
-                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
+                            <h5><%=i18n(resourceBundle, customText, "this.will.provide.access.to")%>:</h5>
                             <div class="claim-list ui list">
                                 <%
                                     try {
@@ -299,25 +315,24 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="field mt-4 text-center login-portal-app-des-font">
-                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.giving.consent.you.agree.to.share.data")%> <span class="break-all-words">
-                                <%=Encode.forHtml(request.getParameter("application"))%></span>.
-                            </p>
+                            <p><%=i18n(resourceBundle, customText, "click.allow.to.authorize.request")%></p>
                         </div>
 
                         <div class="ui divider hidden"></div>
 
                     </div>
-                    <div class="align-right buttons">
-                        <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
-                            value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
-                        <input type="hidden" name="consent" id="consent" value="deny"/>
-
-                        <input class="ui large button secondary" type="reset"
-                               onclick="deny(); return false;"
-                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
-                        <input type="button" class="ui primary large button" id="approve" name="approve"
+                    <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
+                        value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
+                    <div class="mt-0">
+                        <input type="button" class="ui primary fluid large button" id="approve" name="approve"
                                onclick="approved(); return false;"
                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"allow")%> "/>
+                    </div>
+                    <div class="mt-3 align-center">
+                        <input type="hidden" name="consent" id="consent" value="deny"/>
+                        <input class="ui fluid large button secondary" type="reset"
+                               onclick="deny(); return false;"
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
                     </div>
                 </form>
             </div>

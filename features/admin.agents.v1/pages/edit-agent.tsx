@@ -28,7 +28,9 @@ import {
     AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Label } from "semantic-ui-react";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
 import AgentOverview from "../components/edit/agent-overview";
@@ -36,12 +38,15 @@ import AgentRoles from "../components/edit/agent-roles";
 import { ShareAgentForm } from "../components/edit/share-agent-form";
 import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
 import useGetAgent from "../hooks/use-get-agent";
+import isAgentManagedByParentOrg from "../utils/is-agent-managed-by-parent-org";
 
 type EditAgentPageProps = IdentifiableComponentInterface;
 
 export default function EditAgent({
     [ "data-componentid" ]: componentId = "edit-agent"
 }: EditAgentPageProps) {
+
+    const { t } = useTranslation();
 
     const agentId: string = useMemo(() => {
         const path: string[] = history?.location?.pathname?.split("/");
@@ -64,6 +69,11 @@ export default function EditAgent({
         data: agentInfo,
         isLoading: isAgentInfoLoading
     } = useGetAgent(agentId);
+
+    const isManagedByParentOrg: boolean = useMemo(
+        (): boolean => isAgentManagedByParentOrg(agentInfo),
+        [ agentInfo ]
+    );
 
     /**
      * The list of tab panes rendered in the final render.
@@ -100,7 +110,8 @@ export default function EditAgent({
             });
         }
 
-        if (isSharedAccessEnabled && hasSharedAccessReadPermission) {
+        // Agents shared down from a parent organization cannot be re-shared with sub organizations.
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission && !isManagedByParentOrg) {
             tabPanes.push({
                 componentId: "shared-access",
                 menuItem: "Shared Access",
@@ -118,7 +129,7 @@ export default function EditAgent({
         return tabPanes;
 
     }, [ agentFeatureConfig, agentInfo, isSharedAccessEnabled, hasSharedAccessReadPermission,
-        hasSharedAccessUpdatePermission ]);
+        hasSharedAccessUpdatePermission, isManagedByParentOrg ]);
 
     const [ agentOwnerDisplayName, setAgentOwnerDisplayName ] = useState<string>("");
 
@@ -161,7 +172,15 @@ export default function EditAgent({
                 { agentOwnerDisplayName && (
                     <Typography variant="body1">Created by <strong>{ agentOwnerDisplayName }</strong></Typography>
                 ) }
-
+                { isManagedByParentOrg && (
+                    <Label
+                        size="mini"
+                        className="client-id-label"
+                        data-componentid={ `${ componentId }-managed-by-parent-org-label` }
+                    >
+                        { t("parentOrgInvitations:invitedUserLabel") }
+                    </Label>
+                ) }
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {

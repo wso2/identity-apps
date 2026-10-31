@@ -19,6 +19,256 @@
 import { flowExtensionNS } from "../../../models";
 
 export const flowExtension: flowExtensionNS = {
+    createWizard: {
+        steps: {
+            endpointConfig: {
+                certificate: {
+                    hint: "Upload a certificate to encrypt field values exchanged with the extension endpoint.",
+                    title: "Encryption Certificate",
+                    uploaded: "Certificate configured. Clear it to upload a different certificate."
+                },
+                title: "Endpoint Configuration"
+            },
+            generalSettings: {
+                description: {
+                    label: "Description",
+                    placeholder: "Enter a description for the flow extension.",
+                    validations: {
+                        maxLength: "The description cannot exceed 255 characters."
+                    }
+                },
+                iconUrl: {
+                    hint: "A URL pointing to an icon that represents this flow extension.",
+                    label: "Icon URL",
+                    placeholder: "https://example.com/icon.svg",
+                    validations: {
+                        invalid: "Please enter a valid URL."
+                    }
+                },
+                name: {
+                    hint: "Enter a unique name to identify this flow extension.",
+                    label: "Name",
+                    placeholder: "Enter a name for the flow extension.",
+                    validations: {
+                        invalid: "Please enter a valid name. It must start with an alphanumeric character and"
+                            + " can contain letters, numbers, spaces, hyphens and underscores (max 255 characters)."
+                    }
+                },
+                title: "General Settings"
+            }
+        }
+    },
+    edit: {
+        accessConfig: {
+            emptyInfo: "No access configuration has been set. The extension will not send any data and "
+                + "will not allow any modifications until you configure access here.",
+            noCertificateInfo: "No encryption certificate provided. Fields sent to the extension (read) "
+                + "cannot be marked as encrypted until you upload a certificate in the Settings tab. "
+                + "Values returned by the extension (write) can still be encrypted.",
+            resetButton: "Reset",
+            treeLoadError: "Failed to load the Flow Extension context tree from the server. Refresh the "
+                + "page to retry. If the problem persists, ensure the flow-management API is reachable."
+        },
+        backButton: "Go back to Connections",
+        confirmations: {
+            delete: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this flow extension, any flows referencing it may stop working. "
+                    + "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the flow extension."
+            },
+            reset: {
+                assertionHint: "Please confirm your action.",
+                content: "The extension will no longer send any data and will not allow any modifications "
+                    + "until you reconfigure access here. This action cannot be undone.",
+                header: "Reset Access Configuration",
+                message: "This will clear all expose and modify annotations."
+            }
+        },
+        dangerZone: {
+            delete: {
+                actionTitle: "Delete",
+                header: "Delete flow extension",
+                subheader: "Once you delete a flow extension, it cannot be recovered. Please be certain."
+            }
+        },
+        endpoint: {
+            title: "Endpoint Configuration"
+        },
+        general: {
+            description: {
+                label: "Description",
+                placeholder: "Enter a description for the flow extension.",
+                validations: {
+                    maxLength: "The description cannot exceed 255 characters."
+                }
+            },
+            iconUrl: {
+                hint: "A URL pointing to an icon that represents this flow extension.",
+                label: "Icon URL",
+                placeholder: "https://example.com/icon.svg",
+                validations: {
+                    invalid: "Please enter a valid URL."
+                }
+            },
+            name: {
+                hint: "Enter a unique name to identify this flow extension.",
+                label: "Name",
+                placeholder: "Enter a name for the flow extension.",
+                validations: {
+                    invalid: "Please enter a valid name. It must start with an alphanumeric character and"
+                        + " can contain letters, numbers, spaces, hyphens and underscores (max 255 characters)."
+                }
+            }
+        },
+        pageTitle: "Edit Flow Extension",
+        tabs: {
+            accessConfig: {
+                label: "Access Configuration"
+            },
+            endpoint: {
+                label: "Endpoint"
+            },
+            general: {
+                label: "General"
+            }
+        }
+    },
+    notifications: {
+        createError: {
+            description: "An error occurred while creating the flow extension.",
+            message: "Flow Extension Creation Error"
+        },
+        createSuccess: {
+            description: "Successfully created the flow extension.",
+            message: "Creation Successful"
+        },
+        deleteError: {
+            description: "An error occurred while deleting the flow extension.",
+            message: "Flow Extension Deletion Error"
+        },
+        deleteSuccess: {
+            description: "Successfully deleted the flow extension.",
+            message: "Deletion Successful"
+        },
+        fetchError: {
+            description: "An error occurred while retrieving the flow extension.",
+            message: "Retrieval Error"
+        },
+        resetSuccess: {
+            description: "Access configuration has been reset successfully.",
+            message: "Reset Successful"
+        },
+        updateError: {
+            description: "An error occurred while updating the flow extension.",
+            message: "Flow Extension Update Error"
+        },
+        updateSuccess: {
+            description: "Successfully updated the flow extension.",
+            message: "Update Successful"
+        }
+    },
+    contextTree: {
+        addClaimModal: {
+            addButton: "Add Claims",
+            cancelButton: "Cancel",
+            fetchError: {
+                description: "Failed to retrieve local claims.",
+                message: "Error fetching claims"
+            },
+            noOptions: "No claims available",
+            readOnlyBadge: "Read-only",
+            searchPlaceholder: "Search and select claims by name or URI...",
+            subtitle: "Select the claims to add to the claims map.",
+            title: "Add Claims"
+        },
+        addEntryModal: {
+            attributes: {
+                arrayTooltip: "Array of this type",
+                label: "Attributes",
+                namePlaceholder: "Attribute name"
+            },
+            cancelButton: "Cancel",
+            dataType: {
+                label: "Data Type"
+            },
+            keyName: {
+                label: "Key Name",
+                placeholder: "e.g. risk-factor"
+            },
+            multivalued: "Multivalued",
+            structurePreview: "Structure preview",
+            submitButton: {
+                create: "Add Entry",
+                edit: "Save Changes"
+            },
+            subtitle: {
+                map: "Define the key that will be written into the map at runtime",
+                object: "Define the key, value shape, and its attributes"
+            },
+            title: {
+                createMap: "Add Map Entry",
+                createObject: "Add Complex Object Entry",
+                editMap: "Edit Map Entry",
+                editObject: "Edit Complex Object Entry"
+            }
+        },
+        addOrganizationAttributeModal: {
+            addButton: "Add Attributes",
+            cancelButton: "Cancel",
+            defineCustomAttribute: {
+                addButton: "Add",
+                keyLabel: "Key",
+                keyPlaceholder: "e.g. businessType",
+                labelLabel: "Display label",
+                labelPlaceholder: "e.g. Business Type",
+                title: "Define a custom attribute"
+            },
+            duplicateKey: "That attribute has already been added.",
+            invalidKey: "An attribute key must start with a letter and contain only letters, "
+                + "numbers or underscores.",
+            noOptions: "No attributes available",
+            searchPlaceholder: "Select an attribute collected by the flow...",
+            subtitle: "Select the organization attributes to add to the attributes map.",
+            title: "Add Organization Attributes"
+        },
+        fieldConfig: {
+            deleteTooltip: "Delete",
+            editTooltip: "Edit",
+            emptyHint: "Select a leaf field from the tree to configure it.",
+            emptyTitle: "No field selected",
+            encryption: {
+                formReadOnly: "This form is read-only.",
+                read: {
+                    enabledDescription: "This field will be sent to the extension encrypted.",
+                    markFirst: "Mark this field as READ in the tree to enable encryption.",
+                    needCertificate: "Add a certificate to enable encryption.",
+                    notAllowed: "Read is not allowed for this field.",
+                    title: "Read encrypted"
+                },
+                title: "Encryption",
+                write: {
+                    enabledDescription: "The extension will return this field's value encrypted.",
+                    markFirst: "Mark this field as WRITE in the tree to enable encryption.",
+                    notAllowed: "Write is not allowed for this field.",
+                    title: "Write encrypted"
+                }
+            },
+            identityClaimWriteWarning: "Modifying this system maintained attribute may cause unexpected behavior.",
+            readOnlyBadge: "Read-Only",
+            title: "Field Configuration",
+            usernameWriteWarning: "Write access to the username is only applied in the Self Registration " +
+                "flow."
+        },
+        node: {
+            addEntryChip: "+ ADD ENTRY",
+            noEntries: "No entries yet",
+            readChip: "READ",
+            readOnlyBadge: "Read-Only",
+            writeChip: "WRITE"
+        }
+    },
     properties: {
         connectionLabel: "Connection",
         connectionPlaceholder: "Select a connection",

@@ -27,8 +27,8 @@ import { VerifiableCredentialsNS } from "../../../models";
 
 export const verifiableCredentials: VerifiableCredentialsNS = {
     page: {
-        title: "Verifiable Credentials",
-        heading: "Verifiable Credentials",
+        title: "Credential Templates",
+        heading: "Credential Templates",
         description: "Create and manage templates for issuing verifiable credentials to users."
     },
     buttons: {

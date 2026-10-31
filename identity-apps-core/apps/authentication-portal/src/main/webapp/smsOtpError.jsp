@@ -83,6 +83,9 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.resent.count.exceeded");
             } else if(errorMessage.equalsIgnoreCase("sms.quota.exceeded")){
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.sms.quota.exceeded");
+            } else if (errorMessage.equalsIgnoreCase("sms.otp.mobile.number.enrollment.attempts.exceeded")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,
+                    "sms.otp.mobile.number.enrollment.attempts.exceeded");
             } else if (isErrorFallbackLocale) {
                 actualError = errorMessage;
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");

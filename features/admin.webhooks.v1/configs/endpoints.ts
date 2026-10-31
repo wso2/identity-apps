@@ -26,7 +26,10 @@ import { WebhooksResourceEndpointsInterface } from "../models/endpoints";
  */
 export const getWebhooksResourceEndpoints = (serverHost: string): WebhooksResourceEndpointsInterface => {
     return {
+        // Both versions resolved up front; `getWebhooksEndpoint` picks per request. Metadata is
+        // unversioned in the v2 specification and is served from v1 either way.
         webhooks: `${serverHost}/api/server/v1/webhooks`,
-        webhooksMetadata: `${serverHost}/api/server/v1/webhooks/metadata`
+        webhooksMetadata: `${serverHost}/api/server/v1/webhooks/metadata`,
+        webhooksV2: `${serverHost}/api/server/v2/webhooks`
     };
 };

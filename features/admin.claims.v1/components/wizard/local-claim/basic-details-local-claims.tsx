@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { ClaimManagementConstants } from "../../../constants";
+import { isReservedLocalAttributeName, isValidLocalAttributeName } from "../../../utils";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -231,7 +232,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         placeholder={ t("claims:local." +
                                             "forms.attributeID.placeholder") }
                                         value={ values?.get("claimURI")?.toString() }
-                                        maxLength={ 30 }
+                                        maxLength={ ClaimManagementConstants.LOCAL_ATTRIBUTE_NAME_MAX_LENGTH }
                                         loading={ validateMapping }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setClaimID(values.get("claimURI").toString());
@@ -252,17 +253,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
                                                 return;
                                             }
-                                            let isAttributeValid: boolean = true;
-
-                                            // TODO : Discuss on max characters for attribute name
-                                            if (!value.match(/^\w+(\.\w+)?$/) || value.length > 30) {
-                                                isAttributeValid = false;
-                                            }
-
-                                            if (!isAttributeValid) {
+                                            if (!isValidLocalAttributeName(value)) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(t("claims:"
-                                                    +"dialects.forms.fields.attributeName.validation.invalid"));
+                                                    +"dialects.forms.fields.attributeName.validation.invalid", {
+                                                    maxLength: ClaimManagementConstants.LOCAL_ATTRIBUTE_NAME_MAX_LENGTH
+                                                }));
+
+                                                return;
+                                            }
+
+                                            if (isReservedLocalAttributeName(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(t("claims:"
+                                                    +"dialects.forms.fields.attributeName.validation.reserved"));
 
                                                 return;
                                             }
@@ -330,7 +334,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             size="tiny"
                                                             type="error"
                                                             content="The SCIM mapping value entered contains illegal
-                                                                characters. Only alphabets, numbers, `_` are allowed."
+                                                                characters. Only letters, numbers, `_`, `.`, `-` and `/`
+                                                                are allowed."
                                                         />
                                                     )
                                                 }
@@ -366,7 +371,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         </Grid.Column>
                                                         <Grid.Column width={ 11 }>
                                                             <InlineEditInput
-                                                                maxLength={ 50 }
+                                                                maxLength={
+                                                                    ClaimManagementConstants
+                                                                        .LOCAL_ATTRIBUTE_NAME_MAX_LENGTH
+                                                                }
                                                                 text={ oidcMapping }
                                                                 errorHandler={ (status: boolean) => {
                                                                     setShowOIDCMappingError(status);
@@ -413,9 +421,12 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 </Grid.Column>
                                                                 <Grid.Column width={ 11 }>
                                                                     <InlineEditInput
-                                                                        maxLength={ 30 }
+                                                                        maxLength={
+                                                                            ClaimManagementConstants
+                                                                                .LOCAL_ATTRIBUTE_NAME_MAX_LENGTH
+                                                                        }
                                                                         textPrefix={ `${userSchemaURI}:` }
-                                                                        validation="^[a-zA-Z0-9_.-]*$"
+                                                                        validation="^[a-zA-Z0-9_./-]*$"
                                                                         errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);
                                                                         } }
@@ -537,6 +548,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     maxLength={ 30 }
                                     listen={ (values: Map<string, FormValue>) => {
                                         setClaimID(values.get("claimURI").toString());
+                                    } }
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (isReservedLocalAttributeName(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("claims:"
+                                                + "dialects.forms.fields.attributeName.validation.reserved"));
+                                        }
                                     } }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowClaimIDHint, claimTimer);

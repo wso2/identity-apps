@@ -58,6 +58,7 @@ import { UserFeatureDictionaryKeys, UserManagementConstants } from "../../consta
 import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
 import {
     getDisplayOrder,
+    isDuplicatedEnterpriseSchema,
     isMultipleEmailsAndMobileNumbersEnabledForUserStore
 } from "../../utils/user-management-utils";
 
@@ -995,7 +996,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             }
         }
 
-        if (duplicateClaims && duplicateClaims.some((claim: ExternalClaim) => claim.claimURI === schema.schemaUri)) {
+        if (isDuplicatedEnterpriseSchema(schema, duplicateClaims)) {
             return false;
         }
 

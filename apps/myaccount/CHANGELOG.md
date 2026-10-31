@@ -1,5 +1,95 @@
 # @wso2is/myaccount
 
+## 4.5.0
+
+### Minor Changes
+
+- [#10840](https://github.com/wso2/identity-apps/pull/10840) [`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self-service device management to My Account
+
+### Patch Changes
+
+- Updated dependencies [[`9396352cb4a9f5215f298b035074d433ecfa12f5`](https://github.com/wso2/identity-apps/commit/9396352cb4a9f5215f298b035074d433ecfa12f5)]:
+  - @wso2is/i18n@2.56.0
+
+## 4.4.4
+
+### Patch Changes
+
+- [#10809](https://github.com/wso2/identity-apps/pull/10809) [`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Add the Incode connection logo and flow builder icon
+
+- Updated dependencies [[`4250b3c9a0ab341411f1e6217964dc3479299d0b`](https://github.com/wso2/identity-apps/commit/4250b3c9a0ab341411f1e6217964dc3479299d0b)]:
+  - @wso2is/theme@2.11.3
+
+## 4.4.3
+
+### Patch Changes
+
+- [#10614](https://github.com/wso2/identity-apps/pull/10614) [`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Add console support for the Daon TrustX connection templates: hide the tabs the templates do not use,
+  resolve the registration and recovery redirect URIs in the create wizard help panel, and ship the
+  connection logo
+- Updated dependencies [[`cdf04d8ce7e53b0086321a66f4909ffba17c67ab`](https://github.com/wso2/identity-apps/commit/cdf04d8ce7e53b0086321a66f4909ffba17c67ab)]:
+  - @wso2is/theme@2.11.1
+
+## 4.4.2
+
+### Patch Changes
+
+- [#10651](https://github.com/wso2/identity-apps/pull/10651) [`3694e431ce7255f87924ae5d6312b13415902f33`](https://github.com/wso2/identity-apps/commit/3694e431ce7255f87924ae5d6312b13415902f33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add proxy_context_path support for console and myaccount apps
+
+## 4.4.1
+
+### Patch Changes
+
+- [#10599](https://github.com/wso2/identity-apps/pull/10599) [`4b360cbb7575caa5fb184b07a67de613f031997a`](https://github.com/wso2/identity-apps/commit/4b360cbb7575caa5fb184b07a67de613f031997a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve locale field in myaccount app to list all locales
+
+## 4.4.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d3fd4df580bdc261480a14cb9d1d0ba981f62`](https://github.com/wso2/identity-apps/commit/8f5d3fd4df580bdc261480a14cb9d1d0ba981f62), [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb), [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a)]:
+  - @wso2is/i18n@2.44.0
+
+## 4.3.11
+
+### Patch Changes
+
+- [#10494](https://github.com/wso2/identity-apps/pull/10494) [`0d0af7d35586a9280d7a1a99e35148cdf837ab9f`](https://github.com/wso2/identity-apps/commit/0d0af7d35586a9280d7a1a99e35148cdf837ab9f) Thanks [@hwupathum](https://github.com/hwupathum)! - Update consent API uri
+
+## 4.3.10
+
+### Patch Changes
+
+- [#10471](https://github.com/wso2/identity-apps/pull/10471) [`332bfac5067a0b3c21794a24a3c4a2c05fbef6f3`](https://github.com/wso2/identity-apps/commit/332bfac5067a0b3c21794a24a3c4a2c05fbef6f3) Thanks [@Miranlfk](https://github.com/Miranlfk)! - Add a dedicated loading state to the danger zone revert button and prevent the revert request from racing with the update request on governance configuration pages.
+
+## 4.3.9
+
+### Patch Changes
+
+- [#10444](https://github.com/wso2/identity-apps/pull/10444) [`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b) Thanks [@savindi7](https://github.com/savindi7)! - Add tenant ID field in Microsoft Connection.
+
+- Updated dependencies [[`5591da87a12f72f05d60a131d325ca7dc409af6b`](https://github.com/wso2/identity-apps/commit/5591da87a12f72f05d60a131d325ca7dc409af6b)]:
+  - @wso2is/i18n@2.43.7
+  - @wso2is/theme@2.10.7
+
+## 4.3.8
+
+### Patch Changes
+
+- [#10438](https://github.com/wso2/identity-apps/pull/10438) [`202d2372fafa3283f7f41b68683ad2b69492fdc1`](https://github.com/wso2/identity-apps/commit/202d2372fafa3283f7f41b68683ad2b69492fdc1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Refactor super tenant resolution logic in Console and My Account
+
+- Updated dependencies [[`5036ddbed5a42d6bbee5880fb81c0626b510580f`](https://github.com/wso2/identity-apps/commit/5036ddbed5a42d6bbee5880fb81c0626b510580f)]:
+  - @wso2is/i18n@2.43.5
+
+## 4.3.7
+
+### Patch Changes
+
+- [#10424](https://github.com/wso2/identity-apps/pull/10424) [`d613370ee9bea4e28642aa1f43da09270c3919db`](https://github.com/wso2/identity-apps/commit/d613370ee9bea4e28642aa1f43da09270c3919db) Thanks [@savindi7](https://github.com/savindi7)! - Update My Account styles.
+
 ## 4.3.6
 
 ### Patch Changes

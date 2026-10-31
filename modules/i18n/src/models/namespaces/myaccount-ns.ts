@@ -470,6 +470,58 @@ export interface MyAccountNS {
             content: string;
             confirmButton: string;
         };
+        devices?: {
+            actions: {
+                activate: string;
+                deactivate: string;
+                delete: string;
+                more: string;
+                rename: string;
+            };
+            list: {
+                registeredOn: string;
+            };
+            modals: {
+                deactivateConfirmation: {
+                    content: string;
+                    heading: string;
+                    message: string;
+                    primaryAction: string;
+                };
+                deleteConfirmation: {
+                    content: string;
+                    heading: string;
+                    message: string;
+                    primaryAction: string;
+                };
+                rename: {
+                    heading: string;
+                    label: string;
+                    placeholder: string;
+                    primaryAction: string;
+                    validations: {
+                        maxLength: string;
+                        required: string;
+                    };
+                };
+            };
+            notifications: {
+                activateDevice: Notification;
+                deactivateDevice: Notification;
+                deleteDevice: Notification;
+                fetchDevices: Notification;
+                renameDevice: Notification;
+            };
+            pagination: {
+                next: string;
+                previous: string;
+                summary: string;
+            };
+            status: {
+                active: string;
+                inactive: string;
+            };
+        };
         federatedAssociations: {
             deleteConfirmation: string;
             notifications: {
@@ -620,8 +672,12 @@ export interface MyAccountNS {
                     };
                     deviceListFetchError: {
                         error: NotificationItem;
+                    };
+                    configFetchError: {
+                        genericError: NotificationItem;
                     }
                 };
+                deviceLimitReachedHint: string;
             },
             backupCode: {
                 actions: {
@@ -1160,6 +1216,13 @@ export interface MyAccountNS {
         linkedAccounts: {
             actionTitles: {
                 add: string;
+            };
+            description: string;
+            heading: string;
+        };
+        devices?: {
+            actionTitles: {
+                empty: string;
             };
             description: string;
             heading: string;

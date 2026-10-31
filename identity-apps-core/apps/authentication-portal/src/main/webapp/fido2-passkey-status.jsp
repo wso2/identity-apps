@@ -33,6 +33,14 @@
 <%
     String isKeyExist = request.getParameter("keyExist");
 
+    // The auth params are populated by AuthParameterFilter, which wraps the request only when it
+    // carries a session data key. A request reaching this page without that context is not a valid
+    // prompt request, so fail it cleanly instead of letting the cast below throw.
+    if (!(request instanceof AuthenticationRequestWrapper)) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
+    }
+
     Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>

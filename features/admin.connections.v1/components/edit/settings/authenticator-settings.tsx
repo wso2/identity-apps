@@ -1005,6 +1005,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             return (
                 <AuthenticatorFormFactory
+                    connectionId={ identityProvider.id }
                     connectionSettingsMetaData={ connectionSettingsMetaData }
                     mode={ AuthenticatorSettingsFormModes.EDIT }
                     authenticator={ authenticator }

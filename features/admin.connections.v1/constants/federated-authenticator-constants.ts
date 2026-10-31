@@ -148,6 +148,39 @@ export class FederatedAuthenticatorConstants {
     };
 
     /**
+     * Microsoft OAuth2 authorization endpoint template.
+     */
+    public static readonly MICROSOFT_AUTHORIZE_ENDPOINT: string =
+        "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize";
+
+    /**
+     * Microsoft OAuth2 token endpoint template.
+     */
+    public static readonly MICROSOFT_TOKEN_ENDPOINT: string =
+        "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token";
+
+    /**
+     * Default Microsoft tenant segment.
+     */
+    public static readonly MICROSOFT_DEFAULT_TENANT: string = "common";
+
+    /**
+     * Matches the tenant path segment that immediately follows the Microsoft login host.
+     */
+    public static readonly MICROSOFT_TENANT_SEGMENT_REGEX: RegExp =
+        /(login\.microsoftonline\.com\/)[^/?#]+/;
+
+    /**
+     * Authenticator property key for the authorization endpoint URL.
+     */
+    public static readonly AUTHORIZATION_ENDPOINT_URL_KEY: string = "OAuth2AuthzEPUrl";
+
+    /**
+     * Authenticator property key for the token endpoint URL.
+     */
+    public static readonly TOKEN_ENDPOINT_URL_KEY: string = "OAuth2TokenEPUrl";
+
+    /**
      * GitHub Scope mappings.
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {

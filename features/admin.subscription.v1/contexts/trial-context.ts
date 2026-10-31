@@ -34,6 +34,14 @@ export interface TrialContextPropsInterface {
      * Whether the trial resolution is still in progress.
      */
     isLoading: boolean;
+    /**
+     * Whether the post trial expiry notice must be shown.
+     */
+    showTrialExpiryNotice: boolean;
+    /**
+     * Records that the post trial expiry notice has been dismissed for the organization.
+     */
+    dismissTrialExpiryNotice: () => void;
 }
 
 /**

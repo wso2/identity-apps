@@ -39,4 +39,17 @@ export class MultiFactorAuthenticationConstants {
 
     public static readonly MFA_ENABLED_AUTHENTICATOR_UPDATE_ERROR: string = "Received an invalid status " +
         "code while updating enabled authenticators.";
+
+    // Push authenticator device management constants
+    public static readonly RESOURCE_TYPE: string = "DEVICE_MANAGEMENT";
+
+    public static readonly DEVICE_MGT_RESOURCE_NAME: string = "PUSH_DEVICE_MANAGEMENT";
+
+    public static readonly PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT: string = "enableMultipleDeviceEnrollment";
+
+    public static readonly PROPERTY_MAXIMUM_PUSH_DEVICE_LIMIT: string = "maximumDeviceLimit";
+
+    public static readonly DEFAULT_MULTIPLE_PUSH_DEVICE_LIMIT: number = 2;
+
+    public static readonly SINGLE_PUSH_DEVICE_LIMIT: number = 1;
 }

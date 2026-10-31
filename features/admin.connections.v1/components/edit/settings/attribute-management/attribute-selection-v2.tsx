@@ -37,6 +37,11 @@ interface AttributesSelectionV2Props extends TestableComponentInterface {
     mappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
     onAttributesSelected: (mappingsToBeAdded: ConnectionCommonClaimMappingInterface[]) => void;
     isReadOnly: boolean;
+    allowedMappedValues?: string[];
+    externalAttributeLabel?: string;
+    externalAttributeTooltip?: string;
+    attributeMappingHeading?: string;
+    attributeMappingSubheading?: string;
 }
 
 const FORM_ID: string = "idp-attribute-selection-v2-form";
@@ -60,6 +65,11 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         mappedAttributesList,
         onAttributesSelected,
         isReadOnly,
+        allowedMappedValues,
+        externalAttributeLabel,
+        externalAttributeTooltip,
+        attributeMappingHeading,
+        attributeMappingSubheading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -167,12 +177,12 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             <Grid.Row>
                 <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                     <Heading as="h4">
-                        { t("idp:forms.attributeSettings.attributeMapping." +
-                            "heading") }
+                        { attributeMappingHeading ??
+                            t("idp:forms.attributeSettings.attributeMapping.heading") }
                     </Heading>
                     <Heading as="h6" color="grey">
-                        { t("idp:forms.attributeSettings.attributeMapping." +
-                            "subheading") }
+                        { attributeMappingSubheading ??
+                            t("idp:forms.attributeSettings.attributeMapping.subheading") }
                     </Heading>
                     { hasMappedAttributes() ? (
                         <>
@@ -238,7 +248,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                             <Table.Row>
                                                 <Table.HeaderCell width="10">
                                                     <strong>
-                                                        {
+                                                        { externalAttributeLabel ??
                                                             t("idp:forms.attributeSettings." +
                                                                 "attributeMapping.attributeMapTable." +
                                                                 "externalAttributeColumnHeader")
@@ -260,6 +270,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                         </Table.Header>
                                         <Table.Body>
                                             <AttributeMappingList
+                                                allowedMappedValues={ allowedMappedValues }
                                                 alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
                                                 attributeMappingsListToShow={
                                                     mappedAttributesList.filter(
@@ -324,6 +335,9 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             </Grid.Row>
             { showAddModal && (
                 <AddAttributeSelectionModal
+                    allowedMappedValues={ allowedMappedValues }
+                    externalAttributeLabel={ externalAttributeLabel }
+                    externalAttributeTooltip={ externalAttributeTooltip }
                     attributeList={ [ ...attributeList.filter((attribute: ConnectionClaimInterface) =>
                         !mappedAttrIds.includes(attribute.id)) ] }
                     alreadyMappedAttributesList={ [ ...mappedAttributesList ] }

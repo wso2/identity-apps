@@ -33,6 +33,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
+import CopilotActionCard from "./copilot-action-card";
 import {
     StyledCopilotInput,
     StyledFollowUpSuggestionsList,
@@ -41,7 +42,7 @@ import {
 } from "./copilot-styles";
 import { CHARS_PER_FRAME, MAX_INPUT_LENGTH, TYPING_SPEED_MS } from "../constants/copilot-chat-constants";
 import useCopilotPanel from "../hooks/use-copilot-panel";
-import { CopilotMessageInterface } from "../store/types/copilot-action-types";
+import { CopilotActionInterface, CopilotMessageInterface } from "../store/types/copilot-action-types";
 
 const StyledBotMessageBubble: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     "& .markdown": {
@@ -283,6 +284,7 @@ interface ChatMessageProps {
     componentId: string;
     onSendMessage: (msg: string) => void;
     onAnimatedContentChange: () => void;
+    onRespondToAction: (messageId: string, actionId: string, decision: "confirm" | "cancel") => void;
 }
 
 
@@ -299,7 +301,8 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
         isLoading: loading,
         componentId,
         onSendMessage,
-        onAnimatedContentChange
+        onAnimatedContentChange,
+        onRespondToAction
     }: ChatMessageProps): ReactElement => {
         const { t } = useTranslation();
         const isUser: boolean = message.sender === "user";
@@ -440,6 +443,16 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
                         </MessageErrorBoundary>
                     </StyledBotMessageBubble>
 
+                    { message.actions?.map((action: CopilotActionInterface) => (
+                        <CopilotActionCard
+                            key={ action.id }
+                            action={ action }
+                            onRespond={ (decision: "confirm" | "cancel") =>
+                                onRespondToAction(message.id, action.id, decision) }
+                            data-componentid={ `${componentId}-action-${action.id}` }
+                        />
+                    )) }
+
                     { !isError && isLastMessage && (
                         <>
                             { message.suggestionsLoading && !message.suggestions && (
@@ -508,7 +521,8 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
         statusMessage,
         hasMoreHistory,
         isLoadingMoreHistory,
-        loadMoreHistory
+        loadMoreHistory,
+        respondToAction
     } = useCopilotPanel();
 
     const [ inputValue, setInputValue ] = useState<string>("");
@@ -709,6 +723,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                             componentId={ componentId }
                             onSendMessage={ sendMessage }
                             onAnimatedContentChange={ handleAnimatedContentChange }
+                            onRespondToAction={ respondToAction }
                         />
                     ))
                 ) }

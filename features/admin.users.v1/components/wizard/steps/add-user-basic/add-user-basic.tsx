@@ -25,6 +25,9 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import useDuplicatedEnterpriseClaims, {
+    UseDuplicatedEnterpriseClaimsInterface
+} from "@wso2is/admin.claims.v1/hooks/use-duplicated-enterprise-claims";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -94,6 +97,7 @@ import {
     getConfiguration,
     getDisplayOrder,
     getUsernameConfiguration,
+    isDuplicatedEnterpriseSchema,
     isFieldDisplayableInUserCreationWizard
 } from "../../../../utils";
 import "./add-user-basic.scss";
@@ -168,6 +172,10 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
+    const {
+        duplicatedClaims,
+        isLoading: isDuplicatedClaimsLoading
+    }: UseDuplicatedEnterpriseClaimsInterface = useDuplicatedEnterpriseClaims();
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
@@ -454,6 +462,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 continue;
             }
 
+            // Exclude Enterprise schema attributes that duplicate a core User or System schema attribute.
+            if (isDuplicatedEnterpriseSchema(schema, duplicatedClaims)) {
+                continue;
+            }
+
             // If multiple email and mobile number feature is disabled,
             // we need to hide the email addresses and mobile numbers attributes.
             if (!isMultipleEmailAndMobileNumberEnabled) {
@@ -475,7 +488,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             getDisplayOrder(a) - getDisplayOrder(b));
 
         setProfileSchema(filteredSchemas);
-    }, [ profileSchemas ]);
+    }, [ profileSchemas, duplicatedClaims ]);
 
     /*
     * This map the user data to schema using initial values of the wizard.
@@ -1136,7 +1149,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         }
     };
 
-    if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
+    if (
+        isUserStoreRequestLoading
+        || isUserStoreRequestValidating
+        || isAttributesRequestLoading
+        || isDuplicatedClaimsLoading
+    ) {
         return (
             <OxygenGrid container spacing={ 3 }>
                 { Array.from({ length: 3 }).map((_: unknown, idx: number) => (

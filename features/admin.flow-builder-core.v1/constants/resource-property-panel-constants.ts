@@ -33,7 +33,7 @@ class ResourcePropertyPanelConstants {
      */
     private constructor() {}
 
-    public static readonly EXCLUDED_PROPERTIES: string[] = [ "identifier", "type" ];
+    public static readonly EXCLUDED_PROPERTIES: string[] = [ "identifier", "type", "identifierType" ];
 }
 
 export default ResourcePropertyPanelConstants;

@@ -29,6 +29,13 @@ function stripBraces(s) {
 }
 
 /**
+ * Whether a string is an i18n token.
+ */
+function isI18nToken(s) {
+    return !!s && s.startsWith("{{") && s.endsWith("}}");
+}
+
+/**
  * Returns the i18n keys for the given error code.
  *
  * @param {string} errorCode - The error code (e.g., "60001")
@@ -232,7 +239,48 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                 portalUrlStatus: "true"
             };
 
+        case "VP-60001":
+
+            return {
+                message: stripBraces(errorMessage) || "wallet.vp.error.failed.message",
+                description: "wallet.vp.error.failed.description"
+            };
+
+        case "VP-60002":
+
+            return {
+                message: "wallet.vp.error.expired.message",
+                description: "wallet.vp.error.expired.description"
+            };
+
+        case "VP-65001":
+
+            return {
+                message: stripBraces(errorMessage) || "wallet.vp.error.generic.message",
+                description: "wallet.vp.error.generic.description"
+            };
+
+        case "VP-65002":
+
+            return {
+                message: "wallet.vp.error.network.message",
+                description: "wallet.vp.error.network.description"
+            };
+
         default:
+
+            // An executor registered by a connector deployed on the server has no case above. Those can be handled through here.
+            if (isI18nToken(errorMessage) || isI18nToken(errorDescription)) {
+                return {
+                    message: isI18nToken(errorMessage)
+                        ? stripBraces(errorMessage)
+                        : "orchestration.flow.error.failed.message",
+                    description: isI18nToken(errorDescription)
+                        ? stripBraces(errorDescription)
+                        : "orchestration.flow.error.failed.description",
+                    portalUrlStatus: "true"
+                };
+            }
 
             return {
                 message: "orchestration.flow.error.failed.message",

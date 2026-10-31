@@ -32,6 +32,7 @@ export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
 export { default as __DEPRECATED__SelectFieldAdapter } from "./adapters/__DEPRECATED__select-field-adapter";
 export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
 export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-field-adapter";
+export { default as SearchableSelectFieldAdapter } from "./adapters/searchable-select-field-adapter";
 export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
 export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
 export { default as CheckboxGroupFieldAdapter } from "./adapters/checkbox-group-field-adapter";

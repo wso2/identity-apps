@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid } from "semantic-ui-react";
+import { DropdownItemProps, Grid } from "semantic-ui-react";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -234,6 +234,35 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
         });
     };
 
+    /**
+     * Filters the local attribute dropdown options against the search query.
+     *
+     * The dropdown options are rendered with a JSX element as the `text` prop. Hence the default
+     * search of the dropdown, which matches the query against `option.text`, can never match any
+     * option. This filters the options using the display name and the claim URI of the underlying
+     * local attribute instead.
+     *
+     * @param options - Dropdown options to be filtered.
+     * @param query - The search query entered by the user.
+     *
+     * @returns The filtered dropdown options.
+     */
+    const filterLocalClaimOptions = (options: DropdownItemProps[], query: string): DropdownItemProps[] => {
+        if (!query) {
+            return options;
+        }
+
+        const searchQuery: string = query.toLowerCase();
+
+        return options?.filter((option: DropdownItemProps) => {
+            const matchingClaim: Claim = filteredLocalClaims?.find(
+                (localClaim: Claim) => localClaim?.claimURI === option?.value);
+
+            return matchingClaim?.displayName?.toLowerCase().includes(searchQuery)
+                || matchingClaim?.claimURI?.toLowerCase().includes(searchQuery);
+        });
+    };
+
     return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
@@ -320,7 +349,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             requiredErrorMessage={ t("claims:external.forms." +
                                 "localAttribute.requiredErrorMessage") }
                             placeholder={ t("claims:external.forms.attributeURI.placeholder") }
-                            search
+                            search={ filterLocalClaimOptions }
                             loading={ isClaimsLoading }
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={

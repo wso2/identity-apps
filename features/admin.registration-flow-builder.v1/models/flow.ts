@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
@@ -26,6 +27,10 @@ export interface RegistrationFlow {
      * Steps of the registration flow.
      */
     steps: Step[];
+    /**
+     * Headers and runtime values the flow defines.
+     */
+    variables?: FlowVariablesInterface;
 }
 
 /**

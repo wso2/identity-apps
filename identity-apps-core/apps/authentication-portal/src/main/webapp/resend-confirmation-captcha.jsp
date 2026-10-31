@@ -36,6 +36,14 @@
 
 <%
     String UTF_8 = "UTF-8";
+
+    // The username is encoded into the resend form action below. Without it there is no account to
+    // resend a confirmation for, so fail cleanly instead of throwing.
+    if (StringUtils.isBlank(request.getParameter("failedUsername"))) {
+        request.getRequestDispatcher("error.do").forward(request, response);
+        return;
+    }
+
     boolean reCaptchaResendEnabled = false;
     if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
         reCaptchaResendEnabled = true;

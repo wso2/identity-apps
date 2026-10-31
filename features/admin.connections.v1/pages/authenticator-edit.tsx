@@ -36,7 +36,16 @@ import {
     TabPageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    Fragment,
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -49,6 +58,12 @@ import { CommonAuthenticatorConstants } from "../constants/common-authenticator-
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels } from "../models/authenticators";
 import { CustomAuthConnectionInterface } from "../models/connection";
+
+/**
+ * Clears the gradient backdrop `AppAvatar` renders behind square avatars, so the connector
+ * logo on this page is shown on its own.
+ */
+const CONNECTOR_LOGO_STYLES: CSSProperties = { background: "transparent" };
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
@@ -212,6 +227,7 @@ const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterfa
                 name={ connector?.displayName }
                 image={ connector?.image || AuthenticatorMeta.getCustomAuthenticatorIcon() }
                 size="tiny"
+                style={ CONNECTOR_LOGO_STYLES }
             />
         );
     };

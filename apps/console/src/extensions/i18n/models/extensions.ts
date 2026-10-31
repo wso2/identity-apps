@@ -2526,10 +2526,6 @@ export interface Extensions {
                         placeholder: string;
                         hint: string;
                     },
-                    locale: {
-                        label: string;
-                        placeholder: string;
-                    }
                     subject: {
                         label: string;
                         placeholder: string;

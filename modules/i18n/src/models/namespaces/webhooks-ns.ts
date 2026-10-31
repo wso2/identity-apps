@@ -139,8 +139,30 @@ export interface webhooksNS {
         channels: {
             heading: string;
             subHeading: string;
+            subscriptionPolicy: {
+                heading: string;
+                subHeading: string;
+                expandAll: string;
+                collapseAll: string;
+                switchModal: {
+                    header: string;
+                    message: string;
+                    description: string;
+                    preserveLabel: string;
+                    preserveDescription: string;
+                    resetLabel: string;
+                    resetDescription: string;
+                    tooManyOrganizations: string;
+                    tooManyOrganizationsHeading: string;
+                };
+                none: string;
+                allOrganizations: string;
+                selectedOrganizations: string;
+                noOrganizations: string;
+            };
             validations: {
                 empty: string;
+                noOrganizationsSelected: string;
             };
             status: {
                 subscriptionAccepted: string;
@@ -222,6 +244,13 @@ export interface webhooksNS {
             };
         };
         fetchEventProfile: {
+            error: {
+                message: string;
+                description: string;
+                genericDescription: string;
+            };
+        };
+        fetchOrganizations: {
             error: {
                 message: string;
                 description: string;

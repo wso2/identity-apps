@@ -1,12 +1,12 @@
 {
     "private": true,
     "name": "@wso2is/admin.push-providers.v1",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.core.v1": "^2.55.3",
+        "@wso2is/admin.core.v1": "^2.59.3",
         "@wso2is/admin.feature-gate.v1": "^1.9.2",
         "@wso2is/admin.template-core.v1": "^1.6.1"
     },

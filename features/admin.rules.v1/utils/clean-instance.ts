@@ -24,6 +24,30 @@ import {
 } from "../models/rules";
 
 /**
+ * Drops an expression's qualifiers when they are empty.
+ *
+ * @param obj - Any part of a rule.
+ * @returns The same, without empty qualifiers.
+ */
+const removeEmptyQualifiers = (obj: unknown): unknown => {
+    if (Array.isArray(obj)) {
+        return obj.map(removeEmptyQualifiers);
+    }
+
+    if (typeof obj === "object" && obj !== null) {
+        return Object.fromEntries(
+            Object.entries(obj)
+                .filter(([ name, value ]: [string, unknown]) =>
+                    !([ "qualifier", "valueFieldQualifier" ].includes(name)
+                        && (value === "" || value === null || value === undefined)))
+                .map(([ name, value ]: [string, unknown]) => [ name, removeEmptyQualifiers(value) ])
+        );
+    }
+
+    return obj;
+};
+
+/**
  * Cleans the rule instance by removing the `isRuleInstanceTouched` and `id` properties.
  *
  * @param obj - The rule object or rule collection that needs to be cleaned.
@@ -50,7 +74,8 @@ const cleanInstance = (
         objWithoutTouched = rest as RuleInterface;
     }
 
-    return removeIds(objWithoutTouched);
+    return removeEmptyQualifiers(removeIds(objWithoutTouched)) as
+        RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
 };
 
 export default cleanInstance;

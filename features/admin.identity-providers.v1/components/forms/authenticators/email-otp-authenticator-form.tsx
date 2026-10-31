@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -107,6 +107,10 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
      * Time duration to block resend attempts
      */
     EmailOTP_ResendBlockDuration: number;
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    EmailOTP_NotifyEmailSendingFailure: boolean;
 }
 
 /**
@@ -133,6 +137,10 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
      * Time duration to block resend attempts
      */
     EmailOTP_ResendBlockDuration: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    EmailOTP_NotifyEmailSendingFailure: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -159,7 +167,10 @@ interface EmailOTPAuthenticatorFormErrorValidationsInterface {
      * Time duration to block resend attempts
      */
     EmailOTP_ResendBlockDuration: string;
-
+    /**
+     * Whether to propagate OTP delivery failures to the user's login page.
+     */
+    EmailOTP_NotifyEmailSendingFailure: string;
 }
 
 const FORM_ID: string = "email-otp-authenticator-form";
@@ -302,6 +313,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
         const errors: EmailOTPAuthenticatorFormErrorValidationsInterface = {
             EmailOTP_ExpiryTime: undefined,
+            EmailOTP_NotifyEmailSendingFailure: undefined,
             EmailOTP_OTPLength: undefined,
             EmailOTP_ResendAttemptsCount: undefined,
             EmailOTP_ResendBlockDuration: undefined,
@@ -615,6 +627,19 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     }
                 </Label>
             </Field.Input>
+            <Field.Checkbox
+                ariaLabel="Notify users on OTP delivery failure"
+                name="EmailOTP_NotifyEmailSendingFailure"
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".emailOTP.notifyEmailSendingFailure.label")
+                }
+                hint={ t("authenticationProvider:forms.authenticatorSettings" +
+                    ".emailOTP.notifyEmailSendingFailure.hint") }
+                readOnly={ readOnly }
+                width={ 12 }
+                data-componentid={ `${ testId }-show-failure-reason` }
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"

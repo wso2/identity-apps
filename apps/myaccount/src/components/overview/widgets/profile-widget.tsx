@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -26,7 +24,7 @@ import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
-import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
+import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { CommonUtils } from "../../../utils";
 import { SettingsSection } from "../../shared";
@@ -57,9 +55,6 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
 
 
     const { t } = useTranslation();
-    const { organizationDetails } = useThemeProvider();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const navigate = () => {
         history.push(AppConstants.getPaths().get("PERSONAL_INFO") + "#" + CommonConstants.PERSONAL_INFO);
@@ -130,13 +125,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
             <SettingsSection
                 className="overview"
                 data-testid={ `${testId}-settings-section` }
-                header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
-                    {
-                        productName: !isEmpty(organizationDetails?.displayName)
-                            ? organizationDetails?.displayName
-                            : config?.ui?.productName
-                    }
-                ) }
+                header={ t("myAccount:components.overview.widgets.profileStatus.header") }
                 description={
                     (<>
                         {

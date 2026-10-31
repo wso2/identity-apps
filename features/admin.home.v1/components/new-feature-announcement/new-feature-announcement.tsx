@@ -24,6 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureFlagsInterface } from "@wso2is/access-control";
 import { CDSConfig, useCDSConfig } from "@wso2is/admin.cds.v1";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -215,6 +216,7 @@ export const FeatureCarousel = () => {
         isLoading: isCDSConfigFetchRequestLoading
     } = useCDSConfig<CDSConfig>(isCDSFeatureEnabled);
     const isCDSEnabledForOrganization: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+    const isCDSUnifiedProfileView: boolean = isCDSUnifiedProfileViewEnabled();
 
 
     const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) =>
@@ -279,9 +281,15 @@ export const FeatureCarousel = () => {
                     src={ CustomerDataServiceIllustration }
                 />
             </Box>,
-            isEnabled: isCDSEnabledForOrganization,
+            isEnabled: isCDSUnifiedProfileView || isCDSEnabledForOrganization,
             isEnabledStatusLoading: isCDSConfigFetchRequestLoading,
             onTryOut: () => {
+                if (isCDSUnifiedProfileView) {
+                    history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"));
+
+                    return;
+                }
+
                 if (isCDSEnabledForOrganization) {
                     history.push(AppConstants.getPaths().get("PROFILES"));
 

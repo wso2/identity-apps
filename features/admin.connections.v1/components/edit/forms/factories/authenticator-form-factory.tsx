@@ -103,6 +103,10 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
      * Connection setting section meta data.
      */
     connectionSettingsMetaData: any;
+    /**
+     * Resource id of the connection being edited.
+     */
+    connectionId?: string;
 }
 
 /**
@@ -117,6 +121,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     const {
         authenticator,
+        connectionId,
         connectionSettingsMetaData,
         metadata,
         mode,
@@ -357,6 +362,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         default:
             return (
                 <AuthenticatorSettingsForm
+                    connectionId={ connectionId }
                     connectorSettings={ connectionSettingsMetaData }
                     mode={ mode }
                     initialValues={ initialValues }

@@ -24,6 +24,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
+import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -31,6 +32,9 @@ import sortBy from "lodash-es/sortBy";
 import {
     ReactComponent as ResourceServersIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg";
+import {
+    ReactComponent as VerifiableCredentialsOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -273,6 +277,9 @@ export class RouteUtils {
         const isMcpServersFeatureEnabled: boolean =
             window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
+        const isOpenID4VPEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.presentationDefinitions?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -342,6 +349,13 @@ export class RouteUtils {
         const verifiableCredentials: NavCategory = {
             id: "verifiableCredentials",
             order: 2
+        };
+
+        const digitalCredentials: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: VerifiableCredentialsOutlineIcon,
+            id: "digitalCredentials",
+            name: "Verifiable Credentials",
+            order: 3
         };
 
         const preferences: NavCategory = {
@@ -428,7 +442,16 @@ export class RouteUtils {
             {
                 category: verifiableCredentials,
                 id: "verifiableCredentials",
+                order: isOpenID4VPEnabled ? 0 : undefined,
+                parent: isOpenID4VPEnabled ? digitalCredentials : null,
                 selected: history.location.pathname.includes("/verifiable-credentials")
+            },
+            {
+                category: verifiableCredentials,
+                id: "presentationDefinitions",
+                order: 1,
+                parent: isOpenID4VPEnabled ? digitalCredentials : null,
+                selected: history.location.pathname.includes("/presentation-definitions")
             },
             {
                 category: workflows,
@@ -541,24 +564,38 @@ export class RouteUtils {
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
-            {
-                category: customerDataCategory,
-                id: "customerDataProfiles",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILES"))
-            },
-            {
-                category: customerDataCategory,
-                id: "customerDataProfileAttributes",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"))
-            },
-            {
-                category: customerDataCategory,
-                id: "customerDataUnificationRules",
-                parent: customerData,
-                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("UNIFICATION_RULES"))
-            },
+            ...(isCDSUnifiedProfileViewEnabled() ? [
+                {
+                    category: manage,
+                    id: "customerDataService",
+                    order: 1,
+                    selected: [
+                        AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"),
+                        AppConstants.getPaths().get("PROFILES"),
+                        AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+                        AppConstants.getPaths().get("UNIFICATION_RULES")
+                    ].some((path: string) => history.location.pathname.startsWith(path))
+                }
+            ] : [
+                {
+                    category: customerDataCategory,
+                    id: "customerDataProfiles",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILES"))
+                },
+                {
+                    category: customerDataCategory,
+                    id: "customerDataProfileAttributes",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"))
+                },
+                {
+                    category: customerDataCategory,
+                    id: "customerDataUnificationRules",
+                    parent: customerData,
+                    selected: history.location.pathname.startsWith(AppConstants.getPaths().get("UNIFICATION_RULES"))
+                }
+            ]),
             {
                 category: preferences,
                 id: "notificationChannels",
@@ -590,8 +627,14 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "server",
+                id: "cliSettings",
                 order: 2,
+                selected: history.location.pathname.includes("/cli-settings")
+            },
+            {
+                category: settings,
+                id: "server",
+                order: 3,
                 selected: history.location.pathname.includes("server")
             },
             {

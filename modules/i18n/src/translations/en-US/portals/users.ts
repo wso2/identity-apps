@@ -134,7 +134,8 @@ export const users: usersNS = {
                 1: "Groups",
                 2: "Roles",
                 3: "Active Sessions",
-                4: "Shared Access"
+                4: "Shared Access",
+                5: "Devices"
             }
         }
     },

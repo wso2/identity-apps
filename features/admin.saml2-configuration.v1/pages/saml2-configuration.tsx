@@ -34,10 +34,12 @@ import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     DangerZone,
     DangerZoneGroup,
+    DocumentationLink,
     EmphasizedSegment,
     PageLayout,
     PrimaryButton,
-    URLInput
+    URLInput,
+    useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
@@ -87,8 +89,10 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
     const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isReverting, setIsReverting ] = useState<boolean>(false);
     const [ saml2Config , setSaml2Config ] =
         useState<Saml2ConfigFormValuesInterface>(undefined);
     const [ destinationUrls, setDestinationUrls ] = useState<string>("");
@@ -253,7 +257,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
      * Handle saml2 configuration revert.
      */
     const onConfigRevert = (): void => {
-        setIsSubmitting(true);
+        setIsReverting(true);
 
         revertSaml2Configurations()
             .then(() => {
@@ -261,7 +265,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
             }).catch(() => {
                 handlerevertError();
             }).finally(() => {
-                setIsSubmitting(false);
+                setIsReverting(false);
                 mutateSaml2Config();
             });
     };
@@ -310,7 +314,14 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
         <PageLayout
             title={ t("saml2Config:title") }
             pageTitle={ t("saml2Config:title") }
-            description={ t("saml2Config:description") }
+            description={ (
+                <>
+                    { t("saml2Config:description") }
+                    <DocumentationLink link={ getLink("manage.saml2WebSso.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")
@@ -436,6 +447,7 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                                                 <PrimaryButton
                                                                     size="small"
                                                                     loading={ isSubmitting }
+                                                                    disabled={ isReverting }
                                                                     onClick={ () => {
                                                                         formRef?.current?.triggerSubmit();
                                                                     } }
@@ -466,6 +478,8 @@ const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface>
                                         header= { t("governanceConnectors:dangerZone.heading") }
                                         subheader= { t("governanceConnectors:dangerZone.subHeading") }
                                         onActionClick={ () => onConfigRevert() }
+                                        isButtonLoading={ isReverting }
+                                        isButtonDisabled={ isReverting || isSubmitting }
                                         data-testid={ `${ componentId }-danger-zone` }
                                     />
                                 </DangerZoneGroup>

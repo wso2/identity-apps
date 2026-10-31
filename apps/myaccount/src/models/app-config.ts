@@ -74,6 +74,7 @@ export interface ServiceResourceEndpointsInterface {
     brandingPreference: string;
     challenges: string;
     challengeAnswers: string;
+    devices: string;
     federatedAssociations: string;
     fidoEnd: string;
     fidoMetaData: string;
@@ -89,6 +90,7 @@ export interface ServiceResourceEndpointsInterface {
     preference: string;
     profileSchemas: string;
     push: string;
+    serverConfigPreferences: string;
     sessions: string;
     otpCodeValidate: string;
     token: string;
@@ -193,6 +195,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * If the value is not overridden, the default SCIM2 user schema URI is returned.
      */
     userSchemaURI?: string;
+    /**
+     * Enable/Disable the legacy locale dropdown (using supported i18n languages from store)
+     * in the profile locale field. When true, the old dropdown is shown instead of the new
+     * autocomplete input that lists all locales.
+     */
+    enableLegacyLocaleDropdown?: boolean;
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.VALIDATION_NAMESPACE,
         I18nModuleConstants.IMPERSONATION_NAMESPACE,
         I18nModuleConstants.ISSUER_USAGE_SCOPE_NAMESPACE,
+        I18nModuleConstants.FAPI_SECURITY_POLICY_NAMESPACE,
         I18nModuleConstants.USER_NAMESPACE,
         I18nModuleConstants.USERS_NAMESPACE,
         I18nModuleConstants.TRANSFER_LIST_NAMESPACE,
@@ -61,6 +62,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.HELP_PANEL_NAMESPACE,
         I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE,
         I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE,
+        I18nModuleConstants.CLI_SETTINGS_NAMESPACE,
         I18nModuleConstants.SECRETS_NAMESPACE,
         I18nModuleConstants.BRANDING_NAMESPACE,
         I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE,
@@ -82,9 +84,12 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.WEBHOOKS_NAMESPACE,
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE,
         I18nModuleConstants.AGENTS_NAMESPACE,
+        I18nModuleConstants.DEVICES_NAMESPACE,
         I18nModuleConstants.FLOWS_NAMESPACE,
         I18nModuleConstants.COMMON_USERS_NAMESPACE,
+        I18nModuleConstants.PRESENTATION_DEFINITIONS_NAMESPACE,
         I18nModuleConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
+        I18nModuleConstants.OPENID4VP_CONFIG_NAMESPACE,
         I18nModuleConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
         I18nModuleConstants.CONSENTS_NAMESPACE,
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE

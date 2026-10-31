@@ -27,11 +27,13 @@
 <%
     String username = Encode.forJava(request.getParameter("username"));
     String userTenantHint = (Encode.forJava(request.getParameter("t")) != "null") ? Encode.forJava(request.getParameter("t")) : null;
-    if (StringUtils.isNotBlank(userTenantHint)) {
-        username = MultitenantUtils.getTenantAwareUsername(username);
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
-    } else {
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+    if (StringUtils.isNotBlank(username)) {
+        if (StringUtils.isNotBlank(userTenantHint)) {
+            username = MultitenantUtils.getTenantAwareUsername(username);
+            username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
+        } else {
+            username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+        }
     }
     request.setAttribute("resolvedUsername", username);
 %>

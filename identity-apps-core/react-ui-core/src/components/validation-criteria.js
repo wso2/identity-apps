@@ -142,6 +142,13 @@ export const getRuleLabel = (rule) => {
 
             return null;
 
+        case "DateValidator":
+            if (getConditionValue(rule, "disallow.future")) {
+                return "Cannot be a future date.";
+            }
+
+            return null;
+
         default:
             return null;
     }

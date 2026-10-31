@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
@@ -33,11 +35,18 @@ import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    EmptyPlaceholder,
+    PageLayout,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     useEffect,
     useMemo,
     useState
@@ -81,6 +90,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     const { [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -333,7 +343,14 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
         <PageLayout
             pageTitle={ t("applications:resident.provisioning.outbound.heading") }
             title={ t("applications:resident.provisioning.outbound.heading") }
-            description={ t("applications:resident.provisioning.outbound.subHeading") }
+            description={ (
+                <>
+                    { t("applications:resident.provisioning.outbound.subHeading") }
+                    <DocumentationLink link={ getLink("manage.outboundProvisioning.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${ componentId }-layout` }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
@@ -365,6 +382,35 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                     provisioningConfigurations?.outboundProvisioningIdps?.map(
                                         (provisioningIdp: OutboundProvisioningConfigurationInterface,
                                             index: number) => {
+                                            // Resolve whether the underlying connection is shared from a
+                                            // parent organization to denote it with a "Shared" chip.
+                                            const isSharedIdp: boolean = !!filteredIdpList?.find(
+                                                (idp: IdentityProviderInterface) =>
+                                                    idp.name === provisioningIdp.idp)?.isShared;
+                                            const provisionerTitle: ReactNode = isSharedIdp
+                                                ? (
+                                                    <Box
+                                                        sx={ {
+                                                            alignItems: "center",
+                                                            display: "inline-flex",
+                                                            gap: 1
+                                                        } }
+                                                    >
+                                                        { provisioningIdp?.idp }
+                                                        <Chip
+                                                            size="small"
+                                                            label={
+                                                                t("authenticationProvider:sharedConnection.label")
+                                                            }
+                                                            data-componentid={
+                                                                `${ componentId }-${ provisioningIdp?.idp }` +
+                                                                "-shared-chip"
+                                                            }
+                                                        />
+                                                    </Box>
+                                                )
+                                                : provisioningIdp?.idp;
+
                                             return (
                                                 <AuthenticatorAccordion
                                                     key={ provisioningIdp.idp }
@@ -404,7 +450,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                                     verticalAlign: "middle"
                                                                 },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp,
+                                                                title: provisionerTitle,
                                                                 titleOptions: {
                                                                     flex: true
                                                                 }

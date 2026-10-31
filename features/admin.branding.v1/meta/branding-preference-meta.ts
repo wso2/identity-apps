@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,10 +73,10 @@ export class BrandingPreferenceMeta {
         const getAbsoluteLogoPath = (logo: string) => {
             return resolveAppLogoFilePath(logo, `${ window[ "AppUtils" ].getConfig().clientOrigin }/${
                 StringUtils.removeSlashesFromPath(
-                    window[ "AppUtils" ].getConfig().appBase
+                    window[ "AppUtils" ].getConfig().appBaseWithProxy
                 ) !== ""
                     ? StringUtils.removeSlashesFromPath(
-                        window[ "AppUtils" ].getConfig().appBase
+                        window[ "AppUtils" ].getConfig().appBaseWithProxy
                     ) + "/"
                     : ""
             }libs/themes/${systemTheme}`);

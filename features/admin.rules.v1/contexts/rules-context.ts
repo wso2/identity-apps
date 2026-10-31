@@ -37,6 +37,20 @@ export interface HiddenConfigurationInterface {
 }
 
 /**
+ * Limits a rule is validated against on the server. A limit that is not set is not enforced.
+ */
+export interface RuleLimitsInterface {
+    /**
+     * Maximum number of conditions in one group, combined with AND.
+     */
+    maxExpressionsCombinedWithAnd?: number;
+    /**
+     * Maximum number of condition groups, combined with OR.
+     */
+    maxRulesCombinedWithOr?: number;
+}
+
+/**
  * Interface for the RulesContext.
  */
 export interface RulesContextInterface {
@@ -59,6 +73,11 @@ export interface RulesContextInterface {
      * Hidden configuration for filtering UI components.
      */
     hidden: HiddenConfigurationInterface;
+
+    /**
+     * Limits the rule is kept within while it is edited.
+     */
+    limits: RuleLimitsInterface;
 
     /**
      * Method to add a new rule.
@@ -114,7 +133,7 @@ export interface RulesContextInterface {
      * Method to update the rule condition expression value.
      */
     updateConditionExpression: (
-        changedValue: string,
+        changedValue: string | string[],
         ruleId: string,
         conditionId: string,
         expressionId: string,

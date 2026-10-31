@@ -17,6 +17,7 @@
  */
 
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { RuleFieldDefinitionInterface } from "./rule-expression";
 
 /**
  * Interface for common metadata.
@@ -54,6 +55,10 @@ export interface MetadataInterface {
      * List of active flow extension connections from metadata.
      */
     flowExtensionConnections?: FlowExtensionConnectionInterface[];
+    /**
+     * Executors registered by an connector deployed on the server.
+     */
+    extensionExecutors?: ExtensionExecutorInterface[];
     /**
      * Is a Workflow engagement enabled?
      */
@@ -115,6 +120,40 @@ export interface ExecutorConnectionInterface {
 }
 
 /**
+ * Interface for an executor registered dynamically by an extension deployed on the server.
+ */
+export interface ExtensionExecutorInterface {
+    /**
+     * Unique name of the executor, as registered with the flow execution engine.
+     */
+    name: string;
+    /**
+     * Human readable name shown in the palette and on the canvas node.
+     */
+    displayName: string;
+    /**
+     * Short explanation of what the step does, shown under the label in the palette.
+     */
+    description?: string;
+    /**
+     * Whether the executor authenticates the user.
+     */
+    isAuthenticationExecutor?: boolean;
+    /**
+     * Icon for the executor.
+     */
+    icon?: string;
+    /**
+     * Whether a connection has to be selected before a step using this executor is valid.
+     */
+    requiresConnection?: boolean;
+    /**
+     * Name of the authenticator backing this executor.
+     */
+    associatedAuthenticator?: string;
+}
+
+/**
  * Interface for flow extension connection info from flow metadata.
  */
 export interface FlowExtensionConnectionInterface {
@@ -130,4 +169,34 @@ export interface FlowExtensionConnectionInterface {
      * Optional icon URL for the connection.
      */
     iconUrl?: string;
+}
+
+/**
+ * Limits on decision steps and their conditions, read from the console's deployment configuration. They mirror the
+ * server's own configuration, which validates them when a flow is saved.
+ */
+export interface RuleLimitsInterface {
+    /**
+     * Maximum number of decision steps in a flow.
+     */
+    maxDecisionNodes: number;
+    /**
+     * Maximum number of condition groups in a branch condition, combined with OR.
+     */
+    maxRulesCombinedWithOr: number;
+    /**
+     * Maximum number of conditions in one group, combined with AND.
+     */
+    maxExpressionsCombinedWithAnd: number;
+}
+
+/**
+ * Metadata for the conditions of decision steps in a flow.
+ */
+export interface RuleMetadataInterface {
+    /**
+     * The fields a condition can be written against, with the operators each one accepts and how its value is
+     * entered.
+     */
+    ruleMetaData: RuleFieldDefinitionInterface[];
 }

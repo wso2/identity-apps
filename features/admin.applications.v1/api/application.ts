@@ -46,11 +46,13 @@ import {
 } from "../models/application";
 import {
     AuthProtocolMetaListItemInterface,
+    ClientSecretCreationRequestInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
 import { UpdateClaimConfiguration  } from "../models/endpoints";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import { CimdClientMetadataInterface } from "../utils/cimd/models";
 
 /**
  * TODO: move the error messages to a constant file.
@@ -215,6 +217,8 @@ export const updateApplicationDetails = (
  * @param limit - Maximum Limit of the application List.
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
+ * @param excludeSystemPortals - Whether to exclude system portal applications.
+ * @param attributes - Additional attributes to include in the response (comma-separated).
  *
  * @returns A promise containing the response.
  */
@@ -222,7 +226,8 @@ export const getApplicationList = (
     limit: number,
     offset: number,
     filter: string,
-    excludeSystemPortals:boolean = false
+    excludeSystemPortals:boolean = false,
+    attributes?: string
 ): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -232,6 +237,7 @@ export const getApplicationList = (
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             excludeSystemPortals,
             filter,
             limit,
@@ -287,12 +293,12 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
         }
         : null;
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
         data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };
@@ -708,6 +714,35 @@ export const createApplication = (application: MainApplicationInterface): Promis
 };
 
 /**
+ * Retrieves a client's Client ID Metadata Document through IS and returns the values IS checked.
+ *
+ * @param clientId - The Client Identifier URL.
+ * @returns A promise containing the client's metadata.
+ */
+export const previewClientIdMetadataDocument = (clientId: string): Promise<CimdClientMetadataInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: { clientId },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/cimd/preview"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to preview the client ID metadata document."));
+            }
+
+            return Promise.resolve(response.data as CimdClientMetadataInterface);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Updates Authentication sequence of the application.
  * @param id - ID of the application
  * @param Authentication - Configurations of the application.
@@ -858,6 +893,72 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to revoke the application secret."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Creates a new client secret for the application.
+ * Used only in the OIDC multiple client secrets flow.
+ *
+ * @param appId - Application ID.
+ * @param secret - Client secret creation request payload.
+ * @returns Response as a promise.
+ */
+export const createClientSecret = (
+    appId: string,
+    secret: ClientSecretCreationRequestInterface
+): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: secret,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/" + appId +
+            "/inbound-protocols/oidc/secrets"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to create the client secret."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Deletes a specific client secret of the application.
+ * Used only in the OIDC multiple client secrets flow.
+ *
+ * @param appId - Application ID.
+ * @param secretId - ID of the client secret to delete.
+ * @returns Response as a promise.
+ */
+export const deleteClientSecretById = (appId: string, secretId: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.applications + "/" + appId +
+            "/inbound-protocols/oidc/secrets/" + secretId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the client secret."));
             }
 
             return Promise.resolve(response);
@@ -1104,7 +1205,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 userEndpoint: response.data.userinfo_endpoint,
                 webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: state.config.deployment.tenantContext?.enableTenantQualifiedUrls === false ?
-                    requestConfig.url : `${ response.data.token_endpoint }/.well-known/openid-configuration`
+                    requestConfig.url : `${ response.data.issuer }/.well-known/openid-configuration`
             };
 
             return Promise.resolve(oidcConfigs);

@@ -22,8 +22,10 @@ RegistrationFlowExecutorConstants
 import { Edge, Node, ReactFlowState, getIncomers, useStore } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import useAuthenticationFlowBuilderCore from "./use-authentication-flow-builder-core-context";
 import useValidationStatus from "./use-validation-status";
 import { Action, Element } from "../models/elements";
+import { ExtensionExecutorInterface } from "../models/metadata";
 import Notification, { NotificationType } from "../models/notification";
 import { Resource } from "../public-api";
 
@@ -33,6 +35,7 @@ import { Resource } from "../public-api";
 const useRecoveryFactorValidation = (node: Node): void => {
     const { t } = useTranslation();
     const { addNotification, removeNotification, validationConfig } = useValidationStatus();
+    const { metadata } = useAuthenticationFlowBuilderCore();
 
     const nodes: Node[] = useStore((state: ReactFlowState) => state.nodes);
     const edges: Edge[] = useStore((state: ReactFlowState) => state.edges);
@@ -76,19 +79,39 @@ const useRecoveryFactorValidation = (node: Node): void => {
     };
 
     /**
-     * Finds factor views such as SMS OTP, Email OTP and Magic Link in a node's components.
+     * Executors that satisfy the recovery factor requirement. Covers the built-in factors and any
+     * executor contributed by a deployed extension that authenticates the user.
+     */
+    const recoveryFactorExecutors: Set<string> = useMemo(() => {
+        const factors: Set<string> = new Set<string>([
+            RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR,
+            RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR,
+            RegistrationFlowExecutorConstants.MAGIC_LINK_EXECUTOR
+        ]);
+
+        metadata?.extensionExecutors?.forEach((executor: ExtensionExecutorInterface) => {
+            if (executor?.name && executor?.isAuthenticationExecutor) {
+                factors.add(executor.name);
+            }
+        });
+
+        return factors;
+    }, [ metadata?.extensionExecutors ]);
+
+    /**
+     * Finds factor views such as SMS OTP, Email OTP, Magic Link or an extension contributed
+     * recovery factor in a node's components or in its own action.
      */
     const FactorExistsInTheFlow = (node: Node): boolean => {
 
+        const isRecoveryFactor = (executorName: string): boolean =>
+            !!executorName && recoveryFactorExecutors.has(executorName);
+
         return (node?.data?.components as Element[])?.some((parent: Element) =>
             parent?.components?.some(
-                (child: Element) => child?.action?.executor?.name ===
-                    RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR ||
-                    child?.action?.executor?.name ===
-                    RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR
+                (child: Element) => isRecoveryFactor(child?.action?.executor?.name)
             )
-        ) || (node?.data?.action as Action)?.executor?.name ===
-            RegistrationFlowExecutorConstants.MAGIC_LINK_EXECUTOR;
+        ) || isRecoveryFactor((node?.data?.action as Action)?.executor?.name);
     };
 
     /**
@@ -104,7 +127,7 @@ const useRecoveryFactorValidation = (node: Node): void => {
     const hasAncestors: boolean = ancestors?.length > 0;
 
     /**
-     * Checks if any ancestor nodes have factor views such as SMS OTP, Email OTP and Magic Link.
+     * Checks if any ancestor nodes have a recovery factor view.
      */
     const checkIfAncestorsHaveFactors: boolean = useMemo((): boolean => {
         if (!isRecoveryFactorValidationEnabled || !containsResetPassword || !node) return false;
@@ -116,7 +139,7 @@ const useRecoveryFactorValidation = (node: Node): void => {
         }
 
         return false;
-    }, [ isRecoveryFactorValidationEnabled, containsResetPassword, node, ancestors ]);
+    }, [ isRecoveryFactorValidationEnabled, containsResetPassword, node, ancestors, recoveryFactorExecutors ]);
 
     const errorNotificationId: string = `recovery-factor-validation-${node?.id}`;
 
@@ -145,9 +168,8 @@ const useRecoveryFactorValidation = (node: Node): void => {
                 errorNotificationId,
                 t(
                     "flowBuilder:validations.passwordRecoveryRequiresFactors.message",
-                    "Password recovery requires at least one of the following " +
-                        "factors to be present in the flow: Email OTP, SMS OTP, " +
-                        "or Magic Link."
+                    "Password recovery requires at least one recovery factor, such as " +
+                        "Email OTP, SMS OTP or Magic Link, to be present in the flow."
                 ),
                 NotificationType.ERROR
             );

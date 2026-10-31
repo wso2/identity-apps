@@ -33,10 +33,12 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import {
+    DocumentationLink,
     EmphasizedSegment,
     Hint,
     PageLayout,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,6 +83,7 @@ const IssuerUsageScopeConfigurationPage: FunctionComponent<IssuerUsageScopeConfi
     );
 
     const { t } = useTranslation([ "issuerUsageScope" ]);
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const [ issuerUsageScopeConfig, setIssuerUsageScopeConfig ] = useState<IssuerUsageScopeOption>(
@@ -187,7 +190,14 @@ const IssuerUsageScopeConfigurationPage: FunctionComponent<IssuerUsageScopeConfi
         <PageLayout
             title={ t("issuerUsageScope:title") }
             pageTitle={ t("issuerUsageScope:title") }
-            description={ t("issuerUsageScope:description") }
+            description={ (
+                <>
+                    { t("issuerUsageScope:description") }
+                    <DocumentationLink link={ getLink("manage.issuerUsageScope.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("governanceConnectors:goBackLoginAndRegistration")

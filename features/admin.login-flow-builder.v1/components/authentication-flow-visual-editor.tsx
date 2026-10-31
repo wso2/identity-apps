@@ -427,7 +427,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
      * Resolve the passkeys info alert messages.
      */
     useEffect(() => {
-        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps.some(
+        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps?.some(
             (step: AuthenticationStepInterface) =>
                 !!step?.options.find(
                     (authenticator: AuthenticatorInterface) =>

@@ -71,6 +71,10 @@ export interface AuthenticatorInterface {
      * Details endpoint.
      */
     self: string;
+    /**
+     * Whether the authenticator is a shared identity provider (shared from a parent organization).
+     */
+    isShared?: boolean;
 }
 
 /**

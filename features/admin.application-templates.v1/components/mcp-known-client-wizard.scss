@@ -1,0 +1,109 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.ui.modal.mcp-known-client-wizard {
+    .ui.cards > .ui.card.sub-template-selection-card {
+        min-height: 6em;
+
+        .card-text-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .other-client-options {
+        gap: 0.75em;
+
+        .other-client-option {
+            margin: 0;
+            padding: 0.75em 1em;
+            align-items: flex-start;
+            border: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            border-radius: 8px;
+
+            &.selected {
+                border-color: var(--oxygen-palette-primary-main, #ff7300);
+            }
+        }
+    }
+
+    .cimd-document-step {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .cimd-document-url {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75em;
+            margin-top: -0.5em;
+
+            > :first-child {
+                flex-grow: 1;
+            }
+
+            > button {
+                flex-shrink: 0;
+                height: 40px;
+                white-space: nowrap;
+            }
+        }
+
+        .cimd-document-placeholder {
+            padding: 2em;
+            text-align: center;
+            color: var(--oxygen-palette-text-secondary, #757575);
+            border: 1px dashed var(--oxygen-palette-divider, #d4d6dd);
+            border-radius: 8px;
+        }
+
+        .cimd-document-card {
+            border: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            border-radius: 8px;
+
+            .cimd-document-card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75em 1em;
+                border-bottom: 1px solid var(--oxygen-palette-divider, #e6e7ec);
+            }
+
+            .cimd-document-card-details {
+                display: grid;
+                grid-template-columns: 9em 1fr;
+                gap: 0.5em 1em;
+                margin: 0;
+                padding: 0.75em 1em;
+
+                dt {
+                    color: var(--oxygen-palette-text-secondary, #757575);
+                }
+
+                dd {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25em;
+                    margin: 0;
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+}
