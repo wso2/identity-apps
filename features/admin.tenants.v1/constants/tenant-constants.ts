@@ -35,6 +35,11 @@ export default class TenantConstants {
      */
     private constructor() {}
 
+    /**
+     * Number of tenant associations fetched per `tenant/me` page.
+     */
+    public static readonly ASSOCIATED_TENANTS_PAGE_SIZE: number = 15;
+
     public static readonly TENANT_ACTIVATION_UPDATE_INVALID_STATUS_ERROR: string =
         "An invalid status code was received while updating the tenant activation status.";
 

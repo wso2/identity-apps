@@ -21,11 +21,11 @@ import Button from "@oxygen-ui/react/Button";
 import Link from "@oxygen-ui/react/Link/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import useBillingURLs, { BillingURLsInterface } from "@wso2is/admin.core.v1/hooks/use-billing-urls";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { CommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useTrialDetails } from "../hooks/use-trial-details";
@@ -54,14 +54,10 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
     const { tenantHasTrial, daysRemaining } = useTrialDetails();
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const trialTierName: string = useSelector(
         (state: AppState) =>
             ((state?.config?.deployment?.extensions?.trial as { tierName?: string })?.tierName) ?? "Paid"
     );
-    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
-
-    const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
     const pricingURL: string = useSelector(
         (state: AppState) =>
             (state?.config?.deployment?.extensions as { pricingURL?: string })?.pricingURL ?? "https://wso2.com"
@@ -75,17 +71,7 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
             (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
     );
 
-    useEffect(() => {
-        if (saasFeatureStatus === FeatureStatus.DISABLED || !upgradeButtonEnabled) {
-            return;
-        }
-
-        CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({ upgradeButtonURL }: { upgradeButtonURL: string }) => {
-                setUpgradeButtonURL(upgradeButtonURL);
-            }
-        );
-    }, [ tenantDomain, associatedTenants, upgradeButtonEnabled ]);
+    const { upgradeButtonURL }: BillingURLsInterface = useBillingURLs(upgradeButtonEnabled);
 
     if (saasFeatureStatus === FeatureStatus.DISABLED || !tenantHasTrial) {
         return null;

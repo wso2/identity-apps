@@ -18,10 +18,10 @@
 
 import Alert, { AlertProps } from "@oxygen-ui/react/Alert";
 import Link from "@oxygen-ui/react/Link";
+import useBillingURLs, { BillingURLsInterface } from "@wso2is/admin.core.v1/hooks/use-billing-urls";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { CommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
@@ -45,8 +45,6 @@ const FeatureLockedBanner: FunctionComponent<FeatureLockedBannerPropsInterface> 
 
     const { t } = useTranslation();
 
-    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
-    const associatedTenants: unknown[] = useSelector((state: AppState) => state?.auth?.tenants);
     const upgradeButtonEnabled: boolean = useSelector(
         (state: AppState): boolean =>
             state?.config?.deployment?.extensions?.upgradeButtonEnabled === true
@@ -55,19 +53,7 @@ const FeatureLockedBanner: FunctionComponent<FeatureLockedBannerPropsInterface> 
         (state: AppState): string =>
             (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
     );
-    const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>("");
-
-    useEffect(() => {
-        if (!upgradeButtonEnabled) {
-            return;
-        }
-
-        CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({ upgradeButtonURL }: { upgradeButtonURL: string }) => {
-                setUpgradeButtonURL(upgradeButtonURL);
-            }
-        );
-    }, [ tenantDomain, associatedTenants, upgradeButtonEnabled ]);
+    const { upgradeButtonURL }: BillingURLsInterface = useBillingURLs(upgradeButtonEnabled);
 
     return (
         <Alert

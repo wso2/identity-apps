@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import useBillingURLs, { BillingURLsInterface } from "@wso2is/admin.core.v1/hooks/use-billing-urls";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { CommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { TrialExpiryStep } from "../models/trial-expiry";
 import { useTrialDetails } from "./use-trial-details";
@@ -68,12 +68,7 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturnInterface => {
     const { showTrialExpiryNotice, dismissTrialExpiryNotice } = useTrialDetails();
 
     const [ currentStep, setCurrentStep ] = useState<TrialExpiryStep>(TrialExpiryStep.CHANGES);
-    const [ billingUpgradeUrl, setBillingUpgradeUrl ] = useState<string>(undefined);
 
-    const tenantDomain: string = useSelector((state: AppState): string => state?.auth?.tenantDomain);
-    const associatedTenants: Record<string, unknown>[] = useSelector(
-        (state: AppState): Record<string, unknown>[] => state?.auth?.tenants
-    );
     const pricingUrl: string = useSelector(
         (state: AppState): string =>
             (state?.config?.deployment?.extensions as { pricingURL?: string })?.pricingURL ?? "https://wso2.com"
@@ -91,17 +86,8 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturnInterface => {
             (state?.config?.deployment?.extensions as { contactUsUrl?: string })?.contactUsUrl ?? "https://wso2.com"
     );
 
-    useEffect(() => {
-        if (!upgradeButtonEnabled) {
-            return;
-        }
-
-        CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({ upgradeButtonURL }: { upgradeButtonURL: string }) => {
-                setBillingUpgradeUrl(upgradeButtonURL);
-            }
-        );
-    }, [ tenantDomain, associatedTenants, upgradeButtonEnabled ]);
+    const { upgradeButtonURL: billingUpgradeUrl }: BillingURLsInterface =
+        useBillingURLs(upgradeButtonEnabled);
 
     const goToNextStep: () => void = useCallback((): void => {
         setCurrentStep(TrialExpiryStep.UPGRADE);
