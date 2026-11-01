@@ -36,6 +36,12 @@ import { AuthenticationStepInterface } from "../../../../models/application";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 import Chip from "@oxygen-ui/react/Chip";
 
+const INFO_LABEL: JSX.Element = (
+    <Label attached="top">
+        <Icon name="info circle" /> Info
+    </Label>
+);
+
 /**
  * Proptypes for the authenticators component.
  */
@@ -188,12 +194,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @returns React element.
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-        const InfoLabel: JSX.Element = (
-            <Label attached="top">
-                <Icon name="info circle" /> Info
-            </Label>
-        );
-
         if (
             authenticator.category === AuthenticatorCategories.SECOND_FACTOR ||
             authenticator.category === AuthenticatorCategories.TWO_FACTOR_CUSTOM
@@ -202,7 +202,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 <>
                     { currentStep === 0 ? (
                         <Fragment>
-                            { InfoLabel }
+                            { INFO_LABEL }
                             <Text>
                                 { applicationConfig.signInMethod.authenticatorSelection.messages
                                     .secondFactorDisabledInFirstStep ??
@@ -215,7 +215,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         </Fragment>
                     ) : (
                         <Fragment>
-                            { InfoLabel }
+                            { INFO_LABEL }
                             <Text>
                                 { applicationConfig.signInMethod.authenticatorSelection.messages
                                     .secondFactorDisabled ?? (
@@ -245,7 +245,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 <>
                     { currentStep === 0 ? (
                         <Fragment>
-                            { InfoLabel }
+                            { INFO_LABEL }
                             <Text>
                                 { t(
                                     "applications:edit.sections" +
@@ -256,7 +256,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         </Fragment>
                     ) : (
                         <Fragment>
-                            { InfoLabel }
+                            { INFO_LABEL }
                             <Text>
                                 { t(
                                     "applications:edit.sections" +
@@ -271,7 +271,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
                 <Fragment>
-                    { InfoLabel }
+                    { INFO_LABEL }
                     <Text>
                         { t(
                             "applications:edit.sections.signOnMethod.sections." +
@@ -292,7 +292,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
             return (
                 <Fragment>
-                    { InfoLabel }
+                    { INFO_LABEL }
                     <Text>
                         {
                             t(
@@ -308,7 +308,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <Fragment>
-                    { InfoLabel }
+                    { INFO_LABEL }
                     <Text>
                         {
                             (authenticationSteps[currentStep]?.options?.length !== 0)
