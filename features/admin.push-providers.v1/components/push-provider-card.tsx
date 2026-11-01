@@ -137,6 +137,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                                 ResourceTypes.NOTIFICATION_PROVIDERS
                             )
                         }
+                        alt=""
                         loading="lazy"
                     />
                 </div>
