@@ -35,10 +35,10 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { Icon } from "semantic-ui-react";
 import { UnificationRulesList } from "../components/unification-rule-list";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useUnificationRules } from "../hooks/use-unification-rules";
 import { DEFAULT_PAGE_SIZE } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 

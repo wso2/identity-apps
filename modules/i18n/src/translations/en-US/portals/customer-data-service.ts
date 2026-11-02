@@ -719,10 +719,6 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     sharing: {
-        actions: {
-            save: "Save",
-            share: "Share"
-        },
         confirmations: {
             shareAll: {
                 assertionHint: "Please confirm your action.",

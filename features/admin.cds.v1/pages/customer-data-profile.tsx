@@ -23,7 +23,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout, SecondaryButton } from "@wso2is/react-components";
+import { Hint, PageLayout, SecondaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +38,8 @@ import ProfilesSection from "../components/profiles-section";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
-import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import "./customer-data-profile.scss";
 
 /**
@@ -113,9 +114,9 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 data-componentid={ `${ componentId }-enable-toggle` }
             />
             { isSubOrganization && (
-                <p className="hint-description" data-componentid={ `${ componentId }-enable-toggle-hint` }>
+                <Hint data-componentid={ `${ componentId }-enable-toggle-hint` }>
                     { t("customerDataService:organizations.toggleHint") }
-                </p>
+                </Hint>
             ) }
             <Divider hidden />
             { /* Organization management: a child organization has nothing to change in the organization settings. */ }

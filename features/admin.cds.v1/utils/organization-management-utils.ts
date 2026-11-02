@@ -16,36 +16,41 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface } from "@wso2is/core/models";
-import { useSelector } from "react-redux";
-import { ORGANIZATION_MANAGEMENT_FEATURE_ID } from "../constants/organization-management-constants";
+import { AxiosError } from "axios";
+import { ChildOrganizationsMode, PolicyFormMode } from "../models/organization-management";
 
 /**
- * Hook that tells whether the Console runs in a child organization.
+ * Returns the form mode of a stored policy mode. No stored mode means no policy.
  *
- * @returns True in a child organization.
+ * @param mode - The mode of the stored policy.
+ * @returns The form mode.
  */
-export const useIsSubOrganization = (): boolean => {
-    const organizationType: OrganizationType = useSelector(
-        (state: AppState) => state?.organization?.organizationType
-    );
-
-    return organizationType === OrganizationType.SUBORGANIZATION;
+export const toPolicyFormMode = (mode?: ChildOrganizationsMode): PolicyFormMode => {
+    switch (mode) {
+        case ChildOrganizationsMode.ALL:
+            return PolicyFormMode.ALL;
+        case ChildOrganizationsMode.SELECTED:
+            return PolicyFormMode.SELECTED;
+        default:
+            return PolicyFormMode.NONE;
+    }
 };
 
 /**
- * Hook that tells whether organization management of CDS is enabled. A deployment disables it with
- * `customerDataService.organizationManagement` in the `disabledFeatures` of the `customerDataService` feature.
+ * Returns the error of a CDS response as "[code] description", or the fallback when the response
+ * has no description.
  *
- * @returns True when organization management is enabled.
+ * @param error - The error of the request.
+ * @param fallback - The text to use when the response has no description.
+ * @returns The error text.
  */
-export const useIsOrganizationManagementEnabled = (): boolean => {
-    const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.customerDataService
-    );
+export const getErrorDetail = (error: unknown, fallback: string): string => {
+    const data: { code?: string; description?: string } =
+        (error as AxiosError<{ code?: string; description?: string }>)?.response?.data;
 
-    return isFeatureEnabled(cdsFeatureConfig, ORGANIZATION_MANAGEMENT_FEATURE_ID);
+    if (!data?.description) {
+        return fallback;
+    }
+
+    return `${ data.code ? `[${ data.code }] ` : "" }${ data.description }`;
 };

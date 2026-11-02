@@ -23,15 +23,15 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import OrganizationAccess from "../components/organization-access";
 import { OrganizationManagementScopes } from "../constants/organization-management-constants";
 import useCDSConfig from "../hooks/use-config";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import useTreeSync from "../hooks/use-tree-sync";
-import { TreeSyncStatus } from "../models/organization-management";
-import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 
 /**
  * Organization settings of CDS: the organization access (the organizations that can use CDS).
@@ -58,17 +58,10 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
     const isRootWithCDS: boolean = isCDSEnabled && !isSubOrganization && isOrganizationManagementEnabled;
 
-    useEffect(() => {
-        if (!isOrganizationManagementEnabled) {
-            history.push(AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"));
-        }
-    }, [ isOrganizationManagementEnabled ]);
-
     const { data: syncStatus, isLoading: isSyncLoading, mutate: mutateSync } = useTreeSync(isRootWithCDS);
 
-    const syncStatusData: TreeSyncStatus = syncStatus as TreeSyncStatus;
     // A new key after each completed sync loads the access again.
-    const syncKey: string = syncStatusData?.last_synced_at ?? "not-synced";
+    const syncKey: string = syncStatus?.last_synced_at ?? "not-synced";
     const isPageLoading: boolean = isConfigLoading || (isRootWithCDS && isSyncLoading);
 
     return (
@@ -87,7 +80,7 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
                 <OrganizationAccess
                     key={ `access-${ syncKey }` }
                     canUpdate={ hasOrganizationUpdateScope }
-                    syncStatus={ syncStatusData }
+                    syncStatus={ syncStatus }
                     onSyncStarted={ () => mutateSync() }
                     data-componentid={ `${ componentId }-organization-access` }
                 />

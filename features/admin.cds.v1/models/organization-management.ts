@@ -18,94 +18,149 @@
 
 /**
  * Origin of a profile attribute or a unification rule in an organization.
- * OWNED: the organization owns it. SHARED: an ancestor organization shares it. INHERITED: a child
- * organization inherits the identity attribute from its root organization.
  */
-export type ResourceOrigin = "OWNED" | "SHARED" | "INHERITED";
+export enum ResourceOrigin {
+    /**
+     * The organization owns it.
+     */
+    OWNED = "OWNED",
+    /**
+     * An ancestor organization shares it.
+     */
+    SHARED = "SHARED",
+    /**
+     * A child organization inherits the identity attribute from its root organization.
+     */
+    INHERITED = "INHERITED"
+}
 
 /**
- * The decision of a share policy or of the organization access. "all" reaches all organizations
- * below the initiating organization, also the ones created later. "selected" reaches the
- * organizations in orgs.
+ * The decision of a share policy or of the organization access.
  */
-export type ChildOrgsMode = "all" | "selected";
+export enum ChildOrganizationsMode {
+    /**
+     * All organizations below the initiating organization, also the ones created later.
+     */
+    ALL = "all",
+    /**
+     * The organizations in orgs.
+     */
+    SELECTED = "selected"
+}
 
 /**
- * The reach of a selected organization: the organization only, or the organization and all
- * organizations below it, also the ones created later.
+ * The mode of a share settings form or of the organization access form. NONE means no policy.
  */
-export type ChildOrgReach = "org" | "subtree";
+export enum PolicyFormMode {
+    NONE = "none",
+    ALL = "all",
+    SELECTED = "selected"
+}
+
+/**
+ * The reach of a selected organization.
+ */
+export enum ChildOrganizationReach {
+    /**
+     * The organization only.
+     */
+    ORGANIZATION = "org",
+    /**
+     * The organization and all organizations below it, also the ones created later.
+     */
+    SUBTREE = "subtree"
+}
 
 /**
  * A selected organization, with its reach.
  */
-export interface ChildOrg {
+export interface ChildOrganizationInterface {
     org_id: string;
-    reach: ChildOrgReach;
+    reach: ChildOrganizationReach;
 }
 
 /**
  * The organizations that a share policy or the organization access reaches.
  */
-export interface ChildOrgs {
-    mode: ChildOrgsMode;
-    orgs?: ChildOrg[];
+export interface ChildOrganizationsInterface {
+    mode: ChildOrganizationsMode;
+    orgs?: ChildOrganizationInterface[];
 }
 
-export interface SharePolicyRequest {
-    child_orgs: ChildOrgs;
+export interface SharePolicyRequestInterface {
+    child_orgs: ChildOrganizationsInterface;
+}
+
+/**
+ * The type of the resource of a share policy.
+ */
+enum SharePolicyResourceType {
+    SCHEMA_ATTRIBUTE = "SCHEMA_ATTRIBUTE",
+    UNIFICATION_RULE = "UNIFICATION_RULE"
 }
 
 /**
  * A share policy of a profile attribute or a unification rule.
  */
-export interface SharePolicy {
+export interface SharePolicyInterface {
     id: string;
-    resource_type: "SCHEMA_ATTRIBUTE" | "UNIFICATION_RULE";
+    resource_type: SharePolicyResourceType;
     resource_id: string;
     owning_org_id: string;
     initiating_org_id: string;
-    child_orgs: ChildOrgs;
+    child_orgs: ChildOrganizationsInterface;
 }
 
-
-export interface SharePolicyList {
+export interface SharePolicyListInterface {
     total_results: number;
-    policies: SharePolicy[];
+    policies: SharePolicyInterface[];
 }
 
 /**
  * The organization access of a root organization: the organizations that can use CDS.
  */
-export interface OrgAccessPolicy {
+export interface OrganizationAccessPolicyInterface {
     id: string;
     owning_org_id: string;
     initiating_org_id: string;
-    child_orgs: ChildOrgs;
+    child_orgs: ChildOrganizationsInterface;
 }
 
-export interface OrgAccessPolicyList {
+export interface OrganizationAccessPolicyListInterface {
     total_results: number;
-    policies: OrgAccessPolicy[];
+    policies: OrganizationAccessPolicyInterface[];
+}
+
+/**
+ * The type of a resource that can be shared.
+ */
+export enum ShareableResourceType {
+    ATTRIBUTE = "attribute",
+    RULE = "rule"
 }
 
 /**
  * The resource that a share policy is for.
  */
 export type ShareableResource =
-    | { type: "attribute"; scope: string; id: string }
-    | { type: "rule"; id: string };
+    | { type: ShareableResourceType.ATTRIBUTE; scope: string; id: string }
+    | { type: ShareableResourceType.RULE; id: string };
 
 /**
  * State of the organization tree sync of a root organization.
  */
-export type TreeSyncState = "NOT_SYNCED" | "SYNCING" | "SYNCED" | "FAILED";
+export enum TreeSyncState {
+    NOT_SYNCED = "NOT_SYNCED",
+    SYNCING = "SYNCING",
+    SYNCED = "SYNCED",
+    FAILED = "FAILED"
+}
 
 /**
  * GET /organizations/sync-status. last_synced_at is the end of the last sync that completed. The
  * organization access needs it.
  */
-export interface TreeSyncStatus {
+export interface TreeSyncStatusInterface {
     state: TreeSyncState;
     started_at?: string;
     finished_at?: string;

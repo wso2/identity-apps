@@ -58,6 +58,7 @@ import { Dispatch } from "redux";
 import { Icon, Message } from "semantic-ui-react";
 import { createSchemaAttributes, fetchProfileSchemaByScope } from "../api/profile-attributes";
 import { CDSApplicationInterface, useCDSApplications } from "../hooks/use-cds-applications";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { APPLICATION_DATA, TRAITS } from "../models/constants";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
@@ -68,7 +69,6 @@ import type {
     ProfileSchemaSubAttributeRef,
     ValueType
 } from "../models/profile-attributes";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
 
 const StepActionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({

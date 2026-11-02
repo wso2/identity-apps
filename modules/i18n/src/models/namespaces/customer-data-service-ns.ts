@@ -658,10 +658,6 @@ export interface CustomerDataServiceNS {
     };
 
     sharing: {
-        actions: {
-            save: string;
-            share: string;
-        };
         confirmations: {
             shareAll: {
                 assertionHint: string;

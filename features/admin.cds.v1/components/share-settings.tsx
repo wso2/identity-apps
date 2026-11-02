@@ -32,7 +32,6 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import OrganizationSelection from "./organization-selection";
 import {
     createSharePolicy,
     deleteSharePolicy,
@@ -40,31 +39,25 @@ import {
     updateSharePolicy
 } from "../api/organization-management";
 import { OrganizationManagementScopes } from "../constants/organization-management-constants";
-import { useSharePolicies } from "../hooks/use-share-policy";
+import useSharePolicies from "../hooks/use-share-policy";
 import {
-    ChildOrg,
-    ChildOrgReach,
-    ChildOrgs,
-    ChildOrgsMode,
-    SharePolicyRequest,
-    ShareableResource
+    ChildOrganizationInterface,
+    ChildOrganizationReach,
+    ChildOrganizationsInterface,
+    ChildOrganizationsMode,
+    PolicyFormMode,
+    SharePolicyRequestInterface,
+    ShareableResource,
+    ShareableResourceType
 } from "../models/organization-management";
-
-type ShareMode = "none" | ChildOrgsMode;
+import { getErrorDetail, toPolicyFormMode } from "../utils/organization-management-utils";
+import OrganizationSelection from "./organization-selection";
 
 interface ShareSettingsPropsInterface extends IdentifiableComponentInterface {
     /**
      * The attribute or the rule to share.
      */
     resource: ShareableResource;
-    /**
-     * Whether the user can change the share settings.
-     */
-    readOnly?: boolean;
-    /**
-     * Called after the share settings change.
-     */
-    onUpdate?: () => void;
 }
 
 // CDS returns this code for a second policy of the same organization.
@@ -77,8 +70,6 @@ const POLICY_EXISTS_CODE: string = "CDS-17008";
  */
 const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
     resource,
-    readOnly = false,
-    onUpdate,
     ["data-componentid"]: componentId = "cds-share-settings"
 }: ShareSettingsPropsInterface): ReactElement => {
 
@@ -86,12 +77,12 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
     const dispatch: Dispatch = useDispatch();
     const resourceLabel: string = t(`customerDataService:sharing.resource.${ resource.type }`);
     const hasShareScope: boolean = useRequiredScopes([
-        resource.type === "rule"
+        resource.type === ShareableResourceType.RULE
             ? OrganizationManagementScopes.UNIFICATION_RULE_SHARE
             : OrganizationManagementScopes.PROFILE_SCHEMA_SHARE
     ]);
     // Without the share scope, the form shows the policy and cannot change it.
-    const isReadOnly: boolean = readOnly || !hasShareScope;
+    const isReadOnly: boolean = !hasShareScope;
 
     const {
         data: policies,
@@ -103,49 +94,49 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
 
     const hasPolicy: boolean = Boolean(policyId);
 
-    const [ mode, setMode ] = useState<ShareMode>("none");
-    const [ selected, setSelected ] = useState<Record<string, ChildOrgReach>>({});
+    const [ mode, setMode ] = useState<PolicyFormMode>(PolicyFormMode.NONE);
+    const [ selected, setSelected ] = useState<Record<string, ChildOrganizationReach>>({});
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
     const [ problem, setProblem ] = useState<string>(null);
     const [ showSwitchConfirmation, setShowSwitchConfirmation ] = useState<boolean>(false);
     const [ showShareAllConfirmation, setShowShareAllConfirmation ] = useState<boolean>(false);
 
-    const childOrgs: ChildOrgs = policies?.policies?.[0]?.child_orgs;
-    const storedMode: ShareMode = childOrgs?.mode ?? "none";
+    const childOrgs: ChildOrganizationsInterface = policies?.policies?.[0]?.child_orgs;
+    const storedMode: PolicyFormMode = toPolicyFormMode(childOrgs?.mode);
 
     // Load the form from the stored policy. "selected" maps each selected child to its reach.
     useEffect(() => {
         if (isPoliciesLoading) return;
         if (!childOrgs) {
-            setMode("none");
+            setMode(PolicyFormMode.NONE);
             setSelected({});
 
             return;
         }
-        const picked: Record<string, ChildOrgReach> = {};
+        const picked: Record<string, ChildOrganizationReach> = {};
 
-        childOrgs.orgs?.forEach((child: ChildOrg) => {
+        childOrgs.orgs?.forEach((child: ChildOrganizationInterface) => {
             picked[child.org_id] = child.reach;
         });
-        setMode(childOrgs.mode);
+        setMode(toPolicyFormMode(childOrgs.mode));
         setSelected(picked);
     }, [ childOrgs, isPoliciesLoading ]);
 
-    const payload: SharePolicyRequest = useMemo((): SharePolicyRequest => {
-        if (mode === "all") return { child_orgs: { mode: "all" } };
+    const payload: SharePolicyRequestInterface = useMemo((): SharePolicyRequestInterface => {
+        if (mode === PolicyFormMode.ALL) return { child_orgs: { mode: ChildOrganizationsMode.ALL } };
 
         return {
             child_orgs: {
-                mode: "selected",
-                orgs: Object.entries(selected).map(([ orgId, reach ]: [ string, ChildOrgReach ]) =>
+                mode: ChildOrganizationsMode.SELECTED,
+                orgs: Object.entries(selected).map(([ orgId, reach ]: [ string, ChildOrganizationReach ]) =>
                     ({ org_id: orgId, reach }))
             }
         };
     }, [ mode, selected ]);
 
     // A change from all organizations to selected organizations asks for a confirmation.
-    const handleModeChange = (next: ShareMode): void => {
-        if (storedMode === "all" && next === "selected") {
+    const handleModeChange = (next: PolicyFormMode): void => {
+        if (storedMode === PolicyFormMode.ALL && next === PolicyFormMode.SELECTED) {
             setShowSwitchConfirmation(true);
 
             return;
@@ -176,7 +167,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
     };
 
     const handleSave = (): void => {
-        if (mode === "selected" && Object.keys(selected).length === 0) {
+        if (mode === PolicyFormMode.SELECTED && Object.keys(selected).length === 0) {
             dispatch(addAlert({
                 description: t("customerDataService:sharing.notifications.noOrganizationsSelected.description",
                     { resource: resourceLabel }),
@@ -186,7 +177,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
 
             return;
         }
-        if (mode === "all" && storedMode !== "all") {
+        if (mode === PolicyFormMode.ALL && storedMode !== PolicyFormMode.ALL) {
             setShowShareAllConfirmation(true);
 
             return;
@@ -199,7 +190,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
         setIsSaving(true);
 
         try {
-            if (mode === "none") {
+            if (mode === PolicyFormMode.NONE) {
                 if (hasPolicy) {
                     await deleteSharePolicy(resource, policyId);
                 }
@@ -219,14 +210,10 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                 }));
             }
             await mutatePolicies();
-            onUpdate?.();
         } catch (error) {
             mutatePolicies();
-            const data: { code?: string; description?: string; message?: string } =
-                (error as AxiosError<{ code?: string; description?: string; message?: string }>)?.response?.data;
-            const detail: string = data?.description
-                ? `${ data.code ? `[${ data.code }] ` : "" }${ data.description }`
-                : t("customerDataService:sharing.notifications.error.description");
+            const detail: string = getErrorDetail(error,
+                t("customerDataService:sharing.notifications.error.description"));
 
             setProblem(detail);
             dispatch(addAlert({
@@ -255,18 +242,18 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                         <RadioGroup
                             value={ mode }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                handleModeChange(event.target.value as ShareMode) }
+                                handleModeChange(event.target.value as PolicyFormMode) }
                             data-componentid={ `${ componentId }-radio-group` }
                         >
                             <FormControlLabel
-                                value="none"
+                                value={ PolicyFormMode.NONE }
                                 label={ t("customerDataService:sharing.options.none", { resource: resourceLabel }) }
                                 control={ <Radio /> }
                                 disabled={ isReadOnly }
                                 data-componentid={ `${ componentId }-mode-none` }
                             />
                             <FormControlLabel
-                                value="all"
+                                value={ PolicyFormMode.ALL }
                                 label={ (
                                     <>
                                         { t("customerDataService:sharing.options.all", { resource: resourceLabel }) }
@@ -280,7 +267,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                                 data-componentid={ `${ componentId }-mode-all` }
                             />
                             <FormControlLabel
-                                value="selected"
+                                value={ PolicyFormMode.SELECTED }
                                 label={ (
                                     <>
                                         { t("customerDataService:sharing.options.selected",
@@ -294,8 +281,8 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                                 disabled={ isReadOnly }
                                 data-componentid={ `${ componentId }-mode-selected` }
                             />
-                            { mode === "selected" && (
-                                <Grid xs={ 12 } className="ml-5">
+                            { mode === PolicyFormMode.SELECTED && (
+                                <Grid xs={ 12 } sx={ { ml: 4 } }>
                                     <OrganizationSelection
                                         selected={ selected }
                                         onChange={ setSelected }
@@ -310,7 +297,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                     </FormControl>
                 </Grid>
                 { problem && (
-                    <Grid xs={ 12 } className="mt-3">
+                    <Grid xs={ 12 } sx={ { mt: 2 } }>
                         <Alert severity="error" data-componentid={ `${ componentId }-problem` }>
                             { problem }
                         </Alert>
@@ -319,10 +306,10 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                 { !isReadOnly && (
                     <Grid xs={ 8 }>
                         <OxygenButton
-                            className="mt-5"
+                            sx={ { mt: 4 } }
                             variant="contained"
                             size="small"
-                            disabled={ isSaving || (mode === "none" && !hasPolicy) }
+                            disabled={ isSaving || (mode === PolicyFormMode.NONE && !hasPolicy) }
                             onClick={ handleSave }
                             data-componentid={ `${ componentId }-save-button` }
                         >
@@ -339,7 +326,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onPrimaryActionClick={ () => {
-                    setMode("selected");
+                    setMode(PolicyFormMode.SELECTED);
                     setShowSwitchConfirmation(false);
                 } }
                 onSecondaryActionClick={ () => setShowSwitchConfirmation(false) }

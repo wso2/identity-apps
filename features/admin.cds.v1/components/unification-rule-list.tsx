@@ -25,7 +25,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -40,19 +40,20 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
-import { TEMP_PRIORITY } from "../models/constants";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
+import { TEMP_PRIORITY } from "../models/constants";
+import { ResourceOrigin } from "../models/organization-management";
 import {
     UnificationMethod,
     UnificationRuleModel
 } from "../models/unification-rules";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
-import { getPropertyScope } from "../utils/profile-attribute-utils";
+import { getPropertyScope, getPropertySuffix } from "../utils/profile-attribute-utils";
 import SharedChip from "./shared-chip";
 
-const isSharedRule = (rule: UnificationRuleModel): boolean => rule.origin === "SHARED";
+const isSharedRule = (rule: UnificationRuleModel): boolean => rule.origin === ResourceOrigin.SHARED;
 
-interface UnificationRulesListProps {
+interface UnificationRulesListProps extends IdentifiableComponentInterface {
     rules: UnificationRuleModel[];
     isLoading: boolean;
     onDelete: () => void;
@@ -67,20 +68,14 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     isLoading,
     onDelete,
     searchQuery,
-    mutate
+    mutate,
+    ["data-componentid"]: componentId = "cds-unification-rule-list"
 }: UnificationRulesListProps): ReactElement => {
 
     const dispatch: Dispatch<AnyAction> = useDispatch();
     const { t } = useTranslation();
     // Organization management: a child organization only reads the rules.
     const isSubOrganization: boolean = useIsSubOrganization();
-    const getPropertySuffix = (propertyName: string): string => {
-        if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
-        if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
-        if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
-
-        return propertyName || "";
-    };
 
     const filteredRules: UnificationRuleModel[] = useMemo(() => {
         if (!searchQuery?.trim()) return rules;
@@ -315,7 +310,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                             { isSharedRule(rule) && (
                                 <SharedChip
                                     ownerOrg={ rule.owner_org_handle }
-                                    data-componentid={ `cds-unification-rule-${ rule.rule_id }-shared-chip` }
+                                    data-componentid={ `${ componentId }-${ rule.rule_id }-shared-chip` }
                                 />
                             ) }
                         </Box>
@@ -479,7 +474,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                 e.stopPropagation();
                                 openRule(rule);
                             } }
-                            data-componentid={ `unification-rule-view-${ rule.rule_id }` }
+                            data-componentid={ `${ componentId }-view-${ rule.rule_id }` }
                         >
                             <Icon name="eye" fitted />
                         </IconButton>
@@ -497,7 +492,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                 e.stopPropagation();
                                 openRule(rule);
                             } }
-                            data-componentid={ `unification-rule-edit-${ rule.rule_id }` }
+                            data-componentid={ `${ componentId }-edit-${ rule.rule_id }` }
                         >
                             <Icon name="pencil alternate" fitted />
                         </IconButton>

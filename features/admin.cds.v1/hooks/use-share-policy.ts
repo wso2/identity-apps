@@ -23,12 +23,8 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
 import { getSharingPoliciesEndpoint } from "../api/organization-management";
-import type { SharePolicyList, ShareableResource } from "../models/organization-management";
-
-const JSON_HEADERS: Record<string, string> = {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-};
+import { JSON_HEADERS } from "../constants/organization-management-constants";
+import type { SharePolicyListInterface, ShareableResource } from "../models/organization-management";
 
 /**
  * Hook to list the share policies of a profile attribute or a unification rule. The list
@@ -38,7 +34,7 @@ const JSON_HEADERS: Record<string, string> = {
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-export const useSharePolicies = <Data = SharePolicyList, Error = RequestErrorInterface>(
+const useSharePolicies = <Data = SharePolicyListInterface, Error = RequestErrorInterface>(
     resource: ShareableResource,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
@@ -62,3 +58,5 @@ export const useSharePolicies = <Data = SharePolicyList, Error = RequestErrorInt
         mutate
     };
 };
+
+export default useSharePolicies;

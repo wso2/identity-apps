@@ -35,3 +35,11 @@ export const OrganizationManagementScopes: {
  * Key of organization management in the `disabledFeatures` of the `customerDataService` feature config.
  */
 export const ORGANIZATION_MANAGEMENT_FEATURE_ID: string = "customerDataService.organizationManagement";
+
+/**
+ * Headers of the JSON requests to the organization management endpoints of CDS.
+ */
+export const JSON_HEADERS: Record<string, string> = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+};

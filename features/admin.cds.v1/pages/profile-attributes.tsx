@@ -54,12 +54,12 @@ import {
 } from "semantic-ui-react";
 import { ReactComponent as CdsClaimsIcon } from "../assets/images/icons/cds-claims-icon.svg";
 import { ProfileSchemaListing } from "../components/profile-attributes";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useFullProfileSchema } from "../hooks/use-profile-schema";
 import { useProfileSchemaByScope } from "../hooks/use-profile-schema-by-scope";
 import type { ProfileSchemaListingRow, SchemaListingScope } from "../models/profile-attribute-listing";
 import type { ProfileSchemaAttribute } from "../models/profile-attributes";
-import { useIsSubOrganization } from "../utils/organization-management-utils";
-import { toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
+import { getSharingRowFields, toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
 import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 const SORT_BY_NAME: string = "display_name";
@@ -152,14 +152,10 @@ const toRowsFromScopeResponse = (
                     attribute_name: fullName,
                     belongs_to: appId,
                     chip_label: scope,
-                    deletable: a.origin !== "SHARED",
                     display_name: fieldPath || fullName,
-                    // Organization management: a shared attribute is read-only here, so the list offers to view it.
-                    editable: a.origin !== "SHARED",
                     id: `${scope}:${a.attribute_id ?? fullName}`,
                     scope,
-                    // Organization management: a shared attribute shows the Shared chip with its owner.
-                    shared_by: a.origin === "SHARED" ? a.owner_org_handle : undefined
+                    ...getSharingRowFields(a)
                 };
             })
         );
@@ -173,20 +169,20 @@ const toRowsFromScopeResponse = (
         const display: string = fullName.startsWith(prefix)
             ? fullName.slice(prefix.length)
             : fullName;
+        const sharingFields: Pick<ProfileSchemaListingRow, "deletable" | "editable" | "shared_by"> =
+            getSharingRowFields(a);
 
         return {
             attribute_id: a.attribute_id,
             attribute_name: fullName,
             belongs_to: undefined,
             chip_label: scope,
-            // Organization management: only the owner organization can delete a shared attribute.
-            deletable: scope === "traits" && a.origin !== "SHARED",
             display_name: display,
-            // Organization management: a shared attribute is read-only here, so the list offers to view it.
-            editable: a.origin !== "SHARED",
             id: `${scope}:${a.attribute_id ?? fullName}`,
             scope,
-            shared_by: a.origin === "SHARED" ? a.owner_org_handle : undefined
+            ...sharingFields,
+            // Only traits can be deleted from this list.
+            deletable: scope === "traits" && sharingFields.deletable
         };
     });
 };

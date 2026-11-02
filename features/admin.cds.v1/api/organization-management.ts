@@ -21,13 +21,15 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
-import type {
-    OrgAccessPolicy,
-    SharePolicy,
-    SharePolicyList,
-    SharePolicyRequest,
+import { JSON_HEADERS } from "../constants/organization-management-constants";
+import {
+    OrganizationAccessPolicyInterface,
+    SharePolicyInterface,
+    SharePolicyListInterface,
+    SharePolicyRequestInterface,
     ShareableResource,
-    TreeSyncStatus
+    ShareableResourceType,
+    TreeSyncStatusInterface
 } from "../models/organization-management";
 
 /**
@@ -35,11 +37,6 @@ import type {
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-const JSON_HEADERS: Record<string, string> = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-};
 
 /**
  * Returns the collection of the share policies of a profile attribute or a unification rule.
@@ -50,7 +47,7 @@ const JSON_HEADERS: Record<string, string> = {
 export const getSharingPoliciesEndpoint = (resource: ShareableResource): string => {
     const endpoints: Record<string, string> = store.getState().config.endpoints;
 
-    return resource.type === "attribute"
+    return resource.type === ShareableResourceType.ATTRIBUTE
         ? `${ endpoints.cdsProfileSchema }/${ resource.scope }/${ resource.id }/sharing-policies`
         : `${ endpoints.cdsUnificationRules }/${ resource.id }/sharing-policies`;
 };
@@ -73,7 +70,8 @@ const getSharePolicyEndpoint = (resource: ShareableResource, policyId: string): 
  * @param payload - The targets.
  * @returns The new policy.
  */
-export const createSharePolicy = (resource: ShareableResource, payload: SharePolicyRequest): Promise<SharePolicy> => {
+export const createSharePolicy = (resource: ShareableResource,
+    payload: SharePolicyRequestInterface): Promise<SharePolicyInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         headers: JSON_HEADERS,
@@ -82,7 +80,7 @@ export const createSharePolicy = (resource: ShareableResource, payload: SharePol
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as SharePolicy);
+        .then((response: AxiosResponse) => response.data as SharePolicyInterface);
 };
 
 /**
@@ -92,7 +90,7 @@ export const createSharePolicy = (resource: ShareableResource, payload: SharePol
  * @param resource - The resource.
  * @returns The policies.
  */
-export const listSharePolicies = (resource: ShareableResource): Promise<SharePolicyList> => {
+export const listSharePolicies = (resource: ShareableResource): Promise<SharePolicyListInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: JSON_HEADERS,
         method: HttpMethods.GET,
@@ -100,7 +98,7 @@ export const listSharePolicies = (resource: ShareableResource): Promise<SharePol
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as SharePolicyList);
+        .then((response: AxiosResponse) => response.data as SharePolicyListInterface);
 };
 
 /**
@@ -113,7 +111,7 @@ export const listSharePolicies = (resource: ShareableResource): Promise<SharePol
  * @returns The policy.
  */
 export const updateSharePolicy = (resource: ShareableResource, policyId: string,
-    payload: SharePolicyRequest): Promise<SharePolicy> => {
+    payload: SharePolicyRequestInterface): Promise<SharePolicyInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         headers: JSON_HEADERS,
@@ -122,7 +120,7 @@ export const updateSharePolicy = (resource: ShareableResource, policyId: string,
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as SharePolicy);
+        .then((response: AxiosResponse) => response.data as SharePolicyInterface);
 };
 
 /**
@@ -149,7 +147,9 @@ export const deleteSharePolicy = (resource: ShareableResource, policyId: string)
  * @param payload - The selected organizations.
  * @returns The new policy.
  */
-export const createOrganizationAccess = (payload: SharePolicyRequest): Promise<OrgAccessPolicy> => {
+export const createOrganizationAccess = (
+    payload: SharePolicyRequestInterface
+): Promise<OrganizationAccessPolicyInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         headers: JSON_HEADERS,
@@ -158,7 +158,7 @@ export const createOrganizationAccess = (payload: SharePolicyRequest): Promise<O
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as OrgAccessPolicy);
+        .then((response: AxiosResponse) => response.data as OrganizationAccessPolicyInterface);
 };
 
 /**
@@ -170,7 +170,8 @@ export const createOrganizationAccess = (payload: SharePolicyRequest): Promise<O
  * @param payload - The selected organizations.
  * @returns The policy.
  */
-export const updateOrganizationAccess = (id: string, payload: SharePolicyRequest): Promise<OrgAccessPolicy> => {
+export const updateOrganizationAccess = (id: string,
+    payload: SharePolicyRequestInterface): Promise<OrganizationAccessPolicyInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         headers: JSON_HEADERS,
@@ -179,7 +180,7 @@ export const updateOrganizationAccess = (id: string, payload: SharePolicyRequest
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as OrgAccessPolicy);
+        .then((response: AxiosResponse) => response.data as OrganizationAccessPolicyInterface);
 };
 
 /**
@@ -204,7 +205,7 @@ export const deleteOrganizationAccess = (id: string): Promise<void> => {
  *
  * @returns The state of the sync.
  */
-export const startOrganizationTreeSync = (): Promise<TreeSyncStatus> => {
+export const startOrganizationTreeSync = (): Promise<TreeSyncStatusInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: JSON_HEADERS,
         method: HttpMethods.POST,
@@ -212,5 +213,5 @@ export const startOrganizationTreeSync = (): Promise<TreeSyncStatus> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as TreeSyncStatus);
+        .then((response: AxiosResponse) => response.data as TreeSyncStatusInterface);
 };

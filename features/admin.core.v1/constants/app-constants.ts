@@ -656,6 +656,11 @@ export class AppConstants {
     public static readonly CDS_PROFILE_ATTRIBUTES_ROUTE_ID: string = "customerDataProfileAttributes";
 
     /**
+     * Route id of the customer data service organization settings page.
+     */
+    public static readonly CDS_ORGANIZATION_SETTINGS_ROUTE_ID: string = "customerDataOrganizationSettings";
+
+    /**
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";

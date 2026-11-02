@@ -24,7 +24,8 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
-import type { TreeSyncStatus } from "../models/organization-management";
+import { JSON_HEADERS } from "../constants/organization-management-constants";
+import { TreeSyncState, TreeSyncStatusInterface } from "../models/organization-management";
 
 /**
  * Time between two reads of the sync state while a sync runs.
@@ -38,15 +39,12 @@ const POLL_INTERVAL_MS: number = 3000;
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useTreeSync = <Data = TreeSyncStatus, Error = RequestErrorInterface>(
+const useTreeSync = <Data = TreeSyncStatusInterface, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
+        headers: JSON_HEADERS,
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.cdsOrganizationSyncStatus
     };
@@ -55,7 +53,7 @@ const useTreeSync = <Data = TreeSyncStatus, Error = RequestErrorInterface>(
         shouldFetch ? requestConfig : null,
         {
             refreshInterval: (latest: AxiosResponse<Data>): number =>
-                (latest?.data as TreeSyncStatus)?.state === "SYNCING" ? POLL_INTERVAL_MS : 0,
+                (latest?.data as TreeSyncStatusInterface)?.state === TreeSyncState.SYNCING ? POLL_INTERVAL_MS : 0,
             shouldRetryOnError: false
         }
     );

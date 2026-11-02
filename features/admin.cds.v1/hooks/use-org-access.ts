@@ -23,7 +23,8 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import type { OrgAccessPolicyList } from "../models/organization-management";
+import { JSON_HEADERS } from "../constants/organization-management-constants";
+import type { OrganizationAccessPolicyListInterface } from "../models/organization-management";
 
 /**
  * Hook to list the organization access policy of the root organization. The list has a
@@ -32,15 +33,12 @@ import type { OrgAccessPolicyList } from "../models/organization-management";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useOrganizationAccess = <Data = OrgAccessPolicyList, Error = RequestErrorInterface>(
+const useOrganizationAccess = <Data = OrganizationAccessPolicyListInterface, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
+        headers: JSON_HEADERS,
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.cdsOrganizationAccess
     };

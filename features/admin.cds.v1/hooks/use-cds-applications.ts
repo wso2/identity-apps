@@ -27,6 +27,7 @@ import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { CDSApplicationIdentifierType } from "../models/config";
 import { getCDSApplicationIdentifierType } from "../utils/application-identifier-utils";
+import useIsSubOrganization from "./use-is-sub-organization";
 
 /**
  * An item of the application list with its advanced configurations, which the list returns when
@@ -84,10 +85,15 @@ const APPLICATION_LIST_PAGE_SIZE: number = 100;
  * Fetches all applications by paginating through the application list API
  * until `totalResults` is covered.
  *
+ * @param includeAdvancedConfigurations - Whether to get the advanced configurations. Only a shared app of a
+ * child organization needs them, to find its main app.
  * @returns All applications with client ID and issuer attributes.
  */
-const fetchAllApplications: () => Promise<ApplicationListItem[]> =
-    async (): Promise<ApplicationListItem[]> => {
+const fetchAllApplications: (includeAdvancedConfigurations: boolean) => Promise<ApplicationListItem[]> =
+    async (includeAdvancedConfigurations: boolean): Promise<ApplicationListItem[]> => {
+        const attributes: string = includeAdvancedConfigurations
+            ? "advancedConfigurations,clientId,issuer"
+            : "clientId,issuer";
         const allApplications: ApplicationListItem[] = [];
         let offset: number = 0;
         let totalResults: number = 0;
@@ -98,7 +104,7 @@ const fetchAllApplications: () => Promise<ApplicationListItem[]> =
                 offset,
                 null,
                 true,
-                "advancedConfigurations,clientId,issuer"
+                attributes
             );
             const pageApplications: ApplicationListItem[] = (page?.applications ?? []) as ApplicationListItem[];
 
@@ -151,6 +157,7 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
     const { t } = useTranslation();
 
     const identifierType: CDSApplicationIdentifierType = getCDSApplicationIdentifierType();
+    const isSubOrganization: boolean = useIsSubOrganization();
 
     const [ applicationList, setApplicationList ] = useState<ApplicationListItem[]>([]);
     const [ isLoading, setIsLoading ] = useState<boolean>(shouldFetch);
@@ -171,7 +178,7 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
         setIsApplicationsRequestFailed(false);
         setIsLoaded(false);
 
-        fetchAllApplications()
+        fetchAllApplications(isSubOrganization)
             .then((fetchedApplications: ApplicationListItem[]): void => {
                 if (!isCancelled) {
                     setApplicationList(fetchedApplications);

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Box from "@oxygen-ui/react/Box";
@@ -52,15 +53,48 @@ import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
-import { ChildOrgReach } from "../models/organization-management";
-import "./organization-selection.scss";
+import { ChildOrganizationReach } from "../models/organization-management";
 
 /**
  * Number of organizations in one page.
  */
 const PAGE_SIZE: number = 15;
 
-interface OrganizationNode {
+/**
+ * Height of the organization list and of the settings panel, in pixels.
+ */
+const PANEL_HEIGHT: number = 300;
+
+const SelectionContainer: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.grey[300] }`,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1)
+}));
+
+const OrganizationListPanel: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    borderRadius: `${ theme.shape.borderRadius }px 0 0 ${ theme.shape.borderRadius }px`,
+    borderRight: `1px solid ${ theme.palette.grey[300] }`,
+    height: PANEL_HEIGHT,
+    overflow: "auto"
+}));
+
+const SettingsPanel: typeof Grid = styled(Grid)(({ theme }: { theme: Theme }) => ({
+    borderRadius: `0 ${ theme.shape.borderRadius }px ${ theme.shape.borderRadius }px 0`,
+    height: PANEL_HEIGHT,
+    overflowX: "hidden",
+    overflowY: "auto"
+}));
+
+const EmptySettings: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+    height: "100%",
+    justifyContent: "center"
+}));
+
+interface OrganizationNodeInterface {
     id: string;
     name: string;
 }
@@ -69,11 +103,11 @@ interface OrganizationSelectionPropsInterface extends IdentifiableComponentInter
     /**
      * The selected organizations, with their reach.
      */
-    selected: Record<string, ChildOrgReach>;
+    selected: Record<string, ChildOrganizationReach>;
     /**
      * Called with the new selection.
      */
-    onChange: Dispatch<SetStateAction<Record<string, ChildOrgReach>>>;
+    onChange: Dispatch<SetStateAction<Record<string, ChildOrganizationReach>>>;
     /**
      * Label of the checkbox that includes the existing and future child organizations.
      */
@@ -101,7 +135,7 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
     const { t } = useTranslation();
     const dispatch: ReduxDispatch = useDispatch();
 
-    const [ nodes, setNodes ] = useState<Record<string, OrganizationNode>>({});
+    const [ nodes, setNodes ] = useState<Record<string, OrganizationNodeInterface>>({});
     const [ organizationIds, setOrganizationIds ] = useState<string[]>([]);
     const [ nextPageCursor, setNextPageCursor ] = useState<string>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -126,8 +160,8 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
     };
 
     const addNodes = (orgs: OrganizationInterface[]): void => {
-        setNodes((previous: Record<string, OrganizationNode>) => {
-            const next: Record<string, OrganizationNode> = { ...previous };
+        setNodes((previous: Record<string, OrganizationNodeInterface>) => {
+            const next: Record<string, OrganizationNodeInterface> = { ...previous };
 
             orgs.forEach((org: OrganizationInterface) => {
                 next[org.id] = { id: org.id, name: org.name };
@@ -166,10 +200,10 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
     }, []);
 
     const toggleOrganization = (id: string, isChecked: boolean): void => {
-        const next: Record<string, ChildOrgReach> = { ...selected };
+        const next: Record<string, ChildOrganizationReach> = { ...selected };
 
         if (isChecked) {
-            next[id] = next[id] ?? "subtree";
+            next[id] = next[id] ?? ChildOrganizationReach.SUBTREE;
         } else {
             delete next[id];
         }
@@ -177,7 +211,10 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
     };
 
     const toggleChildOrganizations = (id: string, isIncluded: boolean): void => {
-        onChange({ ...selected, [ id ]: isIncluded ? "subtree" : "org" });
+        onChange({
+            ...selected,
+            [ id ]: isIncluded ? ChildOrganizationReach.SUBTREE : ChildOrganizationReach.ORGANIZATION
+        });
     };
 
     const treeItems: TreeViewBaseItem[] = useMemo(
@@ -192,24 +229,24 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
     );
 
     const renderSettings = (): ReactElement => {
-        const node: OrganizationNode = focusedId ? nodes[focusedId] : undefined;
+        const node: OrganizationNodeInterface = focusedId ? nodes[focusedId] : undefined;
 
         if (!node) {
             return (
-                <Box className="cds-organization-selection-empty-settings">
+                <EmptySettings>
                     <Typography variant="h6">
                         { t("customerDataService:organizationSelection.emptyTitle") }
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         { t("customerDataService:organizationSelection.emptyDescription") }
                     </Typography>
-                </Box>
+                </EmptySettings>
             );
         }
 
         return (
             <Box data-componentid={ `${ componentId }-settings` }>
-                <Typography variant="body1" className="mb-3">
+                <Typography variant="body1" sx={ { mb: 2 } }>
                     { t("customerDataService:organizationSelection.settingsFor") }{ " " }
                     <Code>{ node.name }</Code>
                 </Typography>
@@ -222,7 +259,7 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
                     <FormControlLabel
                         control={ <Checkbox /> }
                         label={ includeChildOrganizationsLabel }
-                        checked={ selected[node.id] === "subtree" }
+                        checked={ selected[node.id] === ChildOrganizationReach.SUBTREE }
                         disabled={ readOnly }
                         onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) =>
                             toggleChildOrganizations(node.id, checked) }
@@ -235,15 +272,15 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
 
     if (isLoading) {
         return (
-            <Grid container className="cds-organization-selection" justifyContent="center" padding={ 2 }>
+            <SelectionContainer container justifyContent="center" padding={ 2 }>
                 <CircularProgress size={ 30 } />
-            </Grid>
+            </SelectionContainer>
         );
     }
 
     if (organizationIds.length === 0) {
         return (
-            <Grid container className="cds-organization-selection" data-componentid={ `${ componentId }-no-orgs` }>
+            <SelectionContainer container data-componentid={ `${ componentId }-no-orgs` }>
                 <Grid xs={ 12 } padding={ 1 }>
                     <EmptyPlaceholder
                         className="p-0"
@@ -252,18 +289,17 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
                         subtitle={ [ t("customerDataService:organizationSelection.noOrganizations") ] }
                     />
                 </Grid>
-            </Grid>
+            </SelectionContainer>
         );
     }
 
     return (
-        <Grid container className="cds-organization-selection" data-componentid={ componentId }>
-            <Grid
+        <SelectionContainer container data-componentid={ componentId }>
+            <OrganizationListPanel
                 xs={ 12 }
                 md={ 4 }
                 lg={ 3 }
                 padding={ 1 }
-                className="cds-organization-selection-left-panel"
                 id={ scrollTargetId }
             >
                 <InfiniteScroll
@@ -289,18 +325,17 @@ const OrganizationSelection: FunctionComponent<OrganizationSelectionPropsInterfa
                         slots={ { item: CustomTreeItem } }
                     />
                 </InfiniteScroll>
-            </Grid>
-            <Grid
+            </OrganizationListPanel>
+            <SettingsPanel
                 xs={ 12 }
                 md={ 8 }
                 lg={ 9 }
                 paddingX={ 2 }
                 paddingY={ 1 }
-                className="cds-organization-selection-right-panel"
             >
                 { renderSettings() }
-            </Grid>
-        </Grid>
+            </SettingsPanel>
+        </SelectionContainer>
     );
 };
 

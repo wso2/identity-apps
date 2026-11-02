@@ -16,19 +16,27 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, HttpErrorResponseDataInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/forms";
+import {
+    CheckboxFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    TextFieldAdapter
+} from "@wso2is/forms";
 import {
     AnimatedAvatar,
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Hint,
     ResourceTab,
     ResourceTabPaneInterface,
     TabPageLayout,
@@ -40,37 +48,36 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Grid, Icon, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import ShareSettings from "../components/share-settings";
 import SharedChip from "../components/shared-chip";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useUnificationRule } from "../hooks/use-unification-rules";
+import { ResourceOrigin, ShareableResourceType } from "../models/organization-management";
 import { UnificationRuleModel, UpdateUnificationRulePayload } from "../models/unification-rules";
-import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
-import { getPropertyScope } from "../utils/profile-attribute-utils";
+import { DEFAULT_PROPERTY_SCOPE, getPropertyScope, getPropertySuffix } from "../utils/profile-attribute-utils";
 
-const FORM_ID: string = "unification-rule-edit-form";
-
-interface RouteParams {
+interface RouteParamsInterface {
     id: string;
 }
 
-interface RuleFormValues {
+interface RuleFormValuesInterface {
     rule_name: string;
     is_active: boolean;
+    property_name_display: string;
+    priority_display: string;
 }
 
-const getPropertySuffix = (propertyName: string): string =>
-    (propertyName ?? "").replace(/^(identity_attributes|application_data|traits)\./, "");
+type UnificationRuleEditPagePropsInterface = RouteComponentProps<RouteParamsInterface> & IdentifiableComponentInterface;
 
-const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
-    props: RouteComponentProps<RouteParams>
-): ReactElement => {
+const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInterface> = ({
+    match,
+    ["data-componentid"]: componentId = "cds-unification-rule-edit-page"
+}: UnificationRuleEditPagePropsInterface): ReactElement => {
 
-    const { match } = props;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const componentId: string = "unification-rule-edit";
     const id: string = match.params.id;
 
     const { data: rule, isLoading, error, mutate } = useUnificationRule<UnificationRuleModel>(id);
@@ -82,7 +89,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
     const [ _modalAlert, setModalAlert, modalAlertComponent ] = useConfirmationModalAlert();
 
     // Organization management: a rule that an ancestor organization shares is read-only here.
-    const isShared: boolean = rule?.origin === "SHARED";
+    const isShared: boolean = rule?.origin === ResourceOrigin.SHARED;
     const isSubOrganization: boolean = useIsSubOrganization();
     const isReadOnly: boolean = isShared || isSubOrganization;
     // Organization management: the owner organization shares the rule with its child organizations.
@@ -99,12 +106,22 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
         }));
     }, [ error ]);
 
-    const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
+    const handleTabChange = (_: SyntheticEvent, data: { activeIndex?: number | string }): void => {
         setActiveTabIndex(data.activeIndex as number);
         setModalAlert(null);
     };
 
-    const handleUpdate = (values: RuleFormValues): void => {
+    const validateForm = (values: RuleFormValuesInterface): Partial<Record<keyof RuleFormValuesInterface, string>> => {
+        if (isReadOnly || values.rule_name?.trim()) {
+            return {};
+        }
+
+        return {
+            rule_name: t("customerDataService:unificationRules.create.fields.ruleName.errors.required")
+        };
+    };
+
+    const handleUpdate = (values: RuleFormValuesInterface): void => {
         const payload: UpdateUnificationRulePayload = {
             is_active: Boolean(values.is_active),
             rule_name: values.rule_name?.trim()
@@ -163,145 +180,91 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
         }
     };
 
-    const renderNotice = (content: string, noticeId: string): ReactElement => (
-        <Grid.Row columns={ 1 }>
-            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                <Message
-                    className="display-flex"
-                    size="small"
-                    info
-                    data-componentid={ `${componentId}-${noticeId}` }
-                >
-                    <Icon name="share alternate" />
-                    <Message.Content className="tiny">{ content }</Message.Content>
-                </Message>
-            </Grid.Column>
-        </Grid.Row>
-    );
-
     const renderGeneralTab = (): ReactElement | null => {
         if (!rule) return null;
 
         return (
             <>
                 <EmphasizedSegment padded="very">
-                    <Form
-                        id={ FORM_ID }
+                    <FinalForm
                         key={ `${rule.rule_id}-${rule.rule_name}-${rule.is_active}` }
-                        uncontrolledForm={ true }
-                        onSubmit={ (values: RuleFormValues) => handleUpdate(values) }
+                        onSubmit={ handleUpdate }
+                        validate={ validateForm }
                         initialValues={ {
                             is_active: rule.is_active,
+                            priority_display: String(rule.priority),
+                            property_name_display: getPropertySuffix(rule.property_name),
                             rule_name: rule.rule_name
                         } }
-                    >
-                        <Grid>
-                            { isShared && renderNotice(
-                                t("customerDataService:sharing.sharedNotice.ruleOwner",
-                                    { org: rule.owner_org_handle }),
-                                "shared-notice"
-                            ) }
-
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Input
+                        render={ ({ handleSubmit }: FormRenderProps) => (
+                            <form onSubmit={ handleSubmit }>
+                                <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
+                                    { isShared && (
+                                        <Alert severity="info" data-componentid={ `${componentId}-shared-notice` }>
+                                            { t("customerDataService:sharing.sharedNotice.ruleOwner",
+                                                { org: rule.owner_org_handle }) }
+                                        </Alert>
+                                    ) }
+                                    <FinalFormField
                                         ariaLabel="Rule name"
-                                        inputType="default"
                                         name="rule_name"
                                         label={ t("customerDataService:unificationRules.edit.fields.ruleName.label") }
                                         placeholder={ t("customerDataService:unificationRules.create.fields" +
                                             ".ruleName.placeholder") }
+                                        helperText={
+                                            t("customerDataService:unificationRules.edit.fields.ruleName.hint") }
                                         required={ !isReadOnly }
-                                        requiredErrorMessage={ t("customerDataService:unificationRules.create" +
-                                            ".fields.ruleName.errors.required") }
                                         readOnly={ isReadOnly }
                                         maxLength={ 255 }
-                                        minLength={ 1 }
+                                        component={ TextFieldAdapter }
                                         data-componentid={ `${componentId}-rule-name-input` }
-                                        width={ 16 }
                                     />
-                                    <Hint>
-                                        { t("customerDataService:unificationRules.edit.fields.ruleName.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Input
+                                    <FinalFormField
                                         ariaLabel="Attribute"
-                                        inputType="default"
                                         name="property_name_display"
                                         label={ t("customerDataService:unificationRules.edit.fields.attribute.label") }
-                                        value={ getPropertySuffix(rule.property_name) }
+                                        helperText={
+                                            t("customerDataService:unificationRules.edit.fields.attribute.hint") }
                                         readOnly
-                                        maxLength={ 255 }
-                                        minLength={ 1 }
+                                        component={ TextFieldAdapter }
                                         data-componentid={ `${componentId}-attribute-input` }
-                                        width={ 16 }
                                     />
-                                    <Hint>
-                                        { t("customerDataService:unificationRules.edit.fields.attribute.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Input
+                                    <FinalFormField
                                         ariaLabel="Priority"
-                                        inputType="default"
                                         name="priority_display"
                                         label={ t("customerDataService:unificationRules.edit.fields.priority.label") }
-                                        value={ String(rule.priority) }
+                                        helperText={
+                                            t("customerDataService:unificationRules.edit.fields.priority.hint") }
                                         readOnly
-                                        maxLength={ 10 }
-                                        minLength={ 1 }
+                                        component={ TextFieldAdapter }
                                         data-componentid={ `${componentId}-priority-input` }
-                                        width={ 16 }
                                     />
-                                    <Hint>
-                                        { t("customerDataService:unificationRules.edit.fields.priority.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Checkbox
+                                    <FinalFormField
                                         ariaLabel="Enabled"
                                         name="is_active"
                                         label={ t("customerDataService:unificationRules.edit.fields.isActive.label") }
-                                        readOnly={ isReadOnly }
+                                        hint={ t("customerDataService:unificationRules.edit.fields.isActive.hint") }
                                         disabled={ isReadOnly }
+                                        component={ CheckboxFieldAdapter }
                                         data-componentid={ `${componentId}-is-active-checkbox` }
-                                        width={ 16 }
                                     />
-                                    <Hint>
-                                        { t("customerDataService:unificationRules.edit.fields.isActive.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-
-                            { !isReadOnly && (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Field.Button
-                                            form={ FORM_ID }
-                                            size="small"
-                                            buttonType="primary_btn"
-                                            ariaLabel="Update button"
-                                            name="update-button"
-                                            label={ t("common:update") }
-                                            loading={ isUpdating }
-                                            disabled={ isUpdating }
-                                            data-componentid={ `${componentId}-update-button` }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            ) }
-                        </Grid>
-                    </Form>
+                                    { !isReadOnly && (
+                                        <Box>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                size="small"
+                                                disabled={ isUpdating }
+                                                data-componentid={ `${componentId}-update-button` }
+                                            >
+                                                { t("common:update") }
+                                            </Button>
+                                        </Box>
+                                    ) }
+                                </Box>
+                            </form>
+                        ) }
+                    />
                 </EmphasizedSegment>
 
                 { !isReadOnly && (
@@ -329,7 +292,7 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
         return (
             <EmphasizedSegment padded="very">
                 <ShareSettings
-                    resource={ { id: rule.rule_id, type: "rule" } }
+                    resource={ { id: rule.rule_id, type: ShareableResourceType.RULE } }
                     data-componentid={ `${componentId}-share-settings` }
                 />
             </EmphasizedSegment>
@@ -370,12 +333,8 @@ const UnificationRuleEditPage: FunctionComponent<RouteComponentProps<RouteParams
                     </Box>
                 ) }
                 pageTitle={ t("customerDataService:unificationRules.edit.page.pageTitle") }
-                description={ rule && scope !== "Default"
-                    ? (
-                        <div className="with-label ellipsis">
-                            <Label size="small">{ scope }</Label>
-                        </div>
-                    )
+                description={ rule && scope !== DEFAULT_PROPERTY_SCOPE
+                    ? <Chip size="small" label={ scope } data-componentid={ `${componentId}-scope-chip` } />
                     : null
                 }
                 backButton={ {

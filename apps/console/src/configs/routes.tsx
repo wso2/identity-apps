@@ -1987,7 +1987,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             icon: getSidePanelIcons().childIcon
                         },
                         id: "editUnificationRule",
-                        name: "Edit Unification Rule",
+                        name: "customerDataService:unificationRules.edit.page.pageTitle",
                         path: AppConstants.getPaths().get("UNIFICATION_RULE"),
                         protected: true,
                         showOnSidePanel: false
@@ -2105,7 +2105,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             icon: getSidePanelIcons().childIcon
                         },
                         id: "editUnificationRule",
-                        name: "Edit Unification Rule",
+                        name: "customerDataService:unificationRules.edit.page.pageTitle",
                         path: AppConstants.getPaths().get("UNIFICATION_RULE"),
                         protected: true,
                         showOnSidePanel: false

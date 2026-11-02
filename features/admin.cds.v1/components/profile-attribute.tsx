@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
@@ -47,11 +48,12 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid, Icon, Image, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteSchemaAttributeById, updateSchemaAttributeById } from "../api/profile-attributes";
-import ShareSettings from "./share-settings";
 import { useCDSApplications } from "../hooks/use-cds-applications";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useSchemaAttributeById } from "../hooks/use-profile-attributes";
-import SharedChip from "./shared-chip";
 import { useSearchSubAttributes } from "../hooks/use-search-sub-attributes";
+import { ResourceOrigin, ShareableResourceType } from "../models/organization-management";
 import { SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
 import {
     MergeStrategy,
@@ -59,8 +61,9 @@ import {
     ProfileSchemaSubAttributeRef,
     ValueType
 } from "../models/profile-attributes";
-import { useIsOrganizationManagementEnabled, useIsSubOrganization } from "../utils/organization-management-utils";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
+import ShareSettings from "./share-settings";
+import SharedChip from "./shared-chip";
 
 const FORM_ID: string = "profile-attribute-edit-form";
 
@@ -180,9 +183,9 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ _modalAlert, setModalAlert, modalAlertComponent ] = useConfirmationModalAlert();
     // Organization management: an attribute that an ancestor organization shares is read-only here.
-    const isShared: boolean = attribute?.origin === "SHARED";
+    const isShared: boolean = attribute?.origin === ResourceOrigin.SHARED;
     // Organization management: a child organization inherits the identity attributes from its root.
-    const isInherited: boolean = attribute?.origin === "INHERITED";
+    const isInherited: boolean = attribute?.origin === ResourceOrigin.INHERITED;
     const isSubOrganization: boolean = useIsSubOrganization();
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
     // Organization management: a child organization only reads the schema. The root organization changes and
@@ -193,7 +196,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const canShareScope: boolean = scope === "traits" || scope === "application_data";
     const isShareable: boolean = canShareScope && attribute?.value_type !== "complex"
         && (attribute?.attribute_name ?? "").split(".").length <= 2;
-    const showDangerZone: boolean = (scope === "traits" || scope === "application_data") && !isReadOnly;
+    const showDangerZone: boolean = canShareScope && !isReadOnly;
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -382,18 +385,10 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                             { isShared && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Message
-                                            className="display-flex"
-                                            size="small"
-                                            info
-                                            data-componentid={ `${componentId}-shared-notice` }
-                                        >
-                                            <Icon name="share alternate" />
-                                            <Message.Content className="tiny">
-                                                { t("customerDataService:sharing.sharedNotice.attribute",
-                                                    { org: attribute.owner_org_handle }) }
-                                            </Message.Content>
-                                        </Message>
+                                        <Alert severity="info" data-componentid={ `${componentId}-shared-notice` }>
+                                            { t("customerDataService:sharing.sharedNotice.attribute",
+                                                { org: attribute.owner_org_handle }) }
+                                        </Alert>
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
@@ -842,7 +837,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             <EmphasizedSegment padded="very">
                 { isShareable ? (
                     <ShareSettings
-                        resource={ { id: attribute.attribute_id, scope, type: "attribute" } }
+                        resource={ { id: attribute.attribute_id, scope, type: ShareableResourceType.ATTRIBUTE } }
                         data-componentid={ `${componentId}-share-settings` }
                     />
                 ) : (

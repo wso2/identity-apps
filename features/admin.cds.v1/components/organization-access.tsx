@@ -27,12 +27,10 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import OrganizationSelection from "./organization-selection";
 import {
     createOrganizationAccess,
     deleteOrganizationAccess,
@@ -41,16 +39,17 @@ import {
 } from "../api/organization-management";
 import useOrganizationAccess from "../hooks/use-org-access";
 import {
-    ChildOrg,
-    ChildOrgReach,
-    ChildOrgsMode,
-    OrgAccessPolicy,
-    SharePolicyRequest,
+    ChildOrganizationInterface,
+    ChildOrganizationReach,
+    ChildOrganizationsMode,
+    OrganizationAccessPolicyInterface,
+    PolicyFormMode,
+    SharePolicyRequestInterface,
     TreeSyncState,
-    TreeSyncStatus
+    TreeSyncStatusInterface
 } from "../models/organization-management";
-
-type AccessMode = "none" | ChildOrgsMode;
+import { getErrorDetail, toPolicyFormMode } from "../utils/organization-management-utils";
+import OrganizationSelection from "./organization-selection";
 
 interface OrganizationAccessPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -61,7 +60,7 @@ interface OrganizationAccessPropsInterface extends IdentifiableComponentInterfac
      * The state of the organization tree sync. CDS refuses the organization access until a sync
      * completed.
      */
-    syncStatus: TreeSyncStatus;
+    syncStatus: TreeSyncStatusInterface;
     /**
      * Reads the sync state again after a sync starts.
      */
@@ -86,55 +85,55 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
     const dispatch: Dispatch = useDispatch();
 
     const isTreeSynced: boolean = Boolean(syncStatus?.last_synced_at);
-    const syncState: TreeSyncState = syncStatus?.state ?? "NOT_SYNCED";
-    const isSyncing: boolean = syncState === "SYNCING";
+    const syncState: TreeSyncState = syncStatus?.state ?? TreeSyncState.NOT_SYNCED;
+    const isSyncing: boolean = syncState === TreeSyncState.SYNCING;
 
     const { data: access, isLoading: isAccessLoading, mutate: mutateAccess } =
         useOrganizationAccess(isTreeSynced);
 
     // The list has a maximum of one policy.
-    const policy: OrgAccessPolicy = access?.policies?.[0];
-    const storedMode: AccessMode = policy?.child_orgs?.mode ?? "none";
+    const policy: OrganizationAccessPolicyInterface = access?.policies?.[0];
+    const storedMode: PolicyFormMode = toPolicyFormMode(policy?.child_orgs?.mode);
 
-    const [ mode, setMode ] = useState<AccessMode>("none");
-    const [ selected, setSelected ] = useState<Record<string, ChildOrgReach>>({});
+    const [ mode, setMode ] = useState<PolicyFormMode>(PolicyFormMode.NONE);
+    const [ selected, setSelected ] = useState<Record<string, ChildOrganizationReach>>({});
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
     const [ problem, setProblem ] = useState<string>(null);
-    const [ pendingMode, setPendingMode ] = useState<ChildOrgsMode>(null);
+    const [ pendingMode, setPendingMode ] = useState<PolicyFormMode>(null);
     const [ showAllConfirmation, setShowAllConfirmation ] = useState<boolean>(false);
     const [ isSyncStarting, setIsSyncStarting ] = useState<boolean>(false);
 
     // Load the form from the stored policy. "selected" maps each selected organization to its reach.
     useEffect(() => {
         if (isAccessLoading) return;
-        const picked: Record<string, ChildOrgReach> = {};
+        const picked: Record<string, ChildOrganizationReach> = {};
 
-        policy?.child_orgs?.orgs?.forEach((child: ChildOrg) => {
+        policy?.child_orgs?.orgs?.forEach((child: ChildOrganizationInterface) => {
             picked[child.org_id] = child.reach;
         });
         setMode(storedMode);
         setSelected(picked);
     }, [ policy, isAccessLoading ]);
 
-    const payload: SharePolicyRequest = useMemo((): SharePolicyRequest => {
-        if (mode === "all") return { child_orgs: { mode: "all" } };
+    const payload: SharePolicyRequestInterface = useMemo((): SharePolicyRequestInterface => {
+        if (mode === PolicyFormMode.ALL) return { child_orgs: { mode: ChildOrganizationsMode.ALL } };
 
         return {
             child_orgs: {
-                mode: "selected",
-                orgs: Object.entries(selected).map(([ orgId, reach ]: [ string, ChildOrgReach ]) =>
+                mode: ChildOrganizationsMode.SELECTED,
+                orgs: Object.entries(selected).map(([ orgId, reach ]: [ string, ChildOrganizationReach ]) =>
                     ({ org_id: orgId, reach }))
             }
         };
     }, [ mode, selected ]);
 
     // A change between all and selected organizations is a DELETE and a POST.
-    const isModeChange = (next: AccessMode): boolean =>
-        Boolean(policy) && next !== "none" && storedMode !== "none" && next !== storedMode;
+    const isModeChange = (next: PolicyFormMode): boolean =>
+        Boolean(policy) && next !== PolicyFormMode.NONE && storedMode !== PolicyFormMode.NONE && next !== storedMode;
 
-    const handleModeChange = (next: AccessMode): void => {
+    const handleModeChange = (next: PolicyFormMode): void => {
         if (isModeChange(next)) {
-            setPendingMode(next as ChildOrgsMode);
+            setPendingMode(next);
 
             return;
         }
@@ -146,7 +145,7 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
         setIsSaving(true);
 
         try {
-            if (mode === "none") {
+            if (mode === PolicyFormMode.NONE) {
                 await deleteOrganizationAccess(policy.id);
             } else if (!policy) {
                 await createOrganizationAccess(payload);
@@ -163,11 +162,8 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
             }));
             await mutateAccess();
         } catch (error) {
-            const data: { code?: string; description?: string } =
-                (error as AxiosError<{ code?: string; description?: string }>)?.response?.data;
-            const detail: string = data?.description
-                ? `${ data.code ? `[${ data.code }] ` : "" }${ data.description }`
-                : t("customerDataService:organizationAccess.notifications.error.description");
+            const detail: string = getErrorDetail(error,
+                t("customerDataService:organizationAccess.notifications.error.description"));
 
             setProblem(detail);
             dispatch(addAlert({
@@ -182,7 +178,7 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
     };
 
     const handleSave = (): void => {
-        if (mode === "selected" && Object.keys(selected).length === 0) {
+        if (mode === PolicyFormMode.SELECTED && Object.keys(selected).length === 0) {
             dispatch(addAlert({
                 description: t("customerDataService:organizationAccess.notifications.noOrganizationsSelected" +
                     ".description"),
@@ -192,7 +188,7 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
 
             return;
         }
-        if (mode === "all" && storedMode !== "all") {
+        if (mode === PolicyFormMode.ALL && storedMode !== PolicyFormMode.ALL) {
             setShowAllConfirmation(true);
 
             return;
@@ -208,13 +204,9 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
         try {
             await startOrganizationTreeSync();
         } catch (error) {
-            const data: { code?: string; description?: string } =
-                (error as AxiosError<{ code?: string; description?: string }>)?.response?.data;
-
             dispatch(addAlert({
-                description: data?.description
-                    ? `${ data.code ? `[${ data.code }] ` : "" }${ data.description }`
-                    : t("customerDataService:organizationSync.notifications.error.description"),
+                description: getErrorDetail(error,
+                    t("customerDataService:organizationSync.notifications.error.description")),
                 level: AlertLevels.ERROR,
                 message: t("customerDataService:organizationSync.notifications.error.message")
             }));
@@ -242,8 +234,8 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                 <Alert severity="info" data-componentid={ `${ componentId }-not-synced` }>
                     { t("customerDataService:organizationAccess.notSynced") }
                 </Alert>
-                { syncState === "FAILED" && (
-                    <Alert severity="error" className="mt-3" data-componentid={ `${ componentId }-sync-error` }>
+                { syncState === TreeSyncState.FAILED && (
+                    <Alert severity="error" sx={ { mt: 2 } } data-componentid={ `${ componentId }-sync-error` }>
                         { t("customerDataService:organizationSync.failed", {
                             error: syncStatus?.error ?? "-",
                             time: formatTime(syncStatus?.finished_at)
@@ -252,7 +244,7 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                 ) }
                 { canUpdate && (
                     <Button
-                        className="mt-5"
+                        sx={ { mt: 4 } }
                         variant="contained"
                         size="small"
                         disabled={ isSyncStarting || isSyncing }
@@ -283,25 +275,25 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                         <RadioGroup
                             value={ mode }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                handleModeChange(event.target.value as AccessMode) }
+                                handleModeChange(event.target.value as PolicyFormMode) }
                             data-componentid={ `${ componentId }-radio-group` }
                         >
                             <FormControlLabel
-                                value="none"
+                                value={ PolicyFormMode.NONE }
                                 label={ t("customerDataService:organizationAccess.options.none") }
                                 control={ <Radio /> }
                                 disabled={ !canUpdate }
                                 data-componentid={ `${ componentId }-mode-none` }
                             />
                             <FormControlLabel
-                                value="all"
+                                value={ PolicyFormMode.ALL }
                                 label={ t("customerDataService:organizationAccess.options.all") }
                                 control={ <Radio /> }
                                 disabled={ !canUpdate }
                                 data-componentid={ `${ componentId }-mode-all` }
                             />
                             <FormControlLabel
-                                value="selected"
+                                value={ PolicyFormMode.SELECTED }
                                 label={ (
                                     <>
                                         { t("customerDataService:organizationAccess.options.selected") }
@@ -314,8 +306,8 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                                 disabled={ !canUpdate }
                                 data-componentid={ `${ componentId }-mode-selected` }
                             />
-                            { mode === "selected" && (
-                                <Grid xs={ 12 } className="ml-5">
+                            { mode === PolicyFormMode.SELECTED && (
+                                <Grid xs={ 12 } sx={ { ml: 4 } }>
                                     <OrganizationSelection
                                         selected={ selected }
                                         onChange={ setSelected }
@@ -330,7 +322,7 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                     </FormControl>
                 </Grid>
                 { problem && (
-                    <Grid xs={ 12 } className="mt-3">
+                    <Grid xs={ 12 } sx={ { mt: 2 } }>
                         <Alert severity="error" data-componentid={ `${ componentId }-problem` }>
                             { problem }
                         </Alert>
@@ -339,10 +331,10 @@ const OrganizationAccess: FunctionComponent<OrganizationAccessPropsInterface> = 
                 { canUpdate && (
                     <Grid xs={ 8 }>
                         <Button
-                            className="mt-5"
+                            sx={ { mt: 4 } }
                             variant="contained"
                             size="small"
-                            disabled={ isSaving || (mode === "none" && !policy) }
+                            disabled={ isSaving || (mode === PolicyFormMode.NONE && !policy) }
                             onClick={ handleSave }
                             data-componentid={ `${ componentId }-save-button` }
                         >

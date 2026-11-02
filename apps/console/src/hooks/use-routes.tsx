@@ -150,6 +150,11 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
                 additionalRoutes.push(AppConstants.VC_TEMPLATES_ROUTE);
             }
 
+            if (!isFeatureEnabled(featureConfig?.customerDataService, ORGANIZATION_MANAGEMENT_FEATURE_ID)) {
+                // The organization settings of CDS are part of organization management.
+                additionalRoutes.push(AppConstants.CDS_ORGANIZATION_SETTINGS_ROUTE_ID);
+            }
+
             if (isSubOrganization()
                 && !isFeatureEnabled(featureConfig?.customerDataService, ORGANIZATION_MANAGEMENT_FEATURE_ID)) {
                 // A child organization uses CDS only through organization management.
