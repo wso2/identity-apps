@@ -43,7 +43,7 @@ export enum ReasonTone {
  * Where a reason is shown. A pair reason is about the pair as a whole and sits above the
  * comparison; a row reason qualifies the evidence of the rules it names and sits in their rows.
  */
-export enum ReasonScope {
+enum ReasonScope {
     PAIR = "pair",
     ROW = "row"
 }
@@ -148,7 +148,7 @@ export const describeAttribute = (path: string, labels: AttributeLabels = {}): s
 /**
  * The rule that spoke for the match: the highest-priority rule that agreed.
  */
-export const getPrimaryRule = (task: ReviewTaskModel): ReviewRuleOutcome | undefined =>
+const getPrimaryRule = (task: ReviewTaskModel): ReviewRuleOutcome | undefined =>
     task.explanation?.rules?.find((rule: ReviewRuleOutcome) => rule.primary);
 
 /**
@@ -158,7 +158,7 @@ export const getPrimaryRule = (task: ReviewTaskModel): ReviewRuleOutcome | undef
  * A task raised before explanations were recorded has only its breakdown, so its best attribute
  * score stands in.
  */
-export const getSimilarity = (task: ReviewTaskModel): number => {
+const getSimilarity = (task: ReviewTaskModel): number => {
     const primary: ReviewRuleOutcome = getPrimaryRule(task);
 
     if (primary?.score !== undefined) {

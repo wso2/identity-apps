@@ -145,7 +145,7 @@ export interface ReviewReason {
     previous_similarity?: number;
 }
 
-export interface ReviewTaskExplanation {
+interface ReviewTaskExplanation {
     rules: ReviewRuleOutcome[];
     reasons: ReviewReason[];
 }
