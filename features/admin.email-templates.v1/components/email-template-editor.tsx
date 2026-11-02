@@ -108,6 +108,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                         <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
                             <iframe
                                 id="iframe"
+                                title={ t("emailTemplates:editor.tabs.preview.tabName") }
                                 ref={ (ref) => {
                                     iframe.current = ref;
                                     iframe.current && writeToIframe();
@@ -137,6 +138,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                         >
                                             <iframe
                                                 id="iframe"
+                                                title={ t("emailTemplates:editor.tabs.preview.tabName") }
                                                 ref={ (ref) => {
                                                     iframe.current = ref;
                                                     iframe.current && writeToIframe();
