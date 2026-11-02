@@ -27,6 +27,7 @@ import {
     DevicePolicyListItemInterface,
     DevicePolicyListResponseInterface
 } from "@wso2is/admin.device-policies.v1/models/device-policy";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
@@ -68,12 +69,16 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
         (state: AppState) => state.config.ui.features?.devicePolicies
     );
     const hasReadPermission: boolean = useRequiredScopes(devicePoliciesFeatureConfig?.scopes?.read);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    // Device policies can't be managed in sub-organizations; they are inherited from the parent organization.
+    const isPolicySelectionDisabled: boolean = isSubOrganization();
 
     const [ searchQuery, setSearchQuery ] = useState<string | undefined>(undefined);
 
     const { data: policyList, isLoading: isPolicyListLoading } = useGetDevicePolicies<
         DevicePolicyListResponseInterface
-    >(POLICY_LIST_LIMIT, 0, searchQuery, hasReadPermission);
+    >(POLICY_LIST_LIMIT, 0, searchQuery, hasReadPermission && !isPolicySelectionDisabled);
 
     const selectedPolicyName: string | null =
         resource?.data?.action?.executor?.meta?.[ POLICY_NAME_META_KEY ] || null;
@@ -101,37 +106,48 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
             <Typography variant="body2">
                 { t("devices:registrationStep.properties.description") }
             </Typography>
-            <Autocomplete
-                key={ resource?.id }
-                options={ policyNames }
-                value={ selectedPolicyName }
-                loading={ isPolicyListLoading }
-                filterOptions={ (options: string[]) => options }
-                noOptionsText={ t("devices:registrationStep.properties.noPolicies") }
-                onInputChange={ (_event: SyntheticEvent, query: string, reason: string): void => {
-                    if (reason === "input") {
-                        handleSearch(query);
-                    }
-                } }
-                onChange={ (_event: SyntheticEvent, policyName: string | null): void => {
-                    onChange(
-                        `action.executor.meta.${ POLICY_NAME_META_KEY }`,
-                        policyName ?? "",
-                        resource
-                    );
-                } }
-                renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField
-                        { ...params }
-                        label={ t("devices:registrationStep.properties.policy.label") }
-                        placeholder={ t("devices:registrationStep.properties.policy.placeholder") }
-                        helperText={ hasReadPermission
-                            ? t("devices:registrationStep.properties.policy.hint")
-                            : t("devices:registrationStep.properties.policy.noPermission") }
-                    />
-                ) }
-                data-componentid={ `${ componentId }-policy` }
-            />
+            { isPolicySelectionDisabled ? (
+                <TextField
+                    fullWidth
+                    disabled
+                    value={ selectedPolicyName ?? "" }
+                    label={ t("devices:registrationStep.properties.policy.label") }
+                    helperText={ t("devices:registrationStep.properties.policy.subOrganization") }
+                    data-componentid={ `${ componentId }-policy` }
+                />
+            ) : (
+                <Autocomplete
+                    key={ resource?.id }
+                    options={ policyNames }
+                    value={ selectedPolicyName }
+                    loading={ isPolicyListLoading }
+                    filterOptions={ (options: string[]) => options }
+                    noOptionsText={ t("devices:registrationStep.properties.noPolicies") }
+                    onInputChange={ (_event: SyntheticEvent, query: string, reason: string): void => {
+                        if (reason === "input") {
+                            handleSearch(query);
+                        }
+                    } }
+                    onChange={ (_event: SyntheticEvent, policyName: string | null): void => {
+                        onChange(
+                            `action.executor.meta.${ POLICY_NAME_META_KEY }`,
+                            policyName ?? "",
+                            resource
+                        );
+                    } }
+                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                        <TextField
+                            { ...params }
+                            label={ t("devices:registrationStep.properties.policy.label") }
+                            placeholder={ t("devices:registrationStep.properties.policy.placeholder") }
+                            helperText={ hasReadPermission
+                                ? t("devices:registrationStep.properties.policy.hint")
+                                : t("devices:registrationStep.properties.policy.noPermission") }
+                        />
+                    ) }
+                    data-componentid={ `${ componentId }-policy` }
+                />
+            ) }
         </Stack>
     );
 };

@@ -186,7 +186,8 @@ export const devices: DevicesNS = {
                 hint: "Leave empty to register any device.",
                 label: "Device policy",
                 noPermission: "You do not have permission to view device policies.",
-                placeholder: "Select a device policy"
+                placeholder: "Select a device policy",
+                subOrganization: "Device policies are managed by the parent organization and can't be changed here."
             }
         },
         validation: {
