@@ -373,6 +373,16 @@
                 totpInput.addEventListener('paste', handlePaste);
                 totpInput.addEventListener('input', handleInput);
                 updateTotpCursor(totpInput.value);
+
+                // Clear browser-restored OTP values that did not trigger an input event.
+                var totpEdited = false;
+                totpInput.addEventListener('input', function () { totpEdited = true; });
+                window.addEventListener('pageshow', function () {
+                    if (!totpEdited && totpInput.value) {
+                        totpInput.value = '';
+                        handleInput();
+                    }
+                });
             }
 
             submitBtn.disabled = true;

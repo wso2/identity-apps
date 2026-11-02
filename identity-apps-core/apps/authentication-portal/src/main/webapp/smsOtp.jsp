@@ -450,6 +450,16 @@
                 OTPInput.addEventListener('paste', handlePaste);
                 OTPInput.addEventListener('input', handleInput);
                 updateCursor(OTPInput.value);
+
+                // Clear browser-restored OTP values that did not trigger an input event.
+                var otpEdited = false;
+                OTPInput.addEventListener('input', function () { otpEdited = true; });
+                window.addEventListener('pageshow', function () {
+                    if (!otpEdited && OTPInput.value) {
+                        OTPInput.value = '';
+                        handleInput();
+                    }
+                });
                 <% if (reCaptchaEnabled) { %>
                 // The reCaptcha widget bound to the button enables it on render; keep it disabled until the code is complete.
                 var keepDisabledUntilComplete = function () {

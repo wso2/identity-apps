@@ -313,6 +313,16 @@
                 backupInput.addEventListener('paste', handlePaste);
                 backupInput.addEventListener('input', handleInput);
                 updateBackupCursor(backupInput.value);
+
+                // Clear browser-restored OTP values that did not trigger an input event.
+                var backupEdited = false;
+                backupInput.addEventListener('input', function () { backupEdited = true; });
+                window.addEventListener('pageshow', function () {
+                    if (!backupEdited && backupInput.value) {
+                        backupInput.value = '';
+                        handleInput();
+                    }
+                });
             }
 
             submitBtn.disabled = true;

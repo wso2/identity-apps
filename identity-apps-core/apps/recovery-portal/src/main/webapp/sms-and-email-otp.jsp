@@ -213,7 +213,7 @@
                                             maxlength="<%=otpLength%>"
                                             autocomplete="one-time-code"
                                             autocorrect="off"
-                                            autocapitalize="characters"
+                                            autocapitalize="off"
                                             spellcheck="false"
                                             autofocus
                                             data-testid="recovery-otp-page-segmented-otp-input"
@@ -235,6 +235,7 @@
                                             size='30'
                                             autocomplete="one-time-code"
                                             autocorrect="off"
+                                            autocapitalize="off"
                                             spellcheck="false"
                                             data-testid="recovery-otp-page-non-segmented-otp-input"
                                         />
@@ -437,6 +438,16 @@
                 OTPInput.addEventListener('paste', handlePaste);
                 OTPInput.addEventListener('input', handleInput);
                 updateCursor(OTPInput.value);
+
+                // Clear browser-restored OTP values that did not trigger an input event.
+                var otpEdited = false;
+                OTPInput.addEventListener('input', function () { otpEdited = true; });
+                window.addEventListener('pageshow', function () {
+                    if (!otpEdited && OTPInput.value) {
+                        OTPInput.value = '';
+                        handleInput();
+                    }
+                });
             })();
 
             function sub() {
