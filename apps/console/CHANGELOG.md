@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.28.2
+
+### Patch Changes
+
+- [#10847](https://github.com/wso2/identity-apps/pull/10847) [`93dafe4f1716754ec49cdfe028574520d41f4931`](https://github.com/wso2/identity-apps/commit/93dafe4f1716754ec49cdfe028574520d41f4931) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Scope the webhook channel accordion component ids per channel, so each event row's subscription policy controls can be addressed individually.
+
+- Updated dependencies [[`93dafe4f1716754ec49cdfe028574520d41f4931`](https://github.com/wso2/identity-apps/commit/93dafe4f1716754ec49cdfe028574520d41f4931)]:
+  - @wso2is/admin.webhooks.v1@1.2.1
+
 ## 4.28.1
 
 ### Patch Changes
