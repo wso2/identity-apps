@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.28.3
+
+### Patch Changes
+
+- [#10813](https://github.com/wso2/identity-apps/pull/10813) [`e49fb0139b22e75eb25bef49749386597ec719e3`](https://github.com/wso2/identity-apps/commit/e49fb0139b22e75eb25bef49749386597ec719e3) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - fix: Show billing portal and upgrade links for users with more than 15 tenants
+
+- Updated dependencies [[`e49fb0139b22e75eb25bef49749386597ec719e3`](https://github.com/wso2/identity-apps/commit/e49fb0139b22e75eb25bef49749386597ec719e3)]:
+  - @wso2is/admin.analytics.v1@0.0.17
+  - @wso2is/admin.core.v1@2.63.3
+  - @wso2is/admin.feature-gate.v1@1.12.1
+  - @wso2is/admin.subscription.v1@1.5.232
+  - @wso2is/admin.tenants.v1@2.29.34
+  - @wso2is/admin.onboarding.v1@1.0.98
+
 ## 4.28.2
 
 ### Patch Changes
