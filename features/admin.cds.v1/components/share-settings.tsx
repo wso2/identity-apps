@@ -76,13 +76,13 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const resourceLabel: string = t(`customerDataService:sharing.resource.${ resource.type }`);
-    const hasShareScope: boolean = useRequiredScopes([
+    const hasShareUpdateScope: boolean = useRequiredScopes([
         resource.type === ShareableResourceType.RULE
-            ? OrganizationManagementScopes.UNIFICATION_RULE_SHARE
-            : OrganizationManagementScopes.PROFILE_SCHEMA_SHARE
+            ? OrganizationManagementScopes.UNIFICATION_RULE_SHARE_UPDATE
+            : OrganizationManagementScopes.PROFILE_SCHEMA_SHARE_UPDATE
     ]);
-    // Without the share scope, the form shows the policy and cannot change it.
-    const isReadOnly: boolean = !hasShareScope;
+    // Without the share update scope, the form shows the policy and cannot change it.
+    const isReadOnly: boolean = !hasShareUpdateScope;
 
     const {
         data: policies,

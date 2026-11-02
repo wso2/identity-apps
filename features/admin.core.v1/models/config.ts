@@ -363,6 +363,10 @@ export interface FeatureConfigInterface {
      */
     customerDataService?: FeatureAccessConfigInterface;
     /**
+     * Organization settings of the Customer Data Service.
+     */
+    customerDataOrganizationSettings?: FeatureAccessConfigInterface;
+    /**
      * Presentation definitions (VP template) management feature.
      */
     presentationDefinitions?: FeatureAccessConfigInterface;

@@ -61,6 +61,12 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
 
     const hasCDSUpdateScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
 
+    const organizationSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.customerDataOrganizationSettings
+    );
+
+    const hasOrganizationViewScope: boolean = useRequiredScopes(organizationSettingsFeatureConfig?.scopes?.read);
+
     const {
         data: cdsConfig,
         mutate: mutateCDSConfig
@@ -120,7 +126,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
             ) }
             <Divider hidden />
             { /* Organization management: a child organization has nothing to change in the organization settings. */ }
-            { !isSubOrganization && isOrganizationManagementEnabled && (
+            { !isSubOrganization && isOrganizationManagementEnabled && hasOrganizationViewScope && (
                 <ConfigurationCard
                     title={ t("customerDataService:landing.configuration.organizationSettings.title") }
                     description={ t("customerDataService:landing.configuration.organizationSettings.description") }

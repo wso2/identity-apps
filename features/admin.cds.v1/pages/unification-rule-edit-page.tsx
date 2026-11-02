@@ -20,6 +20,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -51,6 +52,7 @@ import { Dispatch } from "redux";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import ShareSettings from "../components/share-settings";
 import SharedChip from "../components/shared-chip";
+import { OrganizationManagementScopes } from "../constants/organization-management-constants";
 import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useUnificationRule } from "../hooks/use-unification-rules";
@@ -94,7 +96,9 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
     const isReadOnly: boolean = isShared || isSubOrganization;
     // Organization management: the owner organization shares the rule with its child organizations.
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
-    const canShare: boolean = Boolean(rule) && !isShared && !isSubOrganization && isOrganizationManagementEnabled;
+    const hasShareViewScope: boolean = useRequiredScopes([ OrganizationManagementScopes.UNIFICATION_RULE_SHARE_VIEW ]);
+    const canShare: boolean = Boolean(rule) && !isShared && !isSubOrganization && isOrganizationManagementEnabled
+        && hasShareViewScope;
 
     useEffect((): void => {
         if (!error) return;

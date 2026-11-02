@@ -17,18 +17,18 @@
  */
 
 /**
- * Scopes of the organization management endpoints of CDS.
+ * Scopes of the sharing endpoints of CDS.
  */
 export const OrganizationManagementScopes: {
-    ORGANIZATION_UPDATE: string;
-    ORGANIZATION_VIEW: string;
-    PROFILE_SCHEMA_SHARE: string;
-    UNIFICATION_RULE_SHARE: string;
+    PROFILE_SCHEMA_SHARE_UPDATE: string;
+    PROFILE_SCHEMA_SHARE_VIEW: string;
+    UNIFICATION_RULE_SHARE_UPDATE: string;
+    UNIFICATION_RULE_SHARE_VIEW: string;
 } = {
-    ORGANIZATION_UPDATE: "internal_cds_organization_update",
-    ORGANIZATION_VIEW: "internal_cds_organization_view",
-    PROFILE_SCHEMA_SHARE: "internal_cds_profile_schema_share",
-    UNIFICATION_RULE_SHARE: "internal_cds_unification_rule_share"
+    PROFILE_SCHEMA_SHARE_UPDATE: "internal_cds_profile_schema_share_update",
+    PROFILE_SCHEMA_SHARE_VIEW: "internal_cds_profile_schema_share_view",
+    UNIFICATION_RULE_SHARE_UPDATE: "internal_cds_unification_rule_share_update",
+    UNIFICATION_RULE_SHARE_VIEW: "internal_cds_unification_rule_share_view"
 };
 
 /**

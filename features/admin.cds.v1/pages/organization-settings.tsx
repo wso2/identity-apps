@@ -27,7 +27,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import OrganizationAccess from "../components/organization-access";
-import { OrganizationManagementScopes } from "../constants/organization-management-constants";
 import useCDSConfig from "../hooks/use-config";
 import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
@@ -48,7 +47,11 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
         (state: AppState) => state?.config?.ui?.features?.customerDataService
     );
 
-    const hasOrganizationUpdateScope: boolean = useRequiredScopes([ OrganizationManagementScopes.ORGANIZATION_UPDATE ]);
+    const organizationSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.customerDataOrganizationSettings
+    );
+
+    const hasOrganizationUpdateScope: boolean = useRequiredScopes(organizationSettingsFeatureConfig?.scopes?.update);
 
     const { data: cdsConfig, isLoading: isConfigLoading } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 

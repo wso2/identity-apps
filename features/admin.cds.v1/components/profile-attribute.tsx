@@ -20,6 +20,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels,
@@ -48,6 +49,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid, Icon, Image, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteSchemaAttributeById, updateSchemaAttributeById } from "../api/profile-attributes";
+import { OrganizationManagementScopes } from "../constants/organization-management-constants";
 import { useCDSApplications } from "../hooks/use-cds-applications";
 import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
@@ -188,6 +190,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const isInherited: boolean = attribute?.origin === ResourceOrigin.INHERITED;
     const isSubOrganization: boolean = useIsSubOrganization();
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
+    const hasShareViewScope: boolean = useRequiredScopes([ OrganizationManagementScopes.PROFILE_SCHEMA_SHARE_VIEW ]);
     // Organization management: a child organization only reads the schema. The root organization changes and
     // shares it.
     const isReadOnly: boolean = isShared || isSubOrganization;
@@ -857,7 +860,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                 render: renderGeneralTab
             },
             // Organization management: the owner organization shares the attribute with its child organizations.
-            ...(isOrganizationManagementEnabled && canShareScope && attribute && !isReadOnly
+            ...(isOrganizationManagementEnabled && hasShareViewScope && canShareScope && attribute && !isReadOnly
                 ? [ {
                     componentId: "sharing",
                     menuItem: t("customerDataService:sharing.tab"),
@@ -879,6 +882,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             isShareable,
             isSubOrganization,
             isOrganizationManagementEnabled,
+            hasShareViewScope,
             t
         ]
     );
