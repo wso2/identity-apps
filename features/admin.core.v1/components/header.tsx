@@ -40,7 +40,7 @@ import {
     StackOverflowIcon,
     TalkingHeadsetIcon
 } from "@oxygen-ui/react-icons";
-import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -59,7 +59,7 @@ import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import dayjs from "dayjs";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
@@ -72,11 +72,11 @@ import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/
 import { AppConstants } from "../constants/app-constants";
 import { OrganizationType } from "../constants/organization-constants";
 import { history } from "../helpers/history";
+import useBillingURLs, { BillingURLsInterface } from "../hooks/use-billing-urls";
 import useGlobalVariables from "../hooks/use-global-variables";
 import { usePreviewFeatures } from "../hooks/use-preview-features";
 import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState, store } from "../store";
-import { CommonUtils } from "../utils/common-utils";
 import { EventPublisher } from "../utils/event-publisher";
 import "./header.scss";
 
@@ -145,7 +145,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         (state: AppState) => state.config.deployment.accountApp.centralAppPath
     );
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
-    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
     const privilegedUserAccountURL: string = useSelector(
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
@@ -176,7 +175,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         gettingStartedFeatureConfig?.scopes?.feature
     );
 
-    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: UseSubscriptionInterface = useSubscription();
     const { tenantHasTrial } = useTrialDetails();
 
@@ -196,8 +194,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         setAnchorHelpMenu(null);
     };
 
-    const [ billingPortalURL, setBillingPortalURL ] = useState<string>(undefined);
-    const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
+    const { billingPortalURL, upgradeButtonURL }: BillingURLsInterface = useBillingURLs();
     const [ openLanguageSwitcher, setOpenLanguageSwitcher ] = useState<boolean>(
         false
     );
@@ -234,19 +231,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         data: myAccountApplicationData,
         isLoading: isMyAccountAppDataLoading
     } = useMyAccountApplicationData(null, showAppSwitchButton);
-
-    useEffect(() => {
-        if (saasFeatureStatus === FeatureStatus.DISABLED) {
-            return;
-        }
-
-        CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({ billingPortalURL, upgradeButtonURL }: { billingPortalURL: string; upgradeButtonURL: string }) => {
-                setBillingPortalURL(billingPortalURL);
-                setUpgradeButtonURL(upgradeButtonURL);
-            }
-        );
-    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Show the organization switching dropdown only if
