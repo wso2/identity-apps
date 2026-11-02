@@ -438,12 +438,12 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
     "data-componentid": componentId = "flow-context-tree"
 }: FlowContextTreePropsInterface): ReactElement => {
 
-    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features?.flows
+    const flowExtensionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flowExtensions
     );
-    const isOrganizationOnboardingEnabled: boolean = isFeatureEnabled(
-        flowsFeatureConfig,
-        "flows.registration.organizationOnboarding"
+    const isOrganizationAttributesEnabled: boolean = isFeatureEnabled(
+        flowExtensionsFeatureConfig,
+        "flowExtensions.organizationAttributes"
     );
 
     const [ allClaims, setAllClaims ] = useState<Claim[]>([]);
@@ -486,7 +486,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
 
     // Hide only the new attributes section; retain the full tree for access config serialization.
     const visibleTree: TreeNodeStateInterface[] = useMemo(() => tree.map(
-        (node: TreeNodeStateInterface) => !isOrganizationOnboardingEnabled &&
+        (node: TreeNodeStateInterface) => !isOrganizationAttributesEnabled &&
             node.path.replace(/\/+$/, "") ===
                 OrganizationContextConstants.ORGANIZATION_PATH_PREFIX.replace(/\/+$/, "")
             ? {
@@ -496,7 +496,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
                 )
             }
             : node
-    ), [ tree, isOrganizationOnboardingEnabled ]);
+    ), [ tree, isOrganizationAttributesEnabled ]);
 
     const [ claimModal, setClaimModal ] = useState<AddEntryModalStateInterface>({
         open: false,
@@ -783,7 +783,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
                 </Box>
             </Box>
 
-            { isOrganizationOnboardingEnabled && (<AddOrganizationAttributeModal
+            { isOrganizationAttributesEnabled && (<AddOrganizationAttributeModal
                 open={ orgAttributeModal.open }
                 attributeOptions={ organizationAttributeOptions }
                 existingKeys={
