@@ -1,5 +1,12 @@
 # @wso2is/admin.flow-extensions.v1
 
+## 0.2.1
+
+### Patch Changes
+
+- [#10851](https://github.com/wso2/identity-apps/pull/10851) [`65a62570023028d921f32239db335d83e720d74a`](https://github.com/wso2/identity-apps/commit/65a62570023028d921f32239db335d83e720d74a) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Hide custom organization attribute selection in Flow Extensions behind a feature flag and disable it
+  in the default Console deployment configuration.
+
 ## 0.2.0
 
 ### Minor Changes
