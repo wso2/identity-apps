@@ -488,7 +488,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.verifiable-credentials.v1
       '@wso2is/admin.webhooks.v1':
-        specifier: ^1.2.0
+        specifier: ^1.2.1
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-requests.v1':
         specifier: workspace:^
