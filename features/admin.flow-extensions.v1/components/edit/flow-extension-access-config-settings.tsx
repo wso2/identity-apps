@@ -19,15 +19,18 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowExtension from "../../api/update-flow-extension";
 import useFlowExtensionContextTree from "../../api/use-flow-extension-context-tree";
@@ -90,6 +93,13 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const flowExtensionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flowExtensions
+    );
+    const isOrganizationAttributesEnabled: boolean = isFeatureEnabled(
+        flowExtensionsFeatureConfig,
+        "flowExtensions.organizationAttributes"
+    );
 
     // Connection-level access config editor — not bound to a specific flow, so the hook is called
     // with no flowType and the server returns the default (whitelist-filtered) tree.
@@ -104,7 +114,10 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
     const {
         data: publishedFlow,
         isLoading: isPublishedFlowLoading
-    } = useGetPublishedFlow<PublishedFlowInterface>(OrganizationContextConstants.SOURCE_FLOW_TYPE);
+    } = useGetPublishedFlow<PublishedFlowInterface>(
+        OrganizationContextConstants.SOURCE_FLOW_TYPE,
+        isOrganizationAttributesEnabled
+    );
 
     const [ accessConfig, setAccessConfig ] = useState<ClaimAccessConfigInterface>({ expose: [], modify: [] });
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
