@@ -34,7 +34,9 @@ import {
     CopyInputField,
     DocumentationLink,
     EmphasizedSegment,
+    Heading,
     PageLayout,
+    PrimaryButton,
     useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -42,8 +44,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getOIDCApplicationConfigurations } from "../api/application";
-import { updateDCRConfigurations } from "../api/applications-settings";
+import { updateDCRConfigurations, updateOAuth2InboundConfig } from "../api/applications-settings";
 import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";
+import useGetOAuth2InboundConfig from "../api/use-get-oauth2-inbound-config";
 import { OIDCApplicationConfigurationInterface } from "../models/application";
 import {
     ApplicationsSettingsFormErrorValidationsInterface,
@@ -53,6 +56,7 @@ import {
 } from "../models/applications-settings";
 
 const FORM_ID: string = "applications-settings";
+const CIMD_FORM_ID: string = "applications-settings-cimd";
 
 /**
  * Form to edit applications settings.
@@ -87,6 +91,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
     const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
+    const [ isClientIdMetadataDocumentEnabled, setClientIdMetadataDocumentEnabled ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const hasDynamicClientRegistrationUpdatePermission: boolean = useRequiredScopes(
@@ -98,8 +103,15 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
     const {
         data: dcrConfigs,
         error: getDCRConfigsRequestError,
-        isLoading: isGetDCRConfigsRequestLoading
+        isLoading: isGetDCRConfigsRequestLoading,
+        mutate: mutateDCRConfigs
     } = useGetDCRConfigurations();
+
+    const {
+        data: oauth2InboundConfig,
+        isLoading: isOAuth2InboundConfigRequestLoading,
+        mutate: mutateOAuth2InboundConfig
+    } = useGetOAuth2InboundConfig();
 
     /**
      * Set initial values for the form.
@@ -112,6 +124,12 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             setSsaJwks(dcrConfigs?.ssaJwks);
         }
     }, [ dcrConfigs ]);
+
+    useEffect(() => {
+        if (oauth2InboundConfig) {
+            setClientIdMetadataDocumentEnabled(oauth2InboundConfig.enableClientIdMetadataDocument === true);
+        }
+    }, [ oauth2InboundConfig ]);
 
     /**
      * Handles the DCR Configurations GET request error.
@@ -259,7 +277,26 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             );
         }
 
-        updateDCRConfigurations(updateData)
+        const isDCRConfigChanged: boolean = values.authenticationRequired !== dcrConfigs?.authenticationRequired
+            || values.mandateSSA !== dcrConfigs?.mandateSSA
+            || (!isFapiFeatureEnabled && values.enableFapiEnforcement !== dcrConfigs?.enableFapiEnforcement)
+            || (values.ssaJwks ?? "") !== (dcrConfigs?.ssaJwks ?? "");
+        const updateRequests: Promise<unknown>[] = [];
+
+        if (isDCRConfigChanged) {
+            updateRequests.push(updateDCRConfigurations(updateData).then(() => mutateDCRConfigs()));
+        }
+
+        if (oauth2InboundConfig && isClientIdMetadataDocumentEnabled
+            !== (oauth2InboundConfig.enableClientIdMetadataDocument === true)) {
+            updateRequests.push(
+                updateOAuth2InboundConfig({
+                    enableClientIdMetadataDocument: isClientIdMetadataDocumentEnabled
+                }).then(() => mutateOAuth2InboundConfig())
+            );
+        }
+
+        Promise.all(updateRequests)
             .then(() => {
                 handleUpdateSuccess();
             })
@@ -298,7 +335,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
-    if (isGetDCRConfigsRequestLoading) {
+    if (isGetDCRConfigsRequestLoading || isOAuth2InboundConfigRequestLoading) {
         return (
             <EmphasizedSegment padded="very">
                 <ContentLoader inline="centered" active />
@@ -309,16 +346,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
     return (
         <PageLayout
             title={ t("console:develop.pages.applicationsSettings.title") }
-            description={ (
-                <>
-                    { t("console:develop.pages.applicationsSettings.subTitle") }
-                    <DocumentationLink
-                        link={ getLink("develop.applications.applicationsSettings.dcr.learnMore") }
-                    >
-                        { t("console:develop.pages.applicationsSettings.learnMore") }
-                    </DocumentationLink>
-                </>
-            ) }
+            description={ t("console:develop.pages.applicationsSettings.subTitle") }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -329,8 +357,13 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             pageHeaderMaxWidth={ true }
             data-componentid={ `${componentId}-page-layout` }
         >
-            <EmphasizedSegment padded="very">
-
+            <EmphasizedSegment padded="very" data-componentid={ `${componentId}-dcr-section` }>
+                <Heading as="h4">
+                    { t("applications:forms.applicationsSettings.sections.dcr.heading") }
+                </Heading>
+                <Heading as="h6" subHeading>
+                    { t("applications:forms.applicationsSettings.sections.dcr.description") }
+                </Heading>
                 <Form
                     id={ FORM_ID }
                     uncontrolledForm={ false }
@@ -347,7 +380,6 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                     validate={ validateForm }
                     data-componentid={ `${componentId}-form` }
                 >
-
                     <Field.Input
                         ariaLabel="DCR Endpoint"
                         inputType="text"
@@ -431,19 +463,51 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                             data-componentid={ `${componentId}-enableFapiEnforcement-checkbox` }
                         />
                     ) }
-                    <Field.Button
-                        form={ FORM_ID }
-                        size="small"
-                        buttonType="primary_btn"
-                        ariaLabel="DCR Configuration update button"
-                        name="update-button"
-                        disabled={ isSubmitting || !hasDynamicClientRegistrationUpdatePermission }
-                        loading={ isSubmitting }
-                        label={ t("common:update") }
-                        data-componentid={ `${componentId}-submit-button` }
-                    />
                 </Form>
             </EmphasizedSegment>
+            { oauth2InboundConfig && (
+                <EmphasizedSegment padded="very" data-componentid={ `${componentId}-cimd-section` }>
+                    <Heading as="h4">
+                        { t("applications:forms.applicationsSettings.sections.cimd.heading") }
+                    </Heading>
+                    <Heading as="h6" subHeading>
+                        { t("applications:forms.applicationsSettings.sections.cimd.description") }
+                    </Heading>
+                    <Form
+                        id={ CIMD_FORM_ID }
+                        uncontrolledForm={ false }
+                        onSubmit={ () => undefined }
+                        initialValues={ {
+                            enableClientIdMetadataDocument: isClientIdMetadataDocumentEnabled
+                        } }
+                        data-componentid={ `${componentId}-cimd-form` }
+                    >
+                        <Field.Checkbox
+                            ariaLabel="Enable Client ID Metadata Documents"
+                            name="enableClientIdMetadataDocument"
+                            label={ t("applications:forms.applicationsSettings.fields" +
+                                ".enableClientIdMetadataDocument.label") }
+                            hint={ t("applications:forms.applicationsSettings.fields" +
+                                ".enableClientIdMetadataDocument.hint") }
+                            width={ 16 }
+                            listen={ (value: boolean) => setClientIdMetadataDocumentEnabled(value) }
+                            readOnly={ !hasDynamicClientRegistrationUpdatePermission }
+                            data-componentid={ `${componentId}-enableClientIdMetadataDocument-checkbox` }
+                        />
+                    </Form>
+                </EmphasizedSegment>
+            ) }
+            <PrimaryButton
+                type="submit"
+                form={ FORM_ID }
+                size="small"
+                ariaLabel="Application settings update button"
+                disabled={ isSubmitting || !hasDynamicClientRegistrationUpdatePermission }
+                loading={ isSubmitting }
+                data-componentid={ `${componentId}-submit-button` }
+            >
+                { t("common:update") }
+            </PrimaryButton>
         </PageLayout>
     );
 };

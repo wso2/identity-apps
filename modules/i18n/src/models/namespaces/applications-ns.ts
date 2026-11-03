@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1445,6 +1445,16 @@ export interface ApplicationsNS {
         };
         applicationsSettings: {
             title: string;
+            sections: {
+                cimd: {
+                    description: string;
+                    heading: string;
+                };
+                dcr: {
+                    description: string;
+                    heading: string;
+                };
+            };
             fields :{
                 dcrEndpoint: {
                     label: string,
@@ -1467,6 +1477,10 @@ export interface ApplicationsNS {
                     hint: string
                 };
                 enforceFapi: {
+                    label: string,
+                    hint: string
+                };
+                enableClientIdMetadataDocument: {
                     label: string,
                     hint: string
                 };
