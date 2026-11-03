@@ -35,7 +35,6 @@ import { Dispatch } from "redux";
 import {
     createSharePolicy,
     deleteSharePolicy,
-    listSharePolicies,
     updateSharePolicy
 } from "../api/organization-management";
 import { OrganizationManagementScopes } from "../constants/organization-management-constants";
@@ -159,7 +158,7 @@ const ShareSettings: FunctionComponent<ShareSettingsPropsInterface> = ({
             if ((error as AxiosError<{ code?: string }>)?.response?.data?.code !== POLICY_EXISTS_CODE) {
                 throw error;
             }
-            const existing: string = (await listSharePolicies(resource))?.policies?.[0]?.id;
+            const existing: string = (await mutatePolicies())?.data?.policies?.[0]?.id;
 
             if (!existing) throw error;
             await updateSharePolicy(resource, existing, payload);

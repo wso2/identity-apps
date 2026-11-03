@@ -25,7 +25,6 @@ import { JSON_HEADERS } from "../constants/organization-management-constants";
 import {
     OrganizationAccessPolicyInterface,
     SharePolicyInterface,
-    SharePolicyListInterface,
     SharePolicyRequestInterface,
     ShareableResource,
     ShareableResourceType,
@@ -81,24 +80,6 @@ export const createSharePolicy = (resource: ShareableResource,
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => response.data as SharePolicyInterface);
-};
-
-/**
- * GET .../sharing-policies
- * Lists the share policies of the organization for the resource. The list has a maximum of one policy.
- *
- * @param resource - The resource.
- * @returns The policies.
- */
-export const listSharePolicies = (resource: ShareableResource): Promise<SharePolicyListInterface> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: JSON_HEADERS,
-        method: HttpMethods.GET,
-        url: getSharingPoliciesEndpoint(resource)
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => response.data as SharePolicyListInterface);
 };
 
 /**
