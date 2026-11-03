@@ -27,7 +27,7 @@ const USERSTORE: string = "PRIMARY";
 const GROUP_NAME: string = "Internal/engineering";
 
 const createUser = (id: string, isGroupMember: boolean): UserBasicInterface => ({
-    groups: isGroupMember ? [ { display: GROUP_NAME, value: "group-id" } ] : [],
+    groups: isGroupMember ? [ { $ref: "group-ref", display: GROUP_NAME, value: "group-id" } ] : [],
     id,
     userName: id
 });
