@@ -151,23 +151,22 @@ export function AgentSecretShowModal({
                         </Message>
                         { !isForSecretRegeneration && (
                             <>
-                                <label>Agent ID</label>
                                 <div style={ { marginTop: "1%" } }>
                                     <CopyInputField
                                         className="agent-id-input"
                                         value={ agentId }
+                                        label="Agent ID"
                                         data-componentid="agent-id-readonly-input"
                                     />
                                 </div>
                             </>
                         ) }
-                        <div style={ { marginTop: "2%" } }></div>
-                        <label>Agent Secret</label>
-                        <div style={ { marginTop: "1%" } }>
+                        <div style={ { marginTop: "2%" } }>
                             <CopyInputField
                                 className="agent-secret-input"
                                 secret
                                 value={ agentSecret || newAgentSecret }
+                                label="Agent Secret"
                                 hideSecretLabel="Hide secret"
                                 showSecretLabel="Show secret"
                                 data-componentid={ "agent-secret-readonly-input" }
