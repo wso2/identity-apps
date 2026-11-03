@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
+import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -102,7 +103,9 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             try {
                 while (availableUsers.length < pageSize) {
-                    const response = await getUsersList(pageSize, startIndex, filter, null, userstore, null);
+                    const response: UserListInterface = await getUsersList(
+                        pageSize, startIndex, filter, null, userstore, null
+                    );
 
                     if (isRequestCancelled) {
                         return;
@@ -144,7 +147,9 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
             } catch {
                 if (!isRequestCancelled) {
                     dispatch(addAlert({
-                        description: t("console:manage.features.users.notifications.fetchUsers.genericError.description"),
+                        description: t(
+                            "console:manage.features.users.notifications.fetchUsers.genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.users.notifications.fetchUsers.error.message")
                     }));
