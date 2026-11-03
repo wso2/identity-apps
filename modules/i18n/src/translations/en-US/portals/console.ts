@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -2738,8 +2738,8 @@ export const console: ConsoleNS = {
             },
             applicationsSettings: {
                 backButton: "Go back to Applications",
-                subTitle: "Dynamic Client Registration (DCR) can be used to create applications using DCR API.",
-                title: "Dynamic Client Registration",
+                subTitle: "Configure how applications can register with this organization.",
+                title: "Application Settings",
                 learnMore: "Learn More",
                 notifications: {
                     error: {
@@ -2747,11 +2747,11 @@ export const console: ConsoleNS = {
                         message: "Update error"
                     },
                     genericError: {
-                        description: "Failed to update DCR configurations.",
+                        description: "Failed to update the application settings.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully updated DCR configurations.",
+                        description: "Successfully updated the application settings.",
                         message: "Update successful"
                     }
                 }

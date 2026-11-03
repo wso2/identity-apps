@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1701,6 +1701,16 @@ export const applications: ApplicationsNS = {
 
         applicationsSettings: {
             title: "Application Settings",
+            sections: {
+                cimd: {
+                    description: "Clients identify themselves with an HTTPS URL that serves their metadata.",
+                    heading: "Client ID Metadata Documents"
+                },
+                dcr: {
+                    description: "Applications register themselves through the DCR API.",
+                    heading: "Dynamic Client Registration"
+                }
+            },
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
@@ -1725,6 +1735,10 @@ export const applications: ApplicationsNS = {
                 enforceFapi: {
                     label: "Enforce FAPI Conformance",
                     hint: "When checked, an application which is created through DCR endpoint will be a FAPI compliant application."
+                },
+                enableClientIdMetadataDocument: {
+                    label: "Enable",
+                    hint: "Select to register these clients from their metadata documents in the MCP Client template."
                 }
             }
         },
