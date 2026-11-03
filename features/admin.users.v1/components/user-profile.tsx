@@ -91,7 +91,7 @@ import {
     ResendCodeRequestData,
     SubValueInterface
 } from "../models/user";
-import { getDisplayOrder } from "../utils/user-management-utils";
+import { UserManagementUtils, getDisplayOrder } from "../utils/user-management-utils";
 import "./user-profile.scss";
 
 /**
@@ -183,7 +183,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const authenticatedUserSubject: string = useSelector((state: AppState) => state?.auth?.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
@@ -968,8 +968,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return null;
         }
 
-        const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
+        const authenticatedUserId: string = UserManagementUtils.resolveUserIdFromSubject(authenticatedUserSubject);
+        const isUserCurrentLoggedInUser: boolean = !!authenticatedUserId && authenticatedUserId === user?.id;
 
         return (
             <>
