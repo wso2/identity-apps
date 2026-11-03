@@ -93,6 +93,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         const fetchAvailableUsers = async (): Promise<void> => {
             const pageSize: number = 20;
             const availableUsers: UserBasicInterface[] = [];
+            const seenUserIds: Set<string> = new Set<string>();
             const filter: string = !isEmpty(searchQuery) ? searchQuery : null;
             let startIndex: number = 0;
 
@@ -108,8 +109,16 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     }
 
                     const pageUsers: UserBasicInterface[] = response?.Resources ?? [];
+                    let newUsersInPage: number = 0;
 
                     pageUsers.forEach((user: UserBasicInterface) => {
+                        if (!user?.id || seenUserIds.has(user.id)) {
+                            return;
+                        }
+
+                        seenUserIds.add(user.id);
+                        newUsersInPage++;
+
                         const isUserAlreadyAssigned: boolean = user?.groups?.some(
                             (userGroup: UserRoleInterface) => userGroup.display === group.displayName
                         ) ?? false;
@@ -122,7 +131,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     // LDAP stores may omit totalResults; a short page still signals completion.
                     startIndex += pageUsers.length;
 
-                    if (pageUsers.length < pageSize
+                    if (pageUsers.length < pageSize || newUsersInPage === 0
                         || (typeof response?.totalResults === "number"
                             && startIndex >= response.totalResults)) {
                         break;
@@ -132,13 +141,10 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 if (!isRequestCancelled) {
                     setUserList(availableUsers);
                 }
-            } catch (error) {
+            } catch {
                 if (!isRequestCancelled) {
-                    const description: string = error?.response?.data?.description
-                        ?? t("console:manage.features.users.notifications.fetchUsers.genericError.description");
-
                     dispatch(addAlert({
-                        description,
+                        description: t("console:manage.features.users.notifications.fetchUsers.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.users.notifications.fetchUsers.error.message")
                     }));
