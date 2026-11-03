@@ -78,8 +78,13 @@ const reasonKey = (reason: ReviewReason): string =>
 
 /**
  * A score as a reviewer reads it: two decimal places at most, without trailing zeros — 1, 0, 0.97.
+ *
+ * It is truncated, not rounded, so a score that fell short never reads as one that did not: 0.996
+ * shows as 0.99, never 1. The product is fixed to six places first, so that floating-point error
+ * does not pull a whole number of hundredths down a step — 0.29 × 100 is 28.999…, which is 29.
  */
-export const formatScore = (score: number): string => String(Number((score ?? 0).toFixed(2)));
+export const formatScore = (score: number): string =>
+    String(Math.floor(Number(((score ?? 0) * 100).toFixed(6))) / 100);
 
 /**
  * Display names for attributes, keyed by their full path, from the organization's profile schema.

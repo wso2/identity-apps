@@ -123,6 +123,10 @@ describe("Review task reasons", () => {
         expect([ 1, 0, 0.97, 0.9214, 0.5 ].map(formatScore)).toEqual([ "1", "0", "0.97", "0.92", "0.5" ]);
     });
 
+    it("never rounds a score up to one it fell short of", () => {
+        expect([ 0.996, 0.899, 0.29, 0.57 ].map(formatScore)).toEqual([ "0.99", "0.89", "0.29", "0.57" ]);
+    });
+
     it("explains a reconsidered rejection by the rules that newly agree, or by strength when none do", () => {
         const byRule: ReviewReason = getPairReasons(priyanka)[0];
 
