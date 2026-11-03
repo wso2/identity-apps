@@ -272,7 +272,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         )
                     )) as ApplicationBasicInterface[];
 
-                    const appNames: string[] = results?.map((app: ApplicationBasicInterface) => app?.name);
+                    const appNames: string[] = results?.filter((app: ApplicationBasicInterface) => app?.name)
+                        .map((app: ApplicationBasicInterface) =>
+                        app?.name === CommonAuthenticatorConstants.RESIDENT_APPLICATION_NAME
+                            ? t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.residentApplication")
+                            : app?.name);
 
                     setConnectedApps(appNames);
                 }
