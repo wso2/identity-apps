@@ -20,7 +20,8 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement,
+    SyntheticEvent, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 import AdminSessionAdvisoryBanner from "./admin-session-advisory-banner";
 import RemoteLogPublishing from "./remote-log-publishing";
@@ -60,6 +61,16 @@ interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
      */
     hidden?: boolean;
 }
+
+/**
+ * Callback type used to subscribe to an external store change.
+ */
+type SubscribeCallback = () => void;
+
+/**
+ * Cleanup function returned by a store subscription.
+ */
+type UnsubscribeFunction = () => void;
 
 /**
  * Tab component for the System Settings applicable to all the root organizations.
@@ -103,6 +114,7 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
      * Get the active tab index from the tab id defined in the URL params.
      * @returns Active tab.
      */
+
     const getActiveTabFromUrl = (): number => {
         const activeTabFromUrl: SystemSettingsTabInterface | undefined = tabs.find(
             (tab: SystemSettingsTabInterface) => {
@@ -113,24 +125,22 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
         return activeTabFromUrl ? activeTabFromUrl.value : tabs[0].value;
     };
 
-    const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl());
 
     /**
-     * Register a hash change listener to update the active tab.
+     * Subscribe to hash changes on the URL so React can re-render when the active tab changes.
      */
-    useEffect(() => {
-        const handleHashChange = (): void => {
-            setActiveTab(getActiveTabFromUrl());
-        };
+    const subscribeToHashChange: (_callback: SubscribeCallback) => UnsubscribeFunction = useCallback(
+        (callback: SubscribeCallback): UnsubscribeFunction => {
+            window.addEventListener("hashchange", callback);
 
-        // Listen for changes in the URL hash
-        window.addEventListener("hashchange", handleHashChange);
+            return () => {
+                window.removeEventListener("hashchange", callback);
+            };
+        },
+        []
+    );
 
-        return () => {
-            // Clean up the event listener when the component unmounts
-            window.removeEventListener("hashchange", handleHashChange);
-        };
-    }, []);
+    const activeTab: number = useSyncExternalStore<number>(subscribeToHashChange, getActiveTabFromUrl);
 
     /**
      * Callback to handle tab change.
