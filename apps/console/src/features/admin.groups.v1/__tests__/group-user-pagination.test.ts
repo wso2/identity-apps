@@ -1,0 +1,140 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import {
+    fetchAvailableGroupUsers,
+    GetUsersListFunction
+} from "../../../../../../features/admin.groups.v1/utils/group-user-pagination";
+
+const PAGE_SIZE: number = 20;
+const USERSTORE: string = "PRIMARY";
+const GROUP_NAME: string = "Internal/engineering";
+
+const createUser = (id: string, isGroupMember: boolean): UserBasicInterface => ({
+    groups: isGroupMember ? [ { display: GROUP_NAME, value: "group-id" } ] : [],
+    id,
+    userName: id
+});
+
+describe("fetchAvailableGroupUsers", () => {
+
+    it("fetches the next page when all users on the first page are already group members", async () => {
+        const firstPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`assigned-${index}`, true)
+        );
+        const secondPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`available-${index}`, false)
+        );
+        const getUsersListMock = jest.fn();
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        getUsersListMock
+            .mockResolvedValueOnce({ Resources: firstPage, totalResults: PAGE_SIZE * 2 })
+            .mockResolvedValueOnce({ Resources: secondPage, totalResults: PAGE_SIZE * 2 });
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenNthCalledWith(1, PAGE_SIZE, 0, null, null, USERSTORE, null);
+        expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
+        expect(result).toEqual(secondPage);
+    });
+
+    it("handles user stores that omit totalResults and stops after a short final page", async () => {
+        const firstPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`assigned-${index}`, true)
+        );
+        const finalPage: UserBasicInterface[] = [
+            createUser("available-1", false),
+            createUser("available-2", false)
+        ];
+        const getUsersListMock = jest.fn();
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        getUsersListMock
+            .mockResolvedValueOnce({ Resources: firstPage })
+            .mockResolvedValueOnce({ Resources: finalPage });
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(result).toEqual(finalPage);
+    });
+
+    it("stops when a page contains no new user IDs", async () => {
+        const repeatedPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`assigned-${index}`, true)
+        );
+        const getUsersListMock = jest.fn();
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        getUsersListMock
+            .mockResolvedValueOnce({ Resources: repeatedPage, totalResults: PAGE_SIZE * 3 })
+            .mockResolvedValueOnce({ Resources: repeatedPage, totalResults: PAGE_SIZE * 3 });
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(result).toEqual([]);
+    });
+
+    it("does not return stale users when the request is cancelled", async () => {
+        const getUsersListMock = jest.fn().mockResolvedValue({
+            Resources: [ createUser("available-1", false) ],
+            totalResults: 1
+        });
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => true,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(result).toBeNull();
+    });
+});
