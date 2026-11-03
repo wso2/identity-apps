@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.30.1
+
+### Patch Changes
+
+- [#10862](https://github.com/wso2/identity-apps/pull/10862) [`0b9d21da317f2f8f6ee569430c256ea8078c2f47`](https://github.com/wso2/identity-apps/commit/0b9d21da317f2f8f6ee569430c256ea8078c2f47) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Explain the resident application association when a connection cannot be deleted
+
 ## 4.30.0
 
 ### Minor Changes
