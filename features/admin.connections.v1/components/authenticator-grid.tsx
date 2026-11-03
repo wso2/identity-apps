@@ -310,6 +310,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         const appNames: string[] = [];
 
         results.forEach((app: ApplicationBasicInterface) => {
+            if (!app?.name) {
+                return;
+            }
+
             appNames.push(
                 app.name === CommonAuthenticatorConstants.RESIDENT_APPLICATION_NAME
                     ? t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.residentApplication")

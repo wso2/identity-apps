@@ -199,7 +199,8 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                             })
                         )
                     )) as ApplicationBasicInterface[];
-                    setConnectedApps(appDetails?.map((app: ApplicationBasicInterface) =>
+                    setConnectedApps(appDetails?.filter((app: ApplicationBasicInterface) => app?.name)
+                        .map((app: ApplicationBasicInterface) =>
                         app?.name === CommonAuthenticatorConstants.RESIDENT_APPLICATION_NAME
                             ? t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.residentApplication")
                             : app?.name));
