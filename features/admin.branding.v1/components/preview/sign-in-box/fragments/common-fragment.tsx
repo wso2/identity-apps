@@ -38,7 +38,7 @@ const CommonFragment: FunctionComponent<CommonFragmentInterface> = (
 
     return (
         <div data-componentid={ componentId }>
-            <h3 className="ui header"></h3>
+            <div className="ui header"></div>
 
             <div className="segment-form">
                 <div className="ui large form">
