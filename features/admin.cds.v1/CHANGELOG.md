@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.9.0
+
+### Minor Changes
+
+- [#10846](https://github.com/wso2/identity-apps/pull/10846) [`924b8d07a30af4a204b7b9c0cbeb7bc6fb8348bf`](https://github.com/wso2/identity-apps/commit/924b8d07a30af4a204b7b9c0cbeb7bc6fb8348bf) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Explain why a profile pair is in the review queue, rule by rule, from the explanation the Customer Data Service records with each review task
+
 ## 1.8.0
 
 ### Minor Changes
