@@ -119,7 +119,6 @@ const ActionMetaProperties: FunctionComponent<ActionMetaPropertiesPropsInterface
                                 title={ item.disabledTooltip }
                                 data-componentid={ `${componentId}-${item.key}-disabled-tooltip` }
                             >
-                                { /* span wrapper: MUI tooltips don't fire on disabled controls. */ }
                                 <span>{ control }</span>
                             </Tooltip>
                         ) : control }
