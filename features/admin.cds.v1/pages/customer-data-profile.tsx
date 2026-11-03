@@ -23,12 +23,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout, SecondaryButton } from "@wso2is/react-components";
+import { Hint, PageLayout, SecondaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Header } from "semantic-ui-react";
+import { ReactComponent as OrganizationSettingsIcon } from "../assets/images/icons/cds-organization-settings.svg";
 import { ReactComponent as ProfileAttributesIcon } from "../assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ReviewTasksIcon } from "../assets/images/icons/review-tasks.svg";
 import { ReactComponent as UnificationRuleIcon } from "../assets/images/icons/unification-rules.svg";
@@ -37,12 +38,14 @@ import ProfilesSection from "../components/profiles-section";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import "./customer-data-profile.scss";
 
 /**
- * Unified Customer Data Profile page. Combines the CDS enable toggle,
- * the Profile Attributes / Unification Rules configuration cards, and
- * the customer profile list into a single view.
+ * Unified Customer Data Profile page. Combines the CDS enable toggle, the Organization Settings /
+ * Profile Attributes / Unification Rules configuration cards, and the customer profile list
+ * into a single view.
  */
 const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface> = ({
     ["data-componentid"]: componentId = "customer-data-profile-page"
@@ -58,6 +61,12 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
 
     const hasCDSUpdateScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
 
+    const organizationSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.customerDataOrganizationSettings
+    );
+
+    const hasOrganizationViewScope: boolean = useRequiredScopes(organizationSettingsFeatureConfig?.scopes?.read);
+
     const {
         data: cdsConfig,
         mutate: mutateCDSConfig
@@ -66,6 +75,10 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
     const { isUpdating, toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfig);
 
     const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
+
+    // Organization management: a child organization inherits the enablement of its root, so it cannot change it.
+    const isSubOrganization: boolean = useIsSubOrganization();
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
 
     const handleToggle: (event: SyntheticEvent, data: CheckboxProps) => Promise<void> =
         async (_: SyntheticEvent, data: CheckboxProps): Promise<void> => {
@@ -102,10 +115,27 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 toggle
                 onChange={ handleToggle }
                 checked={ isCDSEnabled }
-                readOnly={ !hasCDSUpdateScopes || isUpdating }
+                readOnly={ !hasCDSUpdateScopes || isUpdating || isSubOrganization }
+                disabled={ isSubOrganization }
                 data-componentid={ `${ componentId }-enable-toggle` }
             />
+            { isSubOrganization && (
+                <Hint data-componentid={ `${ componentId }-enable-toggle-hint` }>
+                    { t("customerDataService:organizations.toggleHint") }
+                </Hint>
+            ) }
             <Divider hidden />
+            { /* Organization management: a child organization has nothing to change in the organization settings. */ }
+            { !isSubOrganization && isOrganizationManagementEnabled && hasOrganizationViewScope && (
+                <ConfigurationCard
+                    title={ t("customerDataService:landing.configuration.organizationSettings.title") }
+                    description={ t("customerDataService:landing.configuration.organizationSettings.description") }
+                    icon={ OrganizationSettingsIcon }
+                    disabled={ !isCDSEnabled }
+                    onClick={ () => history.push(AppConstants.getPaths().get("CDS_ORGANIZATION_SETTINGS")) }
+                    data-componentid={ `${ componentId }-organization-settings-card` }
+                />
+            ) }
             <ConfigurationCard
                 title={ t("customerDataService:landing.configuration.profileAttributes.title") }
                 description={ t("customerDataService:landing.configuration.profileAttributes.description") }

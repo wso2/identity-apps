@@ -395,6 +395,43 @@
                 }{% endif %}
             },
             {% endif %}
+            {% if console.customer_data_organization_settings is defined %}
+            "customerDataOrganizationSettings": {
+                "disabledFeatures": [
+                    {% if console.customer_data_organization_settings.disabled_features is defined %}
+                    {% for feature in console.customer_data_organization_settings.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.customer_data_organization_settings.enabled is defined %} {{ console.customer_data_organization_settings.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [
+                    {
+                        "feature": "customerDataOrganizationSettings",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    {% if console.customer_data_organization_settings.scopes is defined %}
+                    {% for operation, scopes in console.customer_data_organization_settings.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.customer_data_profile_attributes is defined %}
             "customerDataProfileAttributes": {
                 "disabledFeatures": [

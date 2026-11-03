@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels,
@@ -47,9 +49,13 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid, Icon, Image, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteSchemaAttributeById, updateSchemaAttributeById } from "../api/profile-attributes";
+import { OrganizationManagementScopes } from "../constants/organization-management-constants";
 import { useCDSApplications } from "../hooks/use-cds-applications";
+import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useSchemaAttributeById } from "../hooks/use-profile-attributes";
 import { useSearchSubAttributes } from "../hooks/use-search-sub-attributes";
+import { ResourceOrigin, ShareableResourceType } from "../models/organization-management";
 import { SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
 import {
     MergeStrategy,
@@ -58,6 +64,8 @@ import {
     ValueType
 } from "../models/profile-attributes";
 import { stripScopePrefix } from "../utils/profile-attribute-utils";
+import ShareSettings from "./share-settings";
+import SharedChip from "./shared-chip";
 
 const FORM_ID: string = "profile-attribute-edit-form";
 
@@ -176,7 +184,22 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ _modalAlert, setModalAlert, modalAlertComponent ] = useConfirmationModalAlert();
-    const showDangerZone: boolean = scope === "traits" || scope === "application_data";
+    // Organization management: an attribute that an ancestor organization shares is read-only here.
+    const isShared: boolean = attribute?.origin === ResourceOrigin.SHARED;
+    // Organization management: a child organization inherits the identity attributes from its root.
+    const isInherited: boolean = attribute?.origin === ResourceOrigin.INHERITED;
+    const isSubOrganization: boolean = useIsSubOrganization();
+    const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
+    const hasShareViewScope: boolean = useRequiredScopes([ OrganizationManagementScopes.PROFILE_SCHEMA_SHARE_VIEW ]);
+    // Organization management: a child organization only reads the schema. The root organization changes and
+    // shares it.
+    const isReadOnly: boolean = isShared || isSubOrganization;
+    // Organization management: traits and application data attributes can be shared, when they are not
+    // complex and not sub-attributes.
+    const canShareScope: boolean = scope === "traits" || scope === "application_data";
+    const isShareable: boolean = canShareScope && attribute?.value_type !== "complex"
+        && (attribute?.attribute_name ?? "").split(".").length <= 2;
+    const showDangerZone: boolean = canShareScope && !isReadOnly;
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -235,8 +258,10 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             })
             .catch((err: AxiosError<HttpErrorResponseDataInterface>): void => {
                 dispatch(addAlert({
-                    description: err?.message || t("customerDataService:profileAttributes.edit.notifications" +
-                        ".updateAttribute.error.description"),
+                    description: err?.response?.data?.description
+                        || err?.message
+                        || t("customerDataService:profileAttributes.edit.notifications" +
+                            ".updateAttribute.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("customerDataService:profileAttributes.edit.notifications" +
                         ".updateAttribute.error.message")
@@ -336,7 +361,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             (!isIdentityScope && currentValueType === "string");
 
         // identity_attributes may see existing canonical values, but cannot edit them
-        const isCanonicalReadOnly: boolean = isIdentityScope;
+        const isCanonicalReadOnly: boolean = isIdentityScope || isReadOnly;
 
         return (
             <>
@@ -360,14 +385,31 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                     >
                         <Grid>
 
+                            { isShared && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Alert severity="info" data-componentid={ `${componentId}-shared-notice` }>
+                                            { t("customerDataService:sharing.sharedNotice.attribute",
+                                                { org: attribute.owner_org_handle }) }
+                                        </Alert>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+
                             { isIdentityScope && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Message className="display-flex" size="small" info>
                                             <Icon name="info circle" />
-                                            <Message.Content className="tiny">
-                                                { t("customerDataService:profileAttributes.edit."+
-                                                "identityAttributesNotice") }
+                                            <Message.Content
+                                                className="tiny"
+                                                data-componentid={ `${componentId}-identity-notice` }
+                                            >
+                                                { isInherited
+                                                    ? t("customerDataService:sharing.inheritedNotice",
+                                                        { org: attribute.owner_org_handle })
+                                                    : t("customerDataService:profileAttributes.edit."+
+                                                    "identityAttributesNotice") }
                                             </Message.Content>
                                         </Message>
                                     </Grid.Column>
@@ -406,7 +448,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                             "displayName.label") }
                                         placeholder={ t("customerDataService:profileAttributes.edit." +
                                             "fields.displayName.placeholder") }
-                                        readOnly={ isIdentityScope }
+                                        readOnly={ isIdentityScope || isReadOnly }
                                         maxLength={ 200 }
                                         minLength={ 0 }
                                         data-componentid={ `${componentId}-display-name-input` }
@@ -421,7 +463,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                             { /* Mutability */ }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    { isIdentityScope ? (
+                                    { isIdentityScope || isReadOnly ? (
                                         <>
                                             <Field.Input
                                                 ariaLabel="Mutability"
@@ -498,8 +540,12 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                                 width={ 16 }
                                             />
                                             <Hint>
-                                                { t("customerDataService:profileAttributes.edit."+
-                                                "fields.applicationIdentifier.hint") }
+                                                { /* A shared app keeps the ID of its main app. */ }
+                                                { isSubOrganization
+                                                    ? t("customerDataService:profileAttributes.edit."+
+                                                        "fields.applicationIdentifier.childOrganizationHint")
+                                                    : t("customerDataService:profileAttributes.edit."+
+                                                        "fields.applicationIdentifier.hint") }
                                             </Hint>
                                         </Grid.Column>
                                     </Grid.Row>
@@ -536,7 +582,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                         label={ t("customerDataService:profileAttributes.edit.fields.valueType.label") }
                                         value={ attribute.value_type }
                                         required={ false }
-                                        disabled={ !cfg.allowValueTypeEdit }
+                                        disabled={ !cfg.allowValueTypeEdit || isReadOnly }
                                         options={ [
                                             { key: "string", text: t("customerDataService:profileAttributes.edit."+
                                                 "fields.valueType.options.text"), value: "string" },
@@ -712,7 +758,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                             "fields.mergeStrategy.label") }
                                         value={ attribute.merge_strategy }
                                         required={ false }
-                                        disabled={ !cfg.allowMergeStrategyEdit }
+                                        disabled={ !cfg.allowMergeStrategyEdit || isReadOnly }
                                         options={ [
                                             { key: "combine", text: t("customerDataService:profileAttributes.edit."+
                                                 "fields.mergeStrategy.options.combine"), value: "combine" },
@@ -736,7 +782,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                         name="multi_valued"
                                         label={ t("customerDataService:profileAttributes.edit."+
                                             "fields.multiValued.label") }
-                                        disabled={ !cfg.allowMultiValuedEdit }
+                                        disabled={ !cfg.allowMultiValuedEdit || isReadOnly }
                                         data-componentid={ `${componentId}-multi-valued-checkbox` }
                                         width={ 16 }
                                     />
@@ -747,7 +793,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                             </Grid.Row>
 
                             { /* Submit */ }
-                            { !isIdentityScope && (
+                            { !isIdentityScope && !isReadOnly && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Field.Button
@@ -787,13 +833,40 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
         );
     };
 
+    const renderSharingTab = (): ReactElement | null => {
+        if (!attribute) return null;
+
+        return (
+            <EmphasizedSegment padded="very">
+                { isShareable ? (
+                    <ShareSettings
+                        resource={ { id: attribute.attribute_id, scope, type: ShareableResourceType.ATTRIBUTE } }
+                        data-componentid={ `${componentId}-share-settings` }
+                    />
+                ) : (
+                    <Message info size="small">
+                        { t("customerDataService:sharing.notShareable") }
+                    </Message>
+                ) }
+            </EmphasizedSegment>
+        );
+    };
+
     const panes: ResourceTabPaneInterface[] = useMemo(
         () => [
             {
                 componentId: "general",
                 menuItem: t("customerDataService:profileAttributes.edit.tabs.general"),
                 render: renderGeneralTab
-            }
+            },
+            // Organization management: the owner organization shares the attribute with its child organizations.
+            ...(isOrganizationManagementEnabled && hasShareViewScope && canShareScope && attribute && !isReadOnly
+                ? [ {
+                    componentId: "sharing",
+                    menuItem: t("customerDataService:sharing.tab"),
+                    render: renderSharingTab
+                } ]
+                : [])
         ],
         [
             attribute,
@@ -804,7 +877,13 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             isDeleting,
             isLoadingSubAttrs,
             currentValueType,
-            getApplicationDisplayName
+            getApplicationDisplayName,
+            canShareScope,
+            isShareable,
+            isSubOrganization,
+            isOrganizationManagementEnabled,
+            hasShareViewScope,
+            t
         ]
     );
 
@@ -824,7 +903,18 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                         </span>
                     </Image>
                 ) }
-                title={ title }
+                title={ isShared || isInherited
+                    ? (
+                        <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
+                            { title }
+                            <SharedChip
+                                ownerOrg={ attribute.owner_org_handle }
+                                inherited={ isInherited }
+                                data-componentid={ `${componentId}-${ isInherited ? "inherited" : "shared" }-chip` }
+                            />
+                        </Box>
+                    )
+                    : title }
                 pageTitle={ t("customerDataService:profileAttributes.edit.page.pageTitle") }
                 description={
                     cfg?.label

@@ -42,6 +42,20 @@ const resolveCustomerDataServiceHost = (serverHost: string, cdsHost?: string): s
 };
 
 /**
+ * In a child organization, the server host ends with "/o". CDS takes the child organization only from
+ * the path, so the CDS path is /t/\{root\}/o/\{org_id\}. The organization name of the Console config is
+ * the ID of the current child organization.
+ *
+ * @param host - The CDS host with the tenant path.
+ * @returns The host with the ID of the child organization, when the Console runs in one.
+ */
+const withSubOrganizationId = (host: string): string => {
+    const orgId: string = window[ "AppUtils" ]?.getConfig()?.organizationName;
+
+    return orgId && /\/o$/.test(host) ? `${ host }/${ orgId }` : host;
+};
+
+/**
  * Get the resource endpoints for Customer Data Service (CDS) related operations.
  *
  * @param serverHost - Resolved (tenant/org-qualified) server host.
@@ -52,13 +66,16 @@ export const getCustomerDataServiceEndpoints = (
     serverHost: string,
     deploymentConfig?: DeploymentConfigInterface
 ): CustomerDataServiceEndpointsInterface => {
-    const cdsHost: string = resolveCustomerDataServiceHost(
+    const cdsHost: string = withSubOrganizationId(resolveCustomerDataServiceHost(
         serverHost,
         deploymentConfig?.extensions?.cdsHost as string
-    );
+    ));
 
     return {
         cdsConfig: `${ cdsHost }/cds/api/v1/config`,
+        cdsOrganizationAccess: `${ cdsHost }/cds/api/v1/organizations/access-policies`,
+        cdsOrganizationSync: `${ cdsHost }/cds/api/v1/organizations/sync`,
+        cdsOrganizationSyncStatus: `${ cdsHost }/cds/api/v1/organizations/sync-status`,
         cdsProfileSchema: `${ cdsHost }/cds/api/v1/profile-schema`,
         cdsProfiles: `${ cdsHost }/cds/api/v1/profiles`,
         cdsReviewTasks: `${ cdsHost }/cds/api/v1/identity-resolution/review-tasks`,

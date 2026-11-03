@@ -16,10 +16,30 @@
  * under the License.
  */
 
+import { ResourceOrigin } from "../models/organization-management";
 import { ProfileSchemaListingRow, SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     FilterAttributeOption, ProfileSchemaAttribute, ProfileSchemaFullResponse
 } from "../models/profile-attributes";
+
+/**
+ * Returns the listing fields that depend on the origin of an attribute. Only the owner organization
+ * can change or delete a shared attribute, so the list offers to view it and shows its owner.
+ *
+ * @param attribute - The attribute.
+ * @returns The deletable, editable, and shared_by fields of the listing row.
+ */
+export const getSharingRowFields = (
+    attribute: ProfileSchemaAttribute
+): Pick<ProfileSchemaListingRow, "deletable" | "editable" | "shared_by"> => {
+    const isShared: boolean = attribute.origin === ResourceOrigin.SHARED;
+
+    return {
+        deletable: !isShared,
+        editable: !isShared,
+        shared_by: isShared ? attribute.owner_org_handle : undefined
+    };
+};
 
 /**
  * Returns the attribute name relative to its scope prefix.
@@ -82,13 +102,27 @@ export const toAttributeDropdownOptions = (
     });
 };
 
+/**
+ * The scope label of a property that has no scope prefix, for example user_id.
+ */
+export const DEFAULT_PROPERTY_SCOPE: string = "Default";
+
 export const getPropertyScope = (propertyName: string): string => {
     if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
     if (propertyName?.startsWith("application_data.")) return "Application Data";
     if (propertyName?.startsWith("traits.")) return "Trait";
 
-    return "Default";
+    return DEFAULT_PROPERTY_SCOPE;
 };
+
+/**
+ * Returns the property name without its scope prefix.
+ *
+ * @param propertyName - The property name, for example traits.loyalty.
+ * @returns The property name without the scope prefix, for example loyalty.
+ */
+export const getPropertySuffix = (propertyName: string): string =>
+    (propertyName ?? "").replace(/^(identity_attributes|application_data|traits)\./, "");
 
 const getScopeLabel = (scope: SchemaListingScope): string =>
     SCOPE_CONFIG[scope]?.label ?? scope;
@@ -189,11 +223,10 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
             attribute_id: a.attribute_id,
             attribute_name: name,
             chip_label: getScopeLabel("traits"),
-            deletable: true,
             display_name: relativeName("traits", name),
-            editable: true,
             id: rowId("traits", name, a.attribute_id),
-            scope: "traits"
+            scope: "traits",
+            ...getSharingRowFields(a)
         });
     });
 
@@ -216,11 +249,10 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
                 attribute_name: fullName,
                 belongs_to: appId,
                 chip_label: getScopeLabel("application_data"),
-                deletable: true,
                 display_name: fieldPath || fullName,
-                editable: true,
                 id: rowId("application_data", fullName, a.attribute_id),
-                scope: "application_data"
+                scope: "application_data",
+                ...getSharingRowFields(a)
             });
         });
     });

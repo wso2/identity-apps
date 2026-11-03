@@ -1016,6 +1016,27 @@
                     "update": []
                 }
             },
+            "customerDataOrganizationSettings": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataOrganizationSettings",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": ["console:customerData"],
+                    "read": [
+                        "internal_cds_organization_view"
+                    ],
+                    "update": [
+                        "internal_cds_organization_update"
+                    ]
+                }
+            },
             "customerDataProfileAttributes": {
                 "disabledFeatures": [],
                 "enabled": false,

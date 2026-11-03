@@ -54,11 +54,12 @@ import {
 } from "semantic-ui-react";
 import { ReactComponent as CdsClaimsIcon } from "../assets/images/icons/cds-claims-icon.svg";
 import { ProfileSchemaListing } from "../components/profile-attributes";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import { useFullProfileSchema } from "../hooks/use-profile-schema";
 import { useProfileSchemaByScope } from "../hooks/use-profile-schema-by-scope";
 import type { ProfileSchemaListingRow, SchemaListingScope } from "../models/profile-attribute-listing";
 import type { ProfileSchemaAttribute } from "../models/profile-attributes";
-import { toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
+import { getSharingRowFields, toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
 import { isCDSUnifiedProfileViewEnabled } from "../utils/ui-mode-utils";
 
 const SORT_BY_NAME: string = "display_name";
@@ -151,11 +152,10 @@ const toRowsFromScopeResponse = (
                     attribute_name: fullName,
                     belongs_to: appId,
                     chip_label: scope,
-                    deletable: true,
                     display_name: fieldPath || fullName,
-                    editable: true,
                     id: `${scope}:${a.attribute_id ?? fullName}`,
-                    scope
+                    scope,
+                    ...getSharingRowFields(a)
                 };
             })
         );
@@ -169,17 +169,20 @@ const toRowsFromScopeResponse = (
         const display: string = fullName.startsWith(prefix)
             ? fullName.slice(prefix.length)
             : fullName;
+        const sharingFields: Pick<ProfileSchemaListingRow, "deletable" | "editable" | "shared_by"> =
+            getSharingRowFields(a);
 
         return {
             attribute_id: a.attribute_id,
             attribute_name: fullName,
             belongs_to: undefined,
             chip_label: scope,
-            deletable: scope === "traits",
             display_name: display,
-            editable: true,
             id: `${scope}:${a.attribute_id ?? fullName}`,
-            scope
+            scope,
+            ...sharingFields,
+            // Only traits can be deleted from this list.
+            deletable: scope === "traits" && sharingFields.deletable
         };
     });
 };
@@ -270,6 +273,8 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     const [ sortAscending, setSortAscending ] = useState<boolean>(true);
     const [ activeFilter, setActiveFilter ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    // Organization management: a child organization only reads the schema.
+    const isSubOrganization: boolean = useIsSubOrganization();
 
     const {
         data: fullSchema,
@@ -369,10 +374,12 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     // Strip identity_attributes from the raw (unsorted) dataset before sorting/paginating.
     const unsortedMainRows: ProfileSchemaListingRow[] = useMemo(
         (): ProfileSchemaListingRow[] =>
-            (assembledFilterRows ?? baseRows).filter(
-                (r: ProfileSchemaListingRow): boolean => r.scope !== "identity_attributes"
-            ),
-        [ assembledFilterRows, baseRows ]
+            (assembledFilterRows ?? baseRows)
+                .filter((r: ProfileSchemaListingRow): boolean => r.scope !== "identity_attributes")
+                .map((r: ProfileSchemaListingRow): ProfileSchemaListingRow => isSubOrganization
+                    ? { ...r, deletable: false, editable: false }
+                    : r),
+        [ assembledFilterRows, baseRows, isSubOrganization ]
     );
 
     // Apply sort to the main list only (traits + application_data).
@@ -478,7 +485,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
             }
             data-componentid={ `${componentId}-page-layout` }
             action={
-                (
+                !isSubOrganization && (
                     <PrimaryButton onClick={ handleAddProfileAttribute }>
                         <Icon name="add" />
                         { t("customerDataService:profileAttributes.list.buttons.add") }
@@ -566,7 +573,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                 { !isLoading && mainRows.length === 0 && !activeFilter && (
                     <EmptyPlaceholder
                         action={
-                            (
+                            !isSubOrganization && (
                                 <PrimaryButton onClick={ handleAddProfileAttribute }>
                                     <Icon name="add" />
                                     { t("customerDataService:profileAttributes.list.buttons.add") }

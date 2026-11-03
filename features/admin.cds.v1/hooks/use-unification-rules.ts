@@ -57,3 +57,36 @@ export const useUnificationRules = <Data = UnificationRuleModel[], Error = Reque
         mutate
     };
 };
+
+/**
+ * Hook to fetch a unification rule by ID.
+ *
+ * @param ruleId - ID of the rule.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
+ */
+export const useUnificationRule = <Data = UnificationRuleModel, Error = RequestErrorInterface>(
+    ruleId: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.cdsUnificationRules}/${ruleId}`
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        ruleId ? requestConfig : null,
+        { shouldRetryOnError: false }
+    );
+
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
+};

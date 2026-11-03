@@ -23,7 +23,9 @@ import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { AlertLevels } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -38,15 +40,20 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
-import { TEMP_PRIORITY } from "../models/constants";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
+import { TEMP_PRIORITY } from "../models/constants";
+import { ResourceOrigin } from "../models/organization-management";
 import {
     UnificationMethod,
     UnificationRuleModel
 } from "../models/unification-rules";
-import { getPropertyScope } from "../utils/profile-attribute-utils";
+import { getPropertyScope, getPropertySuffix } from "../utils/profile-attribute-utils";
+import SharedChip from "./shared-chip";
 
-interface UnificationRulesListProps {
+const isSharedRule = (rule: UnificationRuleModel): boolean => rule.origin === ResourceOrigin.SHARED;
+
+interface UnificationRulesListProps extends IdentifiableComponentInterface {
     rules: UnificationRuleModel[];
     isLoading: boolean;
     onDelete: () => void;
@@ -61,18 +68,14 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     isLoading,
     onDelete,
     searchQuery,
-    mutate
+    mutate,
+    ["data-componentid"]: componentId = "cds-unification-rule-list"
 }: UnificationRulesListProps): ReactElement => {
 
     const dispatch: Dispatch<AnyAction> = useDispatch();
     const { t } = useTranslation();
-    const getPropertySuffix = (propertyName: string): string => {
-        if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
-        if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
-        if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
-
-        return propertyName || "";
-    };
+    // Organization management: a child organization only reads the rules.
+    const isSubOrganization: boolean = useIsSubOrganization();
 
     const filteredRules: UnificationRuleModel[] = useMemo(() => {
         if (!searchQuery?.trim()) return rules;
@@ -94,9 +97,17 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         });
     }, [ rules, searchQuery ]);
 
-    const sortedRules: UnificationRuleModel[] = useMemo(
-        () => [ ...filteredRules ].sort((a:UnificationRuleModel, b:UnificationRuleModel) => a.priority - b.priority),
+    // Organization management: CDS returns the shared rules first, in the evaluation order. They keep that order.
+    // The rules of this organization follow, by priority. Only they can move.
+    const ownedRules: UnificationRuleModel[] = useMemo(
+        () => filteredRules
+            .filter((rule: UnificationRuleModel) => !isSharedRule(rule))
+            .sort((a:UnificationRuleModel, b:UnificationRuleModel) => a.priority - b.priority),
         [ filteredRules ]
+    );
+    const sortedRules: UnificationRuleModel[] = useMemo(
+        () => [ ...filteredRules.filter(isSharedRule), ...ownedRules ],
+        [ filteredRules, ownedRules ]
     );
 
     const [ deletingRule, setDeletingRule ] = useState<UnificationRuleModel | null>(null);
@@ -109,15 +120,15 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     const [ isToggleInProgress, setIsToggleInProgress ] = useState<boolean>(false);
 
     const canMoveUp = (rule: UnificationRuleModel): boolean => {
-        const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
+        const idx: number = ownedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
         return idx > 0;
     };
 
     const canMoveDown = (rule: UnificationRuleModel): boolean => {
-        const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
+        const idx: number = ownedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
-        return idx >= 0 && idx < sortedRules.length - 1;
+        return idx >= 0 && idx < ownedRules.length - 1;
     };
 
     /**
@@ -139,15 +150,15 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     ): Promise<void> => {
         if (isSwapping) return;
 
-        const currentIndex: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
+        const currentIndex: number = ownedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
         if (currentIndex === -1) return;
 
         const swapIndex: number = direction === "increased" ? currentIndex - 1 : currentIndex + 1;
 
-        if (swapIndex < 0 || swapIndex >= sortedRules.length) return;
+        if (swapIndex < 0 || swapIndex >= ownedRules.length) return;
 
-        const adjacentRule: UnificationRuleModel = sortedRules[swapIndex];
+        const adjacentRule: UnificationRuleModel = ownedRules[swapIndex];
         const originalPriority: number = rule.priority;
         const targetPriority: number = adjacentRule.priority;
 
@@ -277,6 +288,10 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
 
     const isFuzzyUnificationEnabled: boolean = useFuzzyUnificationEnabled();
 
+    const openRule = (rule: UnificationRuleModel): void => {
+        history.push(AppConstants.getPaths().get("UNIFICATION_RULE").replace(":id", rule.rule_id));
+    };
+
     const columns: TableColumnInterface[] = [
         {
             dataIndex: "rule_name",
@@ -289,7 +304,17 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         size="mini"
                         spaced="right"
                     />
-                    <Header.Content>{ rule.rule_name }</Header.Content>
+                    <Header.Content>
+                        <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
+                            { rule.rule_name }
+                            { isSharedRule(rule) && (
+                                <SharedChip
+                                    ownerOrg={ rule.owner_org_handle }
+                                    data-componentid={ `${ componentId }-${ rule.rule_id }-shared-chip` }
+                                />
+                            ) }
+                        </Box>
+                    </Header.Content>
                 </Box>
             ),
             title: t("customerDataService:unificationRules.list.columns.rule"),
@@ -368,11 +393,21 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             id: "priority",
             key: "priority",
             render: (rule: UnificationRuleModel) => {
+                if (isSharedRule(rule) || isSubOrganization) {
+                    return (
+                        <Typography variant="body2" sx={ { color: "text.secondary", textAlign: "center" } }>
+                            { rule.priority }
+                        </Typography>
+                    );
+                }
                 const moveUpDisabled: boolean = !canMoveUp(rule) || isSwapping;
                 const moveDownDisabled: boolean = !canMoveDown(rule) || isSwapping;
 
                 return (
-                    <Box sx={ { alignItems: "center", display: "flex", gap: "2px", justifyContent: "center" } }>
+                    <Box
+                        sx={ { alignItems: "center", display: "flex", gap: "2px", justifyContent: "center" } }
+                        onClick={ (e: SyntheticEvent) => e.stopPropagation() }
+                    >
                         <Typography
                             variant="body2"
                             sx={ {
@@ -430,8 +465,38 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             dataIndex: "action",
             id: "action",
             key: "action",
-            render: (rule: UnificationRuleModel) => (
+            render: (rule: UnificationRuleModel) => isSharedRule(rule) || isSubOrganization ? (
                 <Box sx={ { alignItems: "center", display: "flex", gap: "4px", justifyContent: "flex-end" } }>
+                    <Tooltip title={ t("customerDataService:unificationRules.list.actions.view") }>
+                        <IconButton
+                            size="small"
+                            onClick={ (e: SyntheticEvent) => {
+                                e.stopPropagation();
+                                openRule(rule);
+                            } }
+                            data-componentid={ `${ componentId }-view-${ rule.rule_id }` }
+                        >
+                            <Icon name="eye" fitted />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            ) : (
+                <Box
+                    sx={ { alignItems: "center", display: "flex", gap: "4px", justifyContent: "flex-end" } }
+                    onClick={ (e: SyntheticEvent) => e.stopPropagation() }
+                >
+                    <Tooltip title={ t("customerDataService:unificationRules.list.actions.edit") }>
+                        <IconButton
+                            size="small"
+                            onClick={ (e: SyntheticEvent) => {
+                                e.stopPropagation();
+                                openRule(rule);
+                            } }
+                            data-componentid={ `${ componentId }-edit-${ rule.rule_id }` }
+                        >
+                            <Icon name="pencil alternate" fitted />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip
                         title={ rule.is_active
                             ? t("customerDataService:unificationRules.list.actions.disable")
@@ -477,7 +542,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                 data={ sortedRules }
                 showHeader={ true }
                 showActions={ true }
-                onRowClick={ () => {} }
+                onRowClick={ (_e: SyntheticEvent, rule: UnificationRuleModel) => openRule(rule) }
             />
 
             { /* ── Toggle confirmation modal ── */ }

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ResourceOrigin } from "./organization-management";
+
 /**
  * What kind of value an attribute holds. The type decides three things at once: how the
  * value is normalized, which comparison runs against it, and which keys it is indexed
@@ -114,6 +116,9 @@ export interface UnificationRuleModel {
      * Read-only. Derived from `attribute_type` by the server.
      */
     mismatch_strength?: EvidenceStrength;
+    // Organization management: OWNED, or SHARED by the organization in owner_org_handle.
+    origin?: ResourceOrigin;
+    owner_org_handle?: string;
 }
 
 /**
@@ -123,6 +128,7 @@ export interface UnificationRuleModel {
  * indexed under, so the server rebuilds the blocking index for the rule when either moves.
  */
 export interface UpdateUnificationRulePayload {
+    rule_name?: string;
     is_active?: boolean;
     priority?: number;
     attribute_type?: UnificationAttributeType;
