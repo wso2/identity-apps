@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Popup } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { getGravatarImage } from "../../api";
@@ -54,7 +54,8 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
         ["data-testid"]: testId
     } = props;
     const [ confirmDelete, setConfirmDelete ] = useState(false);
-    const [ userID, setUserID ] = useState(null);
+    // Holds the account id targeted by the delete-confirmation modal; only read/written in handlers.
+    const userIDRef: MutableRefObject<string> = useRef<string>(null);
 
     const { t } = useTranslation();
 
@@ -77,7 +78,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
                     <Button
                         onClick={ () => {
                             setConfirmDelete(false);
-                            setUserID(null);
+                            userIDRef.current = null;
                         } }
                         className="link-button"
                     >
@@ -86,9 +87,9 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
                     <Button
                         primary
                         onClick={ () => {
-                            onLinkedAccountRemove(userID);
+                            onLinkedAccountRemove(userIDRef.current);
                             setConfirmDelete(false);
-                            setUserID(null);
+                            userIDRef.current = null;
                         } }
                     >
                         { t("common:remove") }
@@ -151,7 +152,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
                                                             color="red"
                                                             name="trash alternate outline"
                                                             onClick={ () => {
-                                                                setUserID(account.userId);
+                                                                userIDRef.current = account.userId;
                                                                 setConfirmDelete(true);
                                                             } }
                                                         />
