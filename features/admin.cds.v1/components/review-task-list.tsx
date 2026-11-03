@@ -246,14 +246,18 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
 
     /**
      * A reason as a chip, with the full explanation a hover or a focus away. The chip is what a
-     * reviewer scans; the explanation carries the specifics — which attributes, what score, what
-     * threshold — for when the chip alone does not settle it. Its tone says how the reason bears on
-     * the match.
+     * reviewer scans; the explanation carries the specifics — which attributes, what earlier score —
+     * for when the chip alone does not settle it. Its tone says how the reason bears on the match.
+     *
+     * A reason that names several rules is drawn on each of their rows, so a row chip is identified
+     * by its rule as well; a pair chip, drawn once, by its task and code alone.
      */
-    const renderReasonChip = (task: ReviewTaskModel, shown: ReviewReason, key: string): ReactElement => {
+    const renderReasonChip = (task: ReviewTaskModel, shown: ReviewReason, ruleId?: string): ReactElement => {
+        const id: string = [ task.id, ruleId, shown.code ].filter(Boolean).join("-");
+
         return (
             <Popup
-                key={ key }
+                key={ id }
                 on={ [ "hover", "focus" ] }
                 trigger={ (
                     <Label
@@ -262,7 +266,7 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                         className={ `review-task-chip review-task-reason-chip ${ getReasonTone(shown) } `
                             + `category-${ getReasonCategory(shown) }` }
                         tabIndex={ 0 }
-                        data-componentid={ `${ componentId }-reason-${ task.id }-${ shown.code }` }
+                        data-componentid={ `${ componentId }-reason-${ id }` }
                     >
                         { describeReasonLabel(shown, t) }
                     </Label>
@@ -275,8 +279,8 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
     };
 
     /**
-     * The review context, beside the comparison's heading: reasons about the pair as a whole — the match falling short of the merge
-     * threshold, a rejection, automatic merging disabled, a merge that failed. One chip each.
+     * The review context, beside the comparison's heading: reasons about the pair as a whole — a
+     * rejection, automatic merging disabled, a merge that failed. One chip each.
      */
     const renderReviewContext = (task: ReviewTaskModel): ReactElement => {
         const reasons: ReviewReason[] = getPairReasons(task);
@@ -290,8 +294,7 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                 className="review-task-context"
                 data-componentid={ `${ componentId }-context-${ task.id }` }
             >
-                { reasons.map((reason: ReviewReason, index: number) =>
-                    renderReasonChip(task, reason, `${ reason.code }-${ index }`)) }
+                { reasons.map((reason: ReviewReason) => renderReasonChip(task, reason)) }
             </div>
         );
     };
@@ -361,8 +364,8 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
     };
 
     /**
-     * The attribute by the name an administrator knows, with the rule behind it a hover away for
-     * anyone who needs to trace the comparison back to its configuration.
+     * The attribute by the name an administrator knows, with the rule behind it a hover or a focus
+     * away for anyone who needs to trace the comparison back to its configuration.
      */
     const renderAttribute = (task: ReviewTaskModel, rule: ReviewRuleOutcome): ReactElement => {
         const attribute: string = describeAttribute(rule.property_name, attributeLabels);
@@ -373,7 +376,16 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
 
         return (
             <Popup
-                trigger={ <span className="review-task-attribute">{ attribute }</span> }
+                on={ [ "hover", "focus" ] }
+                trigger={ (
+                    <span
+                        className="review-task-attribute"
+                        tabIndex={ 0 }
+                        data-componentid={ `${ componentId }-attribute-${ task.id }-${ rule.rule_id }` }
+                    >
+                        { attribute }
+                    </span>
+                ) }
                 content={ t("customerDataService:reviewTasks.explanation.ruleHint", {
                     property: rule.property_name,
                     rule: rule.rule_name
@@ -490,7 +502,7 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                                 <div className="review-task-evaluation">
                                     { renderMatch(rule) }
                                     { reasons.map((reason: ReviewReason) =>
-                                        renderReasonChip(task, reason, `${ rule.rule_id }-${ reason.code }`)) }
+                                        renderReasonChip(task, reason, rule.rule_id)) }
                                 </div>
                             </Table.Cell>
                         </Table.Row>

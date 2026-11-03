@@ -21,6 +21,7 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
     chen,
+    conflictAcrossRules,
     corroborated,
     jonathon,
     katherine,
@@ -163,11 +164,31 @@ describe("ReviewTaskList", () => {
         expect(screen.queryByTestId(`${ LIST }-reason-corroborated-BELOW_AUTO_MERGE_THRESHOLD`)).toBeNull();
     });
 
+    it("identifies a reason that names several rules separately on each of their rows", () => {
+        renderExpanded([ conflictAcrossRules ]);
+
+        expect(within(row("conflict", "email"))
+            .getByTestId(`${ LIST }-reason-conflict-email-CONFLICTING_EVIDENCE`)).toBeInTheDocument();
+        expect(within(row("conflict", "mobile"))
+            .getByTestId(`${ LIST }-reason-conflict-mobile-CONFLICTING_EVIDENCE`)).toBeInTheDocument();
+    });
+
     it("names attributes by their display name", () => {
         renderExpanded([ marcus ]);
 
         expect(within(row("marcus", "name")).getByText("Full name")).toBeInTheDocument();
         expect(within(row("marcus", "email")).getByText("emailaddress")).toBeInTheDocument();
+    });
+
+    it("shows the rule behind an attribute on keyboard focus", async () => {
+        renderExpanded([ marcus ]);
+
+        const attribute: HTMLElement = screen.getByTestId(`${ LIST }-attribute-marcus-name`);
+
+        expect(attribute).toHaveAttribute("tabindex", "0");
+        fireEvent.focus(attribute);
+        expect(await screen.findByText(/customerDataService:reviewTasks\.explanation\.ruleHint/))
+            .toBeInTheDocument();
     });
 
     it("shows the scores of a task raised before explanations, without reasons", () => {

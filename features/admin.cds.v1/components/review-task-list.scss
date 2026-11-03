@@ -167,6 +167,11 @@ $cds-red-bg: color-mix(in srgb, var(--oxygen-palette-error-main) 10%, transparen
 
     .review-task-attribute {
         cursor: default;
+
+        &:focus-visible {
+            outline: 2px solid var(--oxygen-palette-primary-main);
+            outline-offset: 1px;
+        }
     }
 
     /* A rule with nothing to compare stays listed — a missing value is part of the evidence —
