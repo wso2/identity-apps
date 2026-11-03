@@ -22,10 +22,10 @@ import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 export type GetUsersListFunction = (
     count: number,
     startIndex: number,
-    filter: string | null,
-    attributes: string | null,
+    filter: string,
+    attributes: string,
     domain: string,
-    excludedAttributes?: string | null
+    excludedAttributes?: string
 ) => Promise<UserListInterface>;
 
 export interface FetchAvailableGroupUsersOptions {
