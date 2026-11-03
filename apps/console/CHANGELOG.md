@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.31.0
+
+### Minor Changes
+
+- [#10867](https://github.com/wso2/identity-apps/pull/10867) [`b99a811214fd2d8f860275761f633049715a9753`](https://github.com/wso2/identity-apps/commit/b99a811214fd2d8f860275761f633049715a9753) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add the Client ID Metadata Documents setting to Application Settings
+
 ## 4.30.1
 
 ### Patch Changes
