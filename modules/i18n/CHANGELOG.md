@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.57.1
+
+### Patch Changes
+
+- [#10858](https://github.com/wso2/identity-apps/pull/10858) [`0421a0db2edb71f2f0e7849325cafb9e1adce0bc`](https://github.com/wso2/identity-apps/commit/0421a0db2edb71f2f0e7849325cafb9e1adce0bc) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Explain the resident application association when a connection cannot be deleted
+
 ## 2.57.0
 
 ### Minor Changes
