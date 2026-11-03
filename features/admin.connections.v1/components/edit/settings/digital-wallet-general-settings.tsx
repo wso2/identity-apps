@@ -55,6 +55,7 @@ import {
     updateIdentityProviderDetails,
     useGetConnections
 } from "../../../api/connections";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { useGetFederatedAuthenticator } from "../../../hooks/use-get-federated-authenticator";
 import { useGetPresentationDefinitionList } from "../../../hooks/use-get-presentation-definition-list";
@@ -198,7 +199,10 @@ export const DigitalWalletGeneralSettings: FunctionComponent<DigitalWalletGenera
                             })
                         )
                     )) as ApplicationBasicInterface[];
-                    setConnectedApps(appDetails?.map((app: ApplicationBasicInterface) => app?.name));
+                    setConnectedApps(appDetails?.map((app: ApplicationBasicInterface) =>
+                        app?.name === CommonAuthenticatorConstants.RESIDENT_APPLICATION_NAME
+                            ? t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.residentApplication")
+                            : app?.name));
                 }
             })
             .catch((error: IdentityAppsError) => {

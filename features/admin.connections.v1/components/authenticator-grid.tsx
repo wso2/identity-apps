@@ -71,6 +71,7 @@ import {
     getConnectedApps,
     getConnectedAppsOfAuthenticator
 } from "../api/connections";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -309,7 +310,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         const appNames: string[] = [];
 
         results.forEach((app: ApplicationBasicInterface) => {
-            appNames.push(app.name);
+            appNames.push(
+                app.name === CommonAuthenticatorConstants.RESIDENT_APPLICATION_NAME
+                    ? t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.residentApplication")
+                    : app.name
+            );
         });
 
         setConnectedApps(appNames);

@@ -110,6 +110,12 @@ export class CommonAuthenticatorConstants {
     public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 
     /**
+     * Name of the resident (system) service provider. It is not listed under Applications, but it
+     * holds the organization-level outbound provisioning configuration.
+     */
+    public static readonly RESIDENT_APPLICATION_NAME: string = "wso2carbon-local-sp";
+
+    /**
      * Local Server host.
      */
     public static readonly LOCAL_SERVER_URL: string = "localhost";
