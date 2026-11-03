@@ -52,6 +52,15 @@ import "./review-task-list.scss";
 const NO_VALUE: string = "";
 
 /**
+ * Verdicts that mean both profiles had a value when the task was decided.
+ */
+const COMPARED_VERDICTS: ReadonlySet<RuleVerdict> = new Set<RuleVerdict>([
+    RuleVerdict.AGREE,
+    RuleVerdict.DISAGREE,
+    RuleVerdict.INCONCLUSIVE
+]);
+
+/**
  * Past this, a value is clipped and the whole of it moves into a tooltip. Long emails and
  * identifiers otherwise force the column wider than its share of the row.
  */
@@ -384,9 +393,11 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
      * for what its type usually means — only for what the server reported about this pair.
      *
      * Rows run from what agreed, to what differed, to what could not be read either way, to what
-     * could not be compared. An attribute neither profile has is left out — it was never part of the
-     * comparison, and an empty row only pushes the evidence down. A task raised before the server
-     * recorded explanations has only its breakdown, so its rows carry scores alone.
+     * could not be compared. A row is left out only when neither profile has the attribute and the
+     * comparison did not use it — an empty row only pushes the evidence down. A rule that was
+     * compared, or that a reason names, stays even if its values have since been cleared: it is a
+     * record of how the task was decided, not of the profiles as they are now. A task raised before
+     * the server recorded explanations has only its breakdown, so its rows carry scores alone.
      */
     const renderEvidence = (task: ReviewTaskModel): ReactElement => {
         const rules: ReviewRuleOutcome[] = orderRulesForComparison(task.explanation?.rules
@@ -403,85 +414,91 @@ const ReviewTaskList: FunctionComponent<ReviewTaskListPropsInterface> = ({
                 verdict: null
             })))
             .filter((rule: ReviewRuleOutcome) =>
-                hasValue(task.incoming_profile_id, rule.property_name)
+                COMPARED_VERDICTS.has(rule.verdict)
+                    || getRowReasons(task, rule).length > 0
+                    || hasValue(task.incoming_profile_id, rule.property_name)
                     || hasValue(task.candidate_profile_id, rule.property_name));
-
-        if (rules.length === 0) {
-            return (
-                <Header as="h6" className="mt-0 mb-0" color="grey">
-                    { t("customerDataService:reviewTasks.list.noBreakdown") }
-                </Header>
-            );
-        }
 
         return (
             <>
                 { /* What the pair is in review for sits on the comparison's own heading line,
-                     read together with the evidence rather than above it. */ }
+                     read together with the evidence rather than above it. It is shown even with
+                     no rows to compare: a pair an administrator already rejected must say so. */ }
                 <div className="review-task-evidence-header">
                     <span className="review-task-evidence-caption">
                         { t("customerDataService:reviewTasks.caption") }
                     </span>
                     { renderReviewContext(task) }
                 </div>
-                <Table
-                    basic="very"
-                    fixed
-                    className="review-task-evidence"
-                    data-componentid={ `${ componentId }-evidence-${ task.id }` }
-                >
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell width={ 4 }>
-                                { t("customerDataService:reviewTasks.list.columns.profile") }
-                            </Table.HeaderCell>
-                            <Table.HeaderCell width={ 4 }>
-                                { t("customerDataService:reviewTasks.list.columns.candidateProfile") }
-                            </Table.HeaderCell>
-                            <Table.HeaderCell width={ 3 }>
-                                { t("customerDataService:reviewTasks.list.columns.attribute") }
-                            </Table.HeaderCell>
-                            <Table.HeaderCell width={ 5 }>
-                                { t("customerDataService:reviewTasks.list.columns.attributeMatch") }
-                            </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        { rules.map((rule: ReviewRuleOutcome) => {
-                            const reasons: ReviewReason[] = getRowReasons(task, rule);
-
-                            return (
-                                <Table.Row
-                                    key={ rule.rule_id }
-                                    className={ rule.verdict === RuleVerdict.UNKNOWN ? "not-compared" : undefined }
-                                    data-componentid={ `${ componentId }-rule-${ task.id }-${ rule.rule_id }` }
-                                >
-                                    <Table.Cell>
-                                        { renderTruncated(describeValue(task.incoming_profile_id, rule.property_name)) }
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        { renderTruncated(describeValue(task.candidate_profile_id, rule.property_name)) }
-                                    </Table.Cell>
-                                    <Table.Cell>{ renderAttribute(task, rule) }</Table.Cell>
-                                    { /* The verdict and the reasons that qualify it read as one
-                                         evaluation: side by side with a small gap, most informative
-                                         first, wrapping beneath where the cell is narrow. Every
-                                         reason the server named for the rule is shown. */ }
-                                    <Table.Cell>
-                                        <div className="review-task-evaluation">
-                                            { renderMatch(rule) }
-                                            { reasons.map((reason: ReviewReason) =>
-                                                renderReasonChip(task, reason, `${ rule.rule_id }-${ reason.code }`)) }
-                                        </div>
-                                    </Table.Cell>
-                                </Table.Row>
-                            );
-                        }) }
-                    </Table.Body>
-                </Table>
+                { rules.length === 0 ? (
+                    <Header as="h6" className="mt-0 mb-0" color="grey">
+                        { t("customerDataService:reviewTasks.list.noBreakdown") }
+                    </Header>
+                ) : renderComparison(task, rules) }
             </>
         );
     };
+
+    /**
+     * The comparison table: one row per rule, in the order given.
+     */
+    const renderComparison = (task: ReviewTaskModel, rules: ReviewRuleOutcome[]): ReactElement => (
+        <Table
+            basic="very"
+            fixed
+            className="review-task-evidence"
+            data-componentid={ `${ componentId }-evidence-${ task.id }` }
+        >
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell width={ 4 }>
+                        { t("customerDataService:reviewTasks.list.columns.profile") }
+                    </Table.HeaderCell>
+                    <Table.HeaderCell width={ 4 }>
+                        { t("customerDataService:reviewTasks.list.columns.candidateProfile") }
+                    </Table.HeaderCell>
+                    <Table.HeaderCell width={ 3 }>
+                        { t("customerDataService:reviewTasks.list.columns.attribute") }
+                    </Table.HeaderCell>
+                    <Table.HeaderCell width={ 5 }>
+                        { t("customerDataService:reviewTasks.list.columns.attributeMatch") }
+                    </Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                { rules.map((rule: ReviewRuleOutcome) => {
+                    const reasons: ReviewReason[] = getRowReasons(task, rule);
+
+                    return (
+                        <Table.Row
+                            key={ rule.rule_id }
+                            className={ rule.verdict === RuleVerdict.UNKNOWN ? "not-compared" : undefined }
+                            data-componentid={ `${ componentId }-rule-${ task.id }-${ rule.rule_id }` }
+                        >
+                            <Table.Cell>
+                                { renderTruncated(describeValue(task.incoming_profile_id, rule.property_name)) }
+                            </Table.Cell>
+                            <Table.Cell>
+                                { renderTruncated(describeValue(task.candidate_profile_id, rule.property_name)) }
+                            </Table.Cell>
+                            <Table.Cell>{ renderAttribute(task, rule) }</Table.Cell>
+                            { /* The verdict and the reasons that qualify it read as one
+                                 evaluation: side by side with a small gap, most informative
+                                 first, wrapping beneath where the cell is narrow. Every
+                                 reason the server named for the rule is shown. */ }
+                            <Table.Cell>
+                                <div className="review-task-evaluation">
+                                    { renderMatch(rule) }
+                                    { reasons.map((reason: ReviewReason) =>
+                                        renderReasonChip(task, reason, `${ rule.rule_id }-${ reason.code }`)) }
+                                </div>
+                            </Table.Cell>
+                        </Table.Row>
+                    );
+                }) }
+            </Table.Body>
+        </Table>
+    );
 
     const handleConfirm = async (): Promise<void> => {
         const { task, decision } = pendingDecision;

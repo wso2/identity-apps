@@ -606,7 +606,6 @@ export interface CustomerDataServiceNS {
             reasons: {
                 AUTO_MERGE_DISABLED: { label: string; sentence: string; };
                 AUTO_MERGE_FAILED: { label: string; sentence: string; };
-                BELOW_AUTO_MERGE_THRESHOLD: { label: string; sentence: string; };
                 COMMON_VALUE: { label: string; sentence: string; };
                 CONFLICTING_EVIDENCE: { label: string; sentence: string; };
                 DISCRIMINATING_MISMATCH: { label: string; sentence: string; };

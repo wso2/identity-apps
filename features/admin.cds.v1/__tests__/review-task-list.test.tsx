@@ -30,6 +30,7 @@ import {
     profiles
 } from "./fixtures/review-tasks";
 import ReviewTaskList from "../components/review-task-list";
+import { ProfileModel } from "../models/profiles";
 import { ReviewTaskModel } from "../models/review-tasks";
 import "@testing-library/jest-dom";
 
@@ -37,11 +38,11 @@ const LIST: string = "cds-review-task-list";
 const REASONS: string = "customerDataService:reviewTasks.explanation.reasons";
 const MATCH: string = "customerDataService:reviewTasks.explanation.match";
 
-const renderExpanded = (tasks: ReviewTaskModel[]): void => {
+const renderExpanded = (tasks: ReviewTaskModel[], profilesById: Record<string, ProfileModel> = profiles): void => {
     render(
         <ReviewTaskList
             tasks={ tasks }
-            profiles={ profiles }
+            profiles={ profilesById }
             failedProfileIds={ [] }
             isLoading={ false }
             canResolve={ true }
@@ -97,6 +98,30 @@ describe("ReviewTaskList", () => {
         expect(within(mobile).queryByText(`${ MATCH }.differs0`)).not.toBeInTheDocument();
     });
 
+    it("keeps a compared rule and its reason after its values are cleared on both profiles", () => {
+        const cleared = (id: string): ProfileModel => ({
+            ...profiles[id],
+            identity_attributes: { fullname: profiles[id].identity_attributes.fullname }
+        } as ProfileModel);
+
+        renderExpanded([ marcus ], { ...profiles, "marcus-a": cleared("marcus-a"), "marcus-b": cleared("marcus-b") });
+
+        expect(chipCodes(row("marcus", "email"))).toEqual([ "CONFLICTING_EVIDENCE" ]);
+        expect(screen.queryByTestId(`${ LIST }-rule-marcus-mobile`)).not.toBeInTheDocument();
+    });
+
+    it("shows why the pair is in review even when there are no rules to compare", () => {
+        const noRules: ReviewTaskModel = {
+            ...priyanka,
+            explanation: { ...priyanka.explanation, rules: [] }
+        } as ReviewTaskModel;
+
+        renderExpanded([ noRules ]);
+
+        expect(chipCodes(screen.getByTestId(`${ LIST }-context-priyanka`))).toEqual([ "REJECTION_RECONSIDERED" ]);
+        expect(screen.getByText("customerDataService:reviewTasks.list.noBreakdown")).toBeInTheDocument();
+    });
+
     it("shows every reason that names a row, most informative first", () => {
         renderExpanded([ katherine ]);
 
@@ -135,7 +160,7 @@ describe("ReviewTaskList", () => {
 
         expect(chip("priyanka", "REJECTION_RECONSIDERED")).toHaveClass("category-history");
         expect(chip("chen", "AUTO_MERGE_DISABLED")).toHaveClass("category-configuration");
-        expect(chip("corroborated", "BELOW_AUTO_MERGE_THRESHOLD")).toHaveClass("category-evidence");
+        expect(screen.queryByTestId(`${ LIST }-reason-corroborated-BELOW_AUTO_MERGE_THRESHOLD`)).toBeNull();
     });
 
     it("names attributes by their display name", () => {

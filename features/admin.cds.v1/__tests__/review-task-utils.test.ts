@@ -31,9 +31,8 @@ import {
 } from "./fixtures/review-tasks";
 import { ProfileSchemaFullResponse } from "../models/profile-attributes";
 import { ReviewReason, ReviewRuleOutcome, ReviewTaskModel, RuleVerdict } from "../models/review-tasks";
+import { ReasonCategory, ReasonTone } from "../models/review-task-presentation";
 import {
-    ReasonCategory,
-    ReasonTone,
     buildAttributeLabels,
     compareReviewTasks,
     describeAttribute,
@@ -78,14 +77,15 @@ describe("Review task reasons", () => {
             .toEqual([ "DISCRIMINATING_MISMATCH", "CONFLICTING_EVIDENCE" ]);
     });
 
-    it("leaves the merge threshold out beside another reason, and keeps the lone match for its row", () => {
+    it("keeps the lone match for its row", () => {
         expect(getPairReasons(jonathon)).toEqual([]);
         expect(codes(getRowReasons(jonathon, ruleOf(jonathon, "name")))).toEqual([ "WEAK_SOLE_EVIDENCE" ]);
         expect(getRowReasons(jonathon, ruleOf(jonathon, "city"))).toEqual([]);
     });
 
-    it("shows the merge threshold when it is the only explanation", () => {
-        expect(codes(getPairReasons(corroborated))).toEqual([ "BELOW_AUTO_MERGE_THRESHOLD" ]);
+    it("never shows the merge threshold, even when it is the only reason", () => {
+        expect(getPairReasons(corroborated)).toEqual([]);
+        expect(getRowReasons(corroborated, ruleOf(corroborated, "name"))).toEqual([]);
     });
 
     it("says what each pair reason is due to", () => {
@@ -93,7 +93,6 @@ describe("Review task reasons", () => {
         expect(getReasonCategory({ code: "AUTO_MERGE_DISABLED" })).toBe(ReasonCategory.CONFIGURATION);
         expect(getReasonCategory({ code: "AUTO_MERGE_FAILED" })).toBe(ReasonCategory.OPERATIONAL);
         expect(getReasonCategory({ code: "MERGED_WITH_ANOTHER_PROFILE" })).toBe(ReasonCategory.OPERATIONAL);
-        expect(getReasonCategory({ code: "BELOW_AUTO_MERGE_THRESHOLD" })).toBe(ReasonCategory.EVIDENCE);
     });
 
     it("shows a reason that names several rules on each of their rows, naming all of them", () => {
@@ -118,7 +117,6 @@ describe("Review task reasons", () => {
         expect(getReasonTone({ code: "CONFLICTING_EVIDENCE" })).toBe(ReasonTone.CAUTION);
         expect(getReasonTone({ code: "WEAK_SOLE_EVIDENCE" })).toBe(ReasonTone.INFO);
         expect(getReasonTone({ code: "COMMON_VALUE" })).toBe(ReasonTone.INFO);
-        expect(getReasonTone({ code: "BELOW_AUTO_MERGE_THRESHOLD" })).toBe(ReasonTone.NEUTRAL);
     });
 
     it("formats scores without trailing zeros", () => {

@@ -19,6 +19,12 @@
 import { TFunction } from "react-i18next";
 import { ProfileSchemaAttribute, ProfileSchemaFullResponse } from "../models/profile-attributes";
 import {
+    ReasonCategory,
+    ReasonPresentation,
+    ReasonScope,
+    ReasonTone
+} from "../models/review-task-presentation";
+import {
     ReviewReason,
     ReviewReasonCode,
     ReviewRuleOutcome,
@@ -27,58 +33,19 @@ import {
 } from "../models/review-tasks";
 
 /**
- * How a reason reads. A contradiction is marked by how strongly it argues against the match: an
- * attribute that tells people apart differing is critical, a conflicting one is a caution. A limit
- * on what a match can do on its own is information, not a problem with the data. Context about the
- * pair — a setting, a history — stays neutral.
+ * Reasons that are never shown. Falling short of the automatic merge threshold is true of every
+ * task in the queue — it is what puts a pair there — so it tells a reviewer nothing.
  */
-export enum ReasonTone {
-    NEUTRAL = "neutral",
-    INFO = "info",
-    CAUTION = "caution",
-    CRITICAL = "critical"
-}
+const SILENT_REASONS: ReadonlySet<string> = new Set<string>([ ReviewReasonCode.BELOW_AUTO_MERGE_THRESHOLD ]);
 
 /**
- * Where a reason is shown. A pair reason is about the pair as a whole and sits above the
- * comparison; a row reason qualifies the evidence of the rules it names and sits in their rows.
- */
-enum ReasonScope {
-    PAIR = "pair",
-    ROW = "row"
-}
-
-/**
- * What a reason says the review is due to: the matching evidence itself, an earlier decision on the
- * pair, how the organization is configured, or something that went wrong while merging.
- */
-export enum ReasonCategory {
-    EVIDENCE = "evidence",
-    HISTORY = "history",
-    CONFIGURATION = "configuration",
-    OPERATIONAL = "operational",
-    /**
-     * A reason this Console does not recognize, from a newer server.
-     */
-    OTHER = "other"
-}
-
-interface ReasonPresentation {
-    scope: ReasonScope;
-    tone: ReasonTone;
-    category: ReasonCategory;
-    /**
-     * Order among reasons in the same place: on a row the first is shown and the rest are a hover
-     * away, so the most informative comes first.
-     */
-    rank: number;
-}
-
-/**
- * Every reason the server can send, and how it is presented. A code missing from here — a newer
+ * Every reason the server can send that is shown, and how. A code missing from here — a newer
  * server — is shown as a neutral pair reason with a generic label, never as a raw code.
  */
-const REASON_PRESENTATION: Record<ReviewReasonCode, ReasonPresentation> = {
+const REASON_PRESENTATION: Record<
+    Exclude<ReviewReasonCode, ReviewReasonCode.BELOW_AUTO_MERGE_THRESHOLD>,
+    ReasonPresentation
+> = {
     [ ReviewReasonCode.DISCRIMINATING_MISMATCH ]: {
         category: ReasonCategory.EVIDENCE, rank: 0, scope: ReasonScope.ROW, tone: ReasonTone.CRITICAL },
     [ ReviewReasonCode.CONFLICTING_EVIDENCE ]: {
@@ -94,22 +61,20 @@ const REASON_PRESENTATION: Record<ReviewReasonCode, ReasonPresentation> = {
     [ ReviewReasonCode.MERGED_WITH_ANOTHER_PROFILE ]: {
         category: ReasonCategory.OPERATIONAL, rank: 2, scope: ReasonScope.PAIR, tone: ReasonTone.NEUTRAL },
     [ ReviewReasonCode.AUTO_MERGE_DISABLED ]: {
-        category: ReasonCategory.CONFIGURATION, rank: 3, scope: ReasonScope.PAIR, tone: ReasonTone.NEUTRAL },
-    [ ReviewReasonCode.BELOW_AUTO_MERGE_THRESHOLD ]: {
-        category: ReasonCategory.EVIDENCE, rank: 4, scope: ReasonScope.PAIR, tone: ReasonTone.NEUTRAL }
+        category: ReasonCategory.CONFIGURATION, rank: 3, scope: ReasonScope.PAIR, tone: ReasonTone.NEUTRAL }
 };
 
 const UNKNOWN_REASON: ReasonPresentation = {
     category: ReasonCategory.OTHER, rank: 99, scope: ReasonScope.PAIR, tone: ReasonTone.NEUTRAL };
 
 const presentationOf = (reason: ReviewReason): ReasonPresentation =>
-    REASON_PRESENTATION[reason.code as ReviewReasonCode] ?? UNKNOWN_REASON;
+    REASON_PRESENTATION[reason.code as keyof typeof REASON_PRESENTATION] ?? UNKNOWN_REASON;
 
 /**
  * The i18n key under `reviewTasks.explanation.reasons` for a reason.
  */
 const reasonKey = (reason: ReviewReason): string =>
-    (REASON_PRESENTATION[reason.code as ReviewReasonCode] ? reason.code : "unknown");
+    (REASON_PRESENTATION[reason.code as keyof typeof REASON_PRESENTATION] ? reason.code : "unknown");
 
 /**
  * A score as a reviewer reads it: two decimal places at most, without trailing zeros — 1, 0, 0.97.
@@ -179,22 +144,17 @@ export const compareReviewTasks = (a: ReviewTaskModel, b: ReviewTaskModel): numb
         || (a.created_at ?? "").localeCompare(b.created_at ?? "");
 
 /**
- * The reasons about the pair as a whole, in a stable order.
- *
- * The match falling short of the automatic merge threshold is shown only when nothing else explains
- * the review. With the default threshold of 1 every fuzzy match falls short, so beside another
- * reason it repeats what the row's score already shows; alone — two rules agree, neither is strong
- * enough, and nothing objects — it is the whole explanation.
+ * The reasons a task records that are shown.
  */
-export const getPairReasons = (task: ReviewTaskModel): ReviewReason[] => {
-    const reasons: ReviewReason[] = task.explanation?.reasons ?? [];
+const getShownReasons = (task: ReviewTaskModel): ReviewReason[] => (task.explanation?.reasons ?? [])
+    .filter((reason: ReviewReason) => !SILENT_REASONS.has(reason.code));
 
-    return reasons
-        .filter((reason: ReviewReason) => presentationOf(reason).scope === ReasonScope.PAIR)
-        .filter((reason: ReviewReason) =>
-            reason.code !== ReviewReasonCode.BELOW_AUTO_MERGE_THRESHOLD || reasons.length === 1)
-        .sort((a: ReviewReason, b: ReviewReason) => presentationOf(a).rank - presentationOf(b).rank);
-};
+/**
+ * The reasons about the pair as a whole, in a stable order.
+ */
+export const getPairReasons = (task: ReviewTaskModel): ReviewReason[] => getShownReasons(task)
+    .filter((reason: ReviewReason) => presentationOf(reason).scope === ReasonScope.PAIR)
+    .sort((a: ReviewReason, b: ReviewReason) => presentationOf(a).rank - presentationOf(b).rank);
 
 /**
  * The reasons that name a rule, for its row, most informative first. They are matched on rule ID
@@ -202,7 +162,7 @@ export const getPairReasons = (task: ReviewTaskModel): ReviewReason[] => {
  * their rows, and a rule no reason names carries none, whatever its attribute type.
  */
 export const getRowReasons = (task: ReviewTaskModel, rule: ReviewRuleOutcome): ReviewReason[] =>
-    (task.explanation?.reasons ?? [])
+    getShownReasons(task)
         .filter((reason: ReviewReason) =>
             presentationOf(reason).scope === ReasonScope.ROW && (reason.rule_ids ?? []).includes(rule.rule_id))
         .sort((a: ReviewReason, b: ReviewReason) => presentationOf(a).rank - presentationOf(b).rank);
@@ -227,8 +187,8 @@ const describeRules = (task: ReviewTaskModel, ruleIds: string[] = [], labels: At
     .join(", ");
 
 /**
- * A reason in full, for its tooltip: the specifics — which attributes, what score, what threshold —
- * that the label leaves out.
+ * A reason in full, for its tooltip: the specifics — which attributes, what earlier score — that the
+ * label leaves out.
  */
 export const describeReason = (
     task: ReviewTaskModel,
@@ -238,15 +198,8 @@ export const describeReason = (
 ): string => {
     const key: string = `customerDataService:reviewTasks.explanation.reasons.${ reasonKey(reason) }`;
     const attributes: string = describeRules(task, reason.rule_ids, labels);
-    const primary: ReviewRuleOutcome = getPrimaryRule(task);
 
     switch (reason.code) {
-        case ReviewReasonCode.BELOW_AUTO_MERGE_THRESHOLD:
-            return t(`${ key }.sentence`, {
-                attribute: attributes || describeAttribute(primary?.property_name ?? "", labels),
-                score: formatScore(primary?.score),
-                threshold: formatScore(reason.threshold ?? 1)
-            });
         case ReviewReasonCode.COMMON_VALUE:
             return t(`${ key }.sentence`, { attribute: attributes, count: reason.shared_by_at_least });
         case ReviewReasonCode.REJECTION_RECONSIDERED:

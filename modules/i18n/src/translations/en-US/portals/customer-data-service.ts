@@ -683,11 +683,6 @@ export const customerDataService: CustomerDataServiceNS = {
                     sentence: "These profiles qualified for an automatic merge, but the merge could not be "
                         + "completed."
                 },
-                BELOW_AUTO_MERGE_THRESHOLD: {
-                    label: "Below merge threshold",
-                    sentence: "The match on {{attribute}} scored {{score}}, below the automatic merge "
-                        + "threshold of {{threshold}}."
-                },
                 COMMON_VALUE: {
                     label: "Common value",
                     sentence: "The matching {{attribute}} is shared by {{count}} or more profiles, so on its "
