@@ -429,10 +429,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 })
             );
 
-            setCustomTextFormSubscription({
-                ...customTextFormSubscription,
+            setCustomTextFormSubscription((
+                prevCustomTextFormSubscription: Partial<FormState<CustomTextInterface, CustomTextInterface>>
+            ) => ({
+                ...prevCustomTextFormSubscription,
                 values: cloneDeep(customTextFallbacks?.preference?.text)
-            });
+            }));
 
             mutateCustomTextPreferenceFetchRequest();
         })
@@ -494,13 +496,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         // Update the value in the API.
         _updateCustomTextPreference(updatedValues, isCustomTextPreferenceConfigured).then(() => {
             // Update the value in the form state.
-            setCustomTextFormSubscription({
-                ...customTextFormSubscription,
+            setCustomTextFormSubscription((
+                prevCustomTextFormSubscription: Partial<FormState<CustomTextInterface, CustomTextInterface>>
+            ) => ({
+                ...prevCustomTextFormSubscription,
                 values: {
-                    ...customTextFormSubscription?.values,
+                    ...prevCustomTextFormSubscription?.values,
                     [key]: customTextFallbacks?.preference?.text[key]
                 }
-            });
+            }));
         });
     };
 

@@ -224,7 +224,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep + 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
     };
 
     /**
@@ -402,20 +402,20 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             );
 
             loadAuthenticatorMetadata(selectedTemplate.idp.federatedAuthenticators.defaultAuthenticatorId);
-            setWizardState({
-                ...wizardState,
+            setWizardState((prevWizardState: WizardStateInterface) => ({
+                ...prevWizardState,
                 [WizardConstants.AUTHENTICATOR]: selectedTemplate.idp
-            });
+            }));
         }
     }, [ selectedTemplateId ]);
 
     useEffect(() => {
         if (selectedManualModeOptionId) {
             loadAuthenticatorMetadata(selectedManualModeOptionId);
-            setWizardState({
-                ...wizardState,
+            setWizardState((prevWizardState: WizardStateInterface) => ({
+                ...prevWizardState,
                 [WizardConstants.AUTHENTICATOR]: {}
-            });
+            }));
         }
     }, [ selectedManualModeOptionId ]);
 
@@ -458,7 +458,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         if (partiallyCompletedStep === undefined) {
             return;
         }
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 

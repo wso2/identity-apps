@@ -413,8 +413,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                         tenants.push(tenant);
                     });
                     // Add tenants to the associatedTenants state
-                    setAssociatedTenants([ ...associatedTenants, ...tenants ]);
-                    setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
+                    setAssociatedTenants((prevAssociatedTenants: TenantInfo[]) =>
+                        [ ...prevAssociatedTenants, ...tenants ]);
+                    setAssociatedTenantsOffset((prevAssociatedTenantsOffset: number) =>
+                        prevAssociatedTenantsOffset + associatedTenantsLimit);
                     setDefaultTenant(updatedDefaultTenant);
                     setCurrentTenant(updatedCurrentTenant);
                     setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);

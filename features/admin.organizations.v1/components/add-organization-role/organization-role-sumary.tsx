@@ -63,7 +63,8 @@ export const CreateOrganizationRoleSummary: FunctionComponent<CreateOrganization
             if (summary && summary.PermissionList) {
                 const permissions = summary.PermissionList;
 
-                setSelectedPermissions([ ...selectedPermissions, ...permissions.map(permission => permission.key) ]);
+                setSelectedPermissions((prevSelectedPermissions: string[]) =>
+                    [ ...prevSelectedPermissions, ...permissions.map(permission => permission.key) ]);
             }
         });
     }, [ permissions.length > 0 ]);
