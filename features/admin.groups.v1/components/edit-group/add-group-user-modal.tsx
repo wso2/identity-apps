@@ -17,9 +17,8 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
-import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -41,6 +40,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { GroupsInterface } from "../../models/groups";
+import { fetchAvailableGroupUsers } from "../../utils/group-user-pagination";
 
 /**
  * Proptypes for the group users list component.
@@ -93,55 +93,22 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
         const fetchAvailableUsers = async (): Promise<void> => {
             const pageSize: number = 20;
-            const availableUsers: UserBasicInterface[] = [];
-            const seenUserIds: Set<string> = new Set<string>();
             const filter: string = !isEmpty(searchQuery) ? searchQuery : null;
-            let startIndex: number = 0;
 
             setIsUserListLoading(true);
             setUserList([]);
 
             try {
-                while (availableUsers.length < pageSize) {
-                    const response: UserListInterface = await getUsersList(
-                        pageSize, startIndex, filter, null, userstore, null
-                    );
+                const availableUsers = await fetchAvailableGroupUsers({
+                    filter,
+                    getUsersList,
+                    groupDisplayName: group.displayName,
+                    isCancelled: () => isRequestCancelled,
+                    pageSize,
+                    userstore
+                });
 
-                    if (isRequestCancelled) {
-                        return;
-                    }
-
-                    const pageUsers: UserBasicInterface[] = response?.Resources ?? [];
-                    let newUsersInPage: number = 0;
-
-                    pageUsers.forEach((user: UserBasicInterface) => {
-                        if (!user?.id || seenUserIds.has(user.id)) {
-                            return;
-                        }
-
-                        seenUserIds.add(user.id);
-                        newUsersInPage++;
-
-                        const isUserAlreadyAssigned: boolean = user?.groups?.some(
-                            (userGroup: UserRoleInterface) => userGroup.display === group.displayName
-                        ) ?? false;
-
-                        if (!isUserAlreadyAssigned) {
-                            availableUsers.push(user);
-                        }
-                    });
-
-                    // LDAP stores may omit totalResults; a short page still signals completion.
-                    startIndex += pageUsers.length;
-
-                    if (pageUsers.length < pageSize || newUsersInPage === 0
-                        || (typeof response?.totalResults === "number"
-                            && startIndex >= response.totalResults)) {
-                        break;
-                    }
-                }
-
-                if (!isRequestCancelled) {
+                if (!isRequestCancelled && availableUsers) {
                     setUserList(availableUsers);
                 }
             } catch {
