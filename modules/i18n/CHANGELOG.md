@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.58.0
+
+### Minor Changes
+
+- [#10864](https://github.com/wso2/identity-apps/pull/10864) [`6d181479625ddee1f44af662368a3f17e6694926`](https://github.com/wso2/identity-apps/commit/6d181479625ddee1f44af662368a3f17e6694926) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins enable Client ID Metadata Documents (CIMD) for the organization from the Application Settings page. The page now shows the Dynamic Client Registration and Client ID Metadata Documents settings as separate sections, saved with one Update button.
+
 ## 2.57.1
 
 ### Patch Changes
