@@ -255,21 +255,46 @@ export const flowExtension: flowExtensionNS = {
                     title: "Write encrypted"
                 }
             },
+            flowTypeHint: "The extension gets this only in the {{flowType}} flow.",
             identityClaimWriteWarning: "Modifying this system maintained attribute may cause unexpected behavior.",
+            notInFlowWarning: "The {{flowType}} flow no longer defines this, so the extension doesn't get it. "
+                + "Remove it, or define it again in the flow.",
             readOnlyBadge: "Read-Only",
             title: "Field Configuration",
             usernameWriteWarning: "Write access to the username is only applied in the Self Registration " +
                 "flow."
         },
+        flowTypes: {
+            INVITED_USER_REGISTRATION: "Invited User Registration",
+            PASSWORD_RECOVERY: "Password Recovery",
+            REGISTRATION: "Registration"
+        },
         node: {
             addEntryChip: "+ ADD ENTRY",
             noEntries: "No entries yet",
+            notInFlowBadge: "Not in flow",
             readChip: "READ",
             readOnlyBadge: "Read-Only",
             writeChip: "WRITE"
         }
     },
     properties: {
+        accessConfig: {
+            advancedHint: "Configure encryption and other advanced options in the flow extension itself.",
+            description: "Select the runtime values and request headers that the extension can read or write in this flow.",
+            headers: "Request headers",
+            noHeaders: "This flow defines no request headers. Define them in the Start node.",
+            noRuntimeValues: "This flow defines no runtime values. Define them in the Start node.",
+            notifications: {
+                updateError: {
+                    description: "The flow was saved, but the access configuration of a flow extension couldn't "
+                        + "be updated. Save the flow again to retry.",
+                    message: "Couldn't update the flow extension"
+                }
+            },
+            runtimeValues: "Runtime values",
+            title: "Access configuration"
+        },
         connectionLabel: "Connection",
         connectionPlaceholder: "Select a connection",
         description: "Select an flow extension to link with this flow step.",

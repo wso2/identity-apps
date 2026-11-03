@@ -44,6 +44,8 @@ export interface ContextTreeNodeMetadataInterface {
     canDelete?: boolean;
     dynamicEntryAllowed?: boolean;
     dynamicEntryType?: string;
+    /** Flow types the node applies to. `ALL` means every flow type. */
+    applicableFlowTypes?: string[];
     children?: ContextTreeNodeMetadataInterface[];
 }
 
@@ -91,6 +93,13 @@ export interface TreeNodeStateInterface {
     /** Whether the extension returns this field's modified (write) value encrypted. */
     modifyEncrypted: boolean;
     isClaim?: boolean;
+    /**
+     * Flow type of a runtime value or request header entry, and of the flow type group holding it.
+     * Undefined for every other node, which applies to all flows.
+     */
+    flowType?: string;
+    /** Whether the entry's flow no longer defines it. */
+    notInFlow?: boolean;
     children?: TreeNodeStateInterface[];
 }
 
@@ -151,6 +160,8 @@ export interface FlowExtensionAccessConfigInterface {
 export interface ContextPathOutputInterface {
     path: string;
     encrypted?: boolean;
+    /** Flow type of a runtime value or request header entry. */
+    flowType?: string;
 }
 
 /**

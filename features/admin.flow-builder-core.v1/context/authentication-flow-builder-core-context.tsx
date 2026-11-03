@@ -23,6 +23,7 @@ import { EdgeTypes, NodeTypes } from "@xyflow/react";
 import { AxiosError } from "axios";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
+import { FlowExtensionAccessConfigInterface } from "../models/flow-extension-access";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { MetadataInterface, RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
 import { VariableLimitsInterface } from "../models/variables";
@@ -150,6 +151,31 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Limits on flow variables, from the console's deployment configuration.
      */
     variableLimits?: VariableLimitsInterface;
+    /**
+     * Type of the flow being built.
+     */
+    flowType?: string;
+    /**
+     * Access configs of the flow extensions changed in this flow, by extension ID. They are saved after the flow.
+     */
+    flowExtensionAccessConfigs?: Record<string, FlowExtensionAccessConfigInterface>;
+    /**
+     * Keeps a changed access config of a flow extension, to save after the flow.
+     *
+     * @param extensionId - ID of the flow extension.
+     * @param accessConfig - The full access config of the flow extension.
+     */
+    setFlowExtensionAccessConfig?: (extensionId: string, accessConfig: FlowExtensionAccessConfigInterface) => void;
+    /**
+     * Saves the changed access configs of the flow extensions the flow still uses.
+     *
+     * @returns Whether every one was saved.
+     */
+    saveFlowExtensionAccessConfigs?: () => Promise<boolean>;
+    /**
+     * Increases each time the flow extensions are saved, so their views reload them.
+     */
+    flowExtensionsSavedVersion?: number;
     /**
      * Configured i18n text from the branding or default fallback.
      */

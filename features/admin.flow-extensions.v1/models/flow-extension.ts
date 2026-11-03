@@ -27,6 +27,11 @@ interface ContextPathInterface {
      * per-field encryption mark; gated UI until certificate-based encryption ships end-to-end.
      */
     encrypted?: boolean;
+    /**
+     * Flow type of a runtime value or request header entry, as each flow defines its own.
+     * Other entries apply to all flows and have none.
+     */
+    flowType?: string;
 }
 
 /**

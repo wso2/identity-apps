@@ -165,6 +165,21 @@ export interface flowExtensionNS {
         connectionPlaceholder: string;
         noConnectionsWarning: string;
         noConnectionsWarningWithSupport: string;
+        accessConfig: {
+            title: string;
+            description: string;
+            advancedHint: string;
+            runtimeValues: string;
+            headers: string;
+            noRuntimeValues: string;
+            noHeaders: string;
+            notifications: {
+                updateError: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
     };
     contextTree: {
         fieldConfig: {
@@ -176,6 +191,8 @@ export interface flowExtensionNS {
             deleteTooltip: string;
             usernameWriteWarning: string;
             identityClaimWriteWarning: string;
+            flowTypeHint: string;
+            notInFlowWarning: string;
             encryption: {
                 title: string;
                 formReadOnly: string;
@@ -200,6 +217,12 @@ export interface flowExtensionNS {
             addEntryChip: string;
             readOnlyBadge: string;
             noEntries: string;
+            notInFlowBadge: string;
+        };
+        flowTypes: {
+            REGISTRATION: string;
+            PASSWORD_RECOVERY: string;
+            INVITED_USER_REGISTRATION: string;
         };
         addClaimModal: {
             title: string;

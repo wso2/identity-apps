@@ -49,6 +49,7 @@ import AddOrganizationAttributeModal from "./add-organization-attribute-modal";
 import { OrganizationAttributeEntryInterface } from "./organization-attributes";
 import { OrganizationContextConstants } from "../../constants/organization-context-constants";
 import FlowContextTreeNode from "./flow-context-tree-node";
+import { pruneEmptyFlowTypeGroups } from "./flow-variables";
 import {
     AddEntryModalStateInterface,
     ContextPathOutputInterface,
@@ -373,6 +374,24 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
                         </Alert>
                     ) }
 
+                    { selectedNode.flowType && (
+                        <Alert
+                            severity={ selectedNode.notInFlow ? "warning" : "info" }
+                            sx={ { mt: 2 } }
+                            data-componentid={ `${componentId}-flow-type-hint` }
+                        >
+                            { t(
+                                selectedNode.notInFlow
+                                    ? "flowExtension:contextTree.fieldConfig.notInFlowWarning"
+                                    : "flowExtension:contextTree.fieldConfig.flowTypeHint",
+                                {
+                                    flowType: t(`flowExtension:contextTree.flowTypes.${selectedNode.flowType}`,
+                                        { defaultValue: selectedNode.flowType })
+                                }
+                            ) }
+                        </Alert>
+                    ) }
+
                     { showIdentityClaimWriteWarning && (
                         <Alert
                             severity="warning"
@@ -614,7 +633,8 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
     }, []);
 
     const handleDelete = useCallback((key: string): void => {
-        setTree((prev: TreeNodeStateInterface[]) => deleteNode(prev, key));
+        // A flow type group goes with its last runtime value or header.
+        setTree((prev: TreeNodeStateInterface[]) => pruneEmptyFlowTypeGroups(deleteNode(prev, key)));
     }, []);
 
     const handleAddChild = useCallback((node: TreeNodeStateInterface): void => {

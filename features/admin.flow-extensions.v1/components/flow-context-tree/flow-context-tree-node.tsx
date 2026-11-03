@@ -227,6 +227,8 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
         node.nodeType === NodeType.MAP ||
         node.nodeType === NodeType.COMPLEX_MAP;
     const selected: boolean = selectedKey === node.key && isLeaf;
+    // Flow type rows only separate the runtime values or headers of each flow, so they are kept light.
+    const isFlowTypeGroup: boolean = isContainer && !!node.flowType;
 
     // Container band sits a few pixels to the left of the row's content padding so
     // the chevron + title get a small left gutter inside the band.
@@ -289,7 +291,16 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                                 backgroundColor: selected ? "#FFF4EC" : "#F4F4F4"
                             },
                             backgroundColor: selected ? "#FFF4EC" : "transparent"
-                        })
+                        }),
+                    // A flow type row drops the container band and sits closer to its entries.
+                    ...(isFlowTypeGroup
+                        ? {
+                            "&::before": { display: "none" },
+                            minHeight: "26px",
+                            pb: "2px",
+                            pt: "6px"
+                        }
+                        : {})
                 } }
             >
                 { /* Expand icon (containers only); leaves keep the slot empty for alignment. */ }
@@ -332,21 +343,55 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                         sx={ {
                             // Group headers are always primary; the "Read-Only" caption (not the
                             // colour) conveys read-only state, so headers don't dim with their content.
-                            color: isContainer ? "text.primary" : "text.secondary",
+                            color: isFlowTypeGroup
+                                ? "text.disabled"
+                                : isContainer ? "text.primary" : "text.secondary",
                             fontFamily: isLeaf || node.canDelete
                                 ? "monospace"
                                 : undefined,
-                            fontSize: isContainer ? 14 : 13,
-                            fontWeight: isContainer ? 600 : 500,
-                            letterSpacing: "-0.01em",
-                            lineHeight: 1,
+                            fontSize: isFlowTypeGroup ? 11 : isContainer ? 14 : 13,
+                            fontWeight: isFlowTypeGroup ? 500 : isContainer ? 600 : 500,
+                            letterSpacing: isFlowTypeGroup ? "0.02em" : "-0.01em",
+                            lineHeight: 1.4,
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                             whiteSpace: "nowrap"
                         } }
                     >
-                        { node.title }
+                        { isContainer && node.flowType
+                            ? t(`flowExtension:contextTree.flowTypes.${node.flowType}`, {
+                                defaultValue: node.flowType
+                            })
+                            : node.title }
                     </Typography>
+                    { isLeaf && node.flowType && node.dataType && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "text.disabled",
+                                flexShrink: 0,
+                                fontFamily: "monospace",
+                                fontSize: "9px",
+                                lineHeight: 1
+                            } }
+                        >
+                            { node.dataType }
+                        </Typography>
+                    ) }
+                    { isLeaf && node.notInFlow && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "warning.main",
+                                flexShrink: 0,
+                                fontSize: "9px",
+                                fontWeight: 600,
+                                lineHeight: 1
+                            } }
+                        >
+                            { t("flowExtension:contextTree.node.notInFlowBadge") }
+                        </Typography>
+                    ) }
                     { isLeaf && node.readOnly && (
                         <Typography
                             component="span"

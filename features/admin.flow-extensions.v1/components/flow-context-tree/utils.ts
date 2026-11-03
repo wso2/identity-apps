@@ -25,6 +25,13 @@ import {
     NodeType,
     TreeNodeStateInterface
 } from "./models";
+import {
+    FlowVariableEntryStateInterface,
+    belongsToContainer,
+    buildFlowVariableRows,
+    isFlowScopedEntry,
+    isFlowVariableContainerPath
+} from "./flow-variables";
 
 /**
  * Check if a node is a container (OBJECT, MAP, or COMPLEX_MAP).
@@ -110,9 +117,13 @@ export const mapMetadataToState = (
     nodes.map((node: ContextTreeNodeMetadataInterface) => ({
         allowedOperations: node.allowedOperations || [],
         canDelete: node.canDelete ?? false,
-        children: node.children ? mapMetadataToState(node.children) : undefined,
+        // A flow variable container lists every runtime value or header the flows define, by flow
+        // type, so nothing is added to it by hand.
+        children: isFlowVariableContainerPath(node.path)
+            ? buildFlowVariableRows({ path: node.path, readOnly: node.readOnly ?? false }, node.children, [])
+            : node.children ? mapMetadataToState(node.children) : undefined,
         dataType: node.dataType,
-        dynamicEntryAllowed: node.dynamicEntryAllowed ?? false,
+        dynamicEntryAllowed: !isFlowVariableContainerPath(node.path) && (node.dynamicEntryAllowed ?? false),
         dynamicEntryType: node.dynamicEntryType ?? "",
         exposeEncrypted: false,
         exposed: false,
@@ -202,10 +213,46 @@ export const mapMetadataToStateWithAccessConfig = (
     // to the container's `dynamicEntryType` ("Object").
     const modifyTypeHints: Map<string, string> = new Map();
 
-    (accessConfig.expose ?? []).forEach((e: { path: string; encrypted?: boolean }) => {
+    // Runtime value and request header entries, keyed by path and flow type, as the same path is
+    // configured once per flow type.
+    const flowScopedEntries: Map<string, FlowVariableEntryStateInterface> = new Map();
+    const getFlowScopedState = (entry: ContextPathOutputInterface): FlowVariableEntryStateInterface => {
+        const key: string = `${entry.path}#${entry.flowType}`;
+
+        if (!flowScopedEntries.has(key)) {
+            flowScopedEntries.set(key, {
+                exposeEncrypted: false,
+                exposed: false,
+                flowType: entry.flowType,
+                modify: false,
+                modifyEncrypted: false,
+                path: entry.path
+            });
+        }
+
+        return flowScopedEntries.get(key);
+    };
+
+    (accessConfig.expose ?? []).forEach((e: ContextPathOutputInterface) => {
+        if (isFlowScopedEntry(e)) {
+            const state: FlowVariableEntryStateInterface = getFlowScopedState(e);
+
+            state.exposed = true;
+            state.exposeEncrypted = !!e.encrypted;
+
+            return;
+        }
         exposePaths.set(normalisePath(decodeClaimPath(e.path)), !!e.encrypted);
     });
-    (accessConfig.modify ?? []).forEach((m: { path: string; encrypted?: boolean }) => {
+    (accessConfig.modify ?? []).forEach((m: ContextPathOutputInterface) => {
+        if (isFlowScopedEntry(m)) {
+            const state: FlowVariableEntryStateInterface = getFlowScopedState(m);
+
+            state.modify = true;
+            state.modifyEncrypted = !!m.encrypted;
+
+            return;
+        }
         const decoded: string = decodeClaimPath(m.path);
         const typeHintMatch: RegExpMatchArray | null = decoded.match(/\{([^}]+)\}$/);
         const cleanPath: string = decoded.replace(/\{[^}]+\}$/, "");
@@ -235,6 +282,18 @@ export const mapMetadataToStateWithAccessConfig = (
         return { covered: false, encrypted: false };
     };
 
+    /**
+     * Convert a runtime value or request header container, with the saved READ, WRITE and encryption
+     * marks of its entries.
+     */
+    const convertFlowVariableContainer = (node: ContextTreeNodeMetadataInterface): TreeNodeStateInterface => {
+        const container: TreeNodeStateInterface = mapMetadataToState([ node ])[0];
+        const savedEntries: FlowVariableEntryStateInterface[] = [ ...flowScopedEntries.values() ]
+            .filter((entry: FlowVariableEntryStateInterface) => belongsToContainer(entry, node.path));
+
+        return { ...container, children: buildFlowVariableRows(container, node.children, savedEntries) };
+    };
+
     const convert = (
         metaNodes: ContextTreeNodeMetadataInterface[],
         parentExposed: boolean,
@@ -244,6 +303,13 @@ export const mapMetadataToStateWithAccessConfig = (
 
         for (const node of metaNodes) {
             const np: string = normalisePath(node.path);
+
+            if (isFlowVariableContainerPath(node.path)) {
+                result.push(convertFlowVariableContainer(node));
+
+                continue;
+            }
+
             const nodeIsContainer: boolean = isContainer({
                 nodeType: node.nodeType
             } as TreeNodeStateInterface);
@@ -510,18 +576,29 @@ export const buildAccessConfig = (
             if (isLeaf) {
                 // Expose: leaf-only
                 if (node.exposed) {
-                    expose.push({ encrypted: !!node.exposeEncrypted, path: encodeClaimPath(node.path) });
+                    expose.push({
+                        encrypted: !!node.exposeEncrypted,
+                        path: encodeClaimPath(node.path),
+                        ...(node.flowType ? { flowType: node.flowType } : {})
+                    });
                 }
 
                 // Modify: leaf-only
                 if (node.modify) {
+                    // A runtime value takes its type from the flow that defines it, so it gets no
+                    // type hint.
                     const modifyPath: string = node.canDelete &&
+                        !node.flowType &&
                         node.dataType &&
                         node.dataType !== "String"
                         ? `${node.path}{${node.dataType}}`
                         : node.path;
 
-                    modify.push({ encrypted: !!node.modifyEncrypted, path: encodeClaimPath(modifyPath) });
+                    modify.push({
+                        encrypted: !!node.modifyEncrypted,
+                        path: encodeClaimPath(modifyPath),
+                        ...(node.flowType ? { flowType: node.flowType } : {})
+                    });
                 }
             }
 

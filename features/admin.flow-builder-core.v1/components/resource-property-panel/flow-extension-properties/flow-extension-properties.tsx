@@ -37,6 +37,7 @@ import { FlowExtensionConnectionInterface } from "../../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
 } from "../resource-properties";
+import FlowExtensionAccessConfig from "./flow-extension-access-config";
 import "./flow-extension-properties.scss";
 
 const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
@@ -167,6 +168,12 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
             />
             { errorMessage && (
                 <FormHelperText error>{ errorMessage }</FormHelperText>
+            ) }
+            { selectedConnection && (
+                <FlowExtensionAccessConfig
+                    extensionId={ selectedConnection.actionId }
+                    data-componentid={ `${componentId}-access-config` }
+                />
             ) }
             { !isFlowMetadataLoading && !connections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
