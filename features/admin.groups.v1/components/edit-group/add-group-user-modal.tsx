@@ -18,7 +18,7 @@
 
 import Button from "@oxygen-ui/react/Button";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
-import { useUsersList } from "@wso2is/admin.users.v1/api";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -72,91 +72,90 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isUserListLoading, setIsUserListLoading ] = useState<boolean>(false);
     const [ isSelectAllUsers, setIsSelectAllUsers ] = useState<boolean>(false);
     const [ userList, setUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     /**
-     * Fetch the user list.
-     */
-    const {
-        data: originalUserList,
-        isLoading: isUserListFetchRequestLoading,
-        isValidating: isUserListFetchRequestValidating,
-        error: userListFetchRequestError
-    } = useUsersList(
-        20,
-        0,
-        !isEmpty(searchQuery) ? searchQuery : null,
-        null,
-        userstore,
-        null
-    );
-
-    /**
-     * Set the user list.
-     * This will be triggered when the user list is fetched.
-     * This will also check if the user is already assigned to the group.
-     * If the user is already assigned to the group, it will be added to the selected users list.
+     * Fetch users in pages until enough users that are not assigned to this group
+     * are found. A single first page is insufficient when its users are already
+     * members of the group.
      */
     useEffect(() => {
-        if (!originalUserList || isUserListFetchRequestLoading) {
+        if (!showAddNewUserModal) {
             return;
         }
 
-        if (originalUserList.Resources) {
-            const filteredUsers: UserBasicInterface[] = [];
+        let isRequestCancelled: boolean = false;
 
-            originalUserList.Resources.map((user: UserBasicInterface) => {
-                let isUserExistInGroup: boolean = false;
+        const fetchAvailableUsers = async (): Promise<void> => {
+            const pageSize: number = 20;
+            const availableUsers: UserBasicInterface[] = [];
+            const filter: string = !isEmpty(searchQuery) ? searchQuery : null;
+            let startIndex: number = 0;
 
-                if (user?.groups?.length > 0) {
-                    user.groups.map((userGroup: UserRoleInterface) => {
-                        if (userGroup.display === group.displayName) {
-                            isUserExistInGroup = true;
+            setIsUserListLoading(true);
+            setUserList([]);
+
+            try {
+                while (availableUsers.length < pageSize) {
+                    const response = await getUsersList(pageSize, startIndex, filter, null, userstore, null);
+
+                    if (isRequestCancelled) {
+                        return;
+                    }
+
+                    const pageUsers: UserBasicInterface[] = response?.Resources ?? [];
+
+                    pageUsers.forEach((user: UserBasicInterface) => {
+                        const isUserAlreadyAssigned: boolean = user?.groups?.some(
+                            (userGroup: UserRoleInterface) => userGroup.display === group.displayName
+                        ) ?? false;
+
+                        if (!isUserAlreadyAssigned) {
+                            availableUsers.push(user);
                         }
                     });
+
+                    // LDAP stores may omit totalResults; a short page still signals completion.
+                    startIndex += pageUsers.length;
+
+                    if (pageUsers.length < pageSize
+                        || (typeof response?.totalResults === "number"
+                            && startIndex >= response.totalResults)) {
+                        break;
+                    }
                 }
 
-                // Do not show the user if the user is already assigned to the group.
-                if (!isUserExistInGroup) {
-                    filteredUsers.push(user);
+                if (!isRequestCancelled) {
+                    setUserList(availableUsers);
                 }
-            });
+            } catch (error) {
+                if (!isRequestCancelled) {
+                    const description: string = error?.response?.data?.description
+                        ?? t("console:manage.features.users.notifications.fetchUsers.genericError.description");
 
-            setUserList(filteredUsers);
-        } else {
-            setUserList([]);
-        }
-    }, [ originalUserList, isUserListFetchRequestLoading ]);
+                    dispatch(addAlert({
+                        description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    }));
+                }
+            } finally {
+                if (!isRequestCancelled) {
+                    setIsUserListLoading(false);
+                }
+            }
+        };
 
-    /**
-     * Handles the user list fetch request error.
-     */
-    useEffect(() => {
-        if (!userListFetchRequestError) {
-            return;
-        }
+        fetchAvailableUsers();
 
-        if (userListFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: userListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications." +
-                    "fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
-        }));
-    }, [ userListFetchRequestError ]);
+        return () => {
+            isRequestCancelled = true;
+        };
+    }, [ showAddNewUserModal, searchQuery, userstore, group?.displayName ]);
 
     /**
      * This is a debounced function to handle the user search by email address.
@@ -239,20 +238,20 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={ t("groups:edit.users.searchUsers") }
-                    isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                    isLoading={ isUserListLoading }
                     handleHeaderCheckboxChange={ () => selectAllAssignedList() }
                     isHeaderCheckboxChecked={ isSelectAllUsers }
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
                         handleSearchFieldChange(e, value);
                     } }
-                    showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
+                    showSelectAllCheckbox={ !isUserListLoading && userList.length > 0 }
                     data-testid={ `${ componentId }-user-list-transfer` }
                 >
                     <TransferList
                         selectionComponent
                         bordered={ true }
-                        isListEmpty={ userList.length <= 0 }
-                        isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                        isListEmpty={ !isUserListLoading && userList.length <= 0 }
+                        isLoading={ isUserListLoading }
                         listType="unselected"
                         selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
                         data-testid={ `${ componentId }-unselected-transfer-list` }
