@@ -111,14 +111,24 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 if (!isRequestCancelled && availableUsers) {
                     setUserList(availableUsers);
                 }
-            } catch {
+            } catch (error: unknown) {
+                const errorDescription = (error as {
+                    response?: {
+                        data?: {
+                            description?: string;
+                        };
+                    };
+                })?.response?.data?.description;
+
                 if (!isRequestCancelled) {
                     dispatch(addAlert({
-                        description: t(
+                        description: errorDescription || t(
                             "console:manage.features.users.notifications.fetchUsers.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        message: t(errorDescription
+                            ? "console:manage.features.users.notifications.fetchUsers.error.message"
+                            : "console:manage.features.users.notifications.fetchUsers.genericError.message")
                     }));
                 }
             } finally {
