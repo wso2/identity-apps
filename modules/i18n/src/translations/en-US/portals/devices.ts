@@ -214,6 +214,10 @@ export const devices: DevicesNS = {
                 registeredAt: "Registered On",
                 status: "Status"
             },
+            inherited: {
+                hint: "This device is registered in the user's parent organization and can only be managed there.",
+                label: "Inherited"
+            },
             status: {
                 ACTIVE: "Active",
                 INACTIVE: "Inactive"

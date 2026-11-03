@@ -554,6 +554,7 @@ export const myAccount: MyAccountNS = {
                 rename: "Rename"
             },
             list: {
+                inherited: "Managed by your parent organization",
                 registeredOn: "Registered on {{date}}"
             },
             modals: {

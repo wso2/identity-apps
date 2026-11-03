@@ -207,6 +207,10 @@ export interface DevicesNS {
                 registeredAt: string;
                 status: string;
             };
+            inherited: {
+                hint: string;
+                label: string;
+            };
             status: {
                 ACTIVE: string;
                 INACTIVE: string;
