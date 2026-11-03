@@ -1,5 +1,16 @@
 # @wso2is/admin.core.v1
 
+## 2.63.4
+
+### Patch Changes
+
+- [#10751](https://github.com/wso2/identity-apps/pull/10751) [`3ae52dfac2943baf2b39db6e1f4b8a2b7414bc07`](https://github.com/wso2/identity-apps/commit/3ae52dfac2943baf2b39db6e1f4b8a2b7414bc07) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add organization management support to the Customer Data Service pages: an Organization Settings page with the organization sync and the organization access, share settings for profile attributes and unification rules, shared and inherited attributes and rules, and the Customer Data pages in child organizations
+
+- Updated dependencies [[`3ae52dfac2943baf2b39db6e1f4b8a2b7414bc07`](https://github.com/wso2/identity-apps/commit/3ae52dfac2943baf2b39db6e1f4b8a2b7414bc07)]:
+  - @wso2is/admin.cds.v1@1.8.0
+  - @wso2is/i18n@2.56.1
+  - @wso2is/admin.users.v1@2.39.3
+
 ## 2.63.3
 
 ### Patch Changes
