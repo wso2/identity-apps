@@ -25,6 +25,7 @@ import type {} from "@testing-library/jest-dom/vitest";
 const updateDCRConfigurationsMock: Mock = vi.hoisted(() => vi.fn());
 const updateOAuth2InboundConfigMock: Mock = vi.hoisted(() => vi.fn());
 const useGetOAuth2InboundConfigMock: Mock = vi.hoisted(() => vi.fn());
+const useGetDCRConfigurationsMock: Mock = vi.hoisted(() => vi.fn());
 
 vi.mock("../../api/applications-settings", () => ({
     updateDCRConfigurations: updateDCRConfigurationsMock,
@@ -32,16 +33,7 @@ vi.mock("../../api/applications-settings", () => ({
 }));
 
 vi.mock("../../api/use-get-dcr-configurations", () => ({
-    useGetDCRConfigurations: () => ({
-        data: {
-            authenticationRequired: true,
-            enableFapiEnforcement: false,
-            mandateSSA: false
-        },
-        error: null,
-        isLoading: false,
-        mutate: vi.fn()
-    })
+    useGetDCRConfigurations: useGetDCRConfigurationsMock
 }));
 
 vi.mock("../../api/use-get-oauth2-inbound-config", () => ({
@@ -74,6 +66,16 @@ const renderPage = (enableClientIdMetadataDocument: boolean): void => {
 
 describe("Application Settings page", () => {
     beforeEach(() => {
+        useGetDCRConfigurationsMock.mockReturnValue({
+            data: {
+                authenticationRequired: true,
+                enableFapiEnforcement: false,
+                mandateSSA: false
+            },
+            error: null,
+            isLoading: false,
+            mutate: vi.fn()
+        });
         updateDCRConfigurationsMock.mockReset().mockResolvedValue(undefined);
         updateOAuth2InboundConfigMock.mockReset().mockResolvedValue(undefined);
     });
@@ -102,5 +104,23 @@ describe("Application Settings page", () => {
         fireEvent.click(screen.getByRole("button", { name: "common:update" }));
 
         await waitFor(() => expect(updateDCRConfigurationsMock).toHaveBeenCalledTimes(1));
+    });
+
+    it("does not update DCR when its settings could not be loaded", async () => {
+        useGetDCRConfigurationsMock.mockReturnValue({
+            data: undefined,
+            error: { response: { data: { description: "Failed to retrieve the DCR configuration." } } },
+            isLoading: false,
+            mutate: vi.fn()
+        });
+        renderPage(false);
+
+        fireEvent.click(getInput("enableClientIdMetadataDocument"));
+        fireEvent.click(screen.getByRole("button", { name: "common:update" }));
+
+        await waitFor(() => expect(updateOAuth2InboundConfigMock).toHaveBeenCalledWith({
+            enableClientIdMetadataDocument: true
+        }));
+        expect(updateDCRConfigurationsMock).not.toHaveBeenCalled();
     });
 });

@@ -277,10 +277,11 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
             );
         }
 
-        const isDCRConfigChanged: boolean = values.authenticationRequired !== dcrConfigs?.authenticationRequired
-            || values.mandateSSA !== dcrConfigs?.mandateSSA
-            || (!isFapiFeatureEnabled && values.enableFapiEnforcement !== dcrConfigs?.enableFapiEnforcement)
-            || (values.ssaJwks ?? "") !== (dcrConfigs?.ssaJwks ?? "");
+        const isDCRConfigChanged: boolean = !!dcrConfigs
+            && (values.authenticationRequired !== dcrConfigs.authenticationRequired
+                || values.mandateSSA !== dcrConfigs.mandateSSA
+                || (!isFapiFeatureEnabled && values.enableFapiEnforcement !== dcrConfigs.enableFapiEnforcement)
+                || (values.ssaJwks ?? "") !== (dcrConfigs.ssaJwks ?? ""));
         const updateRequests: Promise<unknown>[] = [];
 
         if (isDCRConfigChanged) {
