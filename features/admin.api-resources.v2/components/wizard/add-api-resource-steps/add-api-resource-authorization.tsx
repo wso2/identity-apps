@@ -111,7 +111,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                 name="authorization"
                 label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form.fields." +
                     "authorize.label") }
-                tabIndex={ 3 }
+                tabIndex={ 0 }
                 hint={
                     (<>
                         <Trans

@@ -276,7 +276,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                             type="password"
                             value={ initialValues?.newPassword }
                             validation={ validateNewPassword }
-                            tabIndex={ 5 }
+                            tabIndex={ 0 }
                             enableReinitialize={ true }
                             listen={ handlePasswordChange }
                             maxWidth={ 60 }
@@ -435,7 +435,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         displayErrorOn="blur"
                                         type="email"
                                         value={ initialValues && initialValues.email }
-                                        tabIndex={ 1 }
+                                        tabIndex={ 0 }
                                         maxLength={ 60 }
                                     />
                                 </Grid.Column>
@@ -486,7 +486,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         } }
                                         type="text"
                                         value={ initialValues && initialValues.username }
-                                        tabIndex={ 1 }
+                                        tabIndex={ 0 }
                                         maxLength={ 60 }
                                     />
                                     <Hint>
@@ -528,7 +528,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         } }
                                         type="email"
                                         value={ initialValues && initialValues.email }
-                                        tabIndex={ 1 }
+                                        tabIndex={ 0 }
                                         maxLength={ 60 }
                                     />
                                 </Grid.Column>
@@ -556,7 +556,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                     ) }
                                     type="text"
                                     value={ initialValues && initialValues.firstName }
-                                    tabIndex={ 2 }
+                                    tabIndex={ 0 }
                                     maxLength={ 30 }
                                 />
                             </Grid.Column>
@@ -584,7 +584,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                     ) }
                                     type="text"
                                     value={ initialValues && initialValues.lastName }
-                                    tabIndex={ 3 }
+                                    tabIndex={ 0 }
                                     maxLength={ 30 }
                                 />
                             </Grid.Column>
@@ -603,7 +603,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                 { setPasswordOption(values.get("passwordOption").toString()); } }
                                 children={ passwordOptions }
                                 value={ initialValues?.passwordOption ? initialValues?.passwordOption : "ask-password" }
-                                tabIndex={ 4 }
+                                tabIndex={ 0 }
                                 maxWidth={ 60 }
                                 width={ 60 }
                             />

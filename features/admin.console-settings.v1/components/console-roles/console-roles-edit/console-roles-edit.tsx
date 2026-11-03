@@ -178,7 +178,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             isSubOrganization={ isSubOrg }
                         />
                     </ResourceTab.Pane>
@@ -196,7 +196,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             isReadOnly={ !hasRolesUpdatePermissions || isReadOnlyProp }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 2 }
+                            tabIndex={ 0 }
                         />
                     </ResourceTab.Pane>
                 )
@@ -242,7 +242,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                                     ? activeUserStore
                                     : null
                             }
-                            tabIndex={ 3 }
+                            tabIndex={ 0 }
                         />
                     </ResourceTab.Pane>
                 )
@@ -257,7 +257,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                                 isReadOnly={ !hasRolesUpdatePermissions || isReadOnlyProp }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 4 }
+                                tabIndex={ 0 }
                             />
                         </ResourceTab.Pane>
                     )

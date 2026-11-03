@@ -341,7 +341,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                             setIsSelectAllUsers(false);
                                         }
                                     }
-                                    tabIndex={ 1 }
+                                    tabIndex={ 0 }
                                     maxLength={ 60 }
                                 />
                             </GridColumn>

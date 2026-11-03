@@ -322,7 +322,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                tabIndex={ 6 }
+                                tabIndex={ 0 }
                                 data-testid={ `${componentId}-cancel-button` }
                                 floated="left"
                                 onClick={ () => closeWizard() }
@@ -333,7 +333,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep !== steps.length - 1 && (
                                 <PrimaryButton
-                                    tabIndex={ 7 }
+                                    tabIndex={ 0 }
                                     data-testid={ `${componentId}-next-button` }
                                     floated="right"
                                     onClick={ () => handleWizardFormSubmit() }
@@ -346,7 +346,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                             ) }
                             { currentWizardStep === steps.length - 1 && (
                                 <PrimaryButton
-                                    tabIndex={ 8 }
+                                    tabIndex={ 0 }
                                     data-testid={ `${componentId}-finish-button` }
                                     floated="right"
                                     onClick={ () => handleWizardFormSubmit() }
@@ -357,7 +357,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton
-                                    tabIndex={ 9 }
+                                    tabIndex={ 0 }
                                     data-testid={ `${componentId}-previous-button` }
                                     floated="right"
                                     onClick={ () => handlePrevious() }

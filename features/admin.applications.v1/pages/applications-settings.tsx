@@ -414,7 +414,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                                 </DocumentationLink>
                             </>
                         ) }
-                        tabIndex={ 3 }
+                        tabIndex={ 0 }
                         width={ 16 }
                         listen={ (value: boolean) => {
                             setAuthenticationRequired(value);
@@ -431,7 +431,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                         name="mandateSSA"
                         label={ t("applications:forms.applicationsSettings.fields.mandateSSA.label") }
                         hint={ t("applications:forms.applicationsSettings.fields.mandateSSA.hint") }
-                        tabIndex={ 3 }
+                        tabIndex={ 0 }
                         width={ 16 }
                         readOnly={ !hasDynamicClientRegistrationUpdatePermission || !isAuthenticationRequired }
                         listen={ (value: boolean) => setMandateSSA(value) }
@@ -457,7 +457,7 @@ const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInter
                             name="enableFapiEnforcement"
                             label={ t("applications:forms.applicationsSettings.fields.enforceFapi.label") }
                             hint={ t("applications:forms.applicationsSettings.fields.enforceFapi.hint") }
-                            tabIndex={ 3 }
+                            tabIndex={ 0 }
                             width={ 16 }
                             listen={ (value: boolean) => setEnableFapiEnforcement(value) }
                             readOnly={ !hasDynamicClientRegistrationUpdatePermission }
