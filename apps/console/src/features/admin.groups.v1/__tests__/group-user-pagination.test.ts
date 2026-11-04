@@ -301,7 +301,10 @@ describe("fetchAvailableGroupUsers", () => {
                 userstore: USERSTORE
             });
 
-            expect(batch).not.toBeNull();
+            if (!batch) {
+                throw new Error("Expected a user batch while more users are available.");
+            }
+
             loadedUsers.push(...batch.users);
             startIndex = batch.nextStartIndex;
             seenUserIds = batch.seenUserIds;
