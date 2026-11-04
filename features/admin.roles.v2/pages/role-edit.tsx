@@ -26,7 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -71,10 +71,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         isValidating: isRoleDetailsRequestValidatingV3
     } = useGetRoleByIdV3(userRolesV3FeatureEnabled ? roleId : null);
 
-    const roleObject: any = useMemo(
-        () => userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2,
-        [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]
-    );
+    const roleObject: any = userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2;
 
     /**
      * Get Role data from URL id
