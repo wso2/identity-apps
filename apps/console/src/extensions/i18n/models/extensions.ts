@@ -18,13 +18,15 @@
 
 import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+
 export interface Extensions {
     develop: {
         apiResource: {
             resourceTypes: {
                 api: string;
+                management: string;
                 mcp: string;
+                organization: string;
             },
             pageHeader: {
                 description: string;
