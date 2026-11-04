@@ -40,6 +40,7 @@ export interface FetchAvailableGroupUsersOptions {
 export interface FetchAvailableGroupUsersPageOptions extends FetchAvailableGroupUsersOptions {
     startIndex?: number;
     seenUserIds?: string[];
+    pendingUsers?: UserBasicInterface[];
 }
 
 export interface FetchAvailableGroupUsersPageResult {
@@ -47,6 +48,7 @@ export interface FetchAvailableGroupUsersPageResult {
     nextStartIndex: number;
     hasMore: boolean;
     seenUserIds: string[];
+    pendingUsers: UserBasicInterface[];
 }
 
 /**
@@ -60,10 +62,10 @@ export const fetchAvailableGroupUsersPage = async (
 ): Promise<FetchAvailableGroupUsersPageResult | null> => {
 
     const pageSize: number = options.pageSize ?? 20;
-    const availableUsers: UserBasicInterface[] = [];
+    const availableUsers: UserBasicInterface[] = [ ...(options.pendingUsers ?? []) ];
     const seenUserIds: Set<string> = new Set<string>(options.seenUserIds ?? []);
     let startIndex: number = options.startIndex ?? 0;
-    let hasMore: boolean = true;
+    let hasMore: boolean = availableUsers.length > pageSize;
 
     while (availableUsers.length < pageSize) {
         const response: UserListInterface = await options.getUsersList(
@@ -100,13 +102,19 @@ export const fetchAvailableGroupUsersPage = async (
             hasMore = false;
             break;
         }
+
+        hasMore = true;
     }
 
+    const users: UserBasicInterface[] = availableUsers.slice(0, pageSize);
+    const pendingUsers: UserBasicInterface[] = availableUsers.slice(pageSize);
+
     return {
-        hasMore,
+        hasMore: hasMore || pendingUsers.length > 0,
         nextStartIndex: startIndex,
+        pendingUsers,
         seenUserIds: Array.from(seenUserIds),
-        users: availableUsers
+        users
     };
 };
 
