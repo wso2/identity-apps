@@ -18,9 +18,10 @@
 
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import {
+    FetchAvailableGroupUsersPageResult,
+    GetUsersListFunction,
     fetchAvailableGroupUsers,
-    fetchAvailableGroupUsersPage,
-    GetUsersListFunction
+    fetchAvailableGroupUsersPage
 } from "../../../../../../features/admin.groups.v1/utils/group-user-pagination";
 
 const PAGE_SIZE: number = 20;
@@ -38,20 +39,20 @@ describe("fetchAvailableGroupUsers", () => {
     it("fetches the next page when all users on the first page are already group members", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`assigned-${index}`, true)
+            (_: unknown, index: number) => createUser(`assigned-${index}`, true)
         );
         const secondPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`available-${index}`, false)
+            (_: unknown, index: number) => createUser(`available-${index}`, false)
         );
-        const getUsersListMock = jest.fn();
+        const getUsersListMock: jest.Mock = jest.fn();
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         getUsersListMock
             .mockResolvedValueOnce({ Resources: firstPage, totalResults: PAGE_SIZE * 2 })
             .mockResolvedValueOnce({ Resources: secondPage, totalResults: PAGE_SIZE * 2 });
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -69,12 +70,12 @@ describe("fetchAvailableGroupUsers", () => {
     it("continues pagination when LDAP reports totalResults for only the current page", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`assigned-${index}`, true)
+            (_: unknown, index: number) => createUser(`assigned-${index}`, true)
         );
         const secondPage: UserBasicInterface[] = [
             createUser("available-ldap-user", false)
         ];
-        const getUsersListMock = jest.fn();
+        const getUsersListMock: jest.Mock = jest.fn();
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         // LDAP can report totalResults=pageSize for each full page even when more users exist.
@@ -84,7 +85,7 @@ describe("fetchAvailableGroupUsers", () => {
             // A short page is not conclusive for every user store; an empty page confirms exhaustion.
             .mockResolvedValueOnce({ Resources: [] });
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -101,13 +102,13 @@ describe("fetchAvailableGroupUsers", () => {
     it("handles user stores that omit totalResults and stops after a short final page", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`assigned-${index}`, true)
+            (_: unknown, index: number) => createUser(`assigned-${index}`, true)
         );
         const finalPage: UserBasicInterface[] = [
             createUser("available-1", false),
             createUser("available-2", false)
         ];
-        const getUsersListMock = jest.fn();
+        const getUsersListMock: jest.Mock = jest.fn();
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         getUsersListMock
@@ -116,7 +117,7 @@ describe("fetchAvailableGroupUsers", () => {
             // The helper requests one more page to confirm that the list is exhausted.
             .mockResolvedValueOnce({ Resources: [] });
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -138,16 +139,16 @@ describe("fetchAvailableGroupUsers", () => {
         ];
         const secondPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`available-after-partial-${index}`, false)
+            (_: unknown, index: number) => createUser(`available-after-partial-${index}`, false)
         );
-        const getUsersListMock = jest.fn();
+        const getUsersListMock: jest.Mock = jest.fn();
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         getUsersListMock
             .mockResolvedValueOnce({ Resources: partialPage })
             .mockResolvedValueOnce({ Resources: secondPage });
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -164,16 +165,16 @@ describe("fetchAvailableGroupUsers", () => {
     it("stops when a page contains no new user IDs", async () => {
         const repeatedPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`assigned-${index}`, true)
+            (_: unknown, index: number) => createUser(`assigned-${index}`, true)
         );
-        const getUsersListMock = jest.fn();
+        const getUsersListMock: jest.Mock = jest.fn();
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         getUsersListMock
             .mockResolvedValueOnce({ Resources: repeatedPage, totalResults: PAGE_SIZE * 3 })
             .mockResolvedValueOnce({ Resources: repeatedPage, totalResults: PAGE_SIZE * 3 });
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -187,13 +188,13 @@ describe("fetchAvailableGroupUsers", () => {
     });
 
     it("does not return stale users when the request is cancelled", async () => {
-        const getUsersListMock = jest.fn().mockResolvedValue({
+        const getUsersListMock: jest.Mock = jest.fn().mockResolvedValue({
             Resources: [ createUser("available-1", false) ],
             totalResults: 1
         });
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
-        const result = await fetchAvailableGroupUsers({
+        const result: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -208,23 +209,23 @@ describe("fetchAvailableGroupUsers", () => {
     it("loads available users in separate batches and preserves the pagination cursor", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`user-${index}`, index < 5)
+            (_: unknown, index: number) => createUser(`user-${index}`, index < 5)
         );
         const secondPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`user-${PAGE_SIZE + index}`, false)
+            (_: unknown, index: number) => createUser(`user-${PAGE_SIZE + index}`, false)
         );
         const thirdPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`user-${PAGE_SIZE * 2 + index}`, false)
+            (_: unknown, index: number) => createUser(`user-${PAGE_SIZE * 2 + index}`, false)
         );
-        const getUsersListMock = jest.fn()
+        const getUsersListMock: jest.Mock = jest.fn()
             .mockResolvedValueOnce({ Resources: firstPage })
             .mockResolvedValueOnce({ Resources: secondPage })
             .mockResolvedValueOnce({ Resources: thirdPage });
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
-        const firstBatch = await fetchAvailableGroupUsersPage({
+        const firstBatch: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -239,7 +240,7 @@ describe("fetchAvailableGroupUsers", () => {
         expect(firstBatch?.nextStartIndex).toBe(PAGE_SIZE * 2);
         expect(firstBatch?.pendingUsers).toHaveLength(15);
 
-        const secondBatch = await fetchAvailableGroupUsersPage({
+        const secondBatch: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -261,22 +262,22 @@ describe("fetchAvailableGroupUsers", () => {
     it("does not drop available users when a backend page crosses the batch boundary", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`first-${index}`, index < 10)
+            (_: unknown, index: number) => createUser(`first-${index}`, index < 10)
         );
         const secondPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`second-${index}`, false)
+            (_: unknown, index: number) => createUser(`second-${index}`, false)
         );
         const thirdPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
-            (_, index) => createUser(`third-${index}`, false)
+            (_: unknown, index: number) => createUser(`third-${index}`, false)
         );
-        const getUsersListMock = jest.fn()
+        const getUsersListMock: jest.Mock = jest.fn()
             .mockResolvedValueOnce({ Resources: firstPage })
             .mockResolvedValueOnce({ Resources: secondPage })
             .mockResolvedValueOnce({ Resources: thirdPage });
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
-        const result = await fetchAvailableGroupUsersPage({
+        const result: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -290,7 +291,7 @@ describe("fetchAvailableGroupUsers", () => {
         expect(result?.pendingUsers).toHaveLength(10);
         expect(result?.nextStartIndex).toBe(PAGE_SIZE * 2);
 
-        const nextBatch = await fetchAvailableGroupUsersPage({
+        const nextBatch: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
             filter: null,
             getUsersList,
             groupDisplayName: GROUP_NAME,
@@ -311,10 +312,10 @@ describe("fetchAvailableGroupUsers", () => {
 
 
     it("loads a 500-user directory in batches without skipping or duplicating users", async () => {
-        const getUsersListMock = jest.fn(async (_count: number, startIndex: number) => ({
+        const getUsersListMock: jest.Mock = jest.fn(async (_count: number, startIndex: number) => ({
             Resources: Array.from(
                 { length: Math.max(0, Math.min(PAGE_SIZE, 500 - startIndex)) },
-                (_, index) => createUser(`user-${startIndex + index}`, false)
+                (_: unknown, index: number) => createUser(`user-${startIndex + index}`, false)
             )
         }));
         const loadedUsers: UserBasicInterface[] = [];
@@ -324,7 +325,7 @@ describe("fetchAvailableGroupUsers", () => {
         let hasMore: boolean = true;
 
         while (hasMore) {
-            const batch = await fetchAvailableGroupUsersPage({
+            const batch: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
                 filter: null,
                 getUsersList: getUsersListMock as GetUsersListFunction,
                 groupDisplayName: GROUP_NAME,

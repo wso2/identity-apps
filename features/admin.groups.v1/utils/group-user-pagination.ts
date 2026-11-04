@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 
 export type GetUsersListFunction = (
@@ -88,7 +88,7 @@ export const fetchAvailableGroupUsersPage = async (
             newUsersInPage++;
 
             const isUserAlreadyAssigned: boolean = user?.groups?.some(
-                (userGroup) => userGroup.display === options.groupDisplayName
+                (userGroup: UserRoleInterface) => userGroup.display === options.groupDisplayName
             ) ?? false;
 
             if (!isUserAlreadyAssigned) {
@@ -100,6 +100,7 @@ export const fetchAvailableGroupUsersPage = async (
 
         if (pageUsers.length === 0 || newUsersInPage === 0) {
             hasMore = false;
+
             break;
         }
 

@@ -40,7 +40,10 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { GroupsInterface } from "../../models/groups";
-import { fetchAvailableGroupUsersPage, FetchAvailableGroupUsersPageResult } from "../../utils/group-user-pagination";
+import {
+    FetchAvailableGroupUsersPageResult,
+    fetchAvailableGroupUsersPage
+} from "../../utils/group-user-pagination";
 
 /**
  * Proptypes for the group users list component.
@@ -82,10 +85,12 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const [ pendingUsers, setPendingUsers ] = useState<UserBasicInterface[]>([]);
     const [ hasMoreUsers, setHasMoreUsers ] = useState<boolean>(false);
     const [ isLoadingMoreUsers, setIsLoadingMoreUsers ] = useState<boolean>(false);
-    const loadMoreRequestId = useRef<number>(0);
-    const loadMoreInProgress = useRef<boolean>(false);
+    const loadMoreRequestId: React.MutableRefObject<number> = useRef<number>(0);
+    const loadMoreInProgress: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isAllVisibleUsersSelected: boolean = userList.length > 0 && userList.every(
-        (user: UserBasicInterface) => selectedUsers.some((selectedUser: UserBasicInterface) => selectedUser.id === user.id)
+        (user: UserBasicInterface) => selectedUsers.some(
+            (selectedUser: UserBasicInterface) => selectedUser.id === user.id
+        )
     );
 
     /**
@@ -109,6 +114,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         }
 
         let isRequestCancelled: boolean = false;
+
         loadMoreRequestId.current++;
         setIsLoadingMoreUsers(false);
 
@@ -141,7 +147,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     setHasMoreUsers(availableUsers.hasMore);
                 }
             } catch (error: unknown) {
-                const errorDescription = (error as {
+                const errorDescription: string | undefined = (error as {
                     response?: {
                         data?: {
                             description?: string;
@@ -226,6 +232,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
             if (nextPage && requestId === loadMoreRequestId.current) {
                 setUserList((currentUsers: UserBasicInterface[]) => {
                     const existingIds: Set<string> = new Set(currentUsers.map((user: UserBasicInterface) => user.id));
+
                     return [
                         ...currentUsers,
                         ...nextPage.users.filter((user: UserBasicInterface) => !existingIds.has(user.id))
@@ -237,7 +244,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 setHasMoreUsers(nextPage.hasMore);
             }
         } catch (error: unknown) {
-            const errorDescription = (error as {
+            const errorDescription: string | undefined = (error as {
                 response?: { data?: { description?: string; }; };
             })?.response?.data?.description;
 
@@ -296,6 +303,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     (user: UserBasicInterface) => !visibleUserIds.has(user.id)
                 );
                 const selectedIds: Set<string> = new Set(retainedUsers.map((user: UserBasicInterface) => user.id));
+
                 return [
                     ...retainedUsers,
                     ...userList.filter((user: UserBasicInterface) => !selectedIds.has(user.id))
