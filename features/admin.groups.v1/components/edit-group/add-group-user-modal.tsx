@@ -80,9 +80,21 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ nextStartIndex, setNextStartIndex ] = useState<number>(0);
     const [ seenUserIds, setSeenUserIds ] = useState<string[]>([]);
+    const [ pendingUsers, setPendingUsers ] = useState<UserBasicInterface[]>([]);
     const [ hasMoreUsers, setHasMoreUsers ] = useState<boolean>(false);
     const [ isLoadingMoreUsers, setIsLoadingMoreUsers ] = useState<boolean>(false);
     const loadMoreRequestId = useRef<number>(0);
+
+    /**
+     * Reset the selection only when a new modal session or target group starts.
+     * Search result refreshes must not discard users selected in earlier searches.
+     */
+    useEffect(() => {
+        if (showAddNewUserModal) {
+            setSelectedUsers([]);
+            setIsSelectAllUsers(false);
+        }
+    }, [ showAddNewUserModal, group?.displayName, userstore ]);
 
     /**
      * Fetch users in pages until enough users that are not assigned to this group
@@ -104,10 +116,10 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             setIsUserListLoading(true);
             setUserList([]);
-            setSelectedUsers([]);
             setIsSelectAllUsers(false);
             setNextStartIndex(0);
             setSeenUserIds([]);
+            setPendingUsers([]);
             setHasMoreUsers(false);
 
             try {
@@ -124,6 +136,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     setUserList(availableUsers.users);
                     setNextStartIndex(availableUsers.nextStartIndex);
                     setSeenUserIds(availableUsers.seenUserIds);
+                    setPendingUsers(availableUsers.pendingUsers);
                     setHasMoreUsers(availableUsers.hasMore);
                 }
             } catch (error: unknown) {
@@ -201,18 +214,23 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 groupDisplayName: group.displayName,
                 isCancelled: () => requestId !== loadMoreRequestId.current,
                 pageSize: 20,
+                pendingUsers,
                 seenUserIds,
                 startIndex: nextStartIndex,
                 userstore
             });
 
             if (nextPage && requestId === loadMoreRequestId.current) {
-                setUserList((currentUsers: UserBasicInterface[]) => [
-                    ...currentUsers,
-                    ...nextPage.users
-                ]);
+                setUserList((currentUsers: UserBasicInterface[]) => {
+                    const existingIds: Set<string> = new Set(currentUsers.map((user: UserBasicInterface) => user.id));
+                    return [
+                        ...currentUsers,
+                        ...nextPage.users.filter((user: UserBasicInterface) => !existingIds.has(user.id))
+                    ];
+                });
                 setNextStartIndex(nextPage.nextStartIndex);
                 setSeenUserIds(nextPage.seenUserIds);
+                setPendingUsers(nextPage.pendingUsers);
                 setHasMoreUsers(nextPage.hasMore);
                 setIsSelectAllUsers(false);
             }
@@ -244,24 +262,21 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
      * @param user - UserBasicInterface
      */
     const handleItemCheckboxChange = (user: UserBasicInterface) => {
-        const checkedUsers: UserBasicInterface[] = !isEmpty(selectedUsers)
-            ? [ ...selectedUsers ]
-            : [];
-
-        // Check if the user is already selected.
-        if (checkedUsers.includes(user)) {
-            // If yes, remove it from the list.
-            checkedUsers.splice(checkedUsers.indexOf(user), 1);
-        } else {
-            // If not add it to the list.
-            checkedUsers.push(user);
-        }
+        const isAlreadySelected: boolean = selectedUsers.some(
+            (selectedUser: UserBasicInterface) => selectedUser.id === user.id
+        );
+        const checkedUsers: UserBasicInterface[] = isAlreadySelected
+            ? selectedUsers.filter((selectedUser: UserBasicInterface) => selectedUser.id !== user.id)
+            : [ ...selectedUsers, user ];
 
         setSelectedUsers(checkedUsers);
-        setIsSelectAllUsers(userList?.length === checkedUsers?.length);
+        const visibleSelectedCount: number = userList.filter((visibleUser: UserBasicInterface) =>
+            checkedUsers.some((selectedUser: UserBasicInterface) => selectedUser.id === visibleUser.id)
+        ).length;
+        setIsSelectAllUsers(userList.length > 0 && visibleSelectedCount === userList.length);
 
-        // Keep a full batch of unselected users available as users are selected.
-        if (userList.length - checkedUsers.length < 20 && hasMoreUsers && !isLoadingMoreUsers) {
+        // Keep a full batch of visible, unselected users available as users are selected.
+        if (userList.length - visibleSelectedCount < 20 && hasMoreUsers && !isLoadingMoreUsers) {
             void handleLoadMoreUsers();
         }
     };
@@ -271,16 +286,26 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
      */
     const selectAllAssignedList = () => {
 
-        if (!isSelectAllUsers) {
-            setSelectedUsers(userList);
+        const visibleUserIds: Set<string> = new Set(userList.map((user: UserBasicInterface) => user.id));
 
-            if (hasMoreUsers && !isLoadingMoreUsers) {
-                void handleLoadMoreUsers();
-            }
+        if (!isSelectAllUsers) {
+            setSelectedUsers((currentUsers: UserBasicInterface[]) => {
+                const retainedUsers: UserBasicInterface[] = currentUsers.filter(
+                    (user: UserBasicInterface) => !visibleUserIds.has(user.id)
+                );
+                const selectedIds: Set<string> = new Set(retainedUsers.map((user: UserBasicInterface) => user.id));
+                return [
+                    ...retainedUsers,
+                    ...userList.filter((user: UserBasicInterface) => !selectedIds.has(user.id))
+                ];
+            });
         } else {
-            setSelectedUsers([]);
+            setSelectedUsers((currentUsers: UserBasicInterface[]) =>
+                currentUsers.filter((user: UserBasicInterface) => !visibleUserIds.has(user.id))
+            );
         }
 
+        // Select All applies only to the currently loaded/visible results.
         setIsSelectAllUsers(!isSelectAllUsers);
     };
 
