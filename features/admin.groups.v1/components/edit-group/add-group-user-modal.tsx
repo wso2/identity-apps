@@ -40,7 +40,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { GroupsInterface } from "../../models/groups";
-import { fetchAvailableGroupUsers } from "../../utils/group-user-pagination";
+import { fetchAvailableGroupUsersPage, FetchAvailableGroupUsersPageResult } from "../../utils/group-user-pagination";
 
 /**
  * Proptypes for the group users list component.
@@ -78,6 +78,10 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const [ userList, setUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ nextStartIndex, setNextStartIndex ] = useState<number>(0);
+    const [ seenUserIds, setSeenUserIds ] = useState<string[]>([]);
+    const [ hasMoreUsers, setHasMoreUsers ] = useState<boolean>(false);
+    const [ isLoadingMoreUsers, setIsLoadingMoreUsers ] = useState<boolean>(false);
 
     /**
      * Fetch users in pages until enough users that are not assigned to this group
@@ -97,9 +101,14 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             setIsUserListLoading(true);
             setUserList([]);
+            setSelectedUsers([]);
+            setIsSelectAllUsers(false);
+            setNextStartIndex(0);
+            setSeenUserIds([]);
+            setHasMoreUsers(false);
 
             try {
-                const availableUsers: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
+                const availableUsers: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
                     filter,
                     getUsersList,
                     groupDisplayName: group.displayName,
@@ -109,7 +118,10 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 });
 
                 if (!isRequestCancelled && availableUsers) {
-                    setUserList(availableUsers);
+                    setUserList(availableUsers.users);
+                    setNextStartIndex(availableUsers.nextStartIndex);
+                    setSeenUserIds(availableUsers.seenUserIds);
+                    setHasMoreUsers(availableUsers.hasMore);
                 }
             } catch (error: unknown) {
                 const errorDescription = (error as {
@@ -187,6 +199,57 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
         setSelectedUsers(checkedUsers);
         setIsSelectAllUsers(userList?.length === checkedUsers?.length);
+    };
+
+    /**
+     * Fetches the next batch without clearing users already selected or displayed.
+     */
+    const handleLoadMoreUsers = async (): Promise<void> => {
+        if (isLoadingMoreUsers || !hasMoreUsers) {
+            return;
+        }
+
+        setIsLoadingMoreUsers(true);
+
+        try {
+            const nextPage: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
+                filter: !isEmpty(searchQuery) ? searchQuery : null,
+                getUsersList,
+                groupDisplayName: group.displayName,
+                isCancelled: () => false,
+                pageSize: 20,
+                seenUserIds,
+                startIndex: nextStartIndex,
+                userstore
+            });
+
+            if (nextPage) {
+                setUserList((currentUsers: UserBasicInterface[]) => [
+                    ...currentUsers,
+                    ...nextPage.users
+                ]);
+                setNextStartIndex(nextPage.nextStartIndex);
+                setSeenUserIds(nextPage.seenUserIds);
+                setHasMoreUsers(nextPage.hasMore);
+                setIsSelectAllUsers(false);
+            }
+        } catch (error: unknown) {
+            const errorDescription = (error as {
+                response?: { data?: { description?: string; }; };
+            })?.response?.data?.description;
+
+            dispatch(addAlert({
+                description: errorDescription || t(
+                    "console:manage.features.users.notifications.fetchUsers.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(errorDescription
+                    ? "console:manage.features.users.notifications.fetchUsers.error.message"
+                    : "console:manage.features.users.notifications.fetchUsers.genericError.message")
+            }));
+        } finally {
+            setIsLoadingMoreUsers(false);
+        }
     };
 
     /**
@@ -281,6 +344,19 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                         }
                     </TransferList>
                 </TransferComponent>
+                { hasMoreUsers && (
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={ handleLoadMoreUsers }
+                        loading={ isLoadingMoreUsers }
+                        disabled={ isLoadingMoreUsers || isUserListLoading }
+                        data-componentid={ `${ componentId }-load-more-users-button` }
+                        data-testid={ `${ componentId }-load-more-users-button` }
+                    >
+                        { t("common:loadMore") }
+                    </Button>
+                ) }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
