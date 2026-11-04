@@ -42,7 +42,7 @@ jobs:
         run: pnpm build:modules
 
       - name: Run pagination unit tests
-        run: pnpm --dir apps/console exec jest --runInBand src/features/admin.groups.v1/__tests__/group-user-pagination.test.ts
+        run: pnpm --dir apps/console exec jest --config jest.pagination.config.cjs --runInBand src/features/admin.groups.v1/__tests__/group-user-pagination.test.ts
 
       - name: Typecheck Console
         run: pnpm --dir apps/console run typecheck
