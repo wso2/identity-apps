@@ -83,11 +83,12 @@ export const fetchAvailableGroupUsers = async (
 
         // Do not use totalResults to determine completion. Some user stores (notably LDAP)
         // may report a page-scoped totalResults value rather than the total number of users.
-        // A short page is the reliable end-of-list signal; no new IDs protects against
-        // user stores that ignore the requested startIndex and repeat a page.
+        // An empty page signals the end of the list. Do not stop on a short page because
+        // some user stores may return partial pages while more results are still available.
+        // No new IDs protects against stores that ignore startIndex and repeat a page.
         startIndex += pageUsers.length;
 
-        if (pageUsers.length < pageSize || newUsersInPage === 0) {
+        if (pageUsers.length === 0 || newUsersInPage === 0) {
             break;
         }
     }
