@@ -276,4 +276,41 @@ describe("fetchAvailableGroupUsers", () => {
         expect(result?.nextStartIndex).toBe(PAGE_SIZE * 2);
     });
 
+
+    it("loads a 500-user directory in batches without skipping or duplicating users", async () => {
+        const getUsersListMock = jest.fn(async (_count: number, startIndex: number) => ({
+            Resources: Array.from(
+                { length: Math.max(0, Math.min(PAGE_SIZE, 500 - startIndex)) },
+                (_, index) => createUser(`user-${startIndex + index}`, false)
+            )
+        }));
+        const loadedUsers: UserBasicInterface[] = [];
+        let startIndex: number = 0;
+        let seenUserIds: string[] = [];
+        let hasMore: boolean = true;
+
+        while (hasMore) {
+            const batch = await fetchAvailableGroupUsersPage({
+                filter: null,
+                getUsersList: getUsersListMock as GetUsersListFunction,
+                groupDisplayName: GROUP_NAME,
+                isCancelled: () => false,
+                pageSize: PAGE_SIZE,
+                seenUserIds,
+                startIndex,
+                userstore: USERSTORE
+            });
+
+            expect(batch).not.toBeNull();
+            loadedUsers.push(...batch.users);
+            startIndex = batch.nextStartIndex;
+            seenUserIds = batch.seenUserIds;
+            hasMore = batch.hasMore;
+        }
+
+        expect(loadedUsers).toHaveLength(500);
+        expect(new Set(loadedUsers.map((user: UserBasicInterface) => user.id)).size).toBe(500);
+        expect(getUsersListMock).toHaveBeenCalledTimes(26);
+    });
+
 });
