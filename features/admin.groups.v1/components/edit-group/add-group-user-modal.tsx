@@ -17,8 +17,8 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
-import { useUsersList } from "@wso2is/admin.users.v1/api";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -34,12 +34,16 @@ import {
 } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { GroupsInterface } from "../../models/groups";
+import {
+    FetchAvailableGroupUsersPageResult,
+    fetchAvailableGroupUsersPage
+} from "../../utils/group-user-pagination";
 
 /**
  * Proptypes for the group users list component.
@@ -72,91 +76,116 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isSelectAllUsers, setIsSelectAllUsers ] = useState<boolean>(false);
+    const [ isUserListLoading, setIsUserListLoading ] = useState<boolean>(false);
     const [ userList, setUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-
-    /**
-     * Fetch the user list.
-     */
-    const {
-        data: originalUserList,
-        isLoading: isUserListFetchRequestLoading,
-        isValidating: isUserListFetchRequestValidating,
-        error: userListFetchRequestError
-    } = useUsersList(
-        20,
-        0,
-        !isEmpty(searchQuery) ? searchQuery : null,
-        null,
-        userstore,
-        null
+    const [ nextStartIndex, setNextStartIndex ] = useState<number>(0);
+    const [ seenUserIds, setSeenUserIds ] = useState<string[]>([]);
+    const [ pendingUsers, setPendingUsers ] = useState<UserBasicInterface[]>([]);
+    const [ hasMoreUsers, setHasMoreUsers ] = useState<boolean>(false);
+    const [ isLoadingMoreUsers, setIsLoadingMoreUsers ] = useState<boolean>(false);
+    const loadMoreRequestId: React.MutableRefObject<number> = useRef<number>(0);
+    const loadMoreInProgress: React.MutableRefObject<boolean> = useRef<boolean>(false);
+    const isAllVisibleUsersSelected: boolean = userList.length > 0 && userList.every(
+        (user: UserBasicInterface) => selectedUsers.some(
+            (selectedUser: UserBasicInterface) => selectedUser.id === user.id
+        )
     );
 
     /**
-     * Set the user list.
-     * This will be triggered when the user list is fetched.
-     * This will also check if the user is already assigned to the group.
-     * If the user is already assigned to the group, it will be added to the selected users list.
+     * Reset the selection only when a new modal session or target group starts.
+     * Search result refreshes must not discard users selected in earlier searches.
      */
     useEffect(() => {
-        if (!originalUserList || isUserListFetchRequestLoading) {
-            return;
+        if (showAddNewUserModal) {
+            setSelectedUsers([]);
         }
-
-        if (originalUserList.Resources) {
-            const filteredUsers: UserBasicInterface[] = [];
-
-            originalUserList.Resources.map((user: UserBasicInterface) => {
-                let isUserExistInGroup: boolean = false;
-
-                if (user?.groups?.length > 0) {
-                    user.groups.map((userGroup: UserRoleInterface) => {
-                        if (userGroup.display === group.displayName) {
-                            isUserExistInGroup = true;
-                        }
-                    });
-                }
-
-                // Do not show the user if the user is already assigned to the group.
-                if (!isUserExistInGroup) {
-                    filteredUsers.push(user);
-                }
-            });
-
-            setUserList(filteredUsers);
-        } else {
-            setUserList([]);
-        }
-    }, [ originalUserList, isUserListFetchRequestLoading ]);
+    }, [ showAddNewUserModal, group?.displayName, userstore ]);
 
     /**
-     * Handles the user list fetch request error.
+     * Fetch users in pages until enough users that are not assigned to this group
+     * are found. A single first page is insufficient when its users are already
+     * members of the group.
      */
     useEffect(() => {
-        if (!userListFetchRequestError) {
+        if (!showAddNewUserModal) {
             return;
         }
 
-        if (userListFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: userListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications." +
-                    "fetchUsers.error.message")
-            }));
+        let isRequestCancelled: boolean = false;
 
-            return;
-        }
+        loadMoreRequestId.current++;
+        setIsLoadingMoreUsers(false);
 
-        dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
-        }));
-    }, [ userListFetchRequestError ]);
+        const fetchAvailableUsers = async (): Promise<void> => {
+            const pageSize: number = 20;
+            const filter: string = !isEmpty(searchQuery) ? searchQuery : null;
+
+            setIsUserListLoading(true);
+            setUserList([]);
+            setNextStartIndex(0);
+            setSeenUserIds([]);
+            setPendingUsers([]);
+            setHasMoreUsers(false);
+
+            try {
+                const availableUsers: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
+                    filter,
+                    getUsersList,
+                    groupDisplayName: group.displayName,
+                    isCancelled: () => isRequestCancelled,
+                    pageSize,
+                    userstore
+                });
+
+                if (!isRequestCancelled && availableUsers) {
+                    setUserList(availableUsers.users);
+                    setNextStartIndex(availableUsers.nextStartIndex);
+                    setSeenUserIds(availableUsers.seenUserIds);
+                    setPendingUsers(availableUsers.pendingUsers);
+                    setHasMoreUsers(availableUsers.hasMore);
+                }
+            } catch (error: unknown) {
+                const errorDescription: string | undefined = (error as {
+                    response?: {
+                        data?: {
+                            description?: string;
+                        };
+                    };
+                })?.response?.data?.description;
+
+                if (!isRequestCancelled) {
+                    dispatch(addAlert({
+                        description: errorDescription || t(
+                            "console:manage.features.users.notifications.fetchUsers.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(errorDescription
+                            ? "console:manage.features.users.notifications.fetchUsers.error.message"
+                            : "console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    }));
+                }
+            } finally {
+                if (!isRequestCancelled) {
+                    setIsUserListLoading(false);
+                }
+            }
+        };
+
+        fetchAvailableUsers();
+
+        return () => {
+            isRequestCancelled = true;
+            loadMoreRequestId.current++;
+            loadMoreInProgress.current = false;
+        };
+    }, [
+        showAddNewUserModal,
+        searchQuery,
+        userstore,
+        group?.displayName
+    ]);
 
     /**
      * This is a debounced function to handle the user search by email address.
@@ -176,25 +205,89 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     }, 1000), []);
 
     /**
+     * Fetches the next batch without clearing users already selected or displayed.
+     */
+    const handleLoadMoreUsers = async (): Promise<void> => {
+        if (loadMoreInProgress.current || !hasMoreUsers) {
+            return;
+        }
+
+        loadMoreInProgress.current = true;
+        setIsLoadingMoreUsers(true);
+        const requestId: number = ++loadMoreRequestId.current;
+
+        try {
+            const nextPage: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
+                filter: !isEmpty(searchQuery) ? searchQuery : null,
+                getUsersList,
+                groupDisplayName: group.displayName,
+                isCancelled: () => requestId !== loadMoreRequestId.current,
+                pageSize: 20,
+                pendingUsers,
+                seenUserIds,
+                startIndex: nextStartIndex,
+                userstore
+            });
+
+            if (nextPage && requestId === loadMoreRequestId.current) {
+                setUserList((currentUsers: UserBasicInterface[]) => {
+                    const existingIds: Set<string> = new Set(currentUsers.map((user: UserBasicInterface) => user.id));
+
+                    return [
+                        ...currentUsers,
+                        ...nextPage.users.filter((user: UserBasicInterface) => !existingIds.has(user.id))
+                    ];
+                });
+                setNextStartIndex(nextPage.nextStartIndex);
+                setSeenUserIds(nextPage.seenUserIds);
+                setPendingUsers(nextPage.pendingUsers);
+                setHasMoreUsers(nextPage.hasMore);
+            }
+        } catch (error: unknown) {
+            const errorDescription: string | undefined = (error as {
+                response?: { data?: { description?: string; }; };
+            })?.response?.data?.description;
+
+            if (requestId === loadMoreRequestId.current) {
+                dispatch(addAlert({
+                    description: errorDescription || t(
+                        "console:manage.features.users.notifications.fetchUsers.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(errorDescription
+                        ? "console:manage.features.users.notifications.fetchUsers.error.message"
+                        : "console:manage.features.users.notifications.fetchUsers.genericError.message")
+                }));
+            }
+        } finally {
+            if (requestId === loadMoreRequestId.current) {
+                loadMoreInProgress.current = false;
+                setIsLoadingMoreUsers(false);
+            }
+        }
+    };
+
+    /**
      * Handles action when a checkbox is checked/unchecked.
      * @param user - UserBasicInterface
      */
     const handleItemCheckboxChange = (user: UserBasicInterface) => {
-        const checkedUsers: UserBasicInterface[] = !isEmpty(selectedUsers)
-            ? [ ...selectedUsers ]
-            : [];
-
-        // Check if the user is already selected.
-        if (checkedUsers.includes(user)) {
-            // If yes, remove it from the list.
-            checkedUsers.splice(checkedUsers.indexOf(user), 1);
-        } else {
-            // If not add it to the list.
-            checkedUsers.push(user);
-        }
+        const isAlreadySelected: boolean = selectedUsers.some(
+            (selectedUser: UserBasicInterface) => selectedUser.id === user.id
+        );
+        const checkedUsers: UserBasicInterface[] = isAlreadySelected
+            ? selectedUsers.filter((selectedUser: UserBasicInterface) => selectedUser.id !== user.id)
+            : [ ...selectedUsers, user ];
 
         setSelectedUsers(checkedUsers);
-        setIsSelectAllUsers(userList?.length === checkedUsers?.length);
+        const visibleSelectedCount: number = userList.filter((visibleUser: UserBasicInterface) =>
+            checkedUsers.some((selectedUser: UserBasicInterface) => selectedUser.id === visibleUser.id)
+        ).length;
+
+        // Keep a full batch of visible, unselected users available as users are selected.
+        if (userList.length - visibleSelectedCount < 20 && hasMoreUsers && !isLoadingMoreUsers) {
+            void handleLoadMoreUsers();
+        }
     };
 
     /**
@@ -202,13 +295,27 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
      */
     const selectAllAssignedList = () => {
 
-        if (!isSelectAllUsers) {
-            setSelectedUsers(userList);
+        const visibleUserIds: Set<string> = new Set(userList.map((user: UserBasicInterface) => user.id));
+
+        if (!isAllVisibleUsersSelected) {
+            setSelectedUsers((currentUsers: UserBasicInterface[]) => {
+                const retainedUsers: UserBasicInterface[] = currentUsers.filter(
+                    (user: UserBasicInterface) => !visibleUserIds.has(user.id)
+                );
+                const selectedIds: Set<string> = new Set(retainedUsers.map((user: UserBasicInterface) => user.id));
+
+                return [
+                    ...retainedUsers,
+                    ...userList.filter((user: UserBasicInterface) => !selectedIds.has(user.id))
+                ];
+            });
         } else {
-            setSelectedUsers([]);
+            setSelectedUsers((currentUsers: UserBasicInterface[]) =>
+                currentUsers.filter((user: UserBasicInterface) => !visibleUserIds.has(user.id))
+            );
         }
 
-        setIsSelectAllUsers(!isSelectAllUsers);
+        // Select All applies only to the currently loaded/visible results.
     };
 
     return (
@@ -239,20 +346,20 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={ t("groups:edit.users.searchUsers") }
-                    isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                    isLoading={ isUserListLoading }
                     handleHeaderCheckboxChange={ () => selectAllAssignedList() }
-                    isHeaderCheckboxChecked={ isSelectAllUsers }
+                    isHeaderCheckboxChecked={ isAllVisibleUsersSelected }
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
                         handleSearchFieldChange(e, value);
                     } }
-                    showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
+                    showSelectAllCheckbox={ !isUserListLoading && userList.length > 0 }
                     data-testid={ `${ componentId }-user-list-transfer` }
                 >
                     <TransferList
                         selectionComponent
                         bordered={ true }
-                        isListEmpty={ userList.length <= 0 }
-                        isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                        isListEmpty={ !isUserListLoading && userList.length <= 0 }
+                        isLoading={ isUserListLoading }
                         listType="unselected"
                         selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
                         data-testid={ `${ componentId }-unselected-transfer-list` }
@@ -269,7 +376,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleItemCheckboxChange(user) }
-                                        key={ index }
+                                        key={ user.id }
                                         listItem={ resolvedGivenName ?? resolvedUsername }
                                         listItemId={ user.id }
                                         listItemIndex={ index }
@@ -289,6 +396,19 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                         }
                     </TransferList>
                 </TransferComponent>
+                { hasMoreUsers && (
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={ handleLoadMoreUsers }
+                        loading={ isLoadingMoreUsers }
+                        disabled={ isLoadingMoreUsers || isUserListLoading }
+                        data-componentid={ `${ componentId }-load-more-users-button` }
+                        data-testid={ `${ componentId }-load-more-users-button` }
+                    >
+                        { t("common:showMore") }
+                    </Button>
+                ) }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
