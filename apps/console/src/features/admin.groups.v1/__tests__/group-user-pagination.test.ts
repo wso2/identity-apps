@@ -59,7 +59,7 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(getUsersListMock).toHaveBeenCalledTimes(3);
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
         expect(getUsersListMock).toHaveBeenNthCalledWith(1, PAGE_SIZE, 0, null, null, USERSTORE, null);
         expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
         expect(result).toEqual(secondPage);
@@ -124,7 +124,7 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenCalledTimes(3);
         expect(result).toEqual(finalPage);
     });
 
