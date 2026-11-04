@@ -124,6 +124,38 @@ describe("fetchAvailableGroupUsers", () => {
         expect(result).toEqual(finalPage);
     });
 
+
+    it("continues pagination after a non-empty partial page", async () => {
+        const partialPage: UserBasicInterface[] = [
+            createUser("assigned-partial-1", true),
+            createUser("assigned-partial-2", true),
+            createUser("assigned-partial-3", true)
+        ];
+        const secondPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`available-after-partial-${index}`, false)
+        );
+        const getUsersListMock = jest.fn();
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        getUsersListMock
+            .mockResolvedValueOnce({ Resources: partialPage })
+            .mockResolvedValueOnce({ Resources: secondPage });
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, partialPage.length, null, null, USERSTORE, null);
+        expect(result).toEqual(secondPage);
+    });
+
     it("stops when a page contains no new user IDs", async () => {
         const repeatedPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
