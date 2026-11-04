@@ -27,7 +27,8 @@ import {
     getSubscribedChannels,
     mapFormDataToChannelUris,
     mapFormDataToSubscribedChannels,
-    mapSubscribedChannelsToFormData
+    mapSubscribedChannelsToFormData,
+    mergeSubscribedChannelsWithStored
 } from "../model-mapper-utils";
 
 const CHANNEL_CONFIGS: WebhookChannelConfigInterface[] = [
@@ -222,5 +223,64 @@ describe("getSubscribedChannels", () => {
 
     it("returns undefined when the webhook is absent", () => {
         expect(getSubscribedChannels(undefined)).toBeUndefined();
+    });
+});
+
+describe("mergeSubscribedChannelsWithStored", () => {
+    const LOGIN: string = "https://schemas.identity.wso2.org/events/login";
+    const TOKEN: string = "https://schemas.identity.wso2.org/events/token";
+    // Hidden because its feature flag is off, so it never reaches `channelConfigs`.
+    const SESSION: string = "https://schemas.identity.wso2.org/events/session";
+
+    const visibleOnly: WebhookChannelConfigInterface[] = [ CHANNEL_CONFIGS[0] ];
+
+    it("keeps a subscription the form never showed", () => {
+        const merged: WebhookChannelSubscriptionInterface[] = mergeSubscribedChannelsWithStored(
+            formData({ Logins: channelValue({ subscriptionPolicy: ChildOrgSubscriptionPolicy.NONE }) }),
+            visibleOnly,
+            [ { channelUri: LOGIN }, { channelUri: SESSION, status: "SUBSCRIPTION_ACCEPTED" } as never ]
+        );
+
+        expect(merged.map((channel: WebhookChannelSubscriptionInterface) => channel.channelUri))
+            .toEqual([ LOGIN, SESSION ]);
+        expect(merged[1]).toEqual({ channelUri: SESSION });
+    });
+
+    it("applies the form values to the channels it did show", () => {
+        const merged: WebhookChannelSubscriptionInterface[] = mergeSubscribedChannelsWithStored(
+            formData({
+                Logins: channelValue({
+                    organizations: [ "org-1" ],
+                    subscriptionPolicy: ChildOrgSubscriptionPolicy.SELECTED_ORGS_ONLY
+                })
+            }),
+            visibleOnly,
+            [ { channelUri: LOGIN }, { channelUri: SESSION } ]
+        );
+
+        expect(merged[0].childOrgSubscription).toEqual({
+            organizations: [ { orgId: "org-1" } ],
+            subscriptionPolicy: ChildOrgSubscriptionPolicy.SELECTED_ORGS_ONLY
+        });
+    });
+
+    it("leaves the stored channel set alone and adds no duplicates", () => {
+        const merged: WebhookChannelSubscriptionInterface[] = mergeSubscribedChannelsWithStored(
+            formData({ Logins: channelValue(), Tokens: channelValue() }),
+            CHANNEL_CONFIGS,
+            [ { channelUri: LOGIN } ]
+        );
+
+        expect(merged.map((channel: WebhookChannelSubscriptionInterface) => channel.channelUri)).toEqual([ LOGIN ]);
+    });
+
+    it("preserves every subscription when all of them are hidden", () => {
+        const merged: WebhookChannelSubscriptionInterface[] = mergeSubscribedChannelsWithStored(
+            formData({}),
+            [],
+            [ { channelUri: SESSION }, { channelUri: TOKEN } ]
+        );
+
+        expect(merged).toEqual([ { channelUri: SESSION }, { channelUri: TOKEN } ]);
     });
 });

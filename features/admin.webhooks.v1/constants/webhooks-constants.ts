@@ -38,12 +38,19 @@ export class WebhooksConstants {
     public static readonly WEBHOOK_NAME_REGEX: RegExp = /^[a-zA-Z0-9-_][a-zA-Z0-9-_ ]*[a-zA-Z0-9-_]$/;
     public static readonly WEBHOOK_SECRET_REGEX: RegExp = /^[ -~]+$/;
 
+    /**
+     * Media type of an RFC 7386 merge patch, which the webhook PATCH operation requires.
+     * This is not a JSON Patch.
+     */
+    public static readonly MERGE_PATCH_CONTENT_TYPE: string = "application/merge-patch+json";
+
     public static readonly ERROR_MESSAGES: { [key: string]: string } = {
         CREATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to create webhook. Unexpected response status.",
         DELETE_WEBHOOK_INVALID_STATUS_CODE: "Failed to delete webhook. Unexpected response status.",
         FETCH_EVENT_PROFILE_INVALID_STATUS_CODE: "Failed to fetch event profile. Unexpected response status.",
         FETCH_WEBHOOKS_INVALID_STATUS_CODE: "Failed to fetch webhooks. Unexpected response status.",
         FETCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to fetch webhook. Unexpected response status.",
+        PATCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to patch webhook. Unexpected response status.",
         RETRY_WEBHOOK_INVALID_STATUS_CODE: "Failed to resend requests. Unexpected response status.",
         UPDATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to update webhook. Unexpected response status.",
         UPDATE_WEBHOOK_METADATA_INVALID_STATUS_CODE: "Failed to update webhook metadata. Unexpected response status.",

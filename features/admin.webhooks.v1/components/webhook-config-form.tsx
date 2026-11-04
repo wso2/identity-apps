@@ -53,6 +53,11 @@ interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
      */
     isReadOnly: boolean;
     /**
+     * Whether the subscription policy controls are read-only. Defaults to `isReadOnly`, and is given
+     * separately by adapters that freeze the rest of the form while leaving the fanout editable.
+     */
+    isSubscriptionReadOnly?: boolean;
+    /**
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
@@ -69,9 +74,9 @@ interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
      */
     hideSubmitButton?: boolean;
     /**
-     * Flag to indicate if the form is in WebSub Hub adopter mode.
+     * Flag to indicate if the form is in WebSub Hub adapter mode.
      */
-    isWebSubHubAdopterMode?: boolean;
+    isWebSubHubAdapterMode?: boolean;
     /**
      * ID of the webhook being edited. Absent while creating.
      */
@@ -93,11 +98,12 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
     channelSubscriptions,
     isLoading,
     isReadOnly,
+    isSubscriptionReadOnly = isReadOnly,
     isCreateFormState,
     onSubmit,
     isSubmitting,
     hideSubmitButton,
-    isWebSubHubAdopterMode,
+    isWebSubHubAdapterMode,
     webhookId,
     isChildOrganizationsAvailable = false,
     isChildOrgSubscriptionEnabled = false,
@@ -125,13 +131,14 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                     initialValues={ initialValues }
                     isCreateFormState={ isCreateFormState }
                     isReadOnly={ isReadOnly }
-                    isWebSubHubAdopterMode={ isWebSubHubAdopterMode }
+                    isWebSubHubAdapterMode={ isWebSubHubAdapterMode }
                     data-componentid={ `${_componentId}-endpoint-config-form` }
                 />
                 <WebhookChannelConfigForm
                     channelConfigs={ channelConfigs }
                     channelSubscriptions={ channelSubscriptions }
                     isReadOnly={ isReadOnly }
+                    isSubscriptionReadOnly={ isSubscriptionReadOnly }
                     webhookId={ webhookId }
                     isChildOrganizationsAvailable={ isChildOrganizationsAvailable }
                     isChildOrgSubscriptionEnabled={ isChildOrgSubscriptionEnabled }
@@ -156,7 +163,7 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                 onSubmit={ handleFormSubmit }
                 validate={ validateForm }
                 initialValues={ initialValues }
-                render={ ({ handleSubmit, submitting, invalid, errors }: FormRenderProps) => (
+                render={ ({ handleSubmit, submitting, invalid, pristine, errors }: FormRenderProps) => (
                     <Box component="form" onSubmit={ handleSubmit }>
                         <EmphasizedSegment
                             className="form-wrapper"
@@ -173,7 +180,8 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                                         className="button-container"
                                         data-componentid={ `${_componentId}-primary-button` }
                                         loading={ isSubmitting || submitting }
-                                        disabled={ isReadOnly || invalid }
+                                        disabled={ (isReadOnly && isSubscriptionReadOnly) || invalid
+                                            || (isWebSubHubAdapterMode && !isCreateFormState && pristine) }
                                     >
                                         { isCreateFormState
                                             ? t("webhooks:configForm.buttons.create")
