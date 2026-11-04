@@ -43,14 +43,33 @@ export interface FetchAvailableGroupUsersOptions {
  *
  * @returns The available users, or null when the request has been cancelled.
  */
-export const fetchAvailableGroupUsers = async (
-    options: FetchAvailableGroupUsersOptions
-): Promise<UserBasicInterface[] | null> => {
+export interface FetchAvailableGroupUsersPageOptions extends FetchAvailableGroupUsersOptions {
+    startIndex?: number;
+    seenUserIds?: string[];
+}
+
+export interface FetchAvailableGroupUsersPageResult {
+    users: UserBasicInterface[];
+    nextStartIndex: number;
+    hasMore: boolean;
+    seenUserIds: string[];
+}
+
+/**
+ * Fetch one batch of available users while retaining the backend pagination cursor.
+ * The function may read multiple backend pages when users are already group members.
+ *
+ * @returns A batch and cursor, or null when the request has been cancelled.
+ */
+export const fetchAvailableGroupUsersPage = async (
+    options: FetchAvailableGroupUsersPageOptions
+): Promise<FetchAvailableGroupUsersPageResult | null> => {
 
     const pageSize: number = options.pageSize ?? 20;
     const availableUsers: UserBasicInterface[] = [];
-    const seenUserIds: Set<string> = new Set<string>();
-    let startIndex: number = 0;
+    const seenUserIds: Set<string> = new Set<string>(options.seenUserIds ?? []);
+    let startIndex: number = options.startIndex ?? 0;
+    let hasMore: boolean = true;
 
     while (availableUsers.length < pageSize) {
         const response: UserListInterface = await options.getUsersList(
@@ -76,22 +95,36 @@ export const fetchAvailableGroupUsers = async (
                 (userGroup) => userGroup.display === options.groupDisplayName
             ) ?? false;
 
-            if (!isUserAlreadyAssigned) {
+            if (!isUserAlreadyAssigned && availableUsers.length < pageSize) {
                 availableUsers.push(user);
             }
         });
 
-        // Do not use totalResults to determine completion. Some user stores (notably LDAP)
-        // may report a page-scoped totalResults value rather than the total number of users.
-        // An empty page signals the end of the list. Do not stop on a short page because
-        // some user stores may return partial pages while more results are still available.
-        // No new IDs protects against stores that ignore startIndex and repeat a page.
         startIndex += pageUsers.length;
 
         if (pageUsers.length === 0 || newUsersInPage === 0) {
+            hasMore = false;
             break;
         }
     }
 
-    return availableUsers;
+    return {
+        hasMore,
+        nextStartIndex: startIndex,
+        seenUserIds: Array.from(seenUserIds),
+        users: availableUsers
+    };
+};
+
+/**
+ * Fetch the first batch of available users.
+ *
+ * @returns The available users, or null when the request has been cancelled.
+ */
+export const fetchAvailableGroupUsers = async (
+    options: FetchAvailableGroupUsersOptions
+): Promise<UserBasicInterface[] | null> => {
+    const result: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage(options);
+
+    return result?.users ?? null;
 };
