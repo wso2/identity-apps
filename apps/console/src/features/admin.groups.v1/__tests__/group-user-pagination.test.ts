@@ -267,12 +267,18 @@ describe("fetchAvailableGroupUsers", () => {
             { length: PAGE_SIZE },
             (_, index) => createUser(`second-${index}`, false)
         );
+        const thirdPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`third-${index}`, false)
+        );
         const getUsersListMock = jest.fn()
             .mockResolvedValueOnce({ Resources: firstPage })
-            .mockResolvedValueOnce({ Resources: secondPage });
+            .mockResolvedValueOnce({ Resources: secondPage })
+            .mockResolvedValueOnce({ Resources: thirdPage });
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
         const result = await fetchAvailableGroupUsersPage({
             filter: null,
-            getUsersList: getUsersListMock as GetUsersListFunction,
+            getUsersList,
             groupDisplayName: GROUP_NAME,
             isCancelled: () => false,
             pageSize: PAGE_SIZE,
@@ -283,6 +289,24 @@ describe("fetchAvailableGroupUsers", () => {
         expect(result?.users[19].id).toBe("second-9");
         expect(result?.pendingUsers).toHaveLength(10);
         expect(result?.nextStartIndex).toBe(PAGE_SIZE * 2);
+
+        const nextBatch = await fetchAvailableGroupUsersPage({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            pendingUsers: result?.pendingUsers,
+            seenUserIds: result?.seenUserIds,
+            startIndex: result?.nextStartIndex,
+            userstore: USERSTORE
+        });
+
+        expect(nextBatch?.users).toHaveLength(PAGE_SIZE);
+        expect(nextBatch?.users[0].id).toBe("second-10");
+        expect(nextBatch?.users[9].id).toBe("second-19");
+        expect(nextBatch?.users[10].id).toBe("third-0");
+        expect(getUsersListMock).toHaveBeenNthCalledWith(3, PAGE_SIZE, PAGE_SIZE * 2, null, null, USERSTORE, null);
     });
 
 
