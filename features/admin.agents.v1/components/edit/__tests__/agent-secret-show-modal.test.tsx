@@ -172,7 +172,7 @@ describe("AgentSecretShowModal", () => {
         expect(screen.getByTestId("agent-secret-readonly-input")).toHaveValue("GeneratedSecret#123");
     });
 
-    it("renders the initial credentials view and closes with Done", () => {
+    it("renders the initial credentials view and closes with Close", () => {
         const onClose: Mock = vi.fn();
 
         render(
@@ -189,7 +189,7 @@ describe("AgentSecretShowModal", () => {
         expect(screen.getByTestId("agent-id-readonly-input")).toHaveValue("agent-id");
         expect(screen.getByTestId("agent-secret-readonly-input")).toHaveValue("InitialSecret#123");
 
-        fireEvent.click(screen.getByText("Done"));
+        fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
         expect(onClose).toHaveBeenCalledTimes(1);
     });

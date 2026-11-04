@@ -211,7 +211,7 @@ export function AgentSecretShowModal({
                         }
                         data-testid={ `${componentId}-done-button` }
                     >
-                            Done
+                            Close
                     </Button>
                 ) }
             </Modal.Actions>
