@@ -34,7 +34,7 @@ import {
 } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -82,6 +82,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const [ seenUserIds, setSeenUserIds ] = useState<string[]>([]);
     const [ hasMoreUsers, setHasMoreUsers ] = useState<boolean>(false);
     const [ isLoadingMoreUsers, setIsLoadingMoreUsers ] = useState<boolean>(false);
+    const loadMoreRequestId = useRef<number>(0);
 
     /**
      * Fetch users in pages until enough users that are not assigned to this group
@@ -94,6 +95,8 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         }
 
         let isRequestCancelled: boolean = false;
+        loadMoreRequestId.current++;
+        setIsLoadingMoreUsers(false);
 
         const fetchAvailableUsers = async (): Promise<void> => {
             const pageSize: number = 20;
@@ -154,6 +157,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
         return () => {
             isRequestCancelled = true;
+            loadMoreRequestId.current++;
         };
     }, [
         showAddNewUserModal,
@@ -210,6 +214,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         }
 
         setIsLoadingMoreUsers(true);
+        const requestId: number = ++loadMoreRequestId.current;
 
         try {
             const nextPage: FetchAvailableGroupUsersPageResult | null = await fetchAvailableGroupUsersPage({
@@ -223,7 +228,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 userstore
             });
 
-            if (nextPage) {
+            if (nextPage && requestId === loadMoreRequestId.current) {
                 setUserList((currentUsers: UserBasicInterface[]) => [
                     ...currentUsers,
                     ...nextPage.users
@@ -238,7 +243,8 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 response?: { data?: { description?: string; }; };
             })?.response?.data?.description;
 
-            dispatch(addAlert({
+            if (requestId === loadMoreRequestId.current) {
+                dispatch(addAlert({
                 description: errorDescription || t(
                     "console:manage.features.users.notifications.fetchUsers.genericError.description"
                 ),
@@ -246,9 +252,12 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 message: t(errorDescription
                     ? "console:manage.features.users.notifications.fetchUsers.error.message"
                     : "console:manage.features.users.notifications.fetchUsers.genericError.message")
-            }));
+                }));
+            }
         } finally {
-            setIsLoadingMoreUsers(false);
+            if (requestId === loadMoreRequestId.current) {
+                setIsLoadingMoreUsers(false);
+            }
         }
     };
 
