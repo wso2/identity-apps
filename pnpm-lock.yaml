@@ -341,7 +341,7 @@ importers:
         specifier: ^2.25.212
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.179
+        specifier: ^2.32.180
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
         specifier: ^1.9.0
