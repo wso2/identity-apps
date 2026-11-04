@@ -203,4 +203,49 @@ describe("fetchAvailableGroupUsers", () => {
 
         expect(result).toBeNull();
     });
+
+    it("loads available users in separate batches and preserves the pagination cursor", async () => {
+        const firstPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`user-${index}`, index < 5)
+        );
+        const secondPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`user-${PAGE_SIZE + index}`, false)
+        );
+        const getUsersListMock = jest.fn()
+            .mockResolvedValueOnce({ Resources: firstPage })
+            .mockResolvedValueOnce({ Resources: secondPage });
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        const firstBatch = await fetchAvailableGroupUsersPage({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(firstBatch?.users).toHaveLength(15);
+        expect(firstBatch?.hasMore).toBe(true);
+        expect(firstBatch?.nextStartIndex).toBe(PAGE_SIZE);
+
+        const secondBatch = await fetchAvailableGroupUsersPage({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            seenUserIds: firstBatch?.seenUserIds,
+            startIndex: firstBatch?.nextStartIndex,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
+        expect(secondBatch?.users).toHaveLength(PAGE_SIZE);
+        expect(secondBatch?.users[0].id).toBe(`user-${PAGE_SIZE}`);
+        expect(secondBatch?.hasMore).toBe(true);
+    });
+
 });
