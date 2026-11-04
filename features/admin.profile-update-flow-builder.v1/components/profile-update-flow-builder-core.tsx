@@ -20,6 +20,7 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowVariablesInterface } from "@wso2is/admin.flow-builder-core.v1/models/variables";
 import {
     BlockTypes,
     Branch,
@@ -145,9 +146,10 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
         );
     };
 
-    const generateSteps = (steps: Node[]): Node[] => {
+    const generateSteps = (steps: Node[], variables?: FlowVariablesInterface): Node[] => {
         const START_STEP: Node = {
             data: {
+                ...(variables && { variables }),
                 displayOnly: true
             },
             deletable: false,
@@ -514,7 +516,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
     useLayoutEffect(() => {
         if (!isProfileUpdateFlowFetchRequestLoading && !isProfileUpdateFlowFetchRequestValidating) {
             if (!isEmpty(profileUpdateFlow?.steps)) {
-                const steps: Node[] = generateSteps(profileUpdateFlow.steps);
+                const steps: Node[] = generateSteps(profileUpdateFlow.steps, profileUpdateFlow.variables);
 
                 updateFlowWithSequence(steps);
             } else {
@@ -523,6 +525,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
         }
     }, [
         profileUpdateFlow?.steps,
+        profileUpdateFlow?.variables,
         isProfileUpdateFlowFetchRequestLoading,
         isProfileUpdateFlowFetchRequestValidating
     ]);
