@@ -81,11 +81,13 @@ export const fetchAvailableGroupUsers = async (
             }
         });
 
-        // LDAP stores may omit totalResults; a short page still signals completion.
+        // Do not use totalResults to determine completion. Some user stores (notably LDAP)
+        // may report a page-scoped totalResults value rather than the total number of users.
+        // A short page is the reliable end-of-list signal; no new IDs protects against
+        // user stores that ignore the requested startIndex and repeat a page.
         startIndex += pageUsers.length;
 
-        if (pageUsers.length < pageSize || newUsersInPage === 0
-            || (typeof response?.totalResults === "number" && startIndex >= response.totalResults)) {
+        if (pageUsers.length < pageSize || newUsersInPage === 0) {
             break;
         }
     }
