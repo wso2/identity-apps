@@ -48,7 +48,7 @@ jobs:
         run: pnpm exec tsc -p apps/console/tsconfig.json --noEmit --incremental false
 
       - name: Build workspace
-        run: pnpm build
+        run: pnpm --dir apps/console run build
 
       - name: Upload Console build
         uses: actions/upload-artifact@v4
