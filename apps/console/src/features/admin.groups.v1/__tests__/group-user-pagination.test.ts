@@ -65,6 +65,36 @@ describe("fetchAvailableGroupUsers", () => {
         expect(result).toEqual(secondPage);
     });
 
+    it("continues pagination when LDAP reports totalResults for only the current page", async () => {
+        const firstPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`assigned-${index}`, true)
+        );
+        const secondPage: UserBasicInterface[] = [
+            createUser("available-ldap-user", false)
+        ];
+        const getUsersListMock = jest.fn();
+        const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
+
+        // LDAP can report totalResults=pageSize for each full page even when more users exist.
+        getUsersListMock
+            .mockResolvedValueOnce({ Resources: firstPage, totalResults: PAGE_SIZE })
+            .mockResolvedValueOnce({ Resources: secondPage, totalResults: PAGE_SIZE });
+
+        const result = await fetchAvailableGroupUsers({
+            filter: null,
+            getUsersList,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
+        expect(result).toEqual(secondPage);
+    });
+
     it("handles user stores that omit totalResults and stops after a short final page", async () => {
         const firstPage: UserBasicInterface[] = Array.from(
             { length: PAGE_SIZE },
