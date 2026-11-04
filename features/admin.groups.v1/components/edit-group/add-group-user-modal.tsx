@@ -203,6 +203,11 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
         setSelectedUsers(checkedUsers);
         setIsSelectAllUsers(userList?.length === checkedUsers?.length);
+
+        // Keep a full batch of unselected users available as users are selected.
+        if (userList.length - checkedUsers.length < 20 && hasMoreUsers && !isLoadingMoreUsers) {
+            void handleLoadMoreUsers();
+        }
     };
 
     /**
@@ -268,6 +273,10 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
         if (!isSelectAllUsers) {
             setSelectedUsers(userList);
+
+            if (hasMoreUsers && !isLoadingMoreUsers) {
+                void handleLoadMoreUsers();
+            }
         } else {
             setSelectedUsers([]);
         }
