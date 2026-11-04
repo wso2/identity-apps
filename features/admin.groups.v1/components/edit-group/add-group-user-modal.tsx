@@ -99,7 +99,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
             setUserList([]);
 
             try {
-                const availableUsers = await fetchAvailableGroupUsers({
+                const availableUsers: UserBasicInterface[] | null = await fetchAvailableGroupUsers({
                     filter,
                     getUsersList,
                     groupDisplayName: group.displayName,
@@ -143,7 +143,12 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         return () => {
             isRequestCancelled = true;
         };
-    }, [ showAddNewUserModal, searchQuery, userstore, group?.displayName ]);
+    }, [
+        showAddNewUserModal,
+        searchQuery,
+        userstore,
+        group?.displayName
+    ]);
 
     /**
      * This is a debounced function to handle the user search by email address.
