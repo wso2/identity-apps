@@ -1,0 +1,60 @@
+name: Group user pagination validation
+
+on:
+  push:
+    branches:
+      - wso2-is-7.3.0-group-user-pagination
+
+concurrency:
+  group: group-user-pagination-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint pagination implementation and tests
+        run: >
+          pnpm exec eslint --ext .ts,.tsx --max-warnings=0
+          --resolve-plugins-relative-to .
+          -- features/admin.groups.v1/components/edit-group/add-group-user-modal.tsx
+          features/admin.groups.v1/utils/group-user-pagination.ts
+          apps/console/src/features/admin.groups.v1/__tests__/group-user-pagination.test.ts
+
+      - name: Build reusable modules
+        run: pnpm build:modules
+
+      - name: Run pagination unit tests
+        run: pnpm --dir apps/console exec jest --runInBand src/features/admin.groups.v1/__tests__/group-user-pagination.test.ts
+
+      - name: Typecheck Console
+        run: pnpm --dir apps/console run typecheck
+
+      - name: Build workspace
+        run: pnpm build
+
+      - name: Upload Console build
+        uses: actions/upload-artifact@v4
+        with:
+          name: identity-apps-console-wso2-is-7.3.0
+          path: apps/console/build/console
+          if-no-files-found: error
+          retention-days: 14
