@@ -118,7 +118,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             setIsUserListLoading(true);
             setUserList([]);
-                setNextStartIndex(0);
+            setNextStartIndex(0);
             setSeenUserIds([]);
             setPendingUsers([]);
             setHasMoreUsers(false);
