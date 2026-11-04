@@ -184,33 +184,6 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     }, 1000), []);
 
     /**
-     * Handles action when a checkbox is checked/unchecked.
-     * @param user - UserBasicInterface
-     */
-    const handleItemCheckboxChange = (user: UserBasicInterface) => {
-        const checkedUsers: UserBasicInterface[] = !isEmpty(selectedUsers)
-            ? [ ...selectedUsers ]
-            : [];
-
-        // Check if the user is already selected.
-        if (checkedUsers.includes(user)) {
-            // If yes, remove it from the list.
-            checkedUsers.splice(checkedUsers.indexOf(user), 1);
-        } else {
-            // If not add it to the list.
-            checkedUsers.push(user);
-        }
-
-        setSelectedUsers(checkedUsers);
-        setIsSelectAllUsers(userList?.length === checkedUsers?.length);
-
-        // Keep a full batch of unselected users available as users are selected.
-        if (userList.length - checkedUsers.length < 20 && hasMoreUsers && !isLoadingMoreUsers) {
-            void handleLoadMoreUsers();
-        }
-    };
-
-    /**
      * Fetches the next batch without clearing users already selected or displayed.
      */
     const handleLoadMoreUsers = async (): Promise<void> => {
@@ -263,6 +236,33 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
             if (requestId === loadMoreRequestId.current) {
                 setIsLoadingMoreUsers(false);
             }
+        }
+    };
+
+    /**
+     * Handles action when a checkbox is checked/unchecked.
+     * @param user - UserBasicInterface
+     */
+    const handleItemCheckboxChange = (user: UserBasicInterface) => {
+        const checkedUsers: UserBasicInterface[] = !isEmpty(selectedUsers)
+            ? [ ...selectedUsers ]
+            : [];
+
+        // Check if the user is already selected.
+        if (checkedUsers.includes(user)) {
+            // If yes, remove it from the list.
+            checkedUsers.splice(checkedUsers.indexOf(user), 1);
+        } else {
+            // If not add it to the list.
+            checkedUsers.push(user);
+        }
+
+        setSelectedUsers(checkedUsers);
+        setIsSelectAllUsers(userList?.length === checkedUsers?.length);
+
+        // Keep a full batch of unselected users available as users are selected.
+        if (userList.length - checkedUsers.length < 20 && hasMoreUsers && !isLoadingMoreUsers) {
+            void handleLoadMoreUsers();
         }
     };
 
