@@ -102,7 +102,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
     const { steps, templates } = resources;
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StepTypes.End;
+    const INITIAL_FLOW_END_STEP_ID: string = StepTypes.End;
 
     /**
      * Hook to refetch the flow when `refetchFlow` is set to `true`.
@@ -125,7 +125,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                 addAlert({
                     description: "An error occurred while fetching the profile update flow.",
                     level: AlertLevels.ERROR,
-                    message: "Couldn't retrieve  the profile update flow."
+                    message: "Couldn't retrieve the profile update flow."
                 })
             );
         }
@@ -191,17 +191,17 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
         // Get all step IDs for validation
         const stepIds: any = steps.map((step: any) => step.id);
 
-        // Find the user onboard step
-        const userOnboardStep: any = steps.find((step: any) => step.type === StepTypes.End);
+        // Find the end step
+        const endStep: any = steps.find((step: any) => step.type === StepTypes.End);
 
-        // Get the ID of the user onboard step or use the default one
-        const userOnboardStepId: any = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
+        // Get the ID of the end step or use the default one
+        const endStepId: any = endStep?.id || INITIAL_FLOW_END_STEP_ID;
 
         // Check if we need to connect start to the first step
         if (steps.length > 0) {
             let firstStep: any = steps[0];
 
-            // TODO: Handle this better. Templates have a `Start` node, but the black starter doesn't.
+            // TODO: Handle this better. Templates have a `Start` node, but the blank starter doesn't.
             if (firstStep.id === INITIAL_FLOW_START_STEP_ID) {
                 firstStep = steps[1];
             }
@@ -221,8 +221,8 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
             }
         }
 
-        // Flag to track if we've already created an edge to the user onboard step
-        let userOnboardEdgeCreated: boolean = false;
+        // Flag to track if we've already created an edge to the end step
+        let endEdgeCreated: boolean = false;
 
         const createEdgesForButtons = (step: any, button: any) => {
             const edges: any[] = [];
@@ -242,13 +242,13 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                         type: "base-edge"
                     });
 
-                    // Check if this is pointing to the user onboard step
-                    if (button.action.next === userOnboardStepId) {
-                        userOnboardEdgeCreated = true;
+                    // Check if this is pointing to the end step
+                    if (button.action.next === endStepId) {
+                        endEdgeCreated = true;
                     }
                 } else if (button.action.next === StepTypes.End) {
-                    // If next references a user onboard ID that's not in the steps
-                    // but follows the naming pattern, connect to our actual user onboard step
+                    // If next references an end step ID that's not in the steps
+                    // but follows the naming pattern, connect to our actual end step
                     edges.push({
                         animated: false,
                         id: button.id,
@@ -257,10 +257,10 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                         },
                         source: step.id,
                         sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
-                        target: userOnboardStepId,
+                        target: endStepId,
                         type: "base-edge"
                     });
-                    userOnboardEdgeCreated = true;
+                    endEdgeCreated = true;
                 }
             }
 
@@ -269,7 +269,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
 
         // Create edges based on the action configuration in each step
         steps.forEach((step: Step) => {
-            // Skip processing for the user onboard step itself
+            // Skip processing for the end step itself
             if (step.type === StepTypes.End) {
                 return;
             }
@@ -317,8 +317,8 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                             type: "base-edge"
                         });
 
-                        if (branch.next === userOnboardStepId) {
-                            userOnboardEdgeCreated = true;
+                        if (branch.next === endStepId) {
+                            endEdgeCreated = true;
                         }
                     });
                 } else if (stepIds.includes(step.data.action.next)) {
@@ -334,32 +334,32 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                         type: "base-edge"
                     });
 
-                    // Check if this is pointing to the user onboard step
-                    if (step.data.action.next === userOnboardStepId) {
-                        userOnboardEdgeCreated = true;
+                    // Check if this is pointing to the end step
+                    if (step.data.action.next === endStepId) {
+                        endEdgeCreated = true;
                     }
                 } else if (step.data.action.next === StepTypes.End) {
-                    // If next references a user onboard ID that's not in the steps
-                    // but follows the naming pattern, connect to our actual user onboard step
+                    // If next references an end step ID that's not in the steps
+                    // but follows the naming pattern, connect to our actual end step
                     edges.push({
                         animated: false,
-                        id: `${step.id}-to-${userOnboardStepId}`,
+                        id: `${step.id}-to-${endStepId}`,
                         markerEnd: {
                             type: MarkerType.Arrow
                         },
                         source: step.id,
                         sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
-                        target: userOnboardStepId,
+                        target: endStepId,
                         type: "base-edge"
                     });
-                    userOnboardEdgeCreated = true;
+                    endEdgeCreated = true;
                 }
             }
         });
 
-        // If no edge to user onboard was created and we have view steps,
-        // connect the last view step to the user onboard step
-        if (!userOnboardEdgeCreated && steps.length > 0) {
+        // If no edge to the end step was created and we have view steps,
+        // connect the last view step to the end step
+        if (!endEdgeCreated && steps.length > 0) {
             // Find view steps
             const viewSteps: any[] = steps.filter((step: any) => step.type === StepTypes.View);
 
@@ -387,7 +387,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                 }
 
                 // If we found a button, use it; otherwise generate a fallback ID
-                const edgeId: any = buttonId || `${lastViewStep.id}-to-${userOnboardStepId}`;
+                const edgeId: any = buttonId || `${lastViewStep.id}-to-${endStepId}`;
 
                 edges.push({
                     animated: false,
@@ -399,7 +399,7 @@ const ProfileUpdateFlowBuilderCore: FunctionComponent<ProfileUpdateFlowBuilderCo
                     ...(buttonId
                         ? { sourceHandle: `${buttonId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
                         : { sourceHandle: `${lastViewStep.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }),
-                    target: userOnboardStepId,
+                    target: endStepId,
                     type: "base-edge"
                 });
             }

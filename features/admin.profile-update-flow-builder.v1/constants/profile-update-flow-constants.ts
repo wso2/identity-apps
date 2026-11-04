@@ -17,14 +17,14 @@
  */
 
 /**
- * Constants related to the tenant management operations.
+ * Constants related to the Profile Update flow.
  *
  * @remarks
  * This class is not meant to be instantiated. It only provides static constants.
  *
  * @example
  * ```typescript
- * const errorMessage = TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR;
+ * const flowType = ProfileUpdateFlowConstants.PROFILE_UPDATE_FLOW_TYPE;
  * ```
  */
 class ProfileUpdateFlowConstants {

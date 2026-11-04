@@ -19,14 +19,14 @@
 import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
- * Constants related to the tenant management operations.
+ * Constants related to the Profile Update flow builder.
  *
  * @remarks
  * This class is not meant to be instantiated. It only provides static constants.
  *
  * @example
  * ```typescript
- * const errorMessage = TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR;
+ * const errorMessage = ProfileUpdateFlowBuilderConstants.FLOW_CONFIG_UPDATE_ERROR;
  * ```
  */
 class ProfileUpdateFlowBuilderConstants {
@@ -43,7 +43,6 @@ class ProfileUpdateFlowBuilderConstants {
 
     public static readonly FEDERATION_CONFIG_SKIPPED_EXECUTORS: ExecutionTypes[] = [
         ExecutionTypes.PasskeyEnrollment,
-        ExecutionTypes.ConfirmationCode,
         ExecutionTypes.MagicLinkExecutor
     ];
 }

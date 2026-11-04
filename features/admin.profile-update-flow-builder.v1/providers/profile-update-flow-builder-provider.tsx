@@ -57,6 +57,7 @@ const ProfileUpdateFlowBuilderProvider: FC<ProfileUpdateFlowBuilderProviderProps
 
     const screensList: PreviewScreenType[] = useMemo(() => ([
         PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_LINK_EXPIRY,
         PreviewScreenType.EMAIL_OTP,
         PreviewScreenType.SMS_OTP
     ]), []);
