@@ -214,7 +214,7 @@
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
                 const accountsPortalUrl = "<%= accountsBaseURL %>";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
-                const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
+                const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp" + window.location.search;
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
