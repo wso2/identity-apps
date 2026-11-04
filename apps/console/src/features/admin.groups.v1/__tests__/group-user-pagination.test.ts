@@ -59,7 +59,7 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenCalledTimes(3);
         expect(getUsersListMock).toHaveBeenNthCalledWith(1, PAGE_SIZE, 0, null, null, USERSTORE, null);
         expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
         expect(result).toEqual(secondPage);
@@ -79,7 +79,9 @@ describe("fetchAvailableGroupUsers", () => {
         // LDAP can report totalResults=pageSize for each full page even when more users exist.
         getUsersListMock
             .mockResolvedValueOnce({ Resources: firstPage, totalResults: PAGE_SIZE })
-            .mockResolvedValueOnce({ Resources: secondPage, totalResults: PAGE_SIZE });
+            .mockResolvedValueOnce({ Resources: secondPage, totalResults: PAGE_SIZE })
+            // A short page is not conclusive for every user store; an empty page confirms exhaustion.
+            .mockResolvedValueOnce({ Resources: [] });
 
         const result = await fetchAvailableGroupUsers({
             filter: null,
@@ -90,7 +92,7 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(getUsersListMock).toHaveBeenCalledTimes(2);
+        expect(getUsersListMock).toHaveBeenCalledTimes(3);
         expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
         expect(result).toEqual(secondPage);
     });
@@ -109,7 +111,9 @@ describe("fetchAvailableGroupUsers", () => {
 
         getUsersListMock
             .mockResolvedValueOnce({ Resources: firstPage })
-            .mockResolvedValueOnce({ Resources: finalPage });
+            .mockResolvedValueOnce({ Resources: finalPage })
+            // The helper requests one more page to confirm that the list is exhausted.
+            .mockResolvedValueOnce({ Resources: [] });
 
         const result = await fetchAvailableGroupUsers({
             filter: null,
