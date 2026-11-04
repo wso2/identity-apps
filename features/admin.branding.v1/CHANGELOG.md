@@ -1,5 +1,11 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.180
+
+### Patch Changes
+
+- [#10870](https://github.com/wso2/identity-apps/pull/10870) [`fefad60e6d685c5fb082b3f59f8d5812d1b7fc08`](https://github.com/wso2/identity-apps/commit/fefad60e6d685c5fb082b3f59f8d5812d1b7fc08) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Allow saving branding design changes when the custom layout is stored as inline HTML
+
 ## 2.32.179
 
 ### Patch Changes

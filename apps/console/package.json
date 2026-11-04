@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "4.31.0",
+    "version": "4.31.1",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -56,7 +56,7 @@
         "@wso2is/admin.approval-workflows.v1": "^1.4.0",
         "@wso2is/admin.ask-password-flow-builder.v1": "workspace:^",
         "@wso2is/admin.authentication.v1": "^2.25.212",
-        "@wso2is/admin.branding.v1": "^2.32.179",
+        "@wso2is/admin.branding.v1": "^2.32.180",
         "@wso2is/admin.cds.v1": "^1.9.0",
         "@wso2is/admin.certificates.v1": "^2.25.206",
         "@wso2is/admin.claims.v1": "^2.31.8",
