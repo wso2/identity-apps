@@ -221,7 +221,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 filter: !isEmpty(searchQuery) ? searchQuery : null,
                 getUsersList,
                 groupDisplayName: group.displayName,
-                isCancelled: () => false,
+                isCancelled: () => requestId !== loadMoreRequestId.current,
                 pageSize: 20,
                 seenUserIds,
                 startIndex: nextStartIndex,
@@ -245,13 +245,13 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             if (requestId === loadMoreRequestId.current) {
                 dispatch(addAlert({
-                description: errorDescription || t(
-                    "console:manage.features.users.notifications.fetchUsers.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(errorDescription
-                    ? "console:manage.features.users.notifications.fetchUsers.error.message"
-                    : "console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    description: errorDescription || t(
+                        "console:manage.features.users.notifications.fetchUsers.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(errorDescription
+                        ? "console:manage.features.users.notifications.fetchUsers.error.message"
+                        : "console:manage.features.users.notifications.fetchUsers.genericError.message")
                 }));
             }
         } finally {
@@ -333,7 +333,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleItemCheckboxChange(user) }
-                                        key={ index }
+                                        key={ user.id }
                                         listItem={ resolvedGivenName ?? resolvedUsername }
                                         listItemId={ user.id }
                                         listItemIndex={ index }
@@ -363,7 +363,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                         data-componentid={ `${ componentId }-load-more-users-button` }
                         data-testid={ `${ componentId }-load-more-users-button` }
                     >
-                        { t("common:loadMore") }
+                        { t("common:showMore") }
                     </Button>
                 ) }
             </Modal.Content>
