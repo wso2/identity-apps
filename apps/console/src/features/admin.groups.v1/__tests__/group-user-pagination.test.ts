@@ -214,9 +214,14 @@ describe("fetchAvailableGroupUsers", () => {
             { length: PAGE_SIZE },
             (_, index) => createUser(`user-${PAGE_SIZE + index}`, false)
         );
+        const thirdPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`user-${PAGE_SIZE * 2 + index}`, false)
+        );
         const getUsersListMock = jest.fn()
             .mockResolvedValueOnce({ Resources: firstPage })
-            .mockResolvedValueOnce({ Resources: secondPage });
+            .mockResolvedValueOnce({ Resources: secondPage })
+            .mockResolvedValueOnce({ Resources: thirdPage });
         const getUsersList: GetUsersListFunction = getUsersListMock as GetUsersListFunction;
 
         const firstBatch = await fetchAvailableGroupUsersPage({
@@ -228,9 +233,11 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(firstBatch?.users).toHaveLength(15);
+        expect(firstBatch?.users).toHaveLength(PAGE_SIZE);
+        expect(firstBatch?.users[0].id).toBe("user-5");
         expect(firstBatch?.hasMore).toBe(true);
-        expect(firstBatch?.nextStartIndex).toBe(PAGE_SIZE);
+        expect(firstBatch?.nextStartIndex).toBe(PAGE_SIZE * 2);
+        expect(firstBatch?.pendingUsers).toHaveLength(15);
 
         const secondBatch = await fetchAvailableGroupUsersPage({
             filter: null,
@@ -238,14 +245,15 @@ describe("fetchAvailableGroupUsers", () => {
             groupDisplayName: GROUP_NAME,
             isCancelled: () => false,
             pageSize: PAGE_SIZE,
+            pendingUsers: firstBatch?.pendingUsers,
             seenUserIds: firstBatch?.seenUserIds,
             startIndex: firstBatch?.nextStartIndex,
             userstore: USERSTORE
         });
 
-        expect(getUsersListMock).toHaveBeenNthCalledWith(2, PAGE_SIZE, PAGE_SIZE, null, null, USERSTORE, null);
+        expect(getUsersListMock).toHaveBeenNthCalledWith(3, PAGE_SIZE, PAGE_SIZE * 2, null, null, USERSTORE, null);
         expect(secondBatch?.users).toHaveLength(PAGE_SIZE);
-        expect(secondBatch?.users[0].id).toBe(`user-${PAGE_SIZE}`);
+        expect(secondBatch?.users[0].id).toBe("user-25");
         expect(secondBatch?.hasMore).toBe(true);
     });
 
@@ -271,8 +279,9 @@ describe("fetchAvailableGroupUsers", () => {
             userstore: USERSTORE
         });
 
-        expect(result?.users).toHaveLength(30);
-        expect(result?.users[29].id).toBe("second-19");
+        expect(result?.users).toHaveLength(PAGE_SIZE);
+        expect(result?.users[19].id).toBe("second-9");
+        expect(result?.pendingUsers).toHaveLength(10);
         expect(result?.nextStartIndex).toBe(PAGE_SIZE * 2);
     });
 
@@ -287,6 +296,7 @@ describe("fetchAvailableGroupUsers", () => {
         const loadedUsers: UserBasicInterface[] = [];
         let startIndex: number = 0;
         let seenUserIds: string[] = [];
+        let pendingUsers: UserBasicInterface[] = [];
         let hasMore: boolean = true;
 
         while (hasMore) {
@@ -296,6 +306,7 @@ describe("fetchAvailableGroupUsers", () => {
                 groupDisplayName: GROUP_NAME,
                 isCancelled: () => false,
                 pageSize: PAGE_SIZE,
+                pendingUsers,
                 seenUserIds,
                 startIndex,
                 userstore: USERSTORE
@@ -308,6 +319,7 @@ describe("fetchAvailableGroupUsers", () => {
             loadedUsers.push(...batch.users);
             startIndex = batch.nextStartIndex;
             seenUserIds = batch.seenUserIds;
+            pendingUsers = batch.pendingUsers;
             hasMore = batch.hasMore;
         }
 
