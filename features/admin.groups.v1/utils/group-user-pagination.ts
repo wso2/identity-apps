@@ -37,12 +37,6 @@ export interface FetchAvailableGroupUsersOptions {
     isCancelled: () => boolean;
 }
 
-/**
- * Fetch users in pages until enough users that are not assigned to the group
- * are found, or the user list is exhausted.
- *
- * @returns The available users, or null when the request has been cancelled.
- */
 export interface FetchAvailableGroupUsersPageOptions extends FetchAvailableGroupUsersOptions {
     startIndex?: number;
     seenUserIds?: string[];
