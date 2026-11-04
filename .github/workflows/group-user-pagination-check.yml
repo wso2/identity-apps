@@ -45,7 +45,7 @@ jobs:
         run: pnpm --dir apps/console exec jest --config jest.pagination.config.cjs --runInBand src/features/admin.groups.v1/__tests__/group-user-pagination.test.ts
 
       - name: Typecheck Console
-        run: pnpm --dir apps/console run typecheck
+        run: pnpm exec tsc -p apps/console/tsconfig.json --noEmit --incremental false
 
       - name: Build workspace
         run: pnpm build
