@@ -95,7 +95,7 @@ export const fetchAvailableGroupUsersPage = async (
                 (userGroup) => userGroup.display === options.groupDisplayName
             ) ?? false;
 
-            if (!isUserAlreadyAssigned && availableUsers.length < pageSize) {
+            if (!isUserAlreadyAssigned) {
                 availableUsers.push(user);
             }
         });
