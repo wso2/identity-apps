@@ -19,6 +19,7 @@
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import {
     fetchAvailableGroupUsers,
+    fetchAvailableGroupUsersPage,
     GetUsersListFunction
 } from "../../../../../../features/admin.groups.v1/utils/group-user-pagination";
 
@@ -246,6 +247,33 @@ describe("fetchAvailableGroupUsers", () => {
         expect(secondBatch?.users).toHaveLength(PAGE_SIZE);
         expect(secondBatch?.users[0].id).toBe(`user-${PAGE_SIZE}`);
         expect(secondBatch?.hasMore).toBe(true);
+    });
+
+
+    it("does not drop available users when a backend page crosses the batch boundary", async () => {
+        const firstPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`first-${index}`, index < 10)
+        );
+        const secondPage: UserBasicInterface[] = Array.from(
+            { length: PAGE_SIZE },
+            (_, index) => createUser(`second-${index}`, false)
+        );
+        const getUsersListMock = jest.fn()
+            .mockResolvedValueOnce({ Resources: firstPage })
+            .mockResolvedValueOnce({ Resources: secondPage });
+        const result = await fetchAvailableGroupUsersPage({
+            filter: null,
+            getUsersList: getUsersListMock as GetUsersListFunction,
+            groupDisplayName: GROUP_NAME,
+            isCancelled: () => false,
+            pageSize: PAGE_SIZE,
+            userstore: USERSTORE
+        });
+
+        expect(result?.users).toHaveLength(30);
+        expect(result?.users[29].id).toBe("second-19");
+        expect(result?.nextStartIndex).toBe(PAGE_SIZE * 2);
     });
 
 });
