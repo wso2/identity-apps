@@ -352,7 +352,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 menuItem: t("users:editUser.tab.menuItems.5"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserDevices userId={ user?.id } />
+                        <UserDevices
+                            userId={ user?.id }
+                            isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                        />
                     </ResourceTab.Pane>
                 )
             });
