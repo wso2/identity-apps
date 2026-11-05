@@ -1,1 +1,19 @@
-[]
+[
+    {
+        "types": [
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "UserResolveExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Resolve User",
+                    "image": "assets/images/icons/magnifying-glass.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    }
+]

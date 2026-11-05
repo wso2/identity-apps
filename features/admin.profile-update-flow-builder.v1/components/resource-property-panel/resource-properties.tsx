@@ -21,6 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+// eslint-disable-next-line max-len
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
 // eslint-disable-next-line max-len
 import FlowHandoffProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-handoff-properties/flow-handoff-properties";
