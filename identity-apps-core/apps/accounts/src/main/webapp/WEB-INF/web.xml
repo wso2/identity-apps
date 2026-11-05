@@ -90,13 +90,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>profile</servlet-name>
+        <servlet-name>manage-profile</servlet-name>
         <jsp-file>/execution-flow.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>profile</servlet-name>
-        <url-pattern>/profile</url-pattern>
+        <servlet-name>manage-profile</servlet-name>
+        <url-pattern>/manage-profile</url-pattern>
     </servlet-mapping>
 
     <servlet>

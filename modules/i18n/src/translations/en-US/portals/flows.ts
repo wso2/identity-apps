@@ -107,13 +107,22 @@ export const flows: flowsNS = {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
             flowHandoff: {
-                expiryTimeHint: "Set the time span that the handoff link would be valid, in seconds.",
-                expiryTimeLabel: "Handoff link expiry time",
+                defaultTargets: {
+                    passwordRecovery: "Recovery Portal",
+                    profileUpdate: "Profile Management page",
+                    registration: "Self Signup page"
+                },
+                expiryTime: "Link valid {{expiryTime}} s",
+                expiryTimeHint: "How long the link stays valid.",
+                expiryTimeLabel: "Link valid for",
                 expiryTimePlaceholder: "Enter expiry time",
-                targetUrlHint: "Link to the webpage that continues the flow from the handoff link. If not set, the " +
-                    "default URL of the flow is used.",
-                targetUrlLabel: "Target URL",
-                targetUrlPlaceholder: "https://myapp.com/account"
+                targetUrlDefaultHint: "The page the one-time link points to, where the flow will continue. " +
+                    "Leave empty to use the default {{target}}.",
+                targetUrlDescription: "Get a one-time link to continue flow at",
+                targetUrlHint: "The page the one-time link points to, where the flow will continue. Leave empty " +
+                    "to use the {{target}}.",
+                targetUrlLabel: "Continue at",
+                targetUrlPlaceholder: "https://myapp.com/manage-profile"
             },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
@@ -135,9 +144,9 @@ export const flows: flowsNS = {
                 configurationHint: "Configure"
             },
             userVerification: {
-                tokenValidityPeriodHint: "Set the time span that a token is accepted after it is issued, in minutes.",
-                tokenValidityPeriodLabel: "Token validity period",
-                tokenValidityPeriodPlaceholder: "Enter the token validity period"
+                tokenValidityPeriodHint: "Only tokens issued within this time are accepted.",
+                tokenValidityPeriodLabel: "Maximum token age",
+                tokenValidityPeriodPlaceholder: "Enter the maximum token age"
             }
         },
         labels: {
@@ -434,7 +443,7 @@ export const flows: flowsNS = {
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
             },
             userResolveRequiresFactors: {
-                message: "Profile update with Resolve User action requires at least one verification factor, such as Email OTP, SMS OTP or Magic Link, after the user is resolved."
+                message: "A profile update flow with a Resolve User step must have at least one verification step after it, such as Email OTP, SMS OTP, or Magic Link."
             },
             variables: {
                 invalid: "Fix the flow variables on the Start step before saving: {{names}}.",

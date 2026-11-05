@@ -115,9 +115,17 @@ export interface flowsNS {
                 configurationHint: string;
             };
             flowHandoff: {
+                defaultTargets: {
+                    passwordRecovery: string;
+                    profileUpdate: string;
+                    registration: string;
+                };
+                expiryTime: string;
                 expiryTimeHint: string;
                 expiryTimeLabel: string;
                 expiryTimePlaceholder: string;
+                targetUrlDefaultHint: string;
+                targetUrlDescription: string;
                 targetUrlHint: string;
                 targetUrlLabel: string;
                 targetUrlPlaceholder: string;

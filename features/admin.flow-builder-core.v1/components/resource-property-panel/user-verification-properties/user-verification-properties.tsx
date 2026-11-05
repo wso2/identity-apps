@@ -69,7 +69,7 @@ const UserVerificationProperties: FunctionComponent<UserVerificationPropertiesPr
                     type="number"
                     aria-label="tokenValidityPeriod"
                     name="tokenValidityPeriod"
-                    value={ tokenValidityPeriod }
+                    defaultValue={ tokenValidityPeriod }
                     onChange={ handleTokenValidityPeriodChange }
                     placeholder={ t("flows:core.executions.userVerification.tokenValidityPeriodPlaceholder") }
                     inputProps={ { max: MAX_TOKEN_VALIDITY_PERIOD, min: 1 } }
@@ -79,7 +79,7 @@ const UserVerificationProperties: FunctionComponent<UserVerificationPropertiesPr
                     variant="body2"
                     color="text.secondary"
                     sx={ { alignSelf: "center" } }>
-                        mins
+                        minutes
                 </Typography>
             </Stack>
             <FormHelperText>
