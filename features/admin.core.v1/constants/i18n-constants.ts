@@ -375,6 +375,12 @@ export class I18nConstants {
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
 
     /**
+     * Function Libraries namespace.
+     */
+    public static readonly FUNCTION_LIBRARIES_NAMESPACE: string =
+        I18nModuleConstants.FUNCTION_LIBRARIES_NAMESPACE;
+
+    /**
      * CLI settings namespace.
      */
     public static readonly CLI_SETTINGS_NAMESPACE: string = I18nModuleConstants.CLI_SETTINGS_NAMESPACE;
@@ -450,6 +456,7 @@ export class I18nConstants {
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ],
+        [ I18nConstants.FUNCTION_LIBRARIES_NAMESPACE, "portals" ],
         [ I18nConstants.CLI_SETTINGS_NAMESPACE, "portals" ]
     ]);
 

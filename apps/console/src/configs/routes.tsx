@@ -21,6 +21,7 @@ import {
     BuildingIcon,
     BuildingPenIcon,
     DocumentCheckIcon,
+    DocumentPenIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
@@ -1873,6 +1874,38 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "webhooks:sidePanel.name",
             order: 31,
             path: AppConstants.getPaths().get("WEBHOOKS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.function-libraries.v1/pages/function-library-edit")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "functionLibraryEdit",
+                    name: "Function Library Edit",
+                    path: AppConstants.getPaths().get("FUNCTION_LIBRARY_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.function-libraries.v1/pages/function-libraries")
+            ),
+            exact: true,
+            icon: {
+                icon: <DocumentPenIcon className="icon" fill="black" />
+            },
+            id: "functionLibraries",
+            name: "functionLibraries:sidePanel.name",
+            order: 32,
+            path: AppConstants.getPaths().get("FUNCTION_LIBRARIES"),
             protected: true,
             showOnSidePanel: true
         },

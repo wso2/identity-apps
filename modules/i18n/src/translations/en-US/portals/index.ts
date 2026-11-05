@@ -73,6 +73,7 @@ export * from "./rules";
 export * from "./custom-auth-connection";
 export * from "./push-providers";
 export * from "./external-api-authentication";
+export * from "./function-libraries";
 export * from "./webhooks";
 export * from "./approval-workflows";
 export * from "./workflow-requests";
