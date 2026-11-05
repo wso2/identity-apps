@@ -105,8 +105,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 ): ReactElement => {
 
     const {
-        isOrganizationCustomRolesEnabled,
-        isSharedApplication,
+        isOrganizationCustomRolesEnabled = false,
+        isSharedApplication = false,
         onUpdate,
         originalTemplateId,
         readOnly,
@@ -138,7 +138,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ inheritedRoleIds, setInheritedRoleIds ] = useState<Set<string>>(new Set<string>());
+    // Null until the roles are fetched, as inherited roles cannot be identified before that.
+    const [ inheritedRoleIds, setInheritedRoleIds ] = useState<Set<string> | null>(null);
     const [ rolesToDelete, setRolesToDelete ] = useState<BasicRoleInterface[]>([]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -173,6 +174,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles on component load and audience switch.
      */
     useEffect(() => {
+        setInheritedRoleIds(null);
         getApplicationRoles();
         if (roleAudience === application?.associatedRoles?.allowedAudience) {
             setSelectedRoles(application?.associatedRoles?.roles);
@@ -223,12 +225,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * @returns True if the role is inherited.
      */
     const isInheritedRole = (role: BasicRoleInterface): boolean => {
-        return isSharedApplication && inheritedRoleIds.has(role?.id);
+        // Treat every role as inherited until the roles are fetched, so none can be removed.
+        return isSharedApplication && (inheritedRoleIds === null || inheritedRoleIds.has(role?.id));
     };
 
     // Shared application roles are editable only for application audience custom roles.
     const isRoleAssignmentReadOnly: boolean = readOnly || (isSharedApplication
-        && (roleAudience !== RoleAudienceTypes.APPLICATION
+        && (inheritedRoleIds === null
+            || roleAudience !== RoleAudienceTypes.APPLICATION
             || (!isOrganizationCustomRolesEnabled
                 && !(initialSelectedRoles ?? []).some((role: BasicRoleInterface) => !isInheritedRole(role)))));
 
@@ -254,9 +258,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
+                        // Removals are detected against these, so keep them in sync with the refreshed roles.
+                        setInitialSelectedRoles(rolesArray);
                     }
                 }
             }).catch((error: AxiosError<RequestErrorInterface>) => {
+                setInheritedRoleIds(null);
+
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ??
@@ -301,8 +309,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
+                        // Removals are detected against these, so keep them in sync with the refreshed roles.
+                        setInitialSelectedRoles(rolesArray);
                     }
                 }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                    setInheritedRoleIds(null);
+
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error?.response?.data?.description ??
@@ -361,19 +373,42 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             userRolesV3FeatureEnabled ? deleteRoleByIdV3 : deleteRoleById;
 
         setIsSubmitting(true);
-        Promise.all(roles.map((role: BasicRoleInterface) => deleteRole(role.id)))
-            .then(() => {
+        Promise.allSettled(roles.map((role: BasicRoleInterface) => deleteRole(role.id)))
+            .then((results: PromiseSettledResult<AxiosResponse>[]) => {
+                const failedRoles: BasicRoleInterface[] = roles.filter(
+                    (_role: BasicRoleInterface, index: number) => results[index].status === "rejected");
+
+                if (failedRoles.length === 0) {
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.success.message")
+                    }));
+
+                    return;
+                }
+
+                if (failedRoles.length < roles.length) {
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.partialError.description", {
+                            roles: failedRoles.map((role: BasicRoleInterface) => role.name).join(", ")
+                        }),
+                        level: AlertLevels.WARNING,
+                        message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.partialError.message")
+                    }));
+
+                    return;
+                }
+
+                const firstError: AxiosError<HttpErrorResponseDataInterface> =
+                    (results[0] as PromiseRejectedResult).reason;
+
                 dispatch(addAlert({
-                    description: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
-                        "notifications.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
-                        "notifications.success.message")
-                }));
-            })
-            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
-                dispatch(addAlert({
-                    description: error?.response?.data?.description ??
+                    description: firstError?.response?.data?.description ??
                         t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
                             "notifications.error.description"),
                     level: AlertLevels.ERROR,
@@ -813,8 +848,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
  * Default props for application roles tab component.
  */
 ApplicationRoles.defaultProps = {
-    isOrganizationCustomRolesEnabled: false,
-    isSharedApplication: false,
     "data-componentid": "application-roles-tab",
     readOnly: true
 };

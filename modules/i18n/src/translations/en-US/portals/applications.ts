@@ -1451,6 +1451,10 @@ export const applications: ApplicationsNS = {
                             description: "An error occurred while deleting the roles of the shared application.",
                             message: "Something went wrong"
                         },
+                        partialError: {
+                            description: "The following roles could not be deleted: {{roles}}.",
+                            message: "Some roles were not deleted"
+                        },
                         success: {
                             description: "The selected roles of the shared application were deleted successfully.",
                             message: "Roles deleted"

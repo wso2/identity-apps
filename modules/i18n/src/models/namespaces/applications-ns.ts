@@ -1205,6 +1205,10 @@ export interface ApplicationsNS {
                             description: string;
                             message: string;
                         };
+                        partialError: {
+                            description: string;
+                            message: string;
+                        };
                         success: {
                             description: string;
                             message: string;
