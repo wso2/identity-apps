@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.31.3
+
+### Patch Changes
+
+- [#10857](https://github.com/wso2/identity-apps/pull/10857) [`08f083cecb839217aee59a3374a4ad47224f66b1`](https://github.com/wso2/identity-apps/commit/08f083cecb839217aee59a3374a4ad47224f66b1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Allow the child organization subscription policy to be edited on webhooks using the WebSubHub adapter.
+
+- Updated dependencies [[`08f083cecb839217aee59a3374a4ad47224f66b1`](https://github.com/wso2/identity-apps/commit/08f083cecb839217aee59a3374a4ad47224f66b1)]:
+  - @wso2is/admin.webhooks.v1@1.3.0
+
 ## 4.31.2
 
 ### Patch Changes
