@@ -40,7 +40,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { deleteFunctionLibrary } from "../api/function-library";
-import { FUNCTION_LIBRARIES_LIST } from "../constants/component-ids";
+import { FUNCTION_LIBRARIES_LIST } from "../constants";
 import { FunctionLibraryInterface } from "../models/function-library";
 
 /**
