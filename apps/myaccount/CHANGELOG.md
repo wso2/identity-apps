@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 4.5.1
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+- Updated dependencies [[`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8)]:
+  - @wso2is/i18n@2.58.4
+
 ## 4.5.0
 
 ### Minor Changes
