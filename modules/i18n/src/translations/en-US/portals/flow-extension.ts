@@ -214,25 +214,6 @@ export const flowExtension: flowExtensionNS = {
                 editObject: "Edit Complex Object Entry"
             }
         },
-        addOrganizationAttributeModal: {
-            addButton: "Add Attributes",
-            cancelButton: "Cancel",
-            defineCustomAttribute: {
-                addButton: "Add",
-                keyLabel: "Key",
-                keyPlaceholder: "e.g. businessType",
-                labelLabel: "Display label",
-                labelPlaceholder: "e.g. Business Type",
-                title: "Define a custom attribute"
-            },
-            duplicateKey: "That attribute has already been added.",
-            invalidKey: "An attribute key must start with a letter and contain only letters, "
-                + "numbers or underscores.",
-            noOptions: "No attributes available",
-            searchPlaceholder: "Select an attribute collected by the flow...",
-            subtitle: "Select the organization attributes to add to the attributes map.",
-            title: "Add Organization Attributes"
-        },
         fieldConfig: {
             deleteTooltip: "Delete",
             editTooltip: "Edit",
@@ -271,6 +252,12 @@ export const flowExtension: flowExtensionNS = {
         },
         node: {
             addEntryChip: "+ ADD ENTRY",
+            descriptions: {
+                organization: "The organization the flow runs in, and where the flow extension is executed.",
+                subjectOrganization: "The organization being onboarded in this registration flow, created from "
+                    + "the details the user enters."
+            },
+            flowTypesOnlyBadge: "{{flowTypes}} only",
             noEntries: "No entries yet",
             notInFlowBadge: "Not in flow",
             readChip: "READ",
@@ -281,9 +268,11 @@ export const flowExtension: flowExtensionNS = {
     properties: {
         accessConfig: {
             advancedHint: "Configure encryption and other advanced options in the flow extension itself.",
-            description: "Select the runtime values and request headers that the extension can read or write in this flow.",
+            description: "Select the runtime values, request headers and organization details that the extension can "
+                + "read or write in this flow.",
             headers: "Request headers",
             noHeaders: "This flow defines no request headers. Define them in the Start node.",
+            noOrganizationAttributes: "This flow collects no other organization attributes.",
             noRuntimeValues: "This flow defines no runtime values. Define them in the Start node.",
             notifications: {
                 updateError: {
@@ -293,6 +282,7 @@ export const flowExtension: flowExtensionNS = {
                 }
             },
             runtimeValues: "Runtime values",
+            subjectOrganization: "Subject organization",
             title: "Access configuration"
         },
         connectionLabel: "Connection",

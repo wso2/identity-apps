@@ -148,6 +148,7 @@ const FlowContextWrapper = ({
         Record<string, FlowExtensionAccessConfigInterface>
     >({});
     const [ flowExtensionsSavedVersion, setFlowExtensionsSavedVersion ] = useState<number>(0);
+    const [ isFlowExtensionAccessLocked, setIsFlowExtensionAccessLocked ] = useState<boolean>(false);
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
@@ -382,10 +383,15 @@ const FlowContextWrapper = ({
             }
         ));
 
-        // Keep the ones that failed, so the next save tries them again.
+        const sent: Map<string, FlowExtensionAccessConfigInterface> = new Map(changed);
+
+        // Keep the ones that failed, so the next save tries them again, and the ones changed while saving, if the
+        // flow still uses them.
         setFlowExtensionAccessConfigs((previous: Record<string, FlowExtensionAccessConfigInterface>) =>
             Object.fromEntries(Object.entries(previous).filter(
-                ([ extensionId ]: [ string, FlowExtensionAccessConfigInterface ]) => failed.includes(extensionId)
+                ([ extensionId, accessConfig ]: [ string, FlowExtensionAccessConfigInterface ]) =>
+                    failed.includes(extensionId)
+                    || (usedExtensionIds.has(extensionId) && sent.get(extensionId) !== accessConfig)
             )));
         setFlowExtensionsSavedVersion((version: number) => version + 1);
 
@@ -696,6 +702,7 @@ const FlowContextWrapper = ({
                 isBrandingEnabled,
                 isConditionalBranchingEnabled,
                 isCustomI18nKey,
+                isFlowExtensionAccessLocked,
                 isFlowMetadataLoading,
                 isI18nSubmitting,
                 isResourcePanelOpen,
@@ -725,6 +732,7 @@ const FlowContextWrapper = ({
                 setFlowEdgeTypes,
                 setFlowExtensionAccessConfig,
                 setFlowNodeTypes,
+                setIsFlowExtensionAccessLocked,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
                 setIsVersionHistoryPanelOpen,

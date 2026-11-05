@@ -19,14 +19,23 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Collapse from "@oxygen-ui/react/Collapse";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { ChevronRightIcon, CircleInfoIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LockIcon } from "../../resources/assets/images/icons/lock.svg";
 import { NodeType, TreeNodeStateInterface } from "./models";
 
 const INDENT: number = 18;
+
+/**
+ * Explanations shown on hover for the sections that are easy to mix up, keyed by path.
+ */
+const SECTION_DESCRIPTION_KEYS: Record<string, string> = {
+    "/organization": "flowExtension:contextTree.node.descriptions.organization",
+    "/subjectOrganization": "flowExtension:contextTree.node.descriptions.subjectOrganization"
+};
 
 interface FlowContextTreeNodeProps {
     node: TreeNodeStateInterface;
@@ -229,6 +238,16 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
     const selected: boolean = selectedKey === node.key && isLeaf;
     // Flow type rows only separate the runtime values or headers of each flow, so they are kept light.
     const isFlowTypeGroup: boolean = isContainer && !!node.flowType;
+    const descriptionKey: string | undefined = isContainer
+        ? SECTION_DESCRIPTION_KEYS[ node.path.replace(/\/+$/, "") ]
+        : undefined;
+    // A top-level section that some flows only have, such as the organization a registration flow onboards.
+    const flowTypesOnly: string = depth === 0 && isContainer && !node.flowType && node.applicableFlowTypes?.length
+        ? node.applicableFlowTypes
+            .map((flowType: string) => t(`flowExtension:contextTree.flowTypes.${flowType}`,
+                { defaultValue: flowType }))
+            .join(", ")
+        : "";
 
     // Container band sits a few pixels to the left of the row's content padding so
     // the chevron + title get a small left gutter inside the band.
@@ -364,6 +383,32 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                             })
                             : node.title }
                     </Typography>
+                    { descriptionKey && (
+                        <Tooltip title={ t(descriptionKey) } placement="top">
+                            <Box
+                                component="span"
+                                sx={ { color: "text.disabled", cursor: "help", display: "inline-flex", flexShrink: 0 } }
+                                data-componentid={ `${componentId}-${node.key}-description` }
+                            >
+                                <CircleInfoIcon size={ 12 } />
+                            </Box>
+                        </Tooltip>
+                    ) }
+                    { flowTypesOnly && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "text.disabled",
+                                flexShrink: 0,
+                                fontSize: "9px",
+                                fontWeight: 500,
+                                lineHeight: 1
+                            } }
+                            data-componentid={ `${componentId}-${node.key}-flow-types` }
+                        >
+                            { t("flowExtension:contextTree.node.flowTypesOnlyBadge", { flowTypes: flowTypesOnly }) }
+                        </Typography>
+                    ) }
                     { isLeaf && node.flowType && node.dataType && (
                         <Typography
                             component="span"

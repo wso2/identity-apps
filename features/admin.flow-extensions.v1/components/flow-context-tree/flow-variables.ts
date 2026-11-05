@@ -28,13 +28,13 @@ import {
 // and only those marked READ or WRITE go into the access config. The flow type row is a UI-only
 // node: it has no path of its own and adds nothing to the access config.
 
-export const RUNTIME_VALUES_PATH: string = "/runtimeValues";
-export const REQUEST_HEADERS_PATH: string = "/request/additionalHeaders";
+const RUNTIME_VALUES_PATH: string = "/runtimeValues";
+const REQUEST_HEADERS_PATH: string = "/request/additionalHeaders";
 
 /**
  * Flow types in the order their rows are shown.
  */
-export const FLOW_TYPE_ORDER: string[] = [ "REGISTRATION", "PASSWORD_RECOVERY", "INVITED_USER_REGISTRATION" ];
+const FLOW_TYPE_ORDER: string[] = [ "REGISTRATION", "PASSWORD_RECOVERY", "INVITED_USER_REGISTRATION" ];
 
 /**
  * Saved state of a runtime value or request header entry.
@@ -56,14 +56,6 @@ export const isFlowVariableContainerPath = (path: string): boolean =>
     normalise(path) === RUNTIME_VALUES_PATH || normalise(path) === REQUEST_HEADERS_PATH;
 
 /**
- * Whether an access config entry is a runtime value or request header entry of a flow.
- *
- * @param entry - Access config entry.
- * @returns `true` when the entry carries a flow type.
- */
-export const isFlowScopedEntry = (entry: ContextPathOutputInterface): boolean => !!entry?.flowType;
-
-/**
  * Whether the access config entry belongs to the container at the given path.
  *
  * @param entry - Access config entry.
@@ -72,6 +64,15 @@ export const isFlowScopedEntry = (entry: ContextPathOutputInterface): boolean =>
  */
 export const belongsToContainer = (entry: { path: string }, containerPath: string): boolean =>
     !!entry?.path?.startsWith(`${normalise(containerPath)}[`);
+
+/**
+ * Whether an access config entry is a runtime value or request header entry of a flow.
+ *
+ * @param entry - Access config entry.
+ * @returns `true` when the entry carries a flow type.
+ */
+export const isFlowScopedEntry = (entry: ContextPathOutputInterface): boolean => !!entry?.flowType
+    && (belongsToContainer(entry, RUNTIME_VALUES_PATH) || belongsToContainer(entry, REQUEST_HEADERS_PATH));
 
 const flowTypeRank = (flowType: string): number => {
     const index: number = FLOW_TYPE_ORDER.indexOf(flowType);

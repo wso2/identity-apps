@@ -173,6 +173,8 @@ export interface flowExtensionNS {
             headers: string;
             noRuntimeValues: string;
             noHeaders: string;
+            noOrganizationAttributes: string;
+            subjectOrganization: string;
             notifications: {
                 updateError: {
                     message: string;
@@ -212,6 +214,11 @@ export interface flowExtensionNS {
             };
         };
         node: {
+            descriptions: {
+                organization: string;
+                subjectOrganization: string;
+            };
+            flowTypesOnlyBadge: string;
             readChip: string;
             writeChip: string;
             addEntryChip: string;
@@ -235,24 +242,6 @@ export interface flowExtensionNS {
             fetchError: {
                 message: string;
                 description: string;
-            };
-        };
-        addOrganizationAttributeModal: {
-            title: string;
-            subtitle: string;
-            noOptions: string;
-            invalidKey: string;
-            duplicateKey: string;
-            searchPlaceholder: string;
-            cancelButton: string;
-            addButton: string;
-            defineCustomAttribute: {
-                title: string;
-                keyLabel: string;
-                keyPlaceholder: string;
-                labelLabel: string;
-                labelPlaceholder: string;
-                addButton: string;
             };
         };
         addEntryModal: {

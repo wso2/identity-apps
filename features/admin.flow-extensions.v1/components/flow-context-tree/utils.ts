@@ -32,6 +32,11 @@ import {
     isFlowScopedEntry,
     isFlowVariableContainerPath
 } from "./flow-variables";
+import {
+    SUBJECT_ORGANIZATION_ATTRIBUTES_PATH,
+    buildMissingAttributeRows,
+    getLimitedFlowTypes
+} from "./subject-organization";
 
 /**
  * Check if a node is a container (OBJECT, MAP, or COMPLEX_MAP).
@@ -116,6 +121,7 @@ export const mapMetadataToState = (
 ): TreeNodeStateInterface[] =>
     nodes.map((node: ContextTreeNodeMetadataInterface) => ({
         allowedOperations: node.allowedOperations || [],
+        applicableFlowTypes: getLimitedFlowTypes(node.applicableFlowTypes),
         canDelete: node.canDelete ?? false,
         // A flow variable container lists every runtime value or header the flows define, by flow
         // type, so nothing is added to it by hand.
@@ -358,6 +364,19 @@ export const mapMetadataToStateWithAccessConfig = (
                 children = convert(node.children, childExposed, childEncrypted);
             }
 
+            // Saved organization attributes the registration flow no longer collects.
+            if (np === SUBJECT_ORGANIZATION_ATTRIBUTES_PATH) {
+                const missingRows: TreeNodeStateInterface[] = buildMissingAttributeRows(
+                    new Set((children || []).map((c: TreeNodeStateInterface) => c.path)),
+                    exposePaths,
+                    node.applicableFlowTypes
+                );
+
+                if (missingRows.length > 0) {
+                    children = [ ...(children || []), ...missingRows ];
+                }
+            }
+
             // Synthesise dynamic entries that exist in accessConfig but not in metadata
             if (node.dynamicEntryAllowed) {
                 const existingChildPaths: Set<string> = new Set(
@@ -475,6 +494,7 @@ export const mapMetadataToStateWithAccessConfig = (
 
             result.push({
                 allowedOperations: node.allowedOperations || [],
+                applicableFlowTypes: getLimitedFlowTypes(node.applicableFlowTypes),
                 canDelete: node.canDelete ?? false,
                 children,
                 dataType: node.dataType,
@@ -572,6 +592,10 @@ export const buildAccessConfig = (
     const walk = (ns: TreeNodeStateInterface[]): void => {
         ns.forEach((node: TreeNodeStateInterface) => {
             const isLeaf: boolean = node.nodeType === NodeType.LEAF;
+            // A field only one flow type has, such as of the organization a registration flow onboards, is saved
+            // for that flow type.
+            const flowType: string | undefined = node.flowType
+                ?? (node.applicableFlowTypes?.length === 1 ? node.applicableFlowTypes[0] : undefined);
 
             if (isLeaf) {
                 // Expose: leaf-only
@@ -579,7 +603,7 @@ export const buildAccessConfig = (
                     expose.push({
                         encrypted: !!node.exposeEncrypted,
                         path: encodeClaimPath(node.path),
-                        ...(node.flowType ? { flowType: node.flowType } : {})
+                        ...(flowType ? { flowType } : {})
                     });
                 }
 
@@ -597,7 +621,7 @@ export const buildAccessConfig = (
                     modify.push({
                         encrypted: !!node.modifyEncrypted,
                         path: encodeClaimPath(modifyPath),
-                        ...(node.flowType ? { flowType: node.flowType } : {})
+                        ...(flowType ? { flowType } : {})
                     });
                 }
             }

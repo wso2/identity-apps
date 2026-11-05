@@ -177,6 +177,16 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     flowExtensionsSavedVersion?: number;
     /**
+     * Whether the access configs of the flow extensions are locked, as while the flow and they are being saved.
+     */
+    isFlowExtensionAccessLocked?: boolean;
+    /**
+     * Locks or unlocks the access configs of the flow extensions.
+     *
+     * @param locked - Whether they are locked.
+     */
+    setIsFlowExtensionAccessLocked?: (locked: boolean) => void;
+    /**
      * Configured i18n text from the branding or default fallback.
      */
     i18nText?: { [key in PreviewScreenType]?: Record<string, string> };

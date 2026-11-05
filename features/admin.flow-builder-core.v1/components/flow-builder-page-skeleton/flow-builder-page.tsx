@@ -53,21 +53,29 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
 }: FlowBuilderPageProps): ReactElement => {
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { saveFlowExtensionAccessConfigs } = useAuthenticationFlowBuilderCore();
+    const { saveFlowExtensionAccessConfigs, setIsFlowExtensionAccessLocked } = useAuthenticationFlowBuilderCore();
 
     /**
      * Saves the flow, then the access configs of the flow extensions changed in it. The flow goes first, as the
-     * extensions are given access to the runtime values and headers it defines.
+     * extensions are given access to the runtime values and headers it defines. The publish succeeds only when both
+     * are saved, so a flow is not enabled while one of its extensions lacks the access it was given. The access configs
+     * are locked until both are saved, so a change made meanwhile cannot be left unsaved.
      */
     const handlePublish: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
-        const isFlowSaved: boolean = await onPublish();
+        setIsFlowExtensionAccessLocked?.(true);
 
-        if (isFlowSaved) {
-            await saveFlowExtensionAccessConfigs?.();
+        try {
+            const isFlowSaved: boolean = await onPublish();
+
+            if (!isFlowSaved) {
+                return false;
+            }
+
+            return await saveFlowExtensionAccessConfigs?.() ?? true;
+        } finally {
+            setIsFlowExtensionAccessLocked?.(false);
         }
-
-        return isFlowSaved;
-    }, [ onPublish, saveFlowExtensionAccessConfigs ]);
+    }, [ onPublish, saveFlowExtensionAccessConfigs, setIsFlowExtensionAccessLocked ]);
 
     /**
      * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.

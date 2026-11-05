@@ -1297,9 +1297,7 @@
                 }
             },
             "flowExtensions": {
-                "disabledFeatures": [
-                    "flowExtensions.organizationAttributes"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [
                     {
