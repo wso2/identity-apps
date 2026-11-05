@@ -1936,6 +1936,33 @@ export const extensions: Extensions = {
                     }
                 }
             },
+            authsignal: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Add Authsignal",
+                        subHeading: "Select an application to set up Authsignal authentication."
+                    },
+                    heading: "Authsignal Set Up Guide",
+                    subHeading: "Follow the instructions to set up Authsignal in your login flow.",
+                    steps: {
+                        addAuthsignal: {
+                            content: "Go to the <1>Login Flow</1> tab. Add <3>Authsignal</3> as the second step, " +
+                                "after a step that identifies the user, such as Username & Password or " +
+                                "Identifier First.",
+                            heading: "Add <1>Authsignal</1> to the login flow"
+                        },
+                        configureSettings: {
+                            content: "Go to the <1>Settings</1> tab and enter the secret key, region and other " +
+                                "details of your Authsignal tenant.",
+                            heading: "Configure Authsignal"
+                        },
+                        selectApplication: {
+                            content: "Choose the <1>application</1> for which you want to set up Authsignal.",
+                            heading: "Select Application"
+                        }
+                    }
+                }
+            },
             pushAuth: {
                 quickStart: {
                     addLoginModal: {

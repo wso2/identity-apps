@@ -38,6 +38,7 @@ export class LocalAuthenticatorConstants {
      */
     public static readonly AUTHENTICATOR_IDS: {
         ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string;
+        AUTHSIGNAL_AUTHENTICATOR_ID: string;
         BACKUP_CODE_AUTHENTICATOR_ID: string;
         BASIC_AUTHENTICATOR_ID: string;
         EMAIL_OTP_AUTHENTICATOR_ID: string;
@@ -54,6 +55,7 @@ export class LocalAuthenticatorConstants {
         X509_CERTIFICATE_AUTHENTICATOR_ID: string;
     } = {
             ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: "U2Vzc2lvbkV4ZWN1dG9y",
+            AUTHSIGNAL_AUTHENTICATOR_ID: "YXV0aHNpZ25hbC1hdXRoZW50aWNhdG9y",
             BACKUP_CODE_AUTHENTICATOR_ID: "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcg",
             BASIC_AUTHENTICATOR_ID: "QmFzaWNBdXRoZW50aWNhdG9y",
             EMAIL_OTP_AUTHENTICATOR_ID: "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I",
@@ -75,6 +77,7 @@ export class LocalAuthenticatorConstants {
      */
     public static readonly AUTHENTICATOR_NAMES: {
         ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME: string;
+        AUTHSIGNAL_AUTHENTICATOR_NAME: string;
         BACKUP_CODE_AUTHENTICATOR_NAME: string;
         BASIC_AUTHENTICATOR_NAME: string;
         EMAIL_OTP_AUTHENTICATOR_NAME: string;
@@ -90,6 +93,7 @@ export class LocalAuthenticatorConstants {
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
             ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME: "SessionExecutor",
+            AUTHSIGNAL_AUTHENTICATOR_NAME: "authsignal-authenticator",
             BACKUP_CODE_AUTHENTICATOR_NAME: "backup-code-authenticator",
             BASIC_AUTHENTICATOR_NAME: "BasicAuthenticator",
             EMAIL_OTP_AUTHENTICATOR_NAME: "email-otp-authenticator",

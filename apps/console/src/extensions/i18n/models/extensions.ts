@@ -1817,6 +1817,30 @@ export interface Extensions {
                     };
                 };
             };
+            authsignal: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    heading: string;
+                    subHeading: string;
+                    steps: {
+                        configureSettings: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectApplication: {
+                            content: string;
+                            heading: string;
+                        };
+                        addAuthsignal: {
+                            content: string;
+                            heading: string;
+                        };
+                    };
+                }
+            },
             pushAuth: {
                 quickStart: {
                     addLoginModal: {
