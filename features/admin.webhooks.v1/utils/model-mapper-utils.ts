@@ -138,6 +138,33 @@ export const mapFormDataToChannelUris = (
 };
 
 /**
+ * The channels a patch should carry: those stored, with the ones the form shows replaced by its values.
+ *
+ * `channelConfigs` holds only the channels the form shows, so building the array from the form alone
+ * would drop a subscription the webhook still holds, and the server refuses a patch that changes the
+ * channel set. A channel the form does not show is sent by URI alone, keeping the policy stored for it.
+ *
+ * @param formData - Current form values.
+ * @param channelConfigs - Channels the form shows.
+ * @param storedChannels - Channels the webhook is subscribed to.
+ * @returns The stored channel set, carrying the edits made to the visible channels.
+ */
+export const mergeSubscribedChannelsWithStored = (
+    formData: WebhookConfigFormPropertyInterface,
+    channelConfigs: WebhookChannelConfigInterface[],
+    storedChannels: WebhookChannelSubscriptionInterface[]
+): WebhookChannelSubscriptionInterface[] => {
+    const editedByUri: Map<string, WebhookChannelSubscriptionInterface> = new Map(
+        mapFormDataToSubscribedChannels(formData, channelConfigs).map(
+            (channel: WebhookChannelSubscriptionInterface) => [ channel.channelUri, channel ]
+        )
+    );
+
+    return storedChannels.map((stored: WebhookChannelSubscriptionInterface) =>
+        editedByUri.get(stored.channelUri) ?? { channelUri: stored.channelUri });
+};
+
+/**
  * The subscribed channels of a webhook, whichever version returned it: v2 reports them as
  * `subscribedChannels` and v1 as `channelsSubscribed`, both carrying the channel URI.
  *

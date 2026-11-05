@@ -62,6 +62,7 @@ import { OrganizationListInterface } from "@wso2is/admin.organizations.v1/models
 import changeWebhookStatus from "../api/change-webhook-status";
 import createWebhook from "../api/create-webhook";
 import deleteWebhook from "../api/delete-webhook";
+import patchWebhook from "../api/patch-webhook";
 import { retrySubscriptionOrUnsubscription } from "../api/retry-webhook";
 import updateWebhook from "../api/update-webhook";
 import useGetDefaultEventProfile from "../api/use-get-default-event-profile";
@@ -86,7 +87,8 @@ import {
     mapEventProfileApiToUI,
     mapFormDataToChannelUris,
     mapFormDataToSubscribedChannels,
-    mapSubscribedChannelsToFormData
+    mapSubscribedChannelsToFormData,
+    mergeSubscribedChannelsWithStored
 } from "../utils/model-mapper-utils";
 
 import "./webhook-edit-page.scss";
@@ -246,18 +248,29 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         return AdapterUtils.isWebSubHub(webhooksMetadata.adapter);
     }, [ webhooksMetadata ]);
 
-    const isFormReadOnly: () => boolean = useCallback((): boolean => {
-        if (isCreateMode) {
-            return !hasWebhookCreatePermissions;
-        }
+    const isPermissionReadOnly: () => boolean = useCallback(
+        (): boolean => isCreateMode ? !hasWebhookCreatePermissions : !hasWebhookUpdatePermissions,
+        [ isCreateMode, hasWebhookCreatePermissions, hasWebhookUpdatePermissions ]
+    );
 
-        // For WebSubHub adapter, form fields are always read-only in edit mode
-        if (isWebSubHubAdapterMode()) {
-            return true;
-        }
+    // The subscription policy is held by the identity server rather than the adapter, so permissions
+    // alone decide it, and it is offered only where the deployment switched it on.
+    const isSubscriptionReadOnly: () => boolean = useCallback(
+        (): boolean => !isChildOrgSubscriptionEnabledForTenant || isPermissionReadOnly(),
+        [ isChildOrgSubscriptionEnabledForTenant, isPermissionReadOnly ]
+    );
 
-        return !hasWebhookUpdatePermissions;
-    }, [ isCreateMode, hasWebhookCreatePermissions, hasWebhookUpdatePermissions, isWebSubHubAdapterMode ]);
+    // Under WebSubHub the hub holds every field, so editing one in place is never offered.
+    const isFormReadOnly: () => boolean = useCallback(
+        (): boolean => (!isCreateMode && isWebSubHubAdapterMode()) || isPermissionReadOnly(),
+        [ isCreateMode, isWebSubHubAdapterMode, isPermissionReadOnly ]
+    );
+
+    // Neither the fields nor the subscription policy can be changed, so the form has nothing to submit.
+    const isNothingEditable: () => boolean = useCallback(
+        (): boolean => isFormReadOnly() && isSubscriptionReadOnly(),
+        [ isFormReadOnly, isSubscriptionReadOnly ]
+    );
 
     const canPerformStatusActions: () => boolean = useCallback((): boolean => {
         return !isCreateMode && hasWebhookUpdatePermissions;
@@ -355,6 +368,29 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             } else {
                 if (!hasWebhookUpdatePermissions) return;
 
+                setIsSubmitting(true);
+
+                // WebSubHub only allows the subscription policy to change after creation, so send just the
+                // channels as a merge patch. The tenant flag guarantees the v2 shape.
+                if (isWebSubHubAdapterMode() && isChildOrgSubscriptionEnabledForTenant) {
+                    patchWebhook(webhookId, {
+                        subscribedChannels: mergeSubscribedChannelsWithStored(
+                            formData, channelConfigs, getSubscribedChannels(webhook) ?? [])
+                    })
+                        .then(() => {
+                            handleSuccess("updateWebhook");
+                            mutateWebhook();
+                        })
+                        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                            handleError(error, "updateWebhook");
+                        })
+                        .finally(() => {
+                            setIsSubmitting(false);
+                        });
+
+                    return;
+                }
+
                 // v2 changes status through the activate and deactivate sub-resources, which the
                 // toggle already drives; v1 has none, so there it rides along with the update.
                 const webhookUpdatePayload: WebhookUpdateRequestInterface = {
@@ -376,7 +412,6 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                     webhookUpdatePayload.secret = formData.secret;
                 }
 
-                setIsSubmitting(true);
                 updateWebhook(webhookId, webhookUpdatePayload)
                     .then(() => {
                         handleSuccess("updateWebhook");
@@ -392,7 +427,9 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         },
         [
             channelConfigs,
+            webhook,
             isChildOrgSubscriptionEnabledForTenant,
+            isWebSubHubAdapterMode,
             isCreateMode,
             hasWebhookCreatePermissions,
             hasWebhookUpdatePermissions,
@@ -696,8 +733,8 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                             isCreateFormState={ isCreateMode }
                             onSubmit={ handleWebhookSubmit }
                             isSubmitting={ isSubmitting || isDeletingWebhook }
-                            hideSubmitButton={ isWebSubHubAdapterMode() && !isCreateMode }
-                            isWebSubHubAdopterMode={ isWebSubHubAdapterMode() }
+                            hideSubmitButton={ isWebSubHubAdapterMode() && !isCreateMode && isNothingEditable() }
+                            isSubscriptionReadOnly={ isSubscriptionReadOnly() }
                         />
                     </Grid.Column>
                 </Grid.Row>
