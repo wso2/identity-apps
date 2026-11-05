@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.31.7
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
+- Updated dependencies [[`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049)]:
+  - @wso2is/admin.server-configurations.v1@2.40.1
+  - @wso2is/i18n@2.58.3
+
 ## 4.31.6
 
 ### Patch Changes
