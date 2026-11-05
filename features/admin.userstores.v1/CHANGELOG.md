@@ -1,5 +1,11 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.44
+
+### Patch Changes
+
+- [#10873](https://github.com/wso2/identity-apps/pull/10873) [`c8c4f42918582f5bd0768e0038f7f70639936131`](https://github.com/wso2/identity-apps/commit/c8c4f42918582f5bd0768e0038f7f70639936131) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Page the user group assignment dialog and the Groups list of LDAP and Active Directory user stores by probing for a following page instead of trusting the capped total, and keep the Groups list on its page when the page size or user store changes
+
 ## 2.27.43
 
 ### Patch Changes
