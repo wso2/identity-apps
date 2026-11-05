@@ -329,7 +329,7 @@ importers:
         specifier: ^1.7.0
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.45.0
+        specifier: ^2.46.1
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.4.0

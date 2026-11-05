@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.31.6
+
+### Patch Changes
+
+- [#10881](https://github.com/wso2/identity-apps/pull/10881) [`b3726907f3b5a02d053ae3f75d33d94e8940b202`](https://github.com/wso2/identity-apps/commit/b3726907f3b5a02d053ae3f75d33d94e8940b202) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix updating an outbound provisioner of an application sending an empty connection name
+
+- Updated dependencies [[`3cbda42484a86ce36989612ae754a4700c992062`](https://github.com/wso2/identity-apps/commit/3cbda42484a86ce36989612ae754a4700c992062)]:
+  - @wso2is/admin.applications.v1@2.46.1
+
 ## 4.31.5
 
 ### Patch Changes
