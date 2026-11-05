@@ -20,7 +20,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { FocusEvent, FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { CommonResourcePropertiesPropsInterface } from "../resource-properties";
 
@@ -30,9 +30,9 @@ import { CommonResourcePropertiesPropsInterface } from "../resource-properties";
 type AuthsignalPropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
- * Executor metadata key holding the action code of the Authsignal flow to run.
+ * Executor meta key the connector reads the action code of the Authsignal flow to run from.
  */
-export const AUTHSIGNAL_ACTION_CODE_PROPERTY_KEY: string = "action.executor.meta.authsignalActionCode";
+const ACTION_CODE_META_KEY: string = "authsignalActionCode";
 
 /**
  * Properties of a step using the Authsignal executor.
@@ -47,7 +47,7 @@ const AuthsignalProperties: FunctionComponent<AuthsignalPropertiesPropsInterface
 }: AuthsignalPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const actionCode: string = (resource?.data?.action?.executor?.meta?.authsignalActionCode as string) ?? "";
+    const actionCode: string = (resource?.data?.action?.executor?.meta?.[ ACTION_CODE_META_KEY ] as string) ?? "";
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
@@ -63,9 +63,16 @@ const AuthsignalProperties: FunctionComponent<AuthsignalPropertiesPropsInterface
                 placeholder={ t("flows:core.executions.authsignal.actionCode.placeholder") }
                 helperText={ t("flows:core.executions.authsignal.actionCode.hint") }
                 defaultValue={ actionCode }
-                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                    onChange(AUTHSIGNAL_ACTION_CODE_PROPERTY_KEY, event.target.value.trim(), resource)
-                }
+                onBlur={ (event: FocusEvent<HTMLInputElement>): void => {
+                    const trimmedActionCode: string = event.target.value.trim();
+
+                    // Show the stored value, as the field is uncontrolled.
+                    event.target.value = trimmedActionCode;
+
+                    if (trimmedActionCode !== actionCode) {
+                        onChange(`action.executor.meta.${ ACTION_CODE_META_KEY }`, trimmedActionCode, resource);
+                    }
+                } }
                 data-componentid={ `${componentId}-action-code` }
             />
         </Stack>

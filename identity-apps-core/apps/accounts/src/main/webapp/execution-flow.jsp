@@ -297,7 +297,7 @@
                 /**
                  * Read the parameters the executor of the last redirection step declared as required, and return them
                  * from the return URL as the inputs to resume the flow with. Returns null unless every declared
-                 * parameter is present, as a return without code or state is not treated as a redirection either.
+                 * parameter is present in the return URL, so a partial return falls through to the regular handling.
                  * The saved list is removed on read, so it applies only to the page load right after the redirection.
                  */
                 const readRedirectionInputs = () => {
@@ -355,6 +355,8 @@
                                 state
                             }
                         });
+
+                        return;
                     }
 
                     // Return from a redirection whose executor declared its own required params instead of code and state.
