@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.31.4
+
+### Patch Changes
+
+- [#10872](https://github.com/wso2/identity-apps/pull/10872) [`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix the flow builder getting stuck on "Flow generation complete!" when a flow is generated with AI a second time without reloading the page
+
+  Show "Generating your flow..." while the flow builder generates a flow with AI, and "Applying final touches..." once the generation has run for a while
+
+- Updated dependencies [[`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.15.1
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.1
+  - @wso2is/admin.ask-password-flow-builder.v1@1.4.1
+  - @wso2is/i18n@2.58.2
+
 ## 4.31.3
 
 ### Patch Changes
