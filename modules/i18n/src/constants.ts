@@ -452,6 +452,11 @@ export class I18nModuleConstants {
     public static readonly FLOW_EXTENSION_NAMESPACE: string = "flowExtension";
 
     /**
+     * Function Libraries namespace.
+     */
+    public static readonly FUNCTION_LIBRARIES_NAMESPACE: string = "functionLibraries";
+
+    /**
      * Constant representing the text direction handling attribute.
      */
     public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";

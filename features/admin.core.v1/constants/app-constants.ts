@@ -366,6 +366,8 @@ export class AppConstants {
             [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
             [ "WEBHOOKS", `${ AppConstants.getDeveloperViewBasePath() }/webhooks` ],
             [ "WEBHOOK_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/webhooks/:id` ],
+            [ "FUNCTION_LIBRARIES", `${ AppConstants.getDeveloperViewBasePath() }/function-libraries` ],
+            [ "FUNCTION_LIBRARY_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/function-libraries/:id` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],

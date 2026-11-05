@@ -42,6 +42,7 @@ import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
 import { getFlowBuilderCoreResourceEndpoints } from "@wso2is/admin.flow-builder-core.v1/config/endpoints";
 import { getFlowsResourceEndpoints } from "@wso2is/admin.flows.v1/configs/endpoints";
+import { getFunctionLibrariesResourceEndpoints } from "@wso2is/admin.function-libraries.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
 import { getRemoteLoggingEndpoints } from "@wso2is/admin.logs.v1/configs/endpoints";
@@ -340,7 +341,8 @@ export class Config {
                 I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
                 I18nConstants.CONSENTS_NAMESPACE,
                 I18nConstants.FLOW_EXTENSION_NAMESPACE,
-                I18nConstants.CLI_SETTINGS_NAMESPACE
+                I18nConstants.CLI_SETTINGS_NAMESPACE,
+                I18nConstants.FUNCTION_LIBRARIES_NAMESPACE
             ],
             preload: []
         };
@@ -413,6 +415,7 @@ export class Config {
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
+            ...getFunctionLibrariesResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getDevicePoliciesResourceEndpoints(this.resolveServerHost()),

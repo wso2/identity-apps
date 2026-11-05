@@ -2965,6 +2965,36 @@
                 }
             },
             {% endif %}
+            "functionLibraries": {
+                "disabledFeatures": [
+                    {% if console.function_libraries is defined and console.function_libraries.disabled_features is defined %}
+                    {% for feature in console.function_libraries.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.function_libraries is defined and console.function_libraries.enabled is defined %} {{ console.function_libraries.enabled }},
+                {% else %} false,
+                {% endif %}
+                "featureFlags": [],
+                "scopes": {
+                    {% if console.function_libraries is defined and console.function_libraries.scopes is defined %}
+                    {% for operation, scopes in console.function_libraries.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": ["internal_functional_lib_create"],
+                        "delete": ["internal_functional_lib_delete"],
+                        "feature": [],
+                        "read": ["internal_functional_lib_view"],
+                        "update": ["internal_functional_lib_update"]
+                    {% endif %}
+                }
+            },
             {% if console.verifiable_presentation is defined %}
             "presentationDefinitions": {
                 "disabledFeatures": [],
