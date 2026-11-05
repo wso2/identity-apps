@@ -22,6 +22,8 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
+import AuthsignalProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/authsignal-properties/authsignal-properties";
+// eslint-disable-next-line max-len
 import DeviceRegistrationProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/device-registration-properties/device-registration-properties";
 // eslint-disable-next-line max-len
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
@@ -224,6 +226,21 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <DeviceRegistrationProperties
                             resource={ resource }
                             data-componentid="device-registration-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
+            // Matching against the server metadata keeps this to deployments with the Authsignal connector.
+            if (extensionExecutor?.name === ExecutionTypes.Authsignal) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <AuthsignalProperties
+                            resource={ resource }
+                            data-componentid="authsignal-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

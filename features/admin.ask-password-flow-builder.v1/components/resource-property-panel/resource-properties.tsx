@@ -22,6 +22,8 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
+import AuthsignalProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/authsignal-properties/authsignal-properties";
+// eslint-disable-next-line max-len
 import DeviceRegistrationProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/device-registration-properties/device-registration-properties";
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
@@ -238,6 +240,19 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <ConfirmationCodeProperties
                             resource={ resource }
                             data-componentid="confirmation-code-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            } else if (extensionExecutor?.name === ExecutionTypes.Authsignal) {
+                // Matching against the server metadata keeps this to deployments with the Authsignal connector.
+                return (
+                    <>
+                        { renderElementId() }
+                        <AuthsignalProperties
+                            resource={ resource }
+                            data-componentid="authsignal-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }
