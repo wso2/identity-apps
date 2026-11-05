@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { APIResourceCategories } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceCategories } from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 
 export const APPLICATION_DOMAIN: string = "Application/";

@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DangerZone } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { CheckboxProps } from "semantic-ui-react";
-import { updateApplicationConfigurations } from "../../api/application";
+import SharedAccessSettingToggle, {
+    SharedAccessSettingConfirmationInterface,
+    SharedAccessSettingNotificationsInterface
+} from "./shared-access-setting-toggle";
 
 /**
  * Props interface for the OrganizationCustomRolesToggle component.
@@ -59,138 +57,100 @@ interface OrganizationCustomRolesTogglePropsInterface extends IdentifiableCompon
  * @param props - Props injected to the component.
  * @returns Organization custom roles toggle component.
  */
-export const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTogglePropsInterface> = ({
+const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTogglePropsInterface> = ({
     appId,
     isEnabled,
     onUpdate,
     readOnly,
     roleAudience,
-    "data-componentid": componentId
+    "data-componentid": componentId = "organization-custom-roles-toggle"
 }: OrganizationCustomRolesTogglePropsInterface): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const [ showConfirmation, setShowConfirmation ] = useState<boolean>(false);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ pendingValue, setPendingValue ] = useState<boolean>(false);
 
     const isOrganizationAudience: boolean = roleAudience?.toUpperCase() === RoleAudienceTypes.ORGANIZATION;
-    // Disabling deletes application custom roles, but not organization roles.
-    const isDeletingOrganizationCustomRoles: boolean = !pendingValue && !isOrganizationAudience;
 
-    const handleToggle: (_event: SyntheticEvent, data: CheckboxProps) => void = (
-        _event: SyntheticEvent,
-        data: CheckboxProps
-    ): void => {
-        if (readOnly) {
-            return;
+    const getConfirmationContent: (pendingValue: boolean) => string = (pendingValue: boolean): string => {
+        if (pendingValue && isOrganizationAudience) {
+            return t(
+                "applications:edit.sections.organizationCustomRoles.confirmation.content.enableOrganizationAudience"
+            );
         }
-        setPendingValue(data.checked ?? false);
-        setShowConfirmation(true);
+
+        if (pendingValue) {
+            return t("applications:edit.sections.organizationCustomRoles.confirmation.content.enable");
+        }
+
+        if (isOrganizationAudience) {
+            return t(
+                "applications:edit.sections.organizationCustomRoles.confirmation.content.disableOrganizationAudience"
+            );
+        }
+
+        return t("applications:edit.sections.organizationCustomRoles.confirmation.content.disable");
     };
 
-    const saveConfiguration: (newValue: boolean) => Promise<void> = (newValue: boolean): Promise<void> => {
-        const direction: string = newValue ? "enable" : "disable";
+    const notifications: SharedAccessSettingNotificationsInterface = {
+        disableError: {
+            description: t(
+                "applications:edit.sections.organizationCustomRoles.notifications.disable.error.description"
+            ),
+            message: t("applications:edit.sections.organizationCustomRoles.notifications.disable.error.message")
+        },
+        disableSuccess: {
+            description: t(
+                "applications:edit.sections.organizationCustomRoles.notifications.disable.success.description"
+            ),
+            message: t("applications:edit.sections.organizationCustomRoles.notifications.disable.success.message")
+        },
+        enableError: {
+            description: t("applications:edit.sections.organizationCustomRoles.notifications.enable.error.description"),
+            message: t("applications:edit.sections.organizationCustomRoles.notifications.enable.error.message")
+        },
+        enableSuccess: {
+            description: t(
+                "applications:edit.sections.organizationCustomRoles.notifications.enable.success.description"
+            ),
+            message: t("applications:edit.sections.organizationCustomRoles.notifications.enable.success.message")
+        }
+    };
 
-        setIsSubmitting(true);
+    const getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface = (
+        pendingValue: boolean
+    ): SharedAccessSettingConfirmationInterface => {
+        // Disabling deletes application custom roles, but not organization roles.
+        const isDeletingOrganizationCustomRoles: boolean = !pendingValue && !isOrganizationAudience;
 
-        return updateApplicationConfigurations(appId, {
-            organizationCustomRolesEnabled: newValue
-        })
-            .then((): void => {
-                dispatch(addAlert({
-                    description: t(
-                        "applications:edit.sections.organizationCustomRoles" +
-                        `.notifications.${direction}.success.description`
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "applications:edit.sections.organizationCustomRoles" +
-                        `.notifications.${direction}.success.message`
-                    )
-                }));
-                onUpdate();
-            })
-            .catch((): void => {
-                dispatch(addAlert({
-                    description: t(
-                        "applications:edit.sections.organizationCustomRoles" +
-                        `.notifications.${direction}.error.description`
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "applications:edit.sections.organizationCustomRoles" +
-                        `.notifications.${direction}.error.message`
-                    )
-                }));
-            })
-            .finally((): void => {
-                setIsSubmitting(false);
-            });
+        return {
+            content: (
+                <p>
+                    { getConfirmationContent(pendingValue) }
+                </p>
+            ),
+            isDestructive: isDeletingOrganizationCustomRoles,
+            message: isDeletingOrganizationCustomRoles
+                ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
+                : t("applications:edit.sections.organizationCustomRoles.confirmation.message")
+        };
     };
 
     return (
-        <>
-            <DangerZone
-                data-componentid={ componentId }
-                className="action-zone"
-                header={ t("applications:edit.sections.organizationCustomRoles.title") }
-                subheader={ t("applications:edit.sections.organizationCustomRoles.description") }
-                actionTitle=""
-                onActionClick={ (): void => undefined }
-                toggle={ {
-                    checked: isEnabled,
-                    disabled: readOnly || isSubmitting,
-                    onChange: handleToggle
-                } }
-            />
-
-            <ConfirmationModal
-                data-componentid={ `${componentId}-confirmation-modal` }
-                onClose={ (): void => setShowConfirmation(false) }
-                // Deleting application custom roles needs a stronger confirmation.
-                type={ isDeletingOrganizationCustomRoles ? "negative" : "warning" }
-                open={ showConfirmation }
-                assertionHint={ isDeletingOrganizationCustomRoles
-                    ? t("applications:edit.sections.organizationCustomRoles.confirmation.assertionHint")
-                    : undefined }
-                assertionType={ isDeletingOrganizationCustomRoles ? "checkbox" : undefined }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onPrimaryActionClick={ (): void => {
-                    setShowConfirmation(false);
-                    saveConfiguration(pendingValue);
-                } }
-                onSecondaryActionClick={ (): void => setShowConfirmation(false) }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header>
-                    { t("applications:edit.sections.organizationCustomRoles.confirmation.header") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    attached
-                    warning={ !isDeletingOrganizationCustomRoles }
-                    negative={ isDeletingOrganizationCustomRoles }
-                >
-                    { isDeletingOrganizationCustomRoles
-                        ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
-                        : t("applications:edit.sections.organizationCustomRoles.confirmation.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    <p>
-                        { t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
-                            (pendingValue ? "enable" : "disable") +
-                            (isOrganizationAudience ? "OrganizationAudience" : "")) }
-                    </p>
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
-        </>
+        <SharedAccessSettingToggle
+            data-componentid={ componentId }
+            appId={ appId }
+            isEnabled={ isEnabled }
+            readOnly={ readOnly }
+            onUpdate={ onUpdate }
+            header={ t("applications:edit.sections.organizationCustomRoles.title") }
+            subheader={ t("applications:edit.sections.organizationCustomRoles.description") }
+            confirmationHeader={ t("applications:edit.sections.organizationCustomRoles.confirmation.header") }
+            notifications={ notifications }
+            getConfigurationPayload={ (newValue: boolean): Record<string, unknown> => ({
+                organizationCustomRolesEnabled: newValue
+            }) }
+            getConfirmation={ getConfirmation }
+        />
     );
 };
 
-/**
- * Default props for the OrganizationCustomRolesToggle component.
- */
-OrganizationCustomRolesToggle.defaultProps = {
-    "data-componentid": "organization-custom-roles-toggle"
-};
+export default OrganizationCustomRolesToggle;
