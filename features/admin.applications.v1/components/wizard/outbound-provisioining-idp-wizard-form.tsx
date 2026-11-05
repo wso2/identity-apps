@@ -214,8 +214,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const getFormValues = (_: any): Record<string, unknown> => {
         // Resolve the IDP name from the source list rather than the dropdown option text, since the option
         // text may be a React node (e.g. the name rendered alongside a "Shared" chip) rather than a string.
+        // The IDP of an existing provisioner cannot be changed, so in edit mode fall back to the saved name.
+        // The IDP list is fetched asynchronously, and submitting before it resolves would send an empty name.
         const idpName: string = idpList?.find(
-            (idp: IdentityProviderInterface) => idp.id === selectedIdp)?.name ?? "";
+            (idp: IdentityProviderInterface) => idp.id === selectedIdp)?.name
+            ?? (isEdit ? initialValues?.idp : undefined)
+            ?? "";
 
         return {
             blocking: isBlockingChecked,
