@@ -52,5 +52,9 @@ export const statusProgressMap: Record<string, number> = {
 const INITIAL_PROGRESS: number = 5;
 const INCREMENT: number = 0.5;
 export const FACTS_ROTATION_DELAY: number = 8000;
+/**
+ * How long the flow is generated before the loader says the generation is being finished.
+ */
+export const FINAL_TOUCHES_DELAY: number = 10000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
 export const PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY: string = "passwordRecoveryFlowAIPrompts";
