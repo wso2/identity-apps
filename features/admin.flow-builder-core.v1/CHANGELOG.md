@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.15.1
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
 ## 0.15.0
 
 ### Minor Changes
