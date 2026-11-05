@@ -182,6 +182,7 @@ export interface DevicesNS {
                 label: string;
                 noPermission: string;
                 placeholder: string;
+                subOrganization: string;
             };
         };
         validation: {
