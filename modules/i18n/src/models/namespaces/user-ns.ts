@@ -795,10 +795,13 @@ export interface userNS {
     updateUser: {
         groups: {
             addGroupsModal: {
+                allGroupsLoaded: string;
+                allMatchingGroupsLoaded: string;
                 heading: string;
                 listIncomplete: string;
                 matchingGroups: string;
                 scrollForMore: string;
+                selectedCount: string;
                 selectedOfTotal: string;
                 showAll: string;
                 showSelected: string;

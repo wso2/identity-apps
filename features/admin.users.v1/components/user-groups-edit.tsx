@@ -28,7 +28,15 @@ import {
     GroupsMemberInterface
 } from "@wso2is/admin.groups.v1/models/groups";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
+import {
+    DEFAULT_MAX_ROLE_NAME_LIST_LENGTH,
+    MAX_ROLE_NAME_LIST_LENGTH_PROPERTY,
+    PRIMARY_USERSTORE,
+    USER_STORE_TYPES_WITHOUT_GROUP_COUNT
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStore, UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
     AlertInterface,
     AlertLevels,
@@ -70,9 +78,11 @@ import {
 import { UserGroupsListTable } from "./user-groups-list";
 
 /**
- * Number of groups fetched per page once the user scrolls past the first response.
+ * Number of groups shown per page. One more is requested each time: the extra row, when it arrives, says
+ * that another page exists, which a store that cannot count its groups cannot tell through the total.
  */
 const GROUPS_PAGE_SIZE: number = 50;
+const GROUPS_REQUEST_SIZE: number = GROUPS_PAGE_SIZE + 1;
 
 interface UserGroupsPropsInterface {
     /**
@@ -136,6 +146,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     // One based start index of the next page, advanced by every page the server returns.
     const [ nextStartIndex, setNextStartIndex ] = useState<number>(1);
     const [ storeGroupCount, setStoreGroupCount ] = useState<number>(null);
+    const [ hasMoreGroups, setHasMoreGroups ] = useState<boolean>(false);
     const [ isShowingSelectedGroups, setIsShowingSelectedGroups ] = useState<boolean>(false);
 
     // Bumped by a search or a re-fetch, so a page of an older fetch is dropped when it arrives late.
@@ -152,14 +163,48 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         : userstoresConfig.primaryUserstoreName;
     const excludedAttributes: string = "members,roles,meta";
 
+    const { userStoresList } = useUserStores();
+
+    const userStore: UserStoreListItem = useMemo(() => userStoresList?.find((store: UserStoreListItem) =>
+        StringUtils.isEqualCaseInsensitive(store?.name, domain)), [ userStoresList, domain ]);
+
+    /**
+     * Whether the user's store reports a real total for its groups. LDAP and Active Directory stores
+     * cannot count them, so the figure they report is a cap and is kept out of the dialog.
+     */
+    const isGroupTotalAvailable: boolean = !USER_STORE_TYPES_WITHOUT_GROUP_COUNT.test(userStore?.typeName ?? "");
+
+    // The cap such a store applies when the server does not page it, read for such a store only.
+    const { data: userStoreDetails } = useGetUserStore<UserStore>(
+        userStore?.id, !isGroupTotalAvailable && !!userStore?.id);
+
+    const groupListCap: number = useMemo(() => {
+        if (isGroupTotalAvailable || !userStoreDetails) {
+            return undefined;
+        }
+
+        const configured: string = userStoreDetails.properties?.find((property: UserStoreProperty) =>
+            property.name === MAX_ROLE_NAME_LIST_LENGTH_PROPERTY)?.value;
+
+        return parseInt(configured, 10) || DEFAULT_MAX_ROLE_NAME_LIST_LENGTH;
+    }, [ isGroupTotalAvailable, userStoreDetails ]);
+
+    /**
+     * Whether reaching the end of the list proves it complete: always for a store with a real total; for a
+     * store that cannot count only when the rows loaded differ from its cap, because a server that does not
+     * page such a store returns exactly the cap.
+     */
+    const isListEndConclusive: boolean = isGroupTotalAvailable
+        || (groupListCap !== undefined && (fetchedGroups?.length ?? 0) !== groupListCap);
+
     const {
         data: originalGroupsList,
         error: groupsListFetchRequestError,
         isLoading: isGroupsListFetchRequestLoading,
         isValidating: isGroupsListFetchRequestValidating
     } = useGroupList(
-        null,
-        null,
+        GROUPS_REQUEST_SIZE,
+        1,
         searchQuery,
         domain,
         excludedAttributes
@@ -188,7 +233,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         return isGroupsListFetchRequestLoading || isGroupsListFetchRequestValidating;
     }, [ isGroupsListFetchRequestLoading, isGroupsListFetchRequestValidating ]);
 
-    const hasMoreGroups: boolean = fetchedGroups !== undefined && nextStartIndex <= totalGroupCount;
     const canLoadMoreGroups: boolean = hasMoreGroups && !isShowingSelectedGroups && !groupsListFetchRequestError;
 
     canLoadMoreRef.current = canLoadMoreGroups;
@@ -204,24 +248,23 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         const loaded: GroupsInterface[] = loadedGroupsRef.current ?? [];
         const startIndex: number = nextStartIndex;
-
-        if (startIndex > totalGroupCount) {
-            return;
-        }
-
         const sequence: number = groupFetchSequence.current;
 
         isLoadingMoreRef.current = true;
 
-        getGroupList(domain, excludedAttributes, GROUPS_PAGE_SIZE, startIndex, searchQuery)
+        getGroupList(domain, excludedAttributes, GROUPS_REQUEST_SIZE, startIndex, searchQuery)
             .then((response: AxiosResponse<GroupListInterface>) => {
                 if (sequence !== groupFetchSequence.current) {
                     return;
                 }
 
-                const page: GroupsInterface[] = response?.data?.Resources ?? [];
+                const rows: GroupsInterface[] = response?.data?.Resources ?? [];
 
-                // The server has nothing more although its total said otherwise. Stop here.
+                // The extra row, when it arrives, means another page exists. It is not shown.
+                setHasMoreGroups(rows.length > GROUPS_PAGE_SIZE);
+                const page: GroupsInterface[] = rows.slice(0, GROUPS_PAGE_SIZE);
+
+                // The server has nothing more although the previous page said otherwise. Stop here.
                 if (page.length === 0) {
                     setTotalGroupCount(loaded.length);
                     if (!searchQuery) {
@@ -271,7 +314,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     isLoadingMoreRef.current = false;
                 }
             });
-    }, [ domain, excludedAttributes, searchQuery, totalGroupCount, nextStartIndex, fetchedGroups, dispatch, t ]);
+    }, [ domain, excludedAttributes, searchQuery, nextStartIndex, fetchedGroups, dispatch, t ]);
 
     /**
      * A search replaces the list, so any page still in flight for the previous query is stale.
@@ -300,14 +343,17 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         firstPageSignature.current = signature;
         groupFetchSequence.current += 1;
         isLoadingMoreRef.current = false;
-        loadedGroupsRef.current = firstPage;
-        setFetchedGroups(firstPage);
-        setNextStartIndex(firstPage.length + 1);
-        // A server that caps the listing reports the capped number, so no further page is requested.
-        setTotalGroupCount(originalGroupsList.totalResults ?? firstPage.length);
+        // The extra row, when it arrives, means another page exists. It is not shown.
+        setHasMoreGroups(firstPage.length > GROUPS_PAGE_SIZE);
+        const firstPageRows: GroupsInterface[] = firstPage.slice(0, GROUPS_PAGE_SIZE);
+
+        loadedGroupsRef.current = firstPageRows;
+        setFetchedGroups(firstPageRows);
+        setNextStartIndex(firstPageRows.length + 1);
+        setTotalGroupCount(originalGroupsList.totalResults ?? firstPageRows.length);
         // The unfiltered total is kept for the selection count while a search reports its own.
         if (!searchQuery) {
-            setStoreGroupCount(originalGroupsList.totalResults ?? firstPage.length);
+            setStoreGroupCount(originalGroupsList.totalResults ?? firstPageRows.length);
         }
     }, [ originalGroupsList ]);
 
@@ -632,6 +678,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     /**
+     * Number of loaded groups the list holds, as the groups the user already belongs to are not listed.
+     */
+    const resolveListedGroupCount = (): number => (fetchedGroups ?? []).filter((group: GroupsInterface) =>
+        !assignedGroupNames.has(group.displayName)).length;
+
+    /**
      * Describes what the list holds when it is not the plain group list.
      */
     const resolveListStatus = (): string => {
@@ -639,7 +691,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             return t("user:updateUser.groups.addGroupsModal.showingSelectedGroups");
         }
 
-        if (!searchQuery) {
+        // A store that cannot count its groups reports a capped figure, so no count is shown for it.
+        if (!searchQuery || !isGroupTotalAvailable) {
             return null;
         }
 
@@ -729,10 +782,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     data-componentid="user-mgt-update-groups-modal-selected-count"
                                     data-testid="user-mgt-update-groups-modal-selected-count"
                                 >
-                                    { t("user:updateUser.groups.addGroupsModal.selectedOfTotal", {
-                                        selected: selectedGroupsList?.length ?? 0,
-                                        total: resolveAssignableGroupCount()
-                                    }) }
+                                    { isGroupTotalAvailable
+                                        ? t("user:updateUser.groups.addGroupsModal.selectedOfTotal", {
+                                            selected: selectedGroupsList?.length ?? 0,
+                                            total: resolveAssignableGroupCount()
+                                        })
+                                        : t("user:updateUser.groups.addGroupsModal.selectedCount", {
+                                            selected: selectedGroupsList?.length ?? 0
+                                        }) }
                                 </Heading>
                             )
                         }
@@ -782,6 +839,28 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     searchQuery
                                         ? t("user:updateUser.groups.addGroupsModal.scrollForMore")
                                         : t("user:updateUser.groups.addGroupsModal.listIncomplete")
+                                }
+                            </Heading>
+                        )
+                    }
+                    {
+                        // Shown once a list that needed more than one page has reached an end that proves it
+                        // complete (a server that does not page a store stops it at exactly the store's cap).
+                        !hasMoreGroups && !isShowingSelectedGroups && !isLoading && !groupsListFetchRequestError
+                        && isListEndConclusive && (fetchedGroups?.length ?? 0) > GROUPS_PAGE_SIZE && (
+                            <Heading
+                                subHeading
+                                as="h6"
+                                compact
+                                data-componentid="user-mgt-update-groups-modal-list-complete"
+                                data-testid="user-mgt-update-groups-modal-list-complete"
+                            >
+                                {
+                                    searchQuery
+                                        ? t("user:updateUser.groups.addGroupsModal.allMatchingGroupsLoaded",
+                                            { count: resolveListedGroupCount() })
+                                        : t("user:updateUser.groups.addGroupsModal.allGroupsLoaded",
+                                            { count: resolveListedGroupCount() })
                                 }
                             </Heading>
                         )

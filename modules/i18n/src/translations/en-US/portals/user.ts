@@ -836,10 +836,13 @@ export const user: userNS = {
     updateUser: {
         groups: {
             addGroupsModal: {
+                allGroupsLoaded: "All {{count}} groups loaded.",
+                allMatchingGroupsLoaded: "All {{count}} matching groups loaded.",
                 heading: "Update User Groups",
                 listIncomplete: "Scroll down to load more, or search by name.",
                 matchingGroups: "{{total}} found for \"{{search}}\"",
                 scrollForMore: "Scroll down to load more.",
+                selectedCount: "{{selected}} groups selected",
                 selectedOfTotal: "{{selected}} of {{total}} groups selected",
                 showAll: "Show all groups",
                 showSelected: "Show selected",

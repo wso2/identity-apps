@@ -26,7 +26,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
-    RemoteUserStoreManagerType
+    RemoteUserStoreManagerType,
+    USER_STORE_TYPES_WITHOUT_GROUP_COUNT
 } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -48,7 +49,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { deleteGroupById, useGroupList } from "../api/groups";
 import { GroupList } from "../components/group-list";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
-import { WizardStepsFormTypes } from "../models/groups";
+import { GroupsInterface, WizardStepsFormTypes } from "../models/groups";
 
 /**
  * React component to list User Groups.
@@ -80,7 +81,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         isLoading: isGroupsListRequestLoading,
         mutate: mutateGroupsFetchRequest
     } = useGroupList(
-        listItemLimit,
+        listItemLimit + 1,
         listOffset,
         searchQuery,
         userStore,
@@ -99,6 +100,26 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const isReadOnlyUserStore: boolean = useMemo(() => {
         return isUserStoreReadOnly(userStore);
     }, [ userStore, readOnlyUserStoreNamesList ]);
+
+    /**
+     * Whether the selected store reports a real total for its groups. LDAP and Active Directory stores
+     * cannot count them, so the page count grows with the pages read and the Next button follows a probe.
+     */
+    const isGroupTotalAvailable: boolean = useMemo(() => {
+        const store: UserStoreListItem = userStoresList?.find((item: UserStoreListItem) =>
+            item?.name?.toLowerCase() === userStore?.toLowerCase());
+
+        return !USER_STORE_TYPES_WITHOUT_GROUP_COUNT.test(store?.typeName ?? "");
+    }, [ userStoresList, userStore ]);
+
+    /**
+     * One group more than the page is requested: the extra one, when it arrives, says that another page
+     * exists, which a store that cannot count its groups cannot tell through the total. It is not shown.
+     */
+    const groups: GroupsInterface[] = useMemo(
+        () => (data?.Resources ?? []).slice(0, listItemLimit), [ data, listItemLimit ]);
+    const isNextPageAvailable: boolean = (data?.Resources?.length ?? 0) > listItemLimit;
+    const currentPage: number = Math.floor((listOffset - 1) / listItemLimit) + 1;
 
     const userStoreOptions: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
@@ -275,7 +296,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
                     />
                 ) }
-                currentListSize={ data?.itemsPerPage }
+                currentListSize={ groups.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
@@ -289,9 +310,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         defaultValue={ userstoresConfig.primaryUserstoreName }
                     />
                 ) }
+                paginationOptions={ { disableNextButton: !isNextPageAvailable } }
                 showPagination={ true }
-                totalPages={ Math.ceil(data?.totalResults / listItemLimit) }
-                totalListSize={ data?.totalResults }
+                totalPages={ isGroupTotalAvailable
+                    ? Math.ceil(data?.totalResults / listItemLimit)
+                    : currentPage + (isNextPageAvailable ? 1 : 0) }
+                totalListSize={ isGroupTotalAvailable
+                    ? data?.totalResults
+                    : Math.max(groups.length, currentPage > 1 ? 1 : 0) }
+                activePage={ currentPage }
                 isLoading={ isGroupsListRequestLoading }
             >
                 { groupsError
@@ -310,7 +337,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             setTriggerClearQuery(!triggerClearQuery);
                             handleGroupFilter(null);
                         } }
-                        groupList={ data?.Resources }
+                        groupList={ groups }
                         searchQuery={ searchQuery }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
