@@ -1332,6 +1332,26 @@
                     ]
                 }
             },
+            "functionLibraries": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_functional_lib_create"
+                    ],
+                    "delete": [
+                        "internal_functional_lib_delete"
+                    ],
+                    "feature": [],
+                    "read": [
+                        "internal_functional_lib_view"
+                    ],
+                    "update": [
+                        "internal_functional_lib_update"
+                    ]
+                }
+            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,

@@ -654,6 +654,12 @@ export class RouteUtils {
                 category: extensions,
                 id: "events",
                 order: 2
+            },
+            {
+                category: extensions,
+                id: "functionLibraries",
+                order: 3,
+                selected: history.location.pathname.includes("/function-libraries")
             }
         ];
 

@@ -37,6 +37,7 @@ import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.
 import { DevicePoliciesResourceEndpointsInterface } from "@wso2is/admin.device-policies.v1/models/endpoints";
 import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
+import { FunctionLibrariesResourceEndpointsInterface } from "@wso2is/admin.function-libraries.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
@@ -176,6 +177,10 @@ export interface FeatureConfigInterface {
      * Flow Extension feature.
      */
     flowExtensions?: FeatureAccessConfigInterface;
+    /**
+     * Adaptive authentication function (script) libraries feature.
+     */
+    functionLibraries?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -1016,6 +1021,7 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface,
     FlowExtensionResourceEndpointsInterface,
+    FunctionLibrariesResourceEndpointsInterface,
     ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
