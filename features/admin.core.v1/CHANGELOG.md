@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.63.5
+
+### Patch Changes
+
+- [#10878](https://github.com/wso2/identity-apps/pull/10878) [`4385d2245ec7a5ac2fe43ea2868d35630cb9301f`](https://github.com/wso2/identity-apps/commit/4385d2245ec7a5ac2fe43ea2868d35630cb9301f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable the flow extension edit route in sub organizations
+
 ## 2.63.4
 
 ### Patch Changes
