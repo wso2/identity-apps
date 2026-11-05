@@ -79,6 +79,8 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
     const [ initialSourceCode ] = useState<string>(value);
     const editorRef: MutableRefObject<CodeMirrorEditorInterface> = useRef<CodeMirrorEditorInterface>(null);
     const lastEditorValue: MutableRefObject<string> = useRef<string>(value);
+    // Incremented on every file selection and every edit, so that a file read finishing after either is ignored.
+    const fileReadVersion: MutableRefObject<number> = useRef<number>(0);
 
     useEffect(() => {
         if (value !== lastEditorValue.current && editorRef.current) {
@@ -97,8 +99,13 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
         }
 
         const reader: FileReader = new FileReader();
+        const readVersion: number = ++fileReadVersion.current;
 
         reader.onload = (): void => {
+            if (readVersion !== fileReadVersion.current) {
+                return;
+            }
+
             onChange(reader.result as string);
         };
         reader.readAsText(file);
@@ -152,6 +159,7 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
                         data: unknown,
                         newValue: string
                     ) => {
+                        fileReadVersion.current += 1;
                         lastEditorValue.current = newValue;
                         onChange(newValue);
                     } }

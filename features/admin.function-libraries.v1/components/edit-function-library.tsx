@@ -40,8 +40,7 @@ import { Dispatch } from "redux";
 import { Divider, Form as SemanticForm } from "semantic-ui-react";
 import FunctionLibraryContentEditor from "./function-library-content-editor";
 import { deleteFunctionLibrary, updateFunctionLibrary } from "../api/function-library";
-import { FUNCTION_LIBRARY_FORM } from "../constants/component-ids";
-import { FunctionLibraryConstants } from "../constants/function-library-constants";
+import { FUNCTION_LIBRARY_FORM, FunctionLibraryConstants } from "../constants";
 import { FunctionLibraryResponseInterface } from "../models/function-library";
 import {
     FunctionLibraryNameValidationError,

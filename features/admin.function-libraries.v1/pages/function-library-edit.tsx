@@ -29,7 +29,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { getFunctionLibrary, getFunctionLibraryContent } from "../api/function-library";
 import EditFunctionLibrary from "../components/edit-function-library";
-import { FUNCTION_LIBRARY_EDIT_PAGE } from "../constants/component-ids";
+import { FUNCTION_LIBRARY_EDIT_PAGE } from "../constants";
 import { FunctionLibraryResponseInterface } from "../models/function-library";
 
 /**

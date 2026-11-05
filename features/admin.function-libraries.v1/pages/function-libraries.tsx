@@ -32,7 +32,7 @@ import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { useGetFunctionLibraries } from "../api/function-library";
 import AddFunctionLibraryWizard from "../components/add-function-library-wizard";
 import FunctionLibrariesList from "../components/function-libraries-list";
-import { FUNCTION_LIBRARIES_PAGE } from "../constants/component-ids";
+import { FUNCTION_LIBRARIES_PAGE } from "../constants";
 import { FunctionLibraryListResponseInterface } from "../models/function-library";
 
 /**

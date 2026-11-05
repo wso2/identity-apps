@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FunctionLibraryConstants } from "../constants/function-library-constants";
+import { FunctionLibraryConstants } from "../constants";
 
 /**
  * Validation errors of a function library name.

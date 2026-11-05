@@ -28,8 +28,7 @@ import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import FunctionLibraryContentEditor from "./function-library-content-editor";
 import { createFunctionLibrary } from "../api/function-library";
-import { FUNCTION_LIBRARY_ADD_WIZARD } from "../constants/component-ids";
-import { FunctionLibraryConstants } from "../constants/function-library-constants";
+import { FUNCTION_LIBRARY_ADD_WIZARD, FunctionLibraryConstants } from "../constants";
 import { FunctionLibraryNameValidationError, validateFunctionLibraryName } from "../utils/function-library-utils";
 
 /**
