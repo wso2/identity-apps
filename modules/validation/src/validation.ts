@@ -114,7 +114,7 @@ export const imageUrl = async (value: string): Promise<boolean> => {
             const response = await Axios.get(value);
             const contentType: string | undefined = response.headers["content-type"]?.toString();
 
-            return Promise.resolve(!!contentType && contentType.includes("image"));
+            return contentType?.includes("image") ?? false;
         } catch (error) {
             return Promise.resolve(false);
         }
