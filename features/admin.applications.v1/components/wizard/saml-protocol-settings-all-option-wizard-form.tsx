@@ -35,7 +35,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState, MutableRefObject } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
@@ -76,10 +76,13 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
      * @param mode - configuration mode
      */
     setSAMLConfigureMode?: (mode: string) => void;
-    issuerRef?: any;
-    metaUrlRef?: any;
+    issuerRef?: MutableRefObject<HTMLDivElement>;
+    metaUrlRef?: MutableRefObject<HTMLDivElement>;
+    assertionConsumerUrlsRef?: MutableRefObject<HTMLDivElement>;
+    metaFileRef?: MutableRefObject<HTMLDivElement>;
     issuerError?: boolean;
     metaUrlError?: boolean;
+    onRequiredFieldMissing?: (field: string, message: string) => void;
     /**
      * Check whether the protocol form changed.
      * @param state - Protocol changed state
@@ -108,8 +111,11 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         setSAMLConfigureMode,
         issuerRef,
         metaUrlRef,
+        assertionConsumerUrlsRef,
+        metaFileRef,
         issuerError,
         metaUrlError,
+        onRequiredFieldMissing,
         handleProtocolValueChange,
         ["data-testid"]: testId
     } = props;
@@ -409,121 +415,123 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     { (!fields || fields.includes("assertionConsumerURLs")) && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
-                                <URLInput
-                                    urlState={ assertionConsumerUrls }
-                                    setURLState={ updateAssertionConsumerUrls }
-                                    labelName={
-                                        t("applications:forms.inboundSAML" +
-                                            ".fields.assertionURLs.label")
-                                    }
-                                    placeholder={
-                                        t("applications:forms.inboundSAML" +
-                                            ".fields.assertionURLs.placeholder")
-                                    }
-                                    validationErrorMsg={
-                                        t("applications:forms." +
-                                            "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
-                                    }
-                                    emptyErrorMessage={
-                                        t("applications:forms.inboundSAML" +
-                                            ".fields.assertionURLs.validations.empty")
-                                    }
-                                    validation={ (value: string) => {
-                                        if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
-                                            URLUtils.isHttpsUrl(value)))) {
-
-                                            return false;
+                                <div ref={ assertionConsumerUrlsRef }>
+                                    <URLInput
+                                        urlState={ assertionConsumerUrls }
+                                        setURLState={ updateAssertionConsumerUrls }
+                                        labelName={
+                                            t("applications:forms.inboundSAML" +
+                                                ".fields.assertionURLs.label")
                                         }
-
-                                        if (!URLUtils.isMobileDeepLink(value)) {
-                                            return false;
+                                        placeholder={
+                                            t("applications:forms.inboundSAML" +
+                                                ".fields.assertionURLs.placeholder")
                                         }
+                                        validationErrorMsg={
+                                            t("applications:forms." +
+                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                        }
+                                        emptyErrorMessage={
+                                            t("applications:forms.inboundSAML" +
+                                                ".fields.assertionURLs.validations.empty")
+                                        }
+                                        validation={ (value: string) => {
+                                            if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
+                                                URLUtils.isHttpsUrl(value)))) {
 
-                                        setAssertionConsumerURLsErrorLabel(null);
-
-                                        return true;
-                                    } }
-                                    computerWidth={ 10 }
-                                    required={ true }
-                                    showError={ showAssertionConsumerUrlError }
-                                    setShowError={ setAssertionConsumerUrlError }
-                                    hint={
-                                        !hideFieldHints && t("applications:" +
-                                            "forms.inboundSAML.fields.assertionURLs.hint")
-                                    }
-                                    addURLTooltip={ t("common:addURL") }
-                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                    data-testid={ `${testId}-assertion-consumer-url-input` }
-                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                        submitUrl = submitFunction;
-                                    } }
-                                    showPredictions={ false }
-                                    customLabel={ assertionConsumerURLsErrorLabel }
-                                    popupHeaderPositive={ t("applications:URLInput.withLabel."
-                                        + "positive.header") }
-                                    popupHeaderNegative={ t("applications:URLInput.withLabel."
-                                        + "negative.header") }
-                                    popupContentPositive={ t("applications:URLInput.withLabel."
-                                        + "positive.content", { productName: config.ui.productName }) }
-                                    popupContentNegative={ t("applications:URLInput.withLabel."
-                                        + "negative.content", { productName: config.ui.productName }) }
-                                    popupDetailedContentPositive={ t("applications:URLInput."
-                                        + "withLabel.positive.detailedContent.0") }
-                                    popupDetailedContentNegative={ t("applications:URLInput."
-                                        + "withLabel.negative.detailedContent.0") }
-                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
-                                    showLessContent={ t("common:showLess") }
-                                    showMoreContent={ t("common:showMore") }
-                                />
-                                {
-                                    (assertionConsumerURLFromTemplate) && isSAASDeployment && (
-                                        <Message
-                                            visible
-                                            type="info"
-                                            content={
-                                                (<>
-                                                    {
-                                                        <Trans
-                                                            i18nKey={ "applications:forms." +
-                                                            "inboundSAML.fields.assertionURLs.info" }
-                                                            tOptions={ {
-                                                                assertionURLFromTemplate:
-                                                                assertionConsumerURLFromTemplate
-                                                            } }
-                                                        >
-                                                            Don’t have an app? Try out a sample app
-                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong>
-                                                            as the assertion Response URL.
-                                                            (You can download and run a sample
-                                                            at a later step.)
-                                                        </Trans>
-                                                    }
-                                                    {
-                                                        (assertionConsumerUrls === undefined ||
-                                                            assertionConsumerUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={
-                                                                    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                                                                    ) => {
-                                                                        e.preventDefault();
-                                                                        setAssertionConsumerUrls(
-                                                                            assertionConsumerURLFromTemplate);
-                                                                        setIssuer(issuerFromTemplate);
-                                                                        setHasAssertionConsumerUrls(true);
-                                                                    }
-                                                                }
-                                                                data-testid={ `${testId}-add-now-button` }
-                                                            >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
-                                                </>)
+                                                return false;
                                             }
-                                        />
-                                    )
-                                }
+
+                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                                return false;
+                                            }
+
+                                            setAssertionConsumerURLsErrorLabel(null);
+
+                                            return true;
+                                        } }
+                                        computerWidth={ 10 }
+                                        required={ true }
+                                        showError={ showAssertionConsumerUrlError }
+                                        setShowError={ setAssertionConsumerUrlError }
+                                        hint={
+                                            !hideFieldHints && t("applications:" +
+                                                "forms.inboundSAML.fields.assertionURLs.hint")
+                                        }
+                                        addURLTooltip={ t("common:addURL") }
+                                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                        data-testid={ `${testId}-assertion-consumer-url-input` }
+                                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                            submitUrl = submitFunction;
+                                        } }
+                                        showPredictions={ false }
+                                        customLabel={ assertionConsumerURLsErrorLabel }
+                                        popupHeaderPositive={ t("applications:URLInput.withLabel."
+                                            + "positive.header") }
+                                        popupHeaderNegative={ t("applications:URLInput.withLabel."
+                                            + "negative.header") }
+                                        popupContentPositive={ t("applications:URLInput.withLabel."
+                                            + "positive.content", { productName: config.ui.productName }) }
+                                        popupContentNegative={ t("applications:URLInput.withLabel."
+                                            + "negative.content", { productName: config.ui.productName }) }
+                                        popupDetailedContentPositive={ t("applications:URLInput."
+                                            + "withLabel.positive.detailedContent.0") }
+                                        popupDetailedContentNegative={ t("applications:URLInput."
+                                            + "withLabel.negative.detailedContent.0") }
+                                        insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                        showLessContent={ t("common:showLess") }
+                                        showMoreContent={ t("common:showMore") }
+                                    />
+                                    {
+                                        (assertionConsumerURLFromTemplate) && isSAASDeployment && (
+                                            <Message
+                                                visible
+                                                type="info"
+                                                content={
+                                                    (<>
+                                                        {
+                                                            <Trans
+                                                                i18nKey={ "applications:forms." +
+                                                                "inboundSAML.fields.assertionURLs.info" }
+                                                                tOptions={ {
+                                                                    assertionURLFromTemplate:
+                                                                    assertionConsumerURLFromTemplate
+                                                                } }
+                                                            >
+                                                                Don’t have an app? Try out a sample app
+                                                                using <strong>{ assertionConsumerURLFromTemplate }</strong>
+                                                                as the assertion Response URL.
+                                                                (You can download and run a sample
+                                                                at a later step.)
+                                                            </Trans>
+                                                        }
+                                                        {
+                                                            (assertionConsumerUrls === undefined ||
+                                                                assertionConsumerUrls === "") && (
+                                                                <LinkButton
+                                                                    className={ "m-1 p-1 with-no-border orange" }
+                                                                    onClick={
+                                                                        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                                                                        ) => {
+                                                                            e.preventDefault();
+                                                                            setAssertionConsumerUrls(
+                                                                                assertionConsumerURLFromTemplate);
+                                                                            setIssuer(issuerFromTemplate);
+                                                                            setHasAssertionConsumerUrls(true);
+                                                                        }
+                                                                    }
+                                                                    data-testid={ `${testId}-add-now-button` }
+                                                                >
+                                                                    <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                                </LinkButton>
+                                                            )
+                                                        }
+                                                    </>)
+                                                }
+                                            />
+                                        )
+                                    }
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -595,25 +603,27 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             return (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <FilePicker
-                            key={ 1 }
-                            fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
-                            file={ selectedMetadataFile }
-                            pastedContent={ pastedMetadataContent }
-                            onChange={ (result: PickerResult<any>) => {
-                                setSelectedMetadataFile(result.file);
-                                setPastedMetadataContent(result.pastedContent);
-                                setXmlBase64String(result.serialized as string);
-                            } }
-                            uploadButtonText="Upload Metadata File"
-                            dropzoneText="Drag and drop a XML file here."
-                            data-testid={ `${testId}-form-wizard-saml-xml-config-file-picker` }
-                            icon={ getCertificateIllustrations().uploadPlaceholder }
-                            placeholderIcon={ <Icon name="file code" size="huge"/> }
-                            normalizeStateOnRemoveOperations={ true }
-                            emptyFileError={ emptyFileError }
-                            hidePasteOption={ true }
-                        />
+                        <div ref={ metaFileRef }>
+                            <FilePicker
+                                key={ 1 }
+                                fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                                file={ selectedMetadataFile }
+                                pastedContent={ pastedMetadataContent }
+                                onChange={ (result: PickerResult<any>) => {
+                                    setSelectedMetadataFile(result.file);
+                                    setPastedMetadataContent(result.pastedContent);
+                                    setXmlBase64String(result.serialized as string);
+                                } }
+                                uploadButtonText="Upload Metadata File"
+                                dropzoneText="Drag and drop a XML file here."
+                                data-testid={ `${testId}-form-wizard-saml-xml-config-file-picker` }
+                                icon={ getCertificateIllustrations().uploadPlaceholder }
+                                placeholderIcon={ <Icon name="file code" size="huge"/> }
+                                normalizeStateOnRemoveOperations={ true }
+                                emptyFileError={ emptyFileError }
+                                hidePasteOption={ true }
+                            />
+                        </div>
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -636,6 +646,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 // Check whether assertionConsumer url is empty or not.
                                 if (isEmpty(assertionConsumerUrls) && isEmpty(url)) {
                                     setAssertionConsumerUrlError(true);
+                                    onRequiredFieldMissing?.(
+                                        "assertionConsumerUrls",
+                                        t("applications:forms.inboundSAML.fields.assertionURLs.validations.empty")
+                                    );
                                 } else {
                                     onSubmit(getFormValues(values, url));
                                 }
@@ -643,6 +657,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         } else {
                             if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
                                 setEmptyFileError(true);
+                                onRequiredFieldMissing?.(
+                                    "metadataFile",
+                                    t("applications:forms.inboundSAML.fields.metadataFile.validations.empty")
+                                );
                             } else {
                                 onSubmit(getFormValues(values));
                             }
