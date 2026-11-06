@@ -106,6 +106,24 @@ export const flows: flowsNS = {
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
+            flowHandoff: {
+                defaultTargets: {
+                    passwordRecovery: "Recovery Portal",
+                    profileUpdate: "Profile Management page",
+                    registration: "Self Signup page"
+                },
+                expiryTime: "Link valid {{expiryTime}} s",
+                expiryTimeHint: "How long the link stays valid.",
+                expiryTimeLabel: "Link valid for",
+                expiryTimePlaceholder: "Enter expiry time",
+                targetUrlDefaultHint: "The page the one-time link points to, where the flow will continue. " +
+                    "Leave empty to use the default {{target}}.",
+                targetUrlDescription: "Get a one-time link to continue flow at",
+                targetUrlHint: "The page the one-time link points to, where the flow will continue. Leave empty " +
+                    "to use the {{target}}.",
+                targetUrlLabel: "Continue at",
+                targetUrlPlaceholder: "https://myapp.com/manage-profile"
+            },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
             },
@@ -124,6 +142,11 @@ export const flows: flowsNS = {
             },
             tooltip: {
                 configurationHint: "Configure"
+            },
+            userVerification: {
+                tokenValidityPeriodHint: "Only tokens issued within this time are accepted.",
+                tokenValidityPeriodLabel: "Maximum token age",
+                tokenValidityPeriodPlaceholder: "Enter the maximum token age"
             }
         },
         labels: {
@@ -419,6 +442,9 @@ export const flows: flowsNS = {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
             },
+            userResolveRequiresFactors: {
+                message: "A profile update flow with a Resolve User step must have at least one verification step after it, such as Email OTP, SMS OTP, or Magic Link."
+            },
             variables: {
                 invalid: "Fix the flow variables on the Start step before saving: {{names}}.",
                 tooManyHeaders: "The flow reads more headers than this server allows. Keep up to {{max}}.",
@@ -485,6 +511,18 @@ export const flows: flowsNS = {
                 description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
                     hint: "Notify the user via email once the password recovery flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
+                }
+            }
+        }
+    },
+    profileUpdate: {
+        flowDisplayName: "Profile Update",
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the profile update flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once the profile update flow is successfully completed.",
                     label: "Send a notification email on flow completion"
                 }
             }

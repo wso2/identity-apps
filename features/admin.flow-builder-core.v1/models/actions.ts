@@ -34,3 +34,65 @@ export enum ActionTypes {
      */
     Route = "ROUTE"
 }
+
+/**
+ * Severity of an action meta notice. Maps directly to the Oxygen UI Alert `severity` prop.
+ */
+type ActionMetaNoticeType = "info" | "warning";
+
+interface ActionMetaNoticeInterface {
+    type: ActionMetaNoticeType;
+    text: string;
+}
+
+/**
+ * Describes a single configurable meta property for an action executor.
+ * Add entries to `actions.json` to expose new checkboxes — no component changes required.
+ */
+export interface ActionMetaConfigItemInterface {
+    key: string;
+    label: string;
+    description?: string;
+    /**
+     * Optional warning/informational notice rendered below the description.
+     */
+    notice?: ActionMetaNoticeInterface;
+    /**
+     * Tooltip shown when this item is disabled. Explains why it is disabled / how to enable it.
+     */
+    disabledTooltip?: string;
+    /**
+     * Default value written to `executor.meta` for this item when its action
+     * type is first selected. Defaults to "false" when omitted.
+     */
+    defaultValue?: string;
+    /**
+     * Key of another meta item that must be enabled for this item to be interactive.
+     * When the referenced item is unchecked, this checkbox is disabled and auto-cleared.
+     * Items with this field are rendered indented (nested) under their parent.
+     */
+    dependsOn?: string;
+}
+
+/**
+ * Describes a single action type within an action group, matching the shape in `actions.json`.
+ */
+export interface ActionTypeInterface {
+    action: Record<string, unknown>;
+    display: {
+        label: string;
+        image: string;
+        defaultVariant?: string;
+    };
+    metaConfig?: ActionMetaConfigItemInterface[];
+}
+
+/**
+ * Describes a group of related action types, matching the top-level shape in `actions.json`.
+ */
+export interface ActionGroupInterface {
+    display?: {
+        label?: string;
+    };
+    types: ActionTypeInterface[];
+}

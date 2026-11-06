@@ -25,6 +25,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
@@ -104,6 +106,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { data: profileUpdateFlowConfig } = useGetFlowConfig(FlowTypes.PROFILE_UPDATE);
 
     const {
         data: smsTemplatesList,
@@ -134,6 +137,11 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         if (smsTemplatesList) {
             const filteredTemplates: SMSTemplateType[] = smsTemplatesList.filter((template: SMSTemplateType) => {
+                if (!profileUpdateFlowConfig?.isEnabled
+                    && template.displayName?.toLowerCase().includes("profileupdate")) {
+                    return false;
+                }
+
                 if (!enableCustomSmsTemplates) {
                     return smsTemplates?.some((smsTemplate: Record<string, string>) => smsTemplate.id === template.id);
                 }
@@ -159,7 +167,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             setSelectedSmsTemplateId(availableSmsTemplates?.[0]?.id);
             setSelectedSmsTemplateDescription(availableSmsTemplates?.[0]?.description);
         }
-    }, [ smsTemplatesList ]);
+    }, [ smsTemplatesList, profileUpdateFlowConfig ]);
 
     useEffect(() => {
         setSelectedSmsTemplate({ ...smsTemplate });
