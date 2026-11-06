@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme } from "@mui/material/styles";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -34,7 +35,7 @@ import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+    HttpErrorResponseDataInterface, RolePropertyInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -61,8 +62,8 @@ import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
-import { getApplicationRolesByAudience } from "../api/roles";
-import { RoleAudienceTypes } from "../constants/role-constants";
+import { deleteRoleById, deleteRoleByIdV3, getApplicationRolesByAudience } from "../api/roles";
+import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 import useGetApplicationRolesByAudienceV3 from "../hooks/use-get-application-roles-by-audience-v3";
 import {
     AssociatedRolesPatchObjectInterface,
@@ -81,6 +82,14 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      */
     readOnly?: boolean;
     /**
+     * Whether the application is a shared application in an organization.
+     */
+    isSharedApplication?: boolean;
+    /**
+     * Whether organization custom roles are enabled for the shared application.
+     */
+    isOrganizationCustomRolesEnabled?: boolean;
+    /**
      * Original template ID of the application for which the roles are created.
      */
     originalTemplateId?: string;
@@ -96,6 +105,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 ): ReactElement => {
 
     const {
+        isOrganizationCustomRolesEnabled = false,
+        isSharedApplication = false,
         onUpdate,
         originalTemplateId,
         readOnly,
@@ -127,6 +138,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    // Null until the roles are fetched, as inherited roles cannot be identified before that.
+    const [ inheritedRoleIds, setInheritedRoleIds ] = useState<Set<string> | null>(null);
+    const [ rolesToDelete, setRolesToDelete ] = useState<BasicRoleInterface[]>([]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -135,6 +149,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
+    const isOrganizationCustomRolesFeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isOrganizationCustomRolesFeatureEnabled
+    );
+    const isCustomRoleCreationAllowed: boolean = isOrganizationCustomRolesFeatureEnabled
+        && isOrganizationCustomRolesEnabled;
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(
         userRolesV3FeatureEnabled
@@ -160,6 +179,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles on component load and audience switch.
      */
     useEffect(() => {
+        setInheritedRoleIds(null);
         getApplicationRoles();
         if (roleAudience === application?.associatedRoles?.allowedAudience) {
             setSelectedRoles(application?.associatedRoles?.roles);
@@ -190,6 +210,39 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
+     * Resolve the IDs of roles inherited from the parent organization.
+     *
+     * @param roles - Roles of the application.
+     * @returns IDs of the inherited roles.
+     */
+    const resolveInheritedRoleIds = (roles: RolesV2Interface[]): Set<string> => {
+        return new Set<string>(roles
+            ?.filter((role: RolesV2Interface) => role?.properties?.some(
+                (property: RolePropertyInterface) =>
+                    property?.name === RoleConstants.IS_SHARED_ROLE && property?.value === "true"))
+            .map((role: RolesV2Interface) => role.id) ?? []);
+    };
+
+    /**
+     * Check whether the role is inherited from the parent organization.
+     *
+     * @param role - Role to check.
+     * @returns True if the role is inherited.
+     */
+    const isInheritedRole = (role: BasicRoleInterface): boolean => {
+        // Treat every role as inherited until the roles are fetched, so none can be removed.
+        return isSharedApplication && (inheritedRoleIds === null || inheritedRoleIds.has(role?.id));
+    };
+
+    // Shared application roles are editable only for application audience custom roles.
+    const isRoleAssignmentReadOnly: boolean = readOnly || (isSharedApplication
+        && (inheritedRoleIds === null
+            || !isOrganizationCustomRolesFeatureEnabled
+            || roleAudience !== RoleAudienceTypes.APPLICATION
+            || (!isOrganizationCustomRolesEnabled
+                && !(initialSelectedRoles ?? []).some((role: BasicRoleInterface) => !isInheritedRole(role)))));
+
+    /**
      * Fetch application roles.
      */
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
@@ -207,12 +260,17 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     });
 
                     setRoleList(rolesArray);
+                    setInheritedRoleIds(resolveInheritedRoleIds(response.data?.Resources));
 
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
+                        // Removals are detected against these, so keep them in sync with the refreshed roles.
+                        setInitialSelectedRoles(rolesArray);
                     }
                 }
             }).catch((error: AxiosError<RequestErrorInterface>) => {
+                setInheritedRoleIds(null);
+
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ??
@@ -253,11 +311,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     });
 
                     setRoleList(rolesArray);
+                    setInheritedRoleIds(resolveInheritedRoleIds(response?.Resources));
 
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
+                        // Removals are detected against these, so keep them in sync with the refreshed roles.
+                        setInitialSelectedRoles(rolesArray);
                     }
                 }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                    setInheritedRoleIds(null);
+
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error?.response?.data?.description ??
@@ -286,6 +349,86 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     setIsLoading(false);
                 });
         }
+    };
+
+    /**
+     * Handle shared application role updates, deleting removed custom roles after confirmation.
+     */
+    const handleSharedApplicationRolesUpdate = (): void => {
+        const removedRoles: BasicRoleInterface[] = (initialSelectedRoles ?? []).filter(
+            (initialRole: BasicRoleInterface) => !isInheritedRole(initialRole)
+                && !selectedRoles?.find((role: BasicRoleInterface) => role.id === initialRole.id));
+
+        if (removedRoles.length === 0) {
+            // Shared application roles are associated automatically, so only refresh them.
+            getApplicationRoles(true);
+            onUpdate(appId);
+
+            return;
+        }
+        setRolesToDelete(removedRoles);
+    };
+
+    /**
+     * Delete the given custom roles of the shared application.
+     *
+     * @param roles - Roles to delete.
+     */
+    const deleteSharedApplicationRoles = (roles: BasicRoleInterface[]): void => {
+        const deleteRole: (roleId: string) => Promise<AxiosResponse> =
+            userRolesV3FeatureEnabled ? deleteRoleByIdV3 : deleteRoleById;
+
+        setIsSubmitting(true);
+        Promise.allSettled(roles.map((role: BasicRoleInterface) => deleteRole(role.id)))
+            .then((results: PromiseSettledResult<AxiosResponse>[]) => {
+                const failedRoles: BasicRoleInterface[] = roles.filter(
+                    (_role: BasicRoleInterface, index: number) => results[index].status === "rejected");
+
+                if (failedRoles.length === 0) {
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.success.message")
+                    }));
+
+                    return;
+                }
+
+                if (failedRoles.length < roles.length) {
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.partialError.description", {
+                            roles: failedRoles.map((role: BasicRoleInterface) => role.name).join(", ")
+                        }),
+                        level: AlertLevels.WARNING,
+                        message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.partialError.message")
+                    }));
+
+                    return;
+                }
+
+                const firstError: AxiosError<HttpErrorResponseDataInterface> =
+                    (results[0] as PromiseRejectedResult).reason;
+
+                dispatch(addAlert({
+                    description: firstError?.response?.data?.description ??
+                        t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                            "notifications.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                        "notifications.error.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                setRolesToDelete([]);
+                // Refresh the roles, as some deletions may have failed.
+                getApplicationRoles(true);
+                onUpdate(appId);
+            });
     };
 
     /**
@@ -412,12 +555,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.application")
                                                 }
                                                 data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                                disabled={ readOnly }
+                                                disabled={ readOnly || isSharedApplication }
                                             />
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
                                             {
                                                 !readOnly &&
+                                                (!isSharedApplication || isCustomRoleCreationAllowed) &&
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
                                                 hasRoleCreatePermissions
                                                     && (
@@ -448,7 +592,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.organization")
                                                 }
                                                 data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                                disabled={ readOnly }
+                                                disabled={ readOnly || isSharedApplication }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -481,7 +625,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <Autocomplete
                                     multiple
                                     disableCloseOnSelect
-                                    readOnly={ readOnly }
+                                    readOnly={ isRoleAssignmentReadOnly }
                                     loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
@@ -492,13 +636,23 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                         <TextField
                                             { ...params }
-                                            placeholder={ !readOnly && t("extensions:develop.applications.edit." +
-                                            "sections.rolesV2.searchPlaceholder") }
+                                            placeholder={ !isRoleAssignmentReadOnly
+                                                && t("extensions:develop.applications.edit." +
+                                                "sections.rolesV2.searchPlaceholder") }
                                         />
                                     ) }
                                     onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
-                                        setSelectedRoles(roles);
+                                        // Roles inherited from the parent organization cannot be removed.
+                                        const retainedInheritedRoles: BasicRoleInterface[] = (selectedRoles ?? [])
+                                            .filter((role: BasicRoleInterface) => isInheritedRole(role)
+                                                && !roles.find((newRole: BasicRoleInterface) =>
+                                                    newRole.id === role.id));
+
+                                        setSelectedRoles([ ...retainedInheritedRoles, ...roles ]);
                                     } }
+                                    getOptionDisabled={
+                                        (role: BasicRoleInterface) => isInheritedRole(role)
+                                    }
                                     isOptionEqualToValue={
                                         (option: BasicRoleInterface, value: BasicRoleInterface) =>
                                             option.id === value.id
@@ -514,6 +668,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             { /* @ts-ignore */ }
                                             <Chip
                                                 { ...getTagProps({ index }) }
+                                                // Roles inherited from the parent organization cannot be removed.
+                                                onDelete={
+                                                    isInheritedRole(option)
+                                                        ? undefined
+                                                        : getTagProps({ index }).onDelete
+                                                }
+                                                sx={
+                                                    isInheritedRole(option)
+                                                        ? {
+                                                            fontSize: (theme: Theme) =>
+                                                                theme.typography.pxToRem(13)
+                                                        }
+                                                        : undefined
+                                                }
                                                 key={ index }
                                                 label={ option.name }
                                                 activeOption={ activeOption }
@@ -544,13 +712,15 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Row>
                     ) : null }
                     {
-                        !readOnly && (
+                        !isRoleAssignmentReadOnly && (
                             <Grid.Row className="mt-4">
                                 <Grid.Column width={ 16 }>
                                     <PrimaryButton
                                         size="small"
                                         loading={ isSubmitting }
-                                        onClick={ () => updateRoles() }
+                                        onClick={ () => isSharedApplication
+                                            ? handleSharedApplicationRolesUpdate()
+                                            : updateRoles() }
                                         ariaLabel="Roles update button"
                                         data-componentid={ `${ componentId }-update-button` }
                                     >
@@ -562,6 +732,31 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     }
                 </Grid>
             </EmphasizedSegment>
+            <ConfirmationModal
+                onClose={ (): void => setRolesToDelete([]) }
+                type="negative"
+                open={ rolesToDelete.length > 0 }
+                assertionHint={ t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
+                    "confirmationModal.assertionHint") }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setRolesToDelete([]) }
+                onPrimaryActionClick={ (): void => deleteSharedApplicationRoles(rolesToDelete) }
+                data-componentid={ `${ componentId }-delete-shared-application-roles-confirmation-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached negative>
+                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.content",
+                        { roles: rolesToDelete.map((role: BasicRoleInterface) => role.name).join(", ") }) }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
             <ConfirmationModal
                 onClose={ (): void => {
                     setTempRoleAudience(roleAudience);
@@ -616,6 +811,21 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         "rolesV2.switchRoleAudience.applicationConfirmationModal.content")
                         : t("extensions:develop.applications.edit.sections." +
                         "rolesV2.switchRoleAudience.organizationConfirmationModal.content")
+                    }
+                    {
+                        // Switching to organization audience deletes application custom roles of organizations.
+                        tempRoleAudience === RoleAudienceTypes.ORGANIZATION
+                        && !isSharedApplication
+                        && application?.organizationCustomRolesEnabled
+                        && (
+                            <p
+                                data-componentid={
+                                    `${ componentId }-switch-role-audience-organization-custom-roles-note` }
+                            >
+                                { t("applications:edit.sections.organizationCustomRoles.confirmation." +
+                                    "audienceSwitch") }
+                            </p>
+                        )
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

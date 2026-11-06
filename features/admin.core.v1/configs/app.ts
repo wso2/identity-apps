@@ -553,6 +553,8 @@ export class Config {
             isMarketingConsentBannerEnabled: window["AppUtils"]?.getConfig()?.ui?.isMarketingConsentBannerEnabled,
             isMultipleEmailsAndMobileNumbersEnabled:
                 window["AppUtils"]?.getConfig()?.ui?.isMultipleEmailsAndMobileNumbersEnabled,
+            isOrganizationCustomRolesFeatureEnabled:
+                window[ "AppUtils" ]?.getConfig()?.ui?.isOrganizationCustomRolesFeatureEnabled ?? false,
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isPasswordResetEnforcementScopeEnabled:
                 window["AppUtils"]?.getConfig()?.ui?.isPasswordResetEnforcementScopeEnabled ?? false,

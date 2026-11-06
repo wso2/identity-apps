@@ -50,6 +50,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
+import useAPIResourceAvailability, {
+    UseAPIResourceAvailabilityReturnInterface
+} from "../../hooks/use-api-resource-availability";
 import { createRole, createRoleUsingV3Api } from "../../api/roles";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
@@ -129,6 +132,8 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         return ids;
     }, [ blockedAPIResourceEntries ]);
 
+    const { isAPIResourceAvailable }: UseAPIResourceAvailabilityReturnInterface = useAPIResourceAvailability();
+
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
@@ -164,6 +169,11 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                 return;
             }
 
+            // Management API resources are not available to roles in organizations.
+            if (!isAPIResourceAvailable(apiResource?.type)) {
+                return;
+            }
+
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
@@ -178,7 +188,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds, isAPIResourceAvailable ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
