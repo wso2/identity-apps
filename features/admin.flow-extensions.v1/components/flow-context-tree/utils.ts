@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import FlowExtensionAccessConstants from "@wso2is/admin.flow-builder-core.v1/constants/flow-extension-access-constants";
 import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
+import FlowExtensionAccessUtils from "./flow-extension-access-utils";
 import {
     ContextPathOutputInterface,
     ContextTreeNodeMetadataInterface,
     FlowExtensionAccessConfigInterface,
+    FlowVariableEntryStateInterface,
     InitialAccessConfigInterface,
     NodeType,
     TreeNodeStateInterface
@@ -109,10 +112,17 @@ export const mapMetadataToState = (
 ): TreeNodeStateInterface[] =>
     nodes.map((node: ContextTreeNodeMetadataInterface) => ({
         allowedOperations: node.allowedOperations || [],
+        applicableFlowTypes: FlowExtensionAccessUtils.getLimitedFlowTypes(node.applicableFlowTypes),
         canDelete: node.canDelete ?? false,
-        children: node.children ? mapMetadataToState(node.children) : undefined,
+        // A flow variable container lists every runtime value or header the flows define, by flow
+        // type, so nothing is added to it by hand.
+        children: FlowExtensionAccessUtils.isFlowVariableContainerPath(node.path)
+            ? FlowExtensionAccessUtils.buildFlowVariableRows(
+                { path: node.path, readOnly: node.readOnly ?? false }, node.children, [])
+            : node.children ? mapMetadataToState(node.children) : undefined,
         dataType: node.dataType,
-        dynamicEntryAllowed: node.dynamicEntryAllowed ?? false,
+        dynamicEntryAllowed: !FlowExtensionAccessUtils.isFlowVariableContainerPath(node.path)
+            && (node.dynamicEntryAllowed ?? false),
         dynamicEntryType: node.dynamicEntryType ?? "",
         exposeEncrypted: false,
         exposed: false,
@@ -202,16 +212,52 @@ export const mapMetadataToStateWithAccessConfig = (
     // to the container's `dynamicEntryType` ("Object").
     const modifyTypeHints: Map<string, string> = new Map();
 
-    (accessConfig.expose ?? []).forEach((e: { path: string; encrypted?: boolean }) => {
-        exposePaths.set(normalisePath(decodeClaimPath(e.path)), !!e.encrypted);
+    // Runtime value and request header entries, keyed by path and flow type, as the same path is
+    // configured once per flow type.
+    const flowScopedEntries: Map<string, FlowVariableEntryStateInterface> = new Map();
+    const getFlowScopedState = (entry: ContextPathOutputInterface): FlowVariableEntryStateInterface => {
+        const key: string = FlowExtensionAccessUtils.getFlowScopedEntryKey(entry.path, entry.flowType);
+
+        if (!flowScopedEntries.has(key)) {
+            flowScopedEntries.set(key, {
+                exposeEncrypted: false,
+                exposed: false,
+                flowType: entry.flowType,
+                modify: false,
+                modifyEncrypted: false,
+                path: entry.path
+            });
+        }
+
+        return flowScopedEntries.get(key);
+    };
+
+    (accessConfig.expose ?? []).forEach((exposeEntry: ContextPathOutputInterface) => {
+        if (FlowExtensionAccessUtils.isFlowScopedEntry(exposeEntry)) {
+            const state: FlowVariableEntryStateInterface = getFlowScopedState(exposeEntry);
+
+            state.exposed = true;
+            state.exposeEncrypted = !!exposeEntry.encrypted;
+
+            return;
+        }
+        exposePaths.set(normalisePath(decodeClaimPath(exposeEntry.path)), !!exposeEntry.encrypted);
     });
-    (accessConfig.modify ?? []).forEach((m: { path: string; encrypted?: boolean }) => {
-        const decoded: string = decodeClaimPath(m.path);
+    (accessConfig.modify ?? []).forEach((modifyEntry: ContextPathOutputInterface) => {
+        if (FlowExtensionAccessUtils.isFlowScopedEntry(modifyEntry)) {
+            const state: FlowVariableEntryStateInterface = getFlowScopedState(modifyEntry);
+
+            state.modify = true;
+            state.modifyEncrypted = !!modifyEntry.encrypted;
+
+            return;
+        }
+        const decoded: string = decodeClaimPath(modifyEntry.path);
         const typeHintMatch: RegExpMatchArray | null = decoded.match(/\{([^}]+)\}$/);
         const cleanPath: string = decoded.replace(/\{[^}]+\}$/, "");
         const norm: string = normalisePath(cleanPath);
 
-        modifyPaths.set(norm, !!m.encrypted);
+        modifyPaths.set(norm, !!modifyEntry.encrypted);
         if (typeHintMatch) {
             modifyTypeHints.set(norm, typeHintMatch[1]);
         }
@@ -235,6 +281,22 @@ export const mapMetadataToStateWithAccessConfig = (
         return { covered: false, encrypted: false };
     };
 
+    /**
+     * Convert a runtime value or request header container, with the saved READ, WRITE and encryption
+     * marks of its entries.
+     */
+    const convertFlowVariableContainer = (node: ContextTreeNodeMetadataInterface): TreeNodeStateInterface => {
+        const container: TreeNodeStateInterface = mapMetadataToState([ node ])[0];
+        const savedEntries: FlowVariableEntryStateInterface[] = [ ...flowScopedEntries.values() ]
+            .filter((entry: FlowVariableEntryStateInterface) =>
+                FlowExtensionAccessUtils.belongsToContainer(entry, node.path));
+
+        return {
+            ...container,
+            children: FlowExtensionAccessUtils.buildFlowVariableRows(container, node.children, savedEntries)
+        };
+    };
+
     const convert = (
         metaNodes: ContextTreeNodeMetadataInterface[],
         parentExposed: boolean,
@@ -244,6 +306,13 @@ export const mapMetadataToStateWithAccessConfig = (
 
         for (const node of metaNodes) {
             const np: string = normalisePath(node.path);
+
+            if (FlowExtensionAccessUtils.isFlowVariableContainerPath(node.path)) {
+                result.push(convertFlowVariableContainer(node));
+
+                continue;
+            }
+
             const nodeIsContainer: boolean = isContainer({
                 nodeType: node.nodeType
             } as TreeNodeStateInterface);
@@ -290,6 +359,19 @@ export const mapMetadataToStateWithAccessConfig = (
                         : parentEncrypted;
 
                 children = convert(node.children, childExposed, childEncrypted);
+            }
+
+            // Saved organization attributes the registration flow no longer collects.
+            if (np === FlowExtensionAccessConstants.SUBJECT_ORGANIZATION_ATTRIBUTES_PATH) {
+                const missingRows: TreeNodeStateInterface[] = FlowExtensionAccessUtils.buildMissingAttributeRows(
+                    new Set((children || []).map((child: TreeNodeStateInterface) => child.path)),
+                    exposePaths,
+                    node.applicableFlowTypes
+                );
+
+                if (missingRows.length > 0) {
+                    children = [ ...(children || []), ...missingRows ];
+                }
             }
 
             // Synthesise dynamic entries that exist in accessConfig but not in metadata
@@ -355,7 +437,7 @@ export const mapMetadataToStateWithAccessConfig = (
                     let isModify: boolean = modifyPaths.has(synthPath);
                     let synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
                     const displayName: string = claimDisplayNames?.get(key) ?? key;
-                    
+
                     // For dynamic entries under a claims map, read-only status comes from the
                     // fixed READ_ONLY_CLAIM_URIS list. Other containers fall back to the
                     // parent's flag.
@@ -409,6 +491,7 @@ export const mapMetadataToStateWithAccessConfig = (
 
             result.push({
                 allowedOperations: node.allowedOperations || [],
+                applicableFlowTypes: FlowExtensionAccessUtils.getLimitedFlowTypes(node.applicableFlowTypes),
                 canDelete: node.canDelete ?? false,
                 children,
                 dataType: node.dataType,
@@ -506,22 +589,37 @@ export const buildAccessConfig = (
     const walk = (ns: TreeNodeStateInterface[]): void => {
         ns.forEach((node: TreeNodeStateInterface) => {
             const isLeaf: boolean = node.nodeType === NodeType.LEAF;
+            // A field only one flow type has, such as of the organization a registration flow onboards, is saved
+            // for that flow type.
+            const flowType: string | undefined = node.flowType
+                ?? (node.applicableFlowTypes?.length === 1 ? node.applicableFlowTypes[0] : undefined);
 
             if (isLeaf) {
                 // Expose: leaf-only
                 if (node.exposed) {
-                    expose.push({ encrypted: !!node.exposeEncrypted, path: encodeClaimPath(node.path) });
+                    expose.push({
+                        encrypted: !!node.exposeEncrypted,
+                        path: encodeClaimPath(node.path),
+                        ...(flowType ? { flowType } : {})
+                    });
                 }
 
                 // Modify: leaf-only
                 if (node.modify) {
+                    // A runtime value takes its type from the flow that defines it, so it gets no
+                    // type hint.
                     const modifyPath: string = node.canDelete &&
+                        !node.flowType &&
                         node.dataType &&
                         node.dataType !== "String"
                         ? `${node.path}{${node.dataType}}`
                         : node.path;
 
-                    modify.push({ encrypted: !!node.modifyEncrypted, path: encodeClaimPath(modifyPath) });
+                    modify.push({
+                        encrypted: !!node.modifyEncrypted,
+                        path: encodeClaimPath(modifyPath),
+                        ...(flowType ? { flowType } : {})
+                    });
                 }
             }
 

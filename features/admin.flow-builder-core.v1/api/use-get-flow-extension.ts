@@ -23,43 +23,40 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { PublishedFlowInterface } from "../models/published-flow";
+import { FlowExtensionInterface } from "../models/flow-extension-access";
 
 /**
- * Hook to retrieve the published flow of a given type.
+ * Hook to get a flow extension by its ID.
  *
- * Calls `GET /api/server/v1/flow?flowType=...`. Used to offer the organization attributes a flow
- * already collects as context tree entries, so they do not have to be typed again here.
- *
- * Failure is not fatal to the caller: the Organization branch still renders its core fields and
- * the manual add path when no flow is published or the request is rejected.
- *
- * @param flowType - Type of the flow to retrieve.
- * @param shouldFetch - Whether the request should be sent.
- * @returns The published flow as an SWR response.
+ * @param extensionId - ID of the flow extension, which is the ID of its action.
+ * @param shouldFetch - Whether to fetch the flow extension.
+ * @returns The flow extension.
  */
-const useGetPublishedFlow = <
-    Data = PublishedFlowInterface,
-    Error = RequestErrorInterface>(
-        flowType: string,
-        shouldFetch: boolean = true
-    ): RequestResultInterface<Data, Error> => {
+const useGetFlowExtension = <Data = FlowExtensionInterface, Error = RequestErrorInterface>(
+    extensionId: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: { flowType },
-        url: store.getState().config.endpoints.flow
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch && !!flowType ? requestConfig : null,
+        shouldFetch && extensionId ? requestConfig : null,
         { shouldRetryOnError: false }
     );
 
-    return { data, error, isLoading, isValidating, mutate };
+    return {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
 };
 
-export default useGetPublishedFlow;
+export default useGetFlowExtension;

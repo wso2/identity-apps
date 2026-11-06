@@ -32,7 +32,7 @@ import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences"
 import { AlertLevels, Claim, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { EdgeTypes, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
+import { EdgeTypes, Node, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import dayjs from "dayjs";
 import merge from "lodash-es/merge";
@@ -61,6 +61,9 @@ import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-pref
 import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { ValidationConfig } from "../context/validation-context";
+import useFlowExtensionAccessConfigSaver, {
+    UseFlowExtensionAccessConfigSaverReturnInterface
+} from "../hooks/use-flow-extension-access-config-saver";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -115,6 +118,16 @@ const FlowContextWrapper = ({
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { toObject } = useReactFlow();
+
+    const getNodes: () => Node[] = useCallback((): Node[] => toObject()?.nodes ?? [], [ toObject ]);
+    const {
+        flowExtensionAccessConfigs,
+        flowExtensionsSavedVersion,
+        isFlowExtensionAccessLocked,
+        saveFlowExtensionAccessConfigs,
+        setFlowExtensionAccessConfig,
+        setIsFlowExtensionAccessLocked
+    }: UseFlowExtensionAccessConfigSaverReturnInterface = useFlowExtensionAccessConfigSaver(getNodes);
     const { flows, setPreferences } = useUserPreferences();
 
     const userName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -617,7 +630,10 @@ const FlowContextWrapper = ({
                 clearLocalHistory,
                 flowCompletionConfigs,
                 flowEdgeTypes,
+                flowExtensionAccessConfigs,
+                flowExtensionsSavedVersion,
                 flowNodeTypes,
+                flowType,
                 hasLocalHistory,
                 i18nText,
                 i18nTextLoading:
@@ -627,6 +643,7 @@ const FlowContextWrapper = ({
                 isBrandingEnabled,
                 isConditionalBranchingEnabled,
                 isCustomI18nKey,
+                isFlowExtensionAccessLocked,
                 isFlowMetadataLoading,
                 isI18nSubmitting,
                 isResourcePanelOpen,
@@ -649,11 +666,14 @@ const FlowContextWrapper = ({
                 restoreFromHistory,
                 ruleLimits,
                 ruleMetadata,
+                saveFlowExtensionAccessConfigs,
                 selectedAttributes,
                 variableLimits,
                 setFlowCompletionConfigs,
                 setFlowEdgeTypes,
+                setFlowExtensionAccessConfig,
                 setFlowNodeTypes,
+                setIsFlowExtensionAccessLocked,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
                 setIsVersionHistoryPanelOpen,
