@@ -613,14 +613,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
             },
             sourcemap: false
         },
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    // This silences the legacy JS API warning specifically
-                    silenceDeprecations: [ "legacy-js-api" ] as [ "legacy-js-api" ]
-                }
-            }
-        },
         define: {
             global: "globalThis",
             "process.env.NODE_ENV": JSON.stringify(nodeEnvironment),
