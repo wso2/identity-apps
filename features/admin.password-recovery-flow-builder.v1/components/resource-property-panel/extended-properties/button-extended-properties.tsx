@@ -26,23 +26,24 @@ import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
+// eslint-disable-next-line max-len
+import ActionMetaProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/action-meta-properties/action-meta-properties";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
+import {
+    ActionGroupInterface,
+    ActionMetaConfigItemInterface,
+    ActionTypeInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import useGetPasswordRecoveryFlowCoreActions from "../../../api/use-get-password-recovery-flow-builder-actions";
-import {
-    ActionGroupInterface,
-    ActionMetaConfigItemInterface,
-    ActionTypeInterface
-} from "../../../models/actions";
-import ActionMetaProperties from "./action-meta-properties";
 import "./button-extended-properties.scss";
 
 /**
