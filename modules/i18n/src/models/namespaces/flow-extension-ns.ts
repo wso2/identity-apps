@@ -174,6 +174,7 @@ export interface flowExtensionNS {
             noRuntimeValues: string;
             noHeaders: string;
             noOrganizationAttributes: string;
+            organizationAttributes: string;
             subjectOrganization: string;
             notifications: {
                 updateError: {

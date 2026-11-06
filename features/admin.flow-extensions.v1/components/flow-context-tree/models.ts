@@ -167,3 +167,11 @@ export interface AddEntryModalStateInterface {
     open: boolean;
     parentNode: TreeNodeStateInterface | null;
 }
+
+/**
+ * Saved state of a runtime value or request header entry.
+ */
+export type FlowVariableEntryStateInterface = Pick<
+    TreeNodeStateInterface,
+    "path" | "flowType" | "exposed" | "exposeEncrypted" | "modify" | "modifyEncrypted"
+>;

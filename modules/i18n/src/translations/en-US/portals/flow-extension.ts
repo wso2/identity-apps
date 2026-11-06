@@ -281,6 +281,7 @@ export const flowExtension: flowExtensionNS = {
                     message: "Couldn't update the flow extension"
                 }
             },
+            organizationAttributes: "attributes",
             runtimeValues: "Runtime values",
             subjectOrganization: "Subject organization",
             title: "Access configuration"

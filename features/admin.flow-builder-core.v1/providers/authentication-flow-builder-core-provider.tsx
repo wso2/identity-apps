@@ -32,7 +32,7 @@ import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences"
 import { AlertLevels, Claim, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { EdgeTypes, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
+import { EdgeTypes, Node, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import dayjs from "dayjs";
 import merge from "lodash-es/merge";
@@ -54,7 +54,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ValidationProvider from "./validation-provider";
-import updateFlowExtensionAccessConfig from "../api/update-flow-extension-access-config";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetRuleMetadata from "../api/use-get-rule-metadata";
 import useGetMetadata from "../api/use-metadata";
@@ -62,7 +61,9 @@ import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-pref
 import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { ValidationConfig } from "../context/validation-context";
-import { FlowExtensionAccessConfigInterface } from "../models/flow-extension-access";
+import useFlowExtensionAccessConfigSaver, {
+    UseFlowExtensionAccessConfigSaverReturnInterface
+} from "../hooks/use-flow-extension-access-config-saver";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { RuleLimitsInterface, RuleMetadataInterface } from "../models/metadata";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -117,6 +118,16 @@ const FlowContextWrapper = ({
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { toObject } = useReactFlow();
+
+    const getNodes: () => Node[] = useCallback((): Node[] => toObject()?.nodes ?? [], [ toObject ]);
+    const {
+        flowExtensionAccessConfigs,
+        flowExtensionsSavedVersion,
+        isFlowExtensionAccessLocked,
+        saveFlowExtensionAccessConfigs,
+        setFlowExtensionAccessConfig,
+        setIsFlowExtensionAccessLocked
+    }: UseFlowExtensionAccessConfigSaverReturnInterface = useFlowExtensionAccessConfigSaver(getNodes);
     const { flows, setPreferences } = useUserPreferences();
 
     const userName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -144,11 +155,6 @@ const FlowContextWrapper = ({
     const [ flowNodeTypes, setFlowNodeTypes ] = useState<NodeTypes>({});
     const [ flowEdgeTypes, setFlowEdgeTypes ] = useState<EdgeTypes>({});
     const [ refetchFlow, setRefetchFlow ] = useState<boolean>(false);
-    const [ flowExtensionAccessConfigs, setFlowExtensionAccessConfigs ] = useState<
-        Record<string, FlowExtensionAccessConfigInterface>
-    >({});
-    const [ flowExtensionsSavedVersion, setFlowExtensionsSavedVersion ] = useState<number>(0);
-    const [ isFlowExtensionAccessLocked, setIsFlowExtensionAccessLocked ] = useState<boolean>(false);
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
@@ -342,71 +348,6 @@ const FlowContextWrapper = ({
             return false;
         }
     }, [ flowType, setPreferences ]);
-
-    const setFlowExtensionAccessConfig: (
-        extensionId: string,
-        accessConfig: FlowExtensionAccessConfigInterface
-    ) => void = useCallback((extensionId: string, accessConfig: FlowExtensionAccessConfigInterface): void => {
-        setFlowExtensionAccessConfigs((previous: Record<string, FlowExtensionAccessConfigInterface>) => ({
-            ...previous,
-            [ extensionId ]: accessConfig
-        }));
-    }, []);
-
-    /**
-     * Save the changed access configs of the flow extensions, after the flow is saved. A flow extension no step of
-     * the flow uses any more is skipped, as its change was made for a step that is gone.
-     */
-    const saveFlowExtensionAccessConfigs: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
-        const usedExtensionIds: Set<string> = new Set(
-            (toObject()?.nodes ?? [])
-                .map((node: { data?: Record<string, any> }) => node?.data?.action?.executor?.meta?.actionId)
-                .filter(Boolean)
-        );
-        const changed: [ string, FlowExtensionAccessConfigInterface ][] = Object.entries(flowExtensionAccessConfigs)
-            .filter(([ extensionId ]: [ string, FlowExtensionAccessConfigInterface ]) =>
-                usedExtensionIds.has(extensionId));
-
-        if (changed.length === 0) {
-            return true;
-        }
-
-        const failed: string[] = [];
-
-        await Promise.all(changed.map(
-            async ([ extensionId, accessConfig ]: [ string, FlowExtensionAccessConfigInterface ]): Promise<void> => {
-                try {
-                    await updateFlowExtensionAccessConfig(extensionId, accessConfig);
-                } catch (error) {
-                    failed.push(extensionId);
-                }
-            }
-        ));
-
-        const sent: Map<string, FlowExtensionAccessConfigInterface> = new Map(changed);
-
-        // Keep the ones that failed, so the next save tries them again, and the ones changed while saving, if the
-        // flow still uses them.
-        setFlowExtensionAccessConfigs((previous: Record<string, FlowExtensionAccessConfigInterface>) =>
-            Object.fromEntries(Object.entries(previous).filter(
-                ([ extensionId, accessConfig ]: [ string, FlowExtensionAccessConfigInterface ]) =>
-                    failed.includes(extensionId)
-                    || (usedExtensionIds.has(extensionId) && sent.get(extensionId) !== accessConfig)
-            )));
-        setFlowExtensionsSavedVersion((version: number) => version + 1);
-
-        if (failed.length > 0) {
-            dispatch(
-                addAlert({
-                    description: t("flowExtension:properties.accessConfig.notifications.updateError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("flowExtension:properties.accessConfig.notifications.updateError.message")
-                })
-            );
-        }
-
-        return failed.length === 0;
-    }, [ flowExtensionAccessConfigs, toObject, dispatch, t ]);
 
     /**
      * Restore flow from a specific history item.

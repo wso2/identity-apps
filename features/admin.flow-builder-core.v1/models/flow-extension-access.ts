@@ -42,3 +42,26 @@ export interface FlowExtensionInterface {
     name: string;
     accessConfig?: FlowExtensionAccessConfigInterface;
 }
+
+/**
+ * A field of the flow, as a row of a flow extension's access config.
+ */
+export interface FlowExtensionAccessRowInterface {
+    name: string;
+    dataType: string;
+    path: string;
+    canWrite: boolean;
+}
+
+/**
+ * Fields listed under their own collapsible row, such as the attributes of an organization.
+ */
+export interface FlowExtensionAccessRowGroupInterface {
+    /**
+     * Stable ID of the group, used for its component ID.
+     */
+    id: string;
+    title: string;
+    emptyText: string;
+    rows: FlowExtensionAccessRowInterface[];
+}

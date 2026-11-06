@@ -43,7 +43,7 @@ import { FlowExtensionConstants } from "../../constants/flow-extension-constants
 import { ReactComponent as LockIcon } from "../../resources/assets/images/icons/lock.svg";
 import AddClaimModal from "./add-claim-modal";
 import FlowContextTreeNode from "./flow-context-tree-node";
-import { pruneEmptyFlowTypeGroups } from "./flow-variables";
+import FlowExtensionAccessUtils from "./flow-extension-access-utils";
 import {
     AddEntryModalStateInterface,
     ContextPathOutputInterface,
@@ -375,8 +375,8 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
                                     : "flowExtension:contextTree.fieldConfig.flowTypeHint",
                                 {
                                     flowType: hintFlowTypes
-                                        .map((flowType: string) => t(`flowExtension:contextTree.flowTypes.${flowType}`,
-                                            { defaultValue: flowType }))
+                                        .map((flowType: string) =>
+                                            FlowExtensionAccessUtils.getFlowTypeLabel(t, flowType))
                                         .join(", ")
                                 }
                             ) }
@@ -588,7 +588,8 @@ const FlowContextTree: FunctionComponent<FlowContextTreePropsInterface> = ({
 
     const handleDelete = useCallback((key: string): void => {
         // A flow type group goes with its last runtime value or header.
-        setTree((prev: TreeNodeStateInterface[]) => pruneEmptyFlowTypeGroups(deleteNode(prev, key)));
+        setTree((prev: TreeNodeStateInterface[]) =>
+            FlowExtensionAccessUtils.pruneEmptyFlowTypeGroups(deleteNode(prev, key)));
     }, []);
 
     const handleAddChild = useCallback((node: TreeNodeStateInterface): void => {

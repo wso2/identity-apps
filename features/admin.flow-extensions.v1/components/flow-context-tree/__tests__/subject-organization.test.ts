@@ -86,7 +86,9 @@ describe("subject organization in the access config tree", () => {
 
     it("lists a saved attribute the flow no longer collects as removable", () => {
         const tree: TreeNodeStateInterface[] = mapMetadataToStateWithAccessConfig([ subjectOrganization ], {
-            expose: [ { encrypted: false, flowType: "REGISTRATION", path: "/subjectOrganization/attributes[name=size]" } ],
+            expose: [
+                { encrypted: false, flowType: "REGISTRATION", path: "/subjectOrganization/attributes[name=size]" }
+            ],
             modify: []
         });
 
