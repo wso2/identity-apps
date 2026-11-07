@@ -6,7 +6,7 @@
     "appBaseName": "myaccount",
     "clientID": "MY_ACCOUNT",
     "consoleApp": {
-        "origin": "https://localhost:9000",
+        "origin": "https://192.168.1.232:9000",
         "path": "/getting-started"
     },
     "idpConfigs": {
@@ -16,7 +16,7 @@
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
         "responseMode": "query",
-        "serverOrigin": "https://localhost:9443"
+        "serverOrigin": "https://192.168.1.232:9443"
     },
     "isSaas": false,
     "loginCallbackPath": "",
@@ -27,7 +27,7 @@
         "login": "",
         "logout": "/logout"
     },
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://192.168.1.232:9443",
     "session": {
         "checkSessionInterval": 3.0,
         "sessionRefreshTimeOut": 300.0,
