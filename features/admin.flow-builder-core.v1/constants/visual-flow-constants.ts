@@ -106,8 +106,7 @@ class VisualFlowConstants {
         ElementTypes.Typography,
         ElementTypes.RichText,
         ElementTypes.Divider,
-        ElementTypes.Image,
-        ElementTypes.QrCode
+        ElementTypes.Image
     ];
 
     /**

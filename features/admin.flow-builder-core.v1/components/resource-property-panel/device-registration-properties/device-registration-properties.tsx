@@ -17,11 +17,7 @@
  */
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
-import FormControl from "@oxygen-ui/react/FormControl";
-import FormHelperText from "@oxygen-ui/react/FormHelperText";
-import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -35,7 +31,7 @@ import {
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useExtensionExecutor from "../../../hooks/use-extension-executor";
@@ -67,6 +63,15 @@ const DEFAULT_PHASE: string = DeviceRegistrationPhases.NativeDeviceRegistration;
  * Phases that verify the device, where a device policy applies.
  */
 const POLICY_PHASES: string[] = [ DEFAULT_PHASE, DeviceRegistrationPhases.ProcessDevice ];
+
+/**
+ * Phases of registering another device by QR code.
+ */
+const ANOTHER_DEVICE_PHASES: string[] = [
+    DeviceRegistrationPhases.InitRegistration,
+    DeviceRegistrationPhases.ProcessDevice,
+    DeviceRegistrationPhases.FinishRegistration
+];
 
 /**
  * Fallback phases when the server does not list them.
@@ -118,6 +123,7 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
         : DEFAULT_PHASES;
     const selectedPhase: string = executorMeta[ PHASE_META_KEY ] || DEFAULT_PHASE;
     const isPolicyApplicable: boolean = POLICY_PHASES.includes(selectedPhase);
+    const isAnotherDevicePhase: boolean = ANOTHER_DEVICE_PHASES.includes(selectedPhase);
 
     const policyNames: string[] = useMemo(() => {
         const names: string[] = (policyList?.policies ?? []).map(
@@ -142,34 +148,30 @@ const DeviceRegistrationProperties: FunctionComponent<DeviceRegistrationProperti
             <Typography variant="body2">
                 { t("devices:registrationStep.properties.description") }
             </Typography>
-            <FormControl fullWidth size="small">
-                <InputLabel id={ `${ componentId }-phase-label` }>
-                    { t("devices:registrationStep.properties.phase.label") }
-                </InputLabel>
-                <Select
-                    labelId={ `${ componentId }-phase-label` }
-                    label={ t("devices:registrationStep.properties.phase.label") }
-                    value={ selectedPhase }
-                    onChange={ (event: SelectChangeEvent<string>): void => {
-                        const phase: string = event.target.value;
+            <TextField
+                select
+                fullWidth
+                label={ t("devices:registrationStep.properties.phase.label") }
+                value={ selectedPhase }
+                onChange={ (event: ChangeEvent<HTMLInputElement>): void => {
+                    const phase: string = event.target.value;
 
-                        // One change for both keys, since property changes are debounced. A policy only applies to a
-                        // phase that verifies the device.
-                        onChange("action.executor.meta", POLICY_PHASES.includes(phase)
-                            ? { ...executorMeta, [ PHASE_META_KEY ]: phase }
-                            : { ...executorMeta, [ PHASE_META_KEY ]: phase, [ POLICY_NAME_META_KEY ]: "" }, resource);
-                    } }
-                    data-componentid={ `${ componentId }-phase` }
-                >
-                    { phases.map((phase: ExecutorPhaseInterface) => (
-                        <MenuItem key={ phase.name } value={ phase.name }>
-                            { t(`devices:registrationStep.properties.phase.options.${ phase.name }`,
-                                { defaultValue: phase.description || phase.name }) }
-                        </MenuItem>
-                    )) }
-                </Select>
-                <FormHelperText>{ t("devices:registrationStep.properties.phase.hint") }</FormHelperText>
-            </FormControl>
+                    // One change for both keys, since property changes are debounced. A policy only applies to a
+                    // phase that verifies the device.
+                    onChange("action.executor.meta", POLICY_PHASES.includes(phase)
+                        ? { ...executorMeta, [ PHASE_META_KEY ]: phase }
+                        : { ...executorMeta, [ PHASE_META_KEY ]: phase, [ POLICY_NAME_META_KEY ]: "" }, resource);
+                } }
+                helperText={ isAnotherDevicePhase ? t("devices:registrationStep.properties.phase.hint") : undefined }
+                data-componentid={ `${ componentId }-phase` }
+            >
+                { phases.map((phase: ExecutorPhaseInterface) => (
+                    <MenuItem key={ phase.name } value={ phase.name }>
+                        { t(`devices:registrationStep.properties.phase.options.${ phase.name }`,
+                            { defaultValue: phase.description || phase.name }) }
+                    </MenuItem>
+                )) }
+            </TextField>
             { isPolicyApplicable && (isPolicySelectionDisabled ? (
                 <TextField
                     fullWidth

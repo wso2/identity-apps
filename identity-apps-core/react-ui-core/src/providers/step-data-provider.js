@@ -19,15 +19,18 @@
 import PropTypes from "prop-types";
 import React, { createContext } from "react";
 
+// Shared fallback, so consumers do not re-render for a new empty object.
+const EMPTY_STEP_DATA = Object.freeze({});
+
 /**
  * Additional data of the current flow step, such as values an executor sends for the page.
  */
-export const StepDataContext = createContext({});
+export const StepDataContext = createContext(EMPTY_STEP_DATA);
 
 export const StepDataProvider = ({ additionalData, children }) => {
 
     return (
-        <StepDataContext.Provider value={ additionalData || {} }>
+        <StepDataContext.Provider value={ additionalData || EMPTY_STEP_DATA }>
             { children }
         </StepDataContext.Provider>
     );

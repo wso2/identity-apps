@@ -949,9 +949,10 @@
                             busy: loading,
                             // Continue the flow; the response is the next step.
                             onSuccess: () => setPostBody({ flowId: flowData.flowId, actionId: "" }),
-                            // The flow ended, so starting again restarts it.
+                            // The flow ended, so starting again restarts it. Other stored keys, such as the
+                            // login's sessionDataKey, are kept.
                             onRestart: () => {
-                                clearFlowStorage();
+                                localStorage.removeItem("flowId");
                                 window.location.reload();
                             },
                             onCancel: () => {

@@ -55,7 +55,8 @@ const resolveExpiresAt = (expiresIn) => {
  * @param {string} params.pollInterval - Seconds between polls.
  * @param {string} params.expiresIn - Seconds until the polling expires.
  * @param {Function} params.onSuccess - Called once the status is SUCCESS.
- * @param {Function} params.onError - Called after too many failed requests in a row.
+ * @param {Function} params.onError - Called after too many failed requests in a row. An error answered by the
+ * server fails the polling at once.
  * @returns {{ status: string, remainingMs: number|null }} Polling status and the time left.
  */
 export const useFlowPolling = ({ pollUrl, pollToken, pollInterval, expiresIn, onSuccess, onError }) => {
@@ -133,8 +134,11 @@ export const useFlowPolling = ({ pollUrl, pollToken, pollInterval, expiresIn, on
                     if (cancelled) {
                         return;
                     }
+                    // The server answered with an error, so retrying would not help.
                     if (data.error) {
-                        throw new Error("Flow poll request failed.");
+                        setStatus(PollStatus.FAILED);
+
+                        return;
                     }
                     failedRequests = 0;
                     if (data.status === PollStatus.SUCCESS) {

@@ -48,6 +48,6 @@
             }
         }
     } catch (Exception e) {
-        out.print("{\"error\": \"Exception: " + e.getMessage() + "\"}");
+        out.print("{\"error\": {\"code\": \"500\"}}");
     }
 %>

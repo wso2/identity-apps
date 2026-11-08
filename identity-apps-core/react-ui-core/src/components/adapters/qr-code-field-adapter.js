@@ -31,6 +31,29 @@ const MAX_SIZE = 480;
 const ERROR_CORRECTION_LEVEL = 2;
 // Light modules around the code, as the QR code specification asks.
 const QUIET_ZONE_MODULES = 4;
+// Bytes the generator fits at the error correction level above (version 40); it truncates longer data.
+const MAX_DATA_LENGTH = 2331;
+
+/**
+ * Checks that the generator can encode the text: it takes each character as one byte and truncates data that does
+ * not fit.
+ *
+ * @param {string} text - The text to encode.
+ * @returns {boolean} Whether the text can be encoded.
+ */
+const isEncodable = (text) => {
+    if (text.length > MAX_DATA_LENGTH) {
+        return false;
+    }
+
+    for (let index = 0; index < text.length; index++) {
+        if (text.charCodeAt(index) > 127) {
+            return false;
+        }
+    }
+
+    return true;
+};
 
 /**
  * Builds the QR code modules with the generator the page loads (js/qrCodeGenerator.js).
@@ -81,6 +104,14 @@ const QRCodeFieldAdapter = ({ component }) => {
 
     useEffect(() => {
         if (!data || !canvasRef.current) {
+            return;
+        }
+
+        if (!isEncodable(data)) {
+            // eslint-disable-next-line no-console
+            console.error("The QR code data can not be encoded.");
+            setHasError(true);
+
             return;
         }
 
