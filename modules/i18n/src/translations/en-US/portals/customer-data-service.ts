@@ -736,8 +736,8 @@ export const customerDataService: CustomerDataServiceNS = {
         heading: "Sharing Policy",
         includeChildOrganizations: "Share with its existing and future child organizations",
         inherited: "Inherited",
-        inheritedFrom: "Inherited from {{org}}",
-        inheritedNotice: "This organization inherits this attribute from {{org}}.",
+        inheritedNotice: "This organization inherits this identity attribute from the root organization. You cannot change it here.",
+        inheritedTooltip: "This organization inherits this from the root organization. You cannot change it here.",
         notShareable: "You can share only traits and application data attributes that are not complex and are not sub-attributes.",
         notifications: {
             error: {
@@ -769,11 +769,11 @@ export const customerDataService: CustomerDataServiceNS = {
             rule: "rule"
         },
         shared: "Shared",
-        sharedBy: "Shared by {{org}}",
         sharedNotice: {
-            attribute: "The organization {{org}} owns this attribute and shares it with this organization. You cannot change or delete it here.",
-            ruleOwner: "The organization {{org}} owns this rule and shares it with this organization. You cannot change or delete it here."
+            attribute: "A parent organization owns this attribute and shares it with this organization. You cannot change or delete it here.",
+            ruleOwner: "A parent organization owns this rule and shares it with this organization. You cannot change or delete it here."
         },
+        sharedTooltip: "A parent organization shares this with this organization. You cannot change it here.",
         tab: "Sharing"
     },
     sidePanel: {

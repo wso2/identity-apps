@@ -24,10 +24,6 @@ import { useTranslation } from "react-i18next";
 
 interface SharedChipPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Handle of the organization that owns and shares the item.
-     */
-    ownerOrg?: string;
-    /**
      * Shows the chip of an inherited identity attribute instead.
      */
     inherited?: boolean;
@@ -36,37 +32,28 @@ interface SharedChipPropsInterface extends IdentifiableComponentInterface {
 /**
  * Marks an attribute or rule that a parent organization shares, or an identity attribute that
  * a child organization inherits from its root. Uses the same Oxygen chip as shared connections. The
- * owner organization shows in the tooltip.
+ * tooltip tells that the item cannot be changed in this organization.
  */
 const SharedChip: FunctionComponent<SharedChipPropsInterface> = ({
-    ownerOrg,
     inherited = false,
     ["data-componentid"]: componentId = "cds-shared-chip"
 }: SharedChipPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
-    const chip: ReactElement = (
-        <Chip
-            label={ inherited
-                ? t("customerDataService:sharing.inherited")
-                : t("customerDataService:sharing.shared") }
-            size="small"
-            data-componentid={ componentId }
-        />
-    );
-
-    if (!ownerOrg) {
-        return chip;
-    }
-
     return (
         <Tooltip
             title={ inherited
-                ? t("customerDataService:sharing.inheritedFrom", { org: ownerOrg })
-                : t("customerDataService:sharing.sharedBy", { org: ownerOrg }) }
+                ? t("customerDataService:sharing.inheritedTooltip")
+                : t("customerDataService:sharing.sharedTooltip") }
         >
-            { chip }
+            <Chip
+                label={ inherited
+                    ? t("customerDataService:sharing.inherited")
+                    : t("customerDataService:sharing.shared") }
+                size="small"
+                data-componentid={ componentId }
+            />
         </Tooltip>
     );
 };

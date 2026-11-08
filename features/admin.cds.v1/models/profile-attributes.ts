@@ -68,9 +68,8 @@ export interface ProfileSchemaAttribute {
     // Canonical values for attributes for options value type.
     canonical_values?: CanonicalValues[];
 
-    // Organization management: OWNED, SHARED by the organization in owner_org_handle, or INHERITED from it.
+    // Organization management: OWNED, SHARED by a parent organization, or INHERITED from the root organization.
     origin?: ResourceOrigin;
-    owner_org_handle?: string;
 }
 
 interface ProfileSchemaCoreAttribute {
