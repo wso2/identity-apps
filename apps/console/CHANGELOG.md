@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.31.9
+
+### Patch Changes
+
+- [#10859](https://github.com/wso2/identity-apps/pull/10859) [`2e4aaaeb87af28ac2d163768259a363a89a7c988`](https://github.com/wso2/identity-apps/commit/2e4aaaeb87af28ac2d163768259a363a89a7c988) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix the Danger Zone being hidden on a user whose username is contained in the logged-in user's username.
+
+- Updated dependencies [[`2e4aaaeb87af28ac2d163768259a363a89a7c988`](https://github.com/wso2/identity-apps/commit/2e4aaaeb87af28ac2d163768259a363a89a7c988)]:
+  - @wso2is/admin.users.v1@2.39.7
+
 ## 4.31.8
 
 ### Patch Changes
