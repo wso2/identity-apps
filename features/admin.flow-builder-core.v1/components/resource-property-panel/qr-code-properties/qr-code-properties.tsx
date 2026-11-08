@@ -54,10 +54,7 @@ const QrCodeProperties: FunctionComponent<QrCodePropertiesPropsInterface> = ({
                 fullWidth
                 label={ t("flows:core.elements.qrCode.properties.data.label") }
                 defaultValue={ resource?.config?.data ?? "" }
-                helperText={ t("flows:core.elements.qrCode.properties.data.hint", {
-                    interpolation: { escapeValue: false },
-                    placeholder: "{{qrCodeData}}"
-                }) }
+                helperText={ t("flows:core.elements.qrCode.properties.data.hint") }
                 onChange={ (event: ChangeEvent<HTMLInputElement>): void =>
                     onChange("config.data", event.target.value, resource) }
                 data-componentid={ `${ componentId }-data` }

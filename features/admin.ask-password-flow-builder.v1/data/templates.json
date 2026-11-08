@@ -801,7 +801,7 @@
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5>"
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5><h2 class=\"rich-text-heading-h2 rich-text-align-center\"><br><span class=\"rich-text-bold rich-text-pre-wrap\">{{pairingCode}}</span></h2>"
                                     }
                                 }
                             ]

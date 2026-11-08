@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -103,10 +103,15 @@ const transformFlow = (flowState: any) => {
                     component.components = processComponents(component.components);
                 }
 
+                // An execution step continues through its own action, so the buttons on its page follow it.
+                const navigations: Record<string, string> = type === StepTypes.Execution
+                    ? { [ component.id ]: stepNavigationMap[ id ] }
+                    : stepNavigationMap;
+
                 return processNavigation(
                     omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES) as Element,
                     component.id,
-                    stepNavigationMap
+                    navigations
                 );
             });
 

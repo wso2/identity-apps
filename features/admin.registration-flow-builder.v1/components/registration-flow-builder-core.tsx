@@ -442,8 +442,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 return;
             }
 
-            // Check if the step has components with actions
-            if (step.data?.components) {
+            // Check if the step has components with actions. An execution step continues through its own
+            // action, so the buttons on its page get no edges.
+            if (step.data?.components && step.type !== StepTypes.Execution) {
                 // Look for forms and their buttons
                 step.data.components.forEach((component: Element) => {
                     if (component.type === BlockTypes.Form) {
@@ -992,7 +993,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 return;
             };
 
-            if (node.data?.components) {
+            // An execution step continues through its own action, so the buttons on its page get no edges.
+            if (node.data?.components && node.type !== StepTypes.Execution) {
                 (node.data?.components as any).forEach((component: Element) => {
                     processAction(node.id, component.id, component.action);
 

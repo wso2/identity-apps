@@ -73,7 +73,7 @@ export const flows: flowsNS = {
                 alt: "QR code preview",
                 properties: {
                     data: {
-                        hint: "Text or link to encode. For device registration, use {{placeholder}}.",
+                        hint: "Text or link to encode.",
                         label: "Data"
                     },
                     size: {

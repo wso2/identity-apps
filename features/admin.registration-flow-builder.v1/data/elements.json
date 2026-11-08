@@ -42,7 +42,7 @@
             "showOnResourcePanel": true
         },
         "config": {
-            "data": "{{qrCodeData}}",
+            "data": "",
             "size": 220
         }
     }

@@ -187,10 +187,10 @@ export const devices: DevicesNS = {
                     + "widget adds them.",
                 label: "Phase",
                 options: {
-                    FINISH_REGISTRATION: "Another device: enter the pairing code",
-                    INIT_REGISTRATION: "Another device: show the QR code",
+                    FINISH_REGISTRATION: "Check pairing code",
+                    INIT_REGISTRATION: "Show QR code",
                     NATIVE_DEVICE_REGISTRATION: "Register this device",
-                    PROCESS_DEVICE: "Another device: verify the device"
+                    PROCESS_DEVICE: "Verify scanned device"
                 }
             },
             policy: {
