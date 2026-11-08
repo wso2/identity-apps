@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -910,20 +910,35 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             }
         });
 
-        const [ templateSteps ] = updateTemplatePlaceholderReferences(
-            generateSteps(template.config.data.steps as any),
-            replacers
-        );
+        const [ templateSteps, replacedPlaceholders ]: [ Node[], Map<string, string> ] =
+            updateTemplatePlaceholderReferences(
+                generateSteps(template.config.data.steps as any),
+                replacers
+            );
 
         const templateEdges: Edge[] = validateEdges(
             generateEdges(templateSteps as any),
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED, BASIC_WALLET and BASIC_DEVICE_REGISTRATION template cases — auto-select the
-        // execution step so its property panel (IdP name or device policy) opens immediately after the template loads.
-        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet
-            || template.type === TemplateTypes.BasicDeviceRegistration) {
+        // Open the device step's property panel once the template loads, so the device policy can be set. The
+        // template names that step in `defaultPropertySelectorId`, as a placeholder that maps to the step's new id.
+        if (template.type === TemplateTypes.BasicDeviceRegistration
+            || template.type === TemplateTypes.BasicQrDeviceRegistration) {
+            const selectorKey: string = template.config.data.__generationMeta__?.defaultPropertySelectorId
+                ?.replace(/[{}]/g, "");
+            const selectedStep: Node | undefined = templateSteps.find(
+                (step: Node) => step.id === replacedPlaceholders.get(selectorKey)
+            );
+
+            if (selectedStep) {
+                return [ templateSteps, templateEdges, selectedStep as Resource, selectedStep.id ];
+            }
+        }
+
+        // Handle BASIC_FEDERATED and BASIC_WALLET template cases — auto-select the execution step so its property
+        // panel opens immediately after the template loads.
+        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet) {
             const executionStep: Node | undefined = templateSteps.find(
                 (step: Node) => step.type === StepTypes.Execution
             );

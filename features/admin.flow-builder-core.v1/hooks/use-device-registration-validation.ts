@@ -32,9 +32,11 @@ import { Resource } from "../public-api";
 
 /**
  * Built in executors that authenticate the user. Mirrors the executors that extend
- * `AuthenticationExecutor` on the server.
+ * `AuthenticationExecutor` on the server, plus the invite confirmation, which the server accepts in
+ * invited user registration flows.
  */
 const AUTHENTICATION_EXECUTORS: string[] = [
+    ExecutionTypes.ConfirmationCode,
     RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR,
     RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR,
     RegistrationFlowExecutorConstants.MAGIC_LINK_EXECUTOR,

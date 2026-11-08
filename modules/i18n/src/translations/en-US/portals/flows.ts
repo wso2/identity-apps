@@ -69,6 +69,19 @@ export const flows: flowsNS = {
             policyConsent: {
                 emptyState: "No policies configured"
             },
+            qrCode: {
+                alt: "QR code preview",
+                properties: {
+                    data: {
+                        hint: "Text or link to encode. For device registration, use {{placeholder}}.",
+                        label: "Data"
+                    },
+                    size: {
+                        hint: "Size in pixels, from 96 to 480.",
+                        label: "Size"
+                    }
+                }
+            },
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -340,6 +353,10 @@ export const flows: flowsNS = {
             enableFlow: "Enable the {{flowType}} flow"
         },
         validation: {
+            executionStep: {
+                disallowedComponents: "This step can't show {{types}} in its current phase. Remove them or "
+                    + "change the phase."
+            },
             fields: {
                 button: {
                     action: "Button must have an action type defined for proper functionality.",
@@ -389,6 +406,10 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the policy consent.",
                     noPoliciesAvailable: "No policies are available for selection.",
                     policiesRequired: "At least one policy must be selected."
+                },
+                qrCode: {
+                    data: "QR code must have data to encode.",
+                    general: "Required fields are not properly configured for the QR code with ID <1>{{id}}</1>."
                 },
                 richText: {
                     general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",

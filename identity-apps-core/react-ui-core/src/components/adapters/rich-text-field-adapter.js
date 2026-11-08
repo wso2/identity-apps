@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,8 +21,10 @@ import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import React, { useMemo } from "react";
 import { useGlobalContext } from "../../hooks/use-global-context";
+import { useStepData } from "../../hooks/use-step-data";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import { escapeHtml, getNestedValue, getStepDataValue, resolvePlaceholders } from "../../utils/placeholder-utils";
 import "./rich-text-field-adapter.css";
 
 DOMPurify.addHook("afterSanitizeAttributes", (node) => {
@@ -38,63 +40,24 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
 const RichTextAdapter = ({ component }) => {
     const { config } = component;
     const { contextData } = useGlobalContext();
+    const stepData = useStepData();
     const { translations } = useTranslations();
 
-    /**
-     * Get nested object value using dot notation key path.
-     *
-     * @param obj - The object to search in.
-     * @param path - The dot notation path (e.g., "some.nested.key").
-     * @param defaultValue - Default value if path is not found.
-     * @returns The resolved value or default value.
-     */
-    const getNestedValue = (obj, path, defaultValue = "") => {
-        try {
-            return path.split(".").reduce((current, key) => {
-                const value = current && current[key];
+    // Global data first, so existing pages resolve as before; step data only fills the keys global data does
+    // not have. Step values can come from outside, such as a device, so they are escaped.
+    const placeholderResolvers = [
+        (key) => getNestedValue(contextData, key),
+        (key) => {
+            const value = getStepDataValue(stepData, key);
 
-                // Check if value exists and is not empty/null/undefined.
-                return value != null && value !== "" && value !== "null" ? value : defaultValue;
-            }, obj);
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.warn(`Error resolving path "${path}":`, error);
-
-            return defaultValue;
+            return value !== "" ? escapeHtml(value) : "";
         }
-    };
-
-    /**
-     * Replace placeholders in the format {{key.path}} with values from global context.
-     *
-     * @param text - The text containing placeholders.
-     * @returns Text with resolved placeholders.
-     */
-    const resolvePlaceholders = (text) => {
-        if (!text || typeof text !== "string") {
-            return text;
-        }
-
-        return text.replace(/\{\{([^}]+)\}\}/g, (match, keyPath) => {
-            try {
-                const trimmedPath = keyPath.trim();
-                const resolvedValue = getNestedValue(contextData, trimmedPath);
-
-                // Return the resolved value or the original placeholder if not found.
-                return resolvedValue !== "" ? resolvedValue : match;
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.warn(`Error resolving placeholder "${match}":`, error);
-
-                return match; // Return original placeholder on error.
-            }
-        });
-    };
+    ];
 
     // Resolve placeholders in the HTML content before sanitizing.
     const sanitizedHtml = useMemo(() => {
     let html = resolveElementText(translations, config.text);
-    html = resolvePlaceholders(html || "");
+    html = resolvePlaceholders(html || "", placeholderResolvers);
 
     // If linkTarget is configured, update links to use that target
     if (config.linkTarget) {
@@ -117,7 +80,7 @@ const RichTextAdapter = ({ component }) => {
     return DOMPurify.sanitize(html, {
         ADD_ATTR: [ "target", "rel" ]
     });
-}, [ config.text, config.linkTarget, contextData ]);
+}, [ config.text, config.linkTarget, contextData, stepData ]);
 
     return (
         <div className="rich-text-content">

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -208,13 +208,14 @@
             }
 
             const { createElement, useEffect, useState, useRef } = React;
-            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
+            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment, PollView } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
                 const accountsPortalUrl = "<%= accountsBaseURL %>";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
+                const executionFlowPollApiProxyPath = accountsPortalUrl + "/util/execution-flow-poll-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
@@ -370,33 +371,7 @@
 
                         return response.json();
                     })
-                    .then((data) => {
-                        if (data.error) {
-                            if (data.error.flowType) {
-                                setFlowType(data.error.flowType);
-                            }
-                            setError(data.error);
-
-                            return;
-                        }
-
-                        if (data.flowId) {
-                            localStorage.setItem("flowId", data.flowId);
-                        }
-
-                        if (data.flowType) {
-                            setFlowType(data.flowType);
-                        }
-
-                        const isFlowEnded = handleFlowStatus(data);
-
-                        if (isFlowEnded) {
-                            return;
-                        }
-
-                        handleStepType(data);
-                        setFlowData(data);
-                    })
+                    .then((data) => handleFlowResponse(data))
                     .catch((err) => {
                         console.error("Error fetching flow data:", err);
                         setError(err);
@@ -651,6 +626,34 @@
                     flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error,
                     flowData && flowData.data && flowData.data.messages ]);
 
+                const handleFlowResponse = (data) => {
+                    if (data.error) {
+                        if (data.error.flowType) {
+                            setFlowType(data.error.flowType);
+                        }
+                        setError(data.error);
+
+                        return;
+                    }
+
+                    if (data.flowId) {
+                        localStorage.setItem("flowId", data.flowId);
+                    }
+
+                    if (data.flowType) {
+                        setFlowType(data.flowType);
+                    }
+
+                    const isFlowEnded = handleFlowStatus(data);
+
+                    if (isFlowEnded) {
+                        return;
+                    }
+
+                    handleStepType(data);
+                    setFlowData(data);
+                };
+
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};
                     flowData.data.requiredParams.map((param) => {
@@ -741,6 +744,10 @@
 
                         case "INTERNAL_PROMPT":
                             handleInternalPrompt(flow);
+                            break;
+
+                        case "POLL":
+                            // Rendered by PollView, which polls and continues the flow.
                             break;
 
                         case "WEBAUTHN":
@@ -929,6 +936,35 @@
                         "div",
                         { className: "registration-content-container loaded" },
                         createElement(WalletQRView, null)
+                    );
+                }
+
+                if (flowData && flowData.type === "POLL") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(PollView, {
+                            contentData: flowData.data,
+                            pollUrl: executionFlowPollApiProxyPath,
+                            busy: loading,
+                            // Continue the flow; the response is the next step.
+                            onSuccess: () => setPostBody({ flowId: flowData.flowId, actionId: "" }),
+                            // The flow ended, so starting again restarts it.
+                            onRestart: () => {
+                                clearFlowStorage();
+                                window.location.reload();
+                            },
+                            onCancel: () => {
+                                clearFlowStorage();
+                                if (window.history.length > 1) {
+                                    window.history.back();
+                                } else {
+                                    window.location.href = defaultMyAccountUrl;
+                                }
+                            },
+                            // Shows the generic flow error.
+                            onError: () => setError({ code: "500" })
+                        })
                     );
                 }
 

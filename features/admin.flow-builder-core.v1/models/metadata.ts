@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -151,6 +151,24 @@ export interface ExtensionExecutorInterface {
      * Name of the authenticator backing this executor.
      */
     associatedAuthenticator?: string;
+    /**
+     * Phases of the executor. A step runs the one set in `action.executor.meta.phase`.
+     */
+    phases?: ExecutorPhaseInterface[];
+}
+
+/**
+ * Interface for a phase of an executor.
+ */
+export interface ExecutorPhaseInterface {
+    /**
+     * Name of the phase.
+     */
+    name: string;
+    /**
+     * Short description of the phase.
+     */
+    description?: string;
 }
 
 /**

@@ -25,9 +25,11 @@ export { default as ValidationCriteria } from "./components/validation-criteria"
 export { default as Field } from "./components/field";
 export { default as DynamicContent } from "./components/dynamic-content";
 export { default as PasskeyEnrollment } from "./components/passkey-enrollment";
+export { default as PollView } from "./components/poll-view";
 export { default as RadioFieldAdapter } from "./components/adapters/radio-field-adapter";
 
 export * from "./hooks/use-field-validations";
+export * from "./hooks/use-flow-polling";
 export * from "./hooks/use-translations";
 
 export { I18nProvider } from "./providers/i18n-provider";

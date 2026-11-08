@@ -179,9 +179,20 @@ export const devices: DevicesNS = {
     },
     registrationStep: {
         properties: {
-            description: "Register the user's device in this step. Select a device policy to allow only "
-                + "devices that comply with it.",
+            description: "Registers a device for the user. Choose what this step does and, optionally, a "
+                + "device policy.",
             noPolicies: "No device policies found",
+            phase: {
+                hint: "Registering another device takes three steps in order. The Register Another Device "
+                    + "widget adds them.",
+                label: "Phase",
+                options: {
+                    FINISH_REGISTRATION: "Another device: enter the pairing code",
+                    INIT_REGISTRATION: "Another device: show the QR code",
+                    NATIVE_DEVICE_REGISTRATION: "Register this device",
+                    PROCESS_DEVICE: "Another device: verify the device"
+                }
+            },
             policy: {
                 hint: "Leave empty to register any device.",
                 label: "Device policy",
@@ -191,8 +202,8 @@ export const devices: DevicesNS = {
             }
         },
         validation: {
-            authenticationRequired: "Device registration needs an authentication step, such as Email OTP, "
-                + "SMS OTP or Passkey, before it in the flow."
+            authenticationRequired: "Add a step that verifies the user, such as Email OTP or Passkey, before "
+                + "device registration."
         }
     },
     userDevices: {

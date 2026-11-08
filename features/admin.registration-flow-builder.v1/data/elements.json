@@ -29,5 +29,21 @@
             "description": "By continuing, you agree to the following policies.",
             "purposes": []
         }
+    },
+    {
+        "resourceType": "ELEMENT",
+        "category": "DISPLAY",
+        "type": "QR_CODE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "QR Code",
+            "image": "assets/images/icons/qr-code.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": "{{qrCodeData}}",
+            "size": 220
+        }
     }
 ]

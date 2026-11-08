@@ -31,6 +31,7 @@ import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
 import PreferenceManagementAdapter from "./adapters/preference-management-adapter";
 import PolicyConsentAdapter from "./adapters/policy-consent-adapter";
+import QrCodeAdapter from "./adapters/qr-code-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
@@ -104,6 +105,8 @@ const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface
         return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.QrCode) {
+        return <QrCodeAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Captcha) {
         return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Policy) {
