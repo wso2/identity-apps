@@ -124,6 +124,14 @@ export interface flowsNS {
             };
         };
         executions: {
+            authsignal: {
+                actionCode: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                };
+                description: string;
+            };
             confirmationCode: {
                 configurationHint: string;
             };
