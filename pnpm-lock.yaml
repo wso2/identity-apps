@@ -503,7 +503,7 @@ importers:
         specifier: ^1.0.16
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.13.7
+        specifier: ^2.13.8
         version: link:../../modules/core
       '@wso2is/i18n':
         specifier: ^2.59.1
@@ -657,7 +657,7 @@ importers:
         specifier: ^1.0.15
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.13.3
+        specifier: ^2.13.8
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.10.3
@@ -672,7 +672,7 @@ importers:
         specifier: workspace:^
         version: link:../../modules/theme
       '@wso2is/validation':
-        specifier: ^2.4.4
+        specifier: ^2.4.5
         version: link:../../modules/validation
       axios:
         specifier: 1.18.0
@@ -3865,7 +3865,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.core.v1
       '@wso2is/core':
-        specifier: ^2.13.0
+        specifier: ^2.13.8
         version: link:../../modules/core
       '@wso2is/i18n':
         specifier: ^2.50.0
