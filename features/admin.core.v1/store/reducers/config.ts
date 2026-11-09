@@ -190,6 +190,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
+            scriptLibraries: "",
             selfSignUp: "",
             serverConfigurations: "",
             serverHost: "",
