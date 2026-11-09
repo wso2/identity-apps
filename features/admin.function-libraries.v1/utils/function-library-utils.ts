@@ -65,7 +65,7 @@ export const getFunctionLibraryImportStatement = (name: string): string => {
 
     if (!moduleName) {
         moduleName = "library";
-    } else if (/^\d/.test(moduleName)) {
+    } else if (/^\d/.test(moduleName) || FunctionLibraryConstants.JS_RESERVED_WORDS.has(moduleName)) {
         moduleName = `_${ moduleName }`;
     }
 

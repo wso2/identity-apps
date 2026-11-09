@@ -56,8 +56,20 @@ describe("getFunctionLibraryImportStatement", () => {
         [ "age-based.js", "var ageBased = require(\"age-based.js\");" ],
         [ "network.utils.js", "var networkUtils = require(\"network.utils.js\");" ],
         [ "legacy lib.js", "var legacyLib = require(\"legacy lib.js\");" ],
-        [ "1lib.js", "var _1lib = require(\"1lib.js\");" ]
+        [ "1lib.js", "var _1lib = require(\"1lib.js\");" ],
+        [ "class.js", "var _class = require(\"class.js\");" ],
+        [ "new.js", "var _new = require(\"new.js\");" ],
+        [ "null.js", "var _null = require(\"null.js\");" ],
+        [ "let.js", "var _let = require(\"let.js\");" ],
+        [ "my class.js", "var myClass = require(\"my class.js\");" ]
     ])("builds the require statement for %s", (name: string, expected: string) => {
         expect(getFunctionLibraryImportStatement(name)).toBe(expected);
+    });
+
+    it.each([
+        "class.js", "new.js", "delete.js", "default.js", "this.js", "null.js", "true.js", "function.js",
+        "1lib.js", "age-based.js", "legacy lib.js", "network.utils.js"
+    ])("builds a statement for %s that compiles in strict mode", (name: string) => {
+        expect(() => new Function(`"use strict"; ${ getFunctionLibraryImportStatement(name) }`)).not.toThrow();
     });
 });
