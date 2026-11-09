@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.8.1
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Resume a redirected flow in the accounts portal with the parameters its executor declared as required, when the external service returns them instead of a code and state
+
 ## 5.8.0
 
 ### Minor Changes
