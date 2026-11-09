@@ -8,4 +8,4 @@
 "@wso2is/i18n": minor
 ---
 
-Add the profile update flow builder
+Add profile update flow to the Console
