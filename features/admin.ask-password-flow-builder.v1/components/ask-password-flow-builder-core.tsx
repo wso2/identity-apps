@@ -37,6 +37,7 @@ import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
+import { withSupportedHeaders } from "@wso2is/admin.flow-builder-core.v1/utils/variables";
 import updateTemplatePlaceholderReferences
     from
     "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
@@ -291,7 +292,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     const generateSteps = (steps: Node[], variables?: FlowVariablesInterface): Node[] => {
         const START_STEP: Node = {
             data: {
-                ...(variables && { variables }),
+                ...(variables && { variables: withSupportedHeaders(variables) }),
                 displayOnly: true
             },
             deletable: false,

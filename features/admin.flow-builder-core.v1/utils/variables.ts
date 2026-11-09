@@ -70,12 +70,31 @@ const VariableNamePatterns: {
 };
 
 /**
- * Data types a header may hold. A request may repeat a header, so it holds an array.
+ * Data types a header may hold. A request may repeat a header, so it holds an array, and header values are text.
  */
 export const HEADER_DATA_TYPES: VariableDataTypes[] = [
-    VariableDataTypes.STRING_ARRAY,
-    VariableDataTypes.NUMBER_ARRAY
+    VariableDataTypes.STRING_ARRAY
 ];
+
+/**
+ * The variables of a flow as the console edits them, leaving out the headers of a type headers no longer hold, such as
+ * an array of numbers a server may still return. They are dropped without a message, so the flow is saved without
+ * them.
+ *
+ * @param variables - Variables of the flow, as the server returns them.
+ * @returns The variables, with only the headers of a supported type.
+ */
+export const withSupportedHeaders = (variables: FlowVariablesInterface): FlowVariablesInterface => {
+    if (!variables?.headers) {
+        return variables;
+    }
+
+    return {
+        ...variables,
+        headers: variables.headers.filter((header: FlowVariableInterface) =>
+            HEADER_DATA_TYPES.includes(header?.dataType))
+    };
+};
 
 /**
  * Problems with the name of a variable, named as their messages are under `flows:core.steps.start.variables.errors`.
