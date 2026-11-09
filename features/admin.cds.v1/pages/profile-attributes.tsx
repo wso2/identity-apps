@@ -169,7 +169,7 @@ const toRowsFromScopeResponse = (
         const display: string = fullName.startsWith(prefix)
             ? fullName.slice(prefix.length)
             : fullName;
-        const sharingFields: Pick<ProfileSchemaListingRow, "deletable" | "editable" | "shared_by"> =
+        const sharingFields: Pick<ProfileSchemaListingRow, "deletable" | "editable" | "is_shared"> =
             getSharingRowFields(a);
 
         return {

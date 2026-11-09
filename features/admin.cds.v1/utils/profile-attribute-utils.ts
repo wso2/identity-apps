@@ -24,20 +24,20 @@ import type {
 
 /**
  * Returns the listing fields that depend on the origin of an attribute. Only the owner organization
- * can change or delete a shared attribute, so the list offers to view it and shows its owner.
+ * can change or delete a shared attribute, so the list offers to view it and marks it as shared.
  *
  * @param attribute - The attribute.
- * @returns The deletable, editable, and shared_by fields of the listing row.
+ * @returns The deletable, editable, and is_shared fields of the listing row.
  */
 export const getSharingRowFields = (
     attribute: ProfileSchemaAttribute
-): Pick<ProfileSchemaListingRow, "deletable" | "editable" | "shared_by"> => {
+): Pick<ProfileSchemaListingRow, "deletable" | "editable" | "is_shared"> => {
     const isShared: boolean = attribute.origin === ResourceOrigin.SHARED;
 
     return {
         deletable: !isShared,
         editable: !isShared,
-        shared_by: isShared ? attribute.owner_org_handle : undefined
+        is_shared: isShared
     };
 };
 

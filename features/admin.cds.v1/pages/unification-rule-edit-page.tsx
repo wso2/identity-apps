@@ -205,8 +205,7 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
                                 <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
                                     { isShared && (
                                         <Alert severity="info" data-componentid={ `${componentId}-shared-notice` }>
-                                            { t("customerDataService:sharing.sharedNotice.ruleOwner",
-                                                { org: rule.owner_org_handle }) }
+                                            { t("customerDataService:sharing.sharedNotice.ruleOwner") }
                                         </Alert>
                                     ) }
                                     <FinalFormField
@@ -330,7 +329,6 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
                         { rule?.rule_name ?? t("customerDataService:unificationRules.edit.page.pageTitle") }
                         { isShared && (
                             <SharedChip
-                                ownerOrg={ rule.owner_org_handle }
                                 data-componentid={ `${componentId}-shared-chip` }
                             />
                         ) }
