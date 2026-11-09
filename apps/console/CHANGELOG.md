@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.32.4
+
+### Patch Changes
+
+- [#10900](https://github.com/wso2/identity-apps/pull/10900) [`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Allow only the array of strings data type for flow headers
+
+- Updated dependencies [[`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.2
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.4
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.2
+
 ## 4.32.3
 
 ### Patch Changes
