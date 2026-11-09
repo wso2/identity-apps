@@ -8443,7 +8443,7 @@ importers:
         specifier: ^1.11.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.16.1
+        specifier: ^0.16.2
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
