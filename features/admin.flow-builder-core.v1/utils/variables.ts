@@ -77,24 +77,43 @@ export const HEADER_DATA_TYPES: VariableDataTypes[] = [
 ];
 
 /**
- * The variables of a flow as the console edits them, leaving out the headers of a type headers no longer hold, such as
- * an array of numbers a server may still return. They are dropped without a message, so the flow is saved without
- * them.
+ * The variables of a flow as the console edits them, with every header of a type headers no longer hold, such as an
+ * array of numbers a server may still return or a draft may still keep, turned into an array of strings. The header
+ * and the conditions that read it stay, and the flow is saved with the header as an array of strings.
  *
- * @param variables - Variables of the flow, as the server returns them.
- * @returns The variables, with only the headers of a supported type.
+ * @param variables - Variables of the flow, as the server returns them or a draft keeps them.
+ * @returns The variables, with every header of a supported type.
  */
-export const withSupportedHeaders = (variables: FlowVariablesInterface): FlowVariablesInterface => {
+export const withSupportedHeaderTypes = (variables: FlowVariablesInterface): FlowVariablesInterface => {
     if (!variables?.headers) {
         return variables;
     }
 
     return {
         ...variables,
-        headers: variables.headers.filter((header: FlowVariableInterface) =>
-            HEADER_DATA_TYPES.includes(header?.dataType))
+        headers: variables.headers.map((header: FlowVariableInterface) =>
+            !header || HEADER_DATA_TYPES.includes(header.dataType)
+                ? header
+                : { ...header, dataType: VariableDataTypes.STRING_ARRAY })
     };
 };
+
+/**
+ * The nodes of a flow, with the headers on its start node of a supported type. See {@link withSupportedHeaderTypes}.
+ *
+ * @param nodes - Nodes of the flow, such as those of a draft restored from history.
+ * @returns The nodes, with the start node's headers of a supported type.
+ */
+export const withSupportedHeaderTypesInNodes = (nodes: Node[]): Node[] =>
+    (nodes ?? []).map((node: Node) => node?.id === START_STEP_ID && node.data?.variables
+        ? {
+            ...node,
+            data: {
+                ...node.data,
+                variables: withSupportedHeaderTypes(node.data.variables as FlowVariablesInterface)
+            }
+        }
+        : node);
 
 /**
  * Problems with the name of a variable, named as their messages are under `flows:core.steps.start.variables.errors`.
