@@ -450,6 +450,18 @@
                 });
             })();
 
+            (function() {
+                var OTPInput = document.getElementById('OTPCode');
+                if (!OTPInput || OTPInput.classList.contains('segmented-otp-input')) return;
+
+                // Clear browser-restored OTP values that did not trigger an input event.
+                var otpEdited = false;
+                OTPInput.addEventListener('input', function () { otpEdited = true; });
+                window.addEventListener('pageshow', function () {
+                    if (!otpEdited && OTPInput.value) OTPInput.value = '';
+                });
+            })();
+
             function sub() {
                 var OTPInput = document.getElementById('OTPCode');
                 if (!OTPInput || OTPInput.value.length < parseInt(otpLength)) return;
