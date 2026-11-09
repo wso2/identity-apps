@@ -479,6 +479,7 @@ export interface MyAccountNS {
                 rename: string;
             };
             list: {
+                inherited: string;
                 registeredOn: string;
             };
             modals: {

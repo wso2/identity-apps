@@ -1,5 +1,49 @@
 # @wso2is/admin.users.v1
 
+## 2.39.10
+
+### Patch Changes
+
+- Updated dependencies [[`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e)]:
+  - @wso2is/admin.flow-builder-core.v1@0.17.0
+  - @wso2is/admin.flows.v1@1.1.0
+  - @wso2is/i18n@2.60.0
+  - @wso2is/admin.core.v1@2.63.7
+
+## 2.39.9
+
+### Patch Changes
+
+- Updated dependencies [[`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13)]:
+  - @wso2is/admin.cds.v1@1.9.1
+  - @wso2is/i18n@2.59.1
+
+## 2.39.8
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/i18n@2.59.0
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.flows.v1@1.0.186
+
+## 2.39.7
+
+### Patch Changes
+
+- [#10859](https://github.com/wso2/identity-apps/pull/10859) [`2e4aaaeb87af28ac2d163768259a363a89a7c988`](https://github.com/wso2/identity-apps/commit/2e4aaaeb87af28ac2d163768259a363a89a7c988) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix the Danger Zone being hidden on a user whose username is contained in the logged-in user's username.
+
+## 2.39.6
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+- Updated dependencies [[`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8)]:
+  - @wso2is/admin.devices.v1@0.1.1
+  - @wso2is/i18n@2.58.4
+
 ## 2.39.5
 
 ### Patch Changes

@@ -675,8 +675,8 @@ export interface CustomerDataServiceNS {
         heading: string;
         includeChildOrganizations: string;
         inherited: string;
-        inheritedFrom: string;
         inheritedNotice: string;
+        inheritedTooltip: string;
         notShareable: string;
         notifications: {
             error: {
@@ -708,11 +708,11 @@ export interface CustomerDataServiceNS {
             rule: string;
         };
         shared: string;
-        sharedBy: string;
         sharedNotice: {
             attribute: string;
             ruleOwner: string;
         };
+        sharedTooltip: string;
         tab: string;
     };
 

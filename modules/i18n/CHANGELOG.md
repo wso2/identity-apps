@@ -1,5 +1,41 @@
 # @wso2is/i18n
 
+## 2.60.0
+
+### Minor Changes
+
+- [#10898](https://github.com/wso2/identity-apps/pull/10898) [`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add user verification, flow handoff and user resolve factor validation to the flow builder core
+
+## 2.59.2
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+## 2.59.1
+
+### Patch Changes
+
+- [#10892](https://github.com/wso2/identity-apps/pull/10892) [`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop showing the owner organization of shared and inherited Customer Data Service items
+
+## 2.59.0
+
+### Minor Changes
+
+- [#10890](https://github.com/wso2/identity-apps/pull/10890) [`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Register another device by scanning a QR code and entering the pairing code shown on it. Add a QR code component, per-phase component rules and device registration widgets and templates to the flow builders.
+
+## 2.58.4
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+## 2.58.3
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
 ## 2.58.2
 
 ### Patch Changes

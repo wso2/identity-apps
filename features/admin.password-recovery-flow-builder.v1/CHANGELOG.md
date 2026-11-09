@@ -1,5 +1,43 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.4.5
+
+### Patch Changes
+
+- [#10898](https://github.com/wso2/identity-apps/pull/10898) [`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add user verification, flow handoff and user resolve factor validation to the flow builder core
+
+- Updated dependencies [[`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e)]:
+  - @wso2is/admin.flow-builder-core.v1@0.17.0
+  - @wso2is/admin.flows.v1@1.1.0
+  - @wso2is/admin.core.v1@2.63.7
+
+## 1.4.4
+
+### Patch Changes
+
+- [#10900](https://github.com/wso2/identity-apps/pull/10900) [`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Allow only the array of strings data type for flow headers
+
+- Updated dependencies [[`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.2
+
+## 1.4.3
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+- Updated dependencies [[`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.1
+
+## 1.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.flows.v1@1.0.186
+
 ## 1.4.1
 
 ### Patch Changes

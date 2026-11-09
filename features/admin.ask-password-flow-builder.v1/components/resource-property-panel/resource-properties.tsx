@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,8 +22,12 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
+import AuthsignalProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/authsignal-properties/authsignal-properties";
+// eslint-disable-next-line max-len
 import DeviceRegistrationProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/device-registration-properties/device-registration-properties";
 import FlowExtensionProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/flow-extension-properties/flow-extension-properties";
+// eslint-disable-next-line max-len
+import QrCodeProperties from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/qr-code-properties/qr-code-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
@@ -177,6 +181,26 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                     { renderElementPropertyFactory() }
                 </>
             );
+        case ElementCategories.Display:
+            if (resource.type === ElementTypes.QrCode) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <QrCodeProperties
+                            resource={ resource }
+                            onChange={ onChange }
+                            data-componentid="qr-code-properties"
+                        />
+                    </>
+                );
+            }
+
+            return (
+                <>
+                    { renderElementId() }
+                    { renderElementPropertyFactory() }
+                </>
+            );
         case ElementCategories.Action:
             return (
                 <>
@@ -238,6 +262,19 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <ConfirmationCodeProperties
                             resource={ resource }
                             data-componentid="confirmation-code-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            } else if (extensionExecutor?.name === ExecutionTypes.Authsignal) {
+                // Matching against the server metadata keeps this to deployments with the Authsignal connector.
+                return (
+                    <>
+                        { renderElementId() }
+                        <AuthsignalProperties
+                            resource={ resource }
+                            data-componentid="authsignal-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

@@ -168,7 +168,8 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
                 if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
                     connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY ||
                     connector.id === ServerConfigurationsConstants.ISSUER_USAGE_SCOPE ||
-                    connector.id === ServerConfigurationsConstants.FAPI_SECURITY_POLICY)) {
+                    connector.id === ServerConfigurationsConstants.FAPI_SECURITY_POLICY ||
+                    connector.id === ServerConfigurationsConstants.DEVICE_ASSURANCE_POLICIES_CONNECTOR_ID)) {
                     return false;
                 }
 

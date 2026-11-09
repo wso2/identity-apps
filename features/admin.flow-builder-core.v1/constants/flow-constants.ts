@@ -49,6 +49,11 @@ class FlowConstants {
     public static readonly DEFAULT_MAX_RUNTIME_VALUES: number = 20;
     public static readonly DEFAULT_MAX_VALUE_LENGTH: number = 255;
     public static readonly DEFAULT_MAX_ARRAY_SIZE: number = 20;
+
+    // Meta keys of the flow handoff executor and the link validity, in seconds, the server uses when none is set.
+    public static readonly FLOW_HANDOFF_EXPIRY_TIME_META_KEY: string = "expiryTime";
+    public static readonly FLOW_HANDOFF_TARGET_URL_META_KEY: string = "targetUrl";
+    public static readonly FLOW_HANDOFF_DEFAULT_EXPIRY_TIME: string = "60";
 }
 
 export default FlowConstants;

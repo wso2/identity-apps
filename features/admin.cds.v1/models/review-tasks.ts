@@ -39,7 +39,6 @@ export enum ReviewDecision {
 
 export interface ReviewTaskModel {
     id: string;
-    org_handle: string;
     /**
      * The profile whose write raised the task.
      */

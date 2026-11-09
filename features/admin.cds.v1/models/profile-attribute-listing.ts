@@ -37,8 +37,8 @@ export interface ProfileSchemaListingRow {
   editable: boolean;
   deletable: boolean;
 
-  // Organization management: the owner organization of a shared attribute.
-  shared_by?: string;
+  // Organization management: a parent organization shares the attribute with this organization.
+  is_shared?: boolean;
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Code from "@oxygen-ui/react/Code";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Position } from "@xyflow/react";
+import { Handle, Node, Position, useNodesData } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
@@ -29,6 +29,7 @@ import usePasswordExecutorValidation from "../../../../hooks/use-password-execut
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import useUserResolveExecutorValidation from "../../../../hooks/use-user-resolve-executor-validation";
 import { ButtonVariants, Element } from "../../../../models/elements";
+import { StepTypes } from "../../../../models/steps";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
 
@@ -44,9 +45,15 @@ type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElemen
  * @returns The ButtonAdapter component.
  */
 const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
-    resource
+    resource,
+    stepId
 }: ButtonAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();
+
+    const step: Pick<Node, "id" | "type" | "data"> | null = useNodesData(stepId);
+
+    // An execution step continues through its own connection, so a button on its page only submits the page.
+    const isExecutionStepButton: boolean = step?.type === StepTypes.Execution;
 
     const generalMessage: ReactElement = useMemo(() => {
         return (
@@ -62,10 +69,10 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
 
     const fields: RequiredFieldInterface[] = useMemo(() => {
         return [
-            {
+            ...(isExecutionStepButton ? [] : [ {
                 errorMessage: t("flows:core.validation.fields.button.action"),
                 name: "action"
-            },
+            } ]),
             {
                 errorMessage: t("flows:core.validation.fields.button.text"),
                 name: "text"
@@ -75,7 +82,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
                 name: "variant"
             }
         ];
-    }, []);
+    }, [ isExecutionStepButton ]);
 
     useRequiredFields(
         resource,
@@ -133,11 +140,13 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             >
                 <PlaceholderComponent value={ resource?.config?.text } />
             </Button>
-            <Handle
-                id={ `${resource?.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
-                type="source"
-                position={ Position.Right }
-            />
+            { !isExecutionStepButton && (
+                <Handle
+                    id={ `${resource?.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                    type="source"
+                    position={ Position.Right }
+                />
+            ) }
         </div>
     );
 };

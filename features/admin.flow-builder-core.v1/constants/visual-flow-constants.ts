@@ -18,7 +18,12 @@
 
 import { ActionTypes } from "../models/actions";
 import { BlockTypes, ElementTypes } from "../models/elements";
-import { ExecutionTypes, StepTypes } from "../models/steps";
+import {
+    DeviceRegistrationPhases,
+    ExecutionAllowedResourceTypesInterface,
+    ExecutionTypes,
+    StepTypes
+} from "../models/steps";
 import { TemplateTypes } from "../models/templates";
 import { WidgetTypes } from "../models/widget";
 
@@ -49,7 +54,8 @@ class VisualFlowConstants {
         TemplateTypes.Blank,
         TemplateTypes.BasicPasskey,
         TemplateTypes.BasicWallet,
-        TemplateTypes.BasicDeviceRegistration
+        TemplateTypes.BasicDeviceRegistration,
+        TemplateTypes.BasicQrDeviceRegistration
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -59,6 +65,7 @@ class VisualFlowConstants {
         ElementTypes.RichText,
         ElementTypes.Divider,
         ElementTypes.Image,
+        ElementTypes.QrCode,
         ElementTypes.Captcha,
         WidgetTypes.EmailOTP,
         WidgetTypes.GoogleFederation,
@@ -70,7 +77,9 @@ class VisualFlowConstants {
         WidgetTypes.GithubFederation,
         WidgetTypes.PasskeyEnrollment,
         WidgetTypes.MagicLink,
-        WidgetTypes.DigitalWalletFederation
+        WidgetTypes.DigitalWalletFederation,
+        WidgetTypes.NativeDeviceRegistration,
+        WidgetTypes.QrDeviceRegistration
     ];
 
     public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -99,6 +108,22 @@ class VisualFlowConstants {
         ElementTypes.Divider,
         ElementTypes.Image
     ];
+
+    /**
+     * Components an execution step's page allows on top of the static content, by executor and phase.
+     * To add rules for another executor, add an entry with its name; executors without one get static content only.
+     */
+    public static readonly FLOW_BUILDER_EXECUTION_ALLOWED_RESOURCE_TYPES:
+        Record<string, ExecutionAllowedResourceTypesInterface> = {
+            [ ExecutionTypes.DeviceRegistration ]: {
+                default: [],
+                phases: {
+                    [ DeviceRegistrationPhases.InitRegistration ]: [ ElementTypes.QrCode ],
+                    // The pairing code form; a wrong code shows this page again.
+                    [ DeviceRegistrationPhases.FinishRegistration ]: [ BlockTypes.Form ]
+                }
+            }
+        };
 
     public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
 

@@ -328,5 +328,289 @@
                 ]
             }
         }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "NATIVE_DEVICE_REGISTRATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Register This Device",
+            "description": "Register the device the user is on, such as a mobile app",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SECONDARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Register this device"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "NATIVE_DEVICE_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "QR_DEVICE_REGISTRATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Register Another Device",
+            "description": "Register another device by scanning a QR code",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{PROCESS_DEVICE_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "INIT_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROCESS_DEVICE_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FINISH_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SECONDARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Register another device"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{INIT_REGISTRATION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{INIT_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "INIT_REGISTRATION"
+                                    }
+                                },
+                                "next": "{{PROCESS_DEVICE_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Register your device</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Scan the QR code with the device you want to register.</span></h5>"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "QR_CODE",
+                                    "config": {
+                                        "data": "{{qrCodeData}}",
+                                        "size": 220
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROCESS_DEVICE_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1090,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "PROCESS_DEVICE"
+                                    }
+                                },
+                                "next": "{{FINISH_REGISTRATION_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5><h2 class=\"rich-text-heading-h2 rich-text-align-center\"><br><span class=\"rich-text-bold rich-text-pre-wrap\">{{pairingCode}}</span></h2>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{FINISH_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 1490,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "FINISH_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Enter the pairing code"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "pairingCode",
+                                                "label": "Enter the code shown on your device",
+                                                "placeholder": "",
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "END"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
     }
 ]

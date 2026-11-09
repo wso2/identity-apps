@@ -569,6 +569,7 @@ export class AppConstants {
         "customerDataService": "v0.0.0",
         "customerDataUnificationRules": "v0.0.0",
         "emailTemplates": "v0.0.0",
+        "flowExtensions": "v0.0.0",
         "flows": "v0.0.0",
         "gettingStarted": "v0.0.0",
         "governanceConnectors": "v0.0.0",

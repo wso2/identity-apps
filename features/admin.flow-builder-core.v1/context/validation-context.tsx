@@ -40,6 +40,10 @@ export interface ValidationConfig {
      * Validates that forms with OTP steps have only one action button (resend button is allowed).
      */
     isOTPButtonValidationEnabled?: boolean;
+    /**
+     * Whether the factor validation after the user resolve view is enabled.
+     */
+    isUserResolveFactorValidationEnabled?: boolean;
 }
 
 /**
@@ -128,6 +132,7 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
         isOTPButtonValidationEnabled: false,
         isOTPValidationEnabled: false,
         isPasswordExecutorValidationEnabled: false,
-        isRecoveryFactorValidationEnabled: false
+        isRecoveryFactorValidationEnabled: false,
+        isUserResolveFactorValidationEnabled: false
     }
 });

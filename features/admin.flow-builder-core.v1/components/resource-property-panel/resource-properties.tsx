@@ -164,7 +164,9 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
             updateNodeData(lastInteractedStepId, (node: any) => {
                 const data: StepData = node?.data || {};
 
-                if (!isEmpty(node?.data?.components)) {
+                // A property of the step itself, such as its executor meta, is set on the step even when it has
+                // components.
+                if (!isEmpty(node?.data?.components) && element?.id !== lastInteractedStepId) {
                     data.components = updateComponent(cloneDeep(node?.data?.components) || []);
                 } else {
                     set(data, propertyKey, newValue);
