@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.9.1
+
+### Patch Changes
+
+- [#10892](https://github.com/wso2/identity-apps/pull/10892) [`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop showing the owner organization of shared and inherited Customer Data Service items
+
 ## 1.9.0
 
 ### Minor Changes
