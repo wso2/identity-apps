@@ -6,4 +6,4 @@
 "@wso2is/admin.password-recovery-flow-builder.v1": patch
 ---
 
-Add user verification and flow handoff steps in the flow builder
+Add user verification, flow handoff and user resolve factor validation to the flow builder core
