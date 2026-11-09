@@ -8,7 +8,6 @@
 
 Consolidate open dependabot npm dependency bumps:
 
-- vite 5.4.8 -> 6.4.3 (apps/console, apps/myaccount)
 - js-yaml 3.13.1 -> 3.15.0 (modules/core)
 - axios 1.7.9 -> 1.18.0 (features/admin.copilot.v1)
 - simple-git 1.129.0 -> 3.36.0 (root devDependency)

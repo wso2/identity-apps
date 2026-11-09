@@ -539,6 +539,13 @@ export default defineConfig(({ mode }: { mode: string }) => {
             },
             sourcemap: false
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    silenceDeprecations: [ "legacy-js-api" ]
+                }
+            }
+        },
         define: {
             global: "globalThis",
             "process.env.NODE_ENV": JSON.stringify(nodeEnvironment),
