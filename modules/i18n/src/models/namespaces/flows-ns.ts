@@ -135,6 +135,22 @@ export interface flowsNS {
             confirmationCode: {
                 configurationHint: string;
             };
+            flowHandoff: {
+                defaultTargets: {
+                    passwordRecovery: string;
+                    profileUpdate: string;
+                    registration: string;
+                };
+                expiryTime: string;
+                expiryTimeHint: string;
+                expiryTimeLabel: string;
+                expiryTimePlaceholder: string;
+                targetUrlDefaultHint: string;
+                targetUrlDescription: string;
+                targetUrlHint: string;
+                targetUrlLabel: string;
+                targetUrlPlaceholder: string;
+            };
             landing: {
                 message: string;
             };
@@ -153,6 +169,11 @@ export interface flowsNS {
             };
             tooltip: {
                 configurationHint: string;
+            };
+            userVerification: {
+                tokenValidityPeriodHint: string;
+                tokenValidityPeriodLabel: string;
+                tokenValidityPeriodPlaceholder: string;
             };
         };
         labels: {
@@ -377,6 +398,9 @@ export interface flowsNS {
             userResolveExecutorFields: {
                 message: string;
                 messageWithUserIdentifier: string;
+            };
+            userResolveRequiresFactors: {
+                message: string;
             };
             variables: {
                 invalid: string;
