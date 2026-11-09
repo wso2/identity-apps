@@ -772,6 +772,12 @@ export const applications: ApplicationsNS = {
                     description: "This action may share new roles or unshare the existing roles from all the organizations.",
                     assertionHint: "Please confirm your action."
                 },
+                unshareWarningModal: {
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the existing roles.",
+                    content: "Organizations can create custom roles for this application. Unsharing it from an organization permanently deletes the custom roles created by that organization.",
+                    assertionHint: "Please confirm your action."
+                },
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",
@@ -924,8 +930,7 @@ export const applications: ApplicationsNS = {
                             "and configurations.",
                         1: "Disabling enhanced organization login also stops organizations from creating " +
                             "custom application roles for this application. The application roles created by " +
-                            "organizations will be permanently deleted, and users and groups assigned to them " +
-                            "will lose the related permissions."
+                            "organizations will be permanently deleted."
                     }
                 },
                 notifications: {

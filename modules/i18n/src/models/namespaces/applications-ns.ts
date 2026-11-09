@@ -959,6 +959,12 @@ export interface ApplicationsNS {
                     description: string;
                     assertionHint: string;
                 };
+                unshareWarningModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
                 orgNotSelectedForRoleSharing: string;
                 individualRoleSharingLabel: string;
                 individualRoleSharingHint: string;

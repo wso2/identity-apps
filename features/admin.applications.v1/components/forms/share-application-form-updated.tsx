@@ -146,6 +146,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
     const applicationAudience: string = application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
+    // Unsharing the application deletes the application roles created by organizations for it.
+    const isOrganizationCustomRolesEnabled: boolean = !!application?.organizationCustomRolesEnabled
+        && applicationAudience?.toUpperCase() === RoleAudienceTypes.APPLICATION;
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
@@ -154,6 +157,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ showShareTypeSwitchModal, setShowShareTypeSwitchModal ] = useState<boolean>(false);
     const [ showShareAllWarningModal, setShowShareAllWarningModal ] = useState<boolean>(false);
+    const [ showUnshareWarningModal, setShowUnshareWarningModal ] = useState<boolean>(false);
     const [ shareTypeSwitchApproach, setShareTypeSwitchApproach ] = useState<ShareTypeSwitchApproach>(
         ShareTypeSwitchApproach.WITHOUT_UNSHARE);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
@@ -411,7 +415,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         shouldMutate && mutateApplicationShareDataFetchRequest();
     };
 
-    const handleApplicationSharing = (): void => {
+    const handleApplicationSharing = (_event?: unknown, isUnshareConfirmed: boolean = false): void => {
         if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
             dispatch(addAlert({
                 description: t("applications:edit.sections.sharedAccess.notifications." +
@@ -420,6 +424,16 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 message: t("applications:edit.sections.sharedAccess.notifications." +
                         "noOrganizationsSelected.message")
             }));
+
+            return;
+        }
+
+        // Unsharing deletes the roles created by the organizations for the application, so confirm it first.
+        const isUnsharing: boolean = (shareType === ShareType.UNSHARE && !isEmpty(applicationShareData))
+            || (shareType === ShareType.SHARE_SELECTED && removedOrgIds?.length > 0);
+
+        if (isOrganizationCustomRolesEnabled && isUnsharing && !isUnshareConfirmed) {
+            setShowUnshareWarningModal(true);
 
             return;
         }
@@ -1255,6 +1269,16 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 data-componentid={ `${ componentId }-share-type-switch-with-unshare` }
                             />
                         </RadioGroup>
+                        { isOrganizationCustomRolesEnabled
+                            && shareTypeSwitchApproach === ShareTypeSwitchApproach.WITH_UNSHARE && (
+                            <Alert
+                                severity="error"
+                                className="mt-3"
+                                data-componentid={ `${ componentId }-share-type-switch-custom-roles-warning` }
+                            >
+                                { t("applications:edit.sections.sharedAccess.unshareWarningModal.message") }
+                            </Alert>
+                        ) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             </>
@@ -1299,6 +1323,45 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             </>
+        );
+    };
+
+    /**
+     * Renders a warning modal to confirm unsharing the application, as it deletes the application roles created by
+     * the organizations.
+     */
+    const renderUnshareWarningModal = (): ReactElement | null => {
+        return (
+            <ConfirmationModal
+                data-componentid={ `${componentId}-unshare-warning-modal` }
+                onClose={ (): void => {
+                    setShowUnshareWarningModal(false);
+                } }
+                type="negative"
+                open={ showUnshareWarningModal }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onPrimaryActionClick={ (): void => {
+                    setShowUnshareWarningModal(false);
+                    handleApplicationSharing(undefined, true);
+                } }
+                onSecondaryActionClick={ (): void => {
+                    setShowUnshareWarningModal(false);
+                } }
+                assertionHint={ t("applications:edit.sections.sharedAccess.unshareWarningModal.assertionHint") }
+                assertionType="checkbox"
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    { t("applications:edit.sections.sharedAccess.unshareWarningModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached negative>
+                    { t("applications:edit.sections.sharedAccess.unshareWarningModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("applications:edit.sections.sharedAccess.unshareWarningModal.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         );
     };
 
@@ -1595,6 +1658,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             { renderConfirmationModal() }
             { renderShareTypeSwitchModal() }
             { renderShareAllWarningModal() }
+            { renderUnshareWarningModal() }
         </>
     );
 };
