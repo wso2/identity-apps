@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, MouseEvent, ReactElement, useEffect } from "react";
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import useExecutionComponentsValidation from "../../../../hooks/use-execution-components-validation";
 import useRecoveryFactorValidation from "../../../../hooks/use-factor-validation";
 import useOTPButtonValidation from "../../../../hooks/use-otp-button-validation";
 import useOTPValidation from "../../../../hooks/use-otp-validation";
@@ -112,6 +113,7 @@ const View: FunctionComponent<ViewPropsInterface> = ({
     useOTPValidation((node as unknown) as Node);
     useOTPButtonValidation((node as unknown) as Node);
     useRecoveryFactorValidation((node as unknown) as Node);
+    useExecutionComponentsValidation((node as unknown) as Node);
 
     useEffect(() => {
         if ((data?.components as Element[])?.length <= 0) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import CountDownAdapter from "./adapters/count-down-adapter";
 import Field from "./field";
 import Form from "./form";
 import { useTranslations } from "../hooks/use-translations";
+import { StepDataProvider } from "../providers/step-data-provider";
 import { resolveElementText } from "../utils/i18n-utils";
 
 /**
@@ -164,7 +165,11 @@ const DynamicContent = ({ contentData, state, handleFlowRequest, error, messages
         });
     };
 
-    return <>{ renderElements() }</>;
+    return (
+        <StepDataProvider additionalData={ contentData && contentData.additionalData }>
+            { renderElements() }
+        </StepDataProvider>
+    );
 };
 
 DynamicContent.propTypes = {

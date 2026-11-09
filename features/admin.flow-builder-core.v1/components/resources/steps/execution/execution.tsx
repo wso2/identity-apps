@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,13 +21,13 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, ReactElement, memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
-import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useDeviceRegistrationValidation from "../../../../hooks/use-device-registration-validation";
 import useValidationStatus from "../../../../hooks/use-validation-status";
 import { Action } from "../../../../models/elements";
 import Notification, { NotificationType } from "../../../../models/notification";
 import { ExecutionStepViewTypes, ExecutionTypes, Step } from "../../../../models/steps";
+import resolveExecutionAllowedResourceTypes from "../../../../utils/resolve-execution-allowed-resource-types";
 import ValidationErrorBoundary from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import View from "../view/view";
@@ -54,7 +54,15 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     } = useValidationStatus();
     const { t } = useTranslation();
 
-    useDeviceRegistrationValidation(id, (data?.action as Action)?.executor?.name);
+    const executorName: string = (data?.action as Action)?.executor?.name;
+    const phase: string | undefined = (data?.action as Action)?.executor?.meta?.phase;
+
+    useDeviceRegistrationValidation(id, executorName);
+
+    const allowedResourceTypes: string[] = useMemo(
+        () => resolveExecutionAllowedResourceTypes(executorName, phase),
+        [ executorName, phase ]
+    );
 
     const components: Element[] = data?.components as Element[] || [];
 
@@ -210,8 +218,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                             heading={ resolveExecutionName((data?.action as any)?.executor?.name) }
                             data={ data }
                             enableSourceHandle={ true }
-                            droppableAllowedTypes={
-                                VisualFlowConstants.FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES }
+                            droppableAllowedTypes={ allowedResourceTypes }
                             onActionPanelDoubleClick={
                                 () => {
                                     setOpenValidationPanel(false);

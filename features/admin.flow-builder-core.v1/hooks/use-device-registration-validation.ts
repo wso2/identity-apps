@@ -35,6 +35,7 @@ import { Resource } from "../public-api";
  * `AuthenticationExecutor` on the server.
  */
 const AUTHENTICATION_EXECUTORS: string[] = [
+    RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR,
     RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR,
     RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR,
     RegistrationFlowExecutorConstants.MAGIC_LINK_EXECUTOR,

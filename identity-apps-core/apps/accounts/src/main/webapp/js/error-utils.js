@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -265,6 +265,62 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
             return {
                 message: "wallet.vp.error.network.message",
                 description: "wallet.vp.error.network.description"
+            };
+
+        case "DR-60002":
+
+            return {
+                message: "device.registration.error.signature.invalid.message",
+                description: "device.registration.error.signature.invalid.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60004":
+
+            return {
+                message: "device.registration.error.not.compliant.message",
+                description: "device.registration.error.not.compliant.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60005":
+
+            return {
+                message: "device.registration.error.device.data.required.message",
+                description: "device.registration.error.device.data.required.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60007":
+
+            return {
+                message: "device.registration.error.code.invalid.message",
+                description: "device.registration.error.code.invalid.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60008":
+
+            return {
+                message: "device.registration.error.code.limit.message",
+                description: "device.registration.error.code.limit.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60009":
+
+            return {
+                message: "device.registration.error.pairing.code.invalid.message",
+                description: "device.registration.error.pairing.code.invalid.description",
+                portalUrlStatus: "true"
+            };
+
+        case "DR-60010":
+
+            return {
+                message: "device.registration.error.device.model.invalid.message",
+                description: "device.registration.error.device.model.invalid.description",
+                portalUrlStatus: "true"
             };
 
         default:

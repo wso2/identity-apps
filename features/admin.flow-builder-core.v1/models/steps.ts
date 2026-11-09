@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -76,6 +76,30 @@ export enum ExecutionTypes {
     FlowExtension = "FlowExtensionExecutor",
     DigitalWalletFederation = "PresentationExecutor",
     DeviceRegistration = "DeviceRegistrationExecutor"
+}
+
+/**
+ * Phases of the device registration executor, set in `action.executor.meta.phase`.
+ */
+export enum DeviceRegistrationPhases {
+    NativeDeviceRegistration = "NATIVE_DEVICE_REGISTRATION",
+    InitRegistration = "INIT_REGISTRATION",
+    ProcessDevice = "PROCESS_DEVICE",
+    FinishRegistration = "FINISH_REGISTRATION"
+}
+
+/**
+ * Components an execution step's page allows on top of the static content, by phase.
+ */
+export interface ExecutionAllowedResourceTypesInterface {
+    /**
+     * Additions for a step without a phase, or with a phase not listed in `phases`.
+     */
+    default: string[];
+    /**
+     * Additions per phase, the value of `action.executor.meta.phase`.
+     */
+    phases?: Record<string, string[]>;
 }
 
 export enum ExecutionStepViewTypes {

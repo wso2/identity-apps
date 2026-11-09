@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,18 @@ import elements from "../data/elements.json";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
+
+/**
+ * Templates and widgets that need the device registration executor.
+ */
+const DEVICE_REGISTRATION_TEMPLATES: string[] = [
+    TemplateTypes.BasicDeviceRegistration,
+    TemplateTypes.BasicQrDeviceRegistration
+];
+const DEVICE_REGISTRATION_WIDGETS: string[] = [
+    WidgetTypes.NativeDeviceRegistration,
+    WidgetTypes.QrDeviceRegistration
+];
 
 /**
  * Hook to get the resources supported by the registration flow builder.
@@ -79,11 +91,12 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
         const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
             return (!isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI) &&
                 (!isOpenID4VPDisabled || template?.type !== TemplateTypes.BasicWallet) &&
-                (isDeviceRegistrationAvailable || template?.type !== TemplateTypes.BasicDeviceRegistration);
+                (isDeviceRegistrationAvailable || !DEVICE_REGISTRATION_TEMPLATES.includes(template?.type));
         });
 
         const filteredWidgets: any[] = (widgets as any[]).filter((widget: any) => {
-            return !isOpenID4VPDisabled || widget?.type !== WidgetTypes.DigitalWalletFederation;
+            return (!isOpenID4VPDisabled || widget?.type !== WidgetTypes.DigitalWalletFederation) &&
+                (isDeviceRegistrationAvailable || !DEVICE_REGISTRATION_WIDGETS.includes(widget?.type));
         });
 
         return {

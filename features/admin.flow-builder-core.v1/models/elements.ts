@@ -82,6 +82,7 @@ export enum ElementTypes {
     Divider = "DIVIDER",
     Choice = "CHOICE",
     Image = "IMAGE",
+    QrCode = "QR_CODE",
     RichText = "RICH_TEXT",
     Typography = "TYPOGRAPHY",
     Resend = "RESEND",

@@ -177,6 +177,16 @@ export interface DevicesNS {
         properties: {
             description: string;
             noPolicies: string;
+            phase: {
+                hint: string;
+                label: string;
+                options: {
+                    FINISH_REGISTRATION: string;
+                    INIT_REGISTRATION: string;
+                    PROCESS_DEVICE: string;
+                    NATIVE_DEVICE_REGISTRATION: string;
+                };
+            };
             policy: {
                 hint: string;
                 label: string;
