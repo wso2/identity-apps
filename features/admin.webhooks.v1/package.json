@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.webhooks.v1",
-    "version": "1.2.1",
+    "version": "1.3.0",
     "description": "UI components and utility methods for WSO2 Identity Server Webhooks",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -18,6 +18,7 @@
         "@wso2is/core": "^2.13.6",
         "@wso2is/react-components": "^2.9.12",
         "axios": "^1.7.0",
+        "classnames": "^2.2.6",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4",

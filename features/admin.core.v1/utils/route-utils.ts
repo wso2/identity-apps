@@ -394,7 +394,8 @@ export class RouteUtils {
 
         const isConnectionsMenuItemSelected = (): boolean => {
             return history.location.pathname.includes("/connections")
-                || history.location.pathname.includes("/identity-verification-providers");
+                || history.location.pathname.includes("/identity-verification-providers")
+                || history.location.pathname.includes("/flow-extensions");
         };
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [

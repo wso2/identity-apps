@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -209,13 +209,14 @@
             }
 
             const { createElement, useEffect, useState, useRef } = React;
-            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
+            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment, PollView } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
                 const accountsPortalUrl = "<%= accountsBaseURL %>";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
+                const executionFlowPollApiProxyPath = accountsPortalUrl + "/util/execution-flow-poll-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
@@ -293,6 +294,44 @@
                 const [ walletQR, setWalletQR ] = useState(null);
                 const walletPollRef = useRef(null);
 
+                // Key of the parameters the executor of a redirection step expects back when the flow resumes.
+                const REDIRECTION_PARAMS_KEY = "redirectionParams";
+
+                /**
+                 * Read the parameters the executor of the last redirection step declared as required, and return them
+                 * from the return URL as the inputs to resume the flow with. Returns null unless every declared
+                 * parameter is present in the return URL, so a partial return falls through to the regular handling.
+                 * The saved list is removed on read, so it applies only to the page load right after the redirection.
+                 */
+                const readRedirectionInputs = () => {
+                    let declaredParams = null;
+
+                    try {
+                        declaredParams = JSON.parse(localStorage.getItem(REDIRECTION_PARAMS_KEY));
+                    } catch (e) {
+                        declaredParams = null;
+                    }
+                    localStorage.removeItem(REDIRECTION_PARAMS_KEY);
+
+                    if (!Array.isArray(declaredParams) || declaredParams.length === 0) {
+                        return null;
+                    }
+
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const inputs = {};
+
+                    for (const param of declaredParams) {
+                        if (typeof param !== "string" || !queryParams.get(param)) {
+                            return null;
+                        }
+                        inputs[param] = queryParams.get(param);
+                    }
+
+                    return inputs;
+                };
+
+                const [ redirectionInputs ] = useState(readRedirectionInputs);
+
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
 
@@ -319,8 +358,19 @@
                                 state
                             }
                         });
+
+                        return;
                     }
-                }, [code, state, authError]);
+
+                    // Return from a redirection whose executor declared its own required params instead of code and state.
+                    if (code === "null" && authError === "null" && redirectionInputs) {
+                        setPostBody({
+                            flowId: savedFlowId,
+                            actionId: "",
+                            inputs: redirectionInputs
+                        });
+                    }
+                }, [code, state, authError, redirectionInputs]);
 
                 useEffect(() => {
                     if (mlt !== "null" && flowId !== "null") {
@@ -358,9 +408,9 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType == "null") {
+                    if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);
@@ -381,33 +431,7 @@
 
                         return response.json();
                     })
-                    .then((data) => {
-                        if (data.error) {
-                            if (data.error.flowType) {
-                                setFlowType(data.error.flowType);
-                            }
-                            setError(data.error);
-
-                            return;
-                        }
-
-                        if (data.flowId) {
-                            localStorage.setItem("flowId", data.flowId);
-                        }
-
-                        if (data.flowType) {
-                            setFlowType(data.flowType);
-                        }
-
-                        const isFlowEnded = handleFlowStatus(data);
-
-                        if (isFlowEnded) {
-                            return;
-                        }
-
-                        handleStepType(data);
-                        setFlowData(data);
-                    })
+                    .then((data) => handleFlowResponse(data))
                     .catch((err) => {
                         console.error("Error fetching flow data:", err);
                         setError(err);
@@ -662,6 +686,34 @@
                     flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error,
                     flowData && flowData.data && flowData.data.messages ]);
 
+                const handleFlowResponse = (data) => {
+                    if (data.error) {
+                        if (data.error.flowType) {
+                            setFlowType(data.error.flowType);
+                        }
+                        setError(data.error);
+
+                        return;
+                    }
+
+                    if (data.flowId) {
+                        localStorage.setItem("flowId", data.flowId);
+                    }
+
+                    if (data.flowType) {
+                        setFlowType(data.flowType);
+                    }
+
+                    const isFlowEnded = handleFlowStatus(data);
+
+                    if (isFlowEnded) {
+                        return;
+                    }
+
+                    handleStepType(data);
+                    setFlowData(data);
+                };
+
                 const handleInternalPrompt = (flowData) => {
                     if (flowData.data.requiredParams.some((param) => param === "token" || param === "tokenType")) {
                         setError({ code: "UNSUPPORTED_INTERNAL_PROMPT" });
@@ -749,6 +801,11 @@
                                 setWalletQR({ url: redirectURL, requestId: requestId, flowId: flow.flowId, sessionTtlMs: (ttlMs >= 30000 && ttlMs <= 180000 ? ttlMs : 0) });
                                 setLoading(false);
                             } else {
+                                // Remember what the executor expects back, so the flow can resume with it on return.
+                                if (Array.isArray(flow.data.requiredParams) && flow.data.requiredParams.length > 0) {
+                                    localStorage.setItem(REDIRECTION_PARAMS_KEY,
+                                        JSON.stringify(flow.data.requiredParams));
+                                }
                                 setLoading(true);
                                 window.location.href = redirectURL;
                             }
@@ -757,6 +814,10 @@
 
                         case "INTERNAL_PROMPT":
                             handleInternalPrompt(flow);
+                            break;
+
+                        case "POLL":
+                            // Rendered by PollView, which polls and continues the flow.
                             break;
 
                         case "WEBAUTHN":
@@ -945,6 +1006,36 @@
                         "div",
                         { className: "registration-content-container loaded" },
                         createElement(WalletQRView, null)
+                    );
+                }
+
+                if (flowData && flowData.type === "POLL") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(PollView, {
+                            contentData: flowData.data,
+                            pollUrl: executionFlowPollApiProxyPath,
+                            busy: loading,
+                            // Continue the flow; the response is the next step.
+                            onSuccess: () => setPostBody({ flowId: flowData.flowId, actionId: "" }),
+                            // The flow ended, so starting again restarts it. Other stored keys, such as the
+                            // login's sessionDataKey, are kept.
+                            onRestart: () => {
+                                localStorage.removeItem("flowId");
+                                window.location.reload();
+                            },
+                            onCancel: () => {
+                                clearFlowStorage();
+                                if (window.history.length > 1) {
+                                    window.history.back();
+                                } else {
+                                    window.location.href = defaultMyAccountUrl;
+                                }
+                            },
+                            // Shows the generic flow error.
+                            onError: () => setError({ code: "500" })
+                        })
                     );
                 }
 

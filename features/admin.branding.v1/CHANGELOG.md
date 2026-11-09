@@ -1,5 +1,21 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.181
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/i18n@2.59.0
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.flows.v1@1.0.186
+
+## 2.32.180
+
+### Patch Changes
+
+- [#10870](https://github.com/wso2/identity-apps/pull/10870) [`fefad60e6d685c5fb082b3f59f8d5812d1b7fc08`](https://github.com/wso2/identity-apps/commit/fefad60e6d685c5fb082b3f59f8d5812d1b7fc08) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Allow saving branding design changes when the custom layout is stored as inline HTML
+
 ## 2.32.179
 
 ### Patch Changes

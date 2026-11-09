@@ -1,5 +1,25 @@
 # @wso2is/admin.core.v1
 
+## 2.63.6
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/admin.registration-flow-builder.v1@0.16.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.0
+  - @wso2is/i18n@2.59.0
+  - @wso2is/admin.branding.v1@2.32.181
+  - @wso2is/admin.flows.v1@1.0.186
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.2
+  - @wso2is/admin.users.v1@2.39.8
+
+## 2.63.5
+
+### Patch Changes
+
+- [#10878](https://github.com/wso2/identity-apps/pull/10878) [`4385d2245ec7a5ac2fe43ea2868d35630cb9301f`](https://github.com/wso2/identity-apps/commit/4385d2245ec7a5ac2fe43ea2868d35630cb9301f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable the flow extension edit route in sub organizations
+
 ## 2.63.4
 
 ### Patch Changes

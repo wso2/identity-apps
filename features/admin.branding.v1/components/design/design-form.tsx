@@ -357,14 +357,18 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
             setFontFamilyFromBrowserDefaults(BrandingPreferencesConstants.DEFAULT_FONT_FROM_THEME);
         }
 
+        const hasInlineHtmlContent: boolean =
+            !!(brandingPreference?.preference?.layout?.content?.html);
+
         // Avoid activating the custom layout when there is no deployed custom layout.
+        // A layout saved as inline HTML content in the branding preference needs no deployed layout file.
         if (commonConfig?.checkCustomLayoutExistanceBeforeEnabling
                 && _values?.layout?.activeLayout === PredefinedLayouts.CUSTOM) {
             while (customLayoutLoading) {
                 // Wait until finished the loading of custom layout.
             }
 
-            if (customLayoutBlob) {
+            if (customLayoutBlob || hasInlineHtmlContent) {
                 onSubmit(_values);
             } else {
                 dispatch(addAlert<AlertInterface>({
@@ -382,9 +386,6 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
 
             return;
         }
-
-        const hasInlineHtmlContent: boolean =
-            !!(brandingPreference?.preference?.layout?.content?.html);
 
         if (!commonConfig?.checkCustomLayoutExistanceBeforeEnabling
                 && _values?.layout?.activeLayout === PredefinedLayouts.CUSTOM && !hasInlineHtmlContent) {

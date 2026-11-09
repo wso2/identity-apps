@@ -202,6 +202,31 @@ export interface WebhookUpdateRequestInterface {
 }
 
 /**
+ * Merge patch body. Only the properties present are changed, and `status` is not among them: it moves
+ * through the activate and deactivate sub-resources instead. The WebSubHub adapter holds the endpoint,
+ * name and secret at the hub and rejects a patch carrying any of them; there only `subscribedChannels`
+ * is accepted.
+ */
+export interface WebhookPatchRequestInterface {
+    /**
+     * Replaces the webhook endpoint URL.
+     */
+    endpoint?: string;
+    /**
+     * Replaces the name of the webhook.
+     */
+    name?: string;
+    /**
+     * Replaces the secret used to sign payloads.
+     */
+    secret?: string;
+    /**
+     * Replaces the channel set wholesale, each channel carrying its own fanout.
+     */
+    subscribedChannels?: WebhookChannelSubscriptionInterface[];
+}
+
+/**
  * Interface for webhook response.
  */
 export interface WebhookResponseInterface {

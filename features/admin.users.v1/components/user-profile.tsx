@@ -27,6 +27,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { searchRoleList, updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import {
     PatchRoleDataInterface,
@@ -91,7 +92,7 @@ import {
     ResendCodeRequestData,
     SubValueInterface
 } from "../models/user";
-import { getDisplayOrder } from "../utils/user-management-utils";
+import { UserManagementUtils, getDisplayOrder } from "../utils/user-management-utils";
 import "./user-profile.scss";
 
 /**
@@ -184,6 +185,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const authenticatedUserSubject: string = useSelector((state: AppState) => state?.auth?.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
@@ -968,8 +970,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return null;
         }
 
-        const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = UserManagementUtils.isLoggedInUser(user?.userName,
+            authenticatedUser, authenticatedUserSubject, userstoresConfig.primaryUserstoreName);
 
         return (
             <>

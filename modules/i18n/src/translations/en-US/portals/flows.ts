@@ -69,6 +69,19 @@ export const flows: flowsNS = {
             policyConsent: {
                 emptyState: "No policies configured"
             },
+            qrCode: {
+                alt: "QR code preview",
+                properties: {
+                    data: {
+                        hint: "Text or link to encode.",
+                        label: "Data"
+                    },
+                    size: {
+                        hint: "Size in pixels, from 96 to 480.",
+                        label: "Size"
+                    }
+                }
+            },
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -103,6 +116,14 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            authsignal: {
+                actionCode: {
+                    hint: "Action code of the flow in the Authsignal Portal. Leave empty to use the action code set in the Authsignal connector settings.",
+                    label: "Action code (optional)",
+                    placeholder: "Enter the Authsignal action code, e.g. sign-in"
+                },
+                description: "Configure the Authsignal flow that runs at this step."
+            },
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
             },
@@ -363,6 +384,10 @@ export const flows: flowsNS = {
             enableFlow: "Enable the {{flowType}} flow"
         },
         validation: {
+            executionStep: {
+                disallowedComponents: "This step can't show {{types}} in its current phase. Remove them or "
+                    + "change the phase."
+            },
             fields: {
                 button: {
                     action: "Button must have an action type defined for proper functionality.",
@@ -412,6 +437,10 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the policy consent.",
                     noPoliciesAvailable: "No policies are available for selection.",
                     policiesRequired: "At least one policy must be selected."
+                },
+                qrCode: {
+                    data: "QR code must have data to encode.",
+                    general: "Required fields are not properly configured for the QR code with ID <1>{{id}}</1>."
                 },
                 richText: {
                     general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",

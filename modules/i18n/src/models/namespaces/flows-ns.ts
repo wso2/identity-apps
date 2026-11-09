@@ -77,6 +77,19 @@ export interface flowsNS {
             policyConsent: {
                 emptyState: string;
             };
+            qrCode: {
+                alt: string;
+                properties: {
+                    data: {
+                        hint: string;
+                        label: string;
+                    };
+                    size: {
+                        hint: string;
+                        label: string;
+                    };
+                };
+            };
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -111,6 +124,14 @@ export interface flowsNS {
             };
         };
         executions: {
+            authsignal: {
+                actionCode: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                };
+                description: string;
+            };
             confirmationCode: {
                 configurationHint: string;
             };
@@ -353,10 +374,17 @@ export interface flowsNS {
                     noPoliciesAvailable: string;
                     policiesRequired: string;
                 };
+                qrCode: {
+                    data: string;
+                    general: string;
+                };
                 flowExtension: {
                     general: string;
                     actionId: string;
                 };
+            };
+            executionStep: {
+                disallowedComponents: string;
             };
             organizationAttributes: {
                 federatedAuthenticationNotSupported: string;

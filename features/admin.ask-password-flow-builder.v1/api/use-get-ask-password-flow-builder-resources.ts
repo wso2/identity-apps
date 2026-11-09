@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,12 +21,27 @@ import useGetExtensionExecutorSteps
     from "@wso2is/admin.flow-builder-core.v1/api/use-get-extension-executor-steps";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { Widget, WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { useMemo } from "react";
 import elements from "../data/elements.json";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
+
+/**
+ * Templates and widgets that need the device registration executor.
+ */
+const DEVICE_REGISTRATION_TEMPLATES: string[] = [
+    TemplateTypes.BasicDeviceRegistration,
+    TemplateTypes.BasicQrDeviceRegistration
+];
+const DEVICE_REGISTRATION_WIDGETS: string[] = [
+    WidgetTypes.NativeDeviceRegistration,
+    WidgetTypes.QrDeviceRegistration
+];
 
 /**
  * Hook to get the resources supported by the password recovery flow builder.
@@ -47,8 +62,19 @@ const useGetAskPasswordFlowBuilderResources = <Data = Resources, Error = Request
     // Executors contributed by extensions deployed on the server. Appended to the palette at runtime.
     const extensionExecutorSteps: Step[] = useGetExtensionExecutorSteps(FlowTypes.INVITED_USER_REGISTRATION);
 
-    return {
-        data: ({
+    const data: unknown = useMemo(() => {
+        // The device registration executor is listed only when it is enabled on the server.
+        const isDeviceRegistrationAvailable: boolean = extensionExecutorSteps.some(
+            (step: Step) => step?.data?.action?.executor?.name === ExecutionTypes.DeviceRegistration
+        );
+
+        const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) =>
+            isDeviceRegistrationAvailable || !DEVICE_REGISTRATION_TEMPLATES.includes(template?.type));
+
+        const filteredWidgets: Widget[] = (widgets as Widget[]).filter((widget: Widget) =>
+            isDeviceRegistrationAvailable || !DEVICE_REGISTRATION_WIDGETS.includes(widget?.type));
+
+        return {
             ...coreResources,
             elements: [
                 ...coreResources?.elements,
@@ -61,13 +87,17 @@ const useGetAskPasswordFlowBuilderResources = <Data = Resources, Error = Request
             ],
             templates: [
                 ...coreResources?.templates,
-                ...templates
+                ...filteredTemplates
             ],
             widgets: [
                 ...coreResources?.widgets,
-                ...widgets
+                ...filteredWidgets
             ]
-        } as unknown) as Data,
+        };
+    }, [ coreResources, extensionExecutorSteps ]);
+
+    return {
+        data: data as Data,
         error: null,
         isLoading: false,
         isValidating: false,

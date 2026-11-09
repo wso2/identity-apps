@@ -116,9 +116,8 @@ export interface UnificationRuleModel {
      * Read-only. Derived from `attribute_type` by the server.
      */
     mismatch_strength?: EvidenceStrength;
-    // Organization management: OWNED, or SHARED by the organization in owner_org_handle.
+    // Organization management: OWNED, or SHARED by a parent organization.
     origin?: ResourceOrigin;
-    owner_org_handle?: string;
 }
 
 /**

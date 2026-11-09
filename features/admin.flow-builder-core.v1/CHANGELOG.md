@@ -1,5 +1,34 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.16.1
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+- Updated dependencies [[`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.1
+
+## 0.16.0
+
+### Minor Changes
+
+- [#10890](https://github.com/wso2/identity-apps/pull/10890) [`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Register another device by scanning a QR code and entering the pairing code shown on it. Add a QR code component, per-phase component rules and device registration widgets and templates to the flow builders.
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.0
+  - @wso2is/admin.branding.v1@2.32.181
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.flows.v1@1.0.186
+
+## 0.15.1
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
 ## 0.15.0
 
 ### Minor Changes

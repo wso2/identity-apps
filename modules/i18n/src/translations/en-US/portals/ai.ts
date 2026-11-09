@@ -62,8 +62,9 @@ export const ai: aiNS = {
         states: {
             0: "Getting things started",
             1: "Gathering essential data for your flow...",
-            2: "Applying final touches...",
-            3: "Flow generation complete!"
+            2: "Generating your flow...",
+            3: "Flow generation complete!",
+            4: "Applying final touches..."
         },
         termsAndConditions: "Terms and Conditions",
         title: "Flow AI"

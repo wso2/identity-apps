@@ -421,5 +421,509 @@
                 ]
             }
         }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC_DEVICE_REGISTRATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Invited User Registration + Register This Device",
+            "description": "Confirm the invite and set a password, then register the device the user is on",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "PASSWORD_RESET_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "flowType": "INVITED_USER_REGISTRATION",
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 200,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "ConfirmationCodeValidationExecutor"
+                                },
+                                "next": "{{PASSWORD_RESET_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{PASSWORD_RESET_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 319
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Set Password"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": false,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 950,
+                            "y": 400
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "NATIVE_DEVICE_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1400,
+                            "y": 420
+                        },
+                        "config": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Set Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully set a password for your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC_QR_DEVICE_REGISTRATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Invited User Registration + Register Another Device",
+            "description": "Confirm the invite and set a password, then register another device with a QR code",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{PROCESS_DEVICE_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "PASSWORD_RESET_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "INIT_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROCESS_DEVICE_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FINISH_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "flowType": "INVITED_USER_REGISTRATION",
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 200,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "ConfirmationCodeValidationExecutor"
+                                },
+                                "next": "{{PASSWORD_RESET_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{PASSWORD_RESET_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 319
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Set Password"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": false,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "{{INIT_REGISTRATION_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{INIT_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 950,
+                            "y": 400
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "INIT_REGISTRATION"
+                                    }
+                                },
+                                "next": "{{PROCESS_DEVICE_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Register your device</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Scan the QR code with the device you want to register.</span></h5>"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "QR_CODE",
+                                    "config": {
+                                        "data": "{{qrCodeData}}",
+                                        "size": 220
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROCESS_DEVICE_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1350,
+                            "y": 400
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "PROCESS_DEVICE"
+                                    }
+                                },
+                                "next": "{{FINISH_REGISTRATION_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5><h2 class=\"rich-text-heading-h2 rich-text-align-center\"><br><span class=\"rich-text-bold rich-text-pre-wrap\">{{pairingCode}}</span></h2>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{FINISH_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 1750,
+                            "y": 400
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "FINISH_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Enter the pairing code"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "pairingCode",
+                                                "label": "Enter the code shown on your device",
+                                                "placeholder": "",
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "END"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 2150,
+                            "y": 420
+                        },
+                        "config": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Set Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully set a password for your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
     }
 ]

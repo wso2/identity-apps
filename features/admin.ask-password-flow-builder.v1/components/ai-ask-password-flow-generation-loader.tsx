@@ -29,6 +29,7 @@ import AIBot
 import useAIAskPasswordFlowGenerationStatus from "../api/use-ai-ask-password-flow-status";
 import {
     FACTS_ROTATION_DELAY,
+    FINAL_TOUCHES_DELAY,
     PROGRESS_UPDATE_INTERVAL,
     statusProgressMap,
     useGetFacts,
@@ -55,6 +56,7 @@ const AskPasswordFlowAILoader = (): ReactElement => {
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ showModal, setShowModal ] = useState<boolean>(true);
+    const [ isApplyingFinalTouches, setIsApplyingFinalTouches ] = useState<boolean>(false);
 
     const statusProgress: Record<string, number> = statusProgressMap;
 
@@ -83,6 +85,26 @@ const AskPasswordFlowAILoader = (): ReactElement => {
 
         return () => clearInterval(interval);
     }, [ factIndex ]);
+
+    const isGeneratingFlow: boolean = Boolean(data?.generatingFlow) && !data?.completed;
+
+    /**
+     * The flow is generated in one long step, so after a while the loader says the generation is being finished.
+     */
+    useEffect(() => {
+        if (!isGeneratingFlow) {
+            setIsApplyingFinalTouches(false);
+
+            return;
+        }
+
+        const timeout: ReturnType<typeof setTimeout> = setTimeout(
+            () => setIsApplyingFinalTouches(true),
+            FINAL_TOUCHES_DELAY
+        );
+
+        return () => clearTimeout(timeout);
+    }, [ isGeneratingFlow ]);
 
     useEffect(() => {
         if (error) {
@@ -123,6 +145,7 @@ const AskPasswordFlowAILoader = (): ReactElement => {
      */
     const getCurrentStatus = () => {
         if (!data) return t("ai:aiFlow.states.0");
+        if (isApplyingFinalTouches && isGeneratingFlow) return t("ai:aiFlow.states.4");
         let currentStatusLabel: string = "ai:aiFlow.states.0";
 
         Object.entries(data).forEach(([ key, value ]: [string, boolean]) => {

@@ -59,7 +59,6 @@ const task = (
     explanation: { reasons, rules },
     id,
     incoming_profile_id: `${ id }-a`,
-    org_handle: "acme",
     status: "PENDING"
 } as unknown as ReviewTaskModel);
 
@@ -158,7 +157,6 @@ export const legacy: ReviewTaskModel = {
     created_at: "2026-10-01T00:00:00Z",
     id: "legacy",
     incoming_profile_id: "legacy-a",
-    org_handle: "acme",
     score_breakdown: { "identity_attributes.fullname": 0.95, "identity_attributes.mobile": 1 },
     status: "PENDING"
 } as unknown as ReviewTaskModel;

@@ -179,19 +179,31 @@ export const devices: DevicesNS = {
     },
     registrationStep: {
         properties: {
-            description: "Register the user's device in this step. Select a device policy to allow only "
-                + "devices that comply with it.",
+            description: "Registers a device for the user. Choose what this step does and, optionally, a "
+                + "device policy.",
             noPolicies: "No device policies found",
+            phase: {
+                hint: "Registering another device takes three steps in order. The Register Another Device "
+                    + "widget adds them.",
+                label: "Phase",
+                options: {
+                    FINISH_REGISTRATION: "Check pairing code",
+                    INIT_REGISTRATION: "Show QR code",
+                    NATIVE_DEVICE_REGISTRATION: "Register this device",
+                    PROCESS_DEVICE: "Verify scanned device"
+                }
+            },
             policy: {
                 hint: "Leave empty to register any device.",
                 label: "Device policy",
                 noPermission: "You do not have permission to view device policies.",
-                placeholder: "Select a device policy"
+                placeholder: "Select a device policy",
+                subOrganization: "Device policies are managed by the parent organization and can't be changed here."
             }
         },
         validation: {
-            authenticationRequired: "Device registration needs an authentication step, such as Email OTP, "
-                + "SMS OTP or Passkey, before it in the flow."
+            authenticationRequired: "Add a step that verifies the user, such as Email OTP or Passkey, before "
+                + "device registration."
         }
     },
     userDevices: {
@@ -213,6 +225,10 @@ export const devices: DevicesNS = {
                 name: "Device",
                 registeredAt: "Registered On",
                 status: "Status"
+            },
+            inherited: {
+                hint: "This device is registered in the user's parent organization and can only be managed there.",
+                label: "Inherited"
             },
             status: {
                 ACTIVE: "Active",
