@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { PickerStrategy } from "@wso2is/react-components";
 import { FunctionLibraryConstants } from "../constants";
 
 /**
@@ -70,3 +71,31 @@ export const getFunctionLibraryImportStatement = (name: string): string => {
 
     return `var ${ moduleName } = require("${ name }");`;
 };
+
+/**
+ * File picker strategy that accepts JavaScript files.
+ */
+export class JavaScriptFileStrategy implements PickerStrategy<string> {
+
+    public mimeTypes: string[] = [ ".js", "text/javascript", "application/javascript" ];
+
+    /**
+     * Serializes pasted content as is. The content of a selected file is read by the content editor, so that a
+     * read which finishes after a newer file or an edit can be discarded.
+     *
+     * @param data - Selected file or pasted content.
+     * @returns The pasted content, or an empty string for a file.
+     */
+    public async serialize(data: File | string): Promise<string> {
+        return typeof data === "string" ? data : "";
+    }
+
+    /**
+     * Accepts any content; the server validates the library.
+     *
+     * @returns A valid result.
+     */
+    public async validate(): Promise<{ valid: boolean }> {
+        return { valid: true };
+    }
+}

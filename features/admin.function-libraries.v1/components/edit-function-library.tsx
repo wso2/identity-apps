@@ -183,108 +183,110 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
     };
 
     return (
-        <EmphasizedSegment padded="very" data-componentid={ componentId }>
-            <Form
-                id={ FORM_ID }
-                uncontrolledForm={ false }
-                onSubmit={ handleSubmit }
-                initialValues={ {
-                    description: functionLibrary?.description ?? "",
-                    name: functionLibrary?.name ?? ""
-                } }
-            >
-                <Field.Input
-                    ariaLabel="Function library name"
-                    inputType="name"
-                    name="name"
-                    label={ t("functionLibraries:forms.name.label") }
-                    hint={ t("functionLibraries:forms.name.hint") }
-                    required={ true }
-                    readOnly={ !hasUpdatePermission }
-                    maxLength={ FunctionLibraryConstants.NAME_MAX_LENGTH }
-                    minLength={ FunctionLibraryConstants.NAME_MIN_LENGTH }
-                    validate={ (value: string): string | undefined => {
-                        const error: FunctionLibraryNameValidationError = validateFunctionLibraryName(value);
-
-                        return error ? t(`functionLibraries:forms.name.validations.${ error }`) : undefined;
+        <>
+            <EmphasizedSegment padded="very" data-componentid={ componentId }>
+                <Form
+                    id={ FORM_ID }
+                    uncontrolledForm={ false }
+                    onSubmit={ handleSubmit }
+                    initialValues={ {
+                        description: functionLibrary?.description ?? "",
+                        name: functionLibrary?.name ?? ""
                     } }
-                    width={ 16 }
-                    data-componentid={ `${ componentId }-name-input` }
-                />
-                <SemanticForm.Field>
-                    <label>{ t("functionLibraries:forms.usage.label") }</label>
-                    <CopyInputField
-                        value={ getFunctionLibraryImportStatement(functionLibrary?.name ?? "") }
-                        data-componentid={ `${ componentId }-usage-copy-field` }
+                >
+                    <Field.Input
+                        ariaLabel="Function library name"
+                        inputType="name"
+                        name="name"
+                        label={ t("functionLibraries:forms.name.label") }
+                        hint={ t("functionLibraries:forms.name.hint") }
+                        required={ true }
+                        readOnly={ !hasUpdatePermission }
+                        maxLength={ FunctionLibraryConstants.NAME_MAX_LENGTH }
+                        minLength={ FunctionLibraryConstants.NAME_MIN_LENGTH }
+                        validate={ (value: string): string | undefined => {
+                            const error: FunctionLibraryNameValidationError = validateFunctionLibraryName(value);
+
+                            return error ? t(`functionLibraries:forms.name.validations.${ error }`) : undefined;
+                        } }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-name-input` }
                     />
-                    <Hint>{ t("functionLibraries:forms.usage.hint") }</Hint>
-                </SemanticForm.Field>
-                <Field.Textarea
-                    ariaLabel="Function library description"
-                    name="description"
-                    label={ t("functionLibraries:forms.description.label") }
-                    placeholder={ t("functionLibraries:forms.description.placeholder") }
-                    required={ false }
-                    maxLength={ FunctionLibraryConstants.DESCRIPTION_MAX_LENGTH }
-                    minLength={ 0 }
-                    readOnly={ !hasUpdatePermission }
-                    width={ 16 }
-                    data-componentid={ `${ componentId }-description-input` }
-                />
-                <FunctionLibraryContentEditor
-                    value={ content }
-                    onChange={ (value: string) => {
-                        setContent(value);
-                        if (value) {
-                            setContentError(undefined);
-                        }
-                    } }
-                    readOnly={ !hasUpdatePermission }
-                    error={ contentError }
-                    data-componentid={ `${ componentId }-content-editor` }
-                />
-                <Field.Button
-                    form={ FORM_ID }
-                    size="small"
-                    buttonType="primary_btn"
-                    ariaLabel="Function library update button"
-                    name="update-button"
-                    disabled={ isSubmitting || !hasUpdatePermission }
-                    loading={ isSubmitting }
-                    label={ t("common:update") }
-                    data-componentid={ `${ componentId }-submit-button` }
-                />
-            </Form>
-            <ConfirmationModal
-                primaryActionLoading={ isSubmitting }
-                onClose={ () => setPendingRenameValues(null) }
-                type="warning"
-                open={ !!pendingRenameValues }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ () => setPendingRenameValues(null) }
-                onPrimaryActionClick={ () => {
-                    const values: EditFunctionLibraryFormValuesInterface = pendingRenameValues;
+                    <SemanticForm.Field>
+                        <label>{ t("functionLibraries:forms.usage.label") }</label>
+                        <CopyInputField
+                            value={ getFunctionLibraryImportStatement(functionLibrary?.name ?? "") }
+                            data-componentid={ `${ componentId }-usage-copy-field` }
+                        />
+                        <Hint>{ t("functionLibraries:forms.usage.hint") }</Hint>
+                    </SemanticForm.Field>
+                    <Field.Textarea
+                        ariaLabel="Function library description"
+                        name="description"
+                        label={ t("functionLibraries:forms.description.label") }
+                        placeholder={ t("functionLibraries:forms.description.placeholder") }
+                        required={ false }
+                        maxLength={ FunctionLibraryConstants.DESCRIPTION_MAX_LENGTH }
+                        minLength={ 0 }
+                        readOnly={ !hasUpdatePermission }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-description-input` }
+                    />
+                    <FunctionLibraryContentEditor
+                        value={ content }
+                        onChange={ (value: string) => {
+                            setContent(value);
+                            if (value) {
+                                setContentError(undefined);
+                            }
+                        } }
+                        readOnly={ !hasUpdatePermission }
+                        error={ contentError }
+                        data-componentid={ `${ componentId }-content-editor` }
+                    />
+                    <Field.Button
+                        form={ FORM_ID }
+                        size="small"
+                        buttonType="primary_btn"
+                        ariaLabel="Function library update button"
+                        name="update-button"
+                        disabled={ isSubmitting || !hasUpdatePermission }
+                        loading={ isSubmitting }
+                        label={ t("common:update") }
+                        data-componentid={ `${ componentId }-submit-button` }
+                    />
+                </Form>
+                <ConfirmationModal
+                    primaryActionLoading={ isSubmitting }
+                    onClose={ () => setPendingRenameValues(null) }
+                    type="warning"
+                    open={ !!pendingRenameValues }
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ () => setPendingRenameValues(null) }
+                    onPrimaryActionClick={ () => {
+                        const values: EditFunctionLibraryFormValuesInterface = pendingRenameValues;
 
-                    setPendingRenameValues(null);
-                    updateLibrary(values);
-                } }
-                data-componentid={ `${ componentId }-rename-confirmation-modal` }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header>
-                    { t("functionLibraries:modals.renameConfirmation.heading") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message attached warning>
-                    { t("functionLibraries:modals.renameConfirmation.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    { t("functionLibraries:modals.renameConfirmation.content", {
-                        newName: pendingRenameValues?.name?.trim(),
-                        oldName: functionLibrary?.name
-                    }) }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
+                        setPendingRenameValues(null);
+                        updateLibrary(values);
+                    } }
+                    data-componentid={ `${ componentId }-rename-confirmation-modal` }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        { t("functionLibraries:modals.renameConfirmation.heading") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("functionLibraries:modals.renameConfirmation.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("functionLibraries:modals.renameConfirmation.content", {
+                            newName: pendingRenameValues?.name?.trim(),
+                            oldName: functionLibrary?.name
+                        }) }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            </EmphasizedSegment>
             { hasDeletePermission && (
                 <>
                     <Divider hidden />
@@ -324,7 +326,7 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
                     </ConfirmationModal>
                 </>
             ) }
-        </EmphasizedSegment>
+        </>
     );
 };
 

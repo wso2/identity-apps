@@ -5810,12 +5810,6 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.6.1
         version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@oxygen-ui/react':
-        specifier: 'catalog:'
-        version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
-      '@oxygen-ui/react-icons':
-        specifier: ^2.4.6
-        version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/access-control':
         specifier: ^3.6.0
         version: link:../../modules/access-control

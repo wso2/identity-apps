@@ -38,7 +38,6 @@ export interface functionLibrariesNS {
     list: {
         columns: {
             name: string;
-            actions: string;
         };
         emptyPlaceholder: {
             title: string;
@@ -67,6 +66,7 @@ export interface functionLibrariesNS {
         };
         content: {
             hint: string;
+            dropzone: string;
             uploadButton: string;
             validations: {
                 empty: string;

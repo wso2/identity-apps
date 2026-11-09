@@ -25,6 +25,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
@@ -183,6 +185,11 @@ const FunctionLibrariesList: FunctionComponent<FunctionLibrariesListPropsInterfa
                         className="header-with-icon"
                         data-componentid={ `${ componentId }-item-heading` }
                     >
+                        <AppAvatar
+                            image={ <AnimatedAvatar name={ data.name } size="mini" /> }
+                            size="mini"
+                            spaced="right"
+                        />
                         <Header.Content>
                             { data.name }
                             <Header.Subheader className="truncate ellipsis">
@@ -199,7 +206,7 @@ const FunctionLibrariesList: FunctionComponent<FunctionLibrariesListPropsInterfa
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("functionLibraries:list.columns.actions")
+                title: ""
             }
         ];
     };
@@ -249,7 +256,8 @@ const FunctionLibrariesList: FunctionComponent<FunctionLibrariesListPropsInterfa
                     imageType: "square"
                 } }
                 data={ functionLibraryList ?? [] }
-                showHeader={ false }
+                showHeader={ true }
+                transparent={ !isLoading && !functionLibraryList?.length }
                 onRowClick={ handleFunctionLibraryEditClick }
                 actions={ createDatatableActions() }
                 columns={ createDatatableColumns() }

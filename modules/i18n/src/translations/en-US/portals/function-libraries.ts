@@ -37,7 +37,8 @@ export const functionLibraries: functionLibrariesNS = {
             hint: "Write the JavaScript content of the function library, or upload an existing .js file. " +
                 "Expose the functions that scripts can use through module.exports, " +
                 "e.g. module.exports.getAge = getAge;",
-            uploadButton: "Upload file",
+            dropzone: "Drag and drop a JavaScript file here.",
+            uploadButton: "Upload JavaScript File",
             validations: {
                 empty: "Function library content cannot be empty."
             }
@@ -66,8 +67,7 @@ export const functionLibraries: functionLibrariesNS = {
     },
     list: {
         columns: {
-            actions: "Actions",
-            name: "Name"
+            name: "Function Library"
         },
         emptyPlaceholder: {
             action: "New Function Library",
@@ -140,8 +140,7 @@ export const functionLibraries: functionLibrariesNS = {
         }
     },
     page: {
-        description: "Create and manage reusable JavaScript function libraries that can be imported " +
-            "into conditional authentication scripts.",
+        description: "Manage reusable JavaScript libraries for conditional authentication scripts.",
         primaryAction: "New Function Library",
         title: "Function Libraries"
     },
