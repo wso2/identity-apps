@@ -23,8 +23,7 @@ export const functionLibraries: functionLibrariesNS = {
         delete: {
             actionTitle: "Delete function library",
             heading: "Delete function library",
-            subHeading: "Once deleted, this function library cannot be recovered. Any conditional " +
-                "authentication scripts that import it will stop working. Please proceed with caution."
+            subHeading: "Once deleted, this function library cannot be recovered. Please proceed with caution."
         },
         header: "Danger Zone"
     },
@@ -34,11 +33,7 @@ export const functionLibraries: functionLibrariesNS = {
     },
     forms: {
         content: {
-            hint: "Write the JavaScript content of the function library, or upload an existing .js file. " +
-                "Expose the functions that scripts can use through module.exports, " +
-                "e.g. module.exports.getAge = getAge;",
-            dropzone: "Drag and drop a JavaScript file here.",
-            uploadButton: "Upload JavaScript File",
+            hint: "Export the functions scripts can use, e.g. module.exports.getAge = getAge;",
             validations: {
                 empty: "Function library content cannot be empty."
             }
@@ -48,8 +43,7 @@ export const functionLibraries: functionLibrariesNS = {
             placeholder: "Enter a description for the function library"
         },
         name: {
-            hint: "A unique name ending with .js. Conditional authentication scripts import the library " +
-                "using this name, so renaming it breaks the scripts that use the current name.",
+            hint: "A unique name ending with .js. Scripts import the library by this name.",
             label: "Name",
             placeholder: "e.g. age-based.js",
             validations: {
@@ -60,8 +54,7 @@ export const functionLibraries: functionLibrariesNS = {
             }
         },
         usage: {
-            hint: "Add this statement to a conditional authentication script to use the functions " +
-                "exported by this library.",
+            hint: "Add this line to a script to use the library.",
             label: "Usage"
         }
     },
@@ -116,6 +109,7 @@ export const functionLibraries: functionLibrariesNS = {
                 message: "Delete successful"
             }
         },
+        duplicateName: "Script library already exist for the provided name.",
         fetch: {
             genericError: {
                 description: "An error occurred while retrieving the function library.",

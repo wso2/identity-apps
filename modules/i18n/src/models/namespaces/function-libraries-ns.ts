@@ -66,8 +66,6 @@ export interface functionLibrariesNS {
         };
         content: {
             hint: string;
-            dropzone: string;
-            uploadButton: string;
             validations: {
                 empty: string;
             };
@@ -101,6 +99,7 @@ export interface functionLibrariesNS {
         };
     };
     notifications: {
+        duplicateName: string;
         fetchList: {
             genericError: NotificationItem;
         };

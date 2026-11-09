@@ -122,6 +122,16 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
                 onUpdate?.(response.data);
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                if (error?.response?.status === 409) {
+                    dispatch(addAlert({
+                        description: t("functionLibraries:notifications.duplicateName"),
+                        level: AlertLevels.ERROR,
+                        message: t("functionLibraries:notifications.update.genericError.message")
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? t("functionLibraries:notifications.update.genericError.description"),

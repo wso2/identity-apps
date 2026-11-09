@@ -16,22 +16,33 @@
  * under the License.
  */
 
-
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CodeEditor, FilePicker, Hint, PickerResult } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import Modal from "@mui/material/Modal";
+import { Theme, styled } from "@mui/material/styles";
+import Box from "@oxygen-ui/react/Box";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import FormControl from "@oxygen-ui/react/FormControl";
+import IconButton from "@oxygen-ui/react/IconButton";
+import MenuItem from "@oxygen-ui/react/MenuItem";
+import Select from "@oxygen-ui/react/Select";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import Typography from "@oxygen-ui/react/Typography";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import type MonacoEditorComponent from "@wso2is/admin.core.v1/components/monaco-editor/monaco-editor";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { Hint } from "@wso2is/react-components";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    LazyExoticComponent,
+    ReactElement,
+    Suspense,
+    lazy,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, Label, Form as SemanticForm } from "semantic-ui-react";
-import { JavaScriptFileStrategy } from "../utils/function-library-utils";
-
-/**
- * The part of the CodeMirror editor instance used by {@link FunctionLibraryContentEditor}.
- */
-interface CodeMirrorEditorInterface {
-    getValue: () => string;
-    setValue: (value: string) => void;
-}
+import { Label, Form as SemanticForm } from "semantic-ui-react";
+import { SupportedEditorThemes } from "../models/content-editor";
 
 /**
  * Props interface of {@link FunctionLibraryContentEditor}.
@@ -42,7 +53,7 @@ interface FunctionLibraryContentEditorPropsInterface extends IdentifiableCompone
      */
     value: string;
     /**
-     * Called when the content is changed either by typing or by uploading a file.
+     * Called when the content is changed in the editor.
      */
     onChange: (value: string) => void;
     /**
@@ -55,10 +66,129 @@ interface FunctionLibraryContentEditorPropsInterface extends IdentifiableCompone
     error?: string;
 }
 
-const JAVASCRIPT_FILE_STRATEGY: JavaScriptFileStrategy = new JavaScriptFileStrategy();
+/**
+ * Stacks the full-screen editor above the Console's Semantic UI dialogs (z-index 1500), such as the create wizard,
+ * and its toolbar tooltip above the full-screen editor.
+ */
+const FULL_SCREEN_Z_INDEX: number = 1600;
+
+const MonacoEditor: LazyExoticComponent<typeof MonacoEditorComponent> = lazy(() =>
+    import("@wso2is/admin.core.v1/components/monaco-editor/monaco-editor")
+);
+
+const EditorPanel: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.grey[100],
+    border: `1px solid ${ theme.palette.divider }`,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(2)
+}));
+
+const Toolbar: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: theme.spacing(1)
+}));
+
+const ToolbarActions: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    gap: theme.spacing(1)
+}));
+
+const EditorFrame: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.divider }`,
+    height: theme.spacing(50)
+}));
+
+const FullScreenContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: theme.shape.borderRadius,
+    display: "flex",
+    flexDirection: "column",
+    height: "90%",
+    left: "50%",
+    padding: theme.spacing(2),
+    position: "absolute",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "95%"
+}));
+
+const FullScreenEditorFrame: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.divider }`,
+    flex: 1,
+    minHeight: 0
+}));
+
+// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
+const MaximizeIcon = (): ReactElement => (
+    <svg
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        height={ 16 }
+        width={ 16 }
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+);
+
+// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
+const MinimizeIcon = (): ReactElement => (
+    <svg
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        height={ 16 }
+        width={ 16 }
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M18 10h-4v-4"></path>
+        <path d="M20 4l-6 6"></path>
+        <path d="M6 14h4v4"></path>
+        <path d="M10 14l-6 6"></path>
+    </svg>
+);
 
 /**
- * Code editor used to author or upload the JavaScript content of a function library.
+ * Saves the editor theme in the same user preference as the conditional authentication script editor.
+ *
+ * @param theme - Selected theme.
+ */
+const persistEditorTheme = (theme: SupportedEditorThemes): void => {
+    const preferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+    if (!preferences?.identityAppsSettings?.userPreferences) {
+        return;
+    }
+
+    AppUtils.setUserPreferences({
+        ...preferences,
+        identityAppsSettings: {
+            ...preferences.identityAppsSettings,
+            userPreferences: {
+                ...preferences.identityAppsSettings.userPreferences,
+                [ ApplicationManagementConstants.CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY ]: theme
+            }
+        }
+    });
+};
+
+/**
+ * JavaScript editor for the content of a function library: the same Monaco editor, theme selection and full-screen
+ * mode as the conditional authentication script editor.
  *
  * @param props - Props injected to the component.
  * @returns Function library content editor.
@@ -76,107 +206,70 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
 
     const { t } = useTranslation();
 
-    // The code editor replaces its whole document, which moves the cursor to the end, whenever `sourceCode`
-    // changes. So it is only given the initial content, and content that changes outside the editor (e.g. a
-    // file upload) is written to the editor directly. Changes typed in the editor are not fed back to it.
-    const [ initialSourceCode ] = useState<string>(value);
-    const editorRef: MutableRefObject<CodeMirrorEditorInterface> = useRef<CodeMirrorEditorInterface>(null);
-    const lastEditorValue: MutableRefObject<string> = useRef<string>(value);
-    const latestValue: MutableRefObject<string> = useRef<string>(value);
-    // Incremented on every file selection and every edit, so that a file read finishing after either is ignored.
-    const fileReadVersion: MutableRefObject<number> = useRef<number>(0);
-    const selectedFile: MutableRefObject<File> = useRef<File>(null);
-    // The content before a file was uploaded, put back when the file is removed.
-    const contentBeforeUpload: MutableRefObject<string> = useRef<string>(null);
+    const [ editorTheme, setEditorTheme ] = useState<SupportedEditorThemes>(
+        AppUtils.getUserPreferences()?.identityAppsSettings?.userPreferences
+            ?.[ApplicationManagementConstants.CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY]
+        ?? SupportedEditorThemes.DARK
+    );
+    const [ isFullScreen, setIsFullScreen ] = useState<boolean>(false);
 
-    latestValue.current = value;
+    const renderEditor = (): ReactElement => (
+        <MonacoEditor
+            loading={ null }
+            width="100%"
+            height="100%"
+            language="javascript"
+            theme={ editorTheme }
+            value={ value ?? "" }
+            options={ {
+                automaticLayout: true,
+                readOnly
+            } }
+            onChange={ (newValue: string) => onChange(newValue ?? "") }
+            data-componentid={ `${ componentId }-code-editor` }
+        />
+    );
 
-    useEffect(() => {
-        if (value !== lastEditorValue.current && editorRef.current) {
-            lastEditorValue.current = value;
-            editorRef.current.setValue(value ?? "");
-        }
-    }, [ value ]);
-
-    const readFile: (file: File) => void = (file: File): void => {
-        const reader: FileReader = new FileReader();
-        const readVersion: number = ++fileReadVersion.current;
-
-        reader.onload = (): void => {
-            if (readVersion !== fileReadVersion.current) {
-                return;
-            }
-
-            onChange(reader.result as string);
-        };
-        reader.readAsText(file);
-    };
-
-    /**
-     * The file picker reports its whole state on every change, so only a change of the selected file is acted on.
-     */
-    const handleFilePickerChange: (result: PickerResult<string>) => void = (result: PickerResult<string>): void => {
-        const file: File = result?.file ?? null;
-
-        if (file === selectedFile.current) {
-            return;
-        }
-
-        if (file) {
-            if (!selectedFile.current) {
-                contentBeforeUpload.current = latestValue.current;
-            }
-            selectedFile.current = file;
-            readFile(file);
-
-            return;
-        }
-
-        selectedFile.current = null;
-        fileReadVersion.current += 1;
-        onChange(contentBeforeUpload.current ?? "");
-    };
-
-    const codeEditor: ReactElement = (
-        <div className="code-editor-wrapper">
-            <CodeEditor
-                lint
-                allowFullScreen
-                language="javascript"
-                sourceCode={ initialSourceCode }
-                editorDidMount={ (editor: CodeMirrorEditorInterface) => {
-                    editorRef.current = editor;
-                    // The Paste tab mounts a new editor each time it is opened, so bring it up to date.
-                    if (editor.getValue() !== (latestValue.current ?? "")) {
-                        lastEditorValue.current = latestValue.current;
-                        editor.setValue(latestValue.current ?? "");
-                    }
-                } }
-                readOnly={ readOnly }
-                options={ {
-                    lineWrapping: true
-                } }
-                onChange={ (
-                    editor: unknown,
-                    data: unknown,
-                    newValue: string
-                ) => {
-                    // Content written to the editor by this component is reported back here; it is not an edit.
-                    if (newValue === lastEditorValue.current) {
-                        return;
-                    }
-                    fileReadVersion.current += 1;
-                    lastEditorValue.current = newValue;
-                    onChange(newValue);
-                } }
-                translations={ {
-                    copyCode: t("common:copyToClipboard"),
-                    exitFullScreen: t("common:exitFullScreen"),
-                    goFullScreen: t("common:goFullScreen")
-                } }
-                data-componentid={ `${ componentId }-code-editor` }
-            />
-        </div>
+    const renderToolbar = (): ReactElement => (
+        <Toolbar>
+            <Typography>{ t("authenticationFlow:scriptEditor.panelHeader") }</Typography>
+            <ToolbarActions>
+                { !isFullScreen && (
+                    <FormControl size="small">
+                        <Select
+                            value={ editorTheme }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                setEditorTheme(event.target.value as SupportedEditorThemes);
+                                persistEditorTheme(event.target.value as SupportedEditorThemes);
+                            } }
+                            data-componentid={ `${ componentId }-theme-select` }
+                        >
+                            <MenuItem value={ SupportedEditorThemes.LIGHT }>
+                                { t("authenticationFlow:scriptEditor.themes.light.label") }
+                            </MenuItem>
+                            <MenuItem value={ SupportedEditorThemes.DARK }>
+                                { t("authenticationFlow:scriptEditor.themes.dark.label") }
+                            </MenuItem>
+                            <MenuItem value={ SupportedEditorThemes.HIGH_CONTRAST }>
+                                { t("authenticationFlow:scriptEditor.themes.highContrast.label") }
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                ) }
+                <Tooltip
+                    title={ isFullScreen ? t("common:exitFullScreen") : t("common:goFullScreen") }
+                    slotProps={ { popper: { sx: { zIndex: FULL_SCREEN_Z_INDEX + 1 } } } }
+                >
+                    <IconButton
+                        size="small"
+                        onClick={ () => setIsFullScreen(!isFullScreen) }
+                        data-componentid={ `${ componentId }-full-screen-toggle` }
+                    >
+                        { isFullScreen ? <MinimizeIcon /> : <MaximizeIcon /> }
+                    </IconButton>
+                </Tooltip>
+            </ToolbarActions>
+        </Toolbar>
     );
 
     return (
@@ -184,22 +277,28 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
             <Hint>
                 { t("functionLibraries:forms.content.hint") }
             </Hint>
-            { readOnly
-                ? codeEditor
-                : (
-                    <FilePicker
-                        fileStrategy={ JAVASCRIPT_FILE_STRATEGY }
-                        pastedContent={ initialSourceCode }
-                        onChange={ handleFilePickerChange }
-                        uploadButtonText={ t("functionLibraries:forms.content.uploadButton") }
-                        dropzoneText={ t("functionLibraries:forms.content.dropzone") }
-                        icon={ getCertificateIllustrations().uploadPlaceholder }
-                        placeholderIcon={ <Icon name="file code" size="huge" /> }
-                        scriptEditor={ codeEditor }
-                        data-componentid={ `${ componentId }-file-picker` }
-                    />
-                )
-            }
+            <Suspense fallback={ <CircularProgress /> }>
+                <EditorPanel>
+                    { renderToolbar() }
+                    <EditorFrame>
+                        { renderEditor() }
+                    </EditorFrame>
+                </EditorPanel>
+                <Modal
+                    open={ isFullScreen }
+                    onClose={ () => setIsFullScreen(false) }
+                    // The create wizard's blurring dimmer blurs every element directly under <body> but itself, which
+                    // includes this modal, so the blur is switched off here.
+                    sx={ { filter: "none !important", zIndex: FULL_SCREEN_Z_INDEX } }
+                >
+                    <FullScreenContainer data-componentid={ `${ componentId }-full-screen` }>
+                        { renderToolbar() }
+                        <FullScreenEditorFrame>
+                            { renderEditor() }
+                        </FullScreenEditorFrame>
+                    </FullScreenContainer>
+                </Modal>
+            </Suspense>
             { error && (
                 // The error label styles of Semantic UI only apply inside a form field.
                 <SemanticForm as="div">

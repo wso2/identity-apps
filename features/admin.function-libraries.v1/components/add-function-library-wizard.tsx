@@ -109,6 +109,16 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
                 handleClose(true);
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                if (error?.response?.status === 409) {
+                    setAlert({
+                        description: "",
+                        level: AlertLevels.ERROR,
+                        message: t("functionLibraries:notifications.duplicateName")
+                    });
+
+                    return;
+                }
+
                 setAlert({
                     description: error?.response?.data?.description
                         ?? t("functionLibraries:notifications.create.genericError.description"),
@@ -125,7 +135,7 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
     return (
         <Modal
             dimmer="blurring"
-            size="large"
+            size="small"
             open={ true }
             closeOnDimmerClick={ false }
             onClose={ () => handleClose(false) }
