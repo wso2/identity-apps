@@ -21,8 +21,6 @@ import Code from "@oxygen-ui/react/Code/Code";
 import Typography from "@oxygen-ui/react/Typography";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import classNames from "classnames";
-import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "../../../../../hooks/use-authentication-flow-builder-core-context";
@@ -110,12 +108,7 @@ const ExtensionExecution = ({
             display="flex"
             gap={ 1 }
             data-componentid={ componentId }
-            className={ classNames(
-                "flow-builder-execution",
-                "extension-execution",
-                kebabCase(executorName),
-                className
-            ) }
+            className={ `flow-builder-execution extension-execution${ className ? ` ${ className }` : "" }` }
         >
             <img
                 src={ iconSrc }

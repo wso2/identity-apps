@@ -34,7 +34,6 @@ import useExecutionComponentsValidation from "../../../../hooks/use-execution-co
 import useRecoveryFactorValidation from "../../../../hooks/use-factor-validation";
 import useOTPButtonValidation from "../../../../hooks/use-otp-button-validation";
 import useOTPValidation from "../../../../hooks/use-otp-validation";
-import useUserResolveFactorValidation from "../../../../hooks/use-user-resolve-factor-validation";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
@@ -115,7 +114,6 @@ const View: FunctionComponent<ViewPropsInterface> = ({
     useOTPButtonValidation((node as unknown) as Node);
     useRecoveryFactorValidation((node as unknown) as Node);
     useExecutionComponentsValidation((node as unknown) as Node);
-    useUserResolveFactorValidation((node as unknown) as Node);
 
     useEffect(() => {
         if ((data?.components as Element[])?.length <= 0) {

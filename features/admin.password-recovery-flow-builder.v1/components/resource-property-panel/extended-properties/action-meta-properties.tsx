@@ -23,12 +23,15 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
+import {
+    CommonResourcePropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import useAuthenticationFlowBuilderCore
+    from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { Action, Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
-import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
 import { ActionMetaConfigItemInterface } from "../../../models/actions";
-import { Action, Element } from "../../../models/elements";
-import { CommonResourcePropertiesPropsInterface } from "../resource-properties";
 
 /**
  * Props interface of {@link ActionMetaProperties}

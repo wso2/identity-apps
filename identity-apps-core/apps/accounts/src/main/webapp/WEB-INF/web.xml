@@ -90,16 +90,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>manage-profile</servlet-name>
-        <jsp-file>/execution-flow.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>manage-profile</servlet-name>
-        <url-pattern>/manage-profile</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>error</servlet-name>
         <jsp-file>/errors/execution_flow_error.jsp</jsp-file>
     </servlet>

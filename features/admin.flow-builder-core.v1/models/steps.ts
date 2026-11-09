@@ -77,9 +77,7 @@ export enum ExecutionTypes {
     DigitalWalletFederation = "PresentationExecutor",
     DeviceRegistration = "DeviceRegistrationExecutor",
     // Contributed by the Authsignal connector; available only when the connector is deployed.
-    Authsignal = "AuthsignalExecutor",
-    UserVerification = "UserVerificationExecutor",
-    FlowHandoff = "FlowHandoffExecutor"
+    Authsignal = "AuthsignalExecutor"
 }
 
 /**

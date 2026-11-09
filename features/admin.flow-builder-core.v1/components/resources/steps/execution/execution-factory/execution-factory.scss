@@ -24,8 +24,7 @@
     &.confirmation-code,
     &.magic-link,
     &.device-registration,
-    &.flow-extension,
-    &.user-verification-executor {
+    &.flow-extension {
         img {
             filter: invert(100%);
         }
@@ -35,42 +34,5 @@
         img {
             color: white;
         }
-    }
-}
-
-.flow-handoff-execution {
-    width: 100%;
-
-    .flow-handoff-execution-name {
-        font-weight: 600;
-    }
-
-    .flow-handoff-execution-label {
-        margin-top: var(--oxygen-spacing-1);
-        color: var(--oxygen-palette-text-secondary);
-    }
-
-    .flow-handoff-execution-target {
-        margin-top: 2px;
-        padding: 2px var(--oxygen-spacing-1);
-        max-width: 240px;
-        font-family: monospace;
-        background-color: var(--oxygen-palette-background-paper);
-        border: 1px solid var(--oxygen-palette-divider);
-        border-radius: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        &.default {
-            font-family: inherit;
-            font-style: italic;
-            color: var(--oxygen-palette-text-secondary);
-        }
-    }
-
-    .flow-handoff-execution-expiry {
-        margin-top: var(--oxygen-spacing-1);
-        color: var(--oxygen-palette-text-secondary);
     }
 }

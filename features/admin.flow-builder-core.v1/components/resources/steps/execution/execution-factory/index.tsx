@@ -25,7 +25,6 @@ import AppleExecution from "./apple-execution";
 import DigitalWalletExecution from "./digital-wallet-execution";
 import ExtensionExecution from "./extension-execution";
 import FacebookExecution from "./facebook-execution";
-import FlowHandoffExecution from "./flow-handoff-execution";
 import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
 import FlowExtensionExecution from "./flow-extension-execution";
@@ -131,12 +130,6 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
                 <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20"/>
                 <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
             </Box>
-        );
-    }
-
-    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.FlowHandoff) {
-        return (
-            <FlowHandoffExecution resource={ resource } />
         );
     }
 
