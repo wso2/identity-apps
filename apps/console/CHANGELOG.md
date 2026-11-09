@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.32.1
+
+### Patch Changes
+
+- [#10892](https://github.com/wso2/identity-apps/pull/10892) [`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop showing the owner organization of shared and inherited Customer Data Service items
+
+- Updated dependencies [[`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13)]:
+  - @wso2is/admin.cds.v1@1.9.1
+  - @wso2is/i18n@2.59.1
+  - @wso2is/admin.users.v1@2.39.9
+
 ## 4.32.0
 
 ### Minor Changes
