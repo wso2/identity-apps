@@ -23,6 +23,8 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position, useNodeId } from "@xyflow/react";
+import classNames from "classnames";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FC, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import ExecutionFactory from "./execution-factory";
@@ -57,7 +59,13 @@ const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
     const { t } = useTranslation();
 
     return (
-        <div className="execution-minimal-step"  data-componentid={ componentId }>
+        <div
+            className={ classNames(
+                "execution-minimal-step",
+                kebabCase(resource?.data?.action?.executor?.name)
+            ) }
+            data-componentid={ componentId }
+        >
             <Box
                 display="flex"
                 justifyContent="space-between"
