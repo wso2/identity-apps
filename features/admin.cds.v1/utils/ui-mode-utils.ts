@@ -29,3 +29,17 @@
 export const isCDSUnifiedProfileViewEnabled = (): boolean => {
     return window["AppUtils"]?.getConfig()?.extensions?.cdsUnifiedProfileView === true;
 };
+
+/**
+ * Checks whether the Console uses the server configuration API to get and set the CDS status.
+ *
+ * Reads the optional `extensions.cdsTenantConfigEnabled` deployment config. When `true`, the
+ * Console uses `/api/server/v1/configs/cds` of the Identity Server for the CDS status. Any other
+ * value — including unset — keeps the `cds_enabled` field of the CDS configuration API. Turn it on
+ * after the CDS status of each organization is migrated to the Identity Server.
+ *
+ * @returns Whether the server configuration API is used for the CDS status.
+ */
+export const isCDSServerConfigEnabled = (): boolean => {
+    return window["AppUtils"]?.getConfig()?.extensions?.cdsTenantConfigEnabled === true;
+};

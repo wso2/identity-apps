@@ -114,6 +114,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             cdsProfileSchema: "",
             cdsProfiles: "",
             cdsReviewTasks: "",
+            cdsServerConfig: "",
             cdsUnificationRules: "",
             certificates: "",
             claims: "",

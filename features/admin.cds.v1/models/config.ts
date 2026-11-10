@@ -82,6 +82,13 @@ export interface CDSConfig {
 }
 
 /**
+ * CDS status of the organization in the Identity Server configuration API.
+ */
+export interface CDSServerConfigInterface {
+    enabled: boolean;
+}
+
+/**
  * CDS Configuration update request interface.
  */
 export interface CDSConfigUpdateRequest {

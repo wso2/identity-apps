@@ -19,7 +19,8 @@
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
-import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
+import { updateCDSStatus } from "@wso2is/admin.cds.v1/api/config";
+import useCDSEnabled, { UseCDSEnabledReturnInterface } from "@wso2is/admin.cds.v1/hooks/use-cds-enabled";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
 import { CDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/models/config";
 import { getCDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/utils/application-identifier-utils";
@@ -135,6 +136,11 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         mutate: mutateCDSConfig
     } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 
+    const {
+        isEnabled: isCDSEnabled,
+        mutate: mutateCDSStatus
+    }: UseCDSEnabledReturnInterface = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
+
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
         const items: PreviewFeaturesListInterface[] = [];
 
@@ -144,7 +150,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
             items.push({
                 action: t("customerDataService:common.featurePreview.action"),
                 description: t("customerDataService:common.featurePreview.description"),
-                enabled: cdsConfig?.cds_enabled,
+                enabled: isCDSEnabled,
                 id: "customer-data-service",
                 image: NewCDSFeatureImage,
                 message: {
@@ -158,7 +164,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         }
 
         return items;
-    }, [ cdsConfig, cdsFeatureConfig, hasCDSScopes, t ]);
+    }, [ isCDSEnabled, cdsFeatureConfig, hasCDSScopes, t ]);
 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(
         () =>
@@ -200,7 +206,12 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const handleCDSToggle: (enable: boolean) => Promise<void> = useCallback(
         async (enable: boolean): Promise<void> => {
-            const currentApps: string[] = cdsConfig?.system_applications ?? [];
+            // Without the CDS configuration, the new list would drop the other system applications.
+            if (!cdsConfig) {
+                return;
+            }
+
+            const currentApps: string[] = cdsConfig.system_applications ?? [];
 
             try {
                 // Resolve the Console system application identifier for the configured mode.
@@ -214,11 +225,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                         : [ ...currentApps, consoleAppIdentifier ]
                     : currentApps.filter((app: string) => app !== consoleAppIdentifier);
 
-                await updateCDSConfig({
-                    cds_enabled: enable,
-                    system_applications: nextApps
-                });
-                mutateCDSConfig();
+                await updateCDSStatus(enable, nextApps);
 
                 if (enable) {
                     addForceExpandedParent("customerDataService");
@@ -231,9 +238,13 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                         message: t("common:error")
                     })
                 );
+            } finally {
+                // Also after a failure: the Identity Server can store the status before the CDS request fails.
+                mutateCDSConfig();
+                mutateCDSStatus();
             }
         },
-        [ cdsConfig?.system_applications, dispatch, mutateCDSConfig, t ]
+        [ cdsConfig, dispatch, mutateCDSConfig, mutateCDSStatus, t ]
     );
 
     const handleToggleChange: (
