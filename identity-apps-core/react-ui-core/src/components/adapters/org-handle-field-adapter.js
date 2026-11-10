@@ -395,11 +395,20 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
         return <Icon name="circle" inverted color="grey" />;
     };
 
-    const uniqueIconName = criteriaStatus.unique === "fail"
-        ? "remove"
-        : criteriaStatus.unique === "pass"
-            ? "check"
-            : null;
+    const criteriaStatuses = [
+        criteriaStatus.firstAlphabet,
+        criteriaStatus.length,
+        criteriaStatus.alphanumeric,
+        criteriaStatus.unique
+    ];
+    const hasFailedCriteria = criteriaStatuses.includes("fail");
+    const allCriteriaPassed = criteriaStatuses.every((status) => status === "pass");
+
+    const validationIcon = hasFailedCriteria
+        ? { name: "remove", color: "red" }
+        : allCriteriaPassed
+            ? { name: "check", color: "green" }
+            : undefined;
 
     const resolvedLabel = resolveElementText(translations, label) || "Organization Handle";
 
@@ -416,7 +425,7 @@ const OrgHandleFieldAdapter = ({ component, formState, formStateHandler, fieldEr
                 loading={isChecking}
                 error={touched && !!error}
                 placeholder="e.g. acmecorp"
-                icon={uniqueIconName || undefined}/>
+                icon={validationIcon}/>
             {touched && error && (
                 <Label basic color="red" pointing>
                     {error}
