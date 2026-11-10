@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.17.1
+
+### Patch Changes
+
+- [#10907](https://github.com/wso2/identity-apps/pull/10907) [`ffecc5aeebd6eea61768b1afc6d00862664aa348`](https://github.com/wso2/identity-apps/commit/ffecc5aeebd6eea61768b1afc6d00862664aa348) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Translate the time units in the user verification and flow handoff properties
+
 ## 0.17.0
 
 ### Minor Changes
