@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import OrganizationAccess from "../components/organization-access";
-import useCDSConfig from "../hooks/use-config";
+import useCDSEnabled from "../hooks/use-cds-enabled";
 import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import useTreeSync from "../hooks/use-tree-sync";
@@ -53,9 +53,10 @@ const OrganizationSettingsPage: FunctionComponent<IdentifiableComponentInterface
 
     const hasOrganizationUpdateScope: boolean = useRequiredScopes(organizationSettingsFeatureConfig?.scopes?.update);
 
-    const { data: cdsConfig, isLoading: isConfigLoading } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
-
-    const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
+    const {
+        isEnabled: isCDSEnabled,
+        isLoading: isConfigLoading
+    } = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
 
     const isSubOrganization: boolean = useIsSubOrganization();
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();

@@ -39,6 +39,10 @@ export interface CustomerDataServiceEndpointsInterface {
      */
     cdsConfig: string;
     /**
+     * Identity Server API of the CDS status of the organization.
+     */
+    cdsServerConfig: string;
+    /**
      * API of the organization access of a root organization.
      */
     cdsOrganizationAccess: string;
