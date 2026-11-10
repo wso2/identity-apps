@@ -45,6 +45,8 @@ import { FunctionLibraryResponseInterface } from "../models/function-library";
 import {
     FunctionLibraryNameValidationError,
     getFunctionLibraryImportStatement,
+    getFunctionLibraryName,
+    getFunctionLibraryNameWithoutSuffix,
     validateFunctionLibraryName
 } from "../utils/function-library-utils";
 
@@ -111,7 +113,7 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
         updateFunctionLibrary(functionLibrary.id, {
             content,
             description: values.description,
-            name: values.name.trim()
+            name: values.name
         })
             .then((response: AxiosResponse<FunctionLibraryResponseInterface>) => {
                 dispatch(addAlert({
@@ -154,14 +156,19 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
             return;
         }
 
+        const updatedValues: EditFunctionLibraryFormValuesInterface = {
+            ...values,
+            name: getFunctionLibraryName(values.name)
+        };
+
         // Scripts import a library by name, so renaming it is confirmed first (as in the legacy console).
-        if (values.name.trim() !== functionLibrary.name) {
-            setPendingRenameValues(values);
+        if (updatedValues.name !== functionLibrary.name) {
+            setPendingRenameValues(updatedValues);
 
             return;
         }
 
-        updateLibrary(values);
+        updateLibrary(updatedValues);
     };
 
     const handleDelete: () => void = (): void => {
@@ -201,7 +208,7 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
                     onSubmit={ handleSubmit }
                     initialValues={ {
                         description: functionLibrary?.description ?? "",
-                        name: functionLibrary?.name ?? ""
+                        name: getFunctionLibraryNameWithoutSuffix(functionLibrary?.name)
                     } }
                 >
                     <Field.Input
@@ -213,15 +220,19 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
                         required={ true }
                         readOnly={ !hasUpdatePermission }
                         maxLength={ FunctionLibraryConstants.NAME_MAX_LENGTH }
-                        minLength={ FunctionLibraryConstants.NAME_MIN_LENGTH }
+                        minLength={ 1 }
                         validate={ (value: string): string | undefined => {
                             const error: FunctionLibraryNameValidationError = validateFunctionLibraryName(value);
 
                             return error ? t(`functionLibraries:forms.name.validations.${ error }`) : undefined;
                         } }
                         width={ 16 }
+                        labelPosition="right"
                         data-componentid={ `${ componentId }-name-input` }
-                    />
+                    >
+                        <input />
+                        <label className="ui label">{ FunctionLibraryConstants.NAME_SUFFIX }</label>
+                    </Field.Input>
                     <SemanticForm.Field>
                         <label>{ t("functionLibraries:forms.usage.label") }</label>
                         <CopyInputField
@@ -291,7 +302,7 @@ const EditFunctionLibrary: FunctionComponent<EditFunctionLibraryPropsInterface> 
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
                         { t("functionLibraries:modals.renameConfirmation.content", {
-                            newName: pendingRenameValues?.name?.trim(),
+                            newName: pendingRenameValues?.name,
                             oldName: functionLibrary?.name
                         }) }
                     </ConfirmationModal.Content>

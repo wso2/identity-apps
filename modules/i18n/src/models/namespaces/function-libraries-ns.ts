@@ -65,7 +65,6 @@ export interface functionLibrariesNS {
             hint: string;
         };
         content: {
-            hint: string;
             validations: {
                 empty: string;
             };

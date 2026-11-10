@@ -29,7 +29,11 @@ import { Grid, Modal } from "semantic-ui-react";
 import FunctionLibraryContentEditor from "./function-library-content-editor";
 import { createFunctionLibrary } from "../api/function-library";
 import { FUNCTION_LIBRARY_ADD_WIZARD, FunctionLibraryConstants } from "../constants";
-import { FunctionLibraryNameValidationError, validateFunctionLibraryName } from "../utils/function-library-utils";
+import {
+    FunctionLibraryNameValidationError,
+    getFunctionLibraryName,
+    validateFunctionLibraryName
+} from "../utils/function-library-utils";
 
 /**
  * Ref exposed by the `Form` component of `@wso2is/forms`.
@@ -51,7 +55,6 @@ type AddFunctionLibraryWizardPropsInterface = {
 
 interface AddFunctionLibraryFormValuesInterface {
     name: string;
-    description: string;
 }
 
 const FORM_ID: string = "add-function-library-form";
@@ -97,8 +100,7 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
 
         createFunctionLibrary({
             content,
-            description: values.description,
-            name: values.name.trim()
+            name: getFunctionLibraryName(values.name)
         })
             .then(() => {
                 dispatch(addAlert({
@@ -155,7 +157,6 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
                     uncontrolledForm={ false }
                     onSubmit={ handleSubmit }
                     initialValues={ {
-                        description: "",
                         name: ""
                     } }
                 >
@@ -167,7 +168,7 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
                         placeholder={ t("functionLibraries:forms.name.placeholder") }
                         hint={ t("functionLibraries:forms.name.hint") }
                         required={ true }
-                        minLength={ FunctionLibraryConstants.NAME_MIN_LENGTH }
+                        minLength={ 1 }
                         maxLength={ FunctionLibraryConstants.NAME_MAX_LENGTH }
                         validate={ (value: string): string | undefined => {
                             const error: FunctionLibraryNameValidationError = validateFunctionLibraryName(value);
@@ -175,31 +176,24 @@ const AddFunctionLibraryWizard: FunctionComponent<AddFunctionLibraryWizardPropsI
                             return error ? t(`functionLibraries:forms.name.validations.${ error }`) : undefined;
                         } }
                         width={ 16 }
+                        labelPosition="right"
                         data-componentid={ `${ componentId }-name-input` }
-                    />
-                    <Field.Textarea
-                        ariaLabel="Function library description"
-                        name="description"
-                        label={ t("functionLibraries:forms.description.label") }
-                        placeholder={ t("functionLibraries:forms.description.placeholder") }
-                        required={ false }
-                        maxLength={ FunctionLibraryConstants.DESCRIPTION_MAX_LENGTH }
-                        minLength={ 0 }
-                        width={ 16 }
-                        data-componentid={ `${ componentId }-description-input` }
+                    >
+                        <input />
+                        <label className="ui label">{ FunctionLibraryConstants.NAME_SUFFIX }</label>
+                    </Field.Input>
+                    <FunctionLibraryContentEditor
+                        value={ content }
+                        onChange={ (value: string) => {
+                            setContent(value);
+                            if (value) {
+                                setContentError(undefined);
+                            }
+                        } }
+                        error={ contentError }
+                        data-componentid={ `${ componentId }-content-editor` }
                     />
                 </Form>
-                <FunctionLibraryContentEditor
-                    value={ content }
-                    onChange={ (value: string) => {
-                        setContent(value);
-                        if (value) {
-                            setContentError(undefined);
-                        }
-                    } }
-                    error={ contentError }
-                    data-componentid={ `${ componentId }-content-editor` }
-                />
                 { isSubmitting && <ContentLoader /> }
             </Modal.Content>
             <Modal.Actions>

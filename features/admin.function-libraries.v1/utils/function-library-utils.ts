@@ -28,23 +28,46 @@ export enum FunctionLibraryNameValidationError {
 }
 
 /**
- * Validates the name of a new function library.
+ * Removes the `.js` ending from a function library name, for the name field, which shows `.js` after the input.
  *
- * @param name - Name to validate.
+ * @param name - Function library name, or the value typed in the name field.
+ * @returns The name without spaces around it and without its `.js` ending.
+ */
+export const getFunctionLibraryNameWithoutSuffix = (name: string): string => {
+    const trimmedName: string = name?.trim() ?? "";
+
+    return trimmedName.endsWith(FunctionLibraryConstants.NAME_SUFFIX)
+        ? trimmedName.slice(0, -FunctionLibraryConstants.NAME_SUFFIX.length).trim()
+        : trimmedName;
+};
+
+/**
+ * Builds the function library name from the value typed in the name field: `.js` is added, unless it was typed.
+ *
+ * @param value - Value of the name field.
+ * @returns The function library name, e.g. `age-based.js` for both `age-based` and `age-based.js`.
+ */
+export const getFunctionLibraryName = (value: string): string =>
+    `${ getFunctionLibraryNameWithoutSuffix(value) }${ FunctionLibraryConstants.NAME_SUFFIX }`;
+
+/**
+ * Validates the value of the name field, with or without its `.js` ending.
+ *
+ * @param value - Value to validate.
  * @returns The validation error, or `undefined` if the name is valid.
  */
-export const validateFunctionLibraryName = (name: string): FunctionLibraryNameValidationError | undefined => {
-    const trimmedName: string = name?.trim();
+export const validateFunctionLibraryName = (value: string): FunctionLibraryNameValidationError | undefined => {
+    const nameWithoutSuffix: string = getFunctionLibraryNameWithoutSuffix(value);
 
-    if (!trimmedName) {
+    if (!nameWithoutSuffix) {
         return FunctionLibraryNameValidationError.REQUIRED;
     }
 
-    if (trimmedName.length > FunctionLibraryConstants.NAME_MAX_LENGTH) {
+    if (getFunctionLibraryName(value).length > FunctionLibraryConstants.NAME_MAX_LENGTH) {
         return FunctionLibraryNameValidationError.MAX_LENGTH;
     }
 
-    if (!FunctionLibraryConstants.NAME_REGEX.test(trimmedName)) {
+    if (!FunctionLibraryConstants.NAME_REGEX.test(nameWithoutSuffix)) {
         return FunctionLibraryNameValidationError.INVALID;
     }
 

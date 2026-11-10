@@ -27,17 +27,19 @@ export class FunctionLibraryConstants {
      * Matches the `NAME` column size of the `IDN_FUNCTION_LIBRARY` table.
      */
     public static readonly NAME_MAX_LENGTH: number = 255;
-    public static readonly NAME_MIN_LENGTH: number = 4;
+    /**
+     * Ending of every function library name. The name field shows it after the input and adds it to the name.
+     */
+    public static readonly NAME_SUFFIX: string = ".js";
     /**
      * Same limit enforced by the legacy management console.
      */
     public static readonly DESCRIPTION_MAX_LENGTH: number = 1020;
     /**
      * The characters allowed by the backend (`^[a-zA-Z0-9 ._-]*$`, spaces included, as in the legacy
-     * management console), ending with `.js` since scripts import the library by its full name
-     * (e.g. `require("age-based.js")`).
+     * management console), for the name without its `.js` ending.
      */
-    public static readonly NAME_REGEX: RegExp = /^[a-zA-Z0-9 ._-]+\.js$/;
+    public static readonly NAME_REGEX: RegExp = /^[a-zA-Z0-9 ._-]+$/;
     /**
      * JavaScript reserved words, including those reserved in strict mode, which cannot be used as variable names.
      */

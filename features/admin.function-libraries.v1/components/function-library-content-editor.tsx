@@ -30,7 +30,6 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import type MonacoEditorComponent from "@wso2is/admin.core.v1/components/monaco-editor/monaco-editor";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
-import { Hint } from "@wso2is/react-components";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -274,9 +273,6 @@ const FunctionLibraryContentEditor: FunctionComponent<FunctionLibraryContentEdit
 
     return (
         <div className="function-library-content-editor" data-componentid={ componentId }>
-            <Hint>
-                { t("functionLibraries:forms.content.hint") }
-            </Hint>
             <Suspense fallback={ <CircularProgress /> }>
                 <EditorPanel>
                     { renderToolbar() }

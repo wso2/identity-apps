@@ -21,7 +21,7 @@ import { functionLibrariesNS } from "../../../models";
 export const functionLibraries: functionLibrariesNS = {
     dangerZone: {
         delete: {
-            actionTitle: "Delete function library",
+            actionTitle: "Delete",
             heading: "Delete function library",
             subHeading: "Once deleted, this function library cannot be recovered. Please proceed with caution."
         },
@@ -33,7 +33,6 @@ export const functionLibraries: functionLibrariesNS = {
     },
     forms: {
         content: {
-            hint: "Export the functions scripts can use, e.g. module.exports.getAge = getAge;",
             validations: {
                 empty: "Function library content cannot be empty."
             }
@@ -43,19 +42,18 @@ export const functionLibraries: functionLibrariesNS = {
             placeholder: "Enter a description for the function library"
         },
         name: {
-            hint: "A unique name ending with .js. Scripts import the library by this name.",
+            hint: "A unique name for the library. Scripts import it by this name.",
             label: "Name",
-            placeholder: "e.g. age-based.js",
+            placeholder: "e.g. age-based",
             validations: {
-                invalid: "Name must end with .js and can only contain alphanumeric characters, spaces, " +
-                    "dots, hyphens and underscores.",
-                maxLength: "Name cannot exceed 255 characters.",
+                invalid: "Name can only contain alphanumeric characters, spaces, dots, hyphens and underscores.",
+                maxLength: "Name cannot exceed 252 characters.",
                 required: "Name is required."
             }
         },
         usage: {
-            hint: "Add this line to a script to use the library.",
-            label: "Usage"
+            hint: "How to import this library in an adaptive authentication script.",
+            label: "Usage Example"
         }
     },
     list: {
@@ -80,8 +78,8 @@ export const functionLibraries: functionLibrariesNS = {
         renameConfirmation: {
             content: "The function library {{oldName}} will be renamed to {{newName}}.",
             heading: "Are you sure you want to edit the function library name?",
-            message: "If you edit this library name, the authentication scripts which used this will no " +
-                "longer function properly!"
+            message: "Renaming this library may break authentication scripts that reference it. Update those " +
+                "scripts manually to use the new library name."
         }
     },
     notFound: {

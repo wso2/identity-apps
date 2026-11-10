@@ -20,17 +20,49 @@ import { describe, expect, it } from "vitest";
 import {
     FunctionLibraryNameValidationError,
     getFunctionLibraryImportStatement,
+    getFunctionLibraryName,
+    getFunctionLibraryNameWithoutSuffix,
     validateFunctionLibraryName
 } from "../function-library-utils";
 
+describe("getFunctionLibraryName", () => {
+    it.each([
+        [ "age-based", "age-based.js" ],
+        [ "age-based.js", "age-based.js" ],
+        [ "  age-based  ", "age-based.js" ],
+        [ " age-based.js ", "age-based.js" ],
+        [ "age based", "age based.js" ],
+        [ "network.utils", "network.utils.js" ],
+        [ "age-based.js.js", "age-based.js.js" ]
+    ])("builds the name from %s", (value: string, expected: string) => {
+        expect(getFunctionLibraryName(value)).toBe(expected);
+    });
+});
+
+describe("getFunctionLibraryNameWithoutSuffix", () => {
+    it.each([
+        [ "age-based.js", "age-based" ],
+        [ "legacy lib.js", "legacy lib" ],
+        [ "age-based", "age-based" ],
+        [ "", "" ],
+        [ undefined, "" ]
+    ])("removes .js from %s", (name: string, expected: string) => {
+        expect(getFunctionLibraryNameWithoutSuffix(name)).toBe(expected);
+    });
+});
+
 describe("validateFunctionLibraryName", () => {
     it.each([
+        "age-based",
         "age-based.js",
-        "age_based.js",
-        "network.utils.js",
-        "Lib1.js",
-        "age based.js",
-        "legacy lib v2.js"
+        "age_based",
+        "network.utils",
+        "Lib1",
+        "a",
+        "age based",
+        "legacy lib v2.js",
+        "a".repeat(252),
+        `${ "a".repeat(252) }.js`
     ])("accepts the valid name %s", (name: string) => {
         expect(validateFunctionLibraryName(name)).toBeUndefined();
     });
@@ -39,12 +71,11 @@ describe("validateFunctionLibraryName", () => {
         [ "", FunctionLibraryNameValidationError.REQUIRED ],
         [ "   ", FunctionLibraryNameValidationError.REQUIRED ],
         [ undefined, FunctionLibraryNameValidationError.REQUIRED ],
-        [ "age-based", FunctionLibraryNameValidationError.INVALID ],
-        [ "age-based.js.bak", FunctionLibraryNameValidationError.INVALID ],
-        [ "age\tbased.js", FunctionLibraryNameValidationError.INVALID ],
-        [ "age*based.js", FunctionLibraryNameValidationError.INVALID ],
-        [ ".js", FunctionLibraryNameValidationError.INVALID ],
+        [ ".js", FunctionLibraryNameValidationError.REQUIRED ],
+        [ "age\tbased", FunctionLibraryNameValidationError.INVALID ],
+        [ "age*based", FunctionLibraryNameValidationError.INVALID ],
         [ "age/based.js", FunctionLibraryNameValidationError.INVALID ],
+        [ "a".repeat(253), FunctionLibraryNameValidationError.MAX_LENGTH ],
         [ `${ "a".repeat(253) }.js`, FunctionLibraryNameValidationError.MAX_LENGTH ]
     ])("rejects %s with %s", (name: string, expectedError: FunctionLibraryNameValidationError) => {
         expect(validateFunctionLibraryName(name)).toBe(expectedError);
