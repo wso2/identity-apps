@@ -165,6 +165,24 @@ export interface flowExtensionNS {
         connectionPlaceholder: string;
         noConnectionsWarning: string;
         noConnectionsWarningWithSupport: string;
+        accessConfig: {
+            title: string;
+            description: string;
+            advancedHint: string;
+            runtimeValues: string;
+            headers: string;
+            noRuntimeValues: string;
+            noHeaders: string;
+            noOrganizationAttributes: string;
+            organizationAttributes: string;
+            subjectOrganization: string;
+            notifications: {
+                updateError: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
     };
     contextTree: {
         fieldConfig: {
@@ -176,6 +194,8 @@ export interface flowExtensionNS {
             deleteTooltip: string;
             usernameWriteWarning: string;
             identityClaimWriteWarning: string;
+            flowTypeHint: string;
+            notInFlowWarning: string;
             encryption: {
                 title: string;
                 formReadOnly: string;
@@ -195,11 +215,22 @@ export interface flowExtensionNS {
             };
         };
         node: {
+            descriptions: {
+                organization: string;
+                subjectOrganization: string;
+            };
+            flowTypesOnlyBadge: string;
             readChip: string;
             writeChip: string;
             addEntryChip: string;
             readOnlyBadge: string;
             noEntries: string;
+            notInFlowBadge: string;
+        };
+        flowTypes: {
+            REGISTRATION: string;
+            PASSWORD_RECOVERY: string;
+            INVITED_USER_REGISTRATION: string;
         };
         addClaimModal: {
             title: string;
@@ -212,24 +243,6 @@ export interface flowExtensionNS {
             fetchError: {
                 message: string;
                 description: string;
-            };
-        };
-        addOrganizationAttributeModal: {
-            title: string;
-            subtitle: string;
-            noOptions: string;
-            invalidKey: string;
-            duplicateKey: string;
-            searchPlaceholder: string;
-            cancelButton: string;
-            addButton: string;
-            defineCustomAttribute: {
-                title: string;
-                keyLabel: string;
-                keyPlaceholder: string;
-                labelLabel: string;
-                labelPlaceholder: string;
-                addButton: string;
             };
         };
         addEntryModal: {

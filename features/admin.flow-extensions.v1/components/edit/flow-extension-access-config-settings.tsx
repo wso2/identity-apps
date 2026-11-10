@@ -31,25 +31,17 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowExtension from "../../api/update-flow-extension";
 import useFlowExtensionContextTree from "../../api/use-flow-extension-context-tree";
-import useGetPublishedFlow from "../../api/use-get-published-flow";
-import { OrganizationContextConstants } from "../../constants/organization-context-constants";
 import {
     ClaimAccessConfigInterface,
     FlowExtensionResponseInterface,
     FlowExtensionUpdateRequestInterface
 } from "../../models/flow-extension";
-import { PublishedFlowInterface } from "../../models/published-flow";
 import {
     FlowContextTree,
     FlowExtensionAccessConfigInterface,
     FlowExtensionContextTreeResponseInterface,
     InitialAccessConfigInterface
 } from "../flow-context-tree";
-import { ContextTreeNodeMetadataInterface } from "../flow-context-tree/models";
-import {
-    OrganizationAttributeEntryInterface,
-    extractOrganizationAttributes
-} from "../flow-context-tree/organization-attributes";
 
 /**
  * Props for the Flow Extension access config settings tab.
@@ -99,13 +91,6 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
         isLoading: isContextTreeLoading
     } = useFlowExtensionContextTree<FlowExtensionContextTreeResponseInterface>();
 
-    // Scanned for the organization attributes it collects, so they can be offered here without
-    // being typed again. Failure is not fatal — the branch still renders its core fields.
-    const {
-        data: publishedFlow,
-        isLoading: isPublishedFlowLoading
-    } = useGetPublishedFlow<PublishedFlowInterface>(OrganizationContextConstants.SOURCE_FLOW_TYPE);
-
     const [ accessConfig, setAccessConfig ] = useState<ClaimAccessConfigInterface>({ expose: [], modify: [] });
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -128,62 +113,6 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
         },
         [ flowExtension ]
     );
-
-    /**
-     * Options offered when adding an entry to the attributes container from the custom keys the
-     * published flow collects. Core organization fields are available at their top-level paths.
-     */
-    const organizationAttributes: OrganizationAttributeEntryInterface[] = useMemo(
-        (): OrganizationAttributeEntryInterface[] => extractOrganizationAttributes(publishedFlow),
-        [ publishedFlow ]
-    );
-
-    /**
-     * Preserve server Organization metadata and add its missing attributes container.
-     * Do not create an Organization branch when the server omits it.
-     */
-    const contextTree: ContextTreeNodeMetadataInterface[] = useMemo((): ContextTreeNodeMetadataInterface[] => {
-        if (!contextTreeData?.context) {
-            return [];
-        }
-
-        const hasServerOrganizationNode: boolean = contextTreeData.context.some(
-            (node: ContextTreeNodeMetadataInterface) =>
-                node.path?.replace(/\/+$/, "") === OrganizationContextConstants.ORGANIZATION_PATH_PREFIX
-                    .replace(/\/+$/, "")
-        );
-
-        if (hasServerOrganizationNode) {
-            return contextTreeData.context.map(
-                (node: ContextTreeNodeMetadataInterface): ContextTreeNodeMetadataInterface => {
-                    const isOrganizationNode: boolean = node.path?.replace(/\/+$/, "") ===
-                        OrganizationContextConstants.ORGANIZATION_PATH_PREFIX.replace(/\/+$/, "");
-
-                    if (!isOrganizationNode) {
-                        return node;
-                    }
-
-                    const hasAttributesNode: boolean = node.children?.some(
-                        (child: ContextTreeNodeMetadataInterface): boolean =>
-                            child.path?.replace(/\/+$/, "") ===
-                            OrganizationContextConstants.ORGANIZATION_ATTRIBUTES_PATH
-                    ) ?? false;
-
-                    return hasAttributesNode
-                        ? node
-                        : {
-                            ...node,
-                            children: [
-                                ...(node.children ?? []),
-                                OrganizationContextConstants.ORGANIZATION_ATTRIBUTES_NODE
-                            ]
-                        };
-                }
-            );
-        }
-
-        return contextTreeData.context;
-    }, [ contextTreeData ]);
 
     const handleAccessConfigChange = (
         newAccessConfig: FlowExtensionAccessConfigInterface
@@ -245,10 +174,7 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
             });
     };
 
-    // The tree snapshots its metadata in a lazy state initialiser, so the flow scan has to have
-    // settled before it mounts. SWR clears `isLoading` on failure too, so a missing or rejected
-    // flow does not hold the page.
-    if (isLoading || !flowExtension || isContextTreeLoading || isPublishedFlowLoading) {
+    if (isLoading || !flowExtension || isContextTreeLoading) {
         return <ContentLoader />;
     }
 
@@ -285,13 +211,12 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
                 ) }
                 <FlowContextTree
                     key={ resetKey }
-                    contextTree={ contextTree }
+                    contextTree={ contextTreeData.context ?? [] }
                     onChange={ handleAccessConfigChange }
                     initialAccessConfig={ initialAccessConfig }
                     readOnly={ isReadOnly }
                     hasCertificate={ hasCertificate }
                     allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
-                    organizationAttributeOptions={ organizationAttributes }
                     redirectionEnabled={ contextTreeData.redirectionEnabled }
                     data-componentid={ `${componentId}-tree` }
                 />

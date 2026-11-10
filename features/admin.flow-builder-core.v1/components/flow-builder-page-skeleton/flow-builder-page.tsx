@@ -20,10 +20,11 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, useCallback, useEffect } from "react";
 import FloatingPublishButton, { FloatingPublishButtonProps } from "./floating-publish-button";
 import FloatingRevertButton, { FloatingRevertButtonProps } from "./floating-revert-button";
 import FlowBuilderPageHeader from "./flow-builder-page-header";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import "./flow-builder-page.scss";
 
 /**
@@ -52,6 +53,29 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
 }: FlowBuilderPageProps): ReactElement => {
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { saveFlowExtensionAccessConfigs, setIsFlowExtensionAccessLocked } = useAuthenticationFlowBuilderCore();
+
+    /**
+     * Saves the flow, then the access configs of the flow extensions changed in it. The flow goes first, as the
+     * extensions are given access to the runtime values and headers it defines. The publish succeeds only when both
+     * are saved, so a flow is not enabled while one of its extensions lacks the access it was given. The access configs
+     * are locked until both are saved, so a change made meanwhile cannot be left unsaved.
+     */
+    const handlePublish: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
+        setIsFlowExtensionAccessLocked?.(true);
+
+        try {
+            const isFlowSaved: boolean = await onPublish();
+
+            if (!isFlowSaved) {
+                return false;
+            }
+
+            return await saveFlowExtensionAccessConfigs?.() ?? true;
+        } finally {
+            setIsFlowExtensionAccessLocked?.(false);
+        }
+    }, [ onPublish, saveFlowExtensionAccessConfigs, setIsFlowExtensionAccessLocked ]);
 
     /**
      * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
@@ -69,7 +93,7 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
                 <FlowBuilderPageHeader
                     flowType={ flowType }
                     isPublishing={ isPublishing }
-                    onPublish={ onPublish }
+                    onPublish={ handlePublish }
                     flowTypeDisplayName={ flowTypeDisplayName }
                 />
             </div>
@@ -84,7 +108,7 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
             <FloatingPublishButton
                 flowType={ flowType }
                 isPublishing={ isPublishing }
-                onPublish={ onPublish }
+                onPublish={ handlePublish }
                 flowTypeDisplayName={ flowTypeDisplayName }
             />
         </div>

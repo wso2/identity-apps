@@ -19,14 +19,26 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Collapse from "@oxygen-ui/react/Collapse";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { ChevronRightIcon, CircleInfoIcon } from "@oxygen-ui/react-icons";
+import FlowExtensionAccessConstants from "@wso2is/admin.flow-builder-core.v1/constants/flow-extension-access-constants";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LockIcon } from "../../resources/assets/images/icons/lock.svg";
+import FlowExtensionAccessUtils from "./flow-extension-access-utils";
 import { NodeType, TreeNodeStateInterface } from "./models";
 
 const INDENT: number = 18;
+
+/**
+ * Explanations shown on hover for the sections that are easy to mix up, keyed by path.
+ */
+const SECTION_DESCRIPTION_KEYS: Record<string, string> = {
+    [ FlowExtensionAccessConstants.ORGANIZATION_PATH ]: "flowExtension:contextTree.node.descriptions.organization",
+    [ FlowExtensionAccessConstants.SUBJECT_ORGANIZATION_PATH ]:
+        "flowExtension:contextTree.node.descriptions.subjectOrganization"
+};
 
 interface FlowContextTreeNodeProps {
     node: TreeNodeStateInterface;
@@ -100,11 +112,17 @@ const OpChips = ({
                     } }
                     sx={ {
                         "& .MuiChip-label": { px: "6px" },
-                        backgroundColor: node.exposed ? "#E8F5E9" : "transparent",
+                        backgroundColor: node.exposed
+                            ? FlowExtensionAccessConstants.READ_CHIP_COLORS.background
+                            : "transparent",
                         border: "1px solid",
-                        borderColor: node.exposed ? "#2E7D32" : "#EBEBEB",
+                        borderColor: node.exposed
+                            ? FlowExtensionAccessConstants.READ_CHIP_COLORS.color
+                            : FlowExtensionAccessConstants.IDLE_CHIP_BORDER_COLOR,
                         borderRadius: "20px",
-                        color: node.exposed ? "#2E7D32" : "#787878",
+                        color: node.exposed
+                            ? FlowExtensionAccessConstants.READ_CHIP_COLORS.color
+                            : FlowExtensionAccessConstants.IDLE_CHIP_TEXT_COLOR,
                         cursor: readOnly ? "default" : "pointer",
                         flexShrink: 0,
                         fontSize: "9.5px",
@@ -114,9 +132,9 @@ const OpChips = ({
                         transition: "all 0.12s ease",
                         ...(!node.exposed && {
                             "&:hover": {
-                                backgroundColor: "#E8F5E9",
-                                borderColor: "#2E7D32",
-                                color: "#2E7D32"
+                                backgroundColor: FlowExtensionAccessConstants.READ_CHIP_COLORS.background,
+                                borderColor: FlowExtensionAccessConstants.READ_CHIP_COLORS.color,
+                                color: FlowExtensionAccessConstants.READ_CHIP_COLORS.color
                             }
                         })
                     } }
@@ -144,11 +162,17 @@ const OpChips = ({
                     } }
                     sx={ {
                         "& .MuiChip-label": { px: "6px" },
-                        backgroundColor: node.modify ? "#E3F2FD" : "transparent",
+                        backgroundColor: node.modify
+                            ? FlowExtensionAccessConstants.WRITE_CHIP_COLORS.background
+                            : "transparent",
                         border: "1px solid",
-                        borderColor: node.modify ? "#1565C0" : "#EBEBEB",
+                        borderColor: node.modify
+                            ? FlowExtensionAccessConstants.WRITE_CHIP_COLORS.color
+                            : FlowExtensionAccessConstants.IDLE_CHIP_BORDER_COLOR,
                         borderRadius: "20px",
-                        color: node.modify ? "#1565C0" : "#787878",
+                        color: node.modify
+                            ? FlowExtensionAccessConstants.WRITE_CHIP_COLORS.color
+                            : FlowExtensionAccessConstants.IDLE_CHIP_TEXT_COLOR,
                         cursor: readOnly ? "default" : "pointer",
                         flexShrink: 0,
                         fontSize: "9.5px",
@@ -158,9 +182,9 @@ const OpChips = ({
                         transition: "all 0.12s ease",
                         ...(!node.modify && {
                             "&:hover": {
-                                backgroundColor: "#E3F2FD",
-                                borderColor: "#1565C0",
-                                color: "#1565C0"
+                                backgroundColor: FlowExtensionAccessConstants.WRITE_CHIP_COLORS.background,
+                                borderColor: FlowExtensionAccessConstants.WRITE_CHIP_COLORS.color,
+                                color: FlowExtensionAccessConstants.WRITE_CHIP_COLORS.color
                             }
                         })
                     } }
@@ -227,6 +251,17 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
         node.nodeType === NodeType.MAP ||
         node.nodeType === NodeType.COMPLEX_MAP;
     const selected: boolean = selectedKey === node.key && isLeaf;
+    // Flow type rows only separate the runtime values or headers of each flow, so they are kept light.
+    const isFlowTypeGroup: boolean = isContainer && !!node.flowType;
+    const descriptionKey: string | undefined = isContainer
+        ? SECTION_DESCRIPTION_KEYS[ node.path.replace(/\/+$/, "") ]
+        : undefined;
+    // A top-level section that some flows only have, such as the organization a registration flow onboards.
+    const flowTypesOnly: string = depth === 0 && isContainer && !node.flowType && node.applicableFlowTypes?.length
+        ? node.applicableFlowTypes
+            .map((flowType: string) => FlowExtensionAccessUtils.getFlowTypeLabel(t, flowType))
+            .join(", ")
+        : "";
 
     // Container band sits a few pixels to the left of the row's content padding so
     // the chevron + title get a small left gutter inside the band.
@@ -271,7 +306,7 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                             // edge of the tree column. The band provides the emphasis, so hover and
                             // selected backgrounds are suppressed.
                             "&::before": {
-                                backgroundColor: "#F4F4F4",
+                                backgroundColor: FlowExtensionAccessConstants.ROW_BAND_COLOR,
                                 borderRadius: "6px",
                                 bottom: 4,
                                 content: "\"\"",
@@ -286,17 +321,26 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                         }
                         : {
                             "&:hover": {
-                                backgroundColor: selected ? "#FFF4EC" : "#F4F4F4"
+                                backgroundColor: selected ? "#FFF4EC" : FlowExtensionAccessConstants.ROW_BAND_COLOR
                             },
                             backgroundColor: selected ? "#FFF4EC" : "transparent"
-                        })
+                        }),
+                    // A flow type row drops the container band and sits closer to its entries.
+                    ...(isFlowTypeGroup
+                        ? {
+                            "&::before": { display: "none" },
+                            minHeight: "26px",
+                            pb: "2px",
+                            pt: "6px"
+                        }
+                        : {})
                 } }
             >
                 { /* Expand icon (containers only); leaves keep the slot empty for alignment. */ }
                 <Box
                     sx={ {
                         alignItems: "center",
-                        color: "#D0D0D0",
+                        color: FlowExtensionAccessConstants.CHEVRON_COLOR,
                         display: "flex",
                         flexShrink: 0,
                         justifyContent: "center",
@@ -332,21 +376,81 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                         sx={ {
                             // Group headers are always primary; the "Read-Only" caption (not the
                             // colour) conveys read-only state, so headers don't dim with their content.
-                            color: isContainer ? "text.primary" : "text.secondary",
+                            color: isFlowTypeGroup
+                                ? "text.disabled"
+                                : isContainer ? "text.primary" : "text.secondary",
                             fontFamily: isLeaf || node.canDelete
                                 ? "monospace"
                                 : undefined,
-                            fontSize: isContainer ? 14 : 13,
-                            fontWeight: isContainer ? 600 : 500,
-                            letterSpacing: "-0.01em",
-                            lineHeight: 1,
+                            fontSize: isFlowTypeGroup ? 11 : isContainer ? 14 : 13,
+                            fontWeight: isFlowTypeGroup ? 500 : isContainer ? 600 : 500,
+                            letterSpacing: isFlowTypeGroup ? "0.02em" : "-0.01em",
+                            lineHeight: 1.4,
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                             whiteSpace: "nowrap"
                         } }
                     >
-                        { node.title }
+                        {
+                            isContainer && node.flowType
+                                ? FlowExtensionAccessUtils.getFlowTypeLabel(t, node.flowType)
+                                : node.title
+                        }
                     </Typography>
+                    { descriptionKey && (
+                        <Tooltip title={ t(descriptionKey) } placement="top">
+                            <Box
+                                component="span"
+                                sx={ { color: "text.disabled", cursor: "help", display: "inline-flex", flexShrink: 0 } }
+                                data-componentid={ `${componentId}-${node.key}-description` }
+                            >
+                                <CircleInfoIcon size={ 12 } />
+                            </Box>
+                        </Tooltip>
+                    ) }
+                    { flowTypesOnly && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "text.disabled",
+                                flexShrink: 0,
+                                fontSize: "9px",
+                                fontWeight: 500,
+                                lineHeight: 1
+                            } }
+                            data-componentid={ `${componentId}-${node.key}-flow-types` }
+                        >
+                            { t("flowExtension:contextTree.node.flowTypesOnlyBadge", { flowTypes: flowTypesOnly }) }
+                        </Typography>
+                    ) }
+                    { isLeaf && node.flowType && node.dataType && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "text.disabled",
+                                flexShrink: 0,
+                                fontFamily: "monospace",
+                                fontSize: "9px",
+                                lineHeight: 1
+                            } }
+                        >
+                            { node.dataType }
+                        </Typography>
+                    ) }
+                    { isLeaf && node.notInFlow && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "warning.main",
+                                flexShrink: 0,
+                                fontSize: "9px",
+                                fontWeight: 600,
+                                lineHeight: 1
+                            } }
+                        >
+                            { t("flowExtension:contextTree.node.notInFlowBadge") }
+                        </Typography>
+                    ) }
                     { isLeaf && node.readOnly && (
                         <Typography
                             component="span"

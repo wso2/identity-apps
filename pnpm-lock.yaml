@@ -5613,6 +5613,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
+      '@wso2is/admin.flow-builder-core.v1':
+        specifier: workspace:^
+        version: link:../admin.flow-builder-core.v1
       '@wso2is/core':
         specifier: workspace:^
         version: link:../../modules/core
