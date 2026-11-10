@@ -82,7 +82,8 @@ export const authenticationProvider:AuthenticationProviderNS = {
             assertionHint: "",
             content: "Remove the associations from these applications before deleting:",
             header: "Unable to Delete",
-            message: "There are applications using this connection."
+            message: "There are applications using this connection.",
+            residentApplication: "Outbound Provisioning settings"
         },
         deleteIDPWithSharedOrganizations: {
             content: "Unshare this connection from all organizations using the Shared Access tab " +

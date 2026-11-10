@@ -69,6 +69,19 @@ export const flows: flowsNS = {
             policyConsent: {
                 emptyState: "No policies configured"
             },
+            qrCode: {
+                alt: "QR code preview",
+                properties: {
+                    data: {
+                        hint: "Text or link to encode.",
+                        label: "Data"
+                    },
+                    size: {
+                        hint: "Size in pixels, from 96 to 480.",
+                        label: "Size"
+                    }
+                }
+            },
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -103,8 +116,34 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            authsignal: {
+                actionCode: {
+                    hint: "Action code of the flow in the Authsignal Portal. Leave empty to use the action code set in the Authsignal connector settings.",
+                    label: "Action code (optional)",
+                    placeholder: "Enter the Authsignal action code, e.g. sign-in"
+                },
+                description: "Configure the Authsignal flow that runs at this step."
+            },
             confirmationCode: {
                 configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
+            },
+            flowHandoff: {
+                defaultTargets: {
+                    passwordRecovery: "Recovery Portal",
+                    profileUpdate: "Profile Management page",
+                    registration: "Self Signup page"
+                },
+                expiryTime: "Link valid {{expiryTime}} s",
+                expiryTimeHint: "How long the link stays valid.",
+                expiryTimeLabel: "Link valid for",
+                expiryTimePlaceholder: "Enter expiry time",
+                targetUrlDefaultHint: "The page the one-time link points to, where the flow will continue. " +
+                    "Leave empty to use the default {{target}}.",
+                targetUrlDescription: "Get a one-time link to continue flow at",
+                targetUrlHint: "The page the one-time link points to, where the flow will continue. Leave empty " +
+                    "to use the {{target}}.",
+                targetUrlLabel: "Continue at",
+                targetUrlPlaceholder: "https://myapp.com/manage-profile"
             },
             landing:{
                 message: "Configure the {{executor}} settings and publish to apply the changes."
@@ -124,6 +163,11 @@ export const flows: flowsNS = {
             },
             tooltip: {
                 configurationHint: "Configure"
+            },
+            userVerification: {
+                tokenValidityPeriodHint: "Only tokens issued within this time are accepted.",
+                tokenValidityPeriodLabel: "Maximum token age",
+                tokenValidityPeriodPlaceholder: "Enter the maximum token age"
             }
         },
         labels: {
@@ -340,6 +384,10 @@ export const flows: flowsNS = {
             enableFlow: "Enable the {{flowType}} flow"
         },
         validation: {
+            executionStep: {
+                disallowedComponents: "This step can't show {{types}} in its current phase. Remove them or "
+                    + "change the phase."
+            },
             fields: {
                 button: {
                     action: "Button must have an action type defined for proper functionality.",
@@ -390,6 +438,10 @@ export const flows: flowsNS = {
                     noPoliciesAvailable: "No policies are available for selection.",
                     policiesRequired: "At least one policy must be selected."
                 },
+                qrCode: {
+                    data: "QR code must have data to encode.",
+                    general: "Required fields are not properly configured for the QR code with ID <1>{{id}}</1>."
+                },
                 richText: {
                     general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",
                     text: "Rich text must have content to be displayed to users."
@@ -418,6 +470,9 @@ export const flows: flowsNS = {
             userResolveExecutorFields: {
                 message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
                 messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
+            },
+            userResolveRequiresFactors: {
+                message: "A profile update flow with a Resolve User step must have at least one verification step after it, such as Email OTP, SMS OTP, or Magic Link."
             },
             variables: {
                 invalid: "Fix the flow variables on the Start step before saving: {{names}}.",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,6 +37,7 @@ import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
+import { withSupportedHeaderTypes } from "@wso2is/admin.flow-builder-core.v1/utils/variables";
 import updateTemplatePlaceholderReferences
     from
     "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
@@ -286,7 +287,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     ): Node[] => {
         const START_STEP: Node = {
             data: {
-                ...(variables && { variables }),
+                ...(variables && { variables: withSupportedHeaderTypes(variables) }),
                 displayOnly: true
             },
             deletable: false,
@@ -442,8 +443,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 return;
             }
 
-            // Check if the step has components with actions
-            if (step.data?.components) {
+            // Check if the step has components with actions. An execution step continues through its own
+            // action, so the buttons on its page get no edges.
+            if (step.data?.components && step.type !== StepTypes.Execution) {
                 // Look for forms and their buttons
                 step.data.components.forEach((component: Element) => {
                     if (component.type === BlockTypes.Form) {
@@ -910,20 +912,35 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             }
         });
 
-        const [ templateSteps ] = updateTemplatePlaceholderReferences(
-            generateSteps(template.config.data.steps as any),
-            replacers
-        );
+        const [ templateSteps, replacedPlaceholders ]: [ Node[], Map<string, string> ] =
+            updateTemplatePlaceholderReferences(
+                generateSteps(template.config.data.steps as any),
+                replacers
+            );
 
         const templateEdges: Edge[] = validateEdges(
             generateEdges(templateSteps as any),
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED, BASIC_WALLET and BASIC_DEVICE_REGISTRATION template cases — auto-select the
-        // execution step so its property panel (IdP name or device policy) opens immediately after the template loads.
-        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet
-            || template.type === TemplateTypes.BasicDeviceRegistration) {
+        // Open the device step's property panel once the template loads, so the device policy can be set. The
+        // template names that step in `defaultPropertySelectorId`, as a placeholder that maps to the step's new id.
+        if (template.type === TemplateTypes.BasicDeviceRegistration
+            || template.type === TemplateTypes.BasicQrDeviceRegistration) {
+            const selectorKey: string = template.config.data.__generationMeta__?.defaultPropertySelectorId
+                ?.replace(/[{}]/g, "");
+            const selectedStep: Node | undefined = templateSteps.find(
+                (step: Node) => step.id === replacedPlaceholders.get(selectorKey)
+            );
+
+            if (selectedStep) {
+                return [ templateSteps, templateEdges, selectedStep as Resource, selectedStep.id ];
+            }
+        }
+
+        // Handle BASIC_FEDERATED and BASIC_WALLET template cases — auto-select the execution step so its property
+        // panel opens immediately after the template loads.
+        if (template.type === TemplateTypes.BasicFederated || template.type === TemplateTypes.BasicWallet) {
             const executionStep: Node | undefined = templateSteps.find(
                 (step: Node) => step.type === StepTypes.Execution
             );
@@ -977,7 +994,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 return;
             };
 
-            if (node.data?.components) {
+            // An execution step continues through its own action, so the buttons on its page get no edges.
+            if (node.data?.components && node.type !== StepTypes.Execution) {
                 (node.data?.components as any).forEach((component: Element) => {
                     processAction(node.id, component.id, component.action);
 

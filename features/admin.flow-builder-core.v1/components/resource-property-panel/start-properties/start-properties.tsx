@@ -395,6 +395,7 @@ const VariableList: FunctionComponent<VariableListPropsInterface> = ({
                                 size="small"
                                 fullWidth
                                 value={ variable.dataType ?? dataTypes[ 0 ] }
+                                disabled={ dataTypes.length === 1 }
                                 onChange={ (event: SelectChangeEvent<VariableDataTypes>) => update(index, {
                                     dataType: event.target.value as VariableDataTypes,
                                     ...(isRuntimeValue && { value: undefined })

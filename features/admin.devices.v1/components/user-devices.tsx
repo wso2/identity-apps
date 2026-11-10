@@ -24,6 +24,7 @@ import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -75,6 +76,10 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
      * ID of the user whose devices are shown.
      */
     userId: string;
+    /**
+     * Whether the user is shared from a parent organization. Its devices are read only.
+     */
+    isUserManagedByParentOrg?: boolean;
 }
 
 /**
@@ -85,6 +90,7 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
  */
 const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
     userId,
+    isUserManagedByParentOrg = false,
     "data-componentid": componentId = "user-devices"
 }: UserDevicesPropsInterface): ReactElement => {
 
@@ -241,9 +247,20 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                             data-componentid={ `${ componentId }-item-image` }
                         />
                         <div>
-                            <Typography variant="body1" data-componentid={ `${ componentId }-item-name` }>
-                                { device.deviceName }
-                            </Typography>
+                            <Stack direction="row" alignItems="center" spacing={ 1 }>
+                                <Typography variant="body1" data-componentid={ `${ componentId }-item-name` }>
+                                    { device.deviceName }
+                                </Typography>
+                                { isUserManagedByParentOrg && (
+                                    <Tooltip title={ t("devices:userDevices.list.inherited.hint") }>
+                                        <Chip
+                                            size="small"
+                                            label={ t("devices:userDevices.list.inherited.label") }
+                                            data-componentid={ `${ componentId }-item-inherited` }
+                                        />
+                                    </Tooltip>
+                                ) }
+                            </Stack>
                             <Typography
                                 variant="body2"
                                 color="text.secondary"
@@ -305,7 +322,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
         return [
             {
                 "data-componentid": `${ componentId }-item-rename-button`,
-                hidden: (): boolean => !hasUpdatePermission,
+                hidden: (): boolean => !hasUpdatePermission || isUserManagedByParentOrg,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_event: SyntheticEvent, device: DeviceInterface): void => handleRenameOpen(device),
                 popupText: (): string => t("devices:userDevices.list.actions.rename"),
@@ -313,7 +330,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (): boolean => !hasDeletePermission,
+                hidden: (): boolean => !hasDeletePermission || isUserManagedByParentOrg,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_event: SyntheticEvent, device: DeviceInterface): void => setDeletingDevice(device),
                 popupText: (): string => t("common:delete"),

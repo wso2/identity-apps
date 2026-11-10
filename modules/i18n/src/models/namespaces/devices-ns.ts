@@ -177,11 +177,22 @@ export interface DevicesNS {
         properties: {
             description: string;
             noPolicies: string;
+            phase: {
+                hint: string;
+                label: string;
+                options: {
+                    FINISH_REGISTRATION: string;
+                    INIT_REGISTRATION: string;
+                    PROCESS_DEVICE: string;
+                    NATIVE_DEVICE_REGISTRATION: string;
+                };
+            };
             policy: {
                 hint: string;
                 label: string;
                 noPermission: string;
                 placeholder: string;
+                subOrganization: string;
             };
         };
         validation: {
@@ -206,6 +217,10 @@ export interface DevicesNS {
                 name: string;
                 registeredAt: string;
                 status: string;
+            };
+            inherited: {
+                hint: string;
+                label: string;
             };
             status: {
                 ACTIVE: string;

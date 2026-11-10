@@ -39,6 +39,11 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
      */
     isReadOnly: boolean;
     /**
+     * Whether the subscription policy controls are read-only. Defaults to `isReadOnly`, and is given
+     * separately by adapters that freeze the rest of the form while leaving the fanout editable.
+     */
+    isSubscriptionReadOnly?: boolean;
+    /**
      * Current channel subscriptions with status.
      */
     channelSubscriptions?: WebhookChannelSubscriptionInterface[];
@@ -63,6 +68,7 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
 const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterface> = ({
     channelConfigs,
     isReadOnly,
+    isSubscriptionReadOnly = isReadOnly,
     channelSubscriptions = EMPTY_ARRAY,
     webhookId,
     isChildOrganizationsAvailable = false,
@@ -164,6 +170,7 @@ const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterf
                         key={ channel.key }
                         channel={ channel }
                         isReadOnly={ isReadOnly }
+                        isSubscriptionReadOnly={ isSubscriptionReadOnly }
                         isExpanded={ expandedChannelKey === channel.key }
                         onExpandedChange={ (expanded: boolean) =>
                             setExpandedChannelKey(expanded ? channel.key : null) }

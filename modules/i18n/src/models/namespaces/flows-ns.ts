@@ -77,6 +77,19 @@ export interface flowsNS {
             policyConsent: {
                 emptyState: string;
             };
+            qrCode: {
+                alt: string;
+                properties: {
+                    data: {
+                        hint: string;
+                        label: string;
+                    };
+                    size: {
+                        hint: string;
+                        label: string;
+                    };
+                };
+            };
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -111,8 +124,32 @@ export interface flowsNS {
             };
         };
         executions: {
+            authsignal: {
+                actionCode: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                };
+                description: string;
+            };
             confirmationCode: {
                 configurationHint: string;
+            };
+            flowHandoff: {
+                defaultTargets: {
+                    passwordRecovery: string;
+                    profileUpdate: string;
+                    registration: string;
+                };
+                expiryTime: string;
+                expiryTimeHint: string;
+                expiryTimeLabel: string;
+                expiryTimePlaceholder: string;
+                targetUrlDefaultHint: string;
+                targetUrlDescription: string;
+                targetUrlHint: string;
+                targetUrlLabel: string;
+                targetUrlPlaceholder: string;
             };
             landing: {
                 message: string;
@@ -132,6 +169,11 @@ export interface flowsNS {
             };
             tooltip: {
                 configurationHint: string;
+            };
+            userVerification: {
+                tokenValidityPeriodHint: string;
+                tokenValidityPeriodLabel: string;
+                tokenValidityPeriodPlaceholder: string;
             };
         };
         labels: {
@@ -332,10 +374,17 @@ export interface flowsNS {
                     noPoliciesAvailable: string;
                     policiesRequired: string;
                 };
+                qrCode: {
+                    data: string;
+                    general: string;
+                };
                 flowExtension: {
                     general: string;
                     actionId: string;
                 };
+            };
+            executionStep: {
+                disallowedComponents: string;
             };
             organizationAttributes: {
                 federatedAuthenticationNotSupported: string;
@@ -349,6 +398,9 @@ export interface flowsNS {
             userResolveExecutorFields: {
                 message: string;
                 messageWithUserIdentifier: string;
+            };
+            userResolveRequiresFactors: {
+                message: string;
             };
             variables: {
                 invalid: string;

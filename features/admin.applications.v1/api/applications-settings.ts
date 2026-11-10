@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import { HttpMethods,
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
 import { ApplicationsSettingsFormValuesInterface, DCRConfigUpdateType } from "../models/applications-settings";
+import { CimdOAuth2InboundConfigInterface } from "../utils/cimd/models";
 
 /**
  * Get an axios instance.
@@ -56,6 +57,38 @@ export const updateDCRConfigurations = (
             }
 
             return Promise.resolve(response.data as ApplicationsSettingsFormValuesInterface);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates the organization's OAuth2 inbound configuration.
+ *
+ * @param updateData - OAuth2 inbound configuration values to update.
+ * @returns A promise that resolves once the configuration is updated.
+ */
+export const updateOAuth2InboundConfig = (
+    updateData: CimdOAuth2InboundConfigInterface
+): Promise<void> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: updateData,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.serverConfigurations }/authentication/inbound/oauth2`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update the OAuth2 inbound configuration."));
+            }
+
+            return Promise.resolve();
         }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });

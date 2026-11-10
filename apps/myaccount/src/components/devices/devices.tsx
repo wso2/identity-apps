@@ -39,9 +39,11 @@ import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { RenameDeviceDialog } from "./rename-device-dialog";
 import { deleteDevice, updateDevice } from "../../api/devices";
+import { SCIMConfigs } from "../../extensions/configs/scim";
 import useGetDevices from "../../hooks/use-get-devices";
 import { RequestErrorInterface } from "../../hooks/use-request";
 import {
@@ -52,6 +54,7 @@ import {
     DevicePatchRequestInterface,
     DeviceStatus
 } from "../../models";
+import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
 
 dayjs.extend(LocalizedFormat);
@@ -101,6 +104,10 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     } = props;
 
     const { t } = useTranslation();
+
+    // Devices of a shared user are inherited from the parent organization and are read only.
+    const isUserManagedByParentOrg: boolean = useSelector((state: AppState) =>
+        !!state?.authenticationInformation?.profileInfo?.[ SCIMConfigs?.scim?.systemSchema ]?.managedOrg);
 
     const [ offset, setOffset ] = useState<number>(0);
     const [ actionsMenuAnchor, setActionsMenuAnchor ] = useState<HTMLElement | null>(null);
@@ -329,6 +336,9 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
             details.push(t("myAccount:components.devices.list.registeredOn",
                 { date: formatRegisteredDate(device.registeredAt) }));
         }
+        if (isUserManagedByParentOrg) {
+            details.push(t("myAccount:components.devices.list.inherited"));
+        }
 
         return details.join(" · ");
     };
@@ -344,7 +354,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
                         <ListItem
                             sx={ { px: 0, py: 1.25 } }
                             data-componentid={ `${ componentId }-list-item` }
-                            secondaryAction={ (
+                            secondaryAction={ isUserManagedByParentOrg ? undefined : (
                                 <IconButton
                                     edge="end"
                                     aria-label={ t("myAccount:components.devices.actions.more",

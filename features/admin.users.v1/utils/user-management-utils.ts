@@ -93,6 +93,37 @@ export class UserManagementUtils {
     };
 
     /**
+     * Checks whether the given user is the logged-in user.
+     *
+     * The `username` claim of the ID token carries no user store domain, so the domain is taken from the `sub`
+     * claim, which the Console application qualifies with it (`SECONDARY/<user-id>@carbon.super`). A value
+     * without a domain belongs to the primary user store.
+     *
+     * @param userName - Username of the user to check, with the user store domain unless it is in the primary store.
+     * @param authenticatedUsername - `username` claim of the ID token, i.e. `state.auth.providedUsername`.
+     * @param authenticatedUserSubject - `sub` claim of the ID token, i.e. `state.auth.username`.
+     * @param primaryUserStoreDomain - Domain name of the primary user store.
+     * @returns Whether the given user is the logged-in user.
+     */
+    public static isLoggedInUser = (
+        userName: string,
+        authenticatedUsername: string,
+        authenticatedUserSubject: string,
+        primaryUserStoreDomain: string
+    ): boolean => {
+        if (!userName || !authenticatedUsername) {
+            return false;
+        }
+
+        const resolveUserStoreDomain = (value: string): string => (value?.includes("/")
+            ? value.substring(0, value.indexOf("/"))
+            : primaryUserStoreDomain)?.toUpperCase();
+
+        return resolveUserStoreDomain(userName) === resolveUserStoreDomain(authenticatedUserSubject)
+            && getUserNameWithoutDomain(userName) === getUserNameWithoutDomain(authenticatedUsername);
+    };
+
+    /**
      * Checks whether administrator role is present in the user roles.
      */
     public static isAdminUser = (roles: UserRoleInterface[]): boolean => {

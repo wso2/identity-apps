@@ -103,9 +103,8 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
                     <Header.Content>
                         <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
                             { row.display_name }
-                            { row.shared_by && (
+                            { row.is_shared && (
                                 <SharedChip
-                                    ownerOrg={ row.shared_by }
                                     data-componentid={ `${componentId}-shared-chip` }
                                 />
                             ) }

@@ -309,7 +309,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                             { rule.rule_name }
                             { isSharedRule(rule) && (
                                 <SharedChip
-                                    ownerOrg={ rule.owner_org_handle }
                                     data-componentid={ `${ componentId }-${ rule.rule_id }-shared-chip` }
                                 />
                             ) }

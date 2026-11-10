@@ -1,5 +1,11 @@
 # @wso2is/admin.devices.v1
 
+## 0.1.1
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
 ## 0.1.0
 
 ### Minor Changes

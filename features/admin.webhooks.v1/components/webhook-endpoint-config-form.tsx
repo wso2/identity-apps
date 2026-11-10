@@ -44,16 +44,16 @@ interface WebhookEndpointConfigFormInterface extends IdentifiableComponentInterf
      */
     isReadOnly: boolean;
     /**
-     * Specifies whether the form is in WebSub Hub adopter mode.
+     * Specifies whether the form is in WebSub Hub adapter mode.
      */
-    isWebSubHubAdopterMode?: boolean;
+    isWebSubHubAdapterMode?: boolean;
 }
 
 const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInterface> = ({
     initialValues,
     isCreateFormState,
     isReadOnly,
-    isWebSubHubAdopterMode,
+    isWebSubHubAdapterMode,
     ["data-componentid"]: _componentId = "webhook-endpoint-config-form"
 }: WebhookEndpointConfigFormInterface): ReactElement => {
     const [ isShowSecret, setShowSecret ] = useState<boolean>(false);
@@ -104,12 +104,12 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
                     </AlertTitle>
                     <Trans
                         i18nKey={
-                            isWebSubHubAdopterMode
+                            isWebSubHubAdapterMode
                                 ? t("webhooks:configForm.fields.secret.info.messageWebSubHubMode")
                                 : t("webhooks:configForm.fields.secret.info.message")
                         }
                     />
-                    { !isWebSubHubAdopterMode && (
+                    { !isWebSubHubAdapterMode && (
                         <div>
                             <Button
                                 onClick={ handleSecretChange }
@@ -133,7 +133,7 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
                     <Hint className="hint-text" compact>
                         { t("webhooks:configForm.fields.secret.hint.common") }
                         { isCreateFormState
-                            ? isWebSubHubAdopterMode
+                            ? isWebSubHubAdapterMode
                                 ? t("webhooks:configForm.fields.secret.hint.createWebSubHubMode")
                                 : t("webhooks:configForm.fields.secret.hint.create")
                             : t("webhooks:configForm.fields.secret.hint.update") }

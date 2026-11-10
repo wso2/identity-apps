@@ -389,8 +389,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Alert severity="info" data-componentid={ `${componentId}-shared-notice` }>
-                                            { t("customerDataService:sharing.sharedNotice.attribute",
-                                                { org: attribute.owner_org_handle }) }
+                                            { t("customerDataService:sharing.sharedNotice.attribute") }
                                         </Alert>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -406,8 +405,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                                 data-componentid={ `${componentId}-identity-notice` }
                                             >
                                                 { isInherited
-                                                    ? t("customerDataService:sharing.inheritedNotice",
-                                                        { org: attribute.owner_org_handle })
+                                                    ? t("customerDataService:sharing.inheritedNotice")
                                                     : t("customerDataService:profileAttributes.edit."+
                                                     "identityAttributesNotice") }
                                             </Message.Content>
@@ -908,7 +906,6 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                         <Box sx={ { alignItems: "center", display: "inline-flex", gap: 1 } }>
                             { title }
                             <SharedChip
-                                ownerOrg={ attribute.owner_org_handle }
                                 inherited={ isInherited }
                                 data-componentid={ `${componentId}-${ isInherited ? "inherited" : "shared" }-chip` }
                             />

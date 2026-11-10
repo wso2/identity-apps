@@ -1,5 +1,201 @@
 # @wso2is/console
 
+## 4.33.0
+
+### Minor Changes
+
+- [#10898](https://github.com/wso2/identity-apps/pull/10898) [`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add user verification, flow handoff and user resolve factor validation to the flow builder core
+
+### Patch Changes
+
+- Updated dependencies [[`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e)]:
+  - @wso2is/admin.flows.v1@1.1.0
+  - @wso2is/i18n@2.60.0
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.5
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.3
+  - @wso2is/admin.branding.v1@2.32.182
+  - @wso2is/admin.core.v1@2.63.7
+  - @wso2is/admin.email-management.v1@2.25.383
+  - @wso2is/admin.registration-flow-builder.v1@0.16.3
+  - @wso2is/admin.users.v1@2.39.10
+
+## 4.32.4
+
+### Patch Changes
+
+- [#10900](https://github.com/wso2/identity-apps/pull/10900) [`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Allow only the array of strings data type for flow headers
+
+- Updated dependencies [[`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.2
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.4
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.2
+
+## 4.32.3
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+- Updated dependencies [[`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.1
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.3
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.1
+  - @wso2is/i18n@2.59.2
+
+## 4.32.2
+
+### Patch Changes
+
+- [#10889](https://github.com/wso2/identity-apps/pull/10889) [`f589a3cd0e785abe8de64d775f701cb436673257`](https://github.com/wso2/identity-apps/commit/f589a3cd0e785abe8de64d775f701cb436673257) Thanks [@hwupathum](https://github.com/hwupathum)! - Consolidate open dependabot npm dependency bumps:
+
+  - js-yaml 3.13.1 -> 3.15.0 (modules/core)
+  - axios 1.7.9 -> 1.18.0 (features/admin.copilot.v1)
+  - simple-git 1.129.0 -> 3.36.0 (root devDependency)
+  - storybook 9.1.9 -> 9.1.19 (root devDependency)
+  - @storybook/react-webpack5 9.1.9 -> 9.1.19 (root devDependency, kept in sync with `storybook`)
+  - fast-xml-parser 3.15.0 -> 5.7.0 (root devDependency)
+  - immutable 5.1.6 -> 5.1.9 (transitive, lockfile update)
+  - @babel/core 7.29.0 -> 7.29.7 (transitive, lockfile update; matches the version master already resolves)
+  - joi 17.13.3 -> 17.13.9 (transitive, lockfile update)
+  - dompurify 3.4.11 -> 3.4.17 (transitive, lockfile update)
+
+- Updated dependencies [[`f589a3cd0e785abe8de64d775f701cb436673257`](https://github.com/wso2/identity-apps/commit/f589a3cd0e785abe8de64d775f701cb436673257)]:
+  - @wso2is/core@2.13.8
+  - @wso2is/admin.copilot.v1@1.1.1
+
+## 4.32.1
+
+### Patch Changes
+
+- [#10892](https://github.com/wso2/identity-apps/pull/10892) [`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop showing the owner organization of shared and inherited Customer Data Service items
+
+- Updated dependencies [[`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13)]:
+  - @wso2is/admin.cds.v1@1.9.1
+  - @wso2is/i18n@2.59.1
+  - @wso2is/admin.users.v1@2.39.9
+
+## 4.32.0
+
+### Minor Changes
+
+- [#10890](https://github.com/wso2/identity-apps/pull/10890) [`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Register another device by scanning a QR code and entering the pairing code shown on it. Add a QR code component, per-phase component rules and device registration widgets and templates to the flow builders.
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.0
+  - @wso2is/i18n@2.59.0
+  - @wso2is/admin.branding.v1@2.32.181
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.email-management.v1@2.25.382
+  - @wso2is/admin.flows.v1@1.0.186
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.2
+  - @wso2is/admin.users.v1@2.39.8
+
+## 4.31.9
+
+### Patch Changes
+
+- [#10859](https://github.com/wso2/identity-apps/pull/10859) [`2e4aaaeb87af28ac2d163768259a363a89a7c988`](https://github.com/wso2/identity-apps/commit/2e4aaaeb87af28ac2d163768259a363a89a7c988) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix the Danger Zone being hidden on a user whose username is contained in the logged-in user's username.
+
+- Updated dependencies [[`2e4aaaeb87af28ac2d163768259a363a89a7c988`](https://github.com/wso2/identity-apps/commit/2e4aaaeb87af28ac2d163768259a363a89a7c988)]:
+  - @wso2is/admin.users.v1@2.39.7
+
+## 4.31.8
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+- Updated dependencies [[`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8)]:
+  - @wso2is/admin.users.v1@2.39.6
+  - @wso2is/i18n@2.58.4
+
+## 4.31.7
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
+- Updated dependencies [[`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049)]:
+  - @wso2is/admin.server-configurations.v1@2.40.1
+  - @wso2is/i18n@2.58.3
+
+## 4.31.6
+
+### Patch Changes
+
+- [#10881](https://github.com/wso2/identity-apps/pull/10881) [`b3726907f3b5a02d053ae3f75d33d94e8940b202`](https://github.com/wso2/identity-apps/commit/b3726907f3b5a02d053ae3f75d33d94e8940b202) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix updating an outbound provisioner of an application sending an empty connection name
+
+- Updated dependencies [[`3cbda42484a86ce36989612ae754a4700c992062`](https://github.com/wso2/identity-apps/commit/3cbda42484a86ce36989612ae754a4700c992062)]:
+  - @wso2is/admin.applications.v1@2.46.1
+
+## 4.31.5
+
+### Patch Changes
+
+- [#10878](https://github.com/wso2/identity-apps/pull/10878) [`4385d2245ec7a5ac2fe43ea2868d35630cb9301f`](https://github.com/wso2/identity-apps/commit/4385d2245ec7a5ac2fe43ea2868d35630cb9301f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable the flow extension edit route in sub organizations
+
+- Updated dependencies [[`4385d2245ec7a5ac2fe43ea2868d35630cb9301f`](https://github.com/wso2/identity-apps/commit/4385d2245ec7a5ac2fe43ea2868d35630cb9301f)]:
+  - @wso2is/admin.core.v1@2.63.5
+
+## 4.31.4
+
+### Patch Changes
+
+- [#10872](https://github.com/wso2/identity-apps/pull/10872) [`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix the flow builder getting stuck on "Flow generation complete!" when a flow is generated with AI a second time without reloading the page
+
+  Show "Generating your flow..." while the flow builder generates a flow with AI, and "Applying final touches..." once the generation has run for a while
+
+- Updated dependencies [[`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.15.1
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.1
+  - @wso2is/admin.ask-password-flow-builder.v1@1.4.1
+  - @wso2is/i18n@2.58.2
+
+## 4.31.3
+
+### Patch Changes
+
+- [#10857](https://github.com/wso2/identity-apps/pull/10857) [`08f083cecb839217aee59a3374a4ad47224f66b1`](https://github.com/wso2/identity-apps/commit/08f083cecb839217aee59a3374a4ad47224f66b1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Allow the child organization subscription policy to be edited on webhooks using the WebSubHub adapter.
+
+- Updated dependencies [[`08f083cecb839217aee59a3374a4ad47224f66b1`](https://github.com/wso2/identity-apps/commit/08f083cecb839217aee59a3374a4ad47224f66b1)]:
+  - @wso2is/admin.webhooks.v1@1.3.0
+
+## 4.31.2
+
+### Patch Changes
+
+- [#10873](https://github.com/wso2/identity-apps/pull/10873) [`c8c4f42918582f5bd0768e0038f7f70639936131`](https://github.com/wso2/identity-apps/commit/c8c4f42918582f5bd0768e0038f7f70639936131) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Page the user group assignment dialog and the Groups list of LDAP and Active Directory user stores by probing for a following page instead of trusting the capped total, and keep the Groups list on its page when the page size or user store changes
+
+- Updated dependencies [[`c8c4f42918582f5bd0768e0038f7f70639936131`](https://github.com/wso2/identity-apps/commit/c8c4f42918582f5bd0768e0038f7f70639936131)]:
+  - @wso2is/admin.groups.v1@2.27.132
+  - @wso2is/admin.users.v1@2.39.5
+  - @wso2is/admin.userstores.v1@2.27.44
+  - @wso2is/i18n@2.58.1
+
+## 4.31.1
+
+### Patch Changes
+
+- [#10870](https://github.com/wso2/identity-apps/pull/10870) [`fefad60e6d685c5fb082b3f59f8d5812d1b7fc08`](https://github.com/wso2/identity-apps/commit/fefad60e6d685c5fb082b3f59f8d5812d1b7fc08) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Allow saving branding design changes when the custom layout is stored as inline HTML
+
+- Updated dependencies [[`fefad60e6d685c5fb082b3f59f8d5812d1b7fc08`](https://github.com/wso2/identity-apps/commit/fefad60e6d685c5fb082b3f59f8d5812d1b7fc08)]:
+  - @wso2is/admin.branding.v1@2.32.180
+
+## 4.31.0
+
+### Minor Changes
+
+- [#10867](https://github.com/wso2/identity-apps/pull/10867) [`b99a811214fd2d8f860275761f633049715a9753`](https://github.com/wso2/identity-apps/commit/b99a811214fd2d8f860275761f633049715a9753) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add the Client ID Metadata Documents setting to Application Settings
+
+## 4.30.1
+
+### Patch Changes
+
+- [#10862](https://github.com/wso2/identity-apps/pull/10862) [`0b9d21da317f2f8f6ee569430c256ea8078c2f47`](https://github.com/wso2/identity-apps/commit/0b9d21da317f2f8f6ee569430c256ea8078c2f47) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Explain the resident application association when a connection cannot be deleted
+
 ## 4.30.0
 
 ### Minor Changes

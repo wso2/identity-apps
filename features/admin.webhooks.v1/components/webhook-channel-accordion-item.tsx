@@ -33,6 +33,7 @@ import { FinalFormField } from "@wso2is/forms";
 import { ConfirmationModal, Hint } from "@wso2is/react-components";
 import CheckboxAdapter from "@wso2is/forms/src/components/adapters/checkbox-field-adapter";
 import { AxiosError, AxiosResponse } from "axios";
+import classNames from "classnames";
 import { FormApi } from "final-form";
 import React, {
     ChangeEvent,
@@ -75,6 +76,11 @@ interface WebhookChannelAccordionItemPropsInterface extends IdentifiableComponen
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Whether the subscription policy controls are read-only. Defaults to `isReadOnly`, and is given
+     * separately by adapters that freeze the rest of the form while leaving the fanout editable.
+     */
+    isSubscriptionReadOnly?: boolean;
     /**
      * Whether this row is the one currently expanded.
      *
@@ -128,6 +134,7 @@ interface WebhookChannelAccordionItemPropsInterface extends IdentifiableComponen
 const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItemPropsInterface> = ({
     channel,
     isReadOnly,
+    isSubscriptionReadOnly = isReadOnly,
     isExpanded,
     onExpandedChange,
     webhookId,
@@ -148,6 +155,10 @@ const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItem
 
     const channelValue: WebhookChannelFormValueInterface | undefined = values?.channels?.[channel.key];
     const isSubscribed: boolean = Boolean(channelValue?.subscribed);
+    // A channel that cannot be subscribed has no policy to edit, so it gets no cog: under WebSub Hub
+    // the channel set is fixed after creation, which is what leaves the checkbox read-only.
+    const isSubscriptionPolicyAvailable: boolean = isChildOrgSubscriptionEnabled
+        && (isSubscribed || !isReadOnly);
     const subscriptionPolicy: ChildOrgSubscriptionPolicy =
         channelValue?.subscriptionPolicy ?? ChildOrgSubscriptionPolicy.NONE;
     const isSelectedOrgsPolicy: boolean = subscriptionPolicy === ChildOrgSubscriptionPolicy.SELECTED_ORGS_ONLY;
@@ -366,21 +377,21 @@ const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItem
                 <FormControlLabel
                     value={ ChildOrgSubscriptionPolicy.NONE }
                     control={ <Radio /> }
-                    disabled={ isReadOnly || !isSubscribed }
+                    disabled={ isSubscriptionReadOnly || !isSubscribed }
                     label={ t("webhooks:configForm.channels.subscriptionPolicy.none") }
                     data-componentid={ `${ channelComponentId }-policy-none` }
                 />
                 <FormControlLabel
                     value={ ChildOrgSubscriptionPolicy.ALL_EXISTING_AND_FUTURE_ORGS }
                     control={ <Radio /> }
-                    disabled={ isReadOnly || !isSubscribed }
+                    disabled={ isSubscriptionReadOnly || !isSubscribed }
                     label={ t("webhooks:configForm.channels.subscriptionPolicy.allOrganizations") }
                     data-componentid={ `${ channelComponentId }-policy-all-orgs` }
                 />
                 <FormControlLabel
                     value={ ChildOrgSubscriptionPolicy.SELECTED_ORGS_ONLY }
                     control={ <Radio /> }
-                    disabled={ isReadOnly || !isSubscribed || !isChildOrganizationsAvailable }
+                    disabled={ isSubscriptionReadOnly || !isSubscribed || !isChildOrganizationsAvailable }
                     label={ isChildOrganizationsAvailable
                         ? t("webhooks:configForm.channels.subscriptionPolicy.selectedOrganizations")
                         : (
@@ -400,7 +411,7 @@ const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItem
                         data-componentid={ `${ channelComponentId }-org-tree` }
                         selectedOrgIds={ channelValue?.organizations ?? [] }
                         onChange={ handleOrganizationsChange }
-                        disabled={ isReadOnly || !isSubscribed }
+                        disabled={ isSubscriptionReadOnly || !isSubscribed }
                         autoExpandFirstLevel
                         autoExpandOrgIds={ selectionAncestorOrgIds }
                         expandAllLabel={ t("webhooks:configForm.channels.subscriptionPolicy.expandAll") }
@@ -423,15 +434,17 @@ const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItem
         <Accordion
             disableGutters
             elevation={ 0 }
-            expanded={ isChildOrgSubscriptionEnabled && isExpanded }
-            onChange={ isChildOrgSubscriptionEnabled
+            expanded={ isSubscriptionPolicyAvailable && isExpanded }
+            onChange={ isSubscriptionPolicyAvailable
                 ? (_event: SyntheticEvent, expanded: boolean) => onExpandedChange(expanded)
                 : undefined }
             data-componentid={ channelComponentId }
-            className={ `webhook-channel-accordion${ isChildOrgSubscriptionEnabled ? "" : " static" }` }
+            className={ classNames("webhook-channel-accordion", {
+                static: !isSubscriptionPolicyAvailable
+            }) }
         >
             <AccordionSummary
-                expandIcon={ isChildOrgSubscriptionEnabled ? <GearIcon /> : null }
+                expandIcon={ isSubscriptionPolicyAvailable ? <GearIcon /> : null }
                 className="channel-summary"
             >
                 { /* Stopped here so that ticking a channel never also expands it. */ }
@@ -459,7 +472,7 @@ const WebhookChannelAccordionItem: FunctionComponent<WebhookChannelAccordionItem
                     </Typography>
                 </Box>
             </AccordionSummary>
-            { isChildOrgSubscriptionEnabled && (
+            { isSubscriptionPolicyAvailable && (
             <AccordionDetails>
                 { renderSubscriptionPolicy() }
                 <ConfirmationModal

@@ -27,4 +27,4 @@ overrides:
   "@mui/material": "catalog:"
   "@types/react": "18.0.18"
   "webpack": "5.101.3"
-  "axios": "1.7.0"
+  "axios": "1.18.0"

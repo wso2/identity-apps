@@ -279,3 +279,16 @@ export enum TestButtonColor {
     SUCCESSFUL,
     FAILED
 }
+
+/**
+ * Matches the type names of user stores that cannot count their groups (LDAP has no count operation).
+ * The group totals such a store reports are capped by its MaxRoleNameListLength, so lists page them by
+ * asking for one group more than the page and reading whether it arrives.
+ */
+export const USER_STORE_TYPES_WITHOUT_GROUP_COUNT: RegExp = /LDAP|ActiveDirectory/i;
+
+/**
+ * The user store property that caps an unpaginated group listing, and the server's default when it is absent.
+ */
+export const MAX_ROLE_NAME_LIST_LENGTH_PROPERTY: string = "MaxRoleNameListLength";
+export const DEFAULT_MAX_ROLE_NAME_LIST_LENGTH: number = 100;

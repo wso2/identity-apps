@@ -36,6 +36,7 @@ const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunct
     const { t } = useTranslation();
 
     const {
+        setFlowGenerationCompleted,
         setIsFlowGenerating,
         setOperationId
     } = useAIGeneratedPasswordRecoveryFlow();
@@ -53,6 +54,9 @@ const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunct
 
         return generatePasswordRecoveryFlow(userQuery, traceId)
             .then((data: any) => {
+                // A previous generation in this session leaves the flag set, which would fetch the new result
+                // before it is ready and never again once it is.
+                setFlowGenerationCompleted(false);
                 setOperationId(data.operation_id);
                 setIsFlowGenerating(true);
             })

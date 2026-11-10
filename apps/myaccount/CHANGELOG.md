@@ -1,5 +1,35 @@
 # @wso2is/myaccount
 
+## 4.5.2
+
+### Patch Changes
+
+- [#10889](https://github.com/wso2/identity-apps/pull/10889) [`f589a3cd0e785abe8de64d775f701cb436673257`](https://github.com/wso2/identity-apps/commit/f589a3cd0e785abe8de64d775f701cb436673257) Thanks [@hwupathum](https://github.com/hwupathum)! - Consolidate open dependabot npm dependency bumps:
+
+  - js-yaml 3.13.1 -> 3.15.0 (modules/core)
+  - axios 1.7.9 -> 1.18.0 (features/admin.copilot.v1)
+  - simple-git 1.129.0 -> 3.36.0 (root devDependency)
+  - storybook 9.1.9 -> 9.1.19 (root devDependency)
+  - @storybook/react-webpack5 9.1.9 -> 9.1.19 (root devDependency, kept in sync with `storybook`)
+  - fast-xml-parser 3.15.0 -> 5.7.0 (root devDependency)
+  - immutable 5.1.6 -> 5.1.9 (transitive, lockfile update)
+  - @babel/core 7.29.0 -> 7.29.7 (transitive, lockfile update; matches the version master already resolves)
+  - joi 17.13.3 -> 17.13.9 (transitive, lockfile update)
+  - dompurify 3.4.11 -> 3.4.17 (transitive, lockfile update)
+
+- Updated dependencies [[`f589a3cd0e785abe8de64d775f701cb436673257`](https://github.com/wso2/identity-apps/commit/f589a3cd0e785abe8de64d775f701cb436673257)]:
+  - @wso2is/core@2.13.8
+  - @wso2is/validation@2.4.5
+
+## 4.5.1
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+- Updated dependencies [[`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8)]:
+  - @wso2is/i18n@2.58.4
+
 ## 4.5.0
 
 ### Minor Changes

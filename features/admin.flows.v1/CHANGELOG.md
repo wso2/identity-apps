@@ -1,5 +1,25 @@
 # @wso2is/admin.flows.v1
 
+## 1.1.0
+
+### Minor Changes
+
+- [#10898](https://github.com/wso2/identity-apps/pull/10898) [`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add user verification, flow handoff and user resolve factor validation to the flow builder core
+
+### Patch Changes
+
+- Updated dependencies [[`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e)]:
+  - @wso2is/admin.flow-builder-core.v1@0.17.0
+  - @wso2is/admin.core.v1@2.63.7
+
+## 1.0.186
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/admin.core.v1@2.63.6
+
 ## 1.0.185
 
 ### Patch Changes

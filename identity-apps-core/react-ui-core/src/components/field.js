@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
 import PreferenceManagementFieldAdapter from "./adapters/preference-management-field-adapter";
 import PolicyConsentFieldAdapter from "./adapters/policy-consent-field-adapter";
+import QRCodeFieldAdapter from "./adapters/qr-code-field-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
@@ -69,6 +70,8 @@ const Field = ({
             return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
         case "IMAGE":
             return <ImageFieldAdapter component={ component } />;
+        case "QR_CODE":
+            return <QRCodeFieldAdapter component={ component } />;
         case "POLICY":
             return (
                 <PolicyConsentFieldAdapter

@@ -74,7 +74,11 @@ import {
     isConditionalBranchingConfigured,
     resolveRuleLimits
 } from "../utils/conditional-branching";
-import { isVariablesEnabled as isVariablesConfigured, resolveVariableLimits } from "../utils/variables";
+import {
+    isVariablesEnabled as isVariablesConfigured,
+    resolveVariableLimits,
+    withSupportedHeaderTypesInNodes
+} from "../utils/variables";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -370,7 +374,9 @@ const FlowContextWrapper = ({
                 }
 
                 // Extract nodes and edges from the flow data
-                const { nodes, edges } = flowData as { nodes: any[]; edges: any[] };
+                const { edges } = flowData as { nodes: any[]; edges: any[] };
+                // A draft saved before headers held only strings may still keep a header of another type.
+                const nodes: any[] = withSupportedHeaderTypesInNodes((flowData as { nodes: any[] }).nodes);
 
                 // Apply the restored flow data to the current flow using React Flow's methods
                 // Note: This assumes the provider has access to setNodes and setEdges methods

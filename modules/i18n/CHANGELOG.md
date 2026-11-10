@@ -1,5 +1,67 @@
 # @wso2is/i18n
 
+## 2.60.0
+
+### Minor Changes
+
+- [#10898](https://github.com/wso2/identity-apps/pull/10898) [`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add user verification, flow handoff and user resolve factor validation to the flow builder core
+
+## 2.59.2
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+## 2.59.1
+
+### Patch Changes
+
+- [#10892](https://github.com/wso2/identity-apps/pull/10892) [`3ca0ac651457638688765335fc8d42cb65a0ec13`](https://github.com/wso2/identity-apps/commit/3ca0ac651457638688765335fc8d42cb65a0ec13) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop showing the owner organization of shared and inherited Customer Data Service items
+
+## 2.59.0
+
+### Minor Changes
+
+- [#10890](https://github.com/wso2/identity-apps/pull/10890) [`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Register another device by scanning a QR code and entering the pairing code shown on it. Add a QR code component, per-phase component rules and device registration widgets and templates to the flow builders.
+
+## 2.58.4
+
+### Patch Changes
+
+- [#10856](https://github.com/wso2/identity-apps/pull/10856) [`e8c0896f2a39a7fa287cc01f549c6471607162f8`](https://github.com/wso2/identity-apps/commit/e8c0896f2a39a7fa287cc01f549c6471607162f8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the devices that shared users inherit from their resident organization as read only
+
+## 2.58.3
+
+### Patch Changes
+
+- [#10854](https://github.com/wso2/identity-apps/pull/10854) [`fd5b880c14df007f45fdeb73765348c437326049`](https://github.com/wso2/identity-apps/commit/fd5b880c14df007f45fdeb73765348c437326049) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide device policy management in sub-organizations and show the device registration step's policy as read-only there.
+
+## 2.58.2
+
+### Patch Changes
+
+- [#10872](https://github.com/wso2/identity-apps/pull/10872) [`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix the flow builder getting stuck on "Flow generation complete!" when a flow is generated with AI a second time without reloading the page
+
+  Show "Generating your flow..." while the flow builder generates a flow with AI, and "Applying final touches..." once the generation has run for a while
+
+## 2.58.1
+
+### Patch Changes
+
+- [#10873](https://github.com/wso2/identity-apps/pull/10873) [`c8c4f42918582f5bd0768e0038f7f70639936131`](https://github.com/wso2/identity-apps/commit/c8c4f42918582f5bd0768e0038f7f70639936131) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Page the user group assignment dialog and the Groups list of LDAP and Active Directory user stores by probing for a following page instead of trusting the capped total, and keep the Groups list on its page when the page size or user store changes
+
+## 2.58.0
+
+### Minor Changes
+
+- [#10864](https://github.com/wso2/identity-apps/pull/10864) [`6d181479625ddee1f44af662368a3f17e6694926`](https://github.com/wso2/identity-apps/commit/6d181479625ddee1f44af662368a3f17e6694926) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins enable Client ID Metadata Documents (CIMD) for the organization from the Application Settings page. The page now shows the Dynamic Client Registration and Client ID Metadata Documents settings as separate sections, saved with one Update button.
+
+## 2.57.1
+
+### Patch Changes
+
+- [#10858](https://github.com/wso2/identity-apps/pull/10858) [`0421a0db2edb71f2f0e7849325cafb9e1adce0bc`](https://github.com/wso2/identity-apps/commit/0421a0db2edb71f2f0e7849325cafb9e1adce0bc) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Explain the resident application association when a connection cannot be deleted
+
 ## 2.57.0
 
 ### Minor Changes

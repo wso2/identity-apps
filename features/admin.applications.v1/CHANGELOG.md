@@ -1,5 +1,22 @@
 # @wso2is/admin.applications.v1
 
+## 2.46.1
+
+### Patch Changes
+
+- [#10881](https://github.com/wso2/identity-apps/pull/10881) [`3cbda42484a86ce36989612ae754a4700c992062`](https://github.com/wso2/identity-apps/commit/3cbda42484a86ce36989612ae754a4700c992062) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix updating an outbound provisioner of an application sending an empty connection name
+
+## 2.46.0
+
+### Minor Changes
+
+- [#10864](https://github.com/wso2/identity-apps/pull/10864) [`6d181479625ddee1f44af662368a3f17e6694926`](https://github.com/wso2/identity-apps/commit/6d181479625ddee1f44af662368a3f17e6694926) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Let admins enable Client ID Metadata Documents (CIMD) for the organization from the Application Settings page. The page now shows the Dynamic Client Registration and Client ID Metadata Documents settings as separate sections, saved with one Update button.
+
+### Patch Changes
+
+- Updated dependencies [[`6d181479625ddee1f44af662368a3f17e6694926`](https://github.com/wso2/identity-apps/commit/6d181479625ddee1f44af662368a3f17e6694926)]:
+  - @wso2is/i18n@2.58.0
+
 ## 2.45.0
 
 ### Minor Changes

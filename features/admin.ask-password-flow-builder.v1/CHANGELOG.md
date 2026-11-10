@@ -1,5 +1,53 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.5.3
+
+### Patch Changes
+
+- Updated dependencies [[`89d2dc5c4f601e2bea343ff4c598ccf39061d97e`](https://github.com/wso2/identity-apps/commit/89d2dc5c4f601e2bea343ff4c598ccf39061d97e)]:
+  - @wso2is/admin.flow-builder-core.v1@0.17.0
+  - @wso2is/admin.flows.v1@1.1.0
+  - @wso2is/admin.core.v1@2.63.7
+
+## 1.5.2
+
+### Patch Changes
+
+- [#10900](https://github.com/wso2/identity-apps/pull/10900) [`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Allow only the array of strings data type for flow headers
+
+- Updated dependencies [[`ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a`](https://github.com/wso2/identity-apps/commit/ff600bfc0d7f31b9e3bfbc851612a61ebffe9f0a)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.2
+
+## 1.5.1
+
+### Patch Changes
+
+- [#10787](https://github.com/wso2/identity-apps/pull/10787) [`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add a properties panel to configure the Authsignal action code of an Authsignal executor step, shown only when the Authsignal connector is deployed
+
+- Updated dependencies [[`6f9d70514f7abb0bc92e0a31e02e6725927e5fff`](https://github.com/wso2/identity-apps/commit/6f9d70514f7abb0bc92e0a31e02e6725927e5fff)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.1
+
+## 1.5.0
+
+### Minor Changes
+
+- [#10890](https://github.com/wso2/identity-apps/pull/10890) [`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Register another device by scanning a QR code and entering the pairing code shown on it. Add a QR code component, per-phase component rules and device registration widgets and templates to the flow builders.
+
+### Patch Changes
+
+- Updated dependencies [[`575de49e6d88789969d548c53cd8683d7186c749`](https://github.com/wso2/identity-apps/commit/575de49e6d88789969d548c53cd8683d7186c749)]:
+  - @wso2is/admin.flow-builder-core.v1@0.16.0
+  - @wso2is/admin.core.v1@2.63.6
+  - @wso2is/admin.flows.v1@1.0.186
+
+## 1.4.1
+
+### Patch Changes
+
+- [#10872](https://github.com/wso2/identity-apps/pull/10872) [`29083b8a4d09422b98a6386f313d25657a36d497`](https://github.com/wso2/identity-apps/commit/29083b8a4d09422b98a6386f313d25657a36d497) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix the flow builder getting stuck on "Flow generation complete!" when a flow is generated with AI a second time without reloading the page
+
+  Show "Generating your flow..." while the flow builder generates a flow with AI, and "Applying final touches..." once the generation has run for a while
+
 ## 1.4.0
 
 ### Minor Changes
