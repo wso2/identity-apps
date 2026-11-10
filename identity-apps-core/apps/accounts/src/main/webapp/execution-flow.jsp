@@ -715,8 +715,8 @@
                 };
 
                 const handleInternalPrompt = (flowData) => {
-                    if (flowData.data.requiredParams.some((param) => param === "token" || param === "tokenType")) {
-                        setError({ code: "UNSUPPORTED_INTERNAL_PROMPT" });
+                    if (flowData.data.requiredParams.some((param) => param !== "origin")) {
+                        setError({ code: "500" });
                         return;
                     }
 
