@@ -34,7 +34,7 @@
         "@wso2is/i18n": "^2.45.1",
         "@wso2is/react-components": "^2.10.0",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "i18next": "^21.9.1",
         "lodash-es": "^4.17.21",
         "rc-tree": "^4.0.0-beta.2",

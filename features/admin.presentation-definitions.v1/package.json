@@ -14,7 +14,7 @@
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "workspace:^",
         "@wso2is/react-components": "workspace:^",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",

@@ -48,7 +48,7 @@
         "@wso2is/react-components": "^2.10.1",
         "@wso2is/theme": "workspace:^",
         "@wso2is/validation": "^2.4.5",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "buffer": "^6.0.3",
         "dayjs": "^1.11.18",
         "history": "^4.9.0",

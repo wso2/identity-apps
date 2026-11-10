@@ -40,7 +40,7 @@
         "@wso2is/common.ui.shared-access.v1": "workspace:^",
         "@wso2is/core": "^2.12.10",
         "@wso2is/react-components": "^2.10.3",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "classnames": "^2.2.6",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",

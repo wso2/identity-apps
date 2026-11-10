@@ -12,7 +12,7 @@
         "@wso2is/common.workflow-approvals.v1": "workspace:^",
         "@wso2is/core": "^2.12.12",
         "@wso2is/react-components": "^2.9.16",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "dayjs": "^1.11.18",
         "i18next": "^21.9.1",
         "lodash-es": "^4.17.21",

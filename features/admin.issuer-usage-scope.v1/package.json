@@ -15,7 +15,7 @@
         "@wso2is/admin.organizations.v1": "^2.28.4",
         "@wso2is/core": "^2.12.10",
         "@wso2is/react-components": "^2.9.16",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"

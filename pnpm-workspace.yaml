@@ -21,10 +21,11 @@ catalog:
   "@mui/material": "^5.13.0"
   "@mui/system": "^5.12.3"
   "@oxygen-ui/react": "^2.4.6"
+  "axios": "1.20.0"
 
 overrides:
-  "@asgardeo/auth-react": "^5.6.1"
+  "@asgardeo/auth-react": "^5.6.3"
   "@mui/material": "catalog:"
   "@types/react": "18.0.18"
   "webpack": "5.101.3"
-  "axios": "1.18.0"
+  "axios": "catalog:"

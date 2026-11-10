@@ -437,7 +437,7 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= buildOptions.publicPath %>auth-spa-3.1.2.min.js";
+            var authScriptSrc = "<%= buildOptions.publicPath %>auth-spa-3.5.3.min.js";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
