@@ -123,7 +123,7 @@ const FlowHandoffProperties: FunctionComponent<FlowHandoffPropertiesPropsInterfa
                         variant="body2"
                         color="text.secondary"
                         sx={ { alignSelf: "center" } }>
-                            seconds
+                        { t("flows:core.executions.flowHandoff.expiryTimeUnit") }
                     </Typography>
                 </Stack>
                 <FormHelperText>
