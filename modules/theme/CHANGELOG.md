@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.11.4
+
+### Patch Changes
+
+- [#10897](https://github.com/wso2/identity-apps/pull/10897) [`0be42c3f32828bf0768e32b4e01774f5ded16772`](https://github.com/wso2/identity-apps/commit/0be42c3f32828bf0768e32b4e01774f5ded16772) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Fix the organization handle input loading spinner and validation icon states.
+
 ## 2.11.3
 
 ### Patch Changes
