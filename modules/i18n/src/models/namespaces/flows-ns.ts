@@ -145,6 +145,7 @@ export interface flowsNS {
                 expiryTimeHint: string;
                 expiryTimeLabel: string;
                 expiryTimePlaceholder: string;
+                expiryTimeUnit: string;
                 targetUrlDefaultHint: string;
                 targetUrlDescription: string;
                 targetUrlHint: string;
@@ -174,6 +175,7 @@ export interface flowsNS {
                 tokenValidityPeriodHint: string;
                 tokenValidityPeriodLabel: string;
                 tokenValidityPeriodPlaceholder: string;
+                tokenValidityPeriodUnit: string;
             };
         };
         labels: {

@@ -79,7 +79,7 @@ const UserVerificationProperties: FunctionComponent<UserVerificationPropertiesPr
                     variant="body2"
                     color="text.secondary"
                     sx={ { alignSelf: "center" } }>
-                        minutes
+                    { t("flows:core.executions.userVerification.tokenValidityPeriodUnit") }
                 </Typography>
             </Stack>
             <FormHelperText>

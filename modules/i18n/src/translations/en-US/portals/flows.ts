@@ -137,6 +137,7 @@ export const flows: flowsNS = {
                 expiryTimeHint: "How long the link stays valid.",
                 expiryTimeLabel: "Link valid for",
                 expiryTimePlaceholder: "Enter expiry time",
+                expiryTimeUnit: "seconds",
                 targetUrlDefaultHint: "The page the one-time link points to, where the flow will continue. " +
                     "Leave empty to use the default {{target}}.",
                 targetUrlDescription: "Get a one-time link to continue flow at",
@@ -167,7 +168,8 @@ export const flows: flowsNS = {
             userVerification: {
                 tokenValidityPeriodHint: "Only tokens issued within this time are accepted.",
                 tokenValidityPeriodLabel: "Maximum token age",
-                tokenValidityPeriodPlaceholder: "Enter the maximum token age"
+                tokenValidityPeriodPlaceholder: "Enter the maximum token age",
+                tokenValidityPeriodUnit: "minutes"
             }
         },
         labels: {
