@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.9.0
+
+### Minor Changes
+
+- [#10899](https://github.com/wso2/identity-apps/pull/10899) [`e1738f423b89abc29af96cb9a3de0b001bdcf16f`](https://github.com/wso2/identity-apps/commit/e1738f423b89abc29af96cb9a3de0b001bdcf16f) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add flow handoff and profile update support to the execution flow page
+
 ## 5.8.2
 
 ### Patch Changes
