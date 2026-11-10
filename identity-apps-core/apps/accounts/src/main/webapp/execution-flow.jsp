@@ -71,6 +71,7 @@
     String confirmationCode = request.getParameter("confirmation");
     String flowType = request.getParameter("flowType");
     String mlt = request.getParameter("mlt");
+    String handoff = request.getParameter("handoff");
     String flowId = request.getParameter("flowId");
     String sessionDataKey = request.getParameter("sessionDataKey");
 
@@ -220,6 +221,7 @@
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
+                const handoff = "<%= Encode.forJavaScript(handoff) != null ? Encode.forJavaScript(handoff) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
                 const authError = "<%= Encode.forJavaScript(authError) != null ? Encode.forJavaScript(authError) : null %>";
@@ -383,6 +385,15 @@
                 }, [mlt, flowId]);
 
                 useEffect(() => {
+                    if (handoff === "true" && flowId !== "null") {
+                        setPostBody({
+                            flowId: flowId,
+                            actionId: ""
+                        });
+                    }
+                }, [handoff, flowId]);
+
+                useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {
                         setPostBody({
                             applicationId: spId,
@@ -397,9 +408,9 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
+                    if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: spId, flowType: "REGISTRATION", ...getExtendedFlowInputs("REGISTRATION") });
-                    } else if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
+                    } else if (!postBody && !redirectionInputs && authError === "null" && code === "null" && confirmationCode === "null" && mlt === "null" && handoff === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: spId, flowType: flowType, ...getExtendedFlowInputs(flowType) });
                     }
                 }, []);
@@ -655,7 +666,7 @@
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
 
-                        if (errorDetails.portalUrlStatus === "true") {
+                        if (errorDetails.portalUrlStatus === "true" && flowType !== "PROFILE_UPDATE") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
 
@@ -704,6 +715,11 @@
                 };
 
                 const handleInternalPrompt = (flowData) => {
+                    if (flowData.data.requiredParams.some((param) => param !== "origin")) {
+                        setError({ code: "500" });
+                        return;
+                    }
+
                     let providedInputs = {};
                     flowData.data.requiredParams.map((param) => {
                         if (param === "origin") {
