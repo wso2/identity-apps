@@ -1,5 +1,13 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.17.2
+
+### Patch Changes
+
+- [#10880](https://github.com/wso2/identity-apps/pull/10880) [`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Let flow extensions read a flow's runtime values and request headers, and write runtime values, configured per flow type in the access configuration and from the flow extension step of the flow builder
+
+* [#10880](https://github.com/wso2/identity-apps/pull/10880) [`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Let flow extensions read the organization a registration flow onboards, in the access configuration and from the flow extension step of the flow builder
+
 ## 0.17.1
 
 ### Patch Changes
