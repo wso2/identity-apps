@@ -1838,6 +1838,10 @@ export interface Extensions {
                             content: string;
                             heading: string;
                         };
+                        addToRegistration: {
+                            content: string;
+                            heading: string;
+                        };
                     };
                 }
             },

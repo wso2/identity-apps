@@ -1951,6 +1951,13 @@ export const extensions: Extensions = {
                                 "Identifier First.",
                             heading: "Add <1>Authsignal</1> to the login flow"
                         },
+                        addToRegistration: {
+                            content: "To also use Authsignal at registration, go to <1>Flows</1> > <3>Registration</3>. " +
+                                "Add the <5>Authsignal</5> node after the form that collects the email address or " +
+                                "mobile number, and before the user onboarding step. The node uses the default " +
+                                "action code unless you set a different one in its properties.",
+                            heading: "Add <1>Authsignal</1> to the registration flow (optional)"
+                        },
                         configureSettings: {
                             content: "Go to the <1>Settings</1> tab and enter the secret key, region and other " +
                                 "details of your Authsignal tenant.",

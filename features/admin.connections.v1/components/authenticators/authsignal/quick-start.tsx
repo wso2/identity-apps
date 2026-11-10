@@ -116,6 +116,29 @@ const AuthsignalQuickStart: FunctionComponent<AuthsignalQuickStartPropsInterface
                     Add <strong>Authsignal</strong> to the login flow
                 </Trans>
             )
+        },
+        {
+            stepContent: (
+                <Text>
+                    <Trans
+                        i18nKey={
+                            "extensions:develop.identityProviders.authsignal.quickStart.steps.addToRegistration.content"
+                        }
+                    >
+                        To also use Authsignal at registration, go to <strong>Flows</strong>{ " > " }
+                        <strong>Registration</strong>. Add the <strong>Authsignal</strong> node after the form that
+                        collects the email address or mobile number, and before the user onboarding step. The node uses
+                        the default action code unless you set a different one in its properties.
+                    </Trans>
+                </Text>
+            ),
+            stepTitle: (
+                <Trans
+                    i18nKey="extensions:develop.identityProviders.authsignal.quickStart.steps.addToRegistration.heading"
+                >
+                    Add <strong>Authsignal</strong> to the registration flow (optional)
+                </Trans>
+            )
         }
     ];
 
