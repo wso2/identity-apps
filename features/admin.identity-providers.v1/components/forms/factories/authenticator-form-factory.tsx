@@ -34,6 +34,7 @@ import {
 } from "../../../models";
 import {
     AppleAuthenticatorForm,
+    AuthsignalAuthenticatorForm,
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
     FIDOAuthenticatorForm,
@@ -286,6 +287,16 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID:
+            return (
+                <AuthsignalAuthenticatorForm
+                    initialValues={ initialValues }
+                    onSubmit={ onSubmit }
+                    data-testid={ testId }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
