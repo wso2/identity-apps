@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.33.3
+
+### Patch Changes
+
+- [#10912](https://github.com/wso2/identity-apps/pull/10912) [`94aec0b4a9e750516c7c1ecec022eb1d4baf6819`](https://github.com/wso2/identity-apps/commit/94aec0b4a9e750516c7c1ecec022eb1d4baf6819) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump console to retry the release that failed on a Nexus deploy timeout
+
 ## 4.33.2
 
 ### Patch Changes
