@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 4.33.2
+
+### Patch Changes
+
+- [#10880](https://github.com/wso2/identity-apps/pull/10880) [`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Let flow extensions read a flow's runtime values and request headers, and write runtime values, configured per flow type in the access configuration and from the flow extension step of the flow builder
+
+* [#10880](https://github.com/wso2/identity-apps/pull/10880) [`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Let flow extensions read the organization a registration flow onboards, in the access configuration and from the flow extension step of the flow builder
+
+* Updated dependencies [[`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3), [`92cf6f53da9344cb90aa28146c9bdafe337bf9e3`](https://github.com/wso2/identity-apps/commit/92cf6f53da9344cb90aa28146c9bdafe337bf9e3)]:
+  - @wso2is/admin.flow-extensions.v1@0.2.2
+  - @wso2is/i18n@2.60.2
+
 ## 4.33.1
 
 ### Patch Changes
