@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.33.1
+
+### Patch Changes
+
+- [#10907](https://github.com/wso2/identity-apps/pull/10907) [`ffecc5aeebd6eea61768b1afc6d00862664aa348`](https://github.com/wso2/identity-apps/commit/ffecc5aeebd6eea61768b1afc6d00862664aa348) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Translate the time units in the user verification and flow handoff properties
+
+- Updated dependencies [[`ffecc5aeebd6eea61768b1afc6d00862664aa348`](https://github.com/wso2/identity-apps/commit/ffecc5aeebd6eea61768b1afc6d00862664aa348)]:
+  - @wso2is/i18n@2.60.1
+
 ## 4.33.0
 
 ### Minor Changes
