@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.33.4
+
+### Patch Changes
+
+- [#10916](https://github.com/wso2/identity-apps/pull/10916) [`348ff77a12bfcfa306a76ee3674a0fb6bf4171c0`](https://github.com/wso2/identity-apps/commit/348ff77a12bfcfa306a76ee3674a0fb6bf4171c0) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Release the console with the rule operators filtered by flow variable data type
+
 ## 4.33.3
 
 ### Patch Changes
