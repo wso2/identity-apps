@@ -313,7 +313,7 @@ const VariableOperators: {
  * @param dataType - Data type of the variable.
  * @returns The constraints, or nothing for an unknown type.
  */
-export const toQualifierConstraints = (
+const toQualifierConstraints = (
     dataType: VariableDataTypes
 ): Pick<QualifierValueInterface, "dataType" | "multiValued" | "operators"> => {
     const multiValued: string[] = VariableOperators.MULTI_VALUED;
