@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.33.7
+
+### Patch Changes
+
+- [#10927](https://github.com/wso2/identity-apps/pull/10927) [`fa763758d748222b476a113896c252a7a47bea6c`](https://github.com/wso2/identity-apps/commit/fa763758d748222b476a113896c252a7a47bea6c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Let administrators activate and deactivate the devices of a user from the user's devices tab
+
+- Updated dependencies [[`fa763758d748222b476a113896c252a7a47bea6c`](https://github.com/wso2/identity-apps/commit/fa763758d748222b476a113896c252a7a47bea6c)]:
+  - @wso2is/i18n@2.60.4
+
 ## 4.33.6
 
 ### Patch Changes
