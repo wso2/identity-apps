@@ -232,8 +232,7 @@
 
                 // A number from 0 to 99 kept for this browser, so conditions on the abTestingKey runtime value send the
                 // same user down the same branch each time. Without one, the flow uses the key's initial value.
-                const abTestingKeyStoragePrefix = "wso2.ab.";
-                const abTestingKeyStorageKey = abTestingKeyStoragePrefix + "<%= Encode.forJavaScript(tenantDomain) %>";
+                const abTestingKeyStorageKey = "abTestingKey";
                 const getAbTestingKey = () => {
                     try {
                         let abTestingKey = localStorage.getItem(abTestingKeyStorageKey);
@@ -250,16 +249,16 @@
                 };
 
                 /**
-                 * Clears what the flow kept in the browser, except the A/B testing keys, which outlive a flow. Those
-                 * of every tenant are kept, as tenants on the same origin share the storage.
+                 * Clears what the flow kept in the browser, except the A/B testing key, which outlives a flow.
                  */
                 const clearFlowStorage = () => {
-                    const abTestingKeys = Object.keys(localStorage)
-                        .filter((key) => key.startsWith(abTestingKeyStoragePrefix))
-                        .map((key) => [ key, localStorage.getItem(key) ]);
+                    const abTestingKey = localStorage.getItem(abTestingKeyStorageKey);
 
                     localStorage.clear();
-                    abTestingKeys.forEach(([ key, value ]) => localStorage.setItem(key, value));
+
+                    if (abTestingKey !== null) {
+                        localStorage.setItem(abTestingKeyStorageKey, abTestingKey);
+                    }
                 };
 
                 const extendedInputResolvers = [
