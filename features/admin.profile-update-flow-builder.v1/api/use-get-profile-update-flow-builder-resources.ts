@@ -33,11 +33,6 @@ import widgets from "../data/widgets.json";
  * Hook to get the resources supported by the profile update flow builder.
  * This hook will aggregate the core resources and the profile update specific resources.
  *
- * This function calls the GET method of the following endpoint to get the resources.
- * - TODO: Fill this
- * For more details, refer to the documentation:
- * {@link https://TODO:<fillthis>)}
- *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetProfileUpdateFlowBuilderResources = <Data = Resources, Error = RequestErrorInterface>(

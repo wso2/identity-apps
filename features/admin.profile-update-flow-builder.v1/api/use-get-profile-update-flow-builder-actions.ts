@@ -25,11 +25,6 @@ import actions from "../data/actions.json";
  * Hook to get the actions supported by the flow builder.
  * This hook will aggregate the core actions and the profile update specific actions.
  *
- * This function calls the GET method of the following endpoint to get the actions.
- * - TODO: Fill this
- * For more details, refer to the documentation:
- * {@link https://TODO:<fillthis>)}
- *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetProfileUpdateFlowBuilderActions = <Data = Actions, Error = RequestErrorInterface>(

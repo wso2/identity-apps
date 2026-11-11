@@ -30,8 +30,6 @@ import ProfileUpdateFlowConstants from "../constants/profile-update-flow-constan
  *
  * This function calls the GET method of the following endpoint to get the profile update flow of the organization.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow?flowType=PROFILE_UPDATE`
- * For more details, refer to the documentation:
- * {@link https://TODO:<fillthis>)}
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
@@ -45,8 +43,8 @@ const useGetProfileUpdateFlow = <Data = any, Error = RequestErrorInterface>(
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        // eslint-disable-next-line max-len
-        url: `${store.getState().config.endpoints.profileUpdateFlow}?flowType=${ProfileUpdateFlowConstants.PROFILE_UPDATE_FLOW_TYPE}`
+        url: store.getState().config.endpoints.profileUpdateFlow + "?flowType=" +
+            ProfileUpdateFlowConstants.PROFILE_UPDATE_FLOW_TYPE
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
