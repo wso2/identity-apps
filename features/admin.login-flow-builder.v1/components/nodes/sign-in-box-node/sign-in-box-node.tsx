@@ -324,7 +324,7 @@ const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
         const signInButton: ReactElement = (
             <Button
-                startIcon={ <img className="oxygen-sign-in-option-image" src={ authenticator.image } /> }
+                startIcon={ <img className="oxygen-sign-in-option-image" src={ authenticator.image } alt="" /> }
                 variant="contained"
                 className="oxygen-sign-in-option"
                 type="button"
