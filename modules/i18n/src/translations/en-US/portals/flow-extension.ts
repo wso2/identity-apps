@@ -248,6 +248,7 @@ export const flowExtension: flowExtensionNS = {
         flowTypes: {
             INVITED_USER_REGISTRATION: "Invited User Registration",
             PASSWORD_RECOVERY: "Password Recovery",
+            PROFILE_UPDATE: "Profile Update",
             REGISTRATION: "Registration"
         },
         node: {
