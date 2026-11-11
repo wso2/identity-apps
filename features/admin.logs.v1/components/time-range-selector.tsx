@@ -54,7 +54,7 @@ const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactEleme
     const [ endTime, setEndTime ] = useState<string>("");
     const [ selectedRange, setSelectedRange ] = useState<number>(0.25);
     const [ prevSelectedRange, setPrevSelectedRange ] = useState<number>(0.25);
-    const [ timeZone, setTimeZone ] = useState<string>(getCurrentTimeZone());
+    const [ timeZone, setTimeZone ] = useState<string>(() => getCurrentTimeZone());
     const [ isTimeRangeDropdownOpen, setIsTimeRangeDropdownOpen ] = useState<boolean | undefined>(
         undefined
     );
