@@ -62,6 +62,10 @@ export interface OperatorConstraintsInterface {
      * Data type of the value the qualifier names.
      */
     dataType?: string;
+    /**
+     * Names of the operators the qualifier accepts, when it states them. Taken over what its type implies.
+     */
+    operators?: string[];
 }
 
 /**
@@ -116,8 +120,13 @@ export const narrowOperators = (
     operators: OperatorInterface[],
     constraints?: OperatorConstraintsInterface
 ): OperatorInterface[] => {
-    if (!operators || !constraints
-        || (constraints.multiValued === undefined && constraints.dataType === undefined)) {
+    if (!operators || !constraints) {
+        return operators;
+    }
+    if (constraints.operators) {
+        return operators.filter((operator: OperatorInterface) => constraints.operators.includes(operator.name));
+    }
+    if (constraints.multiValued === undefined && constraints.dataType === undefined) {
         return operators;
     }
 

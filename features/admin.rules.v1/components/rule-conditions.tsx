@@ -62,7 +62,8 @@ import {
     LinkInterface,
     ListDataInterface,
     OperatorInterface,
-    OperatorValueInputType
+    OperatorValueInputType,
+    QualifierValueInterface
 } from "../models/meta";
 import { ClaimResourceInterface, ResourceInterface } from "../models/resource";
 import {
@@ -1353,10 +1354,12 @@ const ConditionValueReferenceInput: FunctionComponent<ConditionValueReferenceInp
             if (meta.qualifier.values?.length > 0) {
                 return {
                     ...field,
-                    qualifiers: meta.qualifier.values.map((item: ListDataInterface): QualifierOptionInterface => ({
-                        label: item.displayName,
-                        value: item.name
-                    }))
+                    qualifiers: meta.qualifier.values.map(
+                        (item: QualifierValueInterface): QualifierOptionInterface => ({
+                            dataType: item.dataType,
+                            label: item.displayName,
+                            value: item.name
+                        }))
                 };
             }
             if (listedMetas.includes(meta)) {
@@ -1813,9 +1816,25 @@ const useQualifierConstraints = (
     const valuesUrl: string = metaQualifier?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
     const referenceAttribute: string = metaQualifier?.valueReferenceAttribute || "id";
 
-    const { data: fetchedResources } = useGetResourceListOrResourceDetails(valuesUrl, !!valuesUrl && !!qualifier);
+    // A qualifier listed in the metadata itself, such as a variable of a flow, may state its type there.
+    const listedQualifier: QualifierValueInterface | undefined = metaQualifier?.values?.find(
+        (value: QualifierValueInterface) => value?.name === qualifier);
+    const isListedTyped: boolean = listedQualifier?.dataType !== undefined
+        || listedQualifier?.multiValued !== undefined
+        || listedQualifier?.operators !== undefined;
+
+    const { data: fetchedResources } = useGetResourceListOrResourceDetails(
+        valuesUrl, !!valuesUrl && !!qualifier && !isListedTyped);
 
     return useMemo((): OperatorConstraintsInterface | undefined => {
+        if (isListedTyped) {
+            return {
+                dataType: listedQualifier.dataType,
+                multiValued: listedQualifier.multiValued === true,
+                operators: listedQualifier.operators
+            };
+        }
+
         const resource: Record<string, unknown> =
             findQualifierResource(fetchedResources, referenceAttribute, qualifier);
 
@@ -1827,7 +1846,7 @@ const useQualifierConstraints = (
             dataType: resource.dataType as string,
             multiValued: resource.multiValued === true || resource.multiValued === "true"
         };
-    }, [ fetchedResources, referenceAttribute, qualifier ]);
+    }, [ fetchedResources, referenceAttribute, qualifier, isListedTyped, listedQualifier ]);
 };
 
 /**

@@ -18,7 +18,8 @@
 
 import {
     ConditionExpressionMetaInterface,
-    ConditionExpressionsMetaDataInterface
+    ConditionExpressionsMetaDataInterface,
+    QualifierValueInterface
 } from "@wso2is/admin.rules.v1/models/meta";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface } from "@wso2is/core/models";
@@ -290,9 +291,55 @@ export const getVariablesPayload = (nodes: Node[]): FlowVariablesInterface | und
 };
 
 /**
+ * Operators the server accepts in a condition on a header or runtime value, by the variable's type.
+ */
+const VariableOperators: {
+    BOOLEAN: string[];
+    MULTI_VALUED: string[];
+    NUMERIC: string[];
+    TEXT: string[];
+} = {
+    BOOLEAN: [ "equals", "notEquals" ],
+    MULTI_VALUED: [ "in", "notIn", "isEmpty", "isNotEmpty" ],
+    NUMERIC: [ "equals", "notEquals", "greaterThan", "lessThan", "isBlank", "isNotBlank" ],
+    TEXT: [ "equals", "notEquals", "contains", "notContains", "startsWith", "endsWith", "isBlank", "isNotBlank" ]
+};
+
+/**
+ * What the rule editor needs to know about the values a variable of a flow holds: the operators a condition on it
+ * may use, as the server checks them when the flow is saved, and the type of its values, so a value read from
+ * another field is of the same type. An array is described by the type of its entries.
+ *
+ * @param dataType - Data type of the variable.
+ * @returns The constraints, or nothing for an unknown type.
+ */
+const toQualifierConstraints = (
+    dataType: VariableDataTypes
+): Pick<QualifierValueInterface, "dataType" | "multiValued" | "operators"> => {
+    const multiValued: string[] = VariableOperators.MULTI_VALUED;
+
+    switch (dataType) {
+        case VariableDataTypes.STRING_ARRAY:
+            return { dataType: VariableDataTypes.STRING, multiValued: true, operators: multiValued };
+        case VariableDataTypes.NUMBER_ARRAY:
+            return { dataType: VariableDataTypes.DECIMAL, multiValued: true, operators: multiValued };
+        case VariableDataTypes.INTEGER:
+        case VariableDataTypes.DECIMAL:
+            return { dataType, multiValued: false, operators: VariableOperators.NUMERIC };
+        case VariableDataTypes.BOOLEAN:
+            return { dataType, multiValued: false, operators: VariableOperators.BOOLEAN };
+        case VariableDataTypes.STRING:
+            return { dataType, multiValued: false, operators: VariableOperators.TEXT };
+        default:
+            return {};
+    }
+};
+
+/**
  * Offers the names of the flow's variables as the qualifiers of the condition fields that read them, so a condition
- * picks a defined header or runtime value instead of typing its name. A field keeps its own input when the console
- * has flow variables turned off, or when the flow defines no variable it could pick.
+ * picks a defined header or runtime value instead of typing its name. Each name carries the variable's type, so the
+ * rule editor offers only the operators that apply to it. A field keeps its own input when the console has flow
+ * variables turned off, or when the flow defines no variable it could pick.
  *
  * @param metadata  - The rule editor's metadata.
  * @param variables - The variables of the flow.
@@ -308,20 +355,26 @@ export const withVariableQualifiers = (
         return metadata;
     }
 
-    const namesByField: Record<string, string[]> = {
-        [ VariableFields.RUNTIME_VALUES ]: withAbTestingKeyFirst(variables?.runtimeValues).map(
-            (runtimeValue: RuntimeValueInterface) => runtimeValue?.name
-        ),
+    const variablesByField: Record<string, FlowVariableInterface[]> = {
+        [ VariableFields.RUNTIME_VALUES ]: withAbTestingKeyFirst(variables?.runtimeValues),
         [ VariableFields.REQUEST_HEADERS ]: (variables?.headers ?? []).map(
-            (header: FlowVariableInterface) => header?.name?.toLowerCase()
+            (header: FlowVariableInterface) => ({ ...header, name: header?.name?.toLowerCase() })
         )
     };
 
     return metadata.map((meta: ConditionExpressionMetaInterface): ConditionExpressionMetaInterface => {
-        const names: string[] = [ ...new Set((namesByField[ meta.field?.name ] ?? [])
-            .map((name: string) => name?.trim()).filter(Boolean)) ];
+        const values: QualifierValueInterface[] = [];
 
-        if (!names.length || !meta.qualifier) {
+        for (const variable of variablesByField[ meta.field?.name ] ?? []) {
+            const name: string = variable?.name?.trim();
+
+            // The first of two variables of the same name is the one the flow keeps.
+            if (name && !values.some((value: QualifierValueInterface) => value.name === name)) {
+                values.push({ displayName: name, name, ...toQualifierConstraints(variable.dataType) });
+            }
+        }
+
+        if (!values.length || !meta.qualifier) {
             return meta;
         }
 
@@ -330,7 +383,7 @@ export const withVariableQualifiers = (
             qualifier: {
                 ...meta.qualifier,
                 inputType: "options",
-                values: names.map((name: string) => ({ displayName: name, name }))
+                values
             }
         };
     });
