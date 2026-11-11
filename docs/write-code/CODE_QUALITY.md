@@ -109,6 +109,8 @@ const processInput = (input: any): string => input.toUpperCase();
 
 ### 7. Use `IdentifiableComponentInterface` / `data-componentid`, not `TestableComponentInterface` / `data-testid`
 
+`data-testid` is deprecated because its name ties the identifier to testing. `data-componentid` identifies the component itself, so the same ID works for tests, automation, and anything else.
+
 ```tsx
 // ✅
 interface MyComponentPropsInterface extends IdentifiableComponentInterface {}
