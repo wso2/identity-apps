@@ -61,6 +61,7 @@ const Action: ForwardRefExoticComponent<ActionProps> = forwardRef<HTMLButtonElem
         ref: ForwardedRef<HTMLButtonElement>
     ): ReactElement => (
         <button
+            type="button"
             ref={ ref }
             className={ classNames("flow-builder-dnd-action", className) }
             style={
