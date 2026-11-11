@@ -29,6 +29,8 @@ const hasReadPermission: boolean = hasRequiredScopes(
     featureConfig?.sampleFeature, featureConfig?.sampleFeature?.scopes?.read, allowedScopes);
 ```
 
+**Exception — My Account:** My Account doesn't mount an `AccessControlProvider`, and `useRequiredScopes` throws without one. Use `hasRequiredScopes` from `@wso2is/core/helpers` there (see `apps/myaccount/src/components/multi-factor-authentication/multi-factor-authentication.tsx`).
+
 ### 3. Use Oxygen UI, not Semantic UI
 
 Semantic UI is being phased out. Don't use its components or classes (`ui button primary`, etc.) in new code.
@@ -41,9 +43,9 @@ import Button from "@oxygen-ui/react/Button";
 import { Button } from "semantic-ui-react";
 ```
 
-### 4. Use default exports, not named exports
+### 4. Use default exports for components
 
-One default export per file.
+Component files have a single default export. Files that group related items (models, constants, shared styled components) and package entry points (`public-api.ts`) keep named exports.
 
 ```tsx
 // ✅
@@ -56,7 +58,7 @@ export const MyComponent = () => <div />;
 
 ### 5. Build new forms with `@wso2is/forms` (React Final Form)
 
-`@wso2is/forms/legacy` is deprecated for new code.
+`@wso2is/forms/legacy` is deprecated for new code. `required` only marks the field visually; add a `validate` function to enforce it.
 
 ```tsx
 // ✅
@@ -71,6 +73,7 @@ import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
                 label={ t("...label") }
                 ariaLabel="username"
                 required
+                validate={ (value: string) => !value ? t("...validations.required") : undefined }
                 component={ TextFieldAdapter }
             />
         </form>
@@ -142,16 +145,19 @@ className={ classNames("button", { primary: isPrimary, disabled: isDisabled }) }
 className={ "button " + (isPrimary ? "primary " : "") + (isDisabled ? "disabled" : "") }
 ```
 
-### 11. Import from specific file paths, not index files
+### 11. Don't create or import internal barrel files
 
-Index re-exports increase bundle size, weaken tree-shaking, and cause circular dependencies.
+Internal index re-exports increase bundle size, weaken tree-shaking, and cause circular dependencies. Within a package, import directly from the file.
+
+Published package entry points are fine, including exported subpaths that resolve to index files (e.g. `@wso2is/core/constants`, `@wso2is/core/models`).
 
 ```ts
 // ✅
-import Button from "@/components/button";
+import Button from "../components/button";
+import { CommonConstants } from "@wso2is/core/constants";
 
 // ❌
-import { Button } from "@/components";
+import { Button } from "../components";
 ```
 
 ### 12. Use modern JS syntax
@@ -246,9 +252,9 @@ VS Code settings:
 "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
 ```
 
-### 17. Include a changeset in every PR
+### 17. Include a changeset for package changes
 
-Run `pnpm changeset` from the repo root and choose the bump type.
+Run `pnpm changeset` from the repo root and choose the bump type. PRs that don't change any package (e.g. docs or CI only) omit the changeset.
 
 - If you change `features/` or `modules/`, also add a **patch** bump for the consuming app: `@wso2is/console`, `@wso2is/myaccount`, or `@wso2is/identity-apps-core`.
 - New packages get a **major** bump.

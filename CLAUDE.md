@@ -376,7 +376,7 @@ Always use `lazy()` imports for route-level components.
 - **component-ids.ts**: All `data-componentid` values as named string constants
 - **validation.ts**: Validation constraints (min/max lengths, regex patterns)
 - **Data-driven configs**: Templates, options, and selectable items as typed constant arrays
-- No barrel `index.ts` files — import constants from their specific file (see CODE_QUALITY.md rule 11)
+- No internal barrel `index.ts` files — import constants from their specific file. Published package entry points (e.g. `@wso2is/core/constants`) are fine (see CODE_QUALITY.md rule 11)
 
 ### Reusing Existing Constants & Utilities
 

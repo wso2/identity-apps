@@ -42,6 +42,7 @@ cd apps/myaccount && pnpm start   # My Account at https://localhost:9000/myaccou
 
 - React 18, TypeScript 5.1, Redux
 - Vite, Nx 21, pnpm 10
+- Webpack (bundles the JSP portals' React components in `identity-apps-core`)
 - Vitest + React Testing Library
 - Semantic UI React + MUI + Oxygen UI (WSO2 design system)
 
