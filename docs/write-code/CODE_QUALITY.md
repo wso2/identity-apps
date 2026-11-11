@@ -1,6 +1,8 @@
 # Code Quality Rules
 
-Best practices for frontend code in identity-apps. Set up the [developer tools](../SET_UP_DEV_ENVIRONMENT.md#setting-up-development-tools) first.
+This is an evolving documentation on the best practices for writing readable, functional and maintainable frontend code. Everyone contributing to identity-apps repository is expected to go through this document and get a better understanding on the best practices to follow.
+
+> Make sure that you set up the required developer tools as mentioned [here](../SET_UP_DEV_ENVIRONMENT.md#setting-up-development-tools) before starting off with the coding.
 
 ## Code
 
@@ -58,7 +60,7 @@ export const MyComponent = () => <div />;
 
 ### 5. Build new forms with `@wso2is/forms` (React Final Form)
 
-`@wso2is/forms/legacy` is deprecated for new code. `required` only marks the field visually; add a `validate` function to enforce it.
+`@wso2is/forms/legacy` is deprecated for new code.
 
 ```tsx
 // ✅
@@ -91,6 +93,15 @@ Use a specific type, or `unknown` narrowed with type guards.
 ```ts
 // ✅
 const processInput = (input: string): string => input.toUpperCase();
+
+// ✅ Type unknown: narrow before use
+const getErrorMessage = (error: unknown): string => {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return typeof error === "string" ? error : "Unknown error";
+};
 
 // ❌
 const processInput = (input: any): string => input.toUpperCase();
