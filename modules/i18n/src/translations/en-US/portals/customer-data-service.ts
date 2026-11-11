@@ -24,6 +24,25 @@ import { CustomerDataServiceNS } from "../../../models";
  */
 
 export const customerDataService: CustomerDataServiceNS = {
+    allowedOrigins: {
+        description: "Browser origins of this organization's apps that call Customer Data Service, such as a web app using the SDK.",
+        emptyInherited: "The root organization has not added any origins.",
+        errors: {
+            duplicate: "This origin is already in the list.",
+            empty: "Enter an origin.",
+            invalid: "Enter a valid origin, such as https://app.example.com.",
+            notAnOrigin: "Enter only the scheme, host and port, without a path, query, fragment or credentials.",
+            scheme: "The origin must use http or https.",
+            tooLong: "The list is too long to store. Remove an origin before adding another.",
+            trailingSlash: "Remove the trailing slash.",
+            wildcard: "Wildcards are not supported. Add each origin separately."
+        },
+        field: {
+            placeholder: "https://app.example.com"
+        },
+        heading: "Allowed origins",
+        inherited: "This organization uses the allowed origins of its root organization."
+    },
     common: {
         buttons: {
             cancel: "Cancel",
@@ -967,11 +986,11 @@ export const customerDataService: CustomerDataServiceNS = {
         heading: "Profile unification",
         notifications: {
             saveFailed: {
-                description: "The matching settings could not be updated.",
+                description: "The settings could not be updated.",
                 message: "Update failed"
             },
             saved: {
-                description: "The matching settings have been updated.",
+                description: "The settings have been updated.",
                 message: "Settings updated"
             }
         },

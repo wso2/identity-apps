@@ -72,6 +72,13 @@ export interface CDSConfig {
      * rules are unaffected either way.
      */
     deterministic_match_decisive?: boolean;
+
+    /**
+     * Browser origins of the organization's own apps, allowed to call CDS in addition to the
+     * origins the server allows for every organization, such as the Console. A child
+     * organization reports the origins of its root organization, which are the ones that apply.
+     */
+    cors_allowed_origins?: string[];
 }
 
 /**
@@ -92,6 +99,19 @@ export interface CDSConfigUpdateRequest {
     auto_merge_threshold?: number;
     manual_review_threshold?: number;
     deterministic_match_decisive?: boolean;
+    cors_allowed_origins?: string[];
+}
+
+/**
+ * What a section of the settings page reports, so that the page saves every section with one update.
+ */
+export interface CDSSettingsSectionStateInterface {
+    /**
+     * The fields of the section as they stand.
+     */
+    payload: CDSConfigUpdateRequest;
+    isDirty: boolean;
+    hasError: boolean;
 }
 
 /**
