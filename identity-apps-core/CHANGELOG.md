@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.9.1
+
+### Patch Changes
+
+- [#10918](https://github.com/wso2/identity-apps/pull/10918) [`e0e7c4b6c7f92b3699313e625bfe70c5cf6cc6c5`](https://github.com/wso2/identity-apps/commit/e0e7c4b6c7f92b3699313e625bfe70c5cf6cc6c5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Store the A/B testing key of the execution flow page under `abTestingKey`, without binding it to the tenant
+
 ## 5.9.0
 
 ### Minor Changes
