@@ -26,3 +26,4 @@ export * from "./de-DE";
 export * from "./ja-JP";
 export * from "./zh-CN";
 export * from "./nl-NL";
+export * from "./vi-VN";

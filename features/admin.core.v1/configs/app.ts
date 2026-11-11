@@ -441,7 +441,7 @@ export class Config {
      * @returns List of translatable UI languages.
      */
     public static getAppSupportedLocales(): string[] {
-        return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE ];
+        return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, "vi-VN" ];
     }
 
     /**
