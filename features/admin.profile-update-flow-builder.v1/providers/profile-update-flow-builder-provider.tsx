@@ -56,6 +56,7 @@ const ProfileUpdateFlowBuilderProvider: FC<ProfileUpdateFlowBuilderProviderProps
 }: PropsWithChildren<ProfileUpdateFlowBuilderProviderProps>): ReactElement => {
 
     const screensList: PreviewScreenType[] = useMemo(() => ([
+        PreviewScreenType.PROFILE_UPDATE,
         PreviewScreenType.COMMON,
         PreviewScreenType.EMAIL_LINK_EXPIRY,
         PreviewScreenType.EMAIL_OTP,
