@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.17.3
+
+### Patch Changes
+
+- [#10914](https://github.com/wso2/identity-apps/pull/10914) [`e9c25aaf38accfd6cb035a1c3ead9604357130c3`](https://github.com/wso2/identity-apps/commit/e9c25aaf38accfd6cb035a1c3ead9604357130c3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Offer only the operators that suit the data type of a flow header or runtime value in rule conditions
+
+- Updated dependencies [[`e9c25aaf38accfd6cb035a1c3ead9604357130c3`](https://github.com/wso2/identity-apps/commit/e9c25aaf38accfd6cb035a1c3ead9604357130c3)]:
+  - @wso2is/admin.rules.v1@0.7.56
+
 ## 0.17.2
 
 ### Patch Changes
