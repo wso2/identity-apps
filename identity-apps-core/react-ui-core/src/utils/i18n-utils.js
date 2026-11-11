@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { resolvePlaceholders } from "./placeholder-utils";
+
 /**
  * Dynamically imports the appropriate translations object for a given locale.
  * @param {string} locale - The locale code (e.g., 'en', 'fr', 'es').
@@ -93,11 +95,16 @@ export const i18nLink = (locale, link) => {
 
 /**
  * Resolves the text of an element.
+ * If `text` matches `{{some.key}}`, looks up the translation for that key and
+ * replaces any `{{varName}}` placeholders in the result with values from `vars`.
+ * Returns `undefined` only when the key is absent, so callers can fall back;
+ * an existing but empty translation is preserved. A plain `text` is returned as-is.
  * @param {Object} translations - The translations object.
- * @param {string} text - The text to resolve.
- * @returns {string} - The resolved text.
+ * @param {string} text - The text to resolve (plain string or `{{i18n.key}}`).
+ * @param {Object} [vars={}] - Variable map for placeholder interpolation.
+ * @returns {string|undefined} - The resolved text, or `undefined` when the key is absent.
  */
-export const resolveElementText = (translations, text) => {
+export const resolveElementText = (translations, text, vars = {}) => {
     if (!text) {
         return "";
     }
@@ -105,7 +112,13 @@ export const resolveElementText = (translations, text) => {
     const i18nKeyMatch = text.match(/^\{\{(.+)\}\}$/);
 
     if (i18nKeyMatch) {
-        return getTranslationByKey(translations, i18nKeyMatch[1]);
+        const resolved = getTranslationByKey(translations, i18nKeyMatch[1]);
+
+        if (resolved == null) {
+            return undefined;
+        }
+
+        return resolvePlaceholders(resolved, [ (key) => vars[key] ]);
     }
 
     return text;
