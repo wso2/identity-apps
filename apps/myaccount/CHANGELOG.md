@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.5.3
+
+### Patch Changes
+
+- [#10905](https://github.com/wso2/identity-apps/pull/10905) [`602315c0ab1226fc707b37ed1794e949e96a3e90`](https://github.com/wso2/identity-apps/commit/602315c0ab1226fc707b37ed1794e949e96a3e90) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Upgrade axios to 1.20.0 and the Asgardeo SDKs to @asgardeo/auth-react 5.6.3 and @asgardeo/auth-spa 3.5.3
+
 ## 4.5.2
 
 ### Patch Changes
