@@ -677,6 +677,7 @@ export interface CustomerDataServiceNS {
     };
 
     sharing: {
+        complexAttributeNotice: string;
         confirmations: {
             shareAll: {
                 assertionHint: string;
