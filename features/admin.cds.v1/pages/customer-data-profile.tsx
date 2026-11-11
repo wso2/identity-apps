@@ -99,7 +99,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
             pageTitle={ t("customerDataService:landing.page.title") }
             description={ t("customerDataService:landing.page.description") }
             className="customer-data-profile-page"
-            action={ isCDSEnabled && isFuzzyUnificationEnabled && (
+            action={ isCDSEnabled && (
                 <SecondaryButton
                     onClick={ () => history.push(AppConstants.getPaths().get("CUSTOMER_DATA_SETTINGS")) }
                     data-componentid={ `${ componentId }-settings-button` }

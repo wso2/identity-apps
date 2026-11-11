@@ -17,6 +17,25 @@
  */
 
 export interface CustomerDataServiceNS {
+    allowedOrigins: {
+        description: string;
+        emptyInherited: string;
+        errors: {
+            duplicate: string;
+            empty: string;
+            invalid: string;
+            notAnOrigin: string;
+            scheme: string;
+            tooLong: string;
+            trailingSlash: string;
+            wildcard: string;
+        };
+        field: {
+            placeholder: string;
+        };
+        heading: string;
+        inherited: string;
+    };
     common: {
         buttons: {
             cancel: string;

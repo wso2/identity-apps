@@ -18,9 +18,6 @@
 
 import Slider from "@mui/material/Slider";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Card from "@oxygen-ui/react/Card";
-import CardContent from "@oxygen-ui/react/CardContent";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -30,27 +27,24 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { updateCDSConfig } from "../api/config";
 import {
     CDS_CONTRADICTION_THRESHOLD,
     CDS_RESOLUTION_DEFAULTS,
     CDS_SCORE_PENALTY_OFFSET,
-    CDSConfig
+    CDSConfig,
+    CDSSettingsSectionStateInterface
 } from "../models/config";
 
 interface ResolutionSettingsProps extends IdentifiableComponentInterface {
     config: CDSConfig;
     /**
-     * Refreshes the cached configuration once a save succeeds.
+     * Receives the settings as they stand, which the settings page saves with its other sections.
      */
-    mutateConfig: () => void;
+    onChange: (state: CDSSettingsSectionStateInterface) => void;
     isReadOnly?: boolean;
 }
 
@@ -199,16 +193,14 @@ const ResolutionSettings: FunctionComponent<ResolutionSettingsProps> = (
 ): ReactElement => {
     const {
         config,
-        mutateConfig,
+        onChange,
         isReadOnly = false,
         ["data-componentid"]: componentId = "cds-resolution-settings"
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
     const [ settings, setSettings ] = useState<SettingsState>(() => toState(config));
-    const [ isSaving, setIsSaving ] = useState<boolean>(false);
 
     // The configuration arrives asynchronously, so seed the form again whenever a fresh copy
     // lands rather than leaving the defaults showing over real values.
@@ -356,219 +348,178 @@ const ResolutionSettings: FunctionComponent<ResolutionSettingsProps> = (
         }));
     };
 
-    const handleSave = async (): Promise<void> => {
-        if (isSaving || hasError) {
-            return;
-        }
-
-        setIsSaving(true);
-
-        try {
-            await updateCDSConfig({
+    useEffect(() => {
+        onChange({
+            hasError,
+            isDirty,
+            payload: {
                 auto_merge_enabled: settings.autoMergeEnabled,
                 auto_merge_threshold: Number(settings.autoMergeThreshold),
                 deterministic_match_decisive: settings.deterministicMatchDecisive,
                 manual_review_threshold: Number(settings.manualReviewThreshold)
-            });
-
-            mutateConfig();
-
-            dispatch(addAlert({
-                description: t("customerDataService:resolutionSettings.notifications.saved.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("customerDataService:resolutionSettings.notifications.saved.message")
-            }));
-        } catch (error) {
-            // The server explains why it refused — a threshold pair it will not accept, for
-            // instance. Showing only "could not be updated" leaves the operator with nothing
-            // to act on.
-            const serverReason: string =
-                (error as { response?: { data?: { description?: string } } })?.response?.data?.description;
-
-            dispatch(addAlert({
-                description: serverReason
-                    ?? t("customerDataService:resolutionSettings.notifications.saveFailed.description"),
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:resolutionSettings.notifications.saveFailed.message")
-            }));
-        } finally {
-            setIsSaving(false);
-        }
-    };
+            }
+        });
+    }, [ settings, isDirty, hasError ]);
 
     return (
-        <Card data-componentid={ componentId }>
-            <CardContent sx={ { display: "flex", flexDirection: "column", gap: 4, maxWidth: "720px", p: 4 } }>
-                <Box>
-                    <Typography variant="h4">
-                        { t("customerDataService:resolutionSettings.heading") }
-                    </Typography>
-                    <Hint compact>
-                        { t("customerDataService:resolutionSettings.description") }
-                    </Hint>
-                </Box>
+        <Box
+            sx={ { display: "flex", flexDirection: "column", gap: 4, maxWidth: "720px" } }
+            data-componentid={ componentId }
+        >
+            <Box>
+                <Typography variant="h4">
+                    { t("customerDataService:resolutionSettings.heading") }
+                </Typography>
+                <Hint compact>
+                    { t("customerDataService:resolutionSettings.description") }
+                </Hint>
+            </Box>
 
-                <Box>
-                    <Typography variant="h6" id={ `${ componentId }-automatic-heading` } sx={ { mb: 1 } }>
-                        { t("customerDataService:resolutionSettings.groups.automatic") }
-                    </Typography>
-                    <FormControl disabled={ isReadOnly } fullWidth>
-                        <RadioGroup
-                            aria-labelledby={ `${ componentId }-automatic-heading` }
-                            value={ settings.autoMergeEnabled ? "auto" : "approval" }
-                            onChange={ handleApprovalChange }
-                        >
+            <Box>
+                <Typography variant="h6" id={ `${ componentId }-automatic-heading` } sx={ { mb: 1 } }>
+                    { t("customerDataService:resolutionSettings.groups.automatic") }
+                </Typography>
+                <FormControl disabled={ isReadOnly } fullWidth>
+                    <RadioGroup
+                        aria-labelledby={ `${ componentId }-automatic-heading` }
+                        value={ settings.autoMergeEnabled ? "auto" : "approval" }
+                        onChange={ handleApprovalChange }
+                    >
+                        <FormControlLabel
+                            value="approval"
+                            control={ <Radio /> }
+                            label={ t("customerDataService:resolutionSettings.fields.autoMerge.never") }
+                            data-componentid={ `${ componentId }-require-approval` }
+                        />
+                        <Box sx={ { mb: 1, ml: 4 } }>
+                            <Hint compact>
+                                <Trans
+                                    i18nKey="customerDataService:resolutionSettings.fields.autoMerge.neverHint"
+                                    components={ [ null, <strong key="0" /> ] }
+                                />
+                            </Hint>
+                        </Box>
+                        <FormControlLabel
+                            value="auto"
+                            control={ <Radio /> }
+                            label={ t("customerDataService:resolutionSettings.fields.autoMerge.above") }
+                            data-componentid={ `${ componentId }-auto-unify` }
+                        />
+                        <Box sx={ { ml: 4 } }>
+                            <Hint compact>
+                                { t("customerDataService:resolutionSettings.fields.autoMerge.aboveHint") }
+                            </Hint>
+                        </Box>
+                    </RadioGroup>
+                </FormControl>
+
+                { /* Only meaningful when profiles may be unified without review, so shown
+                     only then. Hidden values are kept and still sent, so switching to
+                     approval and back changes nothing. */ }
+                { settings.autoMergeEnabled && (
+                    <Box sx={ { display: "flex", flexDirection: "column", gap: 2, ml: 4, mt: 2 } }>
+                        <ThresholdField
+                            id={ `${ componentId }-auto-merge-threshold` }
+                            label={ t("customerDataService:resolutionSettings.fields.autoMerge.threshold") }
+                            value={ settings.autoMergeThreshold }
+                            min={ lowestUsableAutoMerge }
+                            hint={ autoMerge >= 1
+                                ? t("customerDataService:resolutionSettings.fields.autoMerge.thresholdHintMax")
+                                : t("customerDataService:resolutionSettings.fields.autoMerge.thresholdHint",
+                                    { threshold: formatScore(autoMerge) }) }
+                            error={ autoMergeError }
+                            disabled={ isReadOnly }
+                            onChange={ (value: string) =>
+                                setSettings((prev: SettingsState) => ({ ...prev, autoMergeThreshold: value })) }
+                            data-componentid={ `${ componentId }-auto-merge-threshold` }
+                        />
+                        <FormControl disabled={ isReadOnly } sx={ { ml: 2 } }>
                             <FormControlLabel
-                                value="approval"
-                                control={ <Radio /> }
-                                label={ t("customerDataService:resolutionSettings.fields.autoMerge.never") }
-                                data-componentid={ `${ componentId }-require-approval` }
-                            />
-                            <Box sx={ { mb: 1, ml: 4 } }>
-                                <Hint compact>
-                                    <Trans
-                                        i18nKey="customerDataService:resolutionSettings.fields.autoMerge.neverHint"
-                                        components={ [ null, <strong key="0" /> ] }
-                                    />
-                                </Hint>
-                            </Box>
-                            <FormControlLabel
-                                value="auto"
-                                control={ <Radio /> }
-                                label={ t("customerDataService:resolutionSettings.fields.autoMerge.above") }
-                                data-componentid={ `${ componentId }-auto-unify` }
+                                control={
+                                    (<Checkbox
+                                        checked={ settings.deterministicMatchDecisive }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                            setSettings((prev: SettingsState) =>
+                                                ({ ...prev, deterministicMatchDecisive: event.target.checked })) }
+                                        data-componentid={ `${ componentId }-exact-rule-matches` }
+                                    />)
+                                }
+                                label={ exactRuleLabel }
                             />
                             <Box sx={ { ml: 4 } }>
-                                <Hint compact>
-                                    { t("customerDataService:resolutionSettings.fields.autoMerge.aboveHint") }
-                                </Hint>
+                                <Hint compact>{ exactRuleHint }</Hint>
                             </Box>
-                        </RadioGroup>
-                    </FormControl>
-
-                    { /* Only meaningful when profiles may be unified without review, so shown
-                         only then. Hidden values are kept and still sent, so switching to
-                         approval and back changes nothing. */ }
-                    { settings.autoMergeEnabled && (
-                        <Box sx={ { display: "flex", flexDirection: "column", gap: 2, ml: 4, mt: 2 } }>
-                            <ThresholdField
-                                id={ `${ componentId }-auto-merge-threshold` }
-                                label={ t("customerDataService:resolutionSettings.fields.autoMerge.threshold") }
-                                value={ settings.autoMergeThreshold }
-                                min={ lowestUsableAutoMerge }
-                                hint={ autoMerge >= 1
-                                    ? t("customerDataService:resolutionSettings.fields.autoMerge.thresholdHintMax")
-                                    : t("customerDataService:resolutionSettings.fields.autoMerge.thresholdHint",
-                                        { threshold: formatScore(autoMerge) }) }
-                                error={ autoMergeError }
-                                disabled={ isReadOnly }
-                                onChange={ (value: string) =>
-                                    setSettings((prev: SettingsState) => ({ ...prev, autoMergeThreshold: value })) }
-                                data-componentid={ `${ componentId }-auto-merge-threshold` }
-                            />
-                            <FormControl disabled={ isReadOnly } sx={ { ml: 2 } }>
-                                <FormControlLabel
-                                    control={
-                                        (<Checkbox
-                                            checked={ settings.deterministicMatchDecisive }
-                                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                                                setSettings((prev: SettingsState) =>
-                                                    ({ ...prev, deterministicMatchDecisive: event.target.checked })) }
-                                            data-componentid={ `${ componentId }-exact-rule-matches` }
-                                        />)
-                                    }
-                                    label={ exactRuleLabel }
-                                />
-                                <Box sx={ { ml: 4 } }>
-                                    <Hint compact>{ exactRuleHint }</Hint>
-                                </Box>
-                            </FormControl>
-                        </Box>
-                    ) }
-                </Box>
-
-                <Box>
-                    <Typography variant="h6" sx={ { mb: 1 } }>
-                        { t("customerDataService:resolutionSettings.groups.review") }
-                    </Typography>
-                    <ThresholdField
-                        id={ `${ componentId }-review-threshold` }
-                        label={ t("customerDataService:resolutionSettings.fields.manualReviewThreshold.label") }
-                        value={ settings.manualReviewThreshold }
-                        min={ lowestUsableReview }
-                        max={ highestUsableReview }
-                        hint={ t("customerDataService:resolutionSettings.fields.manualReviewThreshold.hint",
-                            { threshold: formatScore(review) }) }
-                        error={ reviewError }
-                        disabled={ isReadOnly }
-                        onChange={ (value: string) =>
-                            setSettings((prev: SettingsState) => ({ ...prev, manualReviewThreshold: value })) }
-                        data-componentid={ `${ componentId }-review-threshold` }
-                    />
-                </Box>
-
-                { /* Read-only, and drawn from the settings as they stand rather than as saved,
-                     so the effect of a change is visible before it is applied. */ }
-                <Box data-componentid={ `${ componentId }-outcome` }>
-                    <Typography variant="h6" sx={ { mb: 1.5 } }>
-                        { t("customerDataService:resolutionSettings.groups.outcome") }
-                    </Typography>
-                    { /* A 2px gap, not a border, separates the regions. The legend below carries
-                         the same information as text, so the bar itself is hidden from assistive
-                         technology. */ }
-                    <Box aria-hidden sx={ { display: "flex", gap: "2px", height: 12 } }>
-                        { outcomeBands.map((band: OutcomeBand) => (
-                            <Box
-                                key={ band.key }
-                                sx={ { bgcolor: band.color, borderRadius: "4px", flexGrow: band.to - band.from } }
-                            />
-                        )) }
-                    </Box>
-                    <Box component="ul" sx={ { listStyle: "none", m: 0, mt: 1.5, p: 0 } }>
-                        { outcomeBands.map((band: OutcomeBand) => (
-                            <Box
-                                component="li"
-                                key={ band.key }
-                                sx={ { alignItems: "center", display: "flex", gap: 1, py: 0.25 } }
-                            >
-                                <Box
-                                    sx={ {
-                                        bgcolor: band.color,
-                                        borderRadius: "50%",
-                                        flexShrink: 0,
-                                        height: 10,
-                                        width: 10
-                                    } }
-                                />
-                                <Typography variant="body2">
-                                    { `${ band.range }: ${ band.label }` }
-                                </Typography>
-                            </Box>
-                        )) }
-                    </Box>
-                    { settings.autoMergeEnabled && settings.deterministicMatchDecisive && (
-                        <Hint compact>
-                            { t("customerDataService:resolutionSettings.outcome.exactRule") }
-                        </Hint>
-                    ) }
-                </Box>
-
-                { !isReadOnly && (
-                    <Box>
-                        <Button
-                            variant="contained"
-                            onClick={ handleSave }
-                            disabled={ isSaving || !isDirty || hasError }
-                            data-componentid={ `${ componentId }-save` }
-                        >
-                            { isSaving
-                                ? t("customerDataService:resolutionSettings.buttons.saving")
-                                : t("customerDataService:resolutionSettings.buttons.save") }
-                        </Button>
+                        </FormControl>
                     </Box>
                 ) }
-            </CardContent>
-        </Card>
+            </Box>
+
+            <Box>
+                <Typography variant="h6" sx={ { mb: 1 } }>
+                    { t("customerDataService:resolutionSettings.groups.review") }
+                </Typography>
+                <ThresholdField
+                    id={ `${ componentId }-review-threshold` }
+                    label={ t("customerDataService:resolutionSettings.fields.manualReviewThreshold.label") }
+                    value={ settings.manualReviewThreshold }
+                    min={ lowestUsableReview }
+                    max={ highestUsableReview }
+                    hint={ t("customerDataService:resolutionSettings.fields.manualReviewThreshold.hint",
+                        { threshold: formatScore(review) }) }
+                    error={ reviewError }
+                    disabled={ isReadOnly }
+                    onChange={ (value: string) =>
+                        setSettings((prev: SettingsState) => ({ ...prev, manualReviewThreshold: value })) }
+                    data-componentid={ `${ componentId }-review-threshold` }
+                />
+            </Box>
+
+            { /* Read-only, and drawn from the settings as they stand rather than as saved,
+                 so the effect of a change is visible before it is applied. */ }
+            <Box data-componentid={ `${ componentId }-outcome` }>
+                <Typography variant="h6" sx={ { mb: 1.5 } }>
+                    { t("customerDataService:resolutionSettings.groups.outcome") }
+                </Typography>
+                { /* A 2px gap, not a border, separates the regions. The legend below carries
+                     the same information as text, so the bar itself is hidden from assistive
+                     technology. */ }
+                <Box aria-hidden sx={ { display: "flex", gap: "2px", height: 12 } }>
+                    { outcomeBands.map((band: OutcomeBand) => (
+                        <Box
+                            key={ band.key }
+                            sx={ { bgcolor: band.color, borderRadius: "4px", flexGrow: band.to - band.from } }
+                        />
+                    )) }
+                </Box>
+                <Box component="ul" sx={ { listStyle: "none", m: 0, mt: 1.5, p: 0 } }>
+                    { outcomeBands.map((band: OutcomeBand) => (
+                        <Box
+                            component="li"
+                            key={ band.key }
+                            sx={ { alignItems: "center", display: "flex", gap: 1, py: 0.25 } }
+                        >
+                            <Box
+                                sx={ {
+                                    bgcolor: band.color,
+                                    borderRadius: "50%",
+                                    flexShrink: 0,
+                                    height: 10,
+                                    width: 10
+                                } }
+                            />
+                            <Typography variant="body2">
+                                { `${ band.range }: ${ band.label }` }
+                            </Typography>
+                        </Box>
+                    )) }
+                </Box>
+                { settings.autoMergeEnabled && settings.deterministicMatchDecisive && (
+                    <Hint compact>
+                        { t("customerDataService:resolutionSettings.outcome.exactRule") }
+                    </Hint>
+                ) }
+            </Box>
+        </Box>
     );
 };
 
