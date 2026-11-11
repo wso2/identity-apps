@@ -79,6 +79,12 @@ export const branding: BrandingNS = {
                 "sign.up.heading": {
                     hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
                 },
+                "profile.update.button": {
+                    hint: "The text that appears on the main action button of the profile update box. If not set, {{productName}} defaults are used."
+                },
+                "profile.update.heading": {
+                    hint: "The heading of the profile update box. If not set, {{productName}} defaults are used."
+                },
                 "password.recovery.body": {
                     hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
                 },
@@ -172,6 +178,7 @@ export const branding: BrandingNS = {
         "password-recovery": "Password Recovery",
         "password-reset": "Password Reset",
         "password-reset-success": "Password Reset Link Sent",
+        "profile-update": "Profile Update",
         "push-auth": "Push Authentication",
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",

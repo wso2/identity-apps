@@ -37,6 +37,7 @@
     screenNames.add ("password-recovery");
     screenNames.add("password-reset");
     screenNames.add("password-reset-success");
+    screenNames.add("profile-update");
     screenNames.add("flow-extension");
 %>
 

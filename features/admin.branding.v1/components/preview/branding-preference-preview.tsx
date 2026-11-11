@@ -292,7 +292,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.PUSH_AUTH,
         PreviewScreenType.USERNAME_RECOVERY_CLAIM,
         PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION,
-        PreviewScreenType.USERNAME_RECOVERY_SUCCESS
+        PreviewScreenType.USERNAME_RECOVERY_SUCCESS,
+        PreviewScreenType.PROFILE_UPDATE
     ];
 
     const resolvePreviewScreen = (): ReactElement => {
