@@ -921,6 +921,8 @@ export const applications: ApplicationsNS = {
                     "This change may require manual updates to your existing application setup " +
                     "and configurations.",
                 hint: "Learn more about the enhanced organization login.",
+                disableHint: "Turn off Allow organizations to create custom roles to turn off the enhanced " +
+                    "organization login.",
                 confirmation: {
                     header: "Are you sure?",
                     message: "Changing the enhanced organization login mode will affect the current application. " +
@@ -960,10 +962,28 @@ export const applications: ApplicationsNS = {
                     }
                 }
             },
+            organizationLoginSettings: {
+                heading: "Organization Login Settings",
+                notifications: {
+                    update: {
+                        success: {
+                            message: "Organization login settings updated.",
+                            description: "The organization login settings have been successfully updated for " +
+                                "this application."
+                        },
+                        error: {
+                            message: "Failed to update organization login settings.",
+                            description: "An error occurred while updating the organization login settings. " +
+                                "Please try again."
+                        }
+                    }
+                }
+            },
             organizationCustomRoles: {
                 title: "Allow organizations to create custom roles",
                 description: "Enabling this allows organizations to create custom application roles or use their own " +
                     "organization roles for this application, limited to the application's authorized permissions.",
+                disableHint: "Enable enhanced organization login to allow organizations to create custom roles.",
                 confirmation: {
                     assertionHint: "Please confirm your action.",
                     audienceSwitch: "The application roles created by organizations for this application will " +
@@ -971,22 +991,20 @@ export const applications: ApplicationsNS = {
                     header: "Are you sure?",
                     message: "Changing this setting affects whether organizations can create custom roles for " +
                         "this application.",
-                    disableMessage: "This action is irreversible and will permanently delete the application " +
-                        "roles created by organizations.",
+                    disableMessage: "This action is irreversible and will permanently delete the existing roles.",
                     content: {
-                        disableOrganizationAudience: "If you disallow this, the organization roles created by " +
-                            "organizations will no longer be honoured for this application. The roles are not " +
-                            "deleted, and roles shared from your organization are not affected.",
-                        enable: "Organization administrators will be able to create custom application roles and " +
-                            "use their own organization roles for this application, limited to the permissions " +
-                            "authorized for this application.",
-                        disable: "If you disallow this, the application roles created by organizations for this " +
-                            "application will be permanently deleted. Users and groups assigned to these roles " +
-                            "will lose the related permissions. Roles shared from this application are not " +
-                            "affected. Please proceed with caution.",
                         enableOrganizationAudience: "The organization roles created by organizations will be " +
                             "honoured for this application, along with the roles shared from your organization. " +
-                            "Tokens only carry the permissions authorized for this application."
+                            "Tokens only carry the permissions authorized for this application.",
+                        disableOrganizationAudience: "The organization roles created by organizations will no longer " +
+                            "be honoured for this application. The roles are not deleted, and roles shared from " +
+                            "your organization are not affected.",
+                        enableApplicationAudience: "Organization administrators will be able to create custom " +
+                            "application roles and use their own organization roles for this application, limited " +
+                            "to the permissions authorized for this application.",
+                        disableApplicationAudience: "The application roles created by organizations for this " +
+                            "application will be permanently deleted, and users and groups assigned to them will " +
+                            "lose the related permissions."
                     }
                 },
                 notifications: {

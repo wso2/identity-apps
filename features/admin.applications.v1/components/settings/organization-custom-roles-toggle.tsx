@@ -46,6 +46,10 @@ interface OrganizationCustomRolesTogglePropsInterface extends IdentifiableCompon
      */
     readOnly?: boolean;
     /**
+     * If true, renders the toggle disabled.
+     */
+    disabled?: boolean;
+    /**
      * Role audience of the application.
      */
     roleAudience?: string;
@@ -62,6 +66,7 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
     isEnabled,
     onUpdate,
     readOnly,
+    disabled,
     roleAudience,
     "data-componentid": componentId = "organization-custom-roles-toggle"
 }: OrganizationCustomRolesTogglePropsInterface): ReactElement => {
@@ -78,7 +83,8 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
         }
 
         if (pendingValue) {
-            return t("applications:edit.sections.organizationCustomRoles.confirmation.content.enable");
+            return t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
+                "enableApplicationAudience");
         }
 
         if (isOrganizationAudience) {
@@ -87,7 +93,8 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
             );
         }
 
-        return t("applications:edit.sections.organizationCustomRoles.confirmation.content.disable");
+        return t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
+            "disableApplicationAudience");
     };
 
     const notifications: SharedAccessSettingNotificationsInterface = {
@@ -140,6 +147,10 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
             appId={ appId }
             isEnabled={ isEnabled }
             readOnly={ readOnly }
+            disabled={ disabled }
+            disableHint={ disabled
+                ? t("applications:edit.sections.organizationCustomRoles.disableHint")
+                : undefined }
             onUpdate={ onUpdate }
             header={ t("applications:edit.sections.organizationCustomRoles.title") }
             subheader={ t("applications:edit.sections.organizationCustomRoles.description") }

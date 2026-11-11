@@ -265,7 +265,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
                         // Removals are detected against these, so keep them in sync with the refreshed roles.
-                        setInitialSelectedRoles(rolesArray);
+                        if (isSharedApplication) {
+                            setInitialSelectedRoles(rolesArray);
+                        }
                     }
                 }
             }).catch((error: AxiosError<RequestErrorInterface>) => {
@@ -316,7 +318,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
                         // Removals are detected against these, so keep them in sync with the refreshed roles.
-                        setInitialSelectedRoles(rolesArray);
+                        if (isSharedApplication) {
+                            setInitialSelectedRoles(rolesArray);
+                        }
                     }
                 }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     setInheritedRoleIds(null);
@@ -740,6 +744,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     "confirmationModal.assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
+                primaryActionLoading={ isSubmitting }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => setRolesToDelete([]) }
                 onPrimaryActionClick={ (): void => deleteSharedApplicationRoles(rolesToDelete) }

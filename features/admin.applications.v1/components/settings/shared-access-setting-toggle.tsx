@@ -84,6 +84,14 @@ interface SharedAccessSettingTogglePropsInterface extends IdentifiableComponentI
      * If true, renders the toggle in read-only mode.
      */
     readOnly?: boolean;
+    /**
+     * If true, renders the toggle disabled.
+     */
+    disabled?: boolean;
+    /**
+     * Tooltip shown on the toggle while it is disabled.
+     */
+    disableHint?: string;
 }
 
 /**
@@ -103,6 +111,8 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
     getConfirmation,
     onUpdate,
     readOnly,
+    disabled,
+    disableHint,
     "data-componentid": componentId = "shared-access-setting-toggle"
 }: SharedAccessSettingTogglePropsInterface): ReactElement => {
 
@@ -168,7 +178,8 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
                 onActionClick={ (): void => undefined }
                 toggle={ {
                     checked: isEnabled,
-                    disabled: readOnly || isSubmitting,
+                    disableHint,
+                    disabled: readOnly || disabled || isSubmitting,
                     onChange: handleToggle
                 } }
             />

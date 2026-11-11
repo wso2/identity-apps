@@ -1651,7 +1651,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         data-componentid={ `${ componentId }-update-button` }
                         onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleApplicationSharing }
                     >
-                        { t("common:save") }
+                        { t("common:update") }
                     </Button>
                 </Grid>
             </Grid>

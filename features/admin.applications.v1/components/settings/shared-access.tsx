@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import EnhancedOrganizationLoginToggle from "./enhanced-organization-login-toggle";
 import OrganizationCustomRolesToggle from "./organization-custom-roles-toggle";
+import OrganizationLoginSettings from "./organization-login-settings";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -162,7 +163,19 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
-            { isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
+            { isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
+                <OrganizationLoginSettings
+                    appId={ application.id }
+                    isEnhancedOrganizationLoginEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    isOrganizationCustomRolesEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    showOrganizationCustomRoles={ isOrganizationCustomRolesFeatureEnabled }
+                    roleAudience={ application.associatedRoles?.allowedAudience }
+                    onUpdate={ handleUpdate }
+                    isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
+                    readOnly={ readOnly }
+                />
+            ) }
+            { !isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
@@ -172,16 +185,20 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                     roleAudience={ application.associatedRoles?.allowedAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                    disabled={
+                        isOrganizationCustomRolesFeatureEnabled && (application.organizationCustomRolesEnabled ?? false)
+                    }
                 />
             ) }
-            { isEnhancedOrganizationAuthenticationFeatureEnabled && isOrganizationCustomRolesFeatureEnabled &&
-                !isMyAccount && application.enhancedOrgAuthenticationEnabled && (
+            { !isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled &&
+                isOrganizationCustomRolesFeatureEnabled && !isMyAccount && (
                 <OrganizationCustomRolesToggle
                     appId={ application.id }
                     isEnabled={ application.organizationCustomRolesEnabled ?? false }
                     roleAudience={ application.associatedRoles?.allowedAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                    disabled={ !application.enhancedOrgAuthenticationEnabled }
                 />
             ) }
         </>

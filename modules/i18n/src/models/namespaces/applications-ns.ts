@@ -1118,6 +1118,7 @@ export interface ApplicationsNS {
             enhancedOrganizationLogin: {
                 title: string;
                 description: string;
+                disableHint: string;
                 hint: string;
                 confirmation: {
                     header: string;
@@ -1150,9 +1151,25 @@ export interface ApplicationsNS {
                     };
                 };
             };
+            organizationLoginSettings: {
+                heading: string;
+                notifications: {
+                    update: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                };
+            };
             organizationCustomRoles: {
                 title: string;
                 description: string;
+                disableHint: string;
                 confirmation: {
                     assertionHint: string;
                     audienceSwitch: string;
@@ -1161,9 +1178,9 @@ export interface ApplicationsNS {
                     disableMessage: string;
                     content: {
                         disableOrganizationAudience: string;
-                        enable: string;
+                        enableApplicationAudience: string;
                         enableOrganizationAudience: string;
-                        disable: string;
+                        disableApplicationAudience: string;
                     };
                 };
                 notifications: {

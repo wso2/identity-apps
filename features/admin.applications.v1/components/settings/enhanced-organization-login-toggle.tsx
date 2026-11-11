@@ -53,6 +53,10 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
      * If true, renders the toggle in read-only mode.
      */
     readOnly?: boolean;
+    /**
+     * If true, renders the toggle disabled.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -67,6 +71,7 @@ const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLog
     isOrganizationCustomRolesEnabled,
     onUpdate,
     readOnly,
+    disabled,
     roleAudience,
     "data-componentid": componentId = "enhanced-organization-login-toggle"
 }: EnhancedOrganizationLoginTogglePropsInterface): ReactElement => {
@@ -142,6 +147,10 @@ const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLog
             appId={ appId }
             isEnabled={ isEnabled }
             readOnly={ readOnly }
+            disabled={ disabled }
+            disableHint={ disabled
+                ? t("applications:edit.sections.enhancedOrganizationLogin.disableHint")
+                : undefined }
             onUpdate={ onUpdate }
             header={ t("applications:edit.sections.enhancedOrganizationLogin.title") }
             subheader={ t("applications:edit.sections.enhancedOrganizationLogin.description") }
