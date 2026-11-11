@@ -201,6 +201,11 @@ export interface DevicesNS {
     };
     userDevices: {
         confirmations: {
+            deactivate: {
+                content: string;
+                header: string;
+                message: string;
+            };
             delete: {
                 assertionHint: string;
                 content: string;
@@ -210,6 +215,8 @@ export interface DevicesNS {
         };
         list: {
             actions: {
+                activate: string;
+                deactivate: string;
                 rename: string;
             };
             columns: {
@@ -228,6 +235,26 @@ export interface DevicesNS {
             };
         };
         notifications: {
+            activate: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            deactivate: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
             delete: {
                     genericError: {
                         description: string;

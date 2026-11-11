@@ -29,10 +29,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 );
 
 /**
- * Update the name of a device.
+ * Update a device. Renames, activates or deactivates the device.
  *
  * @param deviceId - ID of the device.
- * @param device - New name of the device.
+ * @param device - Fields to update in the device.
  * @returns A promise that resolves with the updated device.
  * @throws Throws an IdentityAppsApiException if the request fails.
  */
