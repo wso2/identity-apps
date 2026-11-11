@@ -18,7 +18,7 @@
         "@wso2is/forms": "workspace:^",
         "@wso2is/react-components": "workspace:^",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "classnames": "^2.2.6",
         "final-form": "^4.20.10",
         "react-i18next": "^11.18.5",

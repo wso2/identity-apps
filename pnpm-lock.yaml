@@ -20,11 +20,11 @@ catalogs:
       version: 2.4.6
 
 overrides:
-  '@asgardeo/auth-react': ^5.6.1
+  '@asgardeo/auth-react': ^5.6.3
   '@mui/material': ^5.13.0
   '@types/react': 18.0.18
   webpack: 5.101.3
-  axios: 1.18.0
+  axios: 1.20.0
 
 importers:
 
@@ -34,8 +34,8 @@ importers:
         specifier: 0.5.21
         version: 0.5.21
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       babel-polyfill:
         specifier: ^6.26.0
         version: 6.26.0
@@ -275,8 +275,8 @@ importers:
   apps/console:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -512,8 +512,8 @@ importers:
         specifier: ^2.10.6
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -621,8 +621,8 @@ importers:
   apps/myaccount:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@babel/polyfill':
         specifier: 7.0.0
         version: 7.0.0
@@ -675,8 +675,8 @@ importers:
         specifier: ^2.4.5
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -796,8 +796,8 @@ importers:
   features:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -986,8 +986,8 @@ importers:
   features/admin.actions.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
         specifier: ^5.13.0
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1025,8 +1025,8 @@ importers:
         specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -1119,8 +1119,8 @@ importers:
   features/admin.administrators.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -1167,8 +1167,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -1246,8 +1246,8 @@ importers:
   features/admin.agents.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -1315,8 +1315,8 @@ importers:
         specifier: workspace:^
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -1394,8 +1394,8 @@ importers:
   features/admin.alternative-login-identifier.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -1445,8 +1445,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -1524,8 +1524,8 @@ importers:
   features/admin.analytics.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
         specifier: ^5.13.0
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1618,8 +1618,8 @@ importers:
   features/admin.api-resources.v2:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -1666,8 +1666,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -1775,8 +1775,8 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -1924,8 +1924,8 @@ importers:
   features/admin.applications.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -2050,8 +2050,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -2386,8 +2386,8 @@ importers:
   features/admin.authentication.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: ^2.59.6
         version: link:../admin.core.v1
@@ -2407,8 +2407,8 @@ importers:
         specifier: ^2.26.1
         version: link:../../modules/i18n
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.18.1
@@ -2480,8 +2480,8 @@ importers:
   features/admin.branding.ai.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -2531,8 +2531,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -2628,8 +2628,8 @@ importers:
   features/admin.branding.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -2703,8 +2703,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -2821,8 +2821,8 @@ importers:
   features/admin.cds.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -2875,8 +2875,8 @@ importers:
         specifier: ^2.10.3
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -2957,8 +2957,8 @@ importers:
   features/admin.certificates.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -3075,8 +3075,8 @@ importers:
   features/admin.claims.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -3141,8 +3141,8 @@ importers:
         specifier: ^2.9.22
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -3359,8 +3359,8 @@ importers:
   features/admin.connections.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -3461,8 +3461,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -3651,8 +3651,8 @@ importers:
   features/admin.console-settings.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -3741,8 +3741,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -3844,8 +3844,8 @@ importers:
   features/admin.copilot.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -3874,8 +3874,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -3917,8 +3917,8 @@ importers:
   features/admin.core.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -4115,8 +4115,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -4257,8 +4257,8 @@ importers:
   features/admin.device-policies.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oxygen-ui/react':
         specifier: 'catalog:'
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
@@ -4278,8 +4278,8 @@ importers:
         specifier: workspace:^
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.18.1
@@ -4372,8 +4372,8 @@ importers:
   features/admin.devices.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oxygen-ui/react':
         specifier: 'catalog:'
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
@@ -4390,8 +4390,8 @@ importers:
         specifier: workspace:^
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -4481,8 +4481,8 @@ importers:
   features/admin.email-and-sms.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -4611,8 +4611,8 @@ importers:
   features/admin.email-management.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -4668,8 +4668,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       codemirror:
         specifier: ^5.52.0
         version: 5.65.21
@@ -4765,8 +4765,8 @@ importers:
   features/admin.email-providers.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -4804,8 +4804,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -4898,8 +4898,8 @@ importers:
   features/admin.email-templates.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: ^2.57.3
         version: link:../admin.core.v1
@@ -4916,8 +4916,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -5007,8 +5007,8 @@ importers:
   features/admin.extensions.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -5094,8 +5094,8 @@ importers:
         specifier: ^2.10.2
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -5194,8 +5194,8 @@ importers:
   features/admin.fapi-security-policy.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
@@ -5212,8 +5212,8 @@ importers:
         specifier: ^2.10.2
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -5285,8 +5285,8 @@ importers:
   features/admin.feature-gate.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -5593,8 +5593,8 @@ importers:
   features/admin.flow-extensions.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
         specifier: ^5.13.0
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5629,8 +5629,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -5805,8 +5805,8 @@ importers:
   features/admin.groups.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -5862,8 +5862,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -5965,8 +5965,8 @@ importers:
   features/admin.home.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -6028,8 +6028,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -6116,8 +6116,8 @@ importers:
   features/admin.identity-providers.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.5.3
         version: link:../../modules/access-control
@@ -6158,8 +6158,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -6258,8 +6258,8 @@ importers:
   features/admin.identity-verification-providers.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -6312,8 +6312,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -6409,8 +6409,8 @@ importers:
   features/admin.impersonation.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -6424,8 +6424,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -6518,8 +6518,8 @@ importers:
   features/admin.issuer-usage-scope.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
         specifier: ^5.13.0
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6545,8 +6545,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -6687,8 +6687,8 @@ importers:
         specifier: ^2.9.25
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -6781,8 +6781,8 @@ importers:
   features/admin.login-flow.ai.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -6838,8 +6838,8 @@ importers:
         specifier: ^2.10.0
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -6932,8 +6932,8 @@ importers:
   features/admin.logs.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -6974,8 +6974,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -7056,8 +7056,8 @@ importers:
   features/admin.oidc-scopes.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -7080,8 +7080,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -7180,8 +7180,8 @@ importers:
   features/admin.onboarding.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -7331,8 +7331,8 @@ importers:
   features/admin.org-insights.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -7379,8 +7379,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -7479,8 +7479,8 @@ importers:
   features/admin.organization-discovery.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -7527,8 +7527,8 @@ importers:
         specifier: ^2.9.18
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -7627,8 +7627,8 @@ importers:
   features/admin.organizations.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -7711,8 +7711,8 @@ importers:
         specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -7950,8 +7950,8 @@ importers:
   features/admin.policy-administration.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -7992,8 +7992,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -8098,8 +8098,8 @@ importers:
   features/admin.presentation-definitions.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8122,8 +8122,8 @@ importers:
         specifier: workspace:^
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -8198,8 +8198,8 @@ importers:
   features/admin.provisioning.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8249,8 +8249,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -8561,8 +8561,8 @@ importers:
   features/admin.remote-repository-configuration.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: ^2.49.95
         version: link:../admin.core.v1
@@ -8576,8 +8576,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -8679,8 +8679,8 @@ importers:
   features/admin.remote-userstores.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8730,8 +8730,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -8815,8 +8815,8 @@ importers:
   features/admin.roles.v2:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8899,8 +8899,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9002,8 +9002,8 @@ importers:
   features/admin.rules.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -9099,8 +9099,8 @@ importers:
   features/admin.saml2-configuration.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -9117,8 +9117,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9211,8 +9211,8 @@ importers:
   features/admin.secrets.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -9232,8 +9232,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -9335,8 +9335,8 @@ importers:
   features/admin.server-configurations.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -9404,8 +9404,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9510,8 +9510,8 @@ importers:
   features/admin.session-management.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.5.3
         version: link:../../modules/access-control
@@ -9531,8 +9531,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9625,8 +9625,8 @@ importers:
   features/admin.sms-providers.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -9664,8 +9664,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9755,8 +9755,8 @@ importers:
   features/admin.sms-templates.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -9806,8 +9806,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -9900,8 +9900,8 @@ importers:
   features/admin.subscription.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -9945,8 +9945,8 @@ importers:
         specifier: ^2.13.0
         version: link:../../modules/core
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -10079,8 +10079,8 @@ importers:
   features/admin.tenants.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -10145,8 +10145,8 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -10251,8 +10251,8 @@ importers:
   features/admin.username-validation.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.applications.v1':
         specifier: ^2.36.10
         version: link:../admin.applications.v1
@@ -10269,8 +10269,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -10348,8 +10348,8 @@ importers:
   features/admin.users.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -10456,8 +10456,8 @@ importers:
         specifier: ^2.4.2
         version: link:../../modules/validation
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -10565,8 +10565,8 @@ importers:
   features/admin.userstores.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -10613,8 +10613,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -10716,8 +10716,8 @@ importers:
   features/admin.validation.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -10776,8 +10776,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -10870,8 +10870,8 @@ importers:
   features/admin.verifiable-credentials.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -10894,8 +10894,8 @@ importers:
         specifier: ^2.9.25
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -10970,8 +10970,8 @@ importers:
   features/admin.webhooks.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
         specifier: ^5.13.0
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -11003,8 +11003,8 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -11097,8 +11097,8 @@ importers:
   features/admin.workflow-requests.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.5.3
         version: link:../../modules/access-control
@@ -11115,8 +11115,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
@@ -11218,8 +11218,8 @@ importers:
   features/admin.wsfed-configuration.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: ^2.57.6
         version: link:../admin.core.v1
@@ -11230,8 +11230,8 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -11324,8 +11324,8 @@ importers:
   features/common.ai.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -11457,8 +11457,8 @@ importers:
   features/common.branding.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/cache':
         specifier: ^11.14.0
         version: 11.14.0
@@ -11496,8 +11496,8 @@ importers:
         specifier: ^2.12.10
         version: link:../../modules/core
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       dompurify:
         specifier: ^3.0.9
         version: 3.4.17
@@ -11572,8 +11572,8 @@ importers:
   features/common.consents.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
@@ -11581,8 +11581,8 @@ importers:
         specifier: ^2.12.7
         version: link:../../modules/core
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -11885,8 +11885,8 @@ importers:
   features/common.workflow-approvals.v1:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: ^2.55.3
         version: link:../admin.core.v1
@@ -12080,14 +12080,14 @@ importers:
   modules/core:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
         version: 5.0.2
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
@@ -12489,8 +12489,8 @@ importers:
   modules/unit-testing:
     devDependencies:
       '@asgardeo/auth-react':
-        specifier: ^5.6.1
-        version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.6.3
+        version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../access-control
@@ -12507,8 +12507,8 @@ importers:
   modules/validation:
     dependencies:
       axios:
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.20.0
+        version: 1.20.0
       fastestsmallesttextencoderdecoder:
         specifier: ^1.0.22
         version: 1.0.22
@@ -12550,15 +12550,15 @@ packages:
   '@asgardeo/auth-js@5.1.2':
     resolution: {integrity: sha512-fGfUorhUwUSXC/sETTlRbXJ0kMwcLKvVXCieePnxg2AVeiy1lFdRqZt1zsnr4/rd0jd/woYBE96rOAS5fVGFPw==}
 
-  '@asgardeo/auth-react@5.6.1':
-    resolution: {integrity: sha512-MzG1AHg/P6lyXXvikSgr4kX/L0mJCCoTAldiXLRzRjE8MHi2VZV0AU5EKBSLd4t/9fQf+tzx+IiImyq/+LordQ==}
+  '@asgardeo/auth-react@5.6.3':
+    resolution: {integrity: sha512-0kEaInBReUQqcSZj+usuV7RElAvJN0hkV8Ew4yq3942cj75bx98gaLzBDHQs9a/kAmuXc6z1DkVM5puR4tZiAg==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@asgardeo/auth-spa@3.5.1':
-    resolution: {integrity: sha512-KmEu8u8Md6pSS/4jVeUcZPtQI58PSD/qxwdLWhQBgzYRV2V+zB/qKqkTN+ekl2/8mnOTt5vp7H21uBla+p7hAA==}
+  '@asgardeo/auth-spa@3.5.3':
+    resolution: {integrity: sha512-pz67CVf5jiIhGyLiG2NRn7LD5Zs8bJ+ixqh1y0eZ3Up5AVtiQQ9onZZsFSJb2x58dy01XYqyvVC/dhTO13t1lQ==}
 
   '@babel/cli@7.28.6':
     resolution: {integrity: sha512-6EUNcuBbNkj08Oj4gAZ+BUU8yLCgKzgVX4gaTh09Ya2C8ICM4P+G30g4m3akRxSYAp3A/gnWchrNst7px4/nUQ==}
@@ -17099,8 +17099,8 @@ packages:
     resolution: {integrity: sha512-zBQouZixDTbo3jMGqHKyePxYxr1e5W8UdTmBQ7sNtaA9M2bE32daxxPLS/jojhKOHxQ7LWwPjfiwf/fhaJWzlg==}
     engines: {node: '>=4'}
 
-  axios@1.18.0:
-    resolution: {integrity: sha512-E32NzpYKp++W7XRe52rHiXV2ehxmh3wbdgO7MHeFM+vqxLBYHzt0ElkiImtOBxtOmyp0yoC8C6uESVV84Y2/hw==}
+  axios@1.20.0:
+    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -18797,6 +18797,10 @@ packages:
     resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
+  form-data@4.0.6:
+    resolution: {integrity: sha512-vKatAh4SlVfgbv+YtmhiRjhEMJsYpsG1Y2rMQtR+SVSbytsSD1YGzDIcrAJmdFec88u/+VoGmxnl+80gL1tRCQ==}
+    engines: {node: '>= 6'}
+
   formatly@0.3.0:
     resolution: {integrity: sha512-9XNj/o4wrRFyhSMJOvsuyMwy8aUfBaZ1VrqHVfohyXf0Sw0e+yfKG+xZaY3arGCOMdwFsqObtzVOc1gU9KiT9w==}
     engines: {node: '>=18.3.0'}
@@ -19076,6 +19080,10 @@ packages:
 
   hasown@2.0.3:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
+    engines: {node: '>= 0.4'}
+
+  hasown@2.0.4:
+    resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
 
   hast-to-hyperscript@9.0.1:
@@ -23428,9 +23436,9 @@ snapshots:
 
   '@asgardeo/auth-js@5.1.2': {}
 
-  '@asgardeo/auth-react@5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@asgardeo/auth-react@5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@asgardeo/auth-spa': 3.5.1
+      '@asgardeo/auth-spa': 3.5.3
       '@babel/runtime-corejs3': 7.29.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -23438,11 +23446,11 @@ snapshots:
       - debug
       - supports-color
 
-  '@asgardeo/auth-spa@3.5.1':
+  '@asgardeo/auth-spa@3.5.3':
     dependencies:
       '@asgardeo/auth-js': 5.1.2
       await-semaphore: 0.1.3
-      axios: 1.18.0
+      axios: 1.20.0
       base64url: 3.0.1
       buffer: 6.0.3
       fast-sha256: 1.3.0
@@ -25562,7 +25570,7 @@ snapshots:
       '@module-federation/third-party-dts-extractor': 0.18.4
       adm-zip: 0.5.17
       ansi-colors: 4.1.3
-      axios: 1.18.0
+      axios: 1.20.0
       chalk: 3.0.0
       fs-extra: 9.1.0
       isomorphic-ws: 5.0.0(ws@8.18.0)
@@ -29061,10 +29069,10 @@ snapshots:
 
   axe-core@4.11.3: {}
 
-  axios@1.18.0:
+  axios@1.20.0:
     dependencies:
       follow-redirects: 1.16.0(debug@4.4.3)
-      form-data: 4.0.5
+      form-data: 4.0.6
       https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
@@ -30424,7 +30432,7 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.3
+      hasown: 2.0.4
 
   es-shim-unscopables@1.1.0:
     dependencies:
@@ -31154,6 +31162,14 @@ snapshots:
       hasown: 2.0.3
       mime-types: 2.1.35
 
+  form-data@4.0.6:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      es-set-tostringtag: 2.1.0
+      hasown: 2.0.4
+      mime-types: 2.1.35
+
   formatly@0.3.0:
     dependencies:
       fd-package-json: 2.0.0
@@ -31267,7 +31283,7 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       math-intrinsics: 1.1.0
 
   get-package-type@0.1.0: {}
@@ -31470,6 +31486,10 @@ snapshots:
       type-fest: 0.8.1
 
   hasown@2.0.3:
+    dependencies:
+      function-bind: 1.1.2
+
+  hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
 
@@ -33258,7 +33278,7 @@ snapshots:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.2
       '@zkochan/js-yaml': 0.0.7
-      axios: 1.18.0
+      axios: 1.20.0
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1

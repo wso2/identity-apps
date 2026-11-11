@@ -26,7 +26,7 @@
         "@wso2is/react-components": "^2.9.16",
         "@wso2is/admin.groups.v1": "^2.27.126",
         "@wso2is/admin.roles.v2": "^2.27.381",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "i18next": "^21.9.1",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",

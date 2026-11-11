@@ -9,7 +9,7 @@
         "@asgardeo/auth-react": "^5.1.2",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "^2.12.7",
-        "axios": "^1.4.0",
+        "axios": "catalog:",
         "react": "^18.2.0",
         "swr": "^2.1.5"
     }

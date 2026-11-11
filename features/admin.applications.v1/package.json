@@ -48,7 +48,7 @@
         "@wso2is/i18n": "^2.58.0",
         "@wso2is/react-components": "^2.10.6",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^1.7.0",
+        "axios": "catalog:",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
         "dayjs": "^1.11.18",
