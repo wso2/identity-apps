@@ -34,7 +34,6 @@ import {
 } from "../../../models";
 import {
     AppleAuthenticatorForm,
-    AuthsignalAuthenticatorForm,
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
     FIDOAuthenticatorForm,
@@ -45,6 +44,7 @@ import {
     PushAuthenticatorForm,
     SMSOTPAuthenticatorForm
 } from "../authenticators";
+import AuthsignalAuthenticatorForm from "../authenticators/authsignal-authenticator-form";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 
 /**
@@ -296,7 +296,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 <AuthsignalAuthenticatorForm
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }
-                    data-testid={ testId }
+                    data-componentid={ testId }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

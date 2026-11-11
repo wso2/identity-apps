@@ -125,6 +125,25 @@ export class LocalAuthenticatorConstants {
      */
     public static readonly FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY: string = "FIDO2TrustedOrigins";
 
+    // Authsignal authenticator constants.
+    /**
+     * Prefix of the Authsignal connector properties that hold secrets.
+     */
+    public static readonly AUTHSIGNAL_SECRET_PROPERTY_PREFIX: string = "__secret__";
+
+    /**
+     * Names of the Authsignal connector properties, as defined by the Authsignal connector.
+     */
+    public static readonly AUTHSIGNAL_PROPERTY_NAMES: {
+        ACTION_CODE: string;
+        REGION: string;
+        SECRET_KEY: string;
+    } = {
+            ACTION_CODE: "Authsignal.ActionCode",
+            REGION: "Authsignal.Region",
+            SECRET_KEY: "__secret__.Authsignal.SecretKey"
+        };
+
     // Email OTP authenticator constants.
     /**
      * Attribute key for Email OTP Authenticator expiry time.

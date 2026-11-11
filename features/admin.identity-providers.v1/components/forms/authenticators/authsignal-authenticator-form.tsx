@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/forms";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Field, FieldInputTypes, Form } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -28,7 +29,7 @@ import {
 /**
  * Interface for Authsignal Authenticator Form props.
  */
-interface AuthsignalAuthenticatorFormPropsInterface extends TestableComponentInterface {
+interface AuthsignalAuthenticatorFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * Authsignal governance connector values, including the connector properties.
      */
@@ -59,17 +60,12 @@ interface AuthsignalConnectorPropertyInterface extends CommonPluggableComponentP
 const FORM_ID: string = "authsignal-authenticator-form";
 
 /**
- * Prefix of connector properties that hold secrets.
- */
-const SECRET_PROPERTY_PREFIX: string = "__secret__";
-
-/**
  * Connector properties that must have a value.
  */
 const REQUIRED_PROPERTIES: string[] = [
-    "__secret__.Authsignal.SecretKey",
-    "Authsignal.Region",
-    "Authsignal.ActionCode"
+    LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.SECRET_KEY,
+    LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.REGION,
+    LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.ACTION_CODE
 ];
 
 const FIELD_MAX_LENGTH: number = 1024;
@@ -89,7 +85,7 @@ const getFieldName = (index: number): string => `property_${ index }`;
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorFormPropsInterface> = (
+const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorFormPropsInterface> = (
     props: AuthsignalAuthenticatorFormPropsInterface
 ): ReactElement => {
 
@@ -98,7 +94,7 @@ export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthentica
         onSubmit,
         readOnly,
         isSubmitting,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId = "authsignal-authenticator-form"
     } = props;
 
     const { t } = useTranslation();
@@ -148,11 +144,17 @@ export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthentica
             initialValues={ initialValues }
         >
             {
+                // Fields are named by their index in the server response, not by the property name,
+                // because the property names contain dots, which the form treats as nested paths.
                 properties.map((property: AuthsignalConnectorPropertyInterface, index: number) => (
                     <Field.Input
                         key={ property.name }
                         ariaLabel={ property.displayName ?? property.name }
-                        inputType={ property.name.startsWith(SECRET_PROPERTY_PREFIX) ? "password" : "text" }
+                        inputType={
+                            property.name.startsWith(LocalAuthenticatorConstants.AUTHSIGNAL_SECRET_PROPERTY_PREFIX)
+                                ? FieldInputTypes.INPUT_PASSWORD
+                                : FieldInputTypes.INPUT_DEFAULT
+                        }
                         name={ getFieldName(index) }
                         label={ property.displayName ?? property.name }
                         hint={ property.description }
@@ -161,7 +163,7 @@ export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthentica
                         maxLength={ FIELD_MAX_LENGTH }
                         minLength={ 0 }
                         width={ 12 }
-                        data-testid={ `${ testId }-${ property.name }` }
+                        data-componentid={ `${ componentId }-${ property.name }` }
                     />
                 ))
             }
@@ -169,9 +171,9 @@ export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthentica
                 form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
-                ariaLabel="Authsignal authenticator update button"
+                ariaLabel={ t("extensions:develop.identityProviders.authsignal.settings.updateButtonAriaLabel") }
                 name="update-button"
-                data-testid={ `${ testId }-submit-button` }
+                data-componentid={ `${ componentId }-submit-button` }
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
@@ -181,9 +183,4 @@ export const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthentica
     );
 };
 
-/**
- * Default props for the component.
- */
-AuthsignalAuthenticatorForm.defaultProps = {
-    "data-testid": "authsignal-authenticator-form"
-};
+export default AuthsignalAuthenticatorForm;

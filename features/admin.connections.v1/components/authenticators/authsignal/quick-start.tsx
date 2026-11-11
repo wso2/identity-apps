@@ -144,7 +144,7 @@ const AuthsignalQuickStart: FunctionComponent<AuthsignalQuickStartPropsInterface
 
     return (
         <>
-            <Grid data-testid={ componentId } className="authenticator-quickstart-content">
+            <Grid data-componentid={ componentId } className="authenticator-quickstart-content">
                 <Grid.Row textAlign="left">
                     <Grid.Column width={ 16 }>
                         <PageHeader
@@ -172,7 +172,6 @@ const AuthsignalQuickStart: FunctionComponent<AuthsignalQuickStartPropsInterface
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
-                        data-testid={ `${ componentId }-application-selection-modal` }
                         open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
                         heading={
@@ -181,7 +180,7 @@ const AuthsignalQuickStart: FunctionComponent<AuthsignalQuickStartPropsInterface
                         subHeading={
                             t("extensions:develop.identityProviders.authsignal.quickStart.addLoginModal.subHeading")
                         }
-                        data-componentid={ componentId + "-application-selection-modal" }
+                        data-componentid={ `${ componentId }-application-selection-modal` }
                     />
                 )
             }

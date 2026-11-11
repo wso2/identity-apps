@@ -1843,7 +1843,10 @@ export interface Extensions {
                             heading: string;
                         };
                     };
-                }
+                };
+                settings: {
+                    updateButtonAriaLabel: string;
+                };
             },
             pushAuth: {
                 quickStart: {
