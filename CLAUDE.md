@@ -73,6 +73,8 @@ pnpm clean                        # Clean all build artifacts
 
 ## Code Conventions
 
+[docs/write-code/CODE_QUALITY.md](docs/write-code/CODE_QUALITY.md) is the source of truth for code quality rules. If anything here conflicts with it, follow CODE_QUALITY.md.
+
 ### Naming Conventions
 
 - **Interfaces**: Must use `Interface` suffix (e.g., `ApplicationListInterface`, `FeatureConfigInterface`)
@@ -135,7 +137,9 @@ interface UseMyHookReturn {
     data: MyDataInterface | null;
 }
 
-export const useMyHook = (): UseMyHookReturn => { ... };
+const useMyHook = (): UseMyHookReturn => { ... };
+
+export default useMyHook;
 ```
 
 ### Testing
@@ -251,11 +255,10 @@ features/admin.<feature-name>.v1/
 │   └── steps/              # Step components (for multi-step flows)
 ├── constants/
 │   ├── component-ids.ts    # data-componentid string constants
-│   ├── validation.ts       # Validation constraints
-│   └── index.ts            # Barrel export
+│   └── validation.ts       # Validation constraints
 ├── hooks/                  # Custom hooks
 ├── models/
-│   └── index.ts            # TypeScript interfaces & enums
+│   └── <concern>.ts        # TypeScript interfaces & enums (one file per concern)
 ├── pages/                  # Route entry points
 ├── utils/                  # Pure utility functions
 ├── public-api.ts           # Public exports (keep minimal)
@@ -373,7 +376,7 @@ Always use `lazy()` imports for route-level components.
 - **component-ids.ts**: All `data-componentid` values as named string constants
 - **validation.ts**: Validation constraints (min/max lengths, regex patterns)
 - **Data-driven configs**: Templates, options, and selectable items as typed constant arrays
-- Use a barrel export (`index.ts`) within the constants directory
+- No internal barrel `index.ts` files — import constants from their specific file. Published package entry points (e.g. `@wso2is/core/constants`) are fine (see CODE_QUALITY.md rule 11)
 
 ### Reusing Existing Constants & Utilities
 
@@ -415,8 +418,7 @@ const response = isUpdate
 
 ### Comment Conventions
 
-- **Exported functions**: Keep JSDoc with `@param` and `@returns` annotations
-- **Interfaces/types**: JSDoc is optional — skip if the name and properties are self-explanatory
+- **Functions, interfaces, and interface members**: Always add a concise TSDoc comment; functions include `@param` and `@returns` (see CODE_QUALITY.md rule 15)
 - **Inline comments**: Only add when explaining non-obvious behavior or constraints (e.g., "Email as login identifier requires alphanumeric username to be enabled")
 - **Remove**: Comments that restate what the code already says, verbose step-by-step narration, or obvious descriptions like "This interface defines the props"
 

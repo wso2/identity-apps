@@ -41,8 +41,9 @@ cd apps/myaccount && pnpm start   # My Account at https://localhost:9000/myaccou
 ### Technology Stack
 
 - React 18, TypeScript 5.1, Redux
-- Webpack 5, Nx 17, pnpm 8
-- Jest + React Testing Library
+- Vite, Nx 21, pnpm 10
+- Webpack (bundles the JSP portals' React components in `identity-apps-core`)
+- Vitest + React Testing Library
 - Semantic UI React + MUI + Oxygen UI (WSO2 design system)
 
 ## Key Conventions
@@ -83,6 +84,7 @@ cd apps/myaccount && pnpm start   # My Account at https://localhost:9000/myaccou
 
 For comprehensive guidelines including feature development patterns, API layer conventions, route registration, access control, state management, and more, see:
 
+- [docs/write-code/CODE_QUALITY.md](docs/write-code/CODE_QUALITY.md) - Code quality rules (source of truth; wins on conflicts)
 - [CLAUDE.md](./CLAUDE.md) - Complete project conventions and development guide
 - [docs/STYLE-GUIDE.md](docs/STYLE-GUIDE.md) - Styling architecture, Oxygen UI usage, theming
 - [docs/FORMS.md](docs/FORMS.md) - Form component guidelines
