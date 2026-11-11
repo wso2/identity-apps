@@ -25,6 +25,24 @@ export interface ListDataInterface {
 }
 
 /**
+ * A qualifier offered from a list the metadata carries, with what it says about the values it names.
+ */
+export interface QualifierValueInterface extends ListDataInterface {
+    /**
+     * Data type of the value the qualifier names, such as `STRING` or `INTEGER`.
+     */
+    dataType?: string;
+    /**
+     * Whether the qualifier names a value that holds more than one value.
+     */
+    multiValued?: boolean;
+    /**
+     * Names of the operators the qualifier accepts, when it states them. Taken over what its type implies.
+     */
+    operators?: string[];
+}
+
+/**
  * What a condition using an operator takes as its value: `none` for an operator that checks the
  * field alone (`isBlank`, `isEmpty`), `list` for one compared against a set (`in`, `notIn`), and
  * `single` for everything else.
@@ -59,7 +77,7 @@ export interface ExpressionValueInterface {
     valueReferenceAttribute?: string;
     valueDisplayAttribute?: string;
     links?: LinkInterface[];
-    values?: ListDataInterface[];
+    values?: QualifierValueInterface[];
 }
 
 /**
