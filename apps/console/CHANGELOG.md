@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.33.6
+
+### Patch Changes
+
+- [#10920](https://github.com/wso2/identity-apps/pull/10920) [`4e32db1f171e6b7b51223001af46079515e70b0d`](https://github.com/wso2/identity-apps/commit/4e32db1f171e6b7b51223001af46079515e70b0d) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add the browser origins of its own apps that an organization allows to call Customer Data Service to the Customer Data settings page
+
+- Updated dependencies [[`4e32db1f171e6b7b51223001af46079515e70b0d`](https://github.com/wso2/identity-apps/commit/4e32db1f171e6b7b51223001af46079515e70b0d)]:
+  - @wso2is/admin.cds.v1@1.10.0
+  - @wso2is/i18n@2.60.3
+  - @wso2is/admin.users.v1@2.39.11
+
 ## 4.33.5
 
 ### Patch Changes

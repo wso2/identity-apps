@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.10.0
+
+### Minor Changes
+
+- [#10920](https://github.com/wso2/identity-apps/pull/10920) [`4e32db1f171e6b7b51223001af46079515e70b0d`](https://github.com/wso2/identity-apps/commit/4e32db1f171e6b7b51223001af46079515e70b0d) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add the browser origins of its own apps that an organization allows to call Customer Data Service to the Customer Data settings page
+
 ## 1.9.1
 
 ### Patch Changes
