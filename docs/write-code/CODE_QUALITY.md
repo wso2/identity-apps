@@ -175,7 +175,7 @@ import { Button } from "../components";
 
 ### 12. Use modern JS syntax
 
-Prefer optional chaining, destructuring, template literals, and async/await.
+Prefer modern JS features such as optional chaining, destructuring, template literals, and async/await for better code readability.
 
 ```ts
 // ✅
@@ -255,23 +255,13 @@ const formatFullName = (user: UserInterface): string => { ... };
  */
 ```
 
-## Tooling & Pull Requests
-
-### 16. Run ESLint on save
-
-VS Code settings:
-
-```json
-"editor.codeActionsOnSave": { "source.fixAll.eslint": true }
-```
-
-### 17. Include a changeset for package changes
+### 16. Include a changeset for package changes
 
 Run `pnpm changeset` from the repo root and choose the bump type. PRs that don't change any package (e.g. docs or CI only) omit the changeset.
 
 - If you change `features/` or `modules/`, also add a **patch** bump for the consuming app: `@wso2is/console`, `@wso2is/myaccount`, or `@wso2is/identity-apps-core`.
 - New packages get a **major** bump.
 
-### 18. Add screenshots or recordings for UI changes
+### 17. Add screenshots or recordings for UI changes
 
 For new or visibly changed UI, add screenshots of the relevant states (default, loading, error, etc.), before/after comparisons for updates, and screen recordings for interactive or multi-step flows.
