@@ -22,7 +22,7 @@ import { TestableComponentInterface,
 import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { GenericIcon } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -70,7 +70,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [ challengeQuestions, setChallengeQuestions ] = useState<ChallengesQuestionsInterface[]>();
     const [ challenges, setChallenges ] = useState(createEmptyChallenge());
     const [ isEdit, setIsEdit ] = useState<number | string>(-1);
-    const [ isInit, setIsInit ] = useState(false);
+    // Guards a one-time fetch on mount; only read/written in handlers, never rendered, so a ref avoids a re-render.
+    const isInitRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -82,7 +83,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * @param response - security questions API response
      */
     const setSecurityDetails = (response: any) => {
-        setIsInit(true);
+        isInitRef.current = true;
         setChallenges({
             answers: [ ...response[1] ],
             isEdit: false,
@@ -292,7 +293,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     };
 
     useEffect(() => {
-        if (!isInit) {
+        if (!isInitRef.current) {
             getSecurityQs().then((response: any) => {
                 setSecurityDetails(response);
             });
