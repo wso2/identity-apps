@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Stack from "@oxygen-ui/react/Stack";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
@@ -29,7 +31,6 @@ import { Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
 
 /**
  * Prop types of the component.
@@ -144,31 +145,30 @@ const AuthsignalQuickStart: FunctionComponent<AuthsignalQuickStartPropsInterface
 
     return (
         <>
-            <Grid data-componentid={ componentId } className="authenticator-quickstart-content">
-                <Grid.Row textAlign="left">
-                    <Grid.Column width={ 16 }>
-                        <PageHeader
-                            className="mb-2"
-                            title={ t("extensions:develop.identityProviders.authsignal.quickStart.heading") }
-                            imageSpaced={ false }
-                            bottomMargin={ false }
-                        />
-                        <Heading subHeading as="h6">
-                            { t("extensions:develop.identityProviders.authsignal.quickStart.subHeading") }
-                        </Heading>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row textAlign="left">
-                    <Grid.Column width={ 16 }>
-                        <VerticalStepper
-                            alwaysOpen
-                            isSidePanelOpen
-                            stepContent={ steps }
-                            isNextEnabled={ true }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Stack
+                data-componentid={ componentId }
+                className="authenticator-quickstart-content"
+                spacing={ 2 }
+                textAlign="left"
+            >
+                <Box>
+                    <PageHeader
+                        className="mb-2"
+                        title={ t("extensions:develop.identityProviders.authsignal.quickStart.heading") }
+                        imageSpaced={ false }
+                        bottomMargin={ false }
+                    />
+                    <Heading subHeading as="h6">
+                        { t("extensions:develop.identityProviders.authsignal.quickStart.subHeading") }
+                    </Heading>
+                </Box>
+                <VerticalStepper
+                    alwaysOpen
+                    isSidePanelOpen
+                    stepContent={ steps }
+                    isNextEnabled={ true }
+                />
+            </Stack>
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
