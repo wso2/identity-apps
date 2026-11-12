@@ -507,6 +507,18 @@ export interface flowsNS {
     };
     profileUpdate: {
         flowDisplayName: string;
+        notifications: {
+            updateProfileUpdateFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
         steps: {
             end: {
                 description: string;

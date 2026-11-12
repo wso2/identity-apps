@@ -125,9 +125,9 @@ const FlowContextWrapper: FC<ProfileUpdateFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Profile update flow updated successfully.",
+                    description: t("flows:profileUpdate.notifications.updateProfileUpdateFlow.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Flow Updated Successfully"
+                    message: t("flows:profileUpdate.notifications.updateProfileUpdateFlow.success.message")
                 })
             );
 
@@ -135,9 +135,11 @@ const FlowContextWrapper: FC<ProfileUpdateFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the profile update flow.",
+                    description: t(
+                        "flows:profileUpdate.notifications.updateProfileUpdateFlow.genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
-                    message: "Flow Update Failure"
+                    message: t("flows:profileUpdate.notifications.updateProfileUpdateFlow.genericError.message")
                 })
             );
 

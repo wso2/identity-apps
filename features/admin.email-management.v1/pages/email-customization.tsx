@@ -197,7 +197,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             setSelectedEmailTemplateId(availableEmailTemplates?.[0]?.id);
             setSelectedEmailTemplateDescription(availableEmailTemplates?.[0]?.description);
         }
-    }, [ emailTemplatesList, profileUpdateFlowConfig ]);
+    }, [ emailTemplatesList, invitedUserRegistrationFlowConfig, profileUpdateFlowConfig ]);
 
     useEffect(() => {
         setSelectedEmailTemplate({ ...emailTemplate });

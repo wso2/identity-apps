@@ -23,6 +23,7 @@ import {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { transformClaimsWithUsername } from "@wso2is/admin.flows.v1/utils/claim-utils";
 import { ClaimsGetParams } from "@wso2is/core/models";
 import { useMemo } from "react";
 import { Attribute } from "../models/attributes";
@@ -40,7 +41,8 @@ const params: ClaimsGetParams = {
  * Hook to get the list of profile attributes the user can update (local claims).
  *
  * This hook uses useGetAllLocalClaims to fetch local claims with specific filters,
- * then leaves out the read-only claims and sorts the claims alphabetically by displayName.
+ * then leaves out the read-only claims, ensures the username claim is included and sorts
+ * the claims alphabetically by displayName.
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
@@ -60,8 +62,9 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
     /**
      * Resolve supported attributes from the meta endpoint as primary source.
      * Falls back to local claims API if metadata is not available.
+     * Ensures the username claim is always included and sorts alphabetically.
      */
-    const sortedAttributes: Attribute[] = useMemo(() => {
+    const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
         const metadataAttributes: Attribute[] = (metadata?.attributeMetadata ?? []).map(
             (attr: { claimURI: string; name: string; readOnly: boolean }) => ({
                 claimURI: attr.claimURI,
@@ -75,18 +78,13 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
             ? metadataAttributes
             : (data as Attribute[]) ?? [];
 
-        return attributes
-            .filter((attribute: Attribute) => !attribute?.readOnly)
-            .sort((a: Attribute, b: Attribute) => {
-                const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
-                const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
-
-                return displayNameA.localeCompare(displayNameB);
-            });
+        return transformClaimsWithUsername(
+            attributes.filter((attribute: Attribute) => !attribute?.readOnly)
+        );
     }, [ metadata?.attributeMetadata, data ]);
 
     return {
-        data: sortedAttributes as Data,
+        data: sortedAttributesWithUsername as Data,
         error,
         isLoading,
         isValidating,
