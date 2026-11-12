@@ -32,11 +32,9 @@ type ProfileUpdateFragmentInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Profile update fragment component.
  */
-const ProfileUpdateFragment: FunctionComponent<ProfileUpdateFragmentInterface> = (
-    props: ProfileUpdateFragmentInterface
-): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
-
+const ProfileUpdateFragment: FunctionComponent<ProfileUpdateFragmentInterface> = ({
+    ["data-componentid"]: componentId = "branding-preview-profile-update-fragment"
+} : ProfileUpdateFragmentInterface): ReactElement => {
     const { i18n } = useBrandingPreference();
 
     return (
@@ -49,19 +47,19 @@ const ProfileUpdateFragment: FunctionComponent<ProfileUpdateFragmentInterface> =
                     <div className="field">
                         <label>First Name</label>
                         <div className="ui fluid input">
-                            <input type="text" value="" placeholder="Enter your first name" />
+                            <input type="text" placeholder="Enter your first name" />
                         </div>
                     </div>
                     <div className="field">
                         <label>Last Name</label>
                         <div className="ui fluid input">
-                            <input type="text" value="" placeholder="Enter your last name" />
+                            <input type="text" placeholder="Enter your last name" />
                         </div>
                     </div>
                     <div className="field">
                         <label>Email</label>
                         <div className="ui fluid input">
-                            <input type="email" value="" placeholder="Enter your email" />
+                            <input type="email" placeholder="Enter your email" />
                         </div>
                     </div>
                     <div className="ui divider hidden"></div>
@@ -72,13 +70,6 @@ const ProfileUpdateFragment: FunctionComponent<ProfileUpdateFragmentInterface> =
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-ProfileUpdateFragment.defaultProps = {
-    "data-componentid": "branding-preview-profile-update-fragment"
 };
 
 export default ProfileUpdateFragment;
