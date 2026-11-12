@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.61.0
+
+### Minor Changes
+
+- [#10780](https://github.com/wso2/identity-apps/pull/10780) [`d8e7c32482a0a377bea5d2d6a94ed62793edfe83`](https://github.com/wso2/identity-apps/commit/d8e7c32482a0a377bea5d2d6a94ed62793edfe83) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add profile update flow to the Console
+
 ## 2.60.4
 
 ### Patch Changes
