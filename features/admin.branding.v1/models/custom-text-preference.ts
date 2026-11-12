@@ -77,5 +77,6 @@ export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVari
     [PreviewScreenType.USERNAME_RECOVERY_CLAIM]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.USERNAME_RECOVERY_SUCCESS]: PreviewScreenVariationType.EMAIL,
-    [PreviewScreenType.CONSENT]: PreviewScreenVariationType.BASE
+    [PreviewScreenType.CONSENT]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PROFILE_UPDATE]: PreviewScreenVariationType.BASE
 };

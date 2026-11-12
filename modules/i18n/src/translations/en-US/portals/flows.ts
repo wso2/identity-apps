@@ -547,6 +547,30 @@ export const flows: flowsNS = {
             }
         }
     },
+    profileUpdate: {
+        flowDisplayName: "Profile Update",
+        notifications: {
+            updateProfileUpdateFlow: {
+                genericError: {
+                    description: "Failed to update the profile update flow.",
+                    message: "Flow Update Failure"
+                },
+                success: {
+                    description: "Profile update flow updated successfully.",
+                    message: "Flow Updated Successfully"
+                }
+            }
+        },
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the profile update flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once the profile update flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
+                }
+            }
+        }
+    },
     registrationFlow: {
         flowDisplayName: "Registration",
         notifications: {

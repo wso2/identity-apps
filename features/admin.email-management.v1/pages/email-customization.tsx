@@ -131,6 +131,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { data: invitedUserRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
+    const { data: profileUpdateFlowConfig } = useGetFlowConfig(FlowTypes.PROFILE_UPDATE);
 
     const {
         data: emailTemplatesList,
@@ -165,6 +166,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 return false;
             } else if (invitedUserRegistrationFlowConfig?.isEnabled && blockedNames.includes(name)) {
                 return false;
+            } else if (!profileUpdateFlowConfig?.isEnabled && name.includes("profileupdate")) {
+                return false;
             }
 
             return !enableCustomEmailTemplates
@@ -194,7 +197,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             setSelectedEmailTemplateId(availableEmailTemplates?.[0]?.id);
             setSelectedEmailTemplateDescription(availableEmailTemplates?.[0]?.description);
         }
-    }, [ emailTemplatesList ]);
+    }, [ emailTemplatesList, invitedUserRegistrationFlowConfig, profileUpdateFlowConfig ]);
 
     useEffect(() => {
         setSelectedEmailTemplate({ ...emailTemplate });

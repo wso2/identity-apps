@@ -54,6 +54,9 @@ import {
 } from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
+    getProfileUpdateFlowBuilderResourceEndpoints
+} from "@wso2is/admin.profile-update-flow-builder.v1/config/endpoints";
+import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
 import {
@@ -412,6 +415,7 @@ export class Config {
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getProfileUpdateFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
