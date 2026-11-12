@@ -144,6 +144,11 @@ export class LocalAuthenticatorConstants {
             SECRET_KEY: "__secret__.Authsignal.SecretKey"
         };
 
+    /**
+     * Regions supported by the Authsignal connector.
+     */
+    public static readonly AUTHSIGNAL_REGIONS: string[] = [ "us", "eu", "au", "ca", "uk" ];
+
     // Email OTP authenticator constants.
     /**
      * Attribute key for Email OTP Authenticator expiry time.

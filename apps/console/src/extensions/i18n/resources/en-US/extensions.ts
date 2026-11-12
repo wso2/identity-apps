@@ -1968,9 +1968,6 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         }
                     }
-                },
-                settings: {
-                    updateButtonAriaLabel: "Authsignal authenticator update button"
                 }
             },
             pushAuth: {

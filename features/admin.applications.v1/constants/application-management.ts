@@ -437,7 +437,9 @@ export class ApplicationManagementConstants {
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME,
-        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.AUTHSIGNAL_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID
     ];
 
     /**

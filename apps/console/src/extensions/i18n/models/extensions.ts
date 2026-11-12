@@ -1844,9 +1844,6 @@ export interface Extensions {
                         };
                     };
                 };
-                settings: {
-                    updateButtonAriaLabel: string;
-                };
             },
             pushAuth: {
                 quickStart: {

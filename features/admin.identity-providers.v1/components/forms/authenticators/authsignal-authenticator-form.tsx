@@ -17,8 +17,17 @@
  */
 
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, FieldInputTypes, Form } from "@wso2is/forms";
+import {
+    FieldInputTypes,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    SelectFieldAdapter,
+    TextFieldAdapter
+} from "@wso2is/forms";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -57,8 +66,6 @@ interface AuthsignalConnectorPropertyInterface extends CommonPluggableComponentP
     description?: string;
 }
 
-const FORM_ID: string = "authsignal-authenticator-form";
-
 /**
  * Connector properties that must have a value.
  */
@@ -72,12 +79,13 @@ const FIELD_MAX_LENGTH: number = 1024;
 
 /**
  * Builds the form field name of a connector property.
- * Property names contain dots, which the form treats as nested paths, so fields are named by index.
+ * Property names contain dots, which the form treats as nested paths, so the dots are encoded.
  *
- * @param index - Index of the property.
+ * @param propertyName - Name of the connector property.
  * @returns Form field name.
  */
-const getFieldName = (index: number): string => `property_${ index }`;
+const getFieldName = (propertyName: string): string =>
+    GovernanceConnectorUtils.encodeConnectorPropertyName(propertyName);
 
 /**
  * Authsignal Authenticator settings form. Fields are built from the Authsignal governance connector properties.
@@ -107,12 +115,46 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
     const initialValues: Record<string, string> = useMemo(() => {
         const values: Record<string, string> = {};
 
-        properties.forEach((property: AuthsignalConnectorPropertyInterface, index: number) => {
-            values[ getFieldName(index) ] = property.value ?? "";
+        properties.forEach((property: AuthsignalConnectorPropertyInterface) => {
+            const value: string = property.value ?? "";
+
+            // The connector reads the region in lower case, so match the dropdown options the same way.
+            values[ getFieldName(property.name) ] =
+                property.name === LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.REGION
+                    ? value.toLowerCase()
+                    : value;
         });
 
         return values;
     }, [ properties ]);
+
+    const regionOptions: { text: string; value: string }[] = useMemo(
+        () => LocalAuthenticatorConstants.AUTHSIGNAL_REGIONS.map((region: string) => ({
+            text: t(`authenticationProvider:forms.authenticatorSettings.authsignal.regions.${ region }`),
+            value: region
+        })),
+        [ t ]
+    );
+
+    /**
+     * Checks that the required connector properties have a value, including fields the user has not touched.
+     *
+     * @param values - Form values.
+     * @returns Errors keyed by field name.
+     */
+    const validateForm = (values: Record<string, string>): Record<string, string> => {
+        const errors: Record<string, string> = {};
+
+        properties.forEach((property: AuthsignalConnectorPropertyInterface) => {
+            const fieldName: string = getFieldName(property.name);
+
+            if (REQUIRED_PROPERTIES.includes(property.name) && !(values[ fieldName ] ?? "").trim()) {
+                errors[ fieldName ] = t("common:required");
+            }
+        });
+
+        return errors;
+    };
 
     /**
      * Maps the form values back to the connector properties.
@@ -124,9 +166,9 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
         values: Record<string, string>
     ): CommonAuthenticatorFormInitialValuesInterface => {
         const updatedProperties: CommonPluggableComponentPropertyInterface[] = properties.map(
-            (property: AuthsignalConnectorPropertyInterface, index: number) => ({
+            (property: AuthsignalConnectorPropertyInterface) => ({
                 name: property.name,
-                value: (values[ getFieldName(index) ] ?? "").trim()
+                value: (values[ getFieldName(property.name) ] ?? "").trim()
             })
         );
 
@@ -136,50 +178,76 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
         };
     };
 
-    return (
-        <Form
-            id={ FORM_ID }
-            uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, string>) => onSubmit(getUpdatedConfigurations(values)) }
-            initialValues={ initialValues }
-        >
-            {
-                // Fields are named by their index in the server response, not by the property name,
-                // because the property names contain dots, which the form treats as nested paths.
-                properties.map((property: AuthsignalConnectorPropertyInterface, index: number) => (
-                    <Field.Input
-                        key={ property.name }
-                        ariaLabel={ property.displayName ?? property.name }
-                        inputType={
-                            property.name.startsWith(LocalAuthenticatorConstants.AUTHSIGNAL_SECRET_PROPERTY_PREFIX)
-                                ? FieldInputTypes.INPUT_PASSWORD
-                                : FieldInputTypes.INPUT_DEFAULT
-                        }
-                        name={ getFieldName(index) }
-                        label={ property.displayName ?? property.name }
-                        hint={ property.description }
-                        required={ REQUIRED_PROPERTIES.includes(property.name) }
-                        readOnly={ readOnly }
-                        maxLength={ FIELD_MAX_LENGTH }
-                        minLength={ 0 }
-                        width={ 12 }
-                        data-componentid={ `${ componentId }-${ property.name }` }
-                    />
-                ))
-            }
-            <Field.Button
-                form={ FORM_ID }
-                size="small"
-                buttonType="primary_btn"
-                ariaLabel={ t("extensions:develop.identityProviders.authsignal.settings.updateButtonAriaLabel") }
-                name="update-button"
-                data-componentid={ `${ componentId }-submit-button` }
-                disabled={ isSubmitting }
-                loading={ isSubmitting }
-                label={ t("common:update") }
-                hidden={ readOnly }
+    /**
+     * Renders the field of a connector property.
+     *
+     * @param property - Connector property.
+     * @returns Form field.
+     */
+    const renderField = (property: AuthsignalConnectorPropertyInterface): ReactElement => {
+        const label: string = property.displayName ?? property.name;
+        const commonProps: Record<string, unknown> = {
+            "aria-label": label,
+            "data-componentid": `${ componentId }-${ getFieldName(property.name) }`,
+            helperText: property.description,
+            label,
+            name: getFieldName(property.name),
+            readOnly,
+            required: REQUIRED_PROPERTIES.includes(property.name)
+        };
+
+        if (property.name === LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.REGION) {
+            return (
+                <FinalFormField
+                    key={ property.name }
+                    { ...commonProps }
+                    component={ SelectFieldAdapter }
+                    options={ regionOptions }
+                />
+            );
+        }
+
+        const isSecret: boolean = property.name.startsWith(
+            LocalAuthenticatorConstants.AUTHSIGNAL_SECRET_PROPERTY_PREFIX
+        );
+
+        return (
+            <FinalFormField
+                key={ property.name }
+                { ...commonProps }
+                component={ TextFieldAdapter }
+                type={ isSecret ? FieldInputTypes.INPUT_PASSWORD : undefined }
+                autoComplete={ isSecret ? "new-password" : undefined }
+                maxLength={ FIELD_MAX_LENGTH }
             />
-        </Form>
+        );
+    };
+
+    return (
+        <FinalForm
+            initialValues={ initialValues }
+            validate={ validateForm }
+            onSubmit={ (values: Record<string, string>) => onSubmit(getUpdatedConfigurations(values)) }
+            render={ ({ handleSubmit }: FormRenderProps) => (
+                <form onSubmit={ handleSubmit } data-componentid={ componentId }>
+                    { properties.map(renderField) }
+                    {
+                        !readOnly && (
+                            <PrimaryButton
+                                className="mt-3"
+                                size="small"
+                                type="submit"
+                                disabled={ isSubmitting }
+                                loading={ isSubmitting }
+                                data-componentid={ `${ componentId }-submit-button` }
+                            >
+                                { t("common:update") }
+                            </PrimaryButton>
+                        )
+                    }
+                </form>
+            ) }
+        />
     );
 };
 

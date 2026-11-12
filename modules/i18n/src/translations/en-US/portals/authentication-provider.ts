@@ -283,6 +283,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 }
             },
+            authsignal: {
+                regions: {
+                    au: "Australia (au)",
+                    ca: "Canada (ca)",
+                    eu: "Europe (eu)",
+                    uk: "United Kingdom (uk)",
+                    us: "United States (us)"
+                }
+            },
             dynamicOptions: {
                 disabled: "{{value}} (disabled)",
                 empty: "No matching connections available.",
