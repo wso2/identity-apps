@@ -544,8 +544,9 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
 
     const renderAddDeviceAction = (): ReactElement => (
         <Button
-            variant="outlined"
+            variant="text"
             size="small"
+            sx={ { my: 1 } }
             startIcon={ <PlusIcon /> }
             disabled={ isDeviceRegistrationStarting }
             onClick={ handleAddDevice }
