@@ -666,7 +666,8 @@
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
 
-                        if (errorDetails.portalUrlStatus === "true" && flowType !== "PROFILE_UPDATE") {
+                        if (errorDetails.portalUrlStatus === "true"
+                            && flowType !== "PROFILE_UPDATE" && flowType !== "DEVICE_REGISTRATION") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
 

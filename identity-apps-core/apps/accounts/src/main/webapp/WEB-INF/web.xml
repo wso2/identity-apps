@@ -100,6 +100,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>register-device</servlet-name>
+        <jsp-file>/execution-flow.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>register-device</servlet-name>
+        <url-pattern>/register-device</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>error</servlet-name>
         <jsp-file>/errors/execution_flow_error.jsp</jsp-file>
     </servlet>

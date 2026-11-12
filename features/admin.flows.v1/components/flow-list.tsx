@@ -22,6 +22,7 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     CircleCheckFilledIcon,
+    ShieldCheckIcon,
     UserAsteriskIcon,
     UserFlowIcon,
     UserKeyIcon,
@@ -78,6 +79,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return <UserAsteriskIcon size="small" className="icon" />;
             case FlowTypes.PROFILE_UPDATE:
                 return <UserPencilIcon size="small" className="icon" />;
+            case FlowTypes.DEVICE_REGISTRATION:
+                return <ShieldCheckIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
         }

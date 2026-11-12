@@ -23,3 +23,4 @@ export * from "./i18n-constants";
 export * from "./profile-constants";
 export * from "./consent-constants";
 export * from "./mfa-constants";
+export * from "./device-registration-constants";

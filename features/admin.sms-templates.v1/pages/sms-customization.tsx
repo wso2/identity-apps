@@ -107,6 +107,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { data: profileUpdateFlowConfig } = useGetFlowConfig(FlowTypes.PROFILE_UPDATE);
+    const { data: deviceRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.DEVICE_REGISTRATION);
 
     const {
         data: smsTemplatesList,
@@ -142,6 +143,11 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     return false;
                 }
 
+                if (!deviceRegistrationFlowConfig?.isEnabled
+                    && template.displayName?.toLowerCase().includes("deviceregistration")) {
+                    return false;
+                }
+
                 if (!enableCustomSmsTemplates) {
                     return smsTemplates?.some((smsTemplate: Record<string, string>) => smsTemplate.id === template.id);
                 }
@@ -167,7 +173,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             setSelectedSmsTemplateId(availableSmsTemplates?.[0]?.id);
             setSelectedSmsTemplateDescription(availableSmsTemplates?.[0]?.description);
         }
-    }, [ smsTemplatesList, profileUpdateFlowConfig ]);
+    }, [ smsTemplatesList, profileUpdateFlowConfig, deviceRegistrationFlowConfig ]);
 
     useEffect(() => {
         setSelectedSmsTemplate({ ...smsTemplate });

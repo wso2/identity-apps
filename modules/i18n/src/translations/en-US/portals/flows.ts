@@ -129,6 +129,7 @@ export const flows: flowsNS = {
             },
             flowHandoff: {
                 defaultTargets: {
+                    deviceRegistration: "Device Registration page",
                     passwordRecovery: "Recovery Portal",
                     profileUpdate: "Profile Management page",
                     registration: "Self Signup page"
@@ -519,6 +520,36 @@ export const flows: flowsNS = {
             description: "A workflow is engaged for this flow. The following settings will not take effect until the workflow is disabled.",
             navigation: "Click <1>here</1> to have a look at the currently engaged workflows.",
             title: "Workflow Engaged"
+        }
+    },
+    deviceRegistration: {
+        flowDisplayName: "Device Registration",
+        notifications: {
+            fetchFlow: {
+                genericError: {
+                    description: "An error occurred while fetching the device registration flow.",
+                    message: "Couldn't retrieve the device registration flow."
+                }
+            },
+            updateFlow: {
+                genericError: {
+                    description: "Failed to update the device registration flow.",
+                    message: "Flow Update Failure"
+                },
+                success: {
+                    description: "Device registration flow updated successfully.",
+                    message: "Flow Updated Successfully"
+                }
+            }
+        },
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the device registration flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once a device is registered.",
+                    label: "Send a notification email on flow completion"
+                }
+            }
         }
     },
     label: "Flows",

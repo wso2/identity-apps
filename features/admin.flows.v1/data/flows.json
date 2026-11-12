@@ -35,6 +35,15 @@
             "path": "PROFILE_UPDATE_FLOW_BUILDER",
             "type": "PROFILE_UPDATE",
             "disabled": false
+        },
+        {
+            "id": "device-registration",
+            "heading": "Device Registration",
+            "description": "Let signed-in users register a new device, with identity verification and a step-up before the device is added.",
+            "featureStatusKey": "flows.types.list.deviceRegistration",
+            "path": "DEVICE_REGISTRATION_FLOW_BUILDER",
+            "type": "DEVICE_REGISTRATION",
+            "disabled": false
         }
     ]
 }

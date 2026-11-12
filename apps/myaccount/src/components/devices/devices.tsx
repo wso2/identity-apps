@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useAuthContext } from "@asgardeo/auth-react";
 import { Theme, alpha } from "@mui/material/styles";
 import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
@@ -32,9 +33,11 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { EllipsisVerticalIcon } from "@oxygen-ui/react-icons";
+import { EllipsisVerticalIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import { ConfirmationModal } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -42,7 +45,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { RenameDeviceDialog } from "./rename-device-dialog";
+import { isDeviceRegistrationFlowEnabled, startDeviceRegistrationFlow } from "../../api/device-registration";
 import { deleteDevice, updateDevice } from "../../api/devices";
+import { DeviceRegistrationConstants } from "../../constants/device-registration-constants";
 import { SCIMConfigs } from "../../extensions/configs/scim";
 import useGetDevices from "../../hooks/use-get-devices";
 import { RequestErrorInterface } from "../../hooks/use-request";
@@ -52,7 +57,8 @@ import {
     DeviceInterface,
     DeviceListResponseInterface,
     DevicePatchRequestInterface,
-    DeviceStatus
+    DeviceStatus,
+    FlowExecutionResponseInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
@@ -76,7 +82,13 @@ const DEVICE_TYPE_ICONS: { icon: SemanticICONS; pattern: RegExp }[] = [
  */
 const DEVICE_MANAGEMENT_DISABLED_ERROR_CODE: string = "DM-60002";
 
-type DeviceNotificationKey = "activateDevice" | "deactivateDevice" | "deleteDevice" | "fetchDevices" | "renameDevice";
+/**
+ * Step type the flow execute API returns when the flow hands off to the accounts portal.
+ */
+const FLOW_REDIRECTION_STEP_TYPE: string = "REDIRECTION";
+
+type DeviceNotificationKey = "activateDevice" | "addDevice" | "deactivateDevice" | "deleteDevice" | "fetchDevices"
+    | "renameDevice";
 
 interface DevicesComponentPropsInterface extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -104,6 +116,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     } = props;
 
     const { t } = useTranslation();
+    const { getIDToken, refreshAccessToken } = useAuthContext();
 
     // Devices of a shared user are inherited from the parent organization and are read only.
     const isUserManagedByParentOrg: boolean = useSelector((state: AppState) =>
@@ -116,6 +129,8 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     const [ deviceToDeactivate, setDeviceToDeactivate ] = useState<DeviceInterface | null>(null);
     const [ deviceToDelete, setDeviceToDelete ] = useState<DeviceInterface | null>(null);
     const [ isRequestInProgress, setIsRequestInProgress ] = useState<boolean>(false);
+    const [ isDeviceRegistrationEnabled, setIsDeviceRegistrationEnabled ] = useState<boolean>(false);
+    const [ isDeviceRegistrationStarting, setIsDeviceRegistrationStarting ] = useState<boolean>(false);
 
     const {
         data: deviceList,
@@ -160,6 +175,23 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     }, [ deviceListFetchError ]);
 
     /**
+     * Shows the add device action only when the device registration flow is enabled for the organization.
+     */
+    useEffect(() => {
+        if (isUserManagedByParentOrg) {
+            return;
+        }
+
+        isDeviceRegistrationFlowEnabled()
+            .then((isEnabled: boolean) => setIsDeviceRegistrationEnabled(isEnabled))
+            .catch((error: AxiosError<RequestErrorInterface>) => {
+                // A flow that was never configured has no config, so it is disabled. When the server doesn't
+                // expose the config at all, the action is shown and the flow itself reports if it is disabled.
+                setIsDeviceRegistrationEnabled(error?.response?.status !== 404);
+            });
+    }, [ isUserManagedByParentOrg ]);
+
+    /**
      * Steps back a page when the current page has become empty, e.g. after deleting its last device.
      */
     useEffect(() => {
@@ -167,6 +199,42 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
             setOffset(Math.max(0, offset - DEVICES_PAGE_SIZE));
         }
     }, [ deviceList ]);
+
+    /**
+     * Starts the device registration flow and follows its handoff to the accounts portal.
+     */
+    const handleAddDevice = async (): Promise<void> => {
+        setIsDeviceRegistrationStarting(true);
+
+        try {
+            // The flow accepts only a recently issued ID token, so get a new one first.
+            await refreshAccessToken();
+
+            const idToken: string = await getIDToken();
+            const response: FlowExecutionResponseInterface = await startDeviceRegistrationFlow(idToken);
+
+            if (response?.type !== FLOW_REDIRECTION_STEP_TYPE || !response?.data?.redirectURL) {
+                throw new Error("The device registration flow didn't hand off to the accounts portal.");
+            }
+
+            SessionStorageUtils.setItemToSessionStorage(DeviceRegistrationConstants.IN_PROGRESS_STORAGE_KEY, "true");
+            window.location.href = response.data.redirectURL;
+        } catch (error) {
+            if ((error as AxiosError<RequestErrorInterface>)?.response?.data?.code
+                === DeviceRegistrationConstants.FLOW_DISABLED_ERROR_CODE) {
+                setIsDeviceRegistrationEnabled(false);
+                onAlertFired({
+                    description: t("myAccount:components.devices.notifications.addDevice.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("myAccount:components.devices.notifications.addDevice.error.message")
+                });
+            } else {
+                fireErrorAlert("addDevice");
+            }
+
+            setIsDeviceRegistrationStarting(false);
+        }
+    };
 
     const handleActionsMenuOpen = (event: MouseEvent<HTMLElement>, device: DeviceInterface): void => {
         setActionsMenuAnchor(event.currentTarget);
@@ -474,6 +542,19 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
         );
     };
 
+    const renderAddDeviceAction = (): ReactElement => (
+        <Button
+            variant="outlined"
+            size="small"
+            startIcon={ <PlusIcon /> }
+            disabled={ isDeviceRegistrationStarting }
+            onClick={ handleAddDevice }
+            data-componentid={ `${ componentId }-add-button` }
+        >
+            { t("myAccount:components.devices.actions.add") }
+        </Button>
+    );
+
     if (isFeatureDisabled) {
         return null;
     }
@@ -483,6 +564,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
             <SettingsSection
                 description={ t("myAccount:sections.devices.description") }
                 header={ t("myAccount:sections.devices.heading") }
+                topActionBar={ isDeviceRegistrationEnabled ? renderAddDeviceAction() : undefined }
                 placeholder={
                     !isDeviceListLoading && devices.length === 0
                         ? t("myAccount:sections.devices.actionTitles.empty")
