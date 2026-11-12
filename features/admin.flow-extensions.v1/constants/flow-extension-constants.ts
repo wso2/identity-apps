@@ -66,6 +66,12 @@ export class FlowExtensionConstants {
     ];
 
     /**
+     * Prefix of the disabled feature that hides a flow type in the runtime values and request headers of the
+     * access config, such as `flowExtensions.accessConfig.flowTypes.PROFILE_UPDATE`.
+     */
+    public static readonly FLOW_TYPE_FEATURE_ID_PREFIX: string = "flowExtensions.accessConfig.flowTypes.";
+
+    /**
      * Validation regex for a Flow Extension name. Must start with an alphanumeric character and
      * may contain letters, numbers, spaces, hyphens and underscores (max 255 characters).
      */

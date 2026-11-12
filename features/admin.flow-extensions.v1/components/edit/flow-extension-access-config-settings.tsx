@@ -19,6 +19,9 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -27,10 +30,11 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowExtension from "../../api/update-flow-extension";
 import useFlowExtensionContextTree from "../../api/use-flow-extension-context-tree";
+import { FlowExtensionConstants } from "../../constants/flow-extension-constants";
 import {
     ClaimAccessConfigInterface,
     FlowExtensionResponseInterface,
@@ -42,6 +46,8 @@ import {
     FlowExtensionContextTreeResponseInterface,
     InitialAccessConfigInterface
 } from "../flow-context-tree";
+import FlowExtensionAccessUtils from "../flow-context-tree/flow-extension-access-utils";
+import { ContextTreeNodeMetadataInterface } from "../flow-context-tree/models";
 
 /**
  * Props for the Flow Extension access config settings tab.
@@ -90,6 +96,19 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
         error: contextTreeError,
         isLoading: isContextTreeLoading
     } = useFlowExtensionContextTree<FlowExtensionContextTreeResponseInterface>();
+
+    const flowExtensionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.flowExtensions
+    );
+
+    const contextTree: ContextTreeNodeMetadataInterface[] = useMemo(
+        (): ContextTreeNodeMetadataInterface[] => FlowExtensionAccessUtils.omitHiddenFlowTypes(
+            contextTreeData?.context ?? [],
+            (flowType: string) => !isFeatureEnabled(
+                flowExtensionsFeatureConfig, FlowExtensionConstants.FLOW_TYPE_FEATURE_ID_PREFIX + flowType)
+        ),
+        [ contextTreeData, flowExtensionsFeatureConfig ]
+    );
 
     const [ accessConfig, setAccessConfig ] = useState<ClaimAccessConfigInterface>({ expose: [], modify: [] });
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -211,7 +230,7 @@ const FlowExtensionAccessConfigSettings: FunctionComponent<FlowExtensionAccessCo
                 ) }
                 <FlowContextTree
                     key={ resetKey }
-                    contextTree={ contextTreeData.context ?? [] }
+                    contextTree={ contextTree }
                     onChange={ handleAccessConfigChange }
                     initialAccessConfig={ initialAccessConfig }
                     readOnly={ isReadOnly }

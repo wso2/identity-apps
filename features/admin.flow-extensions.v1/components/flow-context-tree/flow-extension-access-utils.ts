@@ -88,6 +88,42 @@ class FlowExtensionAccessUtils {
     }
 
     /**
+     * Immutably remove the hidden flow types from the runtime values and request headers of the metadata.
+     *
+     * @param nodes - Context tree metadata.
+     * @param isFlowTypeHidden - Whether a flow type is hidden.
+     * @returns The metadata without the hidden flow types.
+     */
+    public static omitHiddenFlowTypes(
+        nodes: ContextTreeNodeMetadataInterface[],
+        isFlowTypeHidden: (flowType: string) => boolean
+    ): ContextTreeNodeMetadataInterface[] {
+        return nodes.map((node: ContextTreeNodeMetadataInterface) => {
+            if (!node.children) {
+                return node;
+            }
+
+            if (!FlowExtensionAccessUtils.isFlowVariableContainerPath(node.path)) {
+                return {
+                    ...node,
+                    children: FlowExtensionAccessUtils.omitHiddenFlowTypes(node.children, isFlowTypeHidden)
+                };
+            }
+
+            return {
+                ...node,
+                children: node.children
+                    .map((child: ContextTreeNodeMetadataInterface) => ({
+                        ...child,
+                        applicableFlowTypes: (child.applicableFlowTypes ?? [])
+                            .filter((flowType: string) => !isFlowTypeHidden(flowType))
+                    }))
+                    .filter((child: ContextTreeNodeMetadataInterface) => child.applicableFlowTypes.length > 0)
+            };
+        });
+    }
+
+    /**
      * Whether the node is the runtime values or the request headers container.
      *
      * @param path - Path of the node.
