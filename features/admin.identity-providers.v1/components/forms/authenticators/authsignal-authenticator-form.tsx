@@ -186,12 +186,12 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
      */
     const renderField = (property: AuthsignalConnectorPropertyInterface): ReactElement => {
         const label: string = property.displayName ?? property.name;
+        const fieldName: string = getFieldName(property.name);
         const commonProps: Record<string, unknown> = {
             "aria-label": label,
-            "data-componentid": `${ componentId }-${ getFieldName(property.name) }`,
+            "data-componentid": `${ componentId }-${ fieldName }`,
             helperText: property.description,
             label,
-            name: getFieldName(property.name),
             readOnly,
             required: REQUIRED_PROPERTIES.includes(property.name)
         };
@@ -200,6 +200,7 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
             return (
                 <FinalFormField
                     key={ property.name }
+                    name={ fieldName }
                     { ...commonProps }
                     component={ SelectFieldAdapter }
                     options={ regionOptions }
@@ -214,6 +215,7 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
         return (
             <FinalFormField
                 key={ property.name }
+                name={ fieldName }
                 { ...commonProps }
                 component={ TextFieldAdapter }
                 type={ isSecret ? FieldInputTypes.INPUT_PASSWORD : undefined }
