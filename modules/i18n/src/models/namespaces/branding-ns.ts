@@ -71,6 +71,12 @@ export interface BrandingNS {
                 "sign.up.heading": {
                     hint: string;
                 };
+                "profile.update.button": {
+                    hint: string;
+                };
+                "profile.update.heading": {
+                    hint: string;
+                };
                 "password.recovery.body": {
                     hint: string;
                 };
@@ -175,6 +181,7 @@ export interface BrandingNS {
         "password-recovery": string;
         "password-reset": string;
         "password-reset-success": string;
+        "profile-update": string;
         "push-auth": string;
         "username-recovery-claim": string;
         "username-recovery-channel-selection": string;
