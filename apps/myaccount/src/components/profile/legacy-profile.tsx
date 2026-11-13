@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -101,7 +101,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
-import { CommonUtils, isPrimaryClaimVerified } from "../../utils";
+import { CommonUtils, isHiddenProfileAttribute, isPrimaryClaimVerified } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 import "./profile.scss";
@@ -1477,6 +1477,10 @@ export const LegacyProfile: FunctionComponent<LegacyProfileProps> = (props: Lega
 
         // Hide the field if any of the relevant attributes match the schema name.
         if (attributesToHide.some((name: string) => schema.name === name)) {
+            return;
+        }
+
+        if (isHiddenProfileAttribute(schema, featureConfig?.personalInfo?.properties?.hiddenAttributes)) {
             return;
         }
 
