@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,14 +29,16 @@ import { HttpMethods, RoleListInterface, RolesInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { RoleAudienceTypes } from "../constants/role-constants";
+import { APPLICATION_ROLES_PAGE_SIZE, RoleAudienceTypes } from "../constants/role-constants";
 import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 import {
     CreateRoleInterface,
     PatchRoleDataInterface,
+    RolesV2Interface,
     RolesV2ResponseInterface,
     SearchRoleInterface
 } from "../models/roles";
+import { fetchAllRolePages } from "../utils/application-roles-utils";
 
 /**
  * Initialize an axios Http client.
@@ -45,47 +47,53 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get the application roles by audience.
+ * Get every role of the given audience by paging through the roles listing.
  *
- * @param audience - audience.
- * @param before - Before link.
- * @param after - After link.
- * @param limit - Limit.
+ * Without a `count`, the server returns only its default page of roles, so a single request cannot be used
+ * where the complete set matters, such as the roles associated with an application.
  *
- * @returns A promise containing the response.
+ * @param audience - Role audience.
+ * @param appId - Application ID, used when the audience is APPLICATION.
+ * @param excludedAttributes - Attributes to exclude from the response.
+ * @param useV3Api - Whether to use the SCIM2 Roles V3 endpoint.
+ *
+ * @returns A promise containing all the roles.
  */
-export const getApplicationRolesByAudience = (
+export const getAllApplicationRolesByAudience = (
     audience: string,
     appId: string,
-    before: string,
-    after: string,
-    limit: number,
-    excludedAttributes?: string
-):Promise<RolesV2ResponseInterface> => {
+    excludedAttributes?: string,
+    useV3Api?: boolean
+): Promise<RolesV2Interface[]> => {
 
     const filter: string = audience === RoleAudienceTypes.APPLICATION
         ? `audience.value eq ${ appId }`
         : `audience.type eq ${ audience.toLowerCase() }`;
 
-    const requestConfig: RequestConfigInterface = {
-        method: HttpMethods.GET,
-        params: {
-            after,
-            before,
-            excludedAttributes,
-            filter,
-            limit
-        },
-        url:  `${ store.getState().config.endpoints.rolesV2 }`
-    };
+    return fetchAllRolePages((startIndex: number, count: number): Promise<RolesV2ResponseInterface> => {
+        const requestConfig: RequestConfigInterface = {
+            headers: useV3Api
+                ? {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+                : undefined,
+            method: HttpMethods.GET,
+            params: {
+                count,
+                excludedAttributes,
+                filter,
+                startIndex
+            },
+            url: useV3Api
+                ? store.getState().config.endpoints.rolesV3
+                : store.getState().config.endpoints.rolesV2
+        };
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response.data as RolesV2ResponseInterface);
-        })
-        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
-            return Promise.reject(error);
-        });
+        return httpClient(requestConfig)
+            .then((response: AxiosResponse) => response.data as RolesV2ResponseInterface)
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => Promise.reject(error));
+    }, APPLICATION_ROLES_PAGE_SIZE);
 };
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 const ROLE_VIEW_PATH: string = "/roles/";
 export const DOMAIN_SEPARATOR: string = "/";
+export const APPLICATION_ROLES_PAGE_SIZE: number = 100;
 
 /**
  * Role audience interface.
