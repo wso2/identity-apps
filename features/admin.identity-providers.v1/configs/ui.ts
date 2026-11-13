@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import AuthsignalIcon from "@wso2is/admin.connections.v1/resources/assets/images/icons/authsignal.svg";
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.svg";
 import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
@@ -86,6 +87,7 @@ export const getAuthenticatorIcons = (): any => {
         Microsoft: MicrosoftLogo,
         OrganizationIdentifierHandler: OrganizationIdentifierHandlerIcon,
         apple: AppleLogo,
+        authsignal: AuthsignalIcon,
         backupCode: BackupCodesAuthenticatorLogo,
         basic: BasicAuthIcon,
         customAuthenticator: CustomAuthenticator,

@@ -96,7 +96,9 @@ export class AuthenticatorMeta {
                 "client certificates.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .PUSH_AUTHENTICATOR_ID ]: "Two-factor authentication via " +
-                "mobile push notifications."
+                "mobile push notifications.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .AUTHSIGNAL_AUTHENTICATOR_ID ]: "Multi-factor authentication using Authsignal."
         }, authenticatorId);
     }
 
@@ -161,7 +163,9 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID ]:
                 getAuthenticatorIcons()?.OrganizationIdentifierHandler,
-            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.push
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.push,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .AUTHSIGNAL_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.authsignal
         }, authenticatorId);
 
         return icon ?? getAuthenticatorIcons().default;
@@ -202,6 +206,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID ]: "Predefined",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
@@ -252,6 +257,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID ]: "authsignal",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "shared-user-identifier",

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ -->
+
+<svg width="512" height="512" viewBox="80 80 352 352" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M256 87.04C222.064 87.078 189.529 100.576 165.532 124.572C141.536 148.569 128.038 181.104 128 215.04H154.051C154.08 188.011 164.831 162.097 183.944 142.984C203.057 123.871 228.97 113.12 256 113.091C283.03 113.12 308.943 123.871 328.056 142.984C347.169 162.097 357.92 188.011 357.949 215.04V354.632L256 395.387L154.051 354.632V267.233H305.961V319.355L256 339.313L206.039 319.355V293.376H179.989V336.927L256 367.37L332.012 336.988V241.183H128V372.255L256 423.455L384 372.255V215.04C383.959 181.105 370.461 148.571 346.465 124.575C322.469 100.579 289.935 87.0807 256 87.04V87.04Z" fill="black"/>
+<path d="M256 165.13C269.24 165.147 281.933 170.413 291.295 179.776C300.657 189.138 305.924 201.831 305.94 215.071H332.011C331.987 194.92 323.97 175.601 309.72 161.353C295.471 147.105 276.151 139.091 256 139.07C235.847 139.091 216.526 147.107 202.275 161.357C188.025 175.607 180.01 194.928 179.988 215.081H206.059C206.073 201.839 211.338 189.144 220.701 179.779C230.063 170.415 242.758 165.147 256 165.13V165.13Z" fill="black"/>
+</svg>
