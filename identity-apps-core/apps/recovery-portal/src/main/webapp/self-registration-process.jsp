@@ -411,6 +411,15 @@
         properties.add(spIdProperty);
         properties.add(appIsAccessUrlAvailableProperty);
 
+        // Pass the anonymous profile tracker as a property so that it is available through the identity context
+        // during registration (e.g. for external profile linking), in addition to the cdsProfile claim above.
+        if (StringUtils.isNotBlank(cdsProfileCookie)) {
+            Property anonymousProfileTrackerProperty = new Property();
+            anonymousProfileTrackerProperty.setKey("anonymous_profile_tracker");
+            anonymousProfileTrackerProperty.setValue(cdsProfileCookie);
+            properties.add(anonymousProfileTrackerProperty);
+        }
+
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);
         selfUserRegistrationRequest.setProperties(properties);
