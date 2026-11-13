@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 4.35.0
+
+### Minor Changes
+
+- [#10921](https://github.com/wso2/identity-apps/pull/10921) [`dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe`](https://github.com/wso2/identity-apps/commit/dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add the profile update screen to text branding
+
+### Patch Changes
+
+- Updated dependencies [[`dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe`](https://github.com/wso2/identity-apps/commit/dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe)]:
+  - @wso2is/admin.branding.v1@2.34.0
+  - @wso2is/i18n@2.62.0
+
 ## 4.34.0
 
 ### Minor Changes
