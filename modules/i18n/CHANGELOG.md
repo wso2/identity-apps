@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.62.1
+
+### Patch Changes
+
+- [#10903](https://github.com/wso2/identity-apps/pull/10903) [`29e749fba7d2b4ea7a377eee34b86cd014edab4e`](https://github.com/wso2/identity-apps/commit/29e749fba7d2b4ea7a377eee34b86cd014edab4e) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add Authsignal local authenticator tile to the connections page and its icon to the login page
+
 ## 2.62.0
 
 ### Minor Changes
