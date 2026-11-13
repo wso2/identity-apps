@@ -173,6 +173,8 @@ export interface flowsNS {
                 configurationHint: string;
             };
             userVerification: {
+                allowMyAccountHint: string;
+                allowMyAccountLabel: string;
                 tokenValidityPeriodHint: string;
                 tokenValidityPeriodLabel: string;
                 tokenValidityPeriodPlaceholder: string;

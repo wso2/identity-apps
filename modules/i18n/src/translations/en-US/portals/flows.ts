@@ -167,6 +167,8 @@ export const flows: flowsNS = {
                 configurationHint: "Configure"
             },
             userVerification: {
+                allowMyAccountHint: "Let users start this flow from My Account.",
+                allowMyAccountLabel: "Allow My Account",
                 tokenValidityPeriodHint: "Only tokens issued within this time are accepted.",
                 tokenValidityPeriodLabel: "Maximum token age",
                 tokenValidityPeriodPlaceholder: "Enter the maximum token age",
