@@ -24,7 +24,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateCDSConfig } from "../api/config";
+import { updateCDSStatus } from "../api/config";
 import { CDSApplicationIdentifierType, CDSConfig } from "../models/config";
 import { getCDSApplicationIdentifierType } from "../utils/application-identifier-utils";
 
@@ -83,13 +83,15 @@ interface UseCDSToggleReturnInterface {
 /**
  * Hook that enables/disables the Customer Data Service via PATCH.
  *
- * Enabling  → set cds_enabled: true; add the Console system application identifier
+ * Enabling  → set the CDS status to true; add the Console system application identifier
  *             (resolved per the configured CDS application identifier type) if absent.
- * Disabling → set cds_enabled: false; remove the Console system application identifier
+ * Disabling → set the CDS status to false; remove the Console system application identifier
  *             (leave others intact).
  *
+ * See `updateCDSStatus` for the APIs that get the status.
+ *
  * @param cdsConfig - Current CDS configuration.
- * @param mutateCDSConfig - Mutator of the CDS configuration SWR cache.
+ * @param mutateCDSConfig - Gets the CDS configuration and the CDS status again.
  * @returns The toggle handler and its in-flight state.
  */
 const useCDSToggle = (
@@ -119,10 +121,7 @@ const useCDSToggle = (
                         : [ ...currentApps, consoleAppIdentifier ]
                     : currentApps.filter((app: string) => app !== consoleAppIdentifier);
 
-                await updateCDSConfig({
-                    cds_enabled: enable,
-                    system_applications: nextApps
-                });
+                await updateCDSStatus(enable, nextApps);
 
                 mutateCDSConfig();
 

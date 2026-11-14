@@ -23,7 +23,7 @@ import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureFlagsInterface } from "@wso2is/access-control";
-import { CDSConfig, useCDSConfig } from "@wso2is/admin.cds.v1";
+import { useCDSEnabled } from "@wso2is/admin.cds.v1";
 import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -212,10 +212,10 @@ export const FeatureCarousel = () => {
         state.config.ui.features?.customerDataService);
     const isCDSFeatureEnabled: boolean = customerDataServiceFeatureConfig?.enabled ?? false;
     const {
-        data: cdsConfig,
+        isEnabled: isCDSEnabled,
         isLoading: isCDSConfigFetchRequestLoading
-    } = useCDSConfig<CDSConfig>(isCDSFeatureEnabled);
-    const isCDSEnabledForOrganization: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+    } = useCDSEnabled(isCDSFeatureEnabled);
+    const isCDSEnabledForOrganization: boolean = isCDSFeatureEnabled && isCDSEnabled;
     const isCDSUnifiedProfileView: boolean = isCDSUnifiedProfileViewEnabled();
 
 

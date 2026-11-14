@@ -20,7 +20,7 @@ import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/
 import {
     AccessControlProvider, AllFeatureInterface, FeatureAccessConfigInterface, FeatureGateInterface
 } from "@wso2is/access-control";
-import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
+import useCDSEnabled from "@wso2is/admin.cds.v1/hooks/use-cds-enabled";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
@@ -118,11 +118,11 @@ const Base = ({
         (state: AppState) => state?.config?.ui?.features?.customerDataService
     );
 
-    const { data: cdsConfig } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
+    const { isEnabled: isCDSEnabled } = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
 
     useEffect(() => {
-        onCustomerDataServiceStatusChange(cdsConfig?.cds_enabled ?? false);
-    }, [ cdsConfig ]);
+        onCustomerDataServiceStatusChange(isCDSEnabled);
+    }, [ isCDSEnabled ]);
 
     return (
         <Switch>

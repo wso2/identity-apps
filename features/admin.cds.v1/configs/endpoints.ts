@@ -73,6 +73,7 @@ export const getCustomerDataServiceEndpoints = (
 
     return {
         cdsConfig: `${ cdsHost }/cds/api/v1/config`,
+        cdsServerConfig: `${ serverHost }/api/server/v1/configs/cds`,
         cdsOrganizationAccess: `${ cdsHost }/cds/api/v1/organizations/access-policies`,
         cdsOrganizationSync: `${ cdsHost }/cds/api/v1/organizations/sync`,
         cdsOrganizationSyncStatus: `${ cdsHost }/cds/api/v1/organizations/sync-status`,

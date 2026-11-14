@@ -19,7 +19,8 @@
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
-import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
+import { updateCDSStatus } from "@wso2is/admin.cds.v1/api/config";
+import useCDSEnabled from "@wso2is/admin.cds.v1/hooks/use-cds-enabled";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
 import { CDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/models/config";
 import { getCDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/utils/application-identifier-utils";
@@ -135,6 +136,11 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         mutate: mutateCDSConfig
     } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 
+    const {
+        isEnabled: isCDSEnabled,
+        mutate: mutateCDSStatus
+    } = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
+
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
         const items: PreviewFeaturesListInterface[] = [];
 
@@ -144,7 +150,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
             items.push({
                 action: t("customerDataService:common.featurePreview.action"),
                 description: t("customerDataService:common.featurePreview.description"),
-                enabled: cdsConfig?.cds_enabled,
+                enabled: isCDSEnabled,
                 id: "customer-data-service",
                 image: NewCDSFeatureImage,
                 message: {
@@ -158,7 +164,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         }
 
         return items;
-    }, [ cdsConfig, cdsFeatureConfig, hasCDSScopes, t ]);
+    }, [ isCDSEnabled, cdsFeatureConfig, hasCDSScopes, t ]);
 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(
         () =>
@@ -214,11 +220,9 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                         : [ ...currentApps, consoleAppIdentifier ]
                     : currentApps.filter((app: string) => app !== consoleAppIdentifier);
 
-                await updateCDSConfig({
-                    cds_enabled: enable,
-                    system_applications: nextApps
-                });
+                await updateCDSStatus(enable, nextApps);
                 mutateCDSConfig();
+                mutateCDSStatus();
 
                 if (enable) {
                     addForceExpandedParent("customerDataService");
@@ -233,7 +237,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                 );
             }
         },
-        [ cdsConfig?.system_applications, dispatch, mutateCDSConfig, t ]
+        [ cdsConfig?.system_applications, dispatch, mutateCDSConfig, mutateCDSStatus, t ]
     );
 
     const handleToggleChange: (

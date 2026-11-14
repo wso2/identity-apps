@@ -24,7 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Hint, PageLayout, SecondaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -35,6 +35,7 @@ import { ReactComponent as ReviewTasksIcon } from "../assets/images/icons/review
 import { ReactComponent as UnificationRuleIcon } from "../assets/images/icons/unification-rules.svg";
 import ConfigurationCard from "../components/configuration-card";
 import ProfilesSection from "../components/profiles-section";
+import useCDSEnabled from "../hooks/use-cds-enabled";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
@@ -72,9 +73,17 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
         mutate: mutateCDSConfig
     } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 
-    const { isUpdating, toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfig);
+    const {
+        isEnabled: isCDSEnabled,
+        mutate: mutateCDSStatus
+    } = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
 
-    const isCDSEnabled: boolean = cdsConfig?.cds_enabled ?? false;
+    const mutateCDSConfigAndStatus: () => void = useCallback((): void => {
+        mutateCDSConfig();
+        mutateCDSStatus();
+    }, [ mutateCDSConfig, mutateCDSStatus ]);
+
+    const { isUpdating, toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfigAndStatus);
 
     // Organization management: a child organization inherits the enablement of its root, so it cannot change it.
     const isSubOrganization: boolean = useIsSubOrganization();

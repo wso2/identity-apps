@@ -19,7 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import { ProfileListItem, useCDSConfig, useCDSProfiles } from "@wso2is/admin.cds.v1";
+import { ProfileListItem, useCDSEnabled, useCDSProfiles } from "@wso2is/admin.cds.v1";
 import { getEmptyPlaceholderIllustrations, getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -132,9 +132,9 @@ const UserEditPage = (): ReactElement => {
 
     const isCDSFeatureEnabled: boolean = featureConfig?.customerDataService?.enabled ?? false;
 
-    const { data: cdsConfig } = useCDSConfig(isCDSFeatureEnabled);
+    const { isEnabled: isCDSEnabled } = useCDSEnabled(isCDSFeatureEnabled);
 
-    const isCDSEnabledForOrg: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+    const isCDSEnabledForOrg: boolean = isCDSFeatureEnabled && isCDSEnabled;
 
     const { data: cdsProfilesData } = useCDSProfiles(
         isCDSEnabledForOrg && user?.id
