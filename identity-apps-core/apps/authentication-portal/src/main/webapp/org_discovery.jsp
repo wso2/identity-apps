@@ -214,15 +214,24 @@
         %>
 
       <script type="text/javascript">
+         $("#org_form").on("submit", function (e) {
+            if ($(this).data("submitted") === true) {
+                console.warn("Prevented a possible double submit event");
+                e.preventDefault();
+                return false;
+            }
+            $(this).data("submitted", true);
+         });
+
          function enterOrgName() {
             document.getElementById("login_hint").disabled = true;
-            document.getElementById("org_form").submit();
+            $("#org_form").submit();
          }
 
          function enterOrgHandle() {
             document.getElementById("prompt").value = "orgHandle";
             document.getElementById("login_hint").disabled = true;
-            document.getElementById("org_form").submit();
+            $("#org_form").submit();
          }
 
          function navigateBackToLoginPage() {
@@ -237,7 +246,7 @@
                 return;
             }
             document.getElementById("prompt").remove();
-            document.getElementById("org_form").submit();
+            $("#org_form").submit();
          }
 
          // Function to show error message when discovery input is empty.

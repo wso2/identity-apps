@@ -194,13 +194,22 @@
         %>
         <script type="text/javascript">
 
+            $("#pin_form").on("submit", function (e) {
+                if ($(this).data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                    e.preventDefault();
+                    return false;
+                }
+                $(this).data("submitted", true);
+            });
+
             function goBack() {
                 window.history.back();
             }
 
             function promptDiscovery() {
                 document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
+                $("#pin_form").submit();
             }
 
             function submitOrgName() {
@@ -211,7 +220,7 @@
                 }
 
                 document.getElementById("prompt").remove();
-                document.getElementById("pin_form").submit();
+                $("#pin_form").submit();
             }
 
             // Function to show error message when organization name is empty.

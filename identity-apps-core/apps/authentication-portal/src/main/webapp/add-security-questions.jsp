@@ -186,6 +186,15 @@
 
     <script>
         $('select.dropdown').dropdown();
+
+        $('#profile').on('submit', function(e) {
+            if ($(this).data("submitted") === true) {
+                console.warn("Prevented a possible double submit event");
+                e.preventDefault();
+                return false;
+            }
+            $(this).data("submitted", true);
+        });
     </script>
 
 </body>

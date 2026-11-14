@@ -139,6 +139,15 @@
     <% } %>
 
     <script type="text/javascript">
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            if (this.dataset.submitted === "true") {
+                console.warn("Prevented a possible double submit event");
+                e.preventDefault();
+                return;
+            }
+            this.dataset.submitted = "true";
+        });
+
         var userCode;
 
         function loadFunc() {
