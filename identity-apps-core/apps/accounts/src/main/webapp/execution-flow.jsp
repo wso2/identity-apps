@@ -289,6 +289,7 @@
                 const [ flowMessages, setFlowMessages ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
+                const [autoLoginForm, setAutoLoginForm] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
                 const [ walletQR, setWalletQR ] = useState(null);
@@ -524,10 +525,25 @@
                             if (data.flowId) localStorage.setItem("flowId", data.flowId);
                             if (data.flowType) setFlowType(data.flowType);
 
-                            var vpUserAssertion = data.data && data.data.additionalData && data.data.additionalData.userAssertion;
-                            if (data.flowStatus === "COMPLETE" && vpUserAssertion && pageSessionDataKey && pageSessionDataKey !== "null") {
-                                submitPostForm(baseUrl + "/commonauth", { sessionDataKey: pageSessionDataKey, userAssertion: vpUserAssertion });
-                                return;
+                            var vpAdditionalData = (data.data && data.data.additionalData) || {};
+                            var vpUserAssertion = vpAdditionalData.userAssertion;
+                            if (data.flowStatus === "COMPLETE" && vpUserAssertion) {
+                                if (vpAdditionalData.organizationLoginUrl && vpAdditionalData.sessionDataKey) {
+                                    var vpPostFields = {
+                                        sessionDataKey: vpAdditionalData.sessionDataKey,
+                                        userAssertion: vpUserAssertion
+                                    };
+                                    if (vpAdditionalData.type) vpPostFields.type = vpAdditionalData.type;
+                                    submitPostForm(vpAdditionalData.organizationLoginUrl, vpPostFields);
+                                    return;
+                                }
+                                // The user was provisioned in another organization, but the organization login URL
+                                // is unavailable (portal not shared). Do not post the organization-signed assertion
+                                // to this tenant's commonauth; fall through to the normal redirect.
+                                if (!vpAdditionalData.provisionedTenantDomain && pageSessionDataKey && pageSessionDataKey !== "null") {
+                                    submitPostForm(baseUrl + "/commonauth", { sessionDataKey: pageSessionDataKey, userAssertion: vpUserAssertion });
+                                    return;
+                                }
                             }
 
                             var isEnded = handleFlowStatus(data);
@@ -753,7 +769,26 @@
 
                             const sessionDataKey = localStorage.getItem("sessionDataKey");
                             const userAssertion = flow.data.additionalData?.userAssertion;
-                            if (sessionDataKey && userAssertion) {
+                            // The flow provisioned the user inside a new organization, so the server created an
+                            // authentication request in that tenant. The assertion is signed for it and must be
+                            // submitted to the organization's Commonauth endpoint.
+                            const organizationLoginUrl = flow.data.additionalData?.organizationLoginUrl;
+                            const organizationSessionDataKey = flow.data.additionalData?.sessionDataKey;
+                            if (userAssertion && organizationLoginUrl && organizationSessionDataKey) {
+                                setAutoLoginForm({
+                                    action: organizationLoginUrl,
+                                    sessionDataKey: organizationSessionDataKey,
+                                    type: flow.data.additionalData?.type
+                                });
+                                setUserAssertion(userAssertion);
+                                return true;
+                            }
+                            if (userAssertion && !flow.data.additionalData?.provisionedTenantDomain && sessionDataKey) {
+                                setAutoLoginForm({
+                                    action: baseUrl + "/commonauth",
+                                    sessionDataKey: sessionDataKey,
+                                    type: null
+                                });
                                 setUserAssertion(userAssertion);
                                 return true;
                             }
@@ -838,6 +873,9 @@
 
                 const AutoLoginForm = (data) => {
                     const formRef = React.useRef();
+                    // The server decides where the assertion is submitted when the user was provisioned in an
+                    // organization; the login page's own authentication request is used otherwise.
+                    const loginForm = data.autoLoginForm || {};
                     const handleSubmit = () => {
                         formRef.current.submit();
                     };
@@ -855,11 +893,14 @@
                             {
                                 ref: formRef,
                                 method: "POST",
-                                action: baseUrl + "/commonauth",
+                                action: loginForm.action || baseUrl + "/commonauth",
                                 style: { display: 'none' }
                             },
-                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(localStorage.getItem("sessionDataKey") || "") }),
-                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") })
+                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(loginForm.sessionDataKey || "") }),
+                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") }),
+                            loginForm.type
+                                ? createElement("input", { type: "hidden", name: "type", value: encodeURIComponent(loginForm.type) })
+                                : null
                         )
                     );
                 }
@@ -986,7 +1027,7 @@
                 if (userAssertion) {
                     return createElement(
                         AutoLoginForm,
-                        { userAssertion: userAssertion }
+                        { autoLoginForm: autoLoginForm, userAssertion: userAssertion }
                     );
                 }
 
