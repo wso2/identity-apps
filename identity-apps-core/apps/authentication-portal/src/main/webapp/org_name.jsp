@@ -122,7 +122,7 @@
                     <div id="alertDiv"></div>
 
 
-                    <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
+                    <form class="ui large form" id="org_name_form" name="org_name_form" action="<%=commonauthURL%>" method="GET">
                         <div class="field m-0 text-left required">
                             <label><%= i18n(resourceBundle, customText, "organization.name") %></label>
                         </div>
@@ -200,7 +200,7 @@
 
             function promptDiscovery() {
                 document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
+                document.getElementById("org_name_form").submit();
             }
 
             function submitOrgName() {
@@ -211,7 +211,7 @@
                 }
 
                 document.getElementById("prompt").remove();
-                document.getElementById("pin_form").submit();
+                document.getElementById("org_name_form").submit();
             }
 
             // Function to show error message when organization name is empty.
