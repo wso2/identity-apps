@@ -80,6 +80,7 @@ export interface ServiceResourceEndpointsInterface {
     fidoMetaData: string;
     fidoStart: string;
     fidoStartUsernameless: string;
+    flowExecute: string;
     isReadOnlyUser: string;
     issuer: string;
     jwks: string;

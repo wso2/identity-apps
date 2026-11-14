@@ -1,0 +1,1139 @@
+[
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BLANK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Blank",
+            "description": "Start a new flow from scratch",
+            "image": "assets/images/icons/refresh-ccw.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Heading"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "END",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 790,
+                            "y": 330
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Register from My Account",
+            "description": "Verify the user, hand the flow off to the accounts portal, then register another device with a QR code",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{PROCESS_DEVICE_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "FLOW_HANDOFF_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "INIT_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROCESS_DEVICE_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FINISH_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 217,
+                            "height": 99
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 421
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{FLOW_HANDOFF_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FLOW_HANDOFF_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 295,
+                            "height": 154
+                        },
+                        "position": {
+                            "x": 320,
+                            "y": 394
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FlowHandoffExecutor"
+                                },
+                                "next": "{{OTP_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 715,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your email",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{INIT_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{INIT_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1165,
+                            "y": 450
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "INIT_REGISTRATION"
+                                    }
+                                },
+                                "next": "{{PROCESS_DEVICE_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Register your device</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Scan the QR code with the device you want to register.</span></h5>"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "QR_CODE",
+                                    "config": {
+                                        "data": "{{qrCodeData}}",
+                                        "size": 220
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROCESS_DEVICE_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1615,
+                            "y": 450
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "PROCESS_DEVICE"
+                                    }
+                                },
+                                "next": "{{FINISH_REGISTRATION_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5><h2 class=\"rich-text-heading-h2 rich-text-align-center\"><br><span class=\"rich-text-bold rich-text-pre-wrap\">{{pairingCode}}</span></h2>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{FINISH_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 2065,
+                            "y": 450
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "FINISH_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Enter the pairing code"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "pairingCode",
+                                                "label": "Enter the code shown on your device",
+                                                "placeholder": "",
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "END"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 280,
+                            "height": 220
+                        },
+                        "position": {
+                            "x": 2515,
+                            "y": 408
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC_DEVICE_REGISTRATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Register This Device",
+            "description": "Verify the user, then register the device the user is on, such as a mobile app",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 217,
+                            "height": 99
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 421
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{OTP_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 320,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your email",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 770,
+                            "y": 450
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "NATIVE_DEVICE_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 280,
+                            "height": 220
+                        },
+                        "position": {
+                            "x": 1220,
+                            "y": 408
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "DEVICE_REGISTRATION_BOTH",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Register This or Another Device",
+            "description": "Verify the user, then register the device the user is on (mobile app) or another device with a QR code (My Account)",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "DECISION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "NATIVE_OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "DEVICE_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FLOW_HANDOFF_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "OTP_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "INIT_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PROCESS_DEVICE_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FINISH_REGISTRATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "variables": {
+                    "runtimeValues": [
+                        {
+                            "name": "registrationMode",
+                            "dataType": "STRING",
+                            "clientWritable": true
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 217,
+                            "height": 99
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 421
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserVerificationExecutor"
+                                },
+                                "next": "{{DECISION_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{DECISION_STEP_ID}}",
+                        "type": "RULE_EVALUATION",
+                        "size": {
+                            "width": 240,
+                            "height": 140
+                        },
+                        "position": {
+                            "x": 320,
+                            "y": 421
+                        },
+                        "data": {
+                            "action": {
+                                "type": "ROUTE",
+                                "branches": [
+                                    {
+                                        "id": "branch_this_device",
+                                        "name": "This device",
+                                        "next": "{{NATIVE_OTP_STEP_ID}}",
+                                        "rule": {
+                                            "operator": "OR",
+                                            "conditions": [
+                                                {
+                                                    "operator": "AND",
+                                                    "conditions": [
+                                                        {
+                                                            "field": {
+                                                                "name": "runtimeValues",
+                                                                "qualifier": "registrationMode"
+                                                            },
+                                                            "operator": "equals",
+                                                            "value": {
+                                                                "type": "literal",
+                                                                "literal": "NATIVE"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "branch_another_device",
+                                        "name": "Another device",
+                                        "next": "{{FLOW_HANDOFF_STEP_ID}}"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{NATIVE_OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 700,
+                            "y": -200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your email",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{DEVICE_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{DEVICE_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1150,
+                            "y": -100
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "NATIVE_DEVICE_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FLOW_HANDOFF_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 295,
+                            "height": 154
+                        },
+                        "position": {
+                            "x": 700,
+                            "y": 600
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FlowHandoffExecutor"
+                                },
+                                "next": "{{OTP_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{OTP_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1100,
+                            "y": 500
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the code sent to your email",
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "{{INIT_REGISTRATION_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{INIT_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 1550,
+                            "y": 650
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "INIT_REGISTRATION"
+                                    }
+                                },
+                                "next": "{{PROCESS_DEVICE_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Register your device</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Scan the QR code with the device you want to register.</span></h5>"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "QR_CODE",
+                                    "config": {
+                                        "data": "{{qrCodeData}}",
+                                        "size": 220
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PROCESS_DEVICE_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 2000,
+                            "y": 650
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "PROCESS_DEVICE"
+                                    }
+                                },
+                                "next": "{{FINISH_REGISTRATION_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Device verified</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Enter this code in your browser to finish the registration.</span></h5><h2 class=\"rich-text-heading-h2 rich-text-align-center\"><br><span class=\"rich-text-bold rich-text-pre-wrap\">{{pairingCode}}</span></h2>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{FINISH_REGISTRATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 2450,
+                            "y": 650
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "DeviceRegistrationExecutor",
+                                    "meta": {
+                                        "phase": "FINISH_REGISTRATION"
+                                    }
+                                },
+                                "next": "END"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Enter the pairing code"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "pairingCode",
+                                                "label": "Enter the code shown on your device",
+                                                "placeholder": "",
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "END"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 280,
+                            "height": 220
+                        },
+                        "position": {
+                            "x": 2900,
+                            "y": 408
+                        },
+                        "config": {
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Device Registered"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Your device has been registered successfully.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

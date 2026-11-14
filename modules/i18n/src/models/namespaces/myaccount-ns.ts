@@ -473,6 +473,7 @@ export interface MyAccountNS {
         devices?: {
             actions: {
                 activate: string;
+                add: string;
                 deactivate: string;
                 delete: string;
                 more: string;
@@ -508,6 +509,7 @@ export interface MyAccountNS {
             };
             notifications: {
                 activateDevice: Notification;
+                addDevice: Notification;
                 deactivateDevice: Notification;
                 deleteDevice: Notification;
                 fetchDevices: Notification;

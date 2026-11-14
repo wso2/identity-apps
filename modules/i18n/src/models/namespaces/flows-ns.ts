@@ -137,6 +137,7 @@ export interface flowsNS {
             };
             flowHandoff: {
                 defaultTargets: {
+                    deviceRegistration: string;
                     passwordRecovery: string;
                     profileUpdate: string;
                     registration: string;
@@ -172,6 +173,8 @@ export interface flowsNS {
                 configurationHint: string;
             };
             userVerification: {
+                allowMyAccountHint: string;
+                allowMyAccountLabel: string;
                 tokenValidityPeriodHint: string;
                 tokenValidityPeriodLabel: string;
                 tokenValidityPeriodPlaceholder: string;
@@ -507,6 +510,36 @@ export interface flowsNS {
             };
             restoreVersion: string;
             unknownAuthor: string;
+        };
+    };
+    deviceRegistration: {
+        flowDisplayName: string;
+        notifications: {
+            fetchFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        steps: {
+            end: {
+                description: string;
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
         };
     };
     label?: string;

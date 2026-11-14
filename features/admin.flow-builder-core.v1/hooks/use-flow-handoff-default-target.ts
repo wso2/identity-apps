@@ -34,6 +34,8 @@ const useFlowHandoffDefaultTarget = (): string => {
             return t("flows:core.executions.flowHandoff.defaultTargets.registration");
         case FlowTypes.PASSWORD_RECOVERY:
             return t("flows:core.executions.flowHandoff.defaultTargets.passwordRecovery");
+        case FlowTypes.DEVICE_REGISTRATION:
+            return t("flows:core.executions.flowHandoff.defaultTargets.deviceRegistration");
         default:
             return t("flows:core.executions.flowHandoff.defaultTargets.profileUpdate");
     }

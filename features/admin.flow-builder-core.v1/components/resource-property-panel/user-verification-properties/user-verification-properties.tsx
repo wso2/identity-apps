@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
@@ -30,6 +32,7 @@ import {
 const TOKEN_VALIDITY_PERIOD_META_KEY: string = "tokenValidityPeriod";
 const DEFAULT_TOKEN_VALIDITY_PERIOD: string = "5";
 const MAX_TOKEN_VALIDITY_PERIOD: number = 10080;
+const ALLOW_MY_ACCOUNT_META_KEY: string = "allowMyAccount";
 
 /**
  * Props interface of {@link UserVerificationProperties}
@@ -51,11 +54,20 @@ const UserVerificationProperties: FunctionComponent<UserVerificationPropertiesPr
 
     const tokenValidityPeriod: string = resource?.data?.action?.executor?.meta?.[ TOKEN_VALIDITY_PERIOD_META_KEY ]
         ?? DEFAULT_TOKEN_VALIDITY_PERIOD;
+    // My Account is allowed unless the step disables it.
+    const isMyAccountAllowed: boolean =
+        resource?.data?.action?.executor?.meta?.[ ALLOW_MY_ACCOUNT_META_KEY ] !== "false";
 
     const handleTokenValidityPeriodChange: (event: ChangeEvent<HTMLInputElement>) => void = (
         event: ChangeEvent<HTMLInputElement>
     ): void => {
         onChange(`action.executor.meta.${ TOKEN_VALIDITY_PERIOD_META_KEY }`, event.target.value.trim(), resource);
+    };
+
+    const handleAllowMyAccountChange: (event: ChangeEvent<HTMLInputElement>) => void = (
+        event: ChangeEvent<HTMLInputElement>
+    ): void => {
+        onChange(`action.executor.meta.${ ALLOW_MY_ACCOUNT_META_KEY }`, String(event.target.checked), resource);
     };
 
     return (
@@ -84,6 +96,20 @@ const UserVerificationProperties: FunctionComponent<UserVerificationPropertiesPr
             </Stack>
             <FormHelperText>
                 { t("flows:core.executions.userVerification.tokenValidityPeriodHint") }
+            </FormHelperText>
+            <FormControlLabel
+                key={ `${ resource?.id }-${ ALLOW_MY_ACCOUNT_META_KEY }` }
+                control={ (
+                    <Checkbox
+                        defaultChecked={ isMyAccountAllowed }
+                        onChange={ handleAllowMyAccountChange }
+                    />
+                ) }
+                label={ t("flows:core.executions.userVerification.allowMyAccountLabel") }
+                data-componentid={ `${ componentId }-allow-my-account` }
+            />
+            <FormHelperText>
+                { t("flows:core.executions.userVerification.allowMyAccountHint") }
             </FormHelperText>
         </Stack>
     );

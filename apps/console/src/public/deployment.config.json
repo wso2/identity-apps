@@ -1290,6 +1290,10 @@
                     {
                         "feature": "flows.types.list.profileUpdate",
                         "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.deviceRegistration",
+                        "flag": ""
                     }
                 ],
                 "scopes": {
