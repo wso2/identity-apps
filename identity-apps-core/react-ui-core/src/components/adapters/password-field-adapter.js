@@ -39,9 +39,10 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
 
     const { identifier, required, label, placeholder, validations, hint } = component.config;
     const { translations } = useTranslations();
-    const { fieldErrors: passwordErrors, validate } = useFieldValidation(validations);
+    const { fieldErrors: passwordErrors, failedRuleNames: failedPasswordRuleNames, validate } = useFieldValidation(validations);
     const {
         fieldErrors: confirmPasswordErrors,
+        failedRuleNames: failedConfirmRuleNames,
         validate: validateConfirmPassword
     } = useFieldValidation(CONFIRM_PASSWORD_RULE);
 
@@ -99,13 +100,13 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
             return (
                 <ValidationCriteria
                     validationConfig={ CONFIRM_PASSWORD_RULE }
-                    errors={ confirmPasswordErrors }
+                    errors={ failedConfirmRuleNames }
                     value={ confirmPassword }
                 />
             );
         } else {
             return validations && validations.length > 0 ? (
-                <ValidationCriteria validationConfig={ validations } errors={ passwordErrors } value={ password } />
+                <ValidationCriteria validationConfig={ validations } errors={ failedPasswordRuleNames } value={ password } />
             ) : (
                 <ValidationError
                     name={ identifier }
