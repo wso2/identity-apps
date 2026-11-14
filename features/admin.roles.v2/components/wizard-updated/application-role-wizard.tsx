@@ -56,6 +56,7 @@ import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants
 import { ScopeInterface } from "../../models/apiResources";
 import { Policy } from "../../models/policies";
 import {
+    BasicRoleInterface,
     CreateRoleFormData,
     CreateRoleInterface,
     CreateRolePermissionInterface,
@@ -67,7 +68,7 @@ interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInter
     application: ApplicationInterface;
     closeWizard: () => void;
     setUserListRequestLoading: (value: boolean) => void;
-    onRoleCreated: () => void;
+    onRoleCreated: (createdRole: BasicRoleInterface) => void;
     /**
      * Original template ID of the application to which the app role is assigned.
      */
@@ -289,7 +290,10 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         message: t("roles:notifications.createRole.success.message")
                     }));
 
-                    onRoleCreated();
+                    onRoleCreated({
+                        id: response.data?.id,
+                        name: response.data?.displayName
+                    });
                 } else if (response.status === 202) {
                     dispatch(addAlert({
                         description: t("roles:notifications.createRolePendingApproval.success" +
