@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 4.37.0
+
+### Minor Changes
+
+- [#10930](https://github.com/wso2/identity-apps/pull/10930) [`46fff723a942f682784140f5042679959d9c8c9e`](https://github.com/wso2/identity-apps/commit/46fff723a942f682784140f5042679959d9c8c9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self device registration through the device registration flow
+
+### Patch Changes
+
+- Updated dependencies [[`46fff723a942f682784140f5042679959d9c8c9e`](https://github.com/wso2/identity-apps/commit/46fff723a942f682784140f5042679959d9c8c9e)]:
+  - @wso2is/admin.device-registration-flow-builder.v1@1.0.0
+  - @wso2is/admin.flows.v1@1.3.0
+  - @wso2is/admin.email-management.v1@2.27.0
+  - @wso2is/admin.sms-templates.v1@1.2.0
+  - @wso2is/admin.core.v1@2.65.0
+  - @wso2is/i18n@2.63.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.4
+  - @wso2is/admin.branding.v1@2.34.1
+  - @wso2is/admin.flow-extensions.v1@0.2.3
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.6
+  - @wso2is/admin.profile-update-flow-builder.v1@1.0.1
+  - @wso2is/admin.registration-flow-builder.v1@0.16.4
+  - @wso2is/admin.users.v1@2.39.12
+
 ## 4.36.0
 
 ### Minor Changes
