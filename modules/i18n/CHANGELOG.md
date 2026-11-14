@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.0
+
+### Minor Changes
+
+- [#10930](https://github.com/wso2/identity-apps/pull/10930) [`46fff723a942f682784140f5042679959d9c8c9e`](https://github.com/wso2/identity-apps/commit/46fff723a942f682784140f5042679959d9c8c9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self device registration through the device registration flow
+
 ## 2.62.1
 
 ### Patch Changes
