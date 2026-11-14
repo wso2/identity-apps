@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -189,10 +189,17 @@ export const getProfileCompletion = (
 ): ProfileCompletion => {
     const completion: ProfileCompletion = emptyProfileCompletion();
     const skippedAttributed: string[] = [];
+    const hiddenAttributes: string[] = store.getState()?.config?.ui?.features?.personalInfo?.properties
+        ?.hiddenAttributes;
 
     for (const schema of flattenSchemas([ ...profileSchemas ])) {
         // Skip `Roles` & 'Local Credential Exists'
         if (commonConfig.utils.isSchemaNameSkippableforProfileCompletion(schema)) {
+            continue;
+        }
+
+        // Attributes hidden from the user profile cannot be filled by the user.
+        if (isHiddenProfileAttribute(schema, hiddenAttributes)) {
             continue;
         }
 
@@ -305,4 +312,44 @@ export const isPrimaryClaimVerified = (claimKey: string, profileInfo: BasicProfi
     const claimValue: boolean | string = profileInfo?.[systemSchema]?.[claimKey];
 
     return claimValue === true || claimValue === "true";
+};
+
+/**
+ * Checks whether a profile attribute is configured to be hidden from the user profile.
+ *
+ * Attribute URIs are matched case-insensitively, as SCIM attribute names are case-insensitive.
+ * Hiding a complex attribute (e.g. `urn:ietf:params:scim:schemas:core:2.0:User:name`) also hides
+ * its sub-attributes.
+ *
+ * @param schema - Profile schema of the attribute. Sub-attributes are expected in the flattened form.
+ * @param hiddenAttributes - Attribute URIs configured to be hidden.
+ * @returns True if the attribute should be hidden, false otherwise.
+ */
+export const isHiddenProfileAttribute = (
+    schema: Pick<ProfileSchema, "name" | "schemaId" | "schemaUri">,
+    hiddenAttributes?: string[]
+): boolean => {
+    if (isEmpty(hiddenAttributes)) {
+        return false;
+    }
+
+    const attributeUri: string | undefined = schema?.schemaUri
+        ?? (schema?.schemaId && schema?.name ? `${schema.schemaId}:${schema.name}` : undefined);
+
+    if (!attributeUri) {
+        return false;
+    }
+
+    const normalizedAttributeUri: string = attributeUri.toLowerCase();
+
+    return hiddenAttributes.some((hiddenAttribute: string) => {
+        const normalizedHiddenAttribute: string = hiddenAttribute?.trim().toLowerCase();
+
+        if (!normalizedHiddenAttribute) {
+            return false;
+        }
+
+        return normalizedAttributeUri === normalizedHiddenAttribute
+            || normalizedAttributeUri.startsWith(`${normalizedHiddenAttribute}.`);
+    });
 };

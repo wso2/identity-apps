@@ -357,6 +357,15 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "properties": {
+                    "hiddenAttributes": [
+                        {% if myaccount.personal_info.hidden_attributes is defined %}
+                        {% for attribute in myaccount.personal_info.hidden_attributes %}
+                        "{{ attribute }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                        {% endif %}
+                    ]
                 }
             },
             {% if myaccount.consents is defined %}

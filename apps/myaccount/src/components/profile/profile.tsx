@@ -57,6 +57,7 @@ import {
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { getProfileInformation } from "../../store/actions/authenticate";
+import { isHiddenProfileAttribute } from "../../utils";
 import { SettingsSection } from "../shared";
 import "./profile.scss";
 
@@ -576,6 +577,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         if (HIDDEN_ATTRIBUTES.includes(schema.name)) {
+            return false;
+        }
+
+        if (isHiddenProfileAttribute(schema, featureConfig?.personalInfo?.properties?.hiddenAttributes)) {
             return false;
         }
 
