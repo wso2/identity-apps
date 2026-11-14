@@ -18,9 +18,11 @@
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="java.io.File" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Set" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="init-url.jsp"/>
@@ -96,24 +98,29 @@
 
     String direction = languageDirectionMap.getOrDefault(language, "ltr");
 
-    File themeDir = new File(request.getSession().getServletContext().getRealPath("/") + "libs/themes/" + themeName + "/");
+    // Theme assets may be served from the web application itself or mounted into it, so the
+    // file names are resolved through the servlet context rather than the real file system path.
+    Set<String> themeResourcePaths = request.getSession().getServletContext()
+            .getResourcePaths("/libs/themes/" + themeName + "/");
     String themeFileName = "";
-    String[] fileNames = null;
+    List<String> fileNames = null;
 
-    if (themeDir.exists() && themeDir.isDirectory()) {
-        fileNames = themeDir.list();
+    if (themeResourcePaths != null) {
+        fileNames = new ArrayList<String>();
 
-        if (fileNames != null) {
-            for (String file : fileNames) {
-                if (direction.equals("rtl") && file.endsWith(".rtl.min.css")) {
-                    themeFileName = file;
+        for (String themeResourcePath : themeResourcePaths) {
+            fileNames.add(themeResourcePath.substring(themeResourcePath.lastIndexOf('/') + 1));
+        }
 
-                    break;
-                } else if (direction.equals("ltr") && !file.contains(".rtl") && file.endsWith(".min.css")) {
-                    themeFileName = file;
+        for (String file : fileNames) {
+            if (direction.equals("rtl") && file.endsWith(".rtl.min.css")) {
+                themeFileName = file;
 
-                    break;
-                }
+                break;
+            } else if (direction.equals("ltr") && !file.contains(".rtl") && file.endsWith(".min.css")) {
+                themeFileName = file;
+
+                break;
             }
         }
     }

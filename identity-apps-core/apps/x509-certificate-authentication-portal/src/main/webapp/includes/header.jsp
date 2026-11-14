@@ -17,7 +17,7 @@
 --%>
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
-<%@ page import="java.io.File" %>
+<%@ page import="java.util.Set" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
@@ -32,14 +32,19 @@
 <%-- Extract the name of the stylesheet--%>
 <%
     String themeName = "wso2is";
-    File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
-        + "/" + "libs/themes/" + themeName + "/");
-    String[] fileNames = themeDir.list();
+    // Theme assets may be served from the web application itself or mounted into it, so the
+    // file names are resolved through the servlet context rather than the real file system path.
+    Set<String> themeResourcePaths = request.getSession().getServletContext()
+            .getResourcePaths("/libs/themes/" + themeName + "/");
     String themeFileName = "";
 
-    for(String file: fileNames) {
-        if(file.endsWith("min.css")) {
-            themeFileName = file;
+    if (themeResourcePaths != null) {
+        for (String themeResourcePath : themeResourcePaths) {
+            String file = themeResourcePath.substring(themeResourcePath.lastIndexOf('/') + 1);
+
+            if (file.endsWith("min.css")) {
+                themeFileName = file;
+            }
         }
     }
 %>
