@@ -131,8 +131,23 @@
     <% } %>
 
     <script type="text/javascript">
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            if (this.dataset.submitted === "true") {
+                console.warn("Prevented a possible double submit event");
+                e.preventDefault();
+                return;
+            }
+            this.dataset.submitted = "true";
+        });
+
         function doLogin() {
             var loginForm = document.getElementById('loginForm');
+            // form.submit() skips submit listeners, so check the guard here as well.
+            if (loginForm.dataset.submitted === "true") {
+                console.warn("Prevented a possible double submit event");
+                return;
+            }
+            loginForm.dataset.submitted = "true";
             loginForm.submit();
         }
     </script>

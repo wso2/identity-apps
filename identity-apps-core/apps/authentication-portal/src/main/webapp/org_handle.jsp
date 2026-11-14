@@ -191,6 +191,15 @@
         %>
         <script type="text/javascript">
 
+            $("#org_form").on("submit", function (e) {
+                if ($(this).data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                    e.preventDefault();
+                    return false;
+                }
+                $(this).data("submitted", true);
+            });
+
             function goBack() {
                 window.history.back();
             }
@@ -198,7 +207,7 @@
             function promptDiscovery() {
                 document.getElementById("prompt").value = "orgDiscovery";
                 document.getElementById("org_handle").disabled = true;
-                document.getElementById("org_form").submit();
+                $("#org_form").submit();
             }
 
             function submitOrgHandle() {
@@ -209,7 +218,7 @@
                 }
                 
                 document.getElementById("prompt").remove();
-                document.getElementById("org_form").submit();
+                $("#org_form").submit();
             }
 
             // Function to show error message when organization handle is empty.
