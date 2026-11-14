@@ -738,6 +738,7 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     sharing: {
+        complexAttributeNotice: "This is a complex attribute. Its sub-attributes are shared with it and follow its sharing policy.",
         confirmations: {
             shareAll: {
                 assertionHint: "Please confirm your action.",
@@ -757,7 +758,7 @@ export const customerDataService: CustomerDataServiceNS = {
         inherited: "Inherited",
         inheritedNotice: "This organization inherits this identity attribute from the root organization. You cannot change it here.",
         inheritedTooltip: "This organization inherits this from the root organization. You cannot change it here.",
-        notShareable: "You can share only traits and application data attributes that are not complex and are not sub-attributes.",
+        notShareable: "You cannot share a sub-attribute alone. Share its parent attribute. The sub-attributes follow the sharing policy of the parent.",
         notifications: {
             error: {
                 description: "Failed to save the share settings.",
