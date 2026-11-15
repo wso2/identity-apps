@@ -99,7 +99,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    const { addEmailVerificationEdges, addEmailVerificationNodes, applyEmailUsername } = useDefaultFlow();
+    const {
+        addEmailVerificationEdges,
+        addEmailVerificationNodes,
+        applyEmailUsername,
+        isUsernameValidationLoaded
+    } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -726,7 +731,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
      * Effect that updates the flow with the registration flow steps.
      */
     useLayoutEffect(() => {
-        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
+        // Wait for the username validation, since it decides the fields of a new flow.
+        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating
+            && isUsernameValidationLoaded) {
             if (!isEmpty(registrationFlow?.steps)) {
                 const steps: Node[] = generateSteps(registrationFlow.steps, registrationFlow.variables);
 
@@ -740,6 +747,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         registrationFlow?.variables,
         isRegistrationFlowFetchRequestLoading,
         isRegistrationFlowFetchRequestValidating,
+        isUsernameValidationLoaded,
         initialNodes
     ]);
 
