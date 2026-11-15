@@ -102,16 +102,6 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
     const { data: validationConfig, isLoading: isValidationConfigLoading } = useValidationConfigData();
 
     /**
-     * Names of the validators configured for the username.
-     */
-    const usernameValidators: string[] = useMemo(() => {
-        const rules: ValidationConfInterface[] = validationConfig?.find(
-            (validator: ValidationDataInterface) => validator.field === USERNAME_FIELD)?.rules || [];
-
-        return rules.map((rule: ValidationConfInterface) => rule.validator);
-    }, [ validationConfig ]);
-
-    /**
      * Names of the enabled validators configured for the username.
      */
     const enabledUsernameValidators: string[] = useMemo(() => {
@@ -128,12 +118,12 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
     /**
      * Check if the username field is alphanumeric based on the validation configuration.
      */
-    const isAlphanumericUsername: boolean = usernameValidators.includes(ALPHANUMERIC_VALIDATOR);
+    const isAlphanumericUsername: boolean = enabledUsernameValidators.includes(ALPHANUMERIC_VALIDATOR);
 
     /**
      * Check if the email is the username based on the validation configuration.
      */
-    const isEmailUsername: boolean = !enabledUsernameValidators.includes(ALPHANUMERIC_VALIDATOR)
+    const isEmailUsername: boolean = !isAlphanumericUsername
         && enabledUsernameValidators.includes(EMAIL_FORMAT_VALIDATOR);
 
     /**
