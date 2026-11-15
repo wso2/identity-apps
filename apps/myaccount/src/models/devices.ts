@@ -49,3 +49,16 @@ export interface DevicePatchRequestInterface {
     deviceName?: string;
     status?: DeviceStatus;
 }
+
+/**
+ * Response of the flow execute API, limited to what My Account reads.
+ */
+export interface FlowExecutionResponseInterface {
+    flowId: string;
+    flowStatus: string;
+    flowType: string;
+    type: string;
+    data?: {
+        redirectURL?: string;
+    };
+}

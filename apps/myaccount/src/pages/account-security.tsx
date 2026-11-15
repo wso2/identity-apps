@@ -99,6 +99,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const consentControl: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const accountSecurity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const accountActivity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const devices: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setTimeout(() => {
@@ -119,6 +120,13 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     break;
                 case `#${ CommonConstants.ACCOUNT_SECURITY }`:
                     accountSecurity.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    break;
+                case `#${ CommonConstants.DEVICES }`:
+                    devices.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "center"
                     });
@@ -277,10 +285,12 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <DevicesComponent
-                                    onAlertFired={ handleAlerts }
-                                    onFeatureDisabled={ () => setIsDeviceManagementDisabled(true) }
-                                />
+                                <div ref={ devices }>
+                                    <DevicesComponent
+                                        onAlertFired={ handleAlerts }
+                                        onFeatureDisabled={ () => setIsDeviceManagementDisabled(true) }
+                                    />
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }

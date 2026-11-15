@@ -37,6 +37,7 @@
     screenNames.add ("password-recovery");
     screenNames.add("password-reset");
     screenNames.add("password-reset-success");
+    screenNames.add("profile-update");
     screenNames.add("flow-extension");
 %>
 
@@ -665,7 +666,8 @@
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
 
-                        if (errorDetails.portalUrlStatus === "true" && flowType !== "PROFILE_UPDATE") {
+                        if (errorDetails.portalUrlStatus === "true"
+                            && flowType !== "PROFILE_UPDATE" && flowType !== "DEVICE_REGISTRATION") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
 

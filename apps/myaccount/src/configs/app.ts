@@ -117,6 +117,7 @@ export class Config {
             fidoStartUsernameless: `${
                 this.getDeploymentConfig()?.serverHost
             }/api/users/v2/me/webauthn/start-usernameless-registration`,
+            flowExecute: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/flow/execute`,
             homeRealmIdentifiers: `${
                 this.getDeploymentConfig()?.serverHost
             }/api/server/v1/configs/home-realm-identifiers`,

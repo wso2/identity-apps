@@ -208,6 +208,12 @@ export const devices: DevicesNS = {
     },
     userDevices: {
         confirmations: {
+            deactivate: {
+                content: "The device can be activated again at any time.",
+                header: "Are you sure?",
+                message: "Once deactivated, this device can no longer be used for device checks when the user " +
+                    "signs in."
+            },
             delete: {
                 assertionHint: "Please confirm your action.",
                 content: "The user will need to register this device again to use it for device assurance. " +
@@ -218,6 +224,8 @@ export const devices: DevicesNS = {
         },
         list: {
             actions: {
+                activate: "Activate",
+                deactivate: "Deactivate",
                 rename: "Rename"
             },
             columns: {
@@ -236,6 +244,26 @@ export const devices: DevicesNS = {
             }
         },
         notifications: {
+            activate: {
+                genericError: {
+                    description: "An error occurred while activating the device.",
+                    message: "Activation failed"
+                },
+                success: {
+                    description: "The device has been activated successfully.",
+                    message: "Device activated"
+                }
+            },
+            deactivate: {
+                genericError: {
+                    description: "An error occurred while deactivating the device.",
+                    message: "Deactivation failed"
+                },
+                success: {
+                    description: "The device has been deactivated successfully.",
+                    message: "Device deactivated"
+                }
+            },
             delete: {
                 genericError: {
                     description: "An error occurred while removing the device.",

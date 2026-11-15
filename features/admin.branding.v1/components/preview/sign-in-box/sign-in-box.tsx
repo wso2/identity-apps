@@ -36,6 +36,7 @@ import PasswordRecoveryMultiOptionFragment from "./fragments/password-recovery/p
 import PasswordRecoverySMSFragment from "./fragments/password-recovery/password-recovery-sms-otp-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
 import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
+import ProfileUpdateFragment from "./fragments/profile-update-fragment";
 import PushAuthFragment from "./fragments/push-auth-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
@@ -110,6 +111,8 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <PasswordResetSuccessFragment />;
         } else if (selectedScreen === PreviewScreenType.EMAIL_LINK_EXPIRY) {
             return <EmailLinkExpiryFragment />;
+        } else if (selectedScreen === PreviewScreenType.PROFILE_UPDATE) {
+            return <ProfileUpdateFragment />;
         } else if (selectedScreen === PreviewScreenType.USERNAME_RECOVERY_CLAIM) {
             return <UsernameRecoveryClaimsFragment />;
         } else if (selectedScreen === PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION) {

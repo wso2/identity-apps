@@ -1,5 +1,79 @@
 # @wso2is/console
 
+## 4.37.0
+
+### Minor Changes
+
+- [#10930](https://github.com/wso2/identity-apps/pull/10930) [`46fff723a942f682784140f5042679959d9c8c9e`](https://github.com/wso2/identity-apps/commit/46fff723a942f682784140f5042679959d9c8c9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add self device registration through the device registration flow
+
+### Patch Changes
+
+- Updated dependencies [[`46fff723a942f682784140f5042679959d9c8c9e`](https://github.com/wso2/identity-apps/commit/46fff723a942f682784140f5042679959d9c8c9e)]:
+  - @wso2is/admin.device-registration-flow-builder.v1@1.0.0
+  - @wso2is/admin.flows.v1@1.3.0
+  - @wso2is/admin.email-management.v1@2.27.0
+  - @wso2is/admin.sms-templates.v1@1.2.0
+  - @wso2is/admin.core.v1@2.65.0
+  - @wso2is/i18n@2.63.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.5.4
+  - @wso2is/admin.branding.v1@2.34.1
+  - @wso2is/admin.flow-extensions.v1@0.2.3
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.4.6
+  - @wso2is/admin.profile-update-flow-builder.v1@1.0.1
+  - @wso2is/admin.registration-flow-builder.v1@0.16.4
+  - @wso2is/admin.users.v1@2.39.12
+
+## 4.36.0
+
+### Minor Changes
+
+- [#10903](https://github.com/wso2/identity-apps/pull/10903) [`29e749fba7d2b4ea7a377eee34b86cd014edab4e`](https://github.com/wso2/identity-apps/commit/29e749fba7d2b4ea7a377eee34b86cd014edab4e) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Add Authsignal local authenticator tile to the connections page and its icon to the login page
+
+### Patch Changes
+
+- Updated dependencies [[`29e749fba7d2b4ea7a377eee34b86cd014edab4e`](https://github.com/wso2/identity-apps/commit/29e749fba7d2b4ea7a377eee34b86cd014edab4e)]:
+  - @wso2is/admin.applications.v1@2.46.2
+  - @wso2is/admin.connections.v1@2.44.0
+  - @wso2is/i18n@2.62.1
+
+## 4.35.0
+
+### Minor Changes
+
+- [#10921](https://github.com/wso2/identity-apps/pull/10921) [`dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe`](https://github.com/wso2/identity-apps/commit/dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add the profile update screen to text branding
+
+### Patch Changes
+
+- Updated dependencies [[`dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe`](https://github.com/wso2/identity-apps/commit/dce2d82d3bc8d296bbaafb0c186bb796f9d47cfe)]:
+  - @wso2is/admin.branding.v1@2.34.0
+  - @wso2is/i18n@2.62.0
+
+## 4.34.0
+
+### Minor Changes
+
+- [#10780](https://github.com/wso2/identity-apps/pull/10780) [`d8e7c32482a0a377bea5d2d6a94ed62793edfe83`](https://github.com/wso2/identity-apps/commit/d8e7c32482a0a377bea5d2d6a94ed62793edfe83) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Add profile update flow to the Console
+
+### Patch Changes
+
+- Updated dependencies [[`d8e7c32482a0a377bea5d2d6a94ed62793edfe83`](https://github.com/wso2/identity-apps/commit/d8e7c32482a0a377bea5d2d6a94ed62793edfe83)]:
+  - @wso2is/admin.profile-update-flow-builder.v1@1.0.0
+  - @wso2is/admin.email-management.v1@2.26.0
+  - @wso2is/admin.sms-templates.v1@1.1.0
+  - @wso2is/admin.flows.v1@1.2.0
+  - @wso2is/admin.branding.v1@2.33.0
+  - @wso2is/admin.core.v1@2.64.0
+  - @wso2is/i18n@2.61.0
+
+## 4.33.7
+
+### Patch Changes
+
+- [#10927](https://github.com/wso2/identity-apps/pull/10927) [`fa763758d748222b476a113896c252a7a47bea6c`](https://github.com/wso2/identity-apps/commit/fa763758d748222b476a113896c252a7a47bea6c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Let administrators activate and deactivate the devices of a user from the user's devices tab
+
+- Updated dependencies [[`fa763758d748222b476a113896c252a7a47bea6c`](https://github.com/wso2/identity-apps/commit/fa763758d748222b476a113896c252a7a47bea6c)]:
+  - @wso2is/i18n@2.60.4
+
 ## 4.33.6
 
 ### Patch Changes

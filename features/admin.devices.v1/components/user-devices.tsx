@@ -64,7 +64,7 @@ import deleteDevice from "../api/delete-device";
 import updateDevice from "../api/update-device";
 import useGetUserDevices from "../api/use-get-user-devices";
 import { DEVICE_NAME_MAX_LENGTH } from "../constants/device-constants";
-import { DeviceInterface } from "../models/devices";
+import { DeviceInterface, DeviceStatus } from "../models/devices";
 
 dayjs.extend(localizedFormat);
 
@@ -106,6 +106,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ deletingDevice, setDeletingDevice ] = useState<DeviceInterface | undefined>(undefined);
+    const [ deactivatingDevice, setDeactivatingDevice ] = useState<DeviceInterface | undefined>(undefined);
     const [ renamingDevice, setRenamingDevice ] = useState<DeviceInterface | undefined>(undefined);
     const [ deviceName, setDeviceName ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -220,6 +221,54 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
             });
     };
 
+    /**
+     * Activates or deactivates a device.
+     *
+     * @param device - Device to update.
+     * @param status - New status of the device.
+     */
+    const handleStatusUpdate = (device: DeviceInterface, status: DeviceStatus): void => {
+        const notificationKey: string = status === DeviceStatus.ACTIVE ? "activate" : "deactivate";
+
+        setIsSubmitting(true);
+
+        updateDevice(device.id, { status })
+            .then((): void => {
+                dispatch(addAlert({
+                    description: t(`devices:userDevices.notifications.${ notificationKey }.success.description`),
+                    level: AlertLevels.SUCCESS,
+                    message: t(`devices:userDevices.notifications.${ notificationKey }.success.message`)
+                }));
+                mutateDeviceList();
+            })
+            .catch((): void => {
+                dispatch(addAlert({
+                    description: t(`devices:userDevices.notifications.${ notificationKey }.genericError.description`),
+                    level: AlertLevels.ERROR,
+                    message: t(`devices:userDevices.notifications.${ notificationKey }.genericError.message`)
+                }));
+            })
+            .finally((): void => {
+                setIsSubmitting(false);
+                setDeactivatingDevice(undefined);
+            });
+    };
+
+    /**
+     * Activates an inactive device right away, and asks for confirmation before deactivating an active device.
+     *
+     * @param device - Device to activate or deactivate.
+     */
+    const handleStatusToggle = (device: DeviceInterface): void => {
+        if (device.status === DeviceStatus.ACTIVE) {
+            setDeactivatingDevice(device);
+
+            return;
+        }
+
+        handleStatusUpdate(device, DeviceStatus.ACTIVE);
+    };
+
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
             {
@@ -281,7 +330,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                 render: (device: DeviceInterface): ReactNode => (
                     <Chip
                         size="small"
-                        color={ device.status === "ACTIVE" ? "success" : "default" }
+                        color={ device.status === DeviceStatus.ACTIVE ? "success" : "default" }
                         sx={ { height: "auto", paddingY: 0.25 } }
                         label={ (
                             <Typography variant="body2" component="span" color="inherit">
@@ -326,6 +375,17 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_event: SyntheticEvent, device: DeviceInterface): void => handleRenameOpen(device),
                 popupText: (): string => t("devices:userDevices.list.actions.rename"),
+                renderer: "semantic-icon"
+            },
+            {
+                "data-componentid": `${ componentId }-item-status-toggle-button`,
+                hidden: (): boolean => !hasUpdatePermission || isUserManagedByParentOrg,
+                icon: (device: DeviceInterface): SemanticICONS =>
+                    device?.status === DeviceStatus.ACTIVE ? "ban" : "check circle outline",
+                onClick: (_event: SyntheticEvent, device: DeviceInterface): void => handleStatusToggle(device),
+                popupText: (device: DeviceInterface): string => device?.status === DeviceStatus.ACTIVE
+                    ? t("devices:userDevices.list.actions.deactivate")
+                    : t("devices:userDevices.list.actions.activate"),
                 renderer: "semantic-icon"
             },
             {
@@ -410,6 +470,38 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
                     >
                         { t("devices:userDevices.confirmations.delete.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { deactivatingDevice && (
+                <ConfirmationModal
+                    open={ !!deactivatingDevice }
+                    type="warning"
+                    primaryAction={ t("devices:userDevices.list.actions.deactivate") }
+                    secondaryAction={ t("common:cancel") }
+                    primaryActionLoading={ isSubmitting }
+                    onClose={ (): void => setDeactivatingDevice(undefined) }
+                    onSecondaryActionClick={ (): void => setDeactivatingDevice(undefined) }
+                    onPrimaryActionClick={ (): void => handleStatusUpdate(deactivatingDevice, DeviceStatus.INACTIVE) }
+                    closeOnDimmerClick={ false }
+                    data-componentid={ `${ componentId }-deactivate-confirmation-modal` }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${ componentId }-deactivate-confirmation-modal-header` }
+                    >
+                        { t("devices:userDevices.confirmations.deactivate.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        warning
+                        data-componentid={ `${ componentId }-deactivate-confirmation-modal-message` }
+                    >
+                        { t("devices:userDevices.confirmations.deactivate.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${ componentId }-deactivate-confirmation-modal-content` }
+                    >
+                        { t("devices:userDevices.confirmations.deactivate.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

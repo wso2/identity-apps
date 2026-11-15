@@ -16,13 +16,16 @@
  * under the License.
  */
 
-type DeviceStatusType = "ACTIVE" | "INACTIVE";
+export enum DeviceStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE"
+}
 
 export interface DeviceInterface {
     id: string;
     deviceName: string;
     deviceModel: string;
-    status: DeviceStatusType;
+    status: DeviceStatus;
     registeredAt: string;
 }
 
@@ -33,6 +36,10 @@ export interface DeviceListResponseInterface {
     devices: DeviceInterface[];
 }
 
+/**
+ * Fields to update in a device. At least one of the fields must be given.
+ */
 export interface DeviceUpdateRequestInterface {
-    deviceName: string;
+    deviceName?: string;
+    status?: DeviceStatus;
 }

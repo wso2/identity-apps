@@ -26,7 +26,7 @@ import { ThemeProvider } from "@wso2is/common.branding.v1/providers/theme-provid
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
-import { AuthenticateUtils, StringUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, SessionStorageUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -45,7 +45,7 @@ import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "./api/branding-preferences";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
-import { AppConstants } from "./constants";
+import { AppConstants, CommonConstants, DeviceRegistrationConstants } from "./constants";
 import { history } from "./helpers";
 import useSignIn from "./hooks/use-sign-in";
 import { AppState, store } from "./store";
@@ -83,6 +83,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
+        // Coming back from registering a device on the accounts portal opens the Devices section.
+        if (SessionStorageUtils.getItemFromSessionStorage(DeviceRegistrationConstants.IN_PROGRESS_STORAGE_KEY)) {
+            SessionStorageUtils.clearItemFromSessionStorage(DeviceRegistrationConstants.IN_PROGRESS_STORAGE_KEY);
+            history.push(`${ AppConstants.getPaths().get("SECURITY") }#${ CommonConstants.DEVICES }`);
+
+            return;
+        }
+
         const AuthenticationCallbackUrl: string = AuthenticateUtils.getAuthenticationCallbackUrl(
             AppConstantsCore.MY_ACCOUNT_APP
         );

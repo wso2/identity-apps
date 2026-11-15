@@ -137,6 +137,7 @@ export interface flowsNS {
             };
             flowHandoff: {
                 defaultTargets: {
+                    deviceRegistration: string;
                     passwordRecovery: string;
                     profileUpdate: string;
                     registration: string;
@@ -172,6 +173,8 @@ export interface flowsNS {
                 configurationHint: string;
             };
             userVerification: {
+                allowMyAccountHint: string;
+                allowMyAccountLabel: string;
                 tokenValidityPeriodHint: string;
                 tokenValidityPeriodLabel: string;
                 tokenValidityPeriodPlaceholder: string;
@@ -509,6 +512,36 @@ export interface flowsNS {
             unknownAuthor: string;
         };
     };
+    deviceRegistration: {
+        flowDisplayName: string;
+        notifications: {
+            fetchFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        steps: {
+            end: {
+                description: string;
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
+    };
     label?: string;
     passwordRecovery: {
         banner: {
@@ -524,6 +557,30 @@ export interface flowsNS {
                     label: string;
                     hint: string;
                 };
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
+    };
+    profileUpdate: {
+        flowDisplayName: string;
+        notifications: {
+            updateProfileUpdateFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        steps: {
+            end: {
+                description: string;
                 flowCompletionNotification: {
                     label: string;
                     hint: string;

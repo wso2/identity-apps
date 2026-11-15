@@ -85,7 +85,10 @@ export class AuthenticatorMeta {
                 "client certificates.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .PUSH_AUTHENTICATOR_ID ]: "Two-factor authentication via " +
-                "mobile push notifications."
+                "mobile push notifications.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .AUTHSIGNAL_AUTHENTICATOR_ID ]: "Multi-factor authentication " +
+                "using Authsignal."
         }, authenticatorId);
     }
 
@@ -272,6 +275,8 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.emailOTP,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .AUTHSIGNAL_AUTHENTICATOR_ID ]: getConnectionIcons()?.authsignal,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getConnectionIcons()?.push,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
@@ -318,7 +323,8 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined"
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID ]: "Predefined"
         }, authenticatorId);
     }
 
@@ -363,6 +369,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "shared-user-identifier",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID ]: "authsignal",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml"
         }, authenticatorId);
@@ -424,6 +431,16 @@ export class AuthenticatorMeta {
                 content: {
                     quickStart: lazy(() => import(
                         "../components/authenticators/push/quick-start"
+                    ))
+                },
+                isComingSoon: false,
+                isEnabled: true,
+                useAuthenticatorsAPI: false
+            },
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID ]: {
+                content: {
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/authsignal/quick-start"
                     ))
                 },
                 isComingSoon: false,

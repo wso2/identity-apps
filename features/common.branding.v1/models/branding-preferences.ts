@@ -612,7 +612,8 @@ export enum PreviewScreenType {
     USERNAME_RECOVERY_CLAIM = "username-recovery-claim",
     USERNAME_RECOVERY_CHANNEL_SELECTION = "username-recovery-channel-selection",
     USERNAME_RECOVERY_SUCCESS = "username-recovery-success",
-    CONSENT = "consent"
+    CONSENT = "consent",
+    PROFILE_UPDATE = "profile-update"
 }
 
 /**

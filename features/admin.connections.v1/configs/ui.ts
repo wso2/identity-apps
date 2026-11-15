@@ -38,6 +38,7 @@ import MicrosoftLogo from "../../themes/default/assets/images/third-party/micros
 import { ReactComponent as SelectCheckBoxIcon } from
     "../../themes/wso2is/assets/images/icons/outline-icons/select-check-box-outline.svg";
 import { SupportedServices } from "../models/connection";
+import AuthsignalIcon from "../resources/assets/images/icons/authsignal.svg";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon
 } from "../resources/assets/images/icons/default-connection-icon.svg";
@@ -87,6 +88,7 @@ export const getConnectionIcons = (): any => {
     return {
         Microsoft: MicrosoftLogo,
         apple: AppleLogo,
+        authsignal: AuthsignalIcon,
         basic: BasicAuthIcon,
         basicAuthenticator: BasicAuthIcon,
         customAuthenticator: CustomAuthenticator,

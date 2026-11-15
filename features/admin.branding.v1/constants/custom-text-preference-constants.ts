@@ -182,6 +182,10 @@ export class CustomTextPreferenceConstants {
             BODY: string;
         },
         PRIVACY_POLICY: string;
+        PROFILE_UPDATE: {
+            BUTTON: string;
+            HEADING: string;
+        },
         PUSH_AUTH: {
             HEADING: string;
             BODY: string;
@@ -248,6 +252,10 @@ export class CustomTextPreferenceConstants {
                 HEADING: "password.reset.success.heading"
             },
             PRIVACY_POLICY: "privacy.policy",
+            PROFILE_UPDATE: {
+                BUTTON: "profile.update.button",
+                HEADING: "profile.update.heading"
+            },
             PUSH_AUTH: {
                 BODY: "push.notification.sent.msg",
                 HEADING: "push.auth.heading"

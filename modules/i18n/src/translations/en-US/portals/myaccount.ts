@@ -548,6 +548,7 @@ export const myAccount: MyAccountNS = {
         devices: {
             actions: {
                 activate: "Activate",
+                add: "Add device",
                 deactivate: "Deactivate",
                 delete: "Delete",
                 more: "More actions for {{name}}",
@@ -592,6 +593,17 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "The device was activated successfully.",
                         message: "Device activated"
+                    }
+                },
+                addDevice: {
+                    error: {
+                        description: "Adding devices isn't enabled for your organization.",
+                        message: "Couldn't add the device"
+                    },
+                    genericError: {
+                        description: "Something went wrong while starting the device registration. Please try "
+                            + "again.",
+                        message: "Couldn't add the device"
                     }
                 },
                 deactivateDevice: {

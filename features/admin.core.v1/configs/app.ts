@@ -36,6 +36,9 @@ import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpo
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getDevicePoliciesResourceEndpoints } from "@wso2is/admin.device-policies.v1/configs/endpoints";
+import {
+    getDeviceRegistrationFlowBuilderResourceEndpoints
+} from "@wso2is/admin.device-registration-flow-builder.v1/config/endpoints";
 import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
@@ -53,6 +56,9 @@ import {
     getPasswordRecoveryFlowBuilderResourceEndpoints
 } from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
+import {
+    getProfileUpdateFlowBuilderResourceEndpoints
+} from "@wso2is/admin.profile-update-flow-builder.v1/config/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
@@ -412,6 +418,8 @@ export class Config {
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getProfileUpdateFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getDeviceRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),

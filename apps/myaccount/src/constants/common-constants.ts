@@ -58,6 +58,11 @@ export class CommonConstants {
     public static readonly CONSENTS_CONTROL: string = "consents_control";
 
     /**
+     * The name of the devices section.
+     */
+    public static readonly DEVICES: string = "devices";
+
+    /**
      * Session storage key to store session state.
      */
     public static readonly SESSION_STATE: string = "session_state";

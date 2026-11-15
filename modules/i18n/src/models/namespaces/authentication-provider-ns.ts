@@ -261,6 +261,15 @@ export interface AuthenticationProviderNS {
                     };
                 };
             };
+            authsignal: {
+                regions: {
+                    au: string;
+                    ca: string;
+                    eu: string;
+                    uk: string;
+                    us: string;
+                };
+            };
             dynamicOptions: {
                 disabled: string;
                 empty: string;

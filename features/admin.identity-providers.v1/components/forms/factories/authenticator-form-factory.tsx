@@ -44,6 +44,7 @@ import {
     PushAuthenticatorForm,
     SMSOTPAuthenticatorForm
 } from "../authenticators";
+import AuthsignalAuthenticatorForm from "../authenticators/authsignal-authenticator-form";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 
 /**
@@ -286,6 +287,16 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.AUTHSIGNAL_AUTHENTICATOR_ID:
+            return (
+                <AuthsignalAuthenticatorForm
+                    initialValues={ initialValues }
+                    onSubmit={ onSubmit }
+                    data-componentid={ testId }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
