@@ -41,6 +41,7 @@ const LAST_NAME_CLAIM_URI: string = "http://wso2.org/claims/lastname";
 const USERNAME_CLAIM_URI: string = "http://wso2.org/claims/username";
 const USERNAME_FIELD: string = "username";
 const ALPHANUMERIC_VALIDATOR: string = "AlphanumericValidator";
+const EMAIL_FORMAT_VALIDATOR: string = "EmailFormatValidator";
 
 const EXCLUDED_CLAIMS: string[] = [
     EMAIL_CLAIM_URI,
@@ -79,6 +80,7 @@ const FIELD: Element = {
  */
 interface DefaultFlowReturnType {
     generateProfileAttributes: (resource: Resource) => boolean;
+    applyEmailUsername: (steps: Step[]) => void;
     addEmailVerificationNodes: (steps: Step[]) => void;
     addEmailVerificationEdges: (edges: Edge[]) => void;
 };
@@ -93,21 +95,25 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
     const { data: validationConfig } = useValidationConfigData();
 
     /**
+     * Names of the validators configured for the username.
+     */
+    const usernameValidators: string[] = useMemo(() => {
+        const rules: ValidationConfInterface[] = validationConfig?.find(
+            (validator: ValidationDataInterface) => validator.field === USERNAME_FIELD)?.rules || [];
+
+        return rules.map((rule: ValidationConfInterface) => rule.validator);
+    }, [ validationConfig ]);
+
+    /**
      * Check if the username field is alphanumeric based on the validation configuration.
      */
-    const isAlphanumericUsername: boolean = useMemo(() => {
-        if (!validationConfig) {
-            return false;
-        }
+    const isAlphanumericUsername: boolean = usernameValidators.includes(ALPHANUMERIC_VALIDATOR);
 
-        const usernameValidators: ValidationConfInterface[] = validationConfig.find(
-            (validator: ValidationDataInterface) => {
-                return validator.field === USERNAME_FIELD;
-            })?.rules || [];
-
-        return usernameValidators.find(
-            (rule: ValidationConfInterface) => rule.validator === ALPHANUMERIC_VALIDATOR) !== undefined;
-    }, [ validationConfig ]);
+    /**
+     * Check if the email is the username based on the validation configuration.
+     */
+    const isEmailUsername: boolean = !isAlphanumericUsername
+        && usernameValidators.includes(EMAIL_FORMAT_VALIDATOR);
 
     /**
      * Resolve the input variant based on the claim URI.
@@ -168,6 +174,59 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
 
         return field;
     };
+
+    /**
+     * Use the email as the username in the given components. A form drops its username field, or turns it into
+     * the email field when it does not ask for the email.
+     *
+     * @param components - The components to update.
+     * @returns The updated components.
+     */
+    const replaceUsernameFields = (components: Element[]): Element[] => {
+        if (!components) {
+            return components;
+        }
+
+        const hasEmailField: boolean = components.some(
+            (component: Element) => component.config?.identifier === EMAIL_CLAIM_URI);
+        const emailClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === EMAIL_CLAIM_URI);
+
+        return components.flatMap((component: Element) => {
+            if (component.config?.identifier !== USERNAME_CLAIM_URI) {
+                if (component.components) {
+                    component.components = replaceUsernameFields(component.components);
+                }
+
+                return [ component ];
+            }
+
+            if (hasEmailField) {
+                return [];
+            }
+
+            return [ buildFieldFromClaim({
+                ...(emailClaim ?? { claimURI: EMAIL_CLAIM_URI, displayName: "Email" }),
+                required: true
+            } as Claim) ];
+        });
+    };
+
+    /**
+     * Use the email as the username in the given steps when the username must be an email.
+     *
+     * @param steps - The steps to update.
+     */
+    const applyEmailUsername: (steps: Step[]) => void = useCallback((steps: Step[]): void => {
+        if (!isEmailUsername) {
+            return;
+        }
+
+        steps?.forEach((step: Step) => {
+            if (step.data?.components) {
+                step.data.components = replaceUsernameFields(step.data.components);
+            }
+        });
+    }, [ claims, isEmailUsername ]);
 
     /**
      * Generate profile attributes for the given resource.
@@ -236,8 +295,10 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
             }
         }
 
+        applyEmailUsername(resource.config?.data?.steps);
+
         return true;
-    }, [ claims, isAlphanumericUsername ]);
+    }, [ claims, isAlphanumericUsername, applyEmailUsername ]);
 
     useEffect(() => {
         generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
@@ -355,7 +416,7 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
         }
     }, [ metadata?.connectorConfigs?.accountVerificationEnabled ]);
 
-    return { addEmailVerificationEdges, addEmailVerificationNodes, generateProfileAttributes };
+    return { addEmailVerificationEdges, addEmailVerificationNodes, applyEmailUsername, generateProfileAttributes };
 };
 
 export default useDefaultFlow;
