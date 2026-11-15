@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.11.0
+
+### Minor Changes
+
+- [#10926](https://github.com/wso2/identity-apps/pull/10926) [`9c9ca42e64d953c78eef13cb70f090fc974a60b8`](https://github.com/wso2/identity-apps/commit/9c9ca42e64d953c78eef13cb70f090fc974a60b8) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Let an organization share a complex profile attribute with its sub-attributes from the Customer Data profile attributes page
+
 ## 1.10.0
 
 ### Minor Changes
