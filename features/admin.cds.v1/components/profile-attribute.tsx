@@ -195,10 +195,10 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     // shares it.
     const isReadOnly: boolean = isShared || isSubOrganization;
     // Organization management: traits and application data attributes can be shared, when they are not
-    // complex and not sub-attributes.
+    // sub-attributes. A complex attribute is shared with its sub-attributes, which follow its sharing policy.
     const canShareScope: boolean = scope === "traits" || scope === "application_data";
-    const isShareable: boolean = canShareScope && attribute?.value_type !== "complex"
-        && (attribute?.attribute_name ?? "").split(".").length <= 2;
+    const isShareable: boolean = canShareScope && (attribute?.attribute_name ?? "").split(".").length <= 2;
+    const isComplexAttribute: boolean = attribute?.value_type === "complex";
     const showDangerZone: boolean = canShareScope && !isReadOnly;
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
@@ -837,10 +837,21 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
         return (
             <EmphasizedSegment padded="very">
                 { isShareable ? (
-                    <ShareSettings
-                        resource={ { id: attribute.attribute_id, scope, type: ShareableResourceType.ATTRIBUTE } }
-                        data-componentid={ `${componentId}-share-settings` }
-                    />
+                    <>
+                        { isComplexAttribute && (
+                            <Message
+                                info
+                                size="small"
+                                data-componentid={ `${componentId}-share-settings-complex-notice` }
+                            >
+                                { t("customerDataService:sharing.complexAttributeNotice") }
+                            </Message>
+                        ) }
+                        <ShareSettings
+                            resource={ { id: attribute.attribute_id, scope, type: ShareableResourceType.ATTRIBUTE } }
+                            data-componentid={ `${componentId}-share-settings` }
+                        />
+                    </>
                 ) : (
                     <Message info size="small">
                         { t("customerDataService:sharing.notShareable") }
@@ -878,6 +889,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             getApplicationDisplayName,
             canShareScope,
             isShareable,
+            isComplexAttribute,
             isSubOrganization,
             isOrganizationManagementEnabled,
             hasShareViewScope,
