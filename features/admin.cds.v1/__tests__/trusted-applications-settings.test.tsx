@@ -102,7 +102,8 @@ describe("TrustedApplicationsSettings", () => {
         );
 
         await waitFor(() => expect(deleteIconOf("CONSOLE")).toBeNull());
-        expect(chip("CONSOLE")).toHaveTextContent("Console");
+        // The tests render the translation keys.
+        expect(chip("CONSOLE")).toHaveTextContent("customerDataService:trustedApplications.console");
         expect(chip("client-shop")).toHaveTextContent("Shop");
         expect(deleteIconOf("client-shop")).not.toBeNull();
         expect(lastReport(onChange)).toEqual({
