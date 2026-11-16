@@ -87,7 +87,19 @@ export interface CustomerDataServiceNS {
                 description: string;
                 title: string;
             };
-            unificationRules: {
+            trustedApplications: {
+        console: string;
+        description: string;
+        errors: {
+            loadApplications: string;
+        };
+        field: {
+            noOptions: string;
+            placeholder: string;
+        };
+        heading: string;
+    };
+    unificationRules: {
                 description: string;
                 title: string;
             };

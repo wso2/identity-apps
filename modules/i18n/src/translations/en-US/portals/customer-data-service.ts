@@ -87,7 +87,19 @@ export const customerDataService: CustomerDataServiceNS = {
                 description: "Review profile pairs that need an administrator to decide",
                 title: "Review Tasks"
             },
-            unificationRules: {
+            trustedApplications: {
+        console: "Console",
+        description: "These applications are allowed all of the customer data on a profile, including the application data of every app. Any other application gets only its own application data. The Console is always included.",
+        errors: {
+            loadApplications: "The applications could not be loaded. You can still remove the ones in the list."
+        },
+        field: {
+            noOptions: "No more applications to add.",
+            placeholder: "Add an application"
+        },
+        heading: "Applications with full profile access"
+    },
+    unificationRules: {
                 description: "Manage profile unification rules",
                 title: "Unification Rules"
             }
