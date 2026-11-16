@@ -99,7 +99,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    const { addEmailVerificationEdges, addEmailVerificationNodes } = useDefaultFlow();
+    const {
+        addEmailVerificationEdges,
+        addEmailVerificationNodes,
+        applyEmailUsername,
+        isUsernameValidationLoaded
+    } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -594,6 +599,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         // Drop the last step from the template.
         const stepsWithoutLast: Step[] = templateSteps.slice(0, -1);
 
+        applyEmailUsername(stepsWithoutLast);
+
         // Resolve IDs and metadata for downstream usage.
         const withIds: Step[] = generateIdsForResources<Step[]>(stepsWithoutLast) as unknown as Step[];
 
@@ -612,7 +619,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         });
 
         return resolveStepMetadata(resources, withResolvedComponents) as Step[];
-    }, [ templates, resources ]);
+    }, [ templates, resources, applyEmailUsername ]);
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
         // Try to seed from Basic template (without the last step).
@@ -724,7 +731,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
      * Effect that updates the flow with the registration flow steps.
      */
     useLayoutEffect(() => {
-        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
+        // Wait for the username validation, since it decides the fields of a new flow.
+        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating
+            && isUsernameValidationLoaded) {
             if (!isEmpty(registrationFlow?.steps)) {
                 const steps: Node[] = generateSteps(registrationFlow.steps, registrationFlow.variables);
 
@@ -738,6 +747,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         registrationFlow?.variables,
         isRegistrationFlowFetchRequestLoading,
         isRegistrationFlowFetchRequestValidating,
+        isUsernameValidationLoaded,
         initialNodes
     ]);
 
