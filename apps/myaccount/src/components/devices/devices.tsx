@@ -34,6 +34,7 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { EllipsisVerticalIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { ConfirmationModal } from "@wso2is/react-components";
@@ -121,6 +122,8 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     // Devices of a shared user are inherited from the parent organization and are read only.
     const isUserManagedByParentOrg: boolean = useSelector((state: AppState) =>
         !!state?.authenticationInformation?.profileInfo?.[ SCIMConfigs?.scim?.systemSchema ]?.managedOrg);
+    const userName: string = useSelector((state: AppState) =>
+        state?.authenticationInformation?.profileInfo?.userName);
 
     const [ offset, setOffset ] = useState<number>(0);
     const [ actionsMenuAnchor, setActionsMenuAnchor ] = useState<HTMLElement | null>(null);
@@ -273,7 +276,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
             return;
         }
 
-        if (deviceName === deviceToRename.deviceName) {
+        if (deviceName === resolveDeviceName(deviceToRename)) {
             setDeviceToRename(null);
 
             return;
@@ -340,6 +343,29 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
     const handleDeleteClick = (): void => {
         setDeviceToDelete(actionsMenuDevice);
         handleActionsMenuClose();
+    };
+
+    /**
+     * Resolves the device name to show. Generated names have the form `<DOMAIN>/<username>'s <model>`, so the user
+     * store domain is dropped from them.
+     *
+     * @param device - Device to resolve the name of.
+     * @returns Device name to show.
+     */
+    const resolveDeviceName = (device: DeviceInterface): string => {
+        const name: string = device?.deviceName ?? "";
+        const domainSeparatorIndex: number = name.indexOf("/");
+
+        if (!userName || domainSeparatorIndex < 0) {
+            return name;
+        }
+
+        const deviceNameWithoutDomain: string = name.substring(domainSeparatorIndex + 1);
+        const generatedNamePrefix: string = `${ getUserNameWithoutDomain(userName) }'s `;
+
+        return deviceNameWithoutDomain.toLowerCase().startsWith(generatedNamePrefix.toLowerCase())
+            ? deviceNameWithoutDomain
+            : name;
     };
 
     const formatRegisteredDate = (registeredAt: string): string => {
@@ -426,7 +452,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
                                 <IconButton
                                     edge="end"
                                     aria-label={ t("myAccount:components.devices.actions.more",
-                                        { name: device.deviceName }) }
+                                        { name: resolveDeviceName(device) }) }
                                     aria-haspopup="menu"
                                     disabled={ isRequestInProgress }
                                     onClick={ (event: MouseEvent<HTMLElement>) => handleActionsMenuOpen(event, device) }
@@ -458,12 +484,12 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
                                         <Typography
                                             variant="body1"
                                             noWrap
-                                            title={ device.deviceName }
+                                            title={ resolveDeviceName(device) }
                                             color={ isActive ? "text.primary" : "text.secondary" }
                                             sx={ { fontWeight: 500 } }
                                             data-componentid={ `${ componentId }-list-item-name` }
                                         >
-                                            { device.deviceName }
+                                            { resolveDeviceName(device) }
                                         </Typography>
                                         { renderStatus(device) }
                                     </Stack>
@@ -613,7 +639,7 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
             { deviceToRename && (
                 <RenameDeviceDialog
                     isOpen={ Boolean(deviceToRename) }
-                    initialName={ deviceToRename.deviceName }
+                    initialName={ resolveDeviceName(deviceToRename) }
                     isSubmitting={ isRequestInProgress }
                     onClose={ () => setDeviceToRename(null) }
                     onSubmit={ handleRename }

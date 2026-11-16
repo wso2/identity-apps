@@ -30,6 +30,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -77,6 +78,10 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
      */
     userId: string;
     /**
+     * Username of the user whose devices are shown.
+     */
+    userName?: string;
+    /**
      * Whether the user is shared from a parent organization. Its devices are read only.
      */
     isUserManagedByParentOrg?: boolean;
@@ -90,6 +95,7 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
  */
 const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
     userId,
+    userName,
     isUserManagedByParentOrg = false,
     "data-componentid": componentId = "user-devices"
 }: UserDevicesPropsInterface): ReactElement => {
@@ -142,9 +148,32 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
         setListOffset(0);
     };
 
+    /**
+     * Resolves the device name to show. Generated names have the form `<DOMAIN>/<username>'s <model>`, so the user
+     * store domain is dropped from them.
+     *
+     * @param device - Device to resolve the name of.
+     * @returns Device name to show.
+     */
+    const resolveDeviceName = (device: DeviceInterface): string => {
+        const name: string = device?.deviceName ?? "";
+        const domainSeparatorIndex: number = name.indexOf("/");
+
+        if (!userName || domainSeparatorIndex < 0) {
+            return name;
+        }
+
+        const deviceNameWithoutDomain: string = name.substring(domainSeparatorIndex + 1);
+        const generatedNamePrefix: string = `${ getUserNameWithoutDomain(userName) }'s `;
+
+        return deviceNameWithoutDomain.toLowerCase().startsWith(generatedNamePrefix.toLowerCase())
+            ? deviceNameWithoutDomain
+            : name;
+    };
+
     const handleRenameOpen = (device: DeviceInterface): void => {
         setRenamingDevice(device);
-        setDeviceName(device.deviceName ?? "");
+        setDeviceName(resolveDeviceName(device));
     };
 
     const handleRenameClose = (): void => {
@@ -286,7 +315,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
-                                    name={ device.deviceName }
+                                    name={ resolveDeviceName(device) }
                                     size="mini"
                                     data-componentid={ `${ componentId }-item-avatar` }
                                 />
@@ -298,7 +327,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <div>
                             <Stack direction="row" alignItems="center" spacing={ 1 }>
                                 <Typography variant="body1" data-componentid={ `${ componentId }-item-name` }>
-                                    { device.deviceName }
+                                    { resolveDeviceName(device) }
                                 </Typography>
                                 { isUserManagedByParentOrg && (
                                     <Tooltip title={ t("devices:userDevices.list.inherited.hint") }>
@@ -539,7 +568,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <PrimaryButton
                             loading={ isSubmitting }
                             disabled={ isSubmitting || !trimmedDeviceName
-                                || trimmedDeviceName === renamingDevice.deviceName }
+                                || trimmedDeviceName === resolveDeviceName(renamingDevice) }
                             onClick={ handleRename }
                             data-componentid={ `${ componentId }-rename-save-button` }
                         >
