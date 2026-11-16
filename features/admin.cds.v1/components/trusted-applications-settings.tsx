@@ -94,9 +94,12 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
     }, [ savedApplications ]);
 
     // The Console is a system portal, which the application list leaves out, so it is never
-    // offered here. It is only kept when it is already in the list.
+    // offered here. It is only kept when it is already in the list. Sorted by name, as on the
+    // profile attribute page.
     const options: string[] = useMemo(
-        () => applications
+        () => [ ...applications ]
+            .sort((first: CDSApplicationInterface, second: CDSApplicationInterface) =>
+                first.name.localeCompare(second.name))
             .map((app: CDSApplicationInterface) => app.identifier)
             .filter((identifier: string) => identifier !== consoleIdentifier),
         [ applications, consoleIdentifier ]
