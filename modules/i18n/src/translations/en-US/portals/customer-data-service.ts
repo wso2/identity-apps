@@ -89,7 +89,7 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             trustedApplications: {
         console: "Console",
-        description: "These applications are allowed all of the customer data on a profile, including the application data of every app. Any other application gets only its own application data. The Console is always included.",
+        description: "These applications are allowed to access all of the customer data on a profile.",
         errors: {
             loadApplications: "The applications could not be loaded. You can still remove the ones in the list."
         },
