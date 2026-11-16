@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.37.2
+
+### Patch Changes
+
+- [#10939](https://github.com/wso2/identity-apps/pull/10939) [`5f51f2e777f7e9e6657d27d97bc4301cc74dccf3`](https://github.com/wso2/identity-apps/commit/5f51f2e777f7e9e6657d27d97bc4301cc74dccf3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Use the email as the username in the registration flow templates when the username must be an email
+
+- Updated dependencies [[`5f51f2e777f7e9e6657d27d97bc4301cc74dccf3`](https://github.com/wso2/identity-apps/commit/5f51f2e777f7e9e6657d27d97bc4301cc74dccf3)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.16.5
+
 ## 4.37.1
 
 ### Patch Changes
