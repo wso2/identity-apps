@@ -112,7 +112,7 @@ export interface ProfileSchema {
     extended?: boolean;
     schemaId?: string;
     /**
-     * Full attribute URI, e.g. `urn:ietf:params:scim:schemas:core:2.0:User:name.givenName`.
+     * Attribute URI: the schema ID and the attribute path.
      */
     schemaUri?: string;
     regEx?: string;

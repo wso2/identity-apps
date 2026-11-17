@@ -62,14 +62,22 @@ export interface FeatureConfigInterface {
     consents?: FeatureAccessConfigInterface;
 }
 
+/**
+ * Personal info feature configuration.
+ */
 interface PersonalInfoFeatureConfigInterface extends FeatureAccessConfigInterface {
+    /**
+     * Personal info feature properties.
+     */
     properties?: PersonalInfoFeaturePropertiesInterface;
 }
 
+/**
+ * Personal info feature properties.
+ */
 interface PersonalInfoFeaturePropertiesInterface {
     /**
-     * SCIM attribute URIs to hide from the user profile, such as migrated Enterprise attributes that
-     * duplicate a core attribute. Hiding a complex attribute also hides its sub-attributes.
+     * SCIM attribute URIs to hide from the user profile.
      */
     hiddenAttributes?: string[];
 }

@@ -285,14 +285,13 @@ export const getProfileCompletion = (
         }
     }
 
-    // Calculate the profile completion percentage.
-    completion.percentage =
-        Math.ceil(
-            (((completion.required.completedCount + completion.optional.completedCount) /
-                (completion.required.totalCount + completion.optional.totalCount)) *
-                100) /
-                10
-        ) * 10;
+    const totalCount: number = completion.required.totalCount + completion.optional.totalCount;
+    const completedCount: number = completion.required.completedCount + completion.optional.completedCount;
+
+    // Calculate the profile completion percentage. With no attribute to count, use 0 instead of NaN.
+    completion.percentage = totalCount > 0
+        ? Math.ceil(((completedCount / totalCount) * 100) / 10) * 10
+        : 0;
 
     // Set the redux state.
     store.dispatch(setProfileCompletion(completion));
@@ -314,12 +313,33 @@ export const isPrimaryClaimVerified = (claimKey: string, profileInfo: BasicProfi
     return claimValue === true || claimValue === "true";
 };
 
+interface AttributeUriPartsInterface {
+    path: string;
+    schemaId: string;
+}
+
+/**
+ * Split a lower-cased attribute URI at its last `:` into the schema ID and the attribute path.
+ */
+const splitAttributeUri = (attributeUri: string): AttributeUriPartsInterface | undefined => {
+    const normalizedUri: string = attributeUri.trim().toLowerCase();
+    const separatorIndex: number = normalizedUri.lastIndexOf(":");
+
+    if (separatorIndex <= 0 || separatorIndex === normalizedUri.length - 1) {
+        return undefined;
+    }
+
+    return {
+        path: normalizedUri.slice(separatorIndex + 1),
+        schemaId: normalizedUri.slice(0, separatorIndex)
+    };
+};
+
 /**
  * Checks whether a profile attribute is configured to be hidden from the user profile.
  *
- * Attribute URIs are matched case-insensitively, as SCIM attribute names are case-insensitive.
- * Hiding a complex attribute (e.g. `urn:ietf:params:scim:schemas:core:2.0:User:name`) also hides
- * its sub-attributes.
+ * The schema ID and the attribute path are matched separately and case-insensitively, as SCIM attribute names
+ * are case-insensitive. Hiding a complex attribute also hides its sub-attributes.
  *
  * @param schema - Profile schema of the attribute. Sub-attributes are expected in the flattened form.
  * @param hiddenAttributes - Attribute URIs configured to be hidden.
@@ -329,27 +349,26 @@ export const isHiddenProfileAttribute = (
     schema: Pick<ProfileSchema, "name" | "schemaId" | "schemaUri">,
     hiddenAttributes?: string[]
 ): boolean => {
-    if (isEmpty(hiddenAttributes)) {
+    if (!Array.isArray(hiddenAttributes) || hiddenAttributes.length === 0) {
         return false;
     }
 
-    const attributeUri: string | undefined = schema?.schemaUri
-        ?? (schema?.schemaId && schema?.name ? `${schema.schemaId}:${schema.name}` : undefined);
+    // The schemas API sets `schemaUri` on every attribute. The schema ID and the name are used if it is missing.
+    const attributeUri: string = schema?.schemaUri
+        ?? (schema?.schemaId && schema?.name ? `${schema.schemaId}:${schema.name}` : "");
+    const attribute: AttributeUriPartsInterface | undefined = splitAttributeUri(attributeUri);
 
-    if (!attributeUri) {
+    if (!attribute) {
         return false;
     }
 
-    const normalizedAttributeUri: string = attributeUri.toLowerCase();
+    return hiddenAttributes.some((hiddenAttribute: string): boolean => {
+        const hidden: AttributeUriPartsInterface | undefined = typeof hiddenAttribute === "string"
+            ? splitAttributeUri(hiddenAttribute)
+            : undefined;
 
-    return hiddenAttributes.some((hiddenAttribute: string) => {
-        const normalizedHiddenAttribute: string = hiddenAttribute?.trim().toLowerCase();
-
-        if (!normalizedHiddenAttribute) {
-            return false;
-        }
-
-        return normalizedAttributeUri === normalizedHiddenAttribute
-            || normalizedAttributeUri.startsWith(`${normalizedHiddenAttribute}.`);
+        return !!hidden
+            && hidden.schemaId === attribute.schemaId
+            && (attribute.path === hidden.path || attribute.path.startsWith(`${hidden.path}.`));
     });
 };
