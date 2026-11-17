@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,11 +29,12 @@ import { HttpMethods, RoleListInterface, RolesInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { RoleAudienceTypes } from "../constants/role-constants";
+import { APPLICATION_ROLES_PAGE_SIZE, RoleAudienceTypes } from "../constants/role-constants";
 import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 import {
     CreateRoleInterface,
     PatchRoleDataInterface,
+    RolesV2Interface,
     RolesV2ResponseInterface,
     SearchRoleInterface
 } from "../models/roles";
@@ -45,47 +46,83 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get the application roles by audience.
+ * Get every role of the given audience by paging through the roles listing.
  *
- * @param audience - audience.
- * @param before - Before link.
- * @param after - After link.
- * @param limit - Limit.
+ * Without a `count`, the server returns only its default page of roles, so a single request cannot be used
+ * where the complete set matters, such as the roles associated with an application.
  *
- * @returns A promise containing the response.
+ * Pages are requested until the reported `totalResults` is reached. If the server does not report a total,
+ * a page shorter than the page size marks the end. An empty page also ends the listing, as roles deleted
+ * while paging can leave the total overstated. A non-empty page with no new roles before the total is reached
+ * means the server repeats pages, for example by ignoring `startIndex`, so the listing is rejected instead of
+ * being returned incomplete or paged forever.
+ *
+ * @param audience - Role audience.
+ * @param appId - Application ID, used when the audience is APPLICATION.
+ * @param excludedAttributes - Attributes to exclude from the response.
+ * @param useV3Api - Whether to use the SCIM2 Roles V3 endpoint.
+ *
+ * @returns A promise containing all the roles.
  */
-export const getApplicationRolesByAudience = (
-    audience: string,
+export const getAllApplicationRolesByAudience = async (
+    audience: RoleAudienceTypes,
     appId: string,
-    before: string,
-    after: string,
-    limit: number,
-    excludedAttributes?: string
-):Promise<RolesV2ResponseInterface> => {
+    excludedAttributes?: string,
+    useV3Api?: boolean
+): Promise<RolesV2Interface[]> => {
 
     const filter: string = audience === RoleAudienceTypes.APPLICATION
         ? `audience.value eq ${ appId }`
         : `audience.type eq ${ audience.toLowerCase() }`;
+    const roles: RolesV2Interface[] = [];
+    const roleIds: Set<string> = new Set<string>();
+    let startIndex: number = 1;
+    let hasMoreRoles: boolean = true;
 
-    const requestConfig: RequestConfigInterface = {
-        method: HttpMethods.GET,
-        params: {
-            after,
-            before,
-            excludedAttributes,
-            filter,
-            limit
-        },
-        url:  `${ store.getState().config.endpoints.rolesV2 }`
-    };
+    while (hasMoreRoles) {
+        const requestConfig: RequestConfigInterface = {
+            headers: useV3Api
+                ? {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+                : undefined,
+            method: HttpMethods.GET,
+            params: {
+                count: APPLICATION_ROLES_PAGE_SIZE,
+                excludedAttributes,
+                filter,
+                startIndex
+            },
+            url: useV3Api
+                ? store.getState().config.endpoints.rolesV3
+                : store.getState().config.endpoints.rolesV2
+        };
+        const response: AxiosResponse<RolesV2ResponseInterface> = await httpClient(requestConfig);
+        const page: RolesV2Interface[] = response?.data?.Resources ?? [];
+        const totalResults: number | undefined = response?.data?.totalResults;
+        let addedRoleCount: number = 0;
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response.data as RolesV2ResponseInterface);
-        })
-        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
-            return Promise.reject(error);
+        page.forEach((role: RolesV2Interface): void => {
+            if (role?.id && !roleIds.has(role.id)) {
+                roleIds.add(role.id);
+                roles.push(role);
+                addedRoleCount++;
+            }
         });
+
+        startIndex += page.length;
+
+        if (addedRoleCount === 0 && page.length > 0 && totalResults !== undefined && roles.length < totalResults) {
+            throw new Error("The roles listing repeated a page before the reported total was reached.");
+        }
+
+        hasMoreRoles = addedRoleCount > 0 && (totalResults !== undefined
+            ? roles.length < totalResults
+            : page.length >= APPLICATION_ROLES_PAGE_SIZE);
+    }
+
+    return roles;
 };
 
 /**
