@@ -31,6 +31,17 @@ vi.mock("../api/config", () => ({ updateCDSConfig: vi.fn() }));
 vi.mock("../hooks/use-config", () => ({ default: vi.fn() }));
 vi.mock("../hooks/use-fuzzy-unification", () => ({ default: vi.fn() }));
 vi.mock("../hooks/use-is-sub-organization", () => ({ default: vi.fn() }));
+vi.mock("../hooks/use-cds-applications", () => ({
+    useCDSApplications: () => ({
+        applications: [],
+        getApplicationDisplayName: (identifier: string): string => identifier,
+        isApplicationsRequestFailed: false,
+        isLoading: false
+    })
+}));
+vi.mock("../utils/application-identifier-utils", () => ({
+    resolveConsoleSystemApplicationIdentifier: vi.fn().mockResolvedValue("CONSOLE")
+}));
 vi.mock("@wso2is/access-control", async (importOriginal: () => Promise<Record<string, unknown>>) => ({
     ...(await importOriginal()),
     useRequiredScopes: (): boolean => true
@@ -81,6 +92,7 @@ describe("CustomerDataSettingsPage", () => {
         render(<CustomerDataSettingsPage data-componentid={ PAGE } />);
 
         expect(screen.getByTestId(`${ PAGE }-allowed-origins`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${ PAGE }-trusted-applications`)).toBeInTheDocument();
         expect(screen.queryByTestId("resolution-settings")).not.toBeInTheDocument();
     });
 
@@ -147,6 +159,8 @@ describe("CustomerDataSettingsPage", () => {
         render(<CustomerDataSettingsPage data-componentid={ PAGE } />);
 
         expect(screen.getByTestId(`${ PAGE }-allowed-origins-inherited`)).toBeInTheDocument();
+        // CDS refuses the applications of a child organization.
+        expect(screen.queryByTestId(`${ PAGE }-trusted-applications`)).not.toBeInTheDocument();
         expect(screen.queryByTestId(`${ PAGE }-save`)).not.toBeInTheDocument();
     });
 });

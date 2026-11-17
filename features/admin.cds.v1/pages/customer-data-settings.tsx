@@ -35,6 +35,7 @@ import { Dispatch } from "redux";
 import { updateCDSConfig } from "../api/config";
 import AllowedOriginsSettings from "../components/allowed-origins-settings";
 import ResolutionSettings from "../components/resolution-settings";
+import TrustedApplicationsSettings from "../components/trusted-applications-settings";
 import useCDSConfig from "../hooks/use-config";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
@@ -45,12 +46,14 @@ import { CDSConfigUpdateRequest, CDSSettingsSectionStateInterface } from "../mod
  */
 enum SettingsSection {
     ALLOWED_ORIGINS = "allowedOrigins",
-    RESOLUTION = "resolution"
+    RESOLUTION = "resolution",
+    TRUSTED_APPLICATIONS = "trustedApplications"
 }
 
 /**
- * Settings of the organization: the browser origins its apps call CDS from and, with tolerant
- * matching, how confident the engine has to be before it acts. They sit in one form with one
+ * Settings of the organization: the browser origins its apps call CDS from, the applications that
+ * read the application data of every app and, with tolerant matching, how confident the engine has
+ * to be before it acts. They sit in one form with one
  * update, each section separated from the next.
  *
  * Kept off the Customer Data Profile page deliberately: that page is where an operator goes
@@ -84,7 +87,8 @@ const CustomerDataSettingsPage: FunctionComponent<IdentifiableComponentInterface
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
 
     // A child organization uses the origins of its root organization, so only the thresholds
-    // can be edited there.
+    // can be edited there. CDS refuses the applications of a child organization, so they are only
+    // shown in the root organization.
     const isOriginsEditable: boolean = hasCDSUpdateScopes && !isSubOrganization;
     const isResolutionEditable: boolean = hasCDSUpdateScopes && isFuzzyUnificationEnabled;
 
@@ -98,9 +102,10 @@ const CustomerDataSettingsPage: FunctionComponent<IdentifiableComponentInterface
     const shownSections: CDSSettingsSectionStateInterface[] = useMemo(
         () => [
             sections[ SettingsSection.ALLOWED_ORIGINS ],
+            isSubOrganization ? undefined : sections[ SettingsSection.TRUSTED_APPLICATIONS ],
             isFuzzyUnificationEnabled ? sections[ SettingsSection.RESOLUTION ] : undefined
         ].filter(Boolean),
-        [ sections, isFuzzyUnificationEnabled ]
+        [ sections, isSubOrganization, isFuzzyUnificationEnabled ]
     );
 
     const isDirty: boolean = shownSections.some((section: CDSSettingsSectionStateInterface) => section.isDirty);
@@ -169,6 +174,17 @@ const CustomerDataSettingsPage: FunctionComponent<IdentifiableComponentInterface
                             isInherited={ isSubOrganization }
                             data-componentid={ `${ componentId }-allowed-origins` }
                         />
+                        { !isSubOrganization && (
+                            <>
+                                <Divider />
+                                <TrustedApplicationsSettings
+                                    config={ cdsConfig }
+                                    onChange={ handleSectionChange(SettingsSection.TRUSTED_APPLICATIONS) }
+                                    isReadOnly={ !hasCDSUpdateScopes || isSaving }
+                                    data-componentid={ `${ componentId }-trusted-applications` }
+                                />
+                            </>
+                        ) }
                         { /* The thresholds only matter with tolerant matching, so they stay behind its flag. */ }
                         { isFuzzyUnificationEnabled && (
                             <>

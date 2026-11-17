@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useCallback, useState } from "react";
@@ -25,45 +23,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateCDSConfig } from "../api/config";
-import { CDSApplicationIdentifierType, CDSConfig } from "../models/config";
-import { getCDSApplicationIdentifierType } from "../utils/application-identifier-utils";
-
-/**
- * Console system application client ID (reserved consumer key). Also the
- * identifier registered with CDS in legacy `client_id` mode.
- */
-const CDS_CONSOLE_APP: string = "CONSOLE";
-
-/**
- * Resolves the identifier used to register the Console as a CDS system application,
- * honoring the configured CDS application identifier type.
- *
- * In `client_id` mode this is the Console client ID (`CONSOLE`). In `app_id` mode
- * the Console application UUID is looked up via the application list API.
- *
- * @returns The Console system application identifier for the configured mode.
- * @throws If the Console application UUID cannot be resolved in `app_id` mode.
- */
-const resolveConsoleSystemApplicationIdentifier = async (): Promise<string> => {
-    if (getCDSApplicationIdentifierType() !== CDSApplicationIdentifierType.APP_ID) {
-        return CDS_CONSOLE_APP;
-    }
-
-    // Console is a system portal, so system portals must NOT be excluded from the lookup.
-    const response: ApplicationListInterface = await getApplicationList(
-        1,
-        0,
-        `clientId eq ${CDS_CONSOLE_APP}`,
-        false
-    );
-    const consoleApplicationId: string | undefined = response?.applications?.[0]?.id;
-
-    if (!consoleApplicationId) {
-        throw new Error("Unable to resolve the Console application UUID for the CDS system application list.");
-    }
-
-    return consoleApplicationId;
-};
+import { CDSConfig } from "../models/config";
+import { resolveConsoleSystemApplicationIdentifier } from "../utils/application-identifier-utils";
 
 /**
  * Return type of the useCDSToggle hook.

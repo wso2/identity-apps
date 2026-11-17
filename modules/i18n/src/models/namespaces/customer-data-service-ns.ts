@@ -894,6 +894,19 @@ export interface CustomerDataServiceNS {
             title: string;
         };
     };
+    trustedApplications: {
+        console: string;
+        description: string;
+        errors: {
+            loadApplications: string;
+            resolveConsole: string;
+        };
+        field: {
+            noOptions: string;
+            placeholder: string;
+        };
+        heading: string;
+    };
     unificationRules: {
         common: {
             notifications: {
