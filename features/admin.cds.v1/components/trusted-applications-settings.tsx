@@ -85,9 +85,16 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
 
     const [ selected, setSelected ] = useState<string[]>(savedApplications);
     // Enabling CDS adds the Console, which shows profiles with the data of every app. Removing it
-    // would leave the Console showing only its own, so it stays in the list. Unresolved, the
-    // Console is only not locked, and the list is still saved as it stands.
-    const consoleIdentifier: string | null = useConsoleApplicationIdentifier();
+    // would leave the Console showing only its own, so it stays in the list.
+    const {
+        consoleIdentifier,
+        isFailed: isConsoleIdentifierFailed,
+        isLoading: isConsoleIdentifierLoading
+    } = useConsoleApplicationIdentifier();
+
+    // Until the Console is known, its chip cannot be told apart from the others, so the list
+    // cannot be changed.
+    const isFieldReadOnly: boolean = isReadOnly || consoleIdentifier === null;
 
     useEffect(() => {
         setSelected(savedApplications);
@@ -144,7 +151,13 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
                 { t("customerDataService:trustedApplications.heading") }
             </Typography>
 
-            { isApplicationsRequestFailed && (
+            { isConsoleIdentifierFailed && !isReadOnly && (
+                <Alert severity="warning" data-componentid={ `${ componentId }-console-error` }>
+                    { t("customerDataService:trustedApplications.errors.resolveConsole") }
+                </Alert>
+            ) }
+
+            { isApplicationsRequestFailed && !isConsoleIdentifierFailed && (
                 <Alert severity="warning" data-componentid={ `${ componentId }-load-error` }>
                     { t("customerDataService:trustedApplications.errors.loadApplications") }
                 </Alert>
@@ -159,8 +172,8 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
                     value={ selected }
                     onChange={ handleChange }
                     getOptionLabel={ labelOf }
-                    loading={ isApplicationsLoading }
-                    readOnly={ isReadOnly }
+                    loading={ isApplicationsLoading || isConsoleIdentifierLoading }
+                    readOnly={ isFieldReadOnly }
                     noOptionsText={ t("customerDataService:trustedApplications.field.noOptions") }
                     renderTags={ (value: string[], getTagProps: AutocompleteRenderGetTagProps): ReactElement => (
                         <Box display="flex" flexWrap="wrap" gap={ 0.5 }>
@@ -174,7 +187,7 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
                                         key={ identifier }
                                         size="small"
                                         label={ labelOf(identifier) }
-                                        onDelete={ isReadOnly || isLocked(identifier) ? undefined : onDelete }
+                                        onDelete={ isFieldReadOnly || isLocked(identifier) ? undefined : onDelete }
                                         data-componentid={ `${ componentId }-chip-${ identifier }` }
                                     />
                                 );
@@ -184,7 +197,7 @@ const TrustedApplicationsSettings: FunctionComponent<TrustedApplicationsSettings
                     renderInput={ (params: AutocompleteRenderInputParams) => (
                         <TextField
                             { ...params }
-                            placeholder={ isReadOnly
+                            placeholder={ isFieldReadOnly
                                 ? undefined
                                 : t("customerDataService:trustedApplications.field.placeholder") }
                             inputProps={ {

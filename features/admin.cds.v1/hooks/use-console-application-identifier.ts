@@ -19,14 +19,31 @@
 import { useEffect, useState } from "react";
 import { resolveConsoleSystemApplicationIdentifier } from "../utils/application-identifier-utils";
 
+interface UseConsoleApplicationIdentifierReturn {
+    /**
+     * The Console identifier, or null until it is resolved or when it cannot be.
+     */
+    consoleIdentifier: string | null;
+    /**
+     * Whether the identifier could not be resolved.
+     */
+    isFailed: boolean;
+    /**
+     * Whether the identifier is still being resolved.
+     */
+    isLoading: boolean;
+}
+
 /**
  * Resolves the identifier CDS knows the Console by, which depends on the deployment.
  *
- * @returns The Console identifier, or null until it is resolved or when it cannot be.
+ * @returns The Console identifier and the state of its lookup.
  */
-const useConsoleApplicationIdentifier = (): string | null => {
+const useConsoleApplicationIdentifier = (): UseConsoleApplicationIdentifierReturn => {
 
     const [ consoleIdentifier, setConsoleIdentifier ] = useState<string | null>(null);
+    const [ isFailed, setIsFailed ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     useEffect(() => {
         let isCancelled: boolean = false;
@@ -39,7 +56,12 @@ const useConsoleApplicationIdentifier = (): string | null => {
             })
             .catch((): void => {
                 if (!isCancelled) {
-                    setConsoleIdentifier(null);
+                    setIsFailed(true);
+                }
+            })
+            .finally((): void => {
+                if (!isCancelled) {
+                    setIsLoading(false);
                 }
             });
 
@@ -48,7 +70,7 @@ const useConsoleApplicationIdentifier = (): string | null => {
         };
     }, []);
 
-    return consoleIdentifier;
+    return { consoleIdentifier, isFailed, isLoading };
 };
 
 export default useConsoleApplicationIdentifier;

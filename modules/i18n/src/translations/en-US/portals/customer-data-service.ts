@@ -87,19 +87,7 @@ export const customerDataService: CustomerDataServiceNS = {
                 description: "Review profile pairs that need an administrator to decide",
                 title: "Review Tasks"
             },
-            trustedApplications: {
-        console: "Console",
-        description: "These applications are allowed to access all of the customer data on a profile.",
-        errors: {
-            loadApplications: "The applications could not be loaded. You can still remove the ones in the list."
-        },
-        field: {
-            noOptions: "No more applications to add.",
-            placeholder: "Add an application"
-        },
-        heading: "Applications with full profile access"
-    },
-    unificationRules: {
+            unificationRules: {
                 description: "Manage profile unification rules",
                 title: "Unification Rules"
             }
@@ -1021,6 +1009,19 @@ export const customerDataService: CustomerDataServiceNS = {
             description: "Configure how the Customer Data Service behaves for this organization.",
             title: "Settings"
         }
+    },
+    trustedApplications: {
+        console: "Console",
+        description: "These applications are allowed to access all of the customer data on a profile.",
+        errors: {
+            loadApplications: "The applications could not be loaded. You can still remove the ones in the list.",
+            resolveConsole: "The Console could not be identified, so the list cannot be changed. Reload the page to try again."
+        },
+        field: {
+            noOptions: "No more applications to add.",
+            placeholder: "Add an application"
+        },
+        heading: "Applications with full profile access"
     },
     unificationRules: {
         common: {

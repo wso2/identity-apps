@@ -22,11 +22,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import TrustedApplicationsSettings from "../components/trusted-applications-settings";
 import { useCDSApplications } from "../hooks/use-cds-applications";
 import { CDSConfig, CDSSettingsSectionStateInterface } from "../models/config";
+import { resolveConsoleSystemApplicationIdentifier } from "../utils/application-identifier-utils";
 import "@testing-library/jest-dom";
 
 vi.mock("../hooks/use-cds-applications", () => ({ useCDSApplications: vi.fn() }));
 vi.mock("../utils/application-identifier-utils", () => ({
-    resolveConsoleSystemApplicationIdentifier: vi.fn().mockResolvedValue("CONSOLE")
+    resolveConsoleSystemApplicationIdentifier: vi.fn()
 }));
 
 const SETTINGS: string = "settings";
@@ -79,6 +80,7 @@ const input = (): HTMLInputElement => screen.getByTestId(`${ SETTINGS }-input`).
 describe("TrustedApplicationsSettings", () => {
 
     beforeEach(() => {
+        vi.mocked(resolveConsoleSystemApplicationIdentifier).mockResolvedValue("CONSOLE");
         vi.mocked(useCDSApplications).mockReturnValue({
             applications: [
                 { id: "shop", identifier: "client-shop", name: "Shop" },
@@ -124,6 +126,7 @@ describe("TrustedApplicationsSettings", () => {
             />
         );
 
+        await waitFor(() => expect(input()).not.toHaveAttribute("readonly"));
         fireEvent.mouseDown(input());
         fireEvent.click(within(screen.getByRole("listbox")).getByText("Billing"));
 
@@ -160,6 +163,49 @@ describe("TrustedApplicationsSettings", () => {
         }));
     });
 
+    it("cannot be changed while the Console is being identified", () => {
+        vi.mocked(resolveConsoleSystemApplicationIdentifier).mockReturnValue(new Promise<string>(() => undefined));
+
+        render(
+            <TrustedApplicationsSettings
+                config={ configWith([ "console-uuid", "client-shop" ]) }
+                onChange={ vi.fn() }
+                data-componentid={ SETTINGS }
+            />
+        );
+
+        expect(deleteIconOf("console-uuid")).toBeNull();
+        expect(deleteIconOf("client-shop")).toBeNull();
+        expect(input()).toHaveAttribute("readonly");
+    });
+
+    it("cannot be changed when the Console could not be identified", async () => {
+        const onChange: ReturnType<typeof vi.fn> = vi.fn();
+
+        vi.mocked(resolveConsoleSystemApplicationIdentifier).mockRejectedValue(new Error("lookup failed"));
+
+        render(
+            <TrustedApplicationsSettings
+                config={ configWith([ "console-uuid", "client-shop" ]) }
+                onChange={ onChange }
+                data-componentid={ SETTINGS }
+            />
+        );
+
+        expect(await screen.findByTestId(`${ SETTINGS }-console-error`)).toBeInTheDocument();
+        expect(deleteIconOf("console-uuid")).toBeNull();
+        expect(deleteIconOf("client-shop")).toBeNull();
+        expect(input()).toHaveAttribute("readonly");
+
+        fireEvent.keyDown(input(), { key: "Backspace" });
+        expect(chip("console-uuid")).toBeInTheDocument();
+        expect(lastReport(onChange)).toEqual({
+            hasError: false,
+            isDirty: false,
+            payload: { system_applications: [ "console-uuid", "client-shop" ] }
+        });
+    });
+
     it("cannot be changed while read only", () => {
         render(
             <TrustedApplicationsSettings
@@ -174,7 +220,7 @@ describe("TrustedApplicationsSettings", () => {
         expect(input()).toHaveAttribute("readonly");
     });
 
-    it("says when the applications could not be loaded", () => {
+    it("says when the applications could not be loaded", async () => {
         vi.mocked(useCDSApplications).mockReturnValue({
             applications: [],
             getApplicationDisplayName: (identifier: string): string => identifier,
@@ -192,5 +238,6 @@ describe("TrustedApplicationsSettings", () => {
 
         expect(screen.getByTestId(`${ SETTINGS }-load-error`)).toBeInTheDocument();
         expect(chip("client-shop")).toBeInTheDocument();
+        await waitFor(() => expect(deleteIconOf("client-shop")).not.toBeNull());
     });
 });

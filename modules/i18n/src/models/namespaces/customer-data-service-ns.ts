@@ -87,19 +87,7 @@ export interface CustomerDataServiceNS {
                 description: string;
                 title: string;
             };
-            trustedApplications: {
-        console: string;
-        description: string;
-        errors: {
-            loadApplications: string;
-        };
-        field: {
-            noOptions: string;
-            placeholder: string;
-        };
-        heading: string;
-    };
-    unificationRules: {
+            unificationRules: {
                 description: string;
                 title: string;
             };
@@ -905,6 +893,19 @@ export interface CustomerDataServiceNS {
             description: string;
             title: string;
         };
+    };
+    trustedApplications: {
+        console: string;
+        description: string;
+        errors: {
+            loadApplications: string;
+            resolveConsole: string;
+        };
+        field: {
+            noOptions: string;
+            placeholder: string;
+        };
+        heading: string;
     };
     unificationRules: {
         common: {
