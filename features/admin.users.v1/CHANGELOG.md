@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.39.15
+
+### Patch Changes
+
+- [#10941](https://github.com/wso2/identity-apps/pull/10941) [`b86c49e061f718e50e84136d6a29baa1efeba9bc`](https://github.com/wso2/identity-apps/commit/b86c49e061f718e50e84136d6a29baa1efeba9bc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the user store domain from generated device names in the device lists
+
+- Updated dependencies [[`b86c49e061f718e50e84136d6a29baa1efeba9bc`](https://github.com/wso2/identity-apps/commit/b86c49e061f718e50e84136d6a29baa1efeba9bc)]:
+  - @wso2is/admin.devices.v1@0.1.3
+
 ## 2.39.14
 
 ### Patch Changes
