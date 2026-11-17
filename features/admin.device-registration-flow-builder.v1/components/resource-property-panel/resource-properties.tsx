@@ -43,6 +43,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "re
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
+import AllowMyAccountProperties from "./steps/execution/allow-my-account-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import DeviceRegistrationFlowBuilderConstants from "../../constants/device-registration-flow-builder-constants";
 
@@ -198,6 +199,11 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <UserVerificationProperties
                             resource={ resource }
                             data-componentid="user-verification-properties"
+                            onChange={ onChange }
+                        />
+                        <AllowMyAccountProperties
+                            resource={ resource }
+                            data-componentid="allow-my-account-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }
