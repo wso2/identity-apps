@@ -65,6 +65,7 @@ const AllowMyAccountProperties: FunctionComponent<AllowMyAccountPropertiesPropsI
                     <Checkbox
                         defaultChecked={ isMyAccountAllowed }
                         onChange={ handleAllowMyAccountChange }
+                        sx={ { pl: 0 } }
                     />
                 ) }
                 label={ t("flows:core.executions.userVerification.allowMyAccountLabel") }
