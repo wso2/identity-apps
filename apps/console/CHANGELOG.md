@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.37.3
+
+### Patch Changes
+
+- [#10942](https://github.com/wso2/identity-apps/pull/10942) [`08bb30e3e35955629b420cb9bb77f34ffc9665ec`](https://github.com/wso2/identity-apps/commit/08bb30e3e35955629b420cb9bb77f34ffc9665ec) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add the applications allowed all customer data on a profile, including that of every app, to the Customer Data settings page
+
+- Updated dependencies [[`08bb30e3e35955629b420cb9bb77f34ffc9665ec`](https://github.com/wso2/identity-apps/commit/08bb30e3e35955629b420cb9bb77f34ffc9665ec)]:
+  - @wso2is/admin.cds.v1@1.12.0
+  - @wso2is/i18n@2.63.2
+  - @wso2is/admin.users.v1@2.39.14
+
 ## 4.37.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.2
+
+### Patch Changes
+
+- [#10942](https://github.com/wso2/identity-apps/pull/10942) [`08bb30e3e35955629b420cb9bb77f34ffc9665ec`](https://github.com/wso2/identity-apps/commit/08bb30e3e35955629b420cb9bb77f34ffc9665ec) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add the applications allowed all customer data on a profile, including that of every app, to the Customer Data settings page
+
 ## 2.63.1
 
 ### Patch Changes
