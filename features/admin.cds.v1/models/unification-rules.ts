@@ -121,13 +121,13 @@ export interface UnificationRuleModel {
 }
 
 /**
- * Only these fields can be updated.
+ * Only these fields can be updated. The rule name cannot change, because merges record it as
+ * the reason that two profiles were combined.
  *
  * Changing `attribute_type` or `unification_method` changes which keys the attribute is
  * indexed under, so the server rebuilds the blocking index for the rule when either moves.
  */
 export interface UpdateUnificationRulePayload {
-    rule_name?: string;
     is_active?: boolean;
     priority?: number;
     attribute_type?: UnificationAttributeType;

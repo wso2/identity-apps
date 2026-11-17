@@ -1108,7 +1108,8 @@ export const customerDataService: CustomerDataServiceNS = {
                     errors: {
                         required: "Rule name is required."
                     },
-                    hint: "Choose a rule name that describes the unification criteria, e.g., 'Unify on email'.",
+                    hint: "Choose a rule name that describes the unification criteria, e.g., 'Unify on email'. " +
+                        "The name cannot be changed after the rule is created.",
                     label: "Rule Name",
                     placeholder: "Enter a descriptive rule name."
                 },
@@ -1165,7 +1166,8 @@ export const customerDataService: CustomerDataServiceNS = {
                     label: "Priority"
                 },
                 ruleName: {
-                    hint: "A name that describes the unification criteria, for example 'Unify on email'.",
+                    hint: "The rule name cannot be changed, because merged profiles record it as the reason " +
+                        "for the merge.",
                     label: "Rule Name"
                 }
             },
