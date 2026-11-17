@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.4
+
+### Patch Changes
+
+- [#10949](https://github.com/wso2/identity-apps/pull/10949) [`b0382d941b22097e3bf5d8b2ba02a9818610fc94`](https://github.com/wso2/identity-apps/commit/b0382d941b22097e3bf5d8b2ba02a9818610fc94) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Make the unification rule name read-only after the rule is created
+
 ## 2.63.3
 
 ### Patch Changes
