@@ -231,6 +231,8 @@ export interface flowExtensionNS {
             REGISTRATION: string;
             PASSWORD_RECOVERY: string;
             INVITED_USER_REGISTRATION: string;
+            PROFILE_UPDATE: string;
+            DEVICE_REGISTRATION: string;
         };
         addClaimModal: {
             title: string;
