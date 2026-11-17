@@ -147,7 +147,7 @@ export class LocalAuthenticatorConstants {
     /**
      * Regions supported by the Authsignal connector.
      */
-    public static readonly AUTHSIGNAL_REGIONS: string[] = [ "us", "eu", "au", "ca", "uk" ];
+    public static readonly AUTHSIGNAL_REGIONS: string[] = [ "us", "au", "eu", "ca", "uk" ];
 
     // Email OTP authenticator constants.
     /**

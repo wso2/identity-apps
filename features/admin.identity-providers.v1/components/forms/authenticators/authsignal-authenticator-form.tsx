@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
+import Box from "@oxygen-ui/react/Box";
+import Typography from "@oxygen-ui/react/Typography";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -76,6 +80,18 @@ const REQUIRED_PROPERTIES: string[] = [
 ];
 
 const FIELD_MAX_LENGTH: number = 1024;
+
+const FieldContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    marginBottom: theme.spacing(3)
+}));
+
+const FieldHint: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    color: theme.palette.text.secondary,
+    display: "flex",
+    gap: theme.spacing(1),
+    marginTop: theme.spacing(1)
+}));
 
 /**
  * Builds the form field name of a connector property.
@@ -190,38 +206,37 @@ const AuthsignalAuthenticatorForm: FunctionComponent<AuthsignalAuthenticatorForm
         const commonProps: Record<string, unknown> = {
             "aria-label": label,
             "data-componentid": `${ componentId }-${ fieldName }`,
-            helperText: property.description,
             label,
             readOnly,
             required: REQUIRED_PROPERTIES.includes(property.name)
         };
-
-        if (property.name === LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.REGION) {
-            return (
-                <FinalFormField
-                    key={ property.name }
-                    name={ fieldName }
-                    { ...commonProps }
-                    component={ SelectFieldAdapter }
-                    options={ regionOptions }
-                />
-            );
-        }
-
+        const isRegion: boolean = property.name === LocalAuthenticatorConstants.AUTHSIGNAL_PROPERTY_NAMES.REGION;
         const isSecret: boolean = property.name.startsWith(
             LocalAuthenticatorConstants.AUTHSIGNAL_SECRET_PROPERTY_PREFIX
         );
+        const fieldProps: Record<string, unknown> = isRegion
+            ? { component: SelectFieldAdapter, options: regionOptions }
+            : {
+                autoComplete: isSecret ? "new-password" : undefined,
+                component: TextFieldAdapter,
+                maxLength: FIELD_MAX_LENGTH,
+                type: isSecret ? FieldInputTypes.INPUT_PASSWORD : undefined
+            };
 
         return (
-            <FinalFormField
-                key={ property.name }
-                name={ fieldName }
-                { ...commonProps }
-                component={ TextFieldAdapter }
-                type={ isSecret ? FieldInputTypes.INPUT_PASSWORD : undefined }
-                autoComplete={ isSecret ? "new-password" : undefined }
-                maxLength={ FIELD_MAX_LENGTH }
-            />
+            <FieldContainer key={ property.name }>
+                <FinalFormField name={ fieldName } { ...commonProps } { ...fieldProps } />
+                {
+                    property.description && (
+                        <FieldHint data-componentid={ `${ componentId }-${ fieldName }-hint` }>
+                            <CircleInfoIcon size={ 14 } />
+                            <Typography variant="body2" color="inherit">
+                                { property.description }
+                            </Typography>
+                        </FieldHint>
+                    )
+                }
+            </FieldContainer>
         );
     };
 
