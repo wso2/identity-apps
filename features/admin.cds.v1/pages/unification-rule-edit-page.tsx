@@ -65,7 +65,7 @@ interface RouteParamsInterface {
 }
 
 interface RuleFormValuesInterface {
-    rule_name: string;
+    rule_name_display: string;
     is_active: boolean;
     property_name_display: string;
     priority_display: string;
@@ -115,20 +115,9 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
         setModalAlert(null);
     };
 
-    const validateForm = (values: RuleFormValuesInterface): Partial<Record<keyof RuleFormValuesInterface, string>> => {
-        if (isReadOnly || values.rule_name?.trim()) {
-            return {};
-        }
-
-        return {
-            rule_name: t("customerDataService:unificationRules.create.fields.ruleName.errors.required")
-        };
-    };
-
     const handleUpdate = (values: RuleFormValuesInterface): void => {
         const payload: UpdateUnificationRulePayload = {
-            is_active: Boolean(values.is_active),
-            rule_name: values.rule_name?.trim()
+            is_active: Boolean(values.is_active)
         };
 
         setIsUpdating(true);
@@ -193,12 +182,11 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
                     <FinalForm
                         key={ `${rule.rule_id}-${rule.rule_name}-${rule.is_active}` }
                         onSubmit={ handleUpdate }
-                        validate={ validateForm }
                         initialValues={ {
                             is_active: rule.is_active,
                             priority_display: String(rule.priority),
                             property_name_display: getPropertySuffix(rule.property_name),
-                            rule_name: rule.rule_name
+                            rule_name_display: rule.rule_name
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => (
                             <form onSubmit={ handleSubmit }>
@@ -210,15 +198,11 @@ const UnificationRuleEditPage: FunctionComponent<UnificationRuleEditPagePropsInt
                                     ) }
                                     <FinalFormField
                                         ariaLabel="Rule name"
-                                        name="rule_name"
+                                        name="rule_name_display"
                                         label={ t("customerDataService:unificationRules.edit.fields.ruleName.label") }
-                                        placeholder={ t("customerDataService:unificationRules.create.fields" +
-                                            ".ruleName.placeholder") }
                                         helperText={
                                             t("customerDataService:unificationRules.edit.fields.ruleName.hint") }
-                                        required={ !isReadOnly }
-                                        readOnly={ isReadOnly }
-                                        maxLength={ 255 }
+                                        readOnly
                                         component={ TextFieldAdapter }
                                         data-componentid={ `${componentId}-rule-name-input` }
                                     />
