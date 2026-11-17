@@ -34,7 +34,6 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { EllipsisVerticalIcon, PlusIcon } from "@oxygen-ui/react-icons";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { ConfirmationModal } from "@wso2is/react-components";
@@ -347,25 +346,20 @@ export const DevicesComponent: FunctionComponent<DevicesComponentPropsInterface>
 
     /**
      * Resolves the device name to show. Generated names have the form `<DOMAIN>/<username>'s <model>`, so the user
-     * store domain is dropped from them.
+     * store domain is dropped from them. Other names are shown as they are.
      *
      * @param device - Device to resolve the name of.
      * @returns Device name to show.
      */
     const resolveDeviceName = (device: DeviceInterface): string => {
         const name: string = device?.deviceName ?? "";
-        const domainSeparatorIndex: number = name.indexOf("/");
 
-        if (!userName || domainSeparatorIndex < 0) {
+        // Only a username with a user store domain gives a generated name with one.
+        if (!userName?.includes("/") || !name.toLowerCase().startsWith(`${ userName }'s `.toLowerCase())) {
             return name;
         }
 
-        const deviceNameWithoutDomain: string = name.substring(domainSeparatorIndex + 1);
-        const generatedNamePrefix: string = `${ getUserNameWithoutDomain(userName) }'s `;
-
-        return deviceNameWithoutDomain.toLowerCase().startsWith(generatedNamePrefix.toLowerCase())
-            ? deviceNameWithoutDomain
-            : name;
+        return name.substring(name.indexOf("/") + 1);
     };
 
     const formatRegisteredDate = (registeredAt: string): string => {
