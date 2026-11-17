@@ -219,6 +219,17 @@
                     return Object.keys(inputs).length > 0 ? { inputs } : {};
                 };
 
+                const withAnonymousProfileTracker = (body) => {
+                    if (!body || !body.flowId || anonymousProfileTracker === "null") {
+                        return body;
+                    }
+
+                    return {
+                        ...body,
+                        inputs: { ...(body.inputs || {}), anonymous_profile_tracker: anonymousProfileTracker }
+                    };
+                };
+
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -286,7 +297,7 @@
                     fetch(executionFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(postBody)
+                        body: JSON.stringify(withAnonymousProfileTracker(postBody))
                     })
                     .then((response) => {
                         if (!response.ok) {
