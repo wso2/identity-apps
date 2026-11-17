@@ -354,6 +354,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UserDevices
                             userId={ user?.id }
+                            userName={ user?.userName }
                             isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         />
                     </ResourceTab.Pane>

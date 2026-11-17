@@ -77,6 +77,10 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
      */
     userId: string;
     /**
+     * Username of the user whose devices are shown.
+     */
+    userName?: string;
+    /**
      * Whether the user is shared from a parent organization. Its devices are read only.
      */
     isUserManagedByParentOrg?: boolean;
@@ -90,6 +94,7 @@ interface UserDevicesPropsInterface extends IdentifiableComponentInterface {
  */
 const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
     userId,
+    userName,
     isUserManagedByParentOrg = false,
     "data-componentid": componentId = "user-devices"
 }: UserDevicesPropsInterface): ReactElement => {
@@ -142,9 +147,27 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
         setListOffset(0);
     };
 
+    /**
+     * Resolves the device name to show. Generated names have the form `<DOMAIN>/<username>'s <model>`, so the user
+     * store domain is dropped from them. Other names are shown as they are.
+     *
+     * @param device - Device to resolve the name of.
+     * @returns Device name to show.
+     */
+    const resolveDeviceName = (device: DeviceInterface): string => {
+        const name: string = device?.deviceName ?? "";
+
+        // Only a username with a user store domain gives a generated name with one.
+        if (!userName?.includes("/") || !name.toLowerCase().startsWith(`${ userName }'s `.toLowerCase())) {
+            return name;
+        }
+
+        return name.substring(name.indexOf("/") + 1);
+    };
+
     const handleRenameOpen = (device: DeviceInterface): void => {
         setRenamingDevice(device);
-        setDeviceName(device.deviceName ?? "");
+        setDeviceName(resolveDeviceName(device));
     };
 
     const handleRenameClose = (): void => {
@@ -286,7 +309,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
-                                    name={ device.deviceName }
+                                    name={ resolveDeviceName(device) }
                                     size="mini"
                                     data-componentid={ `${ componentId }-item-avatar` }
                                 />
@@ -298,7 +321,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <div>
                             <Stack direction="row" alignItems="center" spacing={ 1 }>
                                 <Typography variant="body1" data-componentid={ `${ componentId }-item-name` }>
-                                    { device.deviceName }
+                                    { resolveDeviceName(device) }
                                 </Typography>
                                 { isUserManagedByParentOrg && (
                                     <Tooltip title={ t("devices:userDevices.list.inherited.hint") }>
@@ -539,7 +562,7 @@ const UserDevices: FunctionComponent<UserDevicesPropsInterface> = ({
                         <PrimaryButton
                             loading={ isSubmitting }
                             disabled={ isSubmitting || !trimmedDeviceName
-                                || trimmedDeviceName === renamingDevice.deviceName }
+                                || trimmedDeviceName === resolveDeviceName(renamingDevice) }
                             onClick={ handleRename }
                             data-componentid={ `${ componentId }-rename-save-button` }
                         >
