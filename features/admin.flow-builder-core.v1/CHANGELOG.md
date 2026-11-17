@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.18.1
+
+### Patch Changes
+
+- [#10951](https://github.com/wso2/identity-apps/pull/10951) [`701e71ac48b6908b4dcb0b80ed402ca5a879dc4b`](https://github.com/wso2/identity-apps/commit/701e71ac48b6908b4dcb0b80ed402ca5a879dc4b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the allow My Account setting of the user verification step only in the device registration flow builder
+
 ## 0.18.0
 
 ### Minor Changes
