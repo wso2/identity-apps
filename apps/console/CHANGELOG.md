@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.37.5
+
+### Patch Changes
+
+- [#10924](https://github.com/wso2/identity-apps/pull/10924) [`be2990b47efc5eaa5968b7140e31ef3867e3cfc6`](https://github.com/wso2/identity-apps/commit/be2990b47efc5eaa5968b7140e31ef3867e3cfc6) Thanks [@RovinKYK](https://github.com/RovinKYK)! - Show the profile update and device registration flow type names in the flow extension access configuration
+
+- Updated dependencies [[`be2990b47efc5eaa5968b7140e31ef3867e3cfc6`](https://github.com/wso2/identity-apps/commit/be2990b47efc5eaa5968b7140e31ef3867e3cfc6)]:
+  - @wso2is/i18n@2.63.3
+
 ## 4.37.4
 
 ### Patch Changes
