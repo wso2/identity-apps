@@ -42,7 +42,7 @@ export const getCDSApplicationIdentifierType = (): CDSApplicationIdentifierType 
  * Console system application client ID (reserved consumer key). Also the
  * identifier registered with CDS in legacy `client_id` mode.
  */
-export const CDS_CONSOLE_APP: string = "CONSOLE";
+const CDS_CONSOLE_APP: string = "CONSOLE";
 
 /**
  * Resolves the identifier used to register the Console as a CDS system application,
