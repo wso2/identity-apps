@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.37.4
+
+### Patch Changes
+
+- [#10944](https://github.com/wso2/identity-apps/pull/10944) [`713f1e8dc938dee5bdfc652ebf87b015da028a3d`](https://github.com/wso2/identity-apps/commit/713f1e8dc938dee5bdfc652ebf87b015da028a3d) Thanks [@ManadaHerath](https://github.com/ManadaHerath)! - Use a black and white icon for the Incode Verification flow step
+
 ## 4.37.3
 
 ### Patch Changes
