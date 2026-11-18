@@ -7,6 +7,9 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
+        "@mui/material": "catalog:",
+        "@oxygen-ui/react": "catalog:",
+        "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/access-control": "^3.5.3",
         "@wso2is/admin.applications.v1": "^2.46.2",
         "@wso2is/admin.claims.v1": "^2.31.1",

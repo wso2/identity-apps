@@ -6257,6 +6257,15 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.6.3
         version: 5.6.3(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/material':
+        specifier: ^5.13.0
+        version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@oxygen-ui/react':
+        specifier: 'catalog:'
+        version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/access-control':
         specifier: ^3.5.3
         version: link:../../modules/access-control

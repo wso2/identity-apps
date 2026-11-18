@@ -285,11 +285,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             authsignal: {
                 regions: {
-                    au: "Australia (au)",
-                    ca: "Canada (ca)",
-                    eu: "Europe (eu)",
-                    uk: "United Kingdom (uk)",
-                    us: "United States (us)"
+                    au: "AU (Sydney)",
+                    ca: "CA (Montreal)",
+                    eu: "EU (Ireland)",
+                    uk: "UK (London)",
+                    us: "US (Oregon)"
                 }
             },
             dynamicOptions: {
