@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -111,6 +111,10 @@ export interface ProfileSchema {
     subAttributes?: ProfileSchema[];
     extended?: boolean;
     schemaId?: string;
+    /**
+     * Attribute URI: the schema ID and the attribute path.
+     */
+    schemaUri?: string;
     regEx?: string;
     /**
      * Minimum length limit.

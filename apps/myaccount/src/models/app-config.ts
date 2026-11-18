@@ -43,7 +43,7 @@ export interface FeatureConfigInterface {
     /**
      * Personal info feature.
      */
-    personalInfo?: FeatureAccessConfigInterface;
+    personalInfo?: PersonalInfoFeatureConfigInterface;
     /**
      * Application management feature.
      */
@@ -60,6 +60,26 @@ export interface FeatureConfigInterface {
      * Consents management feature.
      */
     consents?: FeatureAccessConfigInterface;
+}
+
+/**
+ * Personal info feature configuration.
+ */
+interface PersonalInfoFeatureConfigInterface extends FeatureAccessConfigInterface {
+    /**
+     * Personal info feature properties.
+     */
+    properties?: PersonalInfoFeaturePropertiesInterface;
+}
+
+/**
+ * Personal info feature properties.
+ */
+interface PersonalInfoFeaturePropertiesInterface {
+    /**
+     * SCIM attribute URIs to hide from the user profile.
+     */
+    hiddenAttributes?: string[];
 }
 
 /**

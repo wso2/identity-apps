@@ -57,6 +57,7 @@ import {
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { getProfileInformation } from "../../store/actions/authenticate";
+import { isHiddenProfileAttribute } from "../../utils/profile-utils";
 import { SettingsSection } from "../shared";
 import "./profile.scss";
 
@@ -129,6 +130,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const uiConfig: UIConfigInterface = useSelector((state: AppState) => state.config?.ui);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = uiConfig?.isMultipleEmailsAndMobileNumbersEnabled;
     const isProfileUsernameReadonly: boolean = uiConfig?.isProfileUsernameReadonly;
+    const hiddenAttributes: string[] = featureConfig?.personalInfo?.properties?.hiddenAttributes;
 
     const [ isProfileUpdating, setIsProfileUpdating ] = useState<boolean>(false);
     // const [ isPreferencesLoading, setIsPreferencesLoading ] = useState<boolean>(true);
@@ -562,7 +564,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             (s: ProfileSchemaInterface) => s.name === schemaName
         );
 
-        if (!targetSchema) {
+        // A hidden multi-valued attribute does not replace the primary one, so the primary one stays visible.
+        if (!targetSchema || isHiddenProfileAttribute(targetSchema, hiddenAttributes)) {
             return false;
         }
 
@@ -576,6 +579,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         if (HIDDEN_ATTRIBUTES.includes(schema.name)) {
+            return false;
+        }
+
+        if (isHiddenProfileAttribute(schema, hiddenAttributes)) {
             return false;
         }
 

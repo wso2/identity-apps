@@ -114,6 +114,9 @@
             "personalInfo": {
                 "disabledFeatures": [ "profileInfo.profile.legacy" ],
                 "enabled": true,
+                "properties": {
+                    "hiddenAttributes": []
+                },
                 "scopes": {
                     "create": [],
                     "delete": [],
