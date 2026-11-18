@@ -483,7 +483,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * Moves wizard to teh previous step
      */
     const previous = () => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
     };
 
     return (
