@@ -1010,6 +1010,25 @@ export const customerDataService: CustomerDataServiceNS = {
             title: "Settings"
         }
     },
+    temporaryProfileRetention: {
+        description: "Temporary profiles that have not been updated for the retention period are deleted automatically. The cleanup never deletes profiles that belong to a user or that are merged with another profile.",
+        fields: {
+            intervalDays: {
+                hint: "How often temporary profiles are cleaned up. The default is {{default}}.",
+                label: "Cleanup interval",
+                option: "{{count}} days",
+                optionOne: "{{count}} day"
+            },
+            retentionDays: {
+                hint: "How long a temporary profile is kept without an update before it is deleted. The default is {{default}}.",
+                label: "Retention period",
+                option: "{{count}} days",
+                optionOne: "{{count}} day"
+            }
+        },
+        heading: "Temporary profile retention",
+        inherited: "This organization uses the retention period and the cleanup interval of its root organization."
+    },
     trustedApplications: {
         console: "Console",
         description: "These applications are allowed to access all of the customer data on a profile.",

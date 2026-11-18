@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor } from "@wso2is/unit-testing/utils";
+import { fireEvent, render, screen, waitFor, within } from "@wso2is/unit-testing/utils";
 import React, { ReactElement, useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { updateCDSConfig } from "../api/config";
@@ -71,6 +71,17 @@ const addOrigin = (origin: string): void => {
     fireEvent.click(screen.getByTestId(`${ ORIGINS }-add-button`));
 };
 
+const optionWithValue = (value: number): HTMLElement => {
+    const option: HTMLElement | undefined = screen.getAllByRole("option")
+        .find((candidate: HTMLElement) => candidate.getAttribute("data-value") === String(value));
+
+    if (!option) {
+        throw new Error(`The dropdown has no option with the value ${ value }.`);
+    }
+
+    return option;
+};
+
 describe("CustomerDataSettingsPage", () => {
 
     beforeEach(() => {
@@ -94,6 +105,24 @@ describe("CustomerDataSettingsPage", () => {
         expect(screen.getByTestId(`${ PAGE }-allowed-origins`)).toBeInTheDocument();
         expect(screen.getByTestId(`${ PAGE }-trusted-applications`)).toBeInTheDocument();
         expect(screen.queryByTestId("resolution-settings")).not.toBeInTheDocument();
+    });
+
+    it("saves the retention of temporary profiles with the page's one update", async () => {
+        vi.mocked(useFuzzyUnificationEnabled).mockReturnValue(false);
+
+        render(<CustomerDataSettingsPage data-componentid={ PAGE } />);
+
+        fireEvent.mouseDown(within(screen.getByTestId(`${ PAGE }-temporary-profile-retention-retentionDays-select`))
+            .getByRole("combobox"));
+        fireEvent.click(optionWithValue(30));
+        fireEvent.click(screen.getByTestId(`${ PAGE }-save`));
+
+        await waitFor(() => expect(mutate).toHaveBeenCalled());
+        expect(updateCDSConfig).toHaveBeenCalledTimes(1);
+        expect(updateCDSConfig).toHaveBeenCalledWith({
+            temporary_profile_cleanup_interval_days: 30,
+            temporary_profile_retention_days: 30
+        });
     });
 
     it("saves the allowed origins and the thresholds with one update", async () => {
