@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.6
+
+### Patch Changes
+
+- [#10961](https://github.com/wso2/identity-apps/pull/10961) [`b78983d1bc38f56b7cdfb2911f468d1b7a15f053`](https://github.com/wso2/identity-apps/commit/b78983d1bc38f56b7cdfb2911f468d1b7a15f053) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Let an organization set how long temporary customer profiles are kept and how often they are cleaned up
+
 ## 2.63.5
 
 ### Patch Changes

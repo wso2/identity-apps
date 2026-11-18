@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 4.37.11
+
+### Patch Changes
+
+- [#10961](https://github.com/wso2/identity-apps/pull/10961) [`b78983d1bc38f56b7cdfb2911f468d1b7a15f053`](https://github.com/wso2/identity-apps/commit/b78983d1bc38f56b7cdfb2911f468d1b7a15f053) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Let an organization set how long temporary customer profiles are kept and how often they are cleaned up
+
+- Updated dependencies [[`b78983d1bc38f56b7cdfb2911f468d1b7a15f053`](https://github.com/wso2/identity-apps/commit/b78983d1bc38f56b7cdfb2911f468d1b7a15f053)]:
+  - @wso2is/admin.cds.v1@1.13.0
+  - @wso2is/i18n@2.63.6
+  - @wso2is/admin.users.v1@2.39.17
+
 ## 4.37.10
 
 ### Patch Changes
