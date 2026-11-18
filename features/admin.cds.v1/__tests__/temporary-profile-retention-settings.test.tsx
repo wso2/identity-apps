@@ -169,6 +169,52 @@ describe("TemporaryProfileRetentionSettings", () => {
         expect(lastReport(onChange).isDirty).toBe(false);
     });
 
+    it("keeps an edit when a refresh changes only the other setting", () => {
+        const onChange: ReturnType<typeof vi.fn> = vi.fn();
+        const { rerender } = render(<TemporaryProfileRetentionSettings
+            config={ configWith({ temporary_profile_cleanup_interval_days: 30, temporary_profile_retention_days: 90 }) }
+            onChange={ onChange } data-componentid={ SETTINGS } />);
+
+        choose("retentionDays", 60);
+        rerender(<TemporaryProfileRetentionSettings
+            config={ configWith({ temporary_profile_cleanup_interval_days: 7, temporary_profile_retention_days: 90 }) }
+            onChange={ onChange } data-componentid={ SETTINGS } />);
+
+        expect(screen.getByTestId(`${ SETTINGS }-retentionDays-select`).querySelector("input"))
+            .toHaveValue("60");
+        expect(screen.getByTestId(`${ SETTINGS }-intervalDays-select`).querySelector("input"))
+            .toHaveValue("7");
+        expect(lastReport(onChange)).toEqual({
+            hasError: false,
+            isDirty: true,
+            payload: {
+                temporary_profile_cleanup_interval_days: 7,
+                temporary_profile_retention_days: 60
+            }
+        });
+    });
+
+    it("shows the saved value again once the server holds the edit", () => {
+        const onChange: ReturnType<typeof vi.fn> = vi.fn();
+        const { rerender } = render(<TemporaryProfileRetentionSettings
+            config={ configWith({ temporary_profile_retention_days: 90 }) }
+            onChange={ onChange } data-componentid={ SETTINGS } />);
+
+        choose("retentionDays", 60);
+        rerender(<TemporaryProfileRetentionSettings
+            config={ configWith({ temporary_profile_retention_days: 60 }) }
+            onChange={ onChange } data-componentid={ SETTINGS } />);
+        expect(lastReport(onChange).isDirty).toBe(false);
+
+        rerender(<TemporaryProfileRetentionSettings
+            config={ configWith({ temporary_profile_retention_days: 180 }) }
+            onChange={ onChange } data-componentid={ SETTINGS } />);
+
+        expect(screen.getByTestId(`${ SETTINGS }-retentionDays-select`).querySelector("input"))
+            .toHaveValue("180");
+        expect(lastReport(onChange).isDirty).toBe(false);
+    });
+
     it("cannot be edited without permission", () => {
         renderSection({ isReadOnly: true });
 

@@ -118,6 +118,7 @@ describe("CustomerDataSettingsPage", () => {
         fireEvent.click(screen.getByTestId(`${ PAGE }-save`));
 
         await waitFor(() => expect(mutate).toHaveBeenCalled());
+        expect(updateCDSConfig).toHaveBeenCalledTimes(1);
         expect(updateCDSConfig).toHaveBeenCalledWith({
             temporary_profile_cleanup_interval_days: 30,
             temporary_profile_retention_days: 30

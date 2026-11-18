@@ -89,20 +89,52 @@ const TemporaryProfileRetentionSettings: FunctionComponent<TemporaryProfileReten
 
     const { t } = useTranslation();
 
-    const [ settings, setSettings ] = useState<SettingsStateInterface>(() => toState(config));
-
-    // The configuration arrives asynchronously, so seed the dropdowns again whenever a fresh copy lands
-    // rather than leaving the defaults showing over the saved values.
-    useEffect(() => {
-        setSettings(toState(config));
-    }, [ config?.temporary_profile_retention_days, config?.temporary_profile_cleanup_interval_days ]);
-
-    const isEditable: boolean = !isReadOnly && !isInherited;
-
     const saved: SettingsStateInterface = useMemo(() => toState(config), [
         config?.temporary_profile_retention_days,
         config?.temporary_profile_cleanup_interval_days
     ]);
+
+    // What the administrator has changed and not saved. A fresh copy of the configuration replaces only
+    // the settings that are not in here, so a refresh does not discard an edit.
+    const [ drafts, setDrafts ] = useState<Partial<SettingsStateInterface>>({});
+
+    const settings: SettingsStateInterface = {
+        intervalDays: drafts.intervalDays ?? saved.intervalDays,
+        retentionDays: drafts.retentionDays ?? saved.retentionDays
+    };
+
+    // A draft the server now holds is saved, so it stops being a draft and later changes of the saved
+    // value show.
+    useEffect(() => {
+        setDrafts((previous: Partial<SettingsStateInterface>) => {
+            const remaining: Partial<SettingsStateInterface> = { ...previous };
+
+            SETTING_KEYS.forEach((key: SettingKey) => {
+                if (remaining[ key ] === saved[ key ]) {
+                    delete remaining[ key ];
+                }
+            });
+
+            return Object.keys(remaining).length === Object.keys(previous).length ? previous : remaining;
+        });
+    }, [ saved ]);
+
+    const isEditable: boolean = !isReadOnly && !isInherited;
+
+    const handleChange = (key: SettingKey, value: number): void => {
+        setDrafts((previous: Partial<SettingsStateInterface>) => {
+            const next: Partial<SettingsStateInterface> = { ...previous };
+
+            // Choosing the saved value again is not an edit.
+            if (value === saved[ key ]) {
+                delete next[ key ];
+            } else {
+                next[ key ] = value;
+            }
+
+            return next;
+        });
+    };
 
     const isDirty: boolean = SETTING_KEYS.some((key: SettingKey) => settings[ key ] !== saved[ key ]);
 
@@ -116,7 +148,7 @@ const TemporaryProfileRetentionSettings: FunctionComponent<TemporaryProfileReten
                 temporary_profile_retention_days: settings.retentionDays
             }
         });
-    }, [ settings, isDirty ]);
+    }, [ settings.intervalDays, settings.retentionDays, isDirty ]);
 
     const optionLabel = (key: SettingKey, value: number): string =>
         t(`customerDataService:temporaryProfileRetention.fields.${ key }.${ value === 1 ? "optionOne" : "option" }`,
@@ -159,8 +191,7 @@ const TemporaryProfileRetentionSettings: FunctionComponent<TemporaryProfileReten
                         disabled={ !isEditable }
                         labelId={ `${ componentId }-${ key }-label` }
                         onChange={ (event: SelectChangeEvent<number>): void =>
-                            setSettings((previous: SettingsStateInterface) =>
-                                ({ ...previous, [ key ]: Number(event.target.value) })) }
+                            handleChange(key, Number(event.target.value)) }
                         data-componentid={ `${ componentId }-${ key }-select` }
                     >
                         { optionsFor(key, saved[ key ]).map((value: number) => (

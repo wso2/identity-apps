@@ -1011,7 +1011,7 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     temporaryProfileRetention: {
-        description: "Temporary profiles that have not been updated for the retention period are deleted. Profiles that belong to a user, or that are merged with another profile, are never deleted.",
+        description: "Temporary profiles that have not been updated for the retention period are deleted automatically. The cleanup never deletes profiles that belong to a user or that are merged with another profile.",
         fields: {
             intervalDays: {
                 hint: "How often temporary profiles are cleaned up. The default is {{default}}.",
@@ -1027,7 +1027,7 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         heading: "Temporary profile retention",
-        inherited: "This organization uses the retention period of its root organization."
+        inherited: "This organization uses the retention period and the cleanup interval of its root organization."
     },
     trustedApplications: {
         console: "Console",
