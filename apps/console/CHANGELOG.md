@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.37.10
+
+### Patch Changes
+
+- [#10956](https://github.com/wso2/identity-apps/pull/10956) [`288b56cec18807334df6d0f90708484b97b33e12`](https://github.com/wso2/identity-apps/commit/288b56cec18807334df6d0f90708484b97b33e12) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Use the server default target URL for the flow handoff step of the device registration flow
+
+- Updated dependencies [[`288b56cec18807334df6d0f90708484b97b33e12`](https://github.com/wso2/identity-apps/commit/288b56cec18807334df6d0f90708484b97b33e12)]:
+  - @wso2is/admin.device-registration-flow-builder.v1@1.0.2
+
 ## 4.37.9
 
 ### Patch Changes
