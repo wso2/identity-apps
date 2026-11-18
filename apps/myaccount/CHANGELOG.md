@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 4.6.2
+
+### Patch Changes
+
+- [#10933](https://github.com/wso2/identity-apps/pull/10933) [`a3175ece261531487da7e0c0972396b914e44037`](https://github.com/wso2/identity-apps/commit/a3175ece261531487da7e0c0972396b914e44037) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add the `[myaccount.personal_info] hidden_attributes` config to hide attributes from the My Account profile, such as Enterprise attributes in migrated environments that duplicate a core attribute
+
 ## 4.6.1
 
 ### Patch Changes
