@@ -144,7 +144,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const dispatch: Dispatch = useDispatch();
 
     const [ authenticationSequence, setAuthenticationSequence ] = useState<AuthenticationSequenceInterface>(
-        cloneDeep(application?.authenticationSequence)
+        () => cloneDeep(application?.authenticationSequence)
     );
     const [ isConditionalAuthenticationEnabled, setIsConditionalAuthenticationEnabled ] = useState<boolean>(false);
     const [ filteredAuthenticators, setFilteredAuthenticators ] = useState<{
