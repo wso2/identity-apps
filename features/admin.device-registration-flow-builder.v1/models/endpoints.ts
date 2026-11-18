@@ -25,9 +25,4 @@ export interface DeviceRegistrationFlowBuilderResourceEndpointsInterface {
      * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow`
     */
     deviceRegistrationFlow: string;
-    /**
-     * Accounts portal page that a handed off device registration flow continues on.
-     * @example `https://{serverUrl}/t/{tenantDomain}/accounts/register-device`
-     */
-    deviceRegistrationPortal: string;
 }

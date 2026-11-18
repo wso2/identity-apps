@@ -27,7 +27,6 @@ export const getDeviceRegistrationFlowBuilderResourceEndpoints = (
     serverOrigin: string
 ): DeviceRegistrationFlowBuilderResourceEndpointsInterface => {
     return {
-        deviceRegistrationFlow: `${ serverOrigin }/api/server/v1/flow`,
-        deviceRegistrationPortal: `${ serverOrigin }/accounts/register-device`
+        deviceRegistrationFlow: `${ serverOrigin }/api/server/v1/flow`
     };
 };

@@ -66,7 +66,6 @@ import StepFactory from "./resources/steps/step-factory";
 import useGetDeviceRegistrationFlow from "../api/use-get-device-registration-flow";
 import useGetDeviceRegistrationFlowBuilderResources from "../api/use-get-device-registration-flow-builder-resources";
 import DeviceRegistrationFlowExecutorConstants from "../constants/device-registration-flow-executor-constants";
-import setFlowHandoffTargetUrl from "../utils/set-flow-handoff-target-url";
 
 /**
  * Props interface of {@link DeviceRegistrationFlowBuilderCore}
@@ -417,9 +416,9 @@ const DeviceRegistrationFlowBuilderCore: FunctionComponent<DeviceRegistrationFlo
             templates.find((template: Template) => template.type === TemplateTypes.Basic)
         );
 
-        const steps: Step[] = setFlowHandoffTargetUrl(basicTemplate?.config?.data?.steps);
-
-        const nodes: Node[] = generateSteps(steps, basicTemplate?.config?.data?.variables);
+        const nodes: Node[] = generateSteps(
+            basicTemplate?.config?.data?.steps, basicTemplate?.config?.data?.variables
+        );
 
         const replacers: any = basicTemplate?.config?.data?.__generationMeta__?.replacers || [];
 
@@ -674,7 +673,7 @@ const DeviceRegistrationFlowBuilderCore: FunctionComponent<DeviceRegistrationFlo
         const [ templateSteps, replacedPlaceholders ]: [ Node[], Map<string, string> ] =
             updateTemplatePlaceholderReferences(
                 generateSteps(
-                    setFlowHandoffTargetUrl(template.config.data.steps) as any,
+                    template.config.data.steps as any,
                     template.config.data.variables
                 ),
                 replacers
