@@ -217,7 +217,8 @@ export const DARK_THEME: ThemeConfigInterface = {
     },
     loginPage: {
         background: {
-            backgroundColor: ""
+            backgroundColor: "",
+            backgroundImageURL: ""
         },
         font: {
             color: ""

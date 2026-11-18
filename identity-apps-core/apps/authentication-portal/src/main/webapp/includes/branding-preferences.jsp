@@ -60,6 +60,7 @@
     String passwordRecoveryOverrideURL = "";
     String recoveryPortalOverrideURL = "";
     String layout = "centered";
+    boolean isBackgroundImageSupportedLayout = true;
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();

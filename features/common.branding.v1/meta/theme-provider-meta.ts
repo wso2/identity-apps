@@ -18,6 +18,7 @@
 
 import isEmpty from "lodash-es/isEmpty";
 import { BrandingPreferenceThemeInterface } from "../models/branding-preferences";
+import { resolveCssBackgroundImage } from "../utils/resolve-css-background-image";
 
 /**
  * Class for the Theme Preference Metadata.
@@ -27,9 +28,10 @@ export class ThemePreferenceMeta {
     /**
      * Get the theme skeleton.
      * @param theme - Theme Config.
+     * @param activeLayout - Name of the active layout.
      * @returns Theme Skeleton
      */
-    public static getThemeSkeleton(theme: BrandingPreferenceThemeInterface): string {
+    public static getThemeSkeleton(theme: BrandingPreferenceThemeInterface, activeLayout?: string): string {
 
         if (!theme) {
             return;
@@ -96,6 +98,7 @@ export class ThemePreferenceMeta {
         --asg-login-box-border-radius: ${ theme[ theme.activeTheme ].loginBox.border.borderRadius };
         --asg-login-box-text-color: ${ loginBoxFontColor };
         --asg-login-page-background-color: ${ theme[ theme.activeTheme ].loginPage?.background?.backgroundColor || "var(--asg-colors-background-body-main)" };
+        --asg-login-page-background-image: ${ resolveCssBackgroundImage(theme[ theme.activeTheme ].loginPage?.background?.backgroundImageURL, activeLayout) };
         --asg-login-page-font-color: ${ theme[ theme.activeTheme ].loginPage?.font?.color || "var(--asg-colors-text-primary)" };
         --asg-input-field-base-text-color: ${ inputBaseFontColor || "var(--asg-colors-text-primary)" };
         --asg-input-field-base-background-color: ${ theme[ theme.activeTheme ].inputs.base.background.backgroundColor };
@@ -974,6 +977,16 @@ export class ThemePreferenceMeta {
     /* Error, Success Pages */
     .login-portal.layout .page-wrapper.success-page, .login-portal.layout .page-wrapper.error-page {
         background: var(--asg-login-page-background-color);
+    }
+
+    /* Background Image */
+    .login-portal.layout .page-wrapper,
+    .login-portal.layout .page-wrapper.success-page,
+    .login-portal.layout .page-wrapper.error-page {
+        background-image: var(--asg-login-page-background-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     /* ------  Login Box ------ */

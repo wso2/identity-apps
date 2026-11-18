@@ -253,7 +253,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             const view: string = Mustache.render(htmlContent, context);
 
             const mergedCSSContent: string =
-                BrandingPreferenceMeta.getThemeSkeleton(brandingPreference.theme)
+                BrandingPreferenceMeta.getThemeSkeleton(
+                    brandingPreference.theme,
+                    brandingPreference.layout?.activeLayout
+                )
                 + BrandingPreferenceMeta.getStylesToDisablePointerEvents()
                 + cssContent;
 
@@ -341,7 +344,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             }
 
             return `${
-                BrandingPreferenceMeta.getThemeSkeleton(brandingPreference.theme)
+                BrandingPreferenceMeta.getThemeSkeleton(
+                    brandingPreference.theme,
+                    brandingPreference.layout?.activeLayout
+                )
             }\n${previewScreenSkeletonStyles}}`;
         }
 

@@ -388,11 +388,21 @@ interface BrandingPreferencePageInterface {
     /**
      * Page Background.
      */
-    background: BackgroundStyleAttributesInterface;
+    background: BrandingPreferencePageBackgroundInterface;
     /**
      * Page Body Font.
      */
     font: FontStyleAttributesInterface;
+}
+
+/**
+ * Interface for the login page background preferences.
+ */
+interface BrandingPreferencePageBackgroundInterface extends BackgroundStyleAttributesInterface {
+    /**
+     * URL of the image displayed as the login page background.
+     */
+    backgroundImageURL?: string;
 }
 
 /**

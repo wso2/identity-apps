@@ -1354,6 +1354,11 @@ export interface Extensions {
                                     label: string;
                                     placeholder: string;
                                 };
+                                backgroundImage: {
+                                    hint: string;
+                                    label: string;
+                                    placeholder: string;
+                                };
                                 fontColor: {
                                     hint: string;
                                     label: string;

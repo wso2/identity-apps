@@ -19,6 +19,8 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.Locale" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
@@ -53,6 +55,7 @@
     String primaryTextColor = "";
     String secondaryTextColor = "";
     String loginPageBackgroundColor = "";
+    String loginPageBackgroundImageURL = "";
     String loginPageFontColor = "";
     String footerBorderColor = "";
     String footerFontColor = "inherit";
@@ -110,6 +113,7 @@
     String LOGIN_PAGE_KEY = "loginPage";
     String BACKGROUND_KEY = "background";
     String BACKGROUND_COLOR_KEY = "backgroundColor";
+    String BACKGROUND_IMAGE_URL_KEY = "backgroundImageURL";
     String BORDER_KEY = "border";
     String BORDER_COLOR_KEY = "borderColor";
     String BORDER_RADIUS_KEY = "borderRadius";
@@ -359,6 +363,22 @@
                     && !StringUtils.isBlank(pageBody.getJSONObject(BACKGROUND_KEY).getString(BACKGROUND_COLOR_KEY))) {
 
                     loginPageBackgroundColor = pageBody.getJSONObject(BACKGROUND_KEY).getString(BACKGROUND_COLOR_KEY);
+                }
+                if (isBackgroundImageSupportedLayout
+                    && pageBody.has(BACKGROUND_KEY)
+                    && pageBody.getJSONObject(BACKGROUND_KEY).has(BACKGROUND_IMAGE_URL_KEY)
+                    && !StringUtils.isBlank(pageBody.getJSONObject(BACKGROUND_KEY).optString(BACKGROUND_IMAGE_URL_KEY))) {
+
+                    String backgroundImageURL = pageBody.getJSONObject(BACKGROUND_KEY)
+                        .optString(BACKGROUND_IMAGE_URL_KEY).trim();
+                    String backgroundImageURLInLowerCase = backgroundImageURL.toLowerCase(Locale.ROOT);
+
+                    // Only absolute http(s) URLs are allowed as the login page background image.
+                    if (backgroundImageURLInLowerCase.startsWith("https://")
+                        || backgroundImageURLInLowerCase.startsWith("http://")) {
+
+                        loginPageBackgroundImageURL = backgroundImageURL;
+                    }
                 }
                 if (pageBody.has(FONT_KEY)
                     && pageBody.getJSONObject(FONT_KEY).has(FONT_COLOR_KEY)
@@ -644,6 +664,7 @@
         --asg-login-box-border-radius: <%= StringEscapeUtils.escapeHtml4(loginBoxBorderRadius) %>;
         --asg-login-box-text-color: <%= StringEscapeUtils.escapeHtml4(loginBoxFontColor) %>;
         --asg-login-page-background-color: <%= !StringUtils.isBlank(loginPageBackgroundColor) ? StringEscapeUtils.escapeHtml4(loginPageBackgroundColor) : "var(--asg-colors-background-body-main)" %>;
+        --asg-login-page-background-image: <%= !StringUtils.isBlank(loginPageBackgroundImageURL) ? "url(\"" + Encode.forCssUrl(loginPageBackgroundImageURL) + "\")" : "none" %>;
         --asg-login-page-font-color: <%= !StringUtils.isBlank(loginPageFontColor) ? StringEscapeUtils.escapeHtml4(loginPageFontColor) : "var(--asg-colors-text-primary)" %>;
         --asg-input-field-base-text-color: <%= !StringUtils.isBlank(inputBaseFontColor) ? StringEscapeUtils.escapeHtml4(inputBaseFontColor) : "var(--asg-colors-text-primary)" %>;
         --asg-input-field-base-background-color: <%= StringEscapeUtils.escapeHtml4(inputBaseBackgroundColor) %>;
@@ -1516,6 +1537,29 @@
     .login-portal.layout .page-wrapper.success-page, .login-portal.layout .page-wrapper.error-page {
         background: var(--asg-login-page-background-color);
     }
+
+    /* Background Image */
+    .login-portal.layout .page-wrapper,
+    .login-portal.layout .page-wrapper.success-page,
+    .login-portal.layout .page-wrapper.error-page {
+        background-image: var(--asg-login-page-background-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    <% if (!StringUtils.isBlank(loginPageBackgroundImageURL)) { %>
+    /* Blend the footer language selector with the background image. */
+    .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown,
+    .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown:hover {
+        color: var(--asg-footer-text-color);
+        background: transparent !important;
+    }
+    .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown > .text,
+    .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown > .dropdown.icon {
+        color: var(--asg-footer-text-color) !important;
+    }
+    <% } %>
 
     /* ------  Login Box ------ */
 

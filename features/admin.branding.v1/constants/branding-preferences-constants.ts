@@ -152,6 +152,8 @@ export class BrandingPreferencesConstants {
      * Design form field constraints for validations.
      */
     public static readonly DESIGN_FORM_FIELD_CONSTRAINTS: {
+        BACKGROUND_IMAGE_URL_MAX_LENGTH: number,
+        BACKGROUND_IMAGE_URL_MIN_LENGTH: number,
         BORDER_RADIUS_MAX_LENGTH: number,
         BORDER_RADIUS_MIN_LENGTH: number,
         BORDER_WIDTH_MAX_LENGTH: number,
@@ -179,6 +181,8 @@ export class BrandingPreferencesConstants {
         PRODUCT_TAGLINE_TEXT_MAX_LENGTH: number,
         PRODUCT_TAGLINE_TEXT_MIN_LENGTH: number,
     } = {
+            BACKGROUND_IMAGE_URL_MAX_LENGTH: 2048,
+            BACKGROUND_IMAGE_URL_MIN_LENGTH: 3,
             BORDER_RADIUS_MAX_LENGTH: 100,
             BORDER_RADIUS_MIN_LENGTH: 3,
             BORDER_WIDTH_MAX_LENGTH: 100,
@@ -436,7 +440,8 @@ export class BrandingPreferencesConstants {
                 },
                 loginPage: {
                     background: {
-                        backgroundColor: undefined
+                        backgroundColor: undefined,
+                        backgroundImageURL: undefined
                     },
                     font: {
                         color: undefined
@@ -639,7 +644,8 @@ export class BrandingPreferencesConstants {
                 },
                 loginPage: {
                     background: {
-                        backgroundColor: undefined
+                        backgroundColor: undefined,
+                        backgroundImageURL: undefined
                     },
                     font: {
                         color: undefined
@@ -850,7 +856,8 @@ export class BrandingPreferencesConstants {
         },
         loginPage: {
             background: {
-                backgroundColor: undefined
+                backgroundColor: undefined,
+                backgroundImageURL: undefined
             },
             font: {
                 color: undefined
