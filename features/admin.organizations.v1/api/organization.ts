@@ -39,6 +39,7 @@ import {
     CheckOrgHandleInterface,
     CheckOrgHandleResponseInterface,
     OrganizationInterface,
+    OrganizationLinkInterface,
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
@@ -103,6 +104,75 @@ export const getOrganizations = (
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);
         });
+};
+
+/**
+ * Extracts the `after` cursor from the `next` pagination link of an organization list response.
+ *
+ * @param response - Organization list response.
+ * @returns The `after` cursor if a next page exists, otherwise `undefined`.
+ */
+const getNextPageCursor = (response: OrganizationListInterface): string | undefined => {
+    const nextLink: OrganizationLinkInterface | undefined = response?.links?.find(
+        (link: OrganizationLinkInterface) => link.rel === "next"
+    );
+
+    if (!nextLink?.href) {
+        return undefined;
+    }
+
+    const query: string = nextLink.href.includes("?")
+        ? nextLink.href.substring(nextLink.href.indexOf("?") + 1)
+        : nextLink.href;
+
+    return new URLSearchParams(query).get("after") ?? undefined;
+};
+
+/**
+ * Get all organizations by paginating through every page of the organizations API.
+ *
+ * @param filter - The filter query.
+ * @param recursive - Whether we need to do a recursive search.
+ * @param isRoot - Whether the organization is the root.
+ * @param pageSize - The number of organizations to request per page.
+ *
+ * @returns a promise containing all the organizations.
+ */
+export const getAllOrganizations = async (
+    filter: string,
+    recursive: boolean,
+    isRoot: boolean = false,
+    pageSize: number = 100
+): Promise<OrganizationInterface[]> => {
+    const organizations: OrganizationInterface[] = [];
+    const visitedCursors: Set<string> = new Set<string>();
+    let after: string | undefined = undefined;
+
+    do {
+        const response: OrganizationListInterface = await getOrganizations(
+            filter,
+            pageSize,
+            after,
+            null,
+            recursive,
+            isRoot
+        );
+
+        organizations.push(...(response?.organizations ?? []));
+
+        after = getNextPageCursor(response);
+
+        // Guard against a server returning the same cursor repeatedly.
+        if (after && visitedCursors.has(after)) {
+            break;
+        }
+
+        if (after) {
+            visitedCursors.add(after);
+        }
+    } while (after);
+
+    return organizations;
 };
 
 /**
