@@ -201,7 +201,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             setCopyScopesValue(
                 [ ...new Set(allAuthorizedScopes.map(
                     (scope: AuthorizedPermissionListItemInterface) => scope.name
-                )) ].sort().join(" ")
+                )) ].toSorted().join(" ")
             );
         }
     }, [ allAuthorizedScopes ]);
