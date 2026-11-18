@@ -844,6 +844,33 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         }
     };
 
+    /**
+     * Array-form selection handler for the controlled multi-select tree.
+     *
+     * The MUI X {@link RichTreeView} per-item `onItemSelectionToggle` callback fires against the
+     * tree's internal selection model and, with a controlled `selectedItems` array under
+     * `multiSelect`, can desync from that array when sibling checkboxes are toggled in quick
+     * succession — dropping earlier selections so only the last toggled org survives. The array-form
+     * `onSelectedItemsChange` instead delivers the complete new selection in a single call, making the
+     * controlled array the single source of truth. We diff the new selection against the previous one
+     * and route each added/removed org through {@link resolveSelectedItems}, preserving the existing
+     * addedOrgs/removedOrgs bookkeeping, role cleanup, and parent/child propagation.
+     *
+     * @param newSelectedItems - The complete set of selected item ids reported by the tree.
+     */
+    const handleSelectedItemsChange = (newSelectedItems: string[]): void => {
+        const newSet: Set<string> = new Set(newSelectedItems);
+        const prevSet: Set<string> = new Set(selectedItems);
+
+        // Items newly selected: present in the new selection but not in the previous one.
+        const addedItems: string[] = newSelectedItems.filter((itemId: string) => !prevSet.has(itemId));
+        // Items deselected: present in the previous selection but not in the new one.
+        const removedItems: string[] = selectedItems.filter((itemId: string) => !newSet.has(itemId));
+
+        addedItems.forEach((itemId: string) => resolveSelectedItems(itemId, true));
+        removedItems.forEach((itemId: string) => resolveSelectedItems(itemId, false));
+    };
+
     const selectParentNodes = (selectedItemId: string): void => {
         // Get the seleted node from the flatOrganizationMap
         const selectedOrg: OrganizationInterface | undefined = flatOrganizationMap[selectedItemId];
@@ -1609,12 +1636,11 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                                     collapseChildNodes(itemId);
                                                 }
                                             } }
-                                            onItemSelectionToggle={ (
+                                            onSelectedItemsChange={ (
                                                 _e: SyntheticEvent,
-                                                itemId: string,
-                                                isSelected: boolean
+                                                itemIds: string[]
                                             ) =>
-                                                resolveSelectedItems(itemId, isSelected) }
+                                                handleSelectedItemsChange(itemIds) }
                                             onItemClick={ (_e: SyntheticEvent, itemId: string) => {
                                                 setSelectedOrgId(itemId);
                                             } }
