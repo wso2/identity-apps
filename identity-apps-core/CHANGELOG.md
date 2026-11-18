@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.11.1
+
+### Patch Changes
+
+- [#10507](https://github.com/wso2/identity-apps/pull/10507) [`877595f63f3b3ab214ca90df7fa56a2be08fd08b`](https://github.com/wso2/identity-apps/commit/877595f63f3b3ab214ca90df7fa56a2be08fd08b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Pass the anonymous profile tracker in self registration and on each request that continues a registration flow
+
 ## 5.11.0
 
 ### Minor Changes
