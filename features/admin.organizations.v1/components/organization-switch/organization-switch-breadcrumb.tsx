@@ -31,6 +31,7 @@ import { SessionStorageUtils } from "@wso2is/core/utils";
 import { Action, Location } from "history";
 import React, {
     FunctionComponent,
+    KeyboardEvent,
     ReactElement,
     SyntheticEvent,
     useEffect,
@@ -488,10 +489,18 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     !isLoading && (
                         <div className="organization-breadcrumb-wrapper">
                             <div
+                                role="button"
+                                aria-haspopup="true"
                                 tabIndex={ 0 }
                                 onBlur={ () => setIsDropDownOpen(false) }
                                 className="organization-breadcrumb"
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
+                                onKeyDown={ (e: KeyboardEvent<HTMLDivElement>): void => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        e.currentTarget.click();
+                                    }
+                                } }
                             >
                                 <p className="organization-breadcrumb-label">
                                     { organizationType === OrganizationType.SUPER_ORGANIZATION ||
