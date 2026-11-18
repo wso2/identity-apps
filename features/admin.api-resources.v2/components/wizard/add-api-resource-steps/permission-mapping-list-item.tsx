@@ -165,7 +165,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                 }
                             } }
                             required={ true }
-                            tabIndex={ 1 }
+                            tabIndex={ 0 }
                             data-testid={ `${componentId}-identifier` }
                         />
                         <Hint>
@@ -188,7 +188,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.displayName.emptyValidate") }
                             required={ true }
-                            tabIndex={ 2 }
+                            tabIndex={ 0 }
                             data-testid={ `${componentId}-displayName` }
                         />
                         <Hint>
@@ -207,7 +207,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                 "fields.description.label") }
                             placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.description.placeholder") }
-                            tabIndex={ 3 }
+                            tabIndex={ 0 }
                             maxLength={ 300 }
                             minLength={ 3 }
                             data-testid={ `${componentId}-description` }
@@ -225,7 +225,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             type="button"
                             form={ FORM_ID }
                             size="small"
-                            tabIndex={ 4 }
+                            tabIndex={ 0 }
                             buttonType="primary_btn"
                             name="submit-button"
                             icon="add"

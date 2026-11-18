@@ -321,7 +321,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                tabIndex={ 6 }
+                                tabIndex={ 0 }
                                 data-componentid={ `${componentId}-cancel-button` }
                                 floated="left"
                                 onClick={ (e: React.MouseEvent<HTMLElement>) => onClose(e, null) }
@@ -333,7 +333,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
-                                tabIndex={ 8 }
+                                tabIndex={ 0 }
                                 data-componentid={ `${componentId}-submit-button` }
                                 floated="right"
                                 onClick={ () => {
