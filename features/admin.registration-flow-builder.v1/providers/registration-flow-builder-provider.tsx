@@ -93,7 +93,7 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
 
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
-    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { flowCompletionConfigs, setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
@@ -134,6 +134,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: t("flows:registrationFlow.notifications.updateRegistrationFlow.success.message")
                 })
             );
+
+            setRefetchFlow(true);
 
             return true;
         } catch (error) {
