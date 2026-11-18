@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.5
+
+### Patch Changes
+
+- [#10950](https://github.com/wso2/identity-apps/pull/10950) [`c5ae76c16c37a7769397ae075bb92141714c4042`](https://github.com/wso2/identity-apps/commit/c5ae76c16c37a7769397ae075bb92141714c4042) Thanks [@pamodaaw](https://github.com/pamodaaw)! - Improve the spacing of the Authsignal connection settings form and label the regions by their data center location
+
 ## 2.63.4
 
 ### Patch Changes
