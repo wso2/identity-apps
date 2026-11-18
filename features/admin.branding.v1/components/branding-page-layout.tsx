@@ -134,7 +134,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         isValidating: isApplicationListFetchRequestValidating,
-        error: applicationListFetchRequestError
+        error: applicationListFetchRequestError,
+        mutate: mutateApplicationList
     } = useApplicationList(
         "templateId",
         APPLICATION_LIST_PAGE_SIZE,
@@ -176,6 +177,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     };
 
     const isInitialApplicationSearch: MutableRefObject<boolean> = useRef<boolean>(true);
+    const isApplicationListRequestObserved: MutableRefObject<boolean> = useRef<boolean>(false);
 
     /**
      * Debounced setter for the application dropdown search term.
@@ -248,8 +250,29 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     }, [ history?.location?.search ]);
 
     useEffect(() => {
-        if (!applicationList || isApplicationListFetchRequestLoading
-            || isApplicationListFetchRequestValidating) return;
+        isApplicationListRequestObserved.current = false;
+    }, [ appListOffset, applicationSearchQuery ]);
+
+    useEffect(() => {
+        if (isApplicationListFetchRequestLoading || isApplicationListFetchRequestValidating) {
+            isApplicationListRequestObserved.current = true;
+
+            return;
+        }
+
+        if (!applicationList) return;
+
+        if (!isApplicationListRequestObserved.current) {
+            // Served from the cache without a request, re-fetch before using it.
+            isApplicationListRequestObserved.current = true;
+            mutateApplicationList();
+
+            return;
+        }
+
+        if (applicationListFetchRequestError) return;
+
+        isApplicationListRequestObserved.current = false;
 
         const updatedApplicationList: ApplicationListItemInterface[] = applicationList.applications;
 
@@ -272,7 +295,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         if (!nextFound) {
             setHasMoreApplications(false);
         }
-    }, [ applicationList ]);
+    }, [ applicationList, isApplicationListFetchRequestLoading, isApplicationListFetchRequestValidating,
+        applicationListFetchRequestError ]);
 
     /**
      * Proactively loads more pages while the dropdown is open and too few selectable
