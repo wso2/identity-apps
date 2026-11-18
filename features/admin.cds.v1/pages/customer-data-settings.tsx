@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { updateCDSConfig } from "../api/config";
 import AllowedOriginsSettings from "../components/allowed-origins-settings";
+import TemporaryProfileRetentionSettings from "../components/temporary-profile-retention-settings";
 import ResolutionSettings from "../components/resolution-settings";
 import TrustedApplicationsSettings from "../components/trusted-applications-settings";
 import useCDSConfig from "../hooks/use-config";
@@ -46,14 +47,15 @@ import { CDSConfigUpdateRequest, CDSSettingsSectionStateInterface } from "../mod
  */
 enum SettingsSection {
     ALLOWED_ORIGINS = "allowedOrigins",
+    TEMPORARY_PROFILE_RETENTION = "temporaryProfileRetention",
     RESOLUTION = "resolution",
     TRUSTED_APPLICATIONS = "trustedApplications"
 }
 
 /**
  * Settings of the organization: the browser origins its apps call CDS from, the applications that
- * read the application data of every app and, with tolerant matching, how confident the engine has
- * to be before it acts. They sit in one form with one
+ * read the application data of every app, how long temporary profiles are kept and, with tolerant
+ * matching, how confident the engine has to be before it acts. They sit in one form with one
  * update, each section separated from the next.
  *
  * Kept off the Customer Data Profile page deliberately: that page is where an operator goes
@@ -103,6 +105,7 @@ const CustomerDataSettingsPage: FunctionComponent<IdentifiableComponentInterface
         () => [
             sections[ SettingsSection.ALLOWED_ORIGINS ],
             isSubOrganization ? undefined : sections[ SettingsSection.TRUSTED_APPLICATIONS ],
+            sections[ SettingsSection.TEMPORARY_PROFILE_RETENTION ],
             isFuzzyUnificationEnabled ? sections[ SettingsSection.RESOLUTION ] : undefined
         ].filter(Boolean),
         [ sections, isSubOrganization, isFuzzyUnificationEnabled ]
@@ -185,6 +188,14 @@ const CustomerDataSettingsPage: FunctionComponent<IdentifiableComponentInterface
                                 />
                             </>
                         ) }
+                        <Divider />
+                        <TemporaryProfileRetentionSettings
+                            config={ cdsConfig }
+                            onChange={ handleSectionChange(SettingsSection.TEMPORARY_PROFILE_RETENTION) }
+                            isReadOnly={ !hasCDSUpdateScopes || isSaving }
+                            isInherited={ isSubOrganization }
+                            data-componentid={ `${ componentId }-temporary-profile-retention` }
+                        />
                         { /* The thresholds only matter with tolerant matching, so they stay behind its flag. */ }
                         { isFuzzyUnificationEnabled && (
                             <>

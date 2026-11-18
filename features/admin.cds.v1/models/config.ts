@@ -79,6 +79,19 @@ export interface CDSConfig {
      * organization reports the origins of its root organization, which are the ones that apply.
      */
     cors_allowed_origins?: string[];
+
+    /**
+     * Days a temporary profile may go without an update before it is deleted, together with its
+     * cookies. The server reports the days that apply: the organization's own setting, or its
+     * default when none is set. A child organization reports the days of its root organization.
+     */
+    temporary_profile_retention_days?: number;
+
+    /**
+     * Days between two cleanups of the organization's temporary profiles. Reported the way the
+     * retention is: the organization's own setting, or the default when none is set.
+     */
+    temporary_profile_cleanup_interval_days?: number;
 }
 
 /**
@@ -100,6 +113,8 @@ export interface CDSConfigUpdateRequest {
     manual_review_threshold?: number;
     deterministic_match_decisive?: boolean;
     cors_allowed_origins?: string[];
+    temporary_profile_retention_days?: number;
+    temporary_profile_cleanup_interval_days?: number;
 }
 
 /**
@@ -146,3 +161,15 @@ export const CDS_CONTRADICTION_THRESHOLD: number = 0.3;
  * be dropped instead of escalated.
  */
 export const CDS_SCORE_PENALTY_OFFSET: number = 0.01;
+
+/**
+ * What an organization can pick for the cleanup of temporary profiles: the retention in days and the
+ * days between two cleanups. The server accepts any whole number from 1, so a value that is stored
+ * and is not one of these is still shown.
+ */
+export const CDS_TEMPORARY_PROFILE_CLEANUP: Record<
+    "intervalDays" | "retentionDays", { default: number; options: number[] }
+> = {
+    intervalDays: { default: 30, options: [ 3, 7, 14, 30, 60, 90 ] },
+    retentionDays: { default: 90, options: [ 30, 60, 90, 180, 365 ] }
+};

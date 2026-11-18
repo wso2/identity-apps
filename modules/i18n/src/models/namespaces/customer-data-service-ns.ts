@@ -894,6 +894,25 @@ export interface CustomerDataServiceNS {
             title: string;
         };
     };
+    temporaryProfileRetention: {
+        description: string;
+        fields: {
+            intervalDays: {
+                hint: string;
+                label: string;
+                option: string;
+                optionOne: string;
+            };
+            retentionDays: {
+                hint: string;
+                label: string;
+                option: string;
+                optionOne: string;
+            };
+        };
+        heading: string;
+        inherited: string;
+    };
     trustedApplications: {
         console: string;
         description: string;
