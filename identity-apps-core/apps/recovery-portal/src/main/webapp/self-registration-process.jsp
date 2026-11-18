@@ -368,7 +368,16 @@
         }
 
         // After existing claim population loop
-        String cdsProfileCookie = request.getParameter("http://wso2.org/claims/cdsProfile");
+        String cdsProfileCookie = null;
+        Cookie[] requestCookies = request.getCookies();
+        if (requestCookies != null) {
+            for (Cookie requestCookie : requestCookies) {
+                if ("cds_profile".equals(requestCookie.getName())) {
+                    cdsProfileCookie = requestCookie.getValue();
+                    break;
+                }
+            }
+        }
         if (StringUtils.isNotBlank(cdsProfileCookie)) {
             Claim profileIdClaim = new Claim();
             profileIdClaim.setUri("http://wso2.org/claims/cdsProfile");
@@ -410,6 +419,13 @@
         properties.add(spProperty);
         properties.add(spIdProperty);
         properties.add(appIsAccessUrlAvailableProperty);
+
+        if (StringUtils.isNotBlank(cdsProfileCookie)) {
+            Property anonymousProfileTrackerProperty = new Property();
+            anonymousProfileTrackerProperty.setKey("anonymous_profile_tracker");
+            anonymousProfileTrackerProperty.setValue(cdsProfileCookie);
+            properties.add(anonymousProfileTrackerProperty);
+        }
 
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);
