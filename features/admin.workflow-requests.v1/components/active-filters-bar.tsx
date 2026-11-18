@@ -56,19 +56,15 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                             <span className="filter-value">
                                 { filter.label }
                             </span>
-                            <span
-                                role="button"
-                                tabIndex={ 0 }
+                            <button
+                                type="button"
                                 aria-label={ t("workflowRequests:activeFiltersBar.removeFilter",
                                     { filter: filter.label }) }
                                 onClick={ () => onRemove(filter) }
-                                onKeyPress={ (e: React.KeyboardEvent) => {
-                                    if (e.key === "Enter" || e.key === " ") onRemove(filter);
-                                } }
                                 className="filter-remove-button"
                             >
                                 <Icon name="close" size="small" className="icon" />
-                            </span>
+                            </button>
                         </div>
                     ))
                 ) : (
