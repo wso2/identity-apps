@@ -104,7 +104,7 @@
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-    String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
+    String callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.encodeURL(request.getParameter("callback")));
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
 
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
@@ -192,9 +192,9 @@
      * Validate the back to login URL. If the URL is not valid, set the URL to null.
      */
     if (!StringUtils.isBlank(callback) && !StringUtils.equalsIgnoreCase(callback, "null")) {
-        String encodedCallback = IdentityManagementEndpointUtil.getURLEncodedCallback(callback);
-
-        if (!AuthenticationEndpointUtil.isValidMultiOptionURI(encodedCallback)) {
+        // The callback is already URL-encoded where it is read above, so it can be validated
+        // directly. Re-encoding here would double-encode the query parameters (e.g. %7B -> %257B).
+        if (!AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) {
             callback = null;
         }
     }
