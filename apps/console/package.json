@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "4.37.8",
+    "version": "4.37.9",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -91,7 +91,7 @@
         "@wso2is/admin.push-providers.v1": "^1.1.2",
         "@wso2is/admin.registration-flow-builder.v1": "workspace:^",
         "@wso2is/admin.remote-repository-configuration.v1": "^2.25.205",
-        "@wso2is/admin.roles.v2": "^2.27.387",
+        "@wso2is/admin.roles.v2": "^2.27.388",
         "@wso2is/admin.saml2-configuration.v1": "^2.25.210",
         "@wso2is/admin.secrets.v1": "^2.25.205",
         "@wso2is/admin.server-configurations.v1": "^2.40.1",

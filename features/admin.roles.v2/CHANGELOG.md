@@ -1,5 +1,11 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.388
+
+### Patch Changes
+
+- [#10934](https://github.com/wso2/identity-apps/pull/10934) [`722de9ba153edefb78a0870789b413ac13ea5ec6`](https://github.com/wso2/identity-apps/commit/722de9ba153edefb78a0870789b413ac13ea5ec6) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Keep every role of an application when a role is created from the application Roles tab, so updating the roles no longer deletes roles beyond the first page of the roles listing
+
 ## 2.27.387
 
 ### Patch Changes

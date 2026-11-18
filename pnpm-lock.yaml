@@ -452,7 +452,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.remote-repository-configuration.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.387
+        specifier: ^2.27.388
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.210
