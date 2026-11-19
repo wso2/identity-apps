@@ -156,11 +156,8 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
      * @returns The theme skeleton CSS string.
      */
     const _theme: string = useMemo(
-        () => ThemePreferenceMeta.getThemeSkeleton(
-            themePreference?.preference?.theme,
-            themePreference?.preference?.layout?.activeLayout
-        ),
-        [ themePreference?.preference?.theme, themePreference?.preference?.layout?.activeLayout ]
+        () => ThemePreferenceMeta.getThemeSkeleton(themePreference?.preference?.theme),
+        [ themePreference?.preference?.theme ]
     );
 
     /**

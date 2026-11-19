@@ -15,18 +15,24 @@
  * limitations under the License.
  */
 
-const ALLOWED_PROTOCOLS: string[] = [ "http:", "https:" ];
+import { PredefinedLayouts } from "../models/branding-preferences";
+
+/**
+ * URL prefixes allowed for the background image. Matches the check in the login portals' `theme-skeleton.jsp`.
+ */
+const ALLOWED_URL_PREFIXES: string[] = [ "http://", "https://" ];
 
 /**
  * Layouts that show their side image in place of the background image.
  */
-const LAYOUTS_WITHOUT_BACKGROUND_IMAGE: string[] = [ "left-image", "right-image" ];
+const LAYOUTS_WITHOUT_BACKGROUND_IMAGE: string[] = [ PredefinedLayouts.LEFT_IMAGE, PredefinedLayouts.RIGHT_IMAGE ];
 
 /**
- * Characters that can terminate a CSS `url("...")` token or the enclosing style block, even after
- * WHATWG URL serialization.
+ * Characters that can end a double-quoted CSS string or the enclosing style block.
  */
-const CSS_URL_UNSAFE_CHARACTERS: RegExp = /["'()\\\s<>]/g;
+// Control characters, such as newlines, end a CSS string, so they must be matched and escaped.
+// eslint-disable-next-line no-control-regex
+const CSS_STRING_UNSAFE_CHARACTERS: RegExp = /["\\<>\u0000-\u001F\u007F]/g;
 
 /**
  * Checks whether the given layout supports the page background image.
@@ -38,38 +44,53 @@ export const isBackgroundImageSupportedLayout = (activeLayout?: string): boolean
     !LAYOUTS_WITHOUT_BACKGROUND_IMAGE.includes(activeLayout);
 
 /**
+ * Checks whether the given value is an absolute `http` or `https` URL that can be used as the background image.
+ *
+ * @param imageURL - Image URL entered by the user.
+ * @returns `true` if the URL can be used as the background image.
+ */
+export const isValidBackgroundImageURL = (imageURL?: string): boolean => {
+    const trimmedURL: string = imageURL?.trim();
+
+    if (!trimmedURL) {
+        return false;
+    }
+
+    const lowerCaseURL: string = trimmedURL.toLowerCase();
+
+    if (!ALLOWED_URL_PREFIXES.some((prefix: string) => lowerCaseURL.startsWith(prefix))) {
+        return false;
+    }
+
+    try {
+        new URL(trimmedURL);
+    } catch (_error: unknown) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
  * Resolves an image URL into a value that can be safely used for the CSS `background-image` property.
  *
- * Only absolute `http` and `https` URLs are accepted. Characters that could break out of the
- * `url("...")` token are percent-encoded.
+ * Only absolute `http` and `https` URLs are accepted. The URL is kept as entered and the characters that
+ * could break out of the `url("...")` token are CSS-escaped, so the browser requests the same URL as the
+ * login pages do.
  *
  * @param imageURL - Image URL entered by the user.
  * @param activeLayout - Name of the active layout.
  * @returns A `url("...")` CSS value, or `none` when the URL is empty, not allowed or not supported by the layout.
  */
 export const resolveCssBackgroundImage = (imageURL?: string, activeLayout?: string): string => {
-    const trimmedURL: string = imageURL?.trim();
-
-    if (!trimmedURL || !isBackgroundImageSupportedLayout(activeLayout)) {
+    if (!isBackgroundImageSupportedLayout(activeLayout) || !isValidBackgroundImageURL(imageURL)) {
         return "none";
     }
 
-    let parsedURL: URL;
-
-    try {
-        parsedURL = new URL(trimmedURL);
-    } catch (_error: unknown) {
-        return "none";
-    }
-
-    if (!ALLOWED_PROTOCOLS.includes(parsedURL.protocol)) {
-        return "none";
-    }
-
-    const encodedURL: string = parsedURL.href.replace(
-        CSS_URL_UNSAFE_CHARACTERS,
-        (character: string): string => "%" + character.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0")
+    const escapedURL: string = imageURL.trim().replace(
+        CSS_STRING_UNSAFE_CHARACTERS,
+        (character: string): string => "\\" + character.charCodeAt(0).toString(16) + " "
     );
 
-    return `url("${ encodedURL }")`;
+    return `url("${ escapedURL }")`;
 };

@@ -235,6 +235,10 @@ export class BrandingPreferenceMeta {
         const inputBaseLabelFontColor: string = !isEmpty(theme[ theme.activeTheme ].inputs.base.labels.font.color)
             ? theme[ theme.activeTheme ].inputs.base.labels.font.color
             : "inherit";
+        const loginPageBackgroundImage: string = resolveCssBackgroundImage(
+            theme[ theme.activeTheme ].loginPage?.background?.backgroundImageURL,
+            activeLayout
+        );
 
         return `
         ${theme[ theme.activeTheme ].typography.font.importURL
@@ -281,7 +285,7 @@ export class BrandingPreferenceMeta {
         --asg-login-box-border-radius: ${ theme[ theme.activeTheme ].loginBox.border.borderRadius };
         --asg-login-box-text-color: ${ loginBoxFontColor };
         --asg-login-page-background-color: ${ theme[ theme.activeTheme ].loginPage?.background?.backgroundColor || "var(--asg-colors-background-body-main)" };
-        --asg-login-page-background-image: ${ resolveCssBackgroundImage(theme[ theme.activeTheme ].loginPage?.background?.backgroundImageURL, activeLayout) };
+        --asg-login-page-background-image: ${ loginPageBackgroundImage };
         --asg-login-page-font-color: ${ theme[ theme.activeTheme ].loginPage?.font?.color || "var(--asg-colors-text-primary)" };
         --asg-input-field-base-text-color: ${ inputBaseFontColor || "var(--asg-colors-text-primary)" };
         --asg-input-field-base-background-color: ${ theme[ theme.activeTheme ].inputs.base.background.backgroundColor };
@@ -1079,15 +1083,23 @@ export class BrandingPreferenceMeta {
         background: var(--asg-login-page-background-color);
     }
 
-    /* Background Image */
-    .login-portal.layout .page-wrapper,
-    .login-portal.layout .page-wrapper.success-page,
-    .login-portal.layout .page-wrapper.error-page {
+    ${ loginPageBackgroundImage !== "none" ? `
+    /* Background Image: drawn on a fixed layer so that it covers the viewport instead of the scrollable page. */
+    .login-portal.layout .page-wrapper {
+        isolation: isolate;
+    }
+    .login-portal.layout .page-wrapper::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
         background-image: var(--asg-login-page-background-image);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
+    ` : "" }
 
     /* ------  Login Box ------ */
 

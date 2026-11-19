@@ -1433,8 +1433,11 @@ export const extensions: Extensions = {
                                 backgroundImage: {
                                     hint: "The image is used as the page background and scaled to cover the "
                                         + "screen. The background color is shown while the image loads.",
-                                    label: "Background Image URL",
-                                    placeholder: "Enter a background image URL"
+                                    label: "Background Image URL (optional)",
+                                    placeholder: "Enter a background image URL",
+                                    validations: {
+                                        invalid: "Please enter a valid URL that starts with http:// or https://"
+                                    }
                                 },
                                 fontColor: {
                                     hint: "The font color for the text on login pages. This doesn't change the colors " +
