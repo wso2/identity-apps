@@ -629,32 +629,36 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             }));
         }
 
-        try {
-            await deleteAllCustomTextPreferences();
+        // Custom text is an organization-level preference. Reverting an application's branding
+        // must not delete it, as the bulk delete removes the organization's text for all screens and locales.
+        if (resolvedType === BrandingPreferenceTypes.ORG) {
+            try {
+                await deleteAllCustomTextPreferences();
 
-            dispatch(addAlert<AlertInterface>({
-                description: t(
-                    "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
+                dispatch(addAlert<AlertInterface>({
+                    description: t(
+                        "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
+                        { tenant: tenantName }
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t("extensions:develop.branding.notifications.delete.success.message")
+                }));
+            } catch (error: any) {
+                const description: string = t(
+                    "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
+                        ".description",
                     { tenant: tenantName }
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t("extensions:develop.branding.notifications.delete.success.message")
-            }));
-        } catch (error: any) {
-            const description: string = t(
-                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
-                    ".description",
-                { tenant: tenantName }
-            );
-            const message: string = t(
-                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
-            );
+                );
+                const message: string = t(
+                    "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
+                );
 
-            dispatch(addAlert<AlertInterface>({
-                description: description,
-                level: AlertLevels.ERROR,
-                message: message
-            }));
+                dispatch(addAlert<AlertInterface>({
+                    description: description,
+                    level: AlertLevels.ERROR,
+                    message: message
+                }));
+            }
         }
 
         setIsBrandingPublished(false);
