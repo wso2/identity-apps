@@ -367,24 +367,6 @@
             }
         }
 
-        // After existing claim population loop
-        String cdsProfileCookie = null;
-        Cookie[] requestCookies = request.getCookies();
-        if (requestCookies != null) {
-            for (Cookie requestCookie : requestCookies) {
-                if ("cds_profile".equals(requestCookie.getName())) {
-                    cdsProfileCookie = requestCookie.getValue();
-                    break;
-                }
-            }
-        }
-        if (StringUtils.isNotBlank(cdsProfileCookie)) {
-            Claim profileIdClaim = new Claim();
-            profileIdClaim.setUri("http://wso2.org/claims/cdsProfile");
-            profileIdClaim.setValue(cdsProfileCookie);
-            userClaimList.add(profileIdClaim);
-        }
-
         SelfRegistrationUser selfRegistrationUser = new SelfRegistrationUser();
         selfRegistrationUser.setUsername(username);
         selfRegistrationUser.setTenantDomain(user.getTenantDomain());
@@ -420,6 +402,16 @@
         properties.add(spIdProperty);
         properties.add(appIsAccessUrlAvailableProperty);
 
+        String cdsProfileCookie = null;
+        Cookie[] requestCookies = request.getCookies();
+        if (requestCookies != null) {
+            for (Cookie requestCookie : requestCookies) {
+                if ("cds_profile".equals(requestCookie.getName())) {
+                    cdsProfileCookie = requestCookie.getValue();
+                    break;
+                }
+            }
+        }
         if (StringUtils.isNotBlank(cdsProfileCookie)) {
             Property anonymousProfileTrackerProperty = new Property();
             anonymousProfileTrackerProperty.setKey("anonymous_profile_tracker");
