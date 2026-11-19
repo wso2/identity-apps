@@ -1433,7 +1433,7 @@ export const extensions: Extensions = {
                                 backgroundImage: {
                                     hint: "The image is used as the page background and scaled to cover the "
                                         + "screen. The background color is shown while the image loads.",
-                                    label: "Background Image URL (optional)",
+                                    label: "Background Image URL",
                                     placeholder: "Enter a background image URL",
                                     validations: {
                                         invalid: "Please enter a valid URL that starts with http:// or https://"
