@@ -1,0 +1,84 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.otp-field-segmented {
+    position: relative;
+    display: flex;
+    gap: 0.8rem;
+    margin: auto 0;
+}
+
+/* Transparent overlay that receives typing, paste and OS autofill. `!important` guards
+   against branding stylesheets that style all inputs. */
+.otp-field-segmented > input.otp-field-input {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    caret-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 2;
+    font-size: 16px;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.otp-field-segmented .otp-field-digit {
+    position: relative;
+    width: 3.1rem;
+    padding: 0.67857143em 0;
+    text-align: center;
+    border: 1px solid var(--asg-input-field-base-border-color, rgba(34, 36, 38, .15));
+    border-radius: var(--asg-input-field-base-border-radius, 8px);
+    background: var(--asg-input-field-base-background-color, #fff);
+    font-size: 1em;
+    line-height: 1.21428571em;
+    color: var(--asg-input-field-base-text-color, rgba(0, 0, 0, .87));
+}
+
+.otp-field-segmented .otp-field-digit.active {
+    border-color: var(--asg-colors-primary-main, #FF7300);
+}
+
+.otp-field-segmented .otp-field-digit.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 1em;
+    background-color: var(--asg-input-field-base-text-color, rgba(0, 0, 0, .87));
+    animation: otp-field-cursor-blink 1s step-end infinite;
+}
+
+@keyframes otp-field-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
