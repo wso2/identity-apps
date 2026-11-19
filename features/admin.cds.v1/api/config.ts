@@ -23,7 +23,8 @@ import { HttpMethods,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import type { CDSConfig, CDSConfigUpdateRequest } from "../models/config";
+import type { CDSConfig, CDSConfigUpdateRequest, CDSServerConfigInterface } from "../models/config";
+import { isCDSServerConfigEnabled } from "../utils/ui-mode-utils";
 
 /**
  * Initialize an Http client.
@@ -60,4 +61,62 @@ export const updateCDSConfig = (
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * PATCH /api/server/v1/configs/cds
+ * Update the CDS status of the organization in the Identity Server. The Identity Server sends the status
+ * to CDS before it stores the status.
+ *
+ * @param enabled - The new CDS status.
+ * @returns The CDS status that the Identity Server stored.
+ */
+export const updateCDSServerConfig = (enabled: boolean): Promise<CDSServerConfigInterface> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: { enabled },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.cdsServerConfig
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update the CDS status."));
+            }
+
+            return Promise.resolve(response.data as CDSServerConfigInterface);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Enable or disable CDS and set the CDS system applications.
+ *
+ * When the server configuration API is enabled, the Identity Server gets the status first, and then CDS gets
+ * the system applications. Else, CDS gets both in one request.
+ *
+ * @param enabled - The new CDS status.
+ * @param systemApplications - The new list of CDS system application identifiers.
+ * @returns A promise that resolves when both values are updated.
+ */
+export const updateCDSStatus = async (enabled: boolean, systemApplications: string[]): Promise<void> => {
+
+    if (isCDSServerConfigEnabled()) {
+        await updateCDSServerConfig(enabled);
+        await updateCDSConfig({ system_applications: systemApplications });
+
+        return;
+    }
+
+    await updateCDSConfig({
+        cds_enabled: enabled,
+        system_applications: systemApplications
+    });
 };

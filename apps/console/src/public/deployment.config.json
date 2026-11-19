@@ -43,6 +43,7 @@
         },
         "cdsApplicationIdentifierType": "client_id",
         "cdsHost": "",
+        "cdsTenantConfigEnabled": false,
         "cdsUnifiedProfileView": false,
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [

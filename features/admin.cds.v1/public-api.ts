@@ -16,6 +16,8 @@
  * under the License.
  */
 
+export { default as useCDSEnabled } from "./hooks/use-cds-enabled";
+export * from "./hooks/use-cds-enabled";
 export { default as useCDSConfig } from "./hooks/use-config";
 export * from "./hooks/use-config";
 export * from "./hooks/use-profiles";
