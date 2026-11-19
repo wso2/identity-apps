@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.39.2
+
+### Patch Changes
+
+- [#10970](https://github.com/wso2/identity-apps/pull/10970) [`7521534df5f3cf6ed43db6f6101ad09fc9c11188`](https://github.com/wso2/identity-apps/commit/7521534df5f3cf6ed43db6f6101ad09fc9c11188) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the "(optional)" suffix from the login page background image URL label
+
 ## 4.39.1
 
 ### Patch Changes
