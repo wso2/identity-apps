@@ -341,7 +341,7 @@ importers:
         specifier: ^2.25.212
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.34.1
+        specifier: ^2.35.0
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
         specifier: ^1.13.0
@@ -2694,7 +2694,7 @@ importers:
         specifier: ^2.39.0
         version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
-        specifier: ^2.30.0
+        specifier: ^2.31.0
         version: link:../common.branding.v1
       '@wso2is/core':
         specifier: ^2.13.7
@@ -12275,7 +12275,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/common.branding.v1':
-        specifier: ^2.30.0
+        specifier: ^2.31.0
         version: link:../features/common.branding.v1
       '@wso2is/theme':
         specifier: ^2.11.4
