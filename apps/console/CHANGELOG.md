@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.39.3
+
+### Patch Changes
+
+- [#10972](https://github.com/wso2/identity-apps/pull/10972) [`96afa8b6950ee820f81093799333116427311ac9`](https://github.com/wso2/identity-apps/commit/96afa8b6950ee820f81093799333116427311ac9) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Keep the organization's custom text when reverting an application's branding to default
+
+- Updated dependencies [[`96afa8b6950ee820f81093799333116427311ac9`](https://github.com/wso2/identity-apps/commit/96afa8b6950ee820f81093799333116427311ac9)]:
+  - @wso2is/admin.branding.v1@2.35.2
+
 ## 4.39.2
 
 ### Patch Changes
