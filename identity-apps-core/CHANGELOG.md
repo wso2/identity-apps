@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.11.2
+
+### Patch Changes
+
+- [#10964](https://github.com/wso2/identity-apps/pull/10964) [`0d6428ff1a37fbf6c11edf3c0109582f6682f2a2`](https://github.com/wso2/identity-apps/commit/0d6428ff1a37fbf6c11edf3c0109582f6682f2a2) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Stop sending the cdsProfile claim from the self registration process page
+
 ## 5.11.1
 
 ### Patch Changes
