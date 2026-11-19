@@ -23,3 +23,31 @@ export interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
     roles?: RolesInterface[];
     parentId?: string;
 }
+
+export interface OrganizationLoginConfirmationParamsInterface {
+    /**
+     * Whether the enhanced organization login setting is changed.
+     */
+    isEnhancedOrganizationLoginChanged: boolean;
+    /**
+     * Whether organization custom roles are being disabled. Enabling them does not need a confirmation.
+     */
+    isOrganizationCustomRolesDisabled?: boolean;
+    /**
+     * Whether the role audience of the application is organization.
+     */
+    isOrganizationAudience: boolean;
+}
+
+/**
+ * Confirmation details as i18n keys, so that the callers can translate them.
+ */
+export interface OrganizationLoginConfirmationInterface {
+    isDestructive: boolean;
+    messageKey: string;
+    contentKeys: string[];
+    /**
+     * Hint for the assertion checkbox, set only for destructive confirmations.
+     */
+    assertionHintKey?: string;
+}

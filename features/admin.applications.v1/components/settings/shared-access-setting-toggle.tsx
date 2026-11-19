@@ -33,8 +33,18 @@ export interface SharedAccessSettingConfirmationInterface {
      * Whether the change is destructive and needs a stronger, assertion-based confirmation.
      */
     isDestructive: boolean;
+    /**
+     * Highlighted message shown at the top of the confirmation modal.
+     */
     message: ReactNode;
+    /**
+     * Body of the confirmation modal.
+     */
     content: ReactNode;
+    /**
+     * Hint shown with the assertion checkbox of a destructive confirmation.
+     */
+    assertionHint?: string;
 }
 
 interface SharedAccessSettingAlertInterface {
@@ -73,9 +83,9 @@ interface SharedAccessSettingTogglePropsInterface extends IdentifiableComponentI
      */
     getConfigurationPayload: (newValue: boolean) => Record<string, unknown>;
     /**
-     * Resolves the confirmation modal content for the value being toggled to.
+     * Resolves the confirmation modal content for the value being toggled to, or null to save without one.
      */
-    getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface;
+    getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface | null;
     /**
      * Callback fired after a successful update.
      */
@@ -122,8 +132,8 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ pendingValue, setPendingValue ] = useState<boolean>(false);
 
-    const { isDestructive, message, content }: SharedAccessSettingConfirmationInterface =
-        getConfirmation(pendingValue);
+    const confirmation: SharedAccessSettingConfirmationInterface | null = getConfirmation(pendingValue);
+    const isDestructive: boolean = confirmation?.isDestructive ?? false;
 
     const handleToggle: DangerZoneToggleProps["onChange"] = (
         _event: SyntheticEvent,
@@ -132,7 +142,15 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
         if (readOnly) {
             return;
         }
-        setPendingValue(data.checked ?? false);
+
+        const newValue: boolean = data.checked ?? false;
+
+        if (!getConfirmation(newValue)) {
+            saveConfiguration(newValue);
+
+            return;
+        }
+        setPendingValue(newValue);
         setShowConfirmation(true);
     };
 
@@ -189,9 +207,7 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
                 onClose={ (): void => setShowConfirmation(false) }
                 type={ isDestructive ? "negative" : "warning" }
                 open={ showConfirmation }
-                assertionHint={ isDestructive
-                    ? t("applications:edit.sections.organizationCustomRoles.confirmation.assertionHint")
-                    : undefined }
+                assertionHint={ isDestructive ? confirmation?.assertionHint : undefined }
                 assertionType={ isDestructive ? "checkbox" : undefined }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -210,10 +226,10 @@ const SharedAccessSettingToggle: FunctionComponent<SharedAccessSettingToggleProp
                     warning={ !isDestructive }
                     negative={ isDestructive }
                 >
-                    { message }
+                    { confirmation?.message }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { content }
+                    { confirmation?.content }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

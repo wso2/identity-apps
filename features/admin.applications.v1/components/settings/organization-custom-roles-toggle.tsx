@@ -24,6 +24,8 @@ import SharedAccessSettingToggle, {
     SharedAccessSettingConfirmationInterface,
     SharedAccessSettingNotificationsInterface
 } from "./shared-access-setting-toggle";
+import { OrganizationLoginConfirmationInterface } from "../../models/shared-access";
+import { resolveOrganizationLoginConfirmation } from "../../utils/organization-login-confirmation";
 
 /**
  * Props interface for the OrganizationCustomRolesToggle component.
@@ -75,28 +77,6 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
 
     const isOrganizationAudience: boolean = roleAudience?.toUpperCase() === RoleAudienceTypes.ORGANIZATION;
 
-    const getConfirmationContent: (pendingValue: boolean) => string = (pendingValue: boolean): string => {
-        if (pendingValue && isOrganizationAudience) {
-            return t(
-                "applications:edit.sections.organizationCustomRoles.confirmation.content.enableOrganizationAudience"
-            );
-        }
-
-        if (pendingValue) {
-            return t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
-                "enableApplicationAudience");
-        }
-
-        if (isOrganizationAudience) {
-            return t(
-                "applications:edit.sections.organizationCustomRoles.confirmation.content.disableOrganizationAudience"
-            );
-        }
-
-        return t("applications:edit.sections.organizationCustomRoles.confirmation.content." +
-            "disableApplicationAudience");
-    };
-
     const notifications: SharedAccessSettingNotificationsInterface = {
         disableError: {
             description: t(
@@ -122,22 +102,34 @@ const OrganizationCustomRolesToggle: FunctionComponent<OrganizationCustomRolesTo
         }
     };
 
-    const getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface = (
+    /**
+     * Resolves the confirmation details for toggling organization custom roles. Enabling them does not need a
+     * confirmation.
+     */
+    const getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface | null = (
         pendingValue: boolean
-    ): SharedAccessSettingConfirmationInterface => {
-        // Disabling deletes application custom roles, but not organization roles.
-        const isDeletingOrganizationCustomRoles: boolean = !pendingValue && !isOrganizationAudience;
+    ): SharedAccessSettingConfirmationInterface | null => {
+        if (pendingValue) {
+            return null;
+        }
+
+        const confirmation: OrganizationLoginConfirmationInterface = resolveOrganizationLoginConfirmation({
+            isEnhancedOrganizationLoginChanged: false,
+            isOrganizationAudience,
+            isOrganizationCustomRolesDisabled: true
+        });
 
         return {
+            assertionHint: confirmation.assertionHintKey ? t(confirmation.assertionHintKey) : undefined,
             content: (
-                <p>
-                    { getConfirmationContent(pendingValue) }
-                </p>
+                <>
+                    { confirmation.contentKeys.map((contentKey: string) => (
+                        <p key={ contentKey }>{ t(contentKey) }</p>
+                    )) }
+                </>
             ),
-            isDestructive: isDeletingOrganizationCustomRoles,
-            message: isDeletingOrganizationCustomRoles
-                ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
-                : t("applications:edit.sections.organizationCustomRoles.confirmation.message")
+            isDestructive: confirmation.isDestructive,
+            message: t(confirmation.messageKey)
         };
     };
 

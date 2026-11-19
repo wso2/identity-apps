@@ -415,7 +415,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         shouldMutate && mutateApplicationShareDataFetchRequest();
     };
 
-    const handleApplicationSharing = (_event?: unknown, isUnshareConfirmed: boolean = false): void => {
+    const handleApplicationSharing = (isUnshareConfirmed: boolean = false): void => {
         if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
             dispatch(addAlert({
                 description: t("applications:edit.sections.sharedAccess.notifications." +
@@ -1343,7 +1343,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 secondaryAction={ t("common:cancel") }
                 onPrimaryActionClick={ (): void => {
                     setShowUnshareWarningModal(false);
-                    handleApplicationSharing(undefined, true);
+                    handleApplicationSharing(true);
                 } }
                 onSecondaryActionClick={ (): void => {
                     setShowUnshareWarningModal(false);
@@ -1649,7 +1649,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         size="small"
                         disabled={ readOnly }
                         data-componentid={ `${ componentId }-update-button` }
-                        onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleApplicationSharing }
+                        onClick={ isSharingInProgress
+                            ? handleInterruptOngoingShare
+                            : (): void => handleApplicationSharing() }
                     >
                         { t("common:update") }
                     </Button>

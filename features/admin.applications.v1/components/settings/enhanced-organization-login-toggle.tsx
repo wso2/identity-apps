@@ -24,6 +24,8 @@ import SharedAccessSettingToggle, {
     SharedAccessSettingConfirmationInterface,
     SharedAccessSettingNotificationsInterface
 } from "./shared-access-setting-toggle";
+import { OrganizationLoginConfirmationInterface } from "../../models/shared-access";
+import { resolveOrganizationLoginConfirmation } from "../../utils/organization-login-confirmation";
 
 /**
  * Props interface for the EnhancedOrganizationLoginToggle component.
@@ -38,9 +40,13 @@ interface EnhancedOrganizationLoginTogglePropsInterface extends IdentifiableComp
      */
     isEnabled: boolean;
     /**
-     * Whether organization custom roles are enabled for the application.
+     * Saved value of the organization custom roles setting.
      */
     isOrganizationCustomRolesEnabled?: boolean;
+    /**
+     * Whether the organization custom roles feature is enabled.
+     */
+    isOrganizationCustomRolesFeatureEnabled?: boolean;
     /**
      * Role audience of the application.
      */
@@ -69,6 +75,7 @@ const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLog
     appId,
     isEnabled,
     isOrganizationCustomRolesEnabled,
+    isOrganizationCustomRolesFeatureEnabled,
     onUpdate,
     readOnly,
     disabled,
@@ -107,37 +114,31 @@ const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLog
         }
     };
 
+    /**
+     * Resolves the confirmation details for toggling enhanced organization login.
+     */
     const getConfirmation: (pendingValue: boolean) => SharedAccessSettingConfirmationInterface = (
         pendingValue: boolean
     ): SharedAccessSettingConfirmationInterface => {
         // Disabling enhanced organization login also disables organization custom roles.
-        const isDisablingOrganizationCustomRoles: boolean = !pendingValue && !!isOrganizationCustomRolesEnabled;
-        const isDeletingOrganizationCustomRoles: boolean =
-            isDisablingOrganizationCustomRoles && !isOrganizationAudience;
-
-        const organizationCustomRolesNote: string = isOrganizationAudience
-            ? t(
-                "applications:edit.sections.organizationCustomRoles.confirmation.content.disableOrganizationAudience"
-            )
-            : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.content.1");
+        const confirmation: OrganizationLoginConfirmationInterface = resolveOrganizationLoginConfirmation({
+            isEnhancedOrganizationLoginChanged: true,
+            isOrganizationAudience,
+            isOrganizationCustomRolesDisabled: !pendingValue && isOrganizationCustomRolesFeatureEnabled
+                && isOrganizationCustomRolesEnabled
+        });
 
         return {
+            assertionHint: confirmation.assertionHintKey ? t(confirmation.assertionHintKey) : undefined,
             content: (
                 <>
-                    <p>
-                        { t("applications:edit.sections.enhancedOrganizationLogin.confirmation.content.0") }
-                    </p>
-                    { isDisablingOrganizationCustomRoles && (
-                        <p data-componentid={ `${componentId}-organization-custom-roles-note` }>
-                            { organizationCustomRolesNote }
-                        </p>
-                    ) }
+                    { confirmation.contentKeys.map((contentKey: string) => (
+                        <p key={ contentKey }>{ t(contentKey) }</p>
+                    )) }
                 </>
             ),
-            isDestructive: isDeletingOrganizationCustomRoles,
-            message: isDeletingOrganizationCustomRoles
-                ? t("applications:edit.sections.organizationCustomRoles.confirmation.disableMessage")
-                : t("applications:edit.sections.enhancedOrganizationLogin.confirmation.message")
+            isDestructive: confirmation.isDestructive,
+            message: t(confirmation.messageKey)
         };
     };
 
@@ -158,7 +159,8 @@ const EnhancedOrganizationLoginToggle: FunctionComponent<EnhancedOrganizationLog
             notifications={ notifications }
             getConfigurationPayload={ (newValue: boolean): Record<string, unknown> => ({
                 enhancedOrgAuthenticationEnabled: newValue,
-                // Organization custom roles require enhanced organization login.
+                // Organization custom roles require enhanced organization login. Clear the stored value even when
+                // the feature is off, since the server rejects disabling enhanced organization login while it is set.
                 ...(!newValue && isOrganizationCustomRolesEnabled ? { organizationCustomRolesEnabled: false } : {})
             }) }
             getConfirmation={ getConfirmation }

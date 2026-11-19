@@ -141,7 +141,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     // Null until the roles are fetched, as inherited roles cannot be identified before that.
     const [ inheritedRoleIds, setInheritedRoleIds ] = useState<Set<string> | null>(null);
-    const [ rolesToDelete, setRolesToDelete ] = useState<BasicRoleInterface[]>([]);
 
     // IDs of the roles the selection already accounts for: the application's associated roles when the tab
     // loaded, and every role listed since. A listed role that is not in it was associated with the application
@@ -320,7 +319,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     };
 
     /**
-     * Handle shared application role updates, deleting removed custom roles after confirmation.
+     * Handle shared application role updates, deleting the removed custom roles.
      */
     const handleSharedApplicationRolesUpdate = (): void => {
         const removedRoles: BasicRoleInterface[] = (initialSelectedRoles ?? []).filter(
@@ -334,7 +333,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
             return;
         }
-        setRolesToDelete(removedRoles);
+        deleteSharedApplicationRoles(removedRoles);
     };
 
     /**
@@ -386,13 +385,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
                             "notifications.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
-                        "notifications.error.message")
+                    message: t(
+                        "applications:edit.sections.roles.deleteSharedApplicationRoles.notifications.error.message"
+                    )
                 }));
             })
             .finally(() => {
                 setIsSubmitting(false);
-                setRolesToDelete([]);
                 // Refresh the roles, as some deletions may have failed.
                 getApplicationRoles(undefined, true);
                 onUpdate(appId);
@@ -656,6 +655,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                         ? undefined
                                                         : getTagProps({ index }).onDelete
                                                 }
+                                                // Inherited role chips render with a smaller font size than
+                                                // removable chips, so match it to keep all chips the same size.
                                                 sx={
                                                     isInheritedRole(option)
                                                         ? {
@@ -715,32 +716,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 </Grid>
             </EmphasizedSegment>
             <ConfirmationModal
-                onClose={ (): void => setRolesToDelete([]) }
-                type="negative"
-                open={ rolesToDelete.length > 0 }
-                assertionHint={ t("applications:edit.sections.roles.deleteSharedApplicationRoles." +
-                    "confirmationModal.assertionHint") }
-                assertionType="checkbox"
-                primaryAction={ t("common:confirm") }
-                primaryActionLoading={ isSubmitting }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ (): void => setRolesToDelete([]) }
-                onPrimaryActionClick={ (): void => deleteSharedApplicationRoles(rolesToDelete) }
-                data-componentid={ `${ componentId }-delete-shared-application-roles-confirmation-modal` }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header>
-                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.header") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message attached negative>
-                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    { t("applications:edit.sections.roles.deleteSharedApplicationRoles.confirmationModal.content",
-                        { roles: rolesToDelete.map((role: BasicRoleInterface) => role.name).join(", ") }) }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
-            <ConfirmationModal
                 onClose={ (): void => {
                     setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
@@ -792,23 +767,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     { tempRoleAudience === RoleAudienceTypes.APPLICATION
                         ? t("extensions:develop.applications.edit.sections." +
                         "rolesV2.switchRoleAudience.applicationConfirmationModal.content")
-                        : t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.switchRoleAudience.organizationConfirmationModal.content")
-                    }
-                    {
-                        // Switching to organization audience deletes application custom roles of organizations.
-                        tempRoleAudience === RoleAudienceTypes.ORGANIZATION
-                        && !isSharedApplication
-                        && application?.organizationCustomRolesEnabled
-                        && (
-                            <p
-                                data-componentid={
-                                    `${ componentId }-switch-role-audience-organization-custom-roles-note` }
-                            >
-                                { t("applications:edit.sections.organizationCustomRoles.confirmation." +
-                                    "audienceSwitch") }
-                            </p>
-                        )
+                        // Switching to organization audience also deletes application custom roles of organizations.
+                        : !isSharedApplication && application?.organizationCustomRolesEnabled
+                            ? t("applications:edit.sections.organizationCustomRoles.confirmation.audienceSwitch")
+                            : t("extensions:develop.applications.edit.sections." +
+                            "rolesV2.switchRoleAudience.organizationConfirmationModal.content")
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

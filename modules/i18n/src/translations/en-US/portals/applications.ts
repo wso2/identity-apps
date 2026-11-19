@@ -986,25 +986,19 @@ export const applications: ApplicationsNS = {
                 disableHint: "Enable enhanced organization login to allow organizations to create custom roles.",
                 confirmation: {
                     assertionHint: "Please confirm your action.",
-                    audienceSwitch: "The application roles created by organizations for this application will " +
-                        "also be permanently deleted.",
+                    audienceSwitch: "If you change the Role Audience to Organization, the application roles " +
+                        "currently associated with the application, including those created by organizations, will " +
+                        "be permanently deleted. Please proceed with caution.",
                     header: "Are you sure?",
                     message: "Changing this setting affects whether organizations can create custom roles for " +
                         "this application.",
                     disableMessage: "This action is irreversible and will permanently delete the existing roles.",
                     content: {
-                        enableOrganizationAudience: "The organization roles created by organizations will be " +
-                            "honoured for this application, along with the roles shared from your organization. " +
-                            "Tokens only carry the permissions authorized for this application.",
                         disableOrganizationAudience: "The organization roles created by organizations will no longer " +
                             "be honoured for this application. The roles are not deleted, and roles shared from " +
                             "your organization are not affected.",
-                        enableApplicationAudience: "Organization administrators will be able to create custom " +
-                            "application roles and use their own organization roles for this application, limited " +
-                            "to the permissions authorized for this application.",
-                        disableApplicationAudience: "The application roles created by organizations for this " +
-                            "application will be permanently deleted, and users and groups assigned to them will " +
-                            "lose the related permissions."
+                        disableApplicationAudience: "If you turn off custom roles for organizations, the application " +
+                            "roles created by organizations for this application will be permanently deleted."
                     }
                 },
                 notifications: {
@@ -1462,13 +1456,6 @@ export const applications: ApplicationsNS = {
                     button: "New Role"
                 },
                 deleteSharedApplicationRoles: {
-                    confirmationModal: {
-                        assertionHint: "Please confirm your action.",
-                        content: "The following roles created by your organization will be deleted: {{roles}}. " +
-                            "Users and groups assigned to these roles will lose the related permissions.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the selected roles."
-                    },
                     notifications: {
                         error: {
                             description: "An error occurred while deleting the roles of the shared application.",

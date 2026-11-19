@@ -1178,8 +1178,6 @@ export interface ApplicationsNS {
                     disableMessage: string;
                     content: {
                         disableOrganizationAudience: string;
-                        enableApplicationAudience: string;
-                        enableOrganizationAudience: string;
                         disableApplicationAudience: string;
                     };
                 };
@@ -1217,12 +1215,6 @@ export interface ApplicationsNS {
                     button: string;
                 };
                 deleteSharedApplicationRoles: {
-                    confirmationModal: {
-                        assertionHint: string;
-                        content: string;
-                        header: string;
-                        message: string;
-                    };
                     notifications: {
                         error: {
                             description: string;

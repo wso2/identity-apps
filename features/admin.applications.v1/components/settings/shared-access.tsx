@@ -183,9 +183,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
-                    isOrganizationCustomRolesEnabled={
-                        isOrganizationCustomRolesFeatureEnabled && (application.organizationCustomRolesEnabled ?? false)
-                    }
+                    isOrganizationCustomRolesEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    isOrganizationCustomRolesFeatureEnabled={ isOrganizationCustomRolesFeatureEnabled }
                     roleAudience={ roleAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
