@@ -55,6 +55,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.user.core.UserCoreConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
 
@@ -460,19 +461,20 @@
 </div>
 <% } else {
     String loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage));
-    if (StringUtils.equals(errorMessage, "login.fail.message.with.remaining.attempts")) {
-        // Show the remaining login attempts only when a valid positive count is available.
+    // Show the remaining login attempts with the generic login failure message for invalid credentials, when enabled.
+    if (Boolean.parseBoolean(application.getInitParameter("ShowRemainingLoginAttempts"))
+            && StringUtils.equals(errorMessage, "login.fail.message")
+            && StringUtils.equals(errorCode, UserCoreConstants.ErrorCode.INVALID_CREDENTIAL)) {
         int remainingLoginAttempts = 0;
         try {
             remainingLoginAttempts = Integer.parseInt(request.getParameter("remainingAttempts"));
         } catch (NumberFormatException e) {
-            // Fall back to the generic login failure message.
+            // Keep the generic login failure message.
         }
         if (remainingLoginAttempts > 0) {
-            loginFailureMessage = loginFailureMessage.replace("{{remainingAttempts}}",
-                String.valueOf(remainingLoginAttempts));
-        } else {
-            loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "login.fail.message");
+            loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle,
+                    "login.fail.message.with.remaining.attempts")
+                    .replace("{{remainingAttempts}}", String.valueOf(remainingLoginAttempts));
         }
     }
 %>
