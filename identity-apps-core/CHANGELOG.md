@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.12.3
+
+### Patch Changes
+
+- [#10978](https://github.com/wso2/identity-apps/pull/10978) [`bd875219f325a07d3eddfba47b6afb224435b88b`](https://github.com/wso2/identity-apps/commit/bd875219f325a07d3eddfba47b6afb224435b88b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Retry the identity apps core release that failed at the Nexus staging step
+
 ## 5.12.2
 
 ### Patch Changes
