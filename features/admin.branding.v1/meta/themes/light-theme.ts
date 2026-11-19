@@ -218,7 +218,8 @@ export const LIGHT_THEME: ThemeConfigInterface ={
     },
     loginPage: {
         background: {
-            backgroundColor: ""
+            backgroundColor: "",
+            backgroundImageURL: ""
         },
         font: {
             color: ""

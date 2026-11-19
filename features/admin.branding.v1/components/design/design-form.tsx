@@ -26,6 +26,7 @@ import {
     FontConfigurationStrategies,
     PredefinedThemes
 } from "@wso2is/common.branding.v1/models";
+import { isBackgroundImageSupportedLayout } from "@wso2is/common.branding.v1/utils/resolve-css-background-image";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/forms";
@@ -1749,6 +1750,55 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                     />
                 </Grid.Column>
             </Grid.Row>
+            { isBackgroundImageSupportedLayout(layout.activeLayout) && (
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column>
+                        <Field.Input
+                            ariaLabel="Page background image URL input field"
+                            inputType="url"
+                            label={
+                                t("extensions:develop.branding.forms.design.theme"
+                                + ".loginPage.fields.backgroundImage.label")
+                            }
+                            name={ `theme.${theme.activeTheme}.loginPage.background.backgroundImageURL` }
+                            value={ initialValues.theme[theme.activeTheme].loginPage.background.backgroundImageURL }
+                            data-componentid={ `${componentId}-login-page-background-image-url` }
+                            required={ false }
+                            readOnly={ readOnly }
+                            maxLength={
+                                BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS
+                                    .BACKGROUND_IMAGE_URL_MAX_LENGTH
+                            }
+                            minLength={
+                                BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS
+                                    .BACKGROUND_IMAGE_URL_MIN_LENGTH
+                            }
+                            width={ 16 }
+                            hint={
+                                t("extensions:develop.branding.forms.design.theme"
+                                + ".loginPage.fields.backgroundImage.hint")
+                            }
+                            placeholder={
+                                t("extensions:develop.branding.forms.design.theme"
+                                + ".loginPage.fields.backgroundImage.placeholder")
+                            }
+                            listen={ (value: string) => setTheme({
+                                ...theme,
+                                [theme.activeTheme]: {
+                                    ...theme[theme.activeTheme],
+                                    loginPage: {
+                                        ...theme[theme.activeTheme].loginPage,
+                                        background: {
+                                            ...theme[theme.activeTheme].loginPage.background,
+                                            backgroundImageURL: value
+                                        }
+                                    }
+                                }
+                            }) }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            ) }
             <Grid.Row columns={ 1 }>
                 <Grid.Column>
                     <Field.ColorPicker
