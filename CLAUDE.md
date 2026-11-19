@@ -154,7 +154,7 @@ export default useMyHook;
 
 - Extend `IdentifiableComponentInterface` from `@wso2is/core/models` for component IDs
 - Form fields use `@wso2is/forms` library (React Final Form wrappers). Legacy Semantic UI forms are available under `@wso2is/forms/legacy` but should not be used in new code.
-- All form inputs must have labels; use "(optional)" suffix for non-required fields
+- All form inputs must have labels
 - Memoize components with expensive render logic using `React.memo()`
 - Stabilize callbacks with `useCallback` and expensive computations with `useMemo`
 

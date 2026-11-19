@@ -29,7 +29,6 @@ forms.
 - The label should be visible without relying on placeholders as not every browser can see them, nor can all 
   screenreaders. A visible permanent label provides continuous context.
 - Whenever a input field is mandatory make sure to mark it as `required`.
-- For text inputs that are optional, add "(optional)" to the input label.
 
 ### Text Input Samples
 

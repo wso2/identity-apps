@@ -72,7 +72,7 @@ cd apps/myaccount && pnpm start   # My Account at https://localhost:9000/myaccou
 ### Forms
 
 - Use `@wso2is/forms` library (React Final Form wrappers). Legacy Semantic UI forms are available under `@wso2is/forms/legacy`.
-- All form inputs must have labels; use "(optional)" suffix for non-required fields
+- All form inputs must have labels
 
 ### i18n
 
