@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.12.2
+
+### Patch Changes
+
+- [#10973](https://github.com/wso2/identity-apps/pull/10973) [`37fb2a2bcbe49114f15157be571f52bf5f14fff7`](https://github.com/wso2/identity-apps/commit/37fb2a2bcbe49114f15157be571f52bf5f14fff7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Release the login page background image changes of the identity apps core
+
 ## 5.12.1
 
 ### Patch Changes
