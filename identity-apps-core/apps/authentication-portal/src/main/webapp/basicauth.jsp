@@ -458,9 +458,26 @@
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
     <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant").replace("{supportEmail}",supportEmail) %>
 </div>
-<% } else { %>
+<% } else {
+    String loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage));
+    if (StringUtils.equals(errorMessage, "login.fail.message.with.remaining.attempts")) {
+        // Show the remaining login attempts only when a valid positive count is available.
+        int remainingLoginAttempts = 0;
+        try {
+            remainingLoginAttempts = Integer.parseInt(request.getParameter("remainingAttempts"));
+        } catch (NumberFormatException e) {
+            // Fall back to the generic login failure message.
+        }
+        if (remainingLoginAttempts > 0) {
+            loginFailureMessage = loginFailureMessage.replace("{{remainingAttempts}}",
+                String.valueOf(remainingLoginAttempts));
+        } else {
+            loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "login.fail.message");
+        }
+    }
+%>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-    <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
+    <%= loginFailureMessage %>
 </div>
 <% }
 } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
