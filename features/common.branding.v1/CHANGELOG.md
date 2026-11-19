@@ -1,5 +1,11 @@
 # @wso2is/common.branding.v1
 
+## 2.31.0
+
+### Minor Changes
+
+- [#10957](https://github.com/wso2/identity-apps/pull/10957) [`d8b50047ec71a0c4ae8969cb8c84e100206db208`](https://github.com/wso2/identity-apps/commit/d8b50047ec71a0c4ae8969cb8c84e100206db208) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for configuring a background image for the login pages through the branding theme
+
 ## 2.30.0
 
 ### Minor Changes
