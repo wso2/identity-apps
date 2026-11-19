@@ -364,6 +364,9 @@
 
                     loginPageBackgroundColor = pageBody.getJSONObject(BACKGROUND_KEY).getString(BACKGROUND_COLOR_KEY);
                 }
+                // The image layouts show their side image in place of the background image.
+                boolean isBackgroundImageSupportedLayout = !StringUtils.equals(layout, "left-image")
+                    && !StringUtils.equals(layout, "right-image");
                 if (isBackgroundImageSupportedLayout
                     && pageBody.has(BACKGROUND_KEY)
                     && pageBody.getJSONObject(BACKGROUND_KEY).has(BACKGROUND_IMAGE_URL_KEY)
@@ -1538,17 +1541,23 @@
         background: var(--asg-login-page-background-color);
     }
 
-    /* Background Image */
-    .login-portal.layout .page-wrapper,
-    .login-portal.layout .page-wrapper.success-page,
-    .login-portal.layout .page-wrapper.error-page {
+    <% if (!StringUtils.isBlank(loginPageBackgroundImageURL)) { %>
+    /* Background Image: drawn on a fixed layer so that it covers the viewport instead of the scrollable page. */
+    .login-portal.layout .page-wrapper {
+        isolation: isolate;
+    }
+    .login-portal.layout .page-wrapper::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
         background-image: var(--asg-login-page-background-image);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
 
-    <% if (!StringUtils.isBlank(loginPageBackgroundImageURL)) { %>
     /* Blend the footer language selector with the background image. */
     .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown,
     .login-portal.layout .footer .ui.selection.dropdown.language-selector-dropdown:hover {

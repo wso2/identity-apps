@@ -26,7 +26,10 @@ import {
     FontConfigurationStrategies,
     PredefinedThemes
 } from "@wso2is/common.branding.v1/models";
-import { isBackgroundImageSupportedLayout } from "@wso2is/common.branding.v1/utils/resolve-css-background-image";
+import {
+    isBackgroundImageSupportedLayout,
+    isValidBackgroundImageURL
+} from "@wso2is/common.branding.v1/utils/resolve-css-background-image";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/forms";
@@ -1782,6 +1785,15 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                                 t("extensions:develop.branding.forms.design.theme"
                                 + ".loginPage.fields.backgroundImage.placeholder")
                             }
+                            validation={ (value: string): string => {
+                                // The login pages only render absolute http(s) image URLs.
+                                if (value?.trim() && !isValidBackgroundImageURL(value)) {
+                                    return t("extensions:develop.branding.forms.design.theme"
+                                        + ".loginPage.fields.backgroundImage.validations.invalid");
+                                }
+
+                                return undefined;
+                            } }
                             listen={ (value: string) => setTheme({
                                 ...theme,
                                 [theme.activeTheme]: {

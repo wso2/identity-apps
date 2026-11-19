@@ -213,8 +213,4 @@
             }
         }
     }
-
-    // The image layouts show their side image in place of the theme background image.
-    isBackgroundImageSupportedLayout = !StringUtils.equals(layout, "left-image")
-        && !StringUtils.equals(layout, "right-image");
 %>

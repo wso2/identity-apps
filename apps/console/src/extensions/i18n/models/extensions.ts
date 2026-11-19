@@ -1358,6 +1358,9 @@ export interface Extensions {
                                     hint: string;
                                     label: string;
                                     placeholder: string;
+                                    validations: {
+                                        invalid: string;
+                                    };
                                 };
                                 fontColor: {
                                     hint: string;
