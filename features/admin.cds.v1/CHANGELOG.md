@@ -1,5 +1,16 @@
 # @wso2is/admin.cds.v1
 
+## 1.14.0
+
+### Minor Changes
+
+- [#10904](https://github.com/wso2/identity-apps/pull/10904) [`52fdffe8a4a20198ef8dd96454b114bc549fc09b`](https://github.com/wso2/identity-apps/commit/52fdffe8a4a20198ef8dd96454b114bc549fc09b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add an option to get and set the CDS status with the Identity Server configuration API
+
+### Patch Changes
+
+- Updated dependencies [[`52fdffe8a4a20198ef8dd96454b114bc549fc09b`](https://github.com/wso2/identity-apps/commit/52fdffe8a4a20198ef8dd96454b114bc549fc09b)]:
+  - @wso2is/admin.core.v1@2.65.1
+
 ## 1.13.0
 
 ### Minor Changes
