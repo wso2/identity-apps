@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 5.12.1
+
+### Patch Changes
+
+- [#10968](https://github.com/wso2/identity-apps/pull/10968) [`54281cb05440f618afaff041165ddbaf706ce548`](https://github.com/wso2/identity-apps/commit/54281cb05440f618afaff041165ddbaf706ce548) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the login page background image: validate the image URL, cover the viewport on long pages, and apply the background styles only when an image is set
+
+- Updated dependencies [[`54281cb05440f618afaff041165ddbaf706ce548`](https://github.com/wso2/identity-apps/commit/54281cb05440f618afaff041165ddbaf706ce548)]:
+  - @wso2is/common.branding.v1@2.31.1
+
 ## 5.12.0
 
 ### Minor Changes
