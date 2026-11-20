@@ -43,6 +43,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
+import useAPIResourceAvailability, {
+    UseAPIResourceAvailabilityReturnInterface
+} from "../../../hooks/use-api-resource-availability";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
 import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api/roles";
 import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../../../constants/role-constants";
@@ -119,6 +122,8 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
             return ids;
         }, [ blockedAPIResourceEntries ]);
+
+        const { isAPIResourceAvailable }: UseAPIResourceAvailabilityReturnInterface = useAPIResourceAvailability();
 
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
@@ -201,6 +206,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         return;
                     }
 
+                    // Management API resources are not available to roles in organizations.
+                    if (!isAPIResourceAvailable(api?.type)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
@@ -215,7 +225,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(options);
             }
-        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
+        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds, isAPIResourceAvailable ]);
 
         useEffect(() => {
             const options: DropdownItemProps[] = [];

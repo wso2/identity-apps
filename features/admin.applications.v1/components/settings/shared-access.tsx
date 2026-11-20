@@ -20,6 +20,7 @@ import { useAsyncOperationStatus } from "@wso2is/admin.core.v1/hooks/use-async-o
 import { OperationStatus, OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface,
     IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -29,7 +30,9 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { EnhancedOrganizationLoginToggle } from "./enhanced-organization-login-toggle";
+import EnhancedOrganizationLoginToggle from "./enhanced-organization-login-toggle";
+import OrganizationCustomRolesToggle from "./organization-custom-roles-toggle";
+import OrganizationLoginSettings from "./organization-login-settings";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -84,6 +87,11 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         state?.config?.ui?.asyncOperationStatusPollingInterval);
     const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
+    const isOrganizationCustomRolesFeatureEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isOrganizationCustomRolesFeatureEnabled);
+
+    // Resolved the same way as the share form, which treats a missing audience as organization audience.
+    const roleAudience: string = application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
 
     const isMyAccount: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId ||
@@ -159,12 +167,41 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
-            { isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
+            { isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
+                <OrganizationLoginSettings
+                    appId={ application.id }
+                    isEnhancedOrganizationLoginEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    isOrganizationCustomRolesEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    showOrganizationCustomRoles={ isOrganizationCustomRolesFeatureEnabled }
+                    roleAudience={ roleAudience }
+                    onUpdate={ handleUpdate }
+                    isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
+                    readOnly={ readOnly }
+                />
+            ) }
+            { !isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    isOrganizationCustomRolesEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    isOrganizationCustomRolesFeatureEnabled={ isOrganizationCustomRolesFeatureEnabled }
+                    roleAudience={ roleAudience }
                     onUpdate={ handleUpdate }
                     readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                    disabled={
+                        isOrganizationCustomRolesFeatureEnabled && (application.organizationCustomRolesEnabled ?? false)
+                    }
+                />
+            ) }
+            { !isRoleSharingEnabled && isEnhancedOrganizationAuthenticationFeatureEnabled &&
+                isOrganizationCustomRolesFeatureEnabled && !isMyAccount && (
+                <OrganizationCustomRolesToggle
+                    appId={ application.id }
+                    isEnabled={ application.organizationCustomRolesEnabled ?? false }
+                    roleAudience={ roleAudience }
+                    onUpdate={ handleUpdate }
+                    readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                    disabled={ !application.enhancedOrgAuthenticationEnabled }
                 />
             ) }
         </>

@@ -56,6 +56,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
+import useAPIResourceAvailability, {
+    UseAPIResourceAvailabilityReturnInterface
+} from "../../hooks/use-api-resource-availability";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import {
@@ -156,6 +159,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         return ids;
     }, [ blockedAPIResourceEntries ]);
 
+    const { isAPIResourceAvailable }: UseAPIResourceAvailabilityReturnInterface = useAPIResourceAvailability();
+
     // If the enforce role operation permission feature is enabled,
     // only allow to edit the role if the user has the relevant permission.
     const isReadOnlyView: boolean = isReadOnly ||
@@ -223,6 +228,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     return;
                 }
 
+                // Management API resources are not available to roles in organizations.
+                if (!isAPIResourceAvailable(api?.type)) {
+                    return;
+                }
+
                 if (
                     !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
@@ -244,7 +254,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             setAllAPIResourcesDropdownOptions(options);
         }
 
-    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
+    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds, isAPIResourceAvailable ]);
 
     useEffect(() => {
         const options: DropdownItemProps[] = [];
