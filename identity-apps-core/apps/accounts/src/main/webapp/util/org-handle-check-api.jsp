@@ -101,19 +101,31 @@
             }
         }
 
-        if (responseCode >= 200 && responseCode < 300 && responseBody.length() > 0) {
+        if (responseCode >= 200 && responseCode < 300) {
             response.setStatus(responseCode);
             out.print(responseBody.toString());
         } else {
             // Log the upstream status and body so the failure can be diagnosed,
-            // then return a generic error. Redirects are not forwarded to the browser.
+            // then return a generic error body instead of the upstream details.
             String responseMessage = conn.getResponseMessage();
-            LOG.error("Organization handle check failed. URL: " + checkHandleUrl
+            String logMessage = "Organization handle check failed. URL: " + checkHandleUrl
                 + ", status: " + responseCode
                 + (responseMessage != null && !responseMessage.isEmpty() ? " " + responseMessage : "")
-                + ", response body: " + responseBody);
-            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-            out.print("{\"error\": {\"code\": \"502\"}}");
+                + ", response body: " + responseBody;
+
+            // A 4xx describes the request itself rather than an upstream outage, so its
+            // status is preserved. Redirects and 5xx are not forwarded to the browser.
+            boolean clientError = responseCode >= 400 && responseCode < 500;
+            int errorStatus = clientError ? responseCode : HttpServletResponse.SC_BAD_GATEWAY;
+
+            if (clientError) {
+                LOG.warn(logMessage);
+            } else {
+                LOG.error(logMessage);
+            }
+
+            response.setStatus(errorStatus);
+            out.print("{\"error\": {\"code\": \"" + errorStatus + "\"}}");
         }
     } catch (Exception e) {
         LOG.error("Failed to invoke the organization handle check API.", e);
