@@ -1,5 +1,17 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.389
+
+### Patch Changes
+
+- [#10782](https://github.com/wso2/identity-apps/pull/10782) [`ddafcc57a870e4c56a83b819f6dffe80f53eecd8`](https://github.com/wso2/identity-apps/commit/ddafcc57a870e4c56a83b819f6dffe80f53eecd8) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Allow organizations to create application roles and use their organization roles for shared applications when the owner enables organization custom roles.
+
+- Updated dependencies [[`ddafcc57a870e4c56a83b819f6dffe80f53eecd8`](https://github.com/wso2/identity-apps/commit/ddafcc57a870e4c56a83b819f6dffe80f53eecd8)]:
+  - @wso2is/admin.applications.v1@2.46.3
+  - @wso2is/admin.core.v1@2.65.2
+  - @wso2is/admin.extensions.v1@2.44.4
+  - @wso2is/i18n@2.63.7
+
 ## 2.27.388
 
 ### Patch Changes
