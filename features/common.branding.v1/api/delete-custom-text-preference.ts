@@ -36,7 +36,10 @@ const deleteCustomTextPreference = (
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
 ): Promise<CustomTextPreferenceAPIResponseInterface> => {
-    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
+    // App-level custom text is identified by the application ID. Hence the organization ID is only used for the
+    // organization-level custom text of sub organizations.
+    const tenantDomain: string = type === BrandingPreferenceTypes.ORG
+        && store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id
         : name;
 

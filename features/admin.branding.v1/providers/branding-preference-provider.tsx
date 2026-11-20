@@ -140,7 +140,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
     const {
         data: customTextCommons
-    } = useGetCustomTextPreferenceResolve(!!selectedLocale, tenantDomain, "common", selectedLocale);
+    } = useGetCustomTextPreferenceResolve(!!selectedLocale, resolvedName, "common", selectedLocale, resolvedType);
 
     const {
         data: customText,
@@ -149,9 +149,10 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         mutate: mutateCustomTextPreferenceFetchRequest
     } = useGetCustomTextPreferenceResolve(
         !!selectedScreen && !!selectedLocale,
-        tenantDomain,
+        resolvedName,
         selectedScreen,
-        selectedLocale
+        selectedLocale,
+        resolvedType
     );
 
     const {
@@ -346,10 +347,36 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     };
 
     /**
+     * Reset the unsaved custom text changes when switching between the organization and the applications,
+     * since the custom text form belongs to the previously selected organization or application.
+     */
+    useEffect(() => {
+        setCustomTextFormSubscription(null);
+    }, [ resolvedName, resolvedType ]);
+
+    /**
      * Moderates the Custom Text Preference response.
      */
     useEffect(() => {
+        if (resolvedType === BrandingPreferenceTypes.APP
+            && customTextPreferenceFetchRequestError?.response?.data?.code
+                === CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
+            // Neither the application nor its organization hierarchy has a custom text preference.
+            setIsCustomTextPreferenceConfigured(false);
+
+            return;
+        }
         if (!customText) {
+            return;
+        }
+        if (resolvedType === BrandingPreferenceTypes.APP) {
+            // The application has its own custom text preference only if the preference is resolved from it.
+            // Otherwise the preference is inherited from the organization hierarchy.
+            setIsCustomTextPreferenceConfigured(
+                customText?.resolvedFrom?.type === BrandingPreferenceTypes.APP
+                && customText?.resolvedFrom?.application === selectedApplication
+            );
+
             return;
         }
         if (organizationType === OrganizationType.SUBORGANIZATION
@@ -360,7 +387,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         } else {
             setIsCustomTextPreferenceConfigured(true);
         }
-    }, [ customText ]);
+    }, [ customText, customTextPreferenceFetchRequestError, resolvedType, selectedApplication ]);
 
     /**
      * Updates the custom text preference.
@@ -374,8 +401,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         _isCustomTextPreferenceConfigured: boolean
     ): Promise<void> => {
 
-        return updateCustomTextPreference(_isCustomTextPreferenceConfigured, values, tenantDomain, selectedScreen,
-            selectedLocale)
+        return updateCustomTextPreference(_isCustomTextPreferenceConfigured, values, resolvedName, selectedScreen,
+            selectedLocale, resolvedType)
             .then(
                 () => {
                     dispatch(
@@ -417,7 +444,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * @param locale - Locale to be reset.
      */
     const _deleteCustomTextPreference = (screen: string, locale: string): void => {
-        deleteCustomTextPreference(tenantDomain, screen, locale).then(() => {
+        deleteCustomTextPreference(resolvedName, screen, locale, resolvedType).then(() => {
             dispatch(
                 addAlert<AlertInterface>({
                     description: t("branding:brandingCustomText.notifications.resetSuccess.description", {
@@ -429,10 +456,16 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 })
             );
 
-            setCustomTextFormSubscription({
-                ...customTextFormSubscription,
-                values: cloneDeep(customTextFallbacks?.preference?.text)
-            });
+            if (resolvedType === BrandingPreferenceTypes.APP) {
+                // The application falls back to the custom text of its organization hierarchy. Hence clear the
+                // form values to show the re-resolved custom text.
+                setCustomTextFormSubscription(null);
+            } else {
+                setCustomTextFormSubscription({
+                    ...customTextFormSubscription,
+                    values: cloneDeep(customTextFallbacks?.preference?.text)
+                });
+            }
 
             mutateCustomTextPreferenceFetchRequest();
         })
@@ -585,7 +618,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 },
                 i18n,
                 isCustomLayoutEditorEnabled,
-                isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks),
+                isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks)
+                    && (resolvedType !== BrandingPreferenceTypes.APP || isCustomTextPreferenceConfigured),
                 isCustomTextPreferenceFetching: isCustomTextPreferenceFetching,
                 onSelectedLocaleChange: (locale: string): void => {
                     setCustomTextFormSubscription(null);

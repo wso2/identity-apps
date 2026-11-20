@@ -24,6 +24,7 @@ import { HttpMethods,
 } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { CustomTextPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models/custom-text-preference";
 
 /**
@@ -33,11 +34,18 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Delete all the branding preference text customizations for a given screen and locale.
+ * Delete all the branding preference text customizations.
+ * If an application is given, only the text customizations of the application are deleted. Otherwise, all the
+ * text customizations of the organization are deleted.
  *
+ * @param type - Type of the text customizations to delete.
+ * @param name - ID of the application when the type is APP.
  * @returns Promise containing the response.
  */
-const deleteAllCustomTextPreferences = (): Promise<CustomTextPreferenceAPIResponseInterface> => {
+const deleteAllCustomTextPreferences = (
+    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
+    name?: string
+): Promise<CustomTextPreferenceAPIResponseInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -45,6 +53,12 @@ const deleteAllCustomTextPreferences = (): Promise<CustomTextPreferenceAPIRespon
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
+        params: type === BrandingPreferenceTypes.APP
+            ? {
+                name,
+                type
+            }
+            : undefined,
         url: store.getState().config.endpoints.brandingTextPreference
     };
 

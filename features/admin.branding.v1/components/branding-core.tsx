@@ -18,8 +18,11 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
@@ -117,6 +120,16 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         ? selectedApplication : tenantDomain;
     const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
+
+    const {
+        data: selectedApplicationData
+    }: RequestResultInterface<ApplicationInterface, RequestErrorInterface> = useGetApplication(
+        selectedApplication, resolvedType === BrandingPreferenceTypes.APP);
+
+    // Name shown in the revert notifications: the application name in the application mode.
+    const revertTargetName: string = resolvedType === BrandingPreferenceTypes.APP
+        ? selectedApplicationData?.name ?? selectedApplication
+        : tenantName;
 
     const {
         mergedBrandingPreference: overridenBrandingPreference,
@@ -606,19 +619,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.branding.notifications.delete.success.description",
-                    { tenant: tenantName }),
+                    { tenant: revertTargetName }),
                 level: AlertLevels.SUCCESS,
                 message: t("extensions:develop.branding.notifications.delete.success.message")
             }));
         } catch (error: any) {
             let description: string = t("extensions:develop.branding.notifications.delete.genericError" +
-            ".description", { tenant: tenantName });
+            ".description", { tenant: revertTargetName });
             let message: string = t("extensions:develop.branding.notifications.delete.genericError.message");
 
             // If branding is not configured, but user tried deleting anyway.
             if (error.code === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
                 description = t("extensions:develop.branding.notifications.delete.notConfigured" +
-                ".description", { tenant: tenantName });
+                ".description", { tenant: revertTargetName });
                 message = t("extensions:develop.branding.notifications.delete.notConfigured.message");
             }
 
@@ -629,36 +642,34 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             }));
         }
 
-        // Custom text is an organization-level preference. Reverting an application's branding
-        // must not delete it, as the bulk delete removes the organization's text for all screens and locales.
-        if (resolvedType === BrandingPreferenceTypes.ORG) {
-            try {
-                await deleteAllCustomTextPreferences();
+        // Reverting the organization branding deletes all the custom text of the organization, while reverting an
+        // application branding only deletes the custom text of the application.
+        try {
+            await deleteAllCustomTextPreferences(resolvedType, resolvedName);
 
-                dispatch(addAlert<AlertInterface>({
-                    description: t(
-                        "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
-                        { tenant: tenantName }
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.branding.notifications.delete.success.message")
-                }));
-            } catch (error: any) {
-                const description: string = t(
-                    "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
-                        ".description",
-                    { tenant: tenantName }
-                );
-                const message: string = t(
-                    "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
-                );
+            dispatch(addAlert<AlertInterface>({
+                description: t(
+                    "extensions:develop.branding.notifications.customTextPreferenceDelete.success.description",
+                    { tenant: revertTargetName }
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t("extensions:develop.branding.notifications.delete.success.message")
+            }));
+        } catch (error: any) {
+            const description: string = t(
+                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
+                    ".description",
+                { tenant: revertTargetName }
+            );
+            const message: string = t(
+                "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError.message"
+            );
 
-                dispatch(addAlert<AlertInterface>({
-                    description: description,
-                    level: AlertLevels.ERROR,
-                    message: message
-                }));
-            }
+            dispatch(addAlert<AlertInterface>({
+                description: description,
+                level: AlertLevels.ERROR,
+                message: message
+            }));
         }
 
         setIsBrandingPublished(false);

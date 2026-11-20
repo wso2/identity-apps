@@ -167,7 +167,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         updateActiveTab,
         isCustomTextConfigured,
         updateCustomTextPreference,
-        customTextFormSubscription
+        customTextFormSubscription,
+        selectedApplication
     } = useBrandingPreference();
 
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
@@ -419,7 +420,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText readOnly={ readOnly || brandingMode === BrandingModes.APPLICATION } />
+            <CustomText
+                readOnly={ readOnly || (brandingMode === BrandingModes.APPLICATION && !selectedApplication) }
+            />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
@@ -491,7 +494,11 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             render: AdvancePreferenceTabPane
         });
 
-        if (brandingMode === BrandingModes.ORGANIZATION) {
+        const isApplicationTextTabDisabled: boolean = brandingFeatureConfig?.disabledFeatures?.includes(
+            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+        );
+
+        if (brandingMode === BrandingModes.ORGANIZATION || !isApplicationTextTabDisabled) {
             panes.push({
                 "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
                 menuItem: (
@@ -502,32 +509,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         <FeatureFlagLabel
                             featureFlags={ brandingFeatureFlags }
                             featureKey={
-                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATION_BRANDING_TEXT
-                            }
-                            type="chip"
-                        />
-                    </Menu.Item>
-                ),
-                render: TextPreferenceTabPane
-            });
-        }
-
-        if (brandingMode === BrandingModes.APPLICATION &&
-            !brandingFeatureConfig?.disabledFeatures?.includes(FeatureFlagConstants
-                .FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT)) {
-
-            panes.push({
-                "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
-                menuItem: (
-                    <Menu.Item
-                        key="text"
-                        disabled={ true }
-                    >
-                        { t("branding:tabs.text.label") }
-                        <FeatureFlagLabel
-                            featureFlags={ brandingFeatureFlags }
-                            featureKey={
-                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                                brandingMode === BrandingModes.APPLICATION
+                                    ? FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                                    : FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATION_BRANDING_TEXT
                             }
                             type="chip"
                         />
