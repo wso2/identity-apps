@@ -122,8 +122,10 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     );
 
     // Identifies the custom text currently being edited, so that a completed request doesn't override the form of
-    // another organization, application, screen or locale selected while the request was in progress.
+    // another organization, application, screen or locale selected while the request was in progress. The
+    // generation changes on every selection change, including switching back to a previous selection.
     const customTextScopeRef: MutableRefObject<string> = useRef<string>(null);
+    const customTextScopeGenerationRef: MutableRefObject<number> = useRef<number>(0);
     const [ customTextFormSubscription, setCustomTextFormSubscription ] = useState<
         Partial<FormState<CustomTextInterface, CustomTextInterface>>
     >(null);
@@ -141,7 +143,12 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
 
-    customTextScopeRef.current = `${ resolvedType }:${ resolvedName }:${ selectedScreen }:${ selectedLocale }`;
+    const customTextScope: string = `${ resolvedType }:${ resolvedName }:${ selectedScreen }:${ selectedLocale }`;
+
+    if (customTextScopeRef.current !== customTextScope) {
+        customTextScopeRef.current = customTextScope;
+        customTextScopeGenerationRef.current += 1;
+    }
 
     const [ brandingPreference, setBrandingPreference ] = useState<BrandingPreferenceAPIResponseInterface>(null);
 
@@ -459,7 +466,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * @param locale - Locale to be reset.
      */
     const _deleteCustomTextPreference = (screen: string, locale: string): void => {
-        const requestedCustomTextScope: string = customTextScopeRef.current;
+        const requestedCustomTextScopeGeneration: number = customTextScopeGenerationRef.current;
 
         deleteCustomTextPreference(resolvedName, screen, locale, resolvedType).then(() => {
             dispatch(
@@ -473,7 +480,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 })
             );
 
-            if (requestedCustomTextScope !== customTextScopeRef.current) {
+            if (requestedCustomTextScopeGeneration !== customTextScopeGenerationRef.current) {
                 // The selection changed while the request was in progress. The form now belongs to the new selection.
                 mutateCustomTextPreferenceFetchRequest();
 
@@ -548,8 +555,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             }
         };
 
+        const requestedCustomTextScopeGeneration: number = customTextScopeGenerationRef.current;
+
         // Update the value in the API.
         _updateCustomTextPreference(updatedValues, isCustomTextPreferenceConfigured).then(() => {
+            if (requestedCustomTextScopeGeneration !== customTextScopeGenerationRef.current) {
+                // The selection changed while the request was in progress. The form now belongs to the new selection.
+                return;
+            }
+
             // Update the value in the form state.
             setCustomTextFormSubscription({
                 ...customTextFormSubscription,

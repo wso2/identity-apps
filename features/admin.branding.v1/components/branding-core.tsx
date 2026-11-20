@@ -655,7 +655,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 level: AlertLevels.SUCCESS,
                 message: t("extensions:develop.branding.notifications.delete.success.message")
             }));
-        } catch (error: any) {
+        } catch {
             const description: string = t(
                 "extensions:develop.branding.notifications.customTextPreferenceDelete.genericError" +
                     ".description",

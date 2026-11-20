@@ -69,6 +69,7 @@ import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import { BrandingPreferenceContextProps } from "../context/branding-preference-context";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
 import { CustomTextConfigurationModes } from "../models/custom-text-preference";
@@ -169,7 +170,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         updateCustomTextPreference,
         customTextFormSubscription,
         selectedApplication
-    } = useBrandingPreference();
+    }: BrandingPreferenceContextProps = useBrandingPreference();
 
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
