@@ -418,10 +418,15 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         </ResourceTab.Pane>
     );
 
+    // In the application mode, the text can't be edited until an application is selected. Otherwise, the changes
+    // would apply to the organization custom text.
+    const isCustomTextReadOnly: boolean = readOnly
+        || (brandingMode === BrandingModes.APPLICATION && !selectedApplication);
+
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
             <CustomText
-                readOnly={ readOnly || (brandingMode === BrandingModes.APPLICATION && !selectedApplication) }
+                readOnly={ isCustomTextReadOnly }
             />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
@@ -441,12 +446,12 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             onSubmit({}, false);
                         }
                     },
-                    readOnly: readOnly
+                    readOnly: isCustomTextReadOnly
                 } }
                 data-componentid="sticky-tab-action-panel"
             >
                 <Button
-                    disabled={ !isCustomTextConfigured }
+                    disabled={ isCustomTextReadOnly || !isCustomTextConfigured }
                     onClick={ () =>  {
                         setShowCustomTextRevertAllConfirmationModal(true);
                     } }

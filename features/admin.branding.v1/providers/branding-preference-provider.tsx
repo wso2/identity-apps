@@ -40,7 +40,16 @@ import get from "lodash-es/get";
 import isEqual from "lodash-es/isEqual";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    PropsWithChildren,
+    ReactElement,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -111,6 +120,10 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ selectedLocale, setSelectedCustomTextLocale ] = useState<string>(
         CustomTextPreferenceConstants.DEFAULT_LOCALE
     );
+
+    // Identifies the custom text currently being edited, so that a completed request doesn't override the form of
+    // another organization, application, screen or locale selected while the request was in progress.
+    const customTextScopeRef: MutableRefObject<string> = useRef<string>(null);
     const [ customTextFormSubscription, setCustomTextFormSubscription ] = useState<
         Partial<FormState<CustomTextInterface, CustomTextInterface>>
     >(null);
@@ -127,6 +140,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         ? selectedApplication : tenantDomain;
     const resolvedType: BrandingPreferenceTypes = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? BrandingPreferenceTypes.APP : BrandingPreferenceTypes.ORG;
+
+    customTextScopeRef.current = `${ resolvedType }:${ resolvedName }:${ selectedScreen }:${ selectedLocale }`;
 
     const [ brandingPreference, setBrandingPreference ] = useState<BrandingPreferenceAPIResponseInterface>(null);
 
@@ -444,6 +459,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * @param locale - Locale to be reset.
      */
     const _deleteCustomTextPreference = (screen: string, locale: string): void => {
+        const requestedCustomTextScope: string = customTextScopeRef.current;
+
         deleteCustomTextPreference(resolvedName, screen, locale, resolvedType).then(() => {
             dispatch(
                 addAlert<AlertInterface>({
@@ -455,6 +472,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     message: t("branding:brandingCustomText.notifications.resetSuccess.message")
                 })
             );
+
+            if (requestedCustomTextScope !== customTextScopeRef.current) {
+                // The selection changed while the request was in progress. The form now belongs to the new selection.
+                mutateCustomTextPreferenceFetchRequest();
+
+                return;
+            }
 
             if (resolvedType === BrandingPreferenceTypes.APP) {
                 // The application falls back to the custom text of its organization hierarchy. Hence clear the
