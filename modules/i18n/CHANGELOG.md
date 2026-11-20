@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.63.7
+
+### Patch Changes
+
+- [#10782](https://github.com/wso2/identity-apps/pull/10782) [`ddafcc57a870e4c56a83b819f6dffe80f53eecd8`](https://github.com/wso2/identity-apps/commit/ddafcc57a870e4c56a83b819f6dffe80f53eecd8) Thanks [@VIHANGAGIT](https://github.com/VIHANGAGIT)! - Allow organizations to create application roles and use their organization roles for shared applications when the owner enables organization custom roles.
+
 ## 2.63.6
 
 ### Patch Changes
