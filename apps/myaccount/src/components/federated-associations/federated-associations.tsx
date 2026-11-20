@@ -24,7 +24,7 @@ import { TestableComponentInterface,
 } from "@wso2is/core/models";
 import { AppAvatar, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
@@ -69,7 +69,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     } = props;
 
     const [ confirmDelete, setConfirmDelete ] = useState(false);
-    const [ id, setId ] = useState(null);
+    // Holds the association id targeted by the delete-confirmation modal; only read/written in handlers.
+    const idRef: MutableRefObject<string> = useRef<string>(null);
     const { t } = useTranslation();
     const [ federatedAssociations, setFederatedAssociations ] = useState<FederatedAssociation[]>([]);
     const [ showExternalLogins, setShowExternalLogins ] = useState<boolean>(true);
@@ -207,7 +208,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                     <Button
                         className="link-button"
                         onClick={ () => {
-                            setId(null);
+                            idRef.current = null;
                             setConfirmDelete(false);
                         } }
                     >
@@ -217,9 +218,9 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                         primary
                         onClick={ () => {
                             removeFederatedAssociation(
-                                id
+                                idRef.current
                             );
-                            setId(null);
+                            idRef.current = null;
                             setConfirmDelete(false);
                         } }
                     >
@@ -292,7 +293,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                                     color="grey"
                                                                     name="trash alternate"
                                                                     onClick={ () => {
-                                                                        setId(federatedAssociation.id);
+                                                                        idRef.current = federatedAssociation.id;
                                                                         setConfirmDelete(true);
                                                                     } }
                                                                 />
