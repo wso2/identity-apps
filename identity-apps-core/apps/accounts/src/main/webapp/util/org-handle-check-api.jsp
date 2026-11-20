@@ -25,24 +25,47 @@
 <%@ page import="java.net.URL" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="org.apache.commons.logging.Log" %>
+<%@ page import="org.apache.commons.logging.LogFactory" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@include file="../includes/init-url.jsp" %>
 
+<%!
+    private static final Log LOG = LogFactory.getLog("org-handle-check-api");
+%>
+
 <%
+    final String checkHandlePath = "/api/server/v1/organizations/check-handle";
+    final int connectTimeoutMs = 5000;
+    final int readTimeoutMs = 10000;
+
     StringBuilder requestBody = new StringBuilder();
     String line;
+    HttpURLConnection conn = null;
 
-    try (BufferedReader reader = request.getReader()) {
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
+    try {
+        try (BufferedReader reader = request.getReader()) {
+            while ((line = reader.readLine()) != null) {
+                requestBody.append(line);
+            }
         }
 
-        String checkHandleUrl = identityServerEndpointContextParam
-            + "/api/server/v1/organizations/check-handle";
+        if (identityServerEndpointContextParam == null || identityServerEndpointContextParam.trim().isEmpty()) {
+            LOG.error("The organization handle check endpoint is not configured.");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\": {\"code\": \"500\"}}");
+            return;
+        }
+
+        String checkHandleUrl = identityServerEndpointContextParam + checkHandlePath;
 
         URL url = new URL(checkHandleUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        conn.setConnectTimeout(connectTimeoutMs);
+        conn.setReadTimeout(readTimeoutMs);
+        conn.setInstanceFollowRedirects(false);
+        conn.setUseCaches(false);
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("Accept", "application/json");
 
@@ -56,7 +79,7 @@
         conn.setDoOutput(true);
 
         try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = requestBody.toString().getBytes("utf-8");
+            byte[] input = requestBody.toString().getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
 
@@ -66,18 +89,51 @@
             : conn.getErrorStream();
 
         StringBuilder responseBody = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "utf-8"))) {
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                responseBody.append(responseLine.trim());
+        // getErrorStream() returns null for redirects and for error responses that
+        // carry no body, so the stream must be null-checked before it is read.
+        if (responseStream != null) {
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(responseStream, StandardCharsets.UTF_8))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    responseBody.append(responseLine.trim());
+                }
             }
         }
 
-        response.setStatus(responseCode);
-        out.print(responseBody.toString());
+        if (responseCode >= 200 && responseCode < 300) {
+            response.setStatus(responseCode);
+            out.print(responseBody.toString());
+        } else {
+            // Log the upstream status and body so the failure can be diagnosed,
+            // then return a generic error body instead of the upstream details.
+            String responseMessage = conn.getResponseMessage();
+            String logMessage = "Organization handle check failed. URL: " + checkHandleUrl
+                + ", status: " + responseCode
+                + (responseMessage != null && !responseMessage.isEmpty() ? " " + responseMessage : "")
+                + ", response body: " + responseBody;
 
+            // A 4xx describes the request itself rather than an upstream outage, so its
+            // status is preserved. Redirects and 5xx are not forwarded to the browser.
+            boolean clientError = responseCode >= 400 && responseCode < 500;
+            int errorStatus = clientError ? responseCode : HttpServletResponse.SC_BAD_GATEWAY;
+
+            if (clientError) {
+                LOG.warn(logMessage);
+            } else {
+                LOG.error(logMessage);
+            }
+
+            response.setStatus(errorStatus);
+            out.print("{\"error\": {\"code\": \"" + errorStatus + "\"}}");
+        }
     } catch (Exception e) {
-        response.setStatus(500);
-        out.print("{\"error\": \"Exception: " + e.getMessage() + "\"}");
+        LOG.error("Failed to invoke the organization handle check API.", e);
+        response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        out.print("{\"error\": {\"code\": \"502\"}}");
+    } finally {
+        if (conn != null) {
+            conn.disconnect();
+        }
     }
 %>
