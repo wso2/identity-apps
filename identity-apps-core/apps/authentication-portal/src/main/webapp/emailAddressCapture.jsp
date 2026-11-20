@@ -196,6 +196,14 @@
 
     <script type="text/javascript">
                     $(document).ready(function() {
+                        $('#pin_form').on('submit', function(e) {
+                            if ($(this).data("submitted") === true) {
+                                console.warn("Prevented a possible double submit event");
+                                e.preventDefault();
+                                return false;
+                            }
+                            $(this).data("submitted", true);
+                        });
                         $('#update').click(function() {
                             var emailAddress = document
                                     .getElementById("EMAIL_ADDRESS").value;
