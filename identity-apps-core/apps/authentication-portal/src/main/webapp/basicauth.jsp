@@ -55,6 +55,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.user.core.UserCoreConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
 
@@ -458,9 +459,27 @@
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
     <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant").replace("{supportEmail}",supportEmail) %>
 </div>
-<% } else { %>
+<% } else {
+    String loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage));
+    // Show the remaining login attempts with the generic login failure message for invalid credentials, when enabled.
+    if (Boolean.parseBoolean(application.getInitParameter("ShowRemainingLoginAttempts"))
+            && StringUtils.equals(errorMessage, "login.fail.message")
+            && StringUtils.equals(errorCode, UserCoreConstants.ErrorCode.INVALID_CREDENTIAL)) {
+        int remainingLoginAttempts = 0;
+        try {
+            remainingLoginAttempts = Integer.parseInt(request.getParameter("remainingAttempts"));
+        } catch (NumberFormatException e) {
+            // Keep the generic login failure message.
+        }
+        if (remainingLoginAttempts > 0) {
+            loginFailureMessage = AuthenticationEndpointUtil.i18n(resourceBundle,
+                    "login.fail.message.with.remaining.attempts")
+                    .replace("{{remainingAttempts}}", String.valueOf(remainingLoginAttempts));
+        }
+    }
+%>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-    <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
+    <%= loginFailureMessage %>
 </div>
 <% }
 } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
