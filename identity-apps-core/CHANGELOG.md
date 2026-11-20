@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.12.5
+
+### Patch Changes
+
+- [#10977](https://github.com/wso2/identity-apps/pull/10977) [`9657b946d8e7949c65d445f80bff09c063317393`](https://github.com/wso2/identity-apps/commit/9657b946d8e7949c65d445f80bff09c063317393) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Show the remaining login attempts in the login failure message when enabled for the authentication endpoint
+
 ## 5.12.4
 
 ### Patch Changes
