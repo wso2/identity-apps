@@ -306,6 +306,12 @@
                     // When there's no proxy context path, the IS server returns "null".
                     var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
+                    // Keep the browser inside the organization when the portal is opened from an organization URL.
+                    if (getOrganizationPath()) {
+                        return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
+                            + getOrganizationPath() + "<%= buildOptions.basename ? '/' + buildOptions.basename : ''%>";
+                    }
+
                     if (getTenantName() === startupConfig.superTenant && isSuperTenantRequiredInUrl !== "true") {
                         return applicationDomain.replace(/\/+$/, '') + contextPath
                              + "<%= buildOptions.basename ? '/' + buildOptions.basename : ''%>";
@@ -369,18 +375,11 @@
                     var authParams = Object.assign({}, originalParams);
 
                     if (getOrganizationPath()) {
-                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
-                        var orgIdInLocalStorage = localStorage.getItem("org-id");
-
-                        if (orgIdInLocalStorage) {
-                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
-                                authParams["fidp"] = "OrganizationSSO";
-                                authParams["orgId"] = getOrganizationName();
-                            }
-                        } else {
-                            authParams["fidp"] = "OrganizationSSO";
-                            authParams["orgId"] = getOrganizationName();
-                        }
+                        // Always scope the login to the organization in the URL. Depending on localStorage here
+                        // skipped the organization login when the stored organization was different, e.g. right
+                        // after onboarding a new organization.
+                        authParams["fidp"] = "OrganizationSSO";
+                        authParams["orgId"] = getOrganizationName();
                     }
 
                     return authParams;
