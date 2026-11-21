@@ -519,6 +519,12 @@
                 {% else %} false,
                 {% endif %}
                 "featureFlags": [
+                    {% if console.customer_data_service.fuzzy_matching_enabled is defined and console.customer_data_service.fuzzy_matching_enabled %}
+                    {
+                        "feature": "customerDataFuzzyUnification",
+                        "flag": "ENABLED"
+                    },
+                    {% endif %}
                     {
                         "feature": "customerDataService",
                         "flag": ""
