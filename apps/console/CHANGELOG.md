@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.39.5
+
+### Patch Changes
+
+- [#10988](https://github.com/wso2/identity-apps/pull/10988) [`6cff5aa34f50f47bfda7b5d7cc0f17de9e3a32d8`](https://github.com/wso2/identity-apps/commit/6cff5aa34f50f47bfda7b5d7cc0f17de9e3a32d8) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Allow feature flags for the Customer Data Service console feature to be set from deployment.toml, so that features such as fuzzy unification and review tasks can be enabled.
+
 ## 4.39.4
 
 ### Patch Changes
