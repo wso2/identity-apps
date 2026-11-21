@@ -68,6 +68,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
+import difference from "lodash-es/difference";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
@@ -440,6 +441,40 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     && !isM2MApplication
     && !isSystemApplication
     && !isDefaultApplication, []);
+
+    /**
+     * Scope validators listed in the form. Validators in `HIDDEN_SCOPE_VALIDATORS` are left out.
+     */
+    const listedScopeValidators: string[] = useMemo(() => difference(
+        metadata?.scopeValidators?.options ?? [],
+        ApplicationManagementConstants.HIDDEN_SCOPE_VALIDATORS
+    ), [ metadata?.scopeValidators ]);
+
+    /**
+     * Resolves the scope validators to send on save. The server rejects validators it no longer registers,
+     * so only registered ones are sent. The form only lets the user change the validators it lists, so the
+     * other registered validators configured on the application (e.g. hidden ones) are sent back as is.
+     *
+     * @param selectedValidators - Validators selected in the form. `undefined` if the section is not rendered.
+     * @returns the scope validators for the update request.
+     */
+    const resolveScopeValidators: (selectedValidators: string[] | undefined) => string[] | undefined = (
+        selectedValidators: string[] | undefined
+    ): string[] | undefined => {
+        const registeredValidators: string[] | undefined = metadata?.scopeValidators?.options;
+
+        if (!selectedValidators) {
+            // Section not rendered. If the metadata is not loaded, keep every existing validator,
+            // since filtering against an empty list would remove them all.
+            return registeredValidators
+                ? intersection(initialValues?.scopeValidators, registeredValidators)
+                : initialValues?.scopeValidators;
+        }
+
+        const unlistedValidators: string[] = difference(registeredValidators ?? [], listedScopeValidators);
+
+        return union(intersection(initialValues?.scopeValidators, unlistedValidators), selectedValidators);
+    };
 
     /**
      * Reset the encryption field initial values if its
@@ -1689,7 +1724,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         renewRefreshToken: isRenew
                     };
                 })(),
-                scopeValidators: values.get("scopeValidator"),
+                scopeValidators: resolveScopeValidators(values.get("scopeValidator")),
                 subjectToken: {
                     applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
                         ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
@@ -1701,8 +1736,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             !applicationConfig.inboundOIDCForm.showFrontChannelLogout
                 && delete inboundConfigFormValues.logout.frontChannelLogoutUrl;
-            !applicationConfig.inboundOIDCForm.showScopeValidators
-                && delete inboundConfigFormValues.scopeValidators;
             !applicationConfig.inboundOIDCForm.showIdTokenEncryption
             && delete inboundConfigFormValues.idToken.encryption;
             !applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
@@ -2055,13 +2088,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
-        // Add `scope validators` only if `scope validators` are visible.
-        if (applicationConfig.inboundOIDCForm.showScopeValidators) {
-            inboundConfigFormValues = {
-                ...inboundConfigFormValues,
-                scopeValidators: values.get("scopeValidator")
-            };
-        }
+        inboundConfigFormValues = {
+            ...inboundConfigFormValues,
+            scopeValidators: resolveScopeValidators(values.get("scopeValidator"))
+        };
 
         // If the `clientId` is available, add it to the payload.
         if (initialValues?.clientId) {
@@ -5053,6 +5083,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { applicationConfig.inboundOIDCForm.showScopeValidators
                 && !isSystemApplication
                 && !isDefaultApplication
+                && listedScopeValidators.length > 0
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -5074,8 +5105,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".scopeValidators.fields.validator.validations.empty")
                                 }
                                 type="checkbox"
-                                value={ initialValues?.scopeValidators }
-                                children={ getAllowedList(metadata?.scopeValidators, true) }
+                                value={ intersection(initialValues?.scopeValidators, listedScopeValidators) }
+                                children={ getAllowedList({ options: listedScopeValidators }, true) }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-scope-validator-checkbox` }
                             />

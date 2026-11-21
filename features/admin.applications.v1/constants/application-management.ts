@@ -231,6 +231,16 @@ export class ApplicationManagementConstants {
         "org.wso2.carbon.identity.oauth2.token.OauthTokenIssuerImpl";
 
     /**
+     * Scope validators that are registered in the server but not listed in the OIDC protocol tab.
+     * Values must match the validator names returned in the OIDC metadata.
+     */
+    public static readonly HIDDEN_SCOPE_VALIDATORS: string[] = [
+        // Role based access control validator, shipped by default.
+        // Name returned by JDBCScopeValidator#getValidatorName.
+        "Role based scope validator"
+    ];
+
+    /**
      * List of available grant types.
      */
     public static readonly AVAILABLE_GRANT_TYPES: string[] = [
