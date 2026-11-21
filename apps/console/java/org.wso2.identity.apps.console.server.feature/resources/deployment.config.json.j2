@@ -522,7 +522,17 @@
                     {
                         "feature": "customerDataService",
                         "flag": ""
-                    }
+                    }{% if console.customer_data_service.feature_flags is defined %}{% for flag in console.customer_data_service.feature_flags %},
+                    {
+                        {% for key, value in flag.items() %}
+                        {% if value is string %}
+                        "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+                        {% else %}
+                        "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                        {% endif %}
+                        {% endfor %}
+                    }{% endfor %}{% endif %}
+
                 ],
                 "scopes": {
                     {% if console.customer_data_service.scopes is defined %}
