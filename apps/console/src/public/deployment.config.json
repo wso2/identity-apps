@@ -798,8 +798,7 @@
             },
             "branding": {
                 "disabledFeatures": [
-                    "branding.hostnameUrlBranding",
-                    "branding.stylesAndText.application.text"
+                    "branding.hostnameUrlBranding"
                 ],
                 "enabled": true,
                 "featureFlags": [

@@ -147,6 +147,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         state?.config?.ui?.features?.branding?.disabledFeatures);
     const brandingFeatureFlags: FeatureFlagsInterface[] = useSelector(
         (state: AppState) => state.config.ui.features?.branding?.featureFlags);
+    const isApplicationTextBrandingDisabled: boolean = !!brandingDisabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT);
 
     const [ isBrandingAppsRedirect, setIsBrandingAppsRedirect ] = useState<boolean>(false);
 
@@ -574,6 +576,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     data-componentid={ `${componentId}-application-mode-button` }
                                                     value={ BrandingModes.APPLICATION }
                                                     onClick={ () => {
+                                                        isApplicationTextBrandingDisabled &&
                                                         activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
                                                         updateActiveTab(
                                                             BrandingPreferencesConstants.TABS.GENERAL_TAB_ID

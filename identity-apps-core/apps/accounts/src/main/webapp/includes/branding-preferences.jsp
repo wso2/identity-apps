@@ -308,6 +308,10 @@
             preferenceResourceType = APP_PREFERENCE_RESOURCE_TYPE;
         }
 
+        /* The custom text is resolved independently from the branding preference. Hence keep the requested
+           resource type, since `preferenceResourceType` is overridden by the type the branding is resolved from. */
+        String customTextRequestingResourceType = preferenceResourceType;
+
         BrandingPreferenceRetrievalClient brandingPreferenceRetrievalClient = new BrandingPreferenceRetrievalClient();
         JSONObject brandingPreferenceResponse = null;
         Object cachedBrandingPreferenceResponse = request.getAttribute(BRANDING_PREFERENCE_CACHE_KEY);
@@ -417,7 +421,7 @@
                     if (customTextPreferenceResponse == null) {
                         customTextPreferenceResponse = brandingPreferenceRetrievalClient.getCustomTextPreference(
                             tenantRequestingPreferences,
-                            preferenceResourceType,
+                            customTextRequestingResourceType,
                             applicationRequestingPreferences,
                             screenName,
                             locale

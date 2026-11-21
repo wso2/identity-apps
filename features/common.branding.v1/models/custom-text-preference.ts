@@ -24,6 +24,28 @@ export interface CustomTextPreferenceAPIResponseInterface {
     locale: string;
     screen: string;
     preference: CustomTextPreferenceInterface;
+    /**
+     * Source that the custom text preference is resolved from. Only available in the resolve API response.
+     */
+    resolvedFrom?: CustomTextPreferenceResolvedFromInterface;
+}
+
+/**
+ * Source that a custom text preference is resolved from.
+ */
+export interface CustomTextPreferenceResolvedFromInterface {
+    /**
+     * Type of the source (ORG or APP).
+     */
+    type: BrandingPreferenceTypes;
+    /**
+     * Organization (tenant domain) that the custom text preference is resolved from.
+     */
+    organization?: string;
+    /**
+     * Application that the custom text preference is resolved from. Only available for the APP type.
+     */
+    application?: string;
 }
 
 export interface CustomTextPreferenceInterface {
