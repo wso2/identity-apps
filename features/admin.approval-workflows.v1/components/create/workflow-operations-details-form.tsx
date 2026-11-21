@@ -23,8 +23,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { DataTable, Heading, Hint, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import React, {
@@ -43,12 +42,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { SemanticICONS } from "semantic-ui-react";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
 import RuleConfigurationModal from "./rule-configuration-modal";
-import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
 import { FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface, WorkflowOperationsDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
@@ -128,7 +124,6 @@ export const operations: DropdownPropsInterface[] = [
 
 export interface WorkflowOperationsDetailsFormRef {
     triggerSubmit: () => void;
-    refreshWorkflowAssociations: () => void;
 }
 
 /**
@@ -157,7 +152,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             ref: ForwardedRef<WorkflowOperationsDetailsFormRef>
         ): ReactElement => {
             const { t } = useTranslation();
-            const dispatch: Dispatch = useDispatch();
             const { UIConfig } = useUIConfig();
 
             const isRuleBasedWorkflowEngagementEnabled: boolean = isFeatureEnabled(
@@ -172,15 +166,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
             const [ shouldShowErrors, setShouldShowErrors ] = useState<boolean>(false);
 
-            const {
-                error: workflowAssociationsError,
-                mutate: mutateWorkflowAssociations
-            } = useGetWorkflowAssociations(null, null, null);
-
             useImperativeHandle(ref, () => ({
-                refreshWorkflowAssociations: () => {
-                    mutateWorkflowAssociations();
-                },
                 triggerSubmit: () => {
                     if (triggerFormSubmit.current) {
                         triggerFormSubmit.current();
@@ -194,15 +180,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ initialValues ]);
 
-            /**
-         * Refresh workflow associations when initial values change (indicating an update occurred).
-         */
-            useEffect(() => {
-                if (initialValues?.matchedOperations && isEditPage) {
-                    mutateWorkflowAssociations();
-                }
-            }, [ initialValues?.matchedOperations ]);
-
             const validateForm = (): Partial<WorkflowOperationsDetailsFormValuesInterface> => {
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
@@ -214,23 +191,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
 
                 return error;
             };
-
-            /**
-         * Show an alert if fetching workflow associations fails.
-         */
-            useEffect(() => {
-                if (workflowAssociationsError) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t("approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.message")
-                        })
-                    );
-                }
-            }, [ workflowAssociationsError ]);
 
             const isOperationDisabled = (_operation: DropdownPropsInterface): boolean => {
                 return false;
@@ -389,8 +349,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                             ...values,
                             matchedOperations: selectedOperations.map((operation: DropdownPropsInterface) => operation)
                         });
-                        // Refresh workflow associations data after form submission
-                        mutateWorkflowAssociations();
                     } }
                     initialValues={ initialValues }
                     validate={ validateForm }
