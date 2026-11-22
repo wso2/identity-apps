@@ -1,5 +1,15 @@
 # @wso2is/admin.core.v1
 
+## 2.65.3
+
+### Patch Changes
+
+- [#10990](https://github.com/wso2/identity-apps/pull/10990) [`e8e6a3e2b51a7f01014f05165c0470ec46c23046`](https://github.com/wso2/identity-apps/commit/e8e6a3e2b51a7f01014f05165c0470ec46c23046) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Let the Customer Data Service toggle enable CDS through the Identity Server when the Console cannot read the CDS configuration yet, as before the first enable with service credentials, and remove the Customer Data Service from the preview features
+
+- Updated dependencies [[`e8e6a3e2b51a7f01014f05165c0470ec46c23046`](https://github.com/wso2/identity-apps/commit/e8e6a3e2b51a7f01014f05165c0470ec46c23046)]:
+  - @wso2is/admin.cds.v1@1.14.1
+  - @wso2is/admin.users.v1@2.39.19
+
 ## 2.65.2
 
 ### Patch Changes
