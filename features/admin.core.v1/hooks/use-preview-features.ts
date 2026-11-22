@@ -131,10 +131,13 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasCDSScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
 
+    // Only the CDS preview feature toggle needs the CDS configuration. The unified Customer Data Profile
+    // view has no such toggle, so the Console does not call CDS on every page. Before CDS is enabled,
+    // CDS can refuse the Console token, as with service credentials.
     const {
         data: cdsConfig,
         mutate: mutateCDSConfig
-    } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
+    } = useCDSConfig((cdsFeatureConfig?.enabled ?? false) && !isCDSUnifiedProfileViewEnabled());
 
     const {
         isEnabled: isCDSEnabled,

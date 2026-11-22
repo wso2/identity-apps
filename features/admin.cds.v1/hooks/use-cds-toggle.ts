@@ -22,9 +22,10 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateCDSStatus } from "../api/config";
+import { getCDSConfig, updateCDSConfig, updateCDSServerConfig, updateCDSStatus } from "../api/config";
 import { CDSConfig } from "../models/config";
 import { resolveConsoleSystemApplicationIdentifier } from "../utils/application-identifier-utils";
+import { isCDSServerConfigEnabled } from "../utils/ui-mode-utils";
 
 /**
  * Return type of the useCDSToggle hook.
@@ -37,7 +38,7 @@ interface UseCDSToggleReturnInterface {
 
     /**
      * Enables or disables CDS. Resolves to `true` on success, `false` on failure or when the CDS
-     * configuration is not loaded.
+     * configuration is not loaded and the Identity Server cannot enable CDS first.
      */
     toggleCDS: (enable: boolean) => Promise<boolean>;
 }
@@ -51,6 +52,12 @@ interface UseCDSToggleReturnInterface {
  *             (leave others intact).
  *
  * See `updateCDSStatus` for the APIs that get the status.
+ *
+ * Before the first enable, CDS can have no configuration for the Console to read: with service
+ * credentials, CDS gets the credentials of the organization only when the Identity Server enables
+ * it, and it cannot introspect the Console token without them. When the server configuration API is
+ * enabled, enabling then goes through the Identity Server first, which creates the credentials and
+ * enables CDS. The hook then reads the CDS configuration and sets the system applications.
  *
  * @param cdsConfig - Current CDS configuration.
  * @param mutateCDSConfig - Gets the CDS configuration and the CDS status again.
@@ -68,11 +75,12 @@ const useCDSToggle = (
     const toggleCDS: (enable: boolean) => Promise<boolean> = useCallback(
         async (enable: boolean): Promise<boolean> => {
             // Without the CDS configuration, the new list would drop the other system applications.
-            if (!cdsConfig) {
+            // Only an enable through the Identity Server can go on: it makes CDS answer the Console.
+            const isFirstEnable: boolean = !cdsConfig && enable && isCDSServerConfigEnabled();
+
+            if (!cdsConfig && !isFirstEnable) {
                 return false;
             }
-
-            const currentApps: string[] = cdsConfig.system_applications ?? [];
 
             setIsUpdating(true);
 
@@ -82,13 +90,27 @@ const useCDSToggle = (
                 // wrong identifier is never written to the CDS system application list.
                 const consoleAppIdentifier: string = await resolveConsoleSystemApplicationIdentifier();
 
+                let currentConfig: CDSConfig = cdsConfig;
+
+                if (isFirstEnable) {
+                    await updateCDSServerConfig(true);
+                    currentConfig = await getCDSConfig();
+                }
+
+                const currentApps: string[] = currentConfig?.system_applications ?? [];
+
                 const nextApps: string[] = enable
                     ? currentApps.includes(consoleAppIdentifier)
                         ? currentApps
                         : [ ...currentApps, consoleAppIdentifier ]
                     : currentApps.filter((app: string) => app !== consoleAppIdentifier);
 
-                await updateCDSStatus(enable, nextApps);
+                if (isFirstEnable) {
+                    // The Identity Server has already enabled CDS.
+                    await updateCDSConfig({ system_applications: nextApps });
+                } else {
+                    await updateCDSStatus(enable, nextApps);
+                }
 
                 return true;
             } catch {

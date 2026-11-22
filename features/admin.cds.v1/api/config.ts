@@ -33,6 +33,36 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
+ * GET /cds/api/v1/config
+ * Get the CDS configuration.
+ *
+ * @returns The CDS configuration.
+ */
+export const getCDSConfig = (): Promise<CDSConfig> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.cdsConfig
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get the CDS configuration."));
+            }
+
+            return Promise.resolve(response.data as CDSConfig);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * PATCH /cds/api/v1/config
  * Update the CDS configuration
  */
