@@ -16,64 +16,10 @@
  * under the License.
  */
 
-import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
-import { updateCDSStatus } from "@wso2is/admin.cds.v1/api/config";
-import useCDSEnabled, { UseCDSEnabledReturnInterface } from "@wso2is/admin.cds.v1/hooks/use-cds-enabled";
-import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
-import { CDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/models/config";
-import { getCDSApplicationIdentifierType } from "@wso2is/admin.cds.v1/utils/application-identifier-utils";
-import { isCDSUnifiedProfileViewEnabled } from "@wso2is/admin.cds.v1/utils/ui-mode-utils";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { ChangeEvent, Dispatch, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import NewCDSFeatureImage from "../assets/illustrations/preview-features/new-cds-feature.png";
-import { AppConstants } from "../constants/app-constants";
-import { history } from "../helpers/history";
-import { AppState } from "../store";
-import { addForceExpandedParent } from "../utils/route-utils";
-
-/**
- * Console system application client ID (reserved consumer key). Also the
- * identifier registered with CDS in legacy `client_id` mode.
- */
-const CDS_CONSOLE_APP: string = "CONSOLE";
-
-/**
- * Resolves the identifier used to register the Console as a CDS system application,
- * honoring the configured CDS application identifier type.
- *
- * In `client_id` mode this is the Console client ID (`CONSOLE`). In `app_id` mode
- * the Console application UUID is looked up via the application list API.
- *
- * @returns The Console system application identifier for the configured mode.
- * @throws If the Console application UUID cannot be resolved in `app_id` mode.
- */
-const resolveConsoleSystemApplicationIdentifier = async (): Promise<string> => {
-    if (getCDSApplicationIdentifierType() !== CDSApplicationIdentifierType.APP_ID) {
-        return CDS_CONSOLE_APP;
-    }
-
-    // Console is a system portal, so system portals must NOT be excluded from the lookup.
-    const response: ApplicationListInterface = await getApplicationList(
-        1,
-        0,
-        `clientId eq ${CDS_CONSOLE_APP}`,
-        false
-    );
-    const consoleApplicationId: string | undefined = response?.applications?.[0]?.id;
-
-    if (!consoleApplicationId) {
-        throw new Error("Unable to resolve the Console application UUID for the CDS system application list.");
-    }
-
-    return consoleApplicationId;
-};
+import { ChangeEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
 /**
  * Preview features list item interface.
@@ -100,7 +46,6 @@ export interface PreviewFeaturesListInterface {
 interface UsePreviewFeaturesReturnInterface {
     accessibleFeatures: PreviewFeaturesListInterface[];
     canUsePreviewFeatures: boolean;
-    handleCDSToggle: (enable: boolean) => Promise<void>;
     handlePageRedirection: (actionId: string) => void;
     handleToggleChange: (e: ChangeEvent<HTMLInputElement>, actionId: string) => Promise<void>;
     previewFeaturesList: PreviewFeaturesListInterface[];
@@ -113,73 +58,22 @@ interface UsePreviewFeaturesReturnInterface {
  * Builds the preview features list, accessible features, and modal state/handlers.
  * Used by FeaturePreviewModal for rendering and by Header to gate the Feature Preview menu item.
  *
+ * The Customer Data Service is not a preview feature anymore. It is enabled from its own page, so the
+ * list has no features now.
+ *
  * @returns Preview features list, accessible list, hasPreviewFeatures flag, and modal state/handlers.
  */
 export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
-    const { t } = useTranslation();
-    const dispatch: Dispatch<unknown> = useDispatch();
     const { selectedPreviewFeatureToShow } = useFeatureGate();
-
-    const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.customerDataService
-    );
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const previewFeaturesFeatureStatus: FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER
     );
 
-    const hasCDSScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
+    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => [], []);
 
-    // Only the CDS preview feature toggle needs the CDS configuration. The unified Customer Data Profile
-    // view has no such toggle, so the Console does not call CDS on every page. Before CDS is enabled,
-    // CDS can refuse the Console token, as with service credentials.
-    const {
-        data: cdsConfig,
-        mutate: mutateCDSConfig
-    } = useCDSConfig((cdsFeatureConfig?.enabled ?? false) && !isCDSUnifiedProfileViewEnabled());
-
-    const {
-        isEnabled: isCDSEnabled,
-        mutate: mutateCDSStatus
-    }: UseCDSEnabledReturnInterface = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
-
-    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
-        const items: PreviewFeaturesListInterface[] = [];
-
-        // In the unified Customer Data Profile view, CDS is enabled from its own page,
-        // so it is not offered as a preview feature.
-        if (cdsFeatureConfig?.enabled && hasCDSScopes && !isCDSUnifiedProfileViewEnabled()) {
-            items.push({
-                action: t("customerDataService:common.featurePreview.action"),
-                description: t("customerDataService:common.featurePreview.description"),
-                enabled: isCDSEnabled,
-                id: "customer-data-service",
-                image: NewCDSFeatureImage,
-                message: {
-                    content: t("customerDataService:common.featurePreview.message"),
-                    type: "info" as const
-                },
-                name: t("customerDataService:common.featurePreview.name"),
-                requiredScopes: cdsFeatureConfig?.scopes?.update,
-                value: "CDS.Enable"
-            });
-        }
-
-        return items;
-    }, [ isCDSEnabled, cdsFeatureConfig, hasCDSScopes, t ]);
-
-    const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(
-        () =>
-            previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
-                if (feature.id === "customer-data-service") {
-                    return hasCDSScopes;
-                }
-
-                return true;
-            }),
-        [ previewFeaturesList, hasCDSScopes ]
-    );
+    const accessibleFeatures: PreviewFeaturesListInterface[] = previewFeaturesList;
 
     const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState<number>(0);
 
@@ -196,77 +90,18 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         setSelectedFeatureIndex(activePreviewFeatureIndex >= 0 ? activePreviewFeatureIndex : 0);
     }, [ accessibleFeatures, selectedPreviewFeatureToShow ]);
 
-    const handlePageRedirection: (actionId: string) => void = useCallback((actionId: string) => {
-        switch (actionId) {
-            case "customer-data-service":
-                history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"));
-
-                break;
-            default:
-                break;
-        }
+    const handlePageRedirection: (actionId: string) => void = useCallback((): void => {
+        // No preview feature has a page to open.
     }, []);
-
-    const handleCDSToggle: (enable: boolean) => Promise<void> = useCallback(
-        async (enable: boolean): Promise<void> => {
-            // Without the CDS configuration, the new list would drop the other system applications.
-            if (!cdsConfig) {
-                return;
-            }
-
-            const currentApps: string[] = cdsConfig.system_applications ?? [];
-
-            try {
-                // Resolve the Console system application identifier for the configured mode.
-                // Aborts the toggle if the UUID cannot be resolved in `app_id` mode so that a
-                // wrong identifier is never written to the CDS system application list.
-                const consoleAppIdentifier: string = await resolveConsoleSystemApplicationIdentifier();
-
-                const nextApps: string[] = enable
-                    ? currentApps.includes(consoleAppIdentifier)
-                        ? currentApps
-                        : [ ...currentApps, consoleAppIdentifier ]
-                    : currentApps.filter((app: string) => app !== consoleAppIdentifier);
-
-                await updateCDSStatus(enable, nextApps);
-
-                if (enable) {
-                    addForceExpandedParent("customerDataService");
-                }
-            } catch {
-                dispatch(
-                    addAlert({
-                        description: t("customerDataService:common.featurePreview.updateError"),
-                        level: AlertLevels.ERROR,
-                        message: t("common:error")
-                    })
-                );
-            } finally {
-                // Also after a failure: the Identity Server can store the status before the CDS request fails.
-                mutateCDSConfig();
-                mutateCDSStatus();
-            }
-        },
-        [ cdsConfig, dispatch, mutateCDSConfig, mutateCDSStatus, t ]
-    );
 
     const handleToggleChange: (
         e: ChangeEvent<HTMLInputElement>,
         actionId: string
     ) => Promise<void> = useCallback(
-        async (e: ChangeEvent<HTMLInputElement>, actionId: string): Promise<void> => {
-            const isChecked: boolean = e.target.checked;
-
-            switch (actionId) {
-                case "customer-data-service":
-                    await handleCDSToggle(isChecked);
-
-                    break;
-                default:
-                    break;
-            }
+        async (): Promise<void> => {
+            // No preview feature has a toggle.
         },
-        [ handleCDSToggle ]
+        []
     );
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
@@ -278,7 +113,6 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     return {
         accessibleFeatures,
         canUsePreviewFeatures,
-        handleCDSToggle,
         handlePageRedirection,
         handleToggleChange,
         previewFeaturesList,
@@ -287,4 +121,3 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         setSelectedFeatureIndex
     };
 };
-
