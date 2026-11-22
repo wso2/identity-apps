@@ -42,16 +42,6 @@ import { history } from "../helpers/history";
  * Utility class for application routes related operations.
  */
 
-/**
- * Parent nav group IDs that should be force-expanded on their next mount.
- * Populated when a feature section is newly enabled mid-session.
- */
-const forceExpandedParentIds: Set<string> = new Set<string>();
-
-export const addForceExpandedParent = (id: string): void => {
-    forceExpandedParentIds.add(id);
-};
-
 export class RouteUtils {
 
     /**
@@ -681,8 +671,7 @@ export class RouteUtils {
 
         const updatedGroupedItems: NavRouteInterface[] = Object.values(groupedByParent).map(
             (group: NavRouteInterface[]) => ({
-                expanded: group.some((item: NavRouteInterface) => item.selected)
-                    || forceExpandedParentIds.has(group[0]?.parent?.id),
+                expanded: group.some((item: NavRouteInterface) => item.selected),
                 icon: { icon: group[0]?.parent?.icon },
                 id: group[0]?.parent?.id,
                 items: sortBy(group, (item: NavRouteInterface) => item.order),
