@@ -41,6 +41,7 @@ import useCDSConfig from "../hooks/use-config";
 import useFuzzyUnificationEnabled from "../hooks/use-fuzzy-unification";
 import useIsOrganizationManagementEnabled from "../hooks/use-is-organization-management-enabled";
 import useIsSubOrganization from "../hooks/use-is-sub-organization";
+import { isCDSServerConfigEnabled } from "../utils/ui-mode-utils";
 import "./customer-data-profile.scss";
 
 /**
@@ -85,6 +86,10 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
 
     const { isUpdating, toggleCDS } = useCDSToggle(cdsConfig, mutateCDSConfigAndStatus);
 
+    // Without the CDS configuration, only the first enable can go on: it goes through the Identity Server,
+    // which sends CDS the credentials it needs to answer the Console.
+    const canToggle: boolean = !!cdsConfig || (!isCDSEnabled && isCDSServerConfigEnabled());
+
     // Organization management: a child organization inherits the enablement of its root, so it cannot change it.
     const isSubOrganization: boolean = useIsSubOrganization();
     const isOrganizationManagementEnabled: boolean = useIsOrganizationManagementEnabled();
@@ -124,7 +129,7 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 toggle
                 onChange={ handleToggle }
                 checked={ isCDSEnabled }
-                readOnly={ !hasCDSUpdateScopes || isUpdating || isSubOrganization || !cdsConfig }
+                readOnly={ !hasCDSUpdateScopes || isUpdating || isSubOrganization || !canToggle }
                 disabled={ isSubOrganization }
                 data-componentid={ `${ componentId }-enable-toggle` }
             />
