@@ -965,7 +965,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 ) }
                 { urlState && splitURLState(urlState).map((url: string) => {
                     if (url !== "") {
-                        const isRegexWrapper: boolean = isSingleRegexValue(url);
+                        // A stored regex without parentheses is also shown as a chip.
+                        const isRegexWrapper: boolean = isSingleRegexValue(url) || /^regexp=.+$/.test(url.trim());
 
                         if (skipValidation || skipInternalValidation || isRegexWrapper) {
                             return (

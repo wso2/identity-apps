@@ -438,6 +438,9 @@ export class ApplicationManagementUtils {
     /**
      * Remove regexp wrapper only if the inner parts are valid HTTP(S) URLs.
      * If any part is not a valid URL, return the original string unchanged.
+     * A regex with a single part is not unwrapped, since that would persist it as a plain URL
+     * on the next save. Without parentheses it is returned as `regexp=(...)`, so the URL input
+     * treats it as one regex, unless it has a numbered backreference that the added group would shift.
      *
      * @param url - Callback URLs.
      * @returns Prepared callback URL.
@@ -452,6 +455,11 @@ export class ApplicationManagementUtils {
         if (!matchWithParantheses && !matchWithoutParantheses) return raw;
 
         const inner: string = matchWithParantheses ? matchWithParantheses[1] : matchWithoutParantheses[1];
+
+        if (!matchWithParantheses && /\\[1-9]/.test(inner)) {
+            return raw;
+        }
+
         const parts: string[] = inner.split("|").map(part => part.trim()).filter(Boolean);
 
         const isHttpUrl = (urlString: string): boolean => {
@@ -470,9 +478,17 @@ export class ApplicationManagementUtils {
         const isValidPart = (urlString: string): boolean =>
             isHttpUrl(urlString) || isMobileDeepLink(urlString);
 
-        const allValid = parts.length > 0 && parts.every(isValidPart);
+        const allValid = parts.length > 1 && parts.every(isValidPart);
 
-        return allValid ? parts.join(",") : raw;
+        if (allValid) {
+            return parts.join(",");
+        }
+
+        if (!matchWithParantheses && parts.length > 0) {
+            return `regexp=(${ inner })`;
+        }
+
+        return raw;
     };
 
     /**
