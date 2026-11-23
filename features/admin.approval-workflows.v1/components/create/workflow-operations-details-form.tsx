@@ -192,10 +192,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 return error;
             };
 
-            const isOperationDisabled = (_operation: DropdownPropsInterface): boolean => {
-                return false;
-            };
-
             /**
          * Handles the selection change in the autocomplete.
          * @param selectedOperations - The newly selected operations.
@@ -387,9 +383,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             options={ operations }
                                             disabled={ isReadOnly }
                                             getOptionLabel={ (option: DropdownPropsInterface) => option.text }
-                                            getOptionDisabled={ (option: DropdownPropsInterface) =>
-                                                isOperationDisabled(option)
-                                            }
                                             value={ selectedOperations }
                                             renderTags={ () => null }
                                             renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -422,29 +415,16 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 props: React.HTMLAttributes<HTMLLIElement>,
                                                 option: DropdownPropsInterface,
                                                 { selected }: { selected: boolean }
-                                            ) => {
-                                                const disabled: boolean = isOperationDisabled(option);
-                                                const subTitle: string = disabled
-                                                    ? t(
-                                                        "approvalWorkflows:forms.operations.dropDown." +
-                                                          "alreadyAssignedMessage",
-                                                        { defaultValue: "Already assigned to another workflow" }
-                                                    )
-                                                    : undefined;
-
-                                                return (
-                                                    <AutoCompleteRenderOption
-                                                        selected={ selected }
-                                                        displayName={ option.text }
-                                                        subTitle={ subTitle }
-                                                        disabled={ disabled }
-                                                        renderOptionProps={ props }
-                                                        data-componentid={
-                                                            `${componentId}-option-operation-${option.key}`
-                                                        }
-                                                    />
-                                                );
-                                            } }
+                                            ) => (
+                                                <AutoCompleteRenderOption
+                                                    selected={ selected }
+                                                    displayName={ option.text }
+                                                    renderOptionProps={ props }
+                                                    data-componentid={
+                                                        `${componentId}-option-operation-${option.key}`
+                                                    }
+                                                />
+                                            ) }
                                         />
                                     </div>
                                 </Grid>
