@@ -304,6 +304,7 @@
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
                 const [ walletQR, setWalletQR ] = useState(null);
                 const walletPollRef = useRef(null);
+                const [ orgProvisioningDelayed, setOrgProvisioningDelayed ] = useState(false);
 
                 // Key of the parameters the executor of a redirection step expects back when the flow resumes.
                 const REDIRECTION_PARAMS_KEY = "redirectionParams";
@@ -449,6 +450,22 @@
                     })
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
+
+                // The organization is provisioned with the user and the roles, in one request.
+                const isOrganizationProvisioning = !!(loading && postBody && postBody.inputs
+                    && postBody.inputs.organizationName);
+
+                useEffect(() => {
+                    if (!isOrganizationProvisioning) {
+                        setOrgProvisioningDelayed(false);
+
+                        return;
+                    }
+
+                    const timer = setTimeout(() => setOrgProvisioningDelayed(true), 5000);
+
+                    return () => clearTimeout(timer);
+                }, [ isOrganizationProvisioning ]);
 
                 useEffect(() => {
                     if (!walletQR) return;
@@ -876,6 +893,8 @@
                 }
 
                 const { useTranslations } = ReactUICore;
+                const { translations: flowTranslations } = useTranslations();
+                const getFlowText = (key, fallback) => (flowTranslations && flowTranslations[key]) || fallback;
 
                 const WalletQRView = function() {
                     var deepLinkTimerRef = useRef(null);
@@ -1055,10 +1074,30 @@
                     return createElement(
                         "div",
                         { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
-                        createElement(
-                            "div",
-                            { className: "spinner" }
-                        )
+                        isOrganizationProvisioning
+                            ? createElement(
+                                "div",
+                                { className: "spinner-stack", style: { display: "flex", flexDirection: "column",
+                                    alignItems: "center", textAlign: "center" } },
+                                createElement(
+                                    "div",
+                                    { className: "spinner" }
+                                ),
+                                createElement(
+                                    "div",
+                                    { className: "spinner-message", style: { marginTop: "16px", color: "#666",
+                                        fontSize: "14px", fontWeight: "normal" } },
+                                    orgProvisioningDelayed
+                                        ? getFlowText("organization.onboarding.waiting.delayed",
+                                            "Still setting up your organization. This may take a few minutes.")
+                                        : getFlowText("organization.onboarding.waiting.title",
+                                            "Setting up your organization...")
+                                )
+                            )
+                            : createElement(
+                                "div",
+                                { className: "spinner" }
+                            )
                     );
                 }
 
