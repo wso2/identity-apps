@@ -143,6 +143,11 @@
         @keyframes wallet-reg-spin { to { transform: rotate(360deg); } }
         .wallet-reg-steps { text-align: left; padding-left: 20px; }
         .wallet-reg-steps li { margin-bottom: 8px; color: #444; font-size: 13px; }
+        .spinner-stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .spinner-message {
+            margin-top: 16px; color: var(--asg-colors-text-secondary, #666);
+            font-size: 14px; font-weight: normal;
+        }
     </style>
 
 </head>
@@ -309,6 +314,9 @@
                 // Key of the parameters the executor of a redirection step expects back when the flow resumes.
                 const REDIRECTION_PARAMS_KEY = "redirectionParams";
 
+                // Time to wait before switching to the longer-wait message while the organization is provisioned.
+                const ORG_PROVISIONING_DELAY_THRESHOLD_MS = 5000;
+
                 /**
                  * Read the parameters the executor of the last redirection step declared as required, and return them
                  * from the return URL as the inputs to resume the flow with. Returns null unless every declared
@@ -462,7 +470,7 @@
                         return;
                     }
 
-                    const timer = setTimeout(() => setOrgProvisioningDelayed(true), 5000);
+                    const timer = setTimeout(() => setOrgProvisioningDelayed(true), ORG_PROVISIONING_DELAY_THRESHOLD_MS);
 
                     return () => clearTimeout(timer);
                 }, [ isOrganizationProvisioning ]);
@@ -1077,19 +1085,17 @@
                         isOrganizationProvisioning
                             ? createElement(
                                 "div",
-                                { className: "spinner-stack", style: { display: "flex", flexDirection: "column",
-                                    alignItems: "center", textAlign: "center" } },
+                                { className: "spinner-stack" },
                                 createElement(
                                     "div",
                                     { className: "spinner" }
                                 ),
                                 createElement(
                                     "div",
-                                    { className: "spinner-message", style: { marginTop: "16px", color: "#666",
-                                        fontSize: "14px", fontWeight: "normal" } },
+                                    { className: "spinner-message", role: "status" },
                                     orgProvisioningDelayed
                                         ? getFlowText("organization.onboarding.waiting.delayed",
-                                            "Still setting up your organization. This may take a few minutes.")
+                                            "Still setting up your organization. This may take a few seconds.")
                                         : getFlowText("organization.onboarding.waiting.title",
                                             "Setting up your organization...")
                                 )
