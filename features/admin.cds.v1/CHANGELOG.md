@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.14.2
+
+### Patch Changes
+
+- [#10992](https://github.com/wso2/identity-apps/pull/10992) [`1f9807de8d8df795eda84637e185900fa74a4fc8`](https://github.com/wso2/identity-apps/commit/1f9807de8d8df795eda84637e185900fa74a4fc8) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Let the Customer Data Service enable toggle work before CDS has a configuration for the organization, so that the first enable through the Identity Server can run
+
 ## 1.14.1
 
 ### Patch Changes
