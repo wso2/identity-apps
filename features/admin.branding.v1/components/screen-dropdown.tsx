@@ -64,8 +64,14 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
 
     const [ selectedScreen, setSelectedScreen ] = useState<PreviewScreenType>(defaultScreen);
 
-    useEffect(() => {
+    const [ previousDefaultScreen, setPreviousDefaultScreen ] = useState<PreviewScreenType>(defaultScreen);
+
+    if (previousDefaultScreen !== defaultScreen) {
+        setPreviousDefaultScreen(defaultScreen);
         setSelectedScreen(defaultScreen);
+    }
+
+    useEffect(() => {
         onChange(defaultScreen);
     }, [ defaultScreen ]);
 
