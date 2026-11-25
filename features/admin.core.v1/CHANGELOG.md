@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.65.4
+
+### Patch Changes
+
+- [#10996](https://github.com/wso2/identity-apps/pull/10996) [`3ea9eddb45e90e749414d5dba12f85cd676c1ea3`](https://github.com/wso2/identity-apps/commit/3ea9eddb45e90e749414d5dba12f85cd676c1ea3) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Move the Customer Data Service profiles, profile attributes and unification rules pages under /customer-data, so that refreshing these pages no longer redirects to the getting started page
+
 ## 2.65.3
 
 ### Patch Changes

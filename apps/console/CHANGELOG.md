@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.39.6
+
+### Patch Changes
+
+- [#10996](https://github.com/wso2/identity-apps/pull/10996) [`485be5a33a2759b5078f2365398cc48903c6a471`](https://github.com/wso2/identity-apps/commit/485be5a33a2759b5078f2365398cc48903c6a471) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Send the pages under /customer-data to the Customer Data page when the Customer Data Service is disabled for the organization, instead of showing an empty page or a page that cannot work
+
+- Updated dependencies [[`3ea9eddb45e90e749414d5dba12f85cd676c1ea3`](https://github.com/wso2/identity-apps/commit/3ea9eddb45e90e749414d5dba12f85cd676c1ea3)]:
+  - @wso2is/admin.core.v1@2.65.4
+
 ## 4.39.5
 
 ### Patch Changes
