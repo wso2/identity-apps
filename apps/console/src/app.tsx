@@ -74,6 +74,7 @@ import {
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
 import dayjs from "dayjs";
+import { Location, UnregisterCallback } from "history";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
@@ -118,11 +119,41 @@ const Base = ({
         (state: AppState) => state?.config?.ui?.features?.customerDataService
     );
 
-    const { isEnabled: isCDSEnabled }: UseCDSEnabledReturnInterface = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
+    const {
+        isEnabled: isCDSEnabled,
+        isLoading: isCDSStatusLoading
+    }: UseCDSEnabledReturnInterface = useCDSEnabled(cdsFeatureConfig?.enabled ?? false);
 
     useEffect(() => {
         onCustomerDataServiceStatusChange(isCDSEnabled);
     }, [ isCDSEnabled ]);
+
+    /**
+     * When CDS is disabled for the organization, the pages under the Customer Data page cannot work.
+     * Send them to the Customer Data page, where CDS can be enabled. Wait for the CDS status, so that
+     * a page that is refreshed while the status loads is not sent away.
+     */
+    useEffect(() => {
+        if (!cdsFeatureConfig?.enabled || isCDSStatusLoading || isCDSEnabled) {
+            return;
+        }
+
+        const customerDataPath: string = AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE");
+
+        const redirectToCustomerDataPage = (pathname: string): void => {
+            if (pathname?.startsWith(`${ customerDataPath }/`)) {
+                history.replace(customerDataPath);
+            }
+        };
+
+        redirectToCustomerDataPage(history.location.pathname);
+
+        const unlisten: UnregisterCallback = history.listen((location: Location): void => {
+            redirectToCustomerDataPage(location.pathname);
+        });
+
+        return unlisten;
+    }, [ cdsFeatureConfig?.enabled, isCDSStatusLoading, isCDSEnabled ]);
 
     return (
         <Switch>
