@@ -19,11 +19,10 @@
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Alert from "@oxygen-ui/react/Alert";
-import Autocomplete, {
+import {
     AutocompleteChangeDetails,
     AutocompleteChangeReason,
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -33,7 +32,6 @@ import Code from "@oxygen-ui/react/Code";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import { RoleSharingInterface } from "@wso2is/admin.applications.v1/models/application";
@@ -60,7 +58,7 @@ import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constan
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholder, TextFieldAutocomplete } from "@wso2is/react-components";
 import { AnimatePresence } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -1240,7 +1238,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                 <Typography variant="body1" sx={ { mt: 2 } }>
                                     { currentlyAssignedRolesLabel }
                                 </Typography>
-                                <Autocomplete
+                                <TextFieldAutocomplete
                                     fullWidth
                                     multiple
                                     disableClearable
@@ -1287,19 +1285,15 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                         value: RolesV2Interface) =>
                                         isSameRole(option, value)
                                     }
-                                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                                        <TextField
-                                            { ...params }
-                                            size="small"
-                                            className="role-select-autocomplete"
-                                            placeholder={
-                                                t(
-                                                    "applications:edit.sections.sharedAccess" +
-                                                    ".searchAvailableRolesPlaceholder"
-                                                ) }
-                                            data-componentid={ `${componentId}-assigned-role-search-input` }
-                                        />
-                                    ) }
+                                    textFieldProps={ {
+                                        className: "role-select-autocomplete",
+                                        "data-componentid": `${componentId}-assigned-role-search-input`,
+                                        placeholder: t(
+                                            "applications:edit.sections.sharedAccess" +
+                                                ".searchAvailableRolesPlaceholder"
+                                        ),
+                                        size: "small"
+                                    } }
                                     renderTags={ (
                                         value: RolesV2Interface[],
                                         getTagProps: AutocompleteRenderGetTagProps
@@ -1354,7 +1348,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                 ".noRolesAvailableForOrg") }
                         </Alert>
                     ) : (
-                        <Autocomplete
+                        <TextFieldAutocomplete
                             fullWidth
                             multiple
                             disableClearable
@@ -1405,16 +1399,14 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                 return enableAdminRole &&
                                     option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;
                             } }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    size="small"
-                                    className="role-select-autocomplete"
-                                    placeholder={
-                                        t("applications:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
-                                    data-componentid={ `${componentId}-role-search-input` }
-                                />
-                            ) }
+                            textFieldProps={ {
+                                className: "role-select-autocomplete",
+                                "data-componentid": `${componentId}-role-search-input`,
+                                placeholder: t(
+                                    "applications:edit.sections.sharedAccess.searchAvailableRolesPlaceholder"
+                                ),
+                                size: "small"
+                            } }
                             renderTags={ (
                                 value: RolesV2Interface[],
                                 getTagProps: AutocompleteRenderGetTagProps
@@ -1455,7 +1447,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             <Typography variant="body1" sx={ { mt: 2 } }>
                                 { currentlyAssignedRolesLabel }
                             </Typography>
-                            <Autocomplete
+                            <TextFieldAutocomplete
                                 fullWidth
                                 multiple
                                 disableClearable
@@ -1513,19 +1505,15 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                     return enableAdminRole &&
                                         option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;
                                 } }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        size="small"
-                                        className="role-select-autocomplete"
-                                        placeholder={
-                                            t(
-                                                "applications:edit.sections.sharedAccess" +
-                                                ".searchAvailableRolesPlaceholder"
-                                            ) }
-                                        data-componentid={ `${componentId}-assigned-role-search-input` }
-                                    />
-                                ) }
+                                textFieldProps={ {
+                                    className: "role-select-autocomplete",
+                                    "data-componentid": `${componentId}-assigned-role-search-input`,
+                                    placeholder: t(
+                                        "applications:edit.sections.sharedAccess" +
+                                            ".searchAvailableRolesPlaceholder"
+                                    ),
+                                    size: "small"
+                                } }
                                 renderTags={ (
                                     value: RolesV2Interface[],
                                     getTagProps: AutocompleteRenderGetTagProps

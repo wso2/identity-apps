@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import Autocomplete, {
+import {
     AutocompleteInputChangeReason,
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
-import TextField from "@oxygen-ui/react/TextField";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
@@ -55,6 +53,7 @@ import {
     Heading,
     Hint,
     Message,
+    TextFieldAutocomplete,
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -794,7 +793,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 {
                                     discoverableGroupOption === DiscoverableGroupsRadioOptionType.USER_GROUPS && (
                                         <Grid.Column mobile={ 16 } tablet={ 10 } computer={ 12 } stretched>
-                                            <Autocomplete
+                                            <TextFieldAutocomplete
                                                 multiple
                                                 style={ { padding: 0 } }
                                                 disableCloseOnSelect
@@ -804,13 +803,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 data-componentid={ `${ componentId }-discoverable-group` +
                                                     "-search-text-input" }
                                                 getOptionLabel={ (group: GroupMetadataInterface) => group?.name }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        placeholder= { t("applications:forms.generalDetails.fields." +
-                                                            "discoverableGroups.action.assign") }
-                                                    />
-                                                ) }
+                                                textFieldProps={ {
+                                                    placeholder: t("applications:forms.generalDetails.fields." +
+                                                        "discoverableGroups.action.assign")
+                                                } }
                                                 onChange={ (
                                                     _event: SyntheticEvent,
                                                     groups: GroupMetadataInterface[]

@@ -17,15 +17,13 @@
  */
 
 import { Theme } from "@mui/material/styles";
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
-import TextField from "@oxygen-ui/react/TextField";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
@@ -44,6 +42,7 @@ import {
     Heading,
     LinkButton,
     PrimaryButton,
+    TextFieldAutocomplete,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -603,7 +602,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 )
                         } */ }
                             <Grid.Column width={ 8 }>
-                                <Autocomplete
+                                <TextFieldAutocomplete
                                     multiple
                                     disableCloseOnSelect
                                     readOnly={ isRoleAssignmentReadOnly }
@@ -614,14 +613,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     getOptionLabel={
                                         (role: BasicRoleInterface) => role.name
                                     }
-                                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                                        <TextField
-                                            { ...params }
-                                            placeholder={ !isRoleAssignmentReadOnly
-                                                && t("extensions:develop.applications.edit." +
-                                                "sections.rolesV2.searchPlaceholder") }
-                                        />
-                                    ) }
+                                    textFieldProps={ {
+                                        placeholder: !isRoleAssignmentReadOnly
+                                            && t("extensions:develop.applications.edit." +
+                                            "sections.rolesV2.searchPlaceholder")
+                                    } }
                                     onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
                                         // Roles inherited from the parent organization cannot be removed.
                                         const retainedInheritedRoles: BasicRoleInterface[] = (selectedRoles ?? [])

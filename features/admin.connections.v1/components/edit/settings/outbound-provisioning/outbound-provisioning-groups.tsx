@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
-import TextField from "@oxygen-ui/react/TextField";
 import { Show } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -36,6 +34,7 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { TextFieldAutocomplete } from "@wso2is/react-components";
 import { Heading, Hint } from "@wso2is/react-components/src/components/typography";
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
@@ -251,7 +250,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } computer={ 12 }>
-                    <Autocomplete
+                    <TextFieldAutocomplete
                         multiple
                         disableCloseOnSelect
                         loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
@@ -259,13 +258,10 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                         value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                         data-componentid={ `${ componentId }-groups-autocomplete` }
                         getOptionLabel={ (group: GroupInterface) => group.name }
-                        renderInput={ (params: AutocompleteRenderInputParams) => (
-                            <TextField
-                                { ...params }
-                                placeholder={ t("authenticationProvider:forms." +
-                                                        "outboundProvisioningGroups.placeHolder") }
-                            />
-                        ) }
+                        textFieldProps={ {
+                            placeholder: t("authenticationProvider:forms." +
+                                                    "outboundProvisioningGroups.placeHolder")
+                        } }
                         disabled={ isReadOnly }
                         onChange={ (event: SyntheticEvent, groups: GroupInterface[]) => {
                             setSelectedGroupsOptions(groups);
@@ -319,7 +315,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } computer={ 12 }>
                             <>
-                                <Autocomplete
+                                <TextFieldAutocomplete
                                     multiple
                                     disableCloseOnSelect
                                     loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
@@ -331,14 +327,11 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                                         event: SyntheticEvent,
                                         remainingGroups: GroupInterface[]
                                     ) => handleRestoreGroups(remainingGroups) }
-                                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                                        <TextField
-                                            { ...params }
-                                            placeholder={ t("roles:edit.groups.actions.remove.placeholder") }
-                                            label={ t("roles:edit.groups.actions.remove.label") }
-                                            margin="dense"
-                                        />
-                                    ) }
+                                    textFieldProps={ {
+                                        label: t("roles:edit.groups.actions.remove.label"),
+                                        margin: "dense",
+                                        placeholder: t("roles:edit.groups.actions.remove.placeholder")
+                                    } }
                                     renderTags={ (
                                         value: GroupInterface[],
                                         getTagProps: AutocompleteRenderGetTagProps

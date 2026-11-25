@@ -16,17 +16,22 @@
  * under the License.
  */
 
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
-import TextField from "@oxygen-ui/react/TextField";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/forms";
-import { DataTable, Heading, Hint, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
+import {
+    DataTable,
+    Heading,
+    Hint,
+    TableActionsInterface,
+    TableColumnInterface,
+    TextFieldAutocomplete
+} from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -421,7 +426,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             </Heading>
                                         </Grid>
 
-                                        <Autocomplete
+                                        <TextFieldAutocomplete
                                             className="operations-autocomplete-input"
                                             data-componentid={ `${componentId}-field-operation-autocomplete` }
                                             multiple
@@ -434,19 +439,14 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             }
                                             value={ selectedOperations }
                                             renderTags={ () => null }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder={ t(
-                                                        "approvalWorkflows:forms.operations.dropDown.placeholder"
-                                                    ) }
-                                                    helperText={
-                                                        shouldShowErrors ? errors.matchedOperations : undefined
-                                                    }
-                                                    error={ shouldShowErrors && !!errors.matchedOperations }
-                                                    data-componentid={ `${componentId}-field-operation-search` }
-                                                />
-                                            ) }
+                                            textFieldProps={ {
+                                                "data-componentid": `${componentId}-field-operation-search`,
+                                                error: shouldShowErrors && !!errors.matchedOperations,
+                                                helperText: shouldShowErrors ? errors.matchedOperations : undefined,
+                                                placeholder: t(
+                                                    "approvalWorkflows:forms.operations.dropDown.placeholder"
+                                                )
+                                            } }
                                             onChange={ handleOperationSelectionChange }
                                             filterOptions={ (
                                                 options: DropdownPropsInterface[],

@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
-import TextField from "@oxygen-ui/react/TextField";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { AutoCompleteRenderOption } from
     "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/auto-complete-render-option";
@@ -34,6 +32,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
+import { TextFieldAutocomplete } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     HTMLAttributes,
@@ -178,7 +177,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                         md={ activeUserStore ? 12 : 10 }
                         data-componentid={ `${componentId}-field-user-autocomplete` }
                     >
-                        <Autocomplete
+                        <TextFieldAutocomplete
                             multiple
                             disableCloseOnSelect
                             loading={ isUserListFetchRequestLoading || isUserSearchLoading }
@@ -186,19 +185,14 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                             value={ selectedUsers }
                             disabled={ isReadOnly }
                             getOptionLabel={ (user: UserBasicInterface) => RoleManagementUtils.getUserUsername(user) }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    placeholder={ "Type user/s to search and assign" }
-                                    error={ validationError }
-                                    helperText={
-                                        validationError
-                                            ? "At least one of the options should be completed"
-                                            : ""
-                                    }
-                                    data-componentid={ `${componentId}-field-user-search` }
-                                />
-                            ) }
+                            textFieldProps={ {
+                                "data-componentid": `${componentId}-field-user-search`,
+                                error: validationError,
+                                helperText: validationError
+                                    ? "At least one of the options should be completed"
+                                    : "",
+                                placeholder: "Type user/s to search and assign"
+                            } }
                             onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
                                 setSelectedUsers(users);
                             } }
