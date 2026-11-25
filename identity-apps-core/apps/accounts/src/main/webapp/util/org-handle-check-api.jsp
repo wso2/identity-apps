@@ -25,6 +25,7 @@
 <%@ page import="java.net.URL" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@include file="../includes/init-url.jsp" %>
 
@@ -37,8 +38,10 @@
             requestBody.append(line);
         }
 
-        String checkHandleUrl = identityServerEndpointContextParam
-            + "/api/server/v1/organizations/check-handle";
+        // Call the internal service URL. The public URL routes this server-side call back through the edge
+        // (feature-gate proxy), which rejects the portal's client credentials with a 401.
+        String checkHandleUrl = IdentityManagementEndpointUtil.getBasePath(tenantDomain,
+            "/api/server/v1/organizations/check-handle", true, false);
 
         URL url = new URL(checkHandleUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -66,10 +69,13 @@
             : conn.getErrorStream();
 
         StringBuilder responseBody = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "utf-8"))) {
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                responseBody.append(responseLine.trim());
+        // The error stream is null when the server returns an error status with no body.
+        if (responseStream != null) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "utf-8"))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    responseBody.append(responseLine.trim());
+                }
             }
         }
 
@@ -77,6 +83,7 @@
         out.print(responseBody.toString());
 
     } catch (Exception e) {
+        application.log("org-handle-check-api.jsp failed to call the check-handle API", e);
         response.setStatus(500);
         out.print("{\"error\": \"Exception: " + e.getMessage() + "\"}");
     }
