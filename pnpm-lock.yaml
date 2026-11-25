@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.65.2
+        specifier: ^2.65.4
         version: link:../../features/admin.core.v1
       '@wso2is/admin.device-policies.v1':
         specifier: workspace:^
