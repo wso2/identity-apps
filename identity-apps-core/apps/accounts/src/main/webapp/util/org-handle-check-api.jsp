@@ -38,8 +38,6 @@
             requestBody.append(line);
         }
 
-        // Call the internal service URL. The public URL routes this server-side call back through the edge
-        // (feature-gate proxy), which rejects the portal's client credentials with a 401.
         String checkHandleUrl = IdentityManagementEndpointUtil.getBasePath(tenantDomain,
             "/api/server/v1/organizations/check-handle", true, false);
 
@@ -69,7 +67,6 @@
             : conn.getErrorStream();
 
         StringBuilder responseBody = new StringBuilder();
-        // The error stream is null when the server returns an error status with no body.
         if (responseStream != null) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "utf-8"))) {
                 String responseLine;
