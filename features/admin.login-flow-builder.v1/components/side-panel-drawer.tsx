@@ -21,7 +21,7 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { MouseEvent, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { MouseEvent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import "./side-panel-drawer.scss";
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
@@ -71,12 +71,12 @@ const SidePanelDrawer = (props: PropsWithChildren<SidePanelDrawerPropsInterface>
 
     const [ isDrawerOpen, setIsDrawerOpen ] = useState<boolean>(open);
 
-    /**
-     * Set the drawer open state when the `open` prop changes.
-     */
-    useEffect(() => {
+    const [ previousOpen, setPreviousOpen ] = useState<boolean>(open);
+
+    if (previousOpen !== open) {
+        setPreviousOpen(open);
         setIsDrawerOpen(open);
-    }, [ open ]);
+    }
 
     /**
      * Handles the drawer open state.
