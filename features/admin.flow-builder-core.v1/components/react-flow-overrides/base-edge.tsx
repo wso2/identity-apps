@@ -48,11 +48,13 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     ...rest
 }: BaseEdgePropsInterface): ReactElement => {
     const { deleteElements } = useReactFlow();
-    const [ isEdgeSelected, setIsEdgeSelected ] = useState<boolean>(false);
+    const [ isEdgeSelected, setIsEdgeSelected ] = useState<boolean>(selected ?? false);
+    const [ previousSelected, setPreviousSelected ] = useState<boolean | undefined>(selected);
 
-    useEffect(() => {
-        setIsEdgeSelected(selected || false);
-    }, [ selected ]);
+    if (previousSelected !== selected) {
+        setPreviousSelected(selected);
+        setIsEdgeSelected(selected ?? false);
+    }
 
     useEffect(() => {
         const handleGlobalClick = (event: MouseEvent): void => {
