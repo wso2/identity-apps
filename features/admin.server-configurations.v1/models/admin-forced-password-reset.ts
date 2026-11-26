@@ -67,6 +67,20 @@ export interface AdminForcedPasswordResetFormValuesInterface {
      * Whether sms otp based force password reset is enabled.
      */
     enableSmsOtp: boolean;
+    /**
+     * Length of the force password reset OTP. Empty keeps the default OTP generation.
+     */
+    otpLength?: string;
+}
+
+/**
+ * Admin forced password reset form error interface.
+ */
+export interface AdminForcedPasswordResetFormErrorValidationsInterface {
+    /**
+     * OTP length field.
+     */
+    otpLength: string;
 }
 
 /**
@@ -93,6 +107,10 @@ export interface AdminForcedPasswordResetFormUpdatableConfigInterface {
      * Expiry time of force password link/OTP.
      */
     "Recovery.AdminPasswordReset.ExpiryTime": number;
+    /**
+     * Length of the force password reset OTP.
+     */
+    "Recovery.AdminPasswordReset.OTP.OTPLength"?: string;
 }
 
 /**

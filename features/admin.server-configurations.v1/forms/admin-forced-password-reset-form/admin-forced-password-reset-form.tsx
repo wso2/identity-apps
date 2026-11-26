@@ -20,6 +20,7 @@ import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/forms";
 import { RadioChild } from "@wso2is/forms/legacy";
 import { Heading, Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ import { AdminForcedPasswordResetFormConstants } from "../../constants/admin-for
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
+    AdminForcedPasswordResetFormErrorValidationsInterface,
     AdminForcedPasswordResetFormPropsInterface,
     AdminForcedPasswordResetFormUpdatableConfigInterface,
     AdminForcedPasswordResetFormValuesInterface,
@@ -58,6 +60,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<AdminForcedPasswordResetFormValuesInterface>(undefined);
     const [ resetOption, setResetOption ] = useState<string>(AdminForcedPasswordResetOption.EMAIL_LINK);
+    const [ otpLengthProperty, setOtpLengthProperty ] = useState<ConnectorPropertyInterface>(undefined);
 
     const RECOVERY_RADIO_OPTIONS: RadioChild[] = [
         {
@@ -111,6 +114,14 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                         };
 
                         break;
+                    case ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_OTP_LENGTH:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            otpLength: property.value
+                        };
+                        setOtpLengthProperty(property);
+
+                        break;
                     case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP:
                         resolvedInitialValues = {
                             ...resolvedInitialValues,
@@ -139,6 +150,39 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     }, [ initialValues ]);
 
     /**
+     * Validate the form values.
+     *
+     * @param values - Form values.
+     * @returns Form validation.
+     */
+    const validateForm = (values: AdminForcedPasswordResetFormValuesInterface):
+        AdminForcedPasswordResetFormErrorValidationsInterface => {
+        const errors: AdminForcedPasswordResetFormErrorValidationsInterface = {
+            otpLength: undefined
+        };
+
+        // An empty OTP length is allowed and keeps the default OTP generation.
+        if (!otpLengthProperty || !values.otpLength) {
+            return errors;
+        }
+
+        if (!FormValidation.isInteger(values.otpLength as unknown as number)) {
+            // Check for invalid input.
+            errors.otpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "forcedPasswordRecovery.form.fields.otpLength.validations.invalid");
+        } else if ((parseInt(values.otpLength, 10) <
+            GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_VALUE)
+            || (parseInt(values.otpLength, 10) >
+            GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.otpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "forcedPasswordRecovery.form.fields.otpLength.validations.range");
+        }
+
+        return errors;
+    };
+
+    /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
@@ -161,6 +205,13 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                 : initialConnectorValues?.enableSmsOtp
         };
 
+        // Only send the OTP length when the server supports it.
+        if (otpLengthProperty) {
+            data["Recovery.AdminPasswordReset.OTP.OTPLength"] = values.otpLength !== undefined
+                ? values.otpLength
+                : initialConnectorValues?.otpLength;
+        }
+
         return data;
     };
 
@@ -168,12 +219,17 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
         return null;
     }
 
+    // Shown only for OTP based options and when the server supports a configurable OTP length.
+    const isOtpLengthFieldVisible: boolean = !!otpLengthProperty
+        && resetOption !== AdminForcedPasswordResetOption.EMAIL_LINK;
+
     return (
         <div className="connector-form admin-forced-password-reset-form">
             <Form
                 id={ FORM_ID }
                 uncontrolledForm={ false }
                 initialValues={ initialConnectorValues }
+                validate={ validateForm }
                 onSubmit={ (values: Record<string, unknown>) =>
                     onSubmit(getUpdatedConfigurations(values))
                 }
@@ -237,6 +293,52 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "forcedPasswordRecovery.form.fields.expiryTime.hint") }
                 </Hint>
+                {
+                    isOtpLengthFieldVisible && (
+                        <Field.Input
+                            className="sub-header"
+                            ariaLabel="otpLength"
+                            inputType="number"
+                            name="otpLength"
+                            min={
+                                GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.
+                                    OTP_CODE_LENGTH_MIN_VALUE
+                            }
+                            max={
+                                GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.
+                                    OTP_CODE_LENGTH_MAX_VALUE
+                            }
+                            label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "forcedPasswordRecovery.form.fields.otpLength.label") }
+                            placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "forcedPasswordRecovery.form.fields.otpLength.placeholder") }
+                            required={ false }
+                            maxLength={
+                                GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.
+                                    OTP_CODE_LENGTH_MAX_LENGTH
+                            }
+                            minLength={
+                                GovernanceConnectorConstants.FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS.
+                                    OTP_CODE_LENGTH_MIN_LENGTH
+                            }
+                            readOnly={ readOnly }
+                            width={ 10 }
+                            labelPosition="right"
+                            data-componentid={ `${ componentId }-otp-length` }
+                        >
+                            <input/>
+                            <label className="ui label">characters</label>
+                        </Field.Input>
+                    )
+                }
+                {
+                    isOtpLengthFieldVisible && (
+                        <Hint>
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "forcedPasswordRecovery.form.fields.otpLength.hint") }
+                        </Hint>
+                    )
+                }
                 <Field.Button
                     form={ FORM_ID }
                     size="small"
