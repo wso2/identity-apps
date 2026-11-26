@@ -452,6 +452,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             return (
                 <iframe
                     hidden
+                    title={ t("user:editUser.userActionZoneGroup.impersonateUserZone.header") }
                     src={ `${getBasePath(consoleUrl)}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
