@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.39.7
+
+### Patch Changes
+
+- [#11002](https://github.com/wso2/identity-apps/pull/11002) [`59a68cb4a980a9cc144d727a256e97abd62664f7`](https://github.com/wso2/identity-apps/commit/59a68cb4a980a9cc144d727a256e97abd62664f7) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Rename Customer Data Service (CDS) to Customer Data Directory (CDD) in the Console texts
+
+- Updated dependencies [[`59a68cb4a980a9cc144d727a256e97abd62664f7`](https://github.com/wso2/identity-apps/commit/59a68cb4a980a9cc144d727a256e97abd62664f7)]:
+  - @wso2is/admin.home.v1@1.7.202
+  - @wso2is/i18n@2.63.8
+
 ## 4.39.6
 
 ### Patch Changes
