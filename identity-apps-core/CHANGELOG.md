@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.12.6
+
+### Patch Changes
+
+- [#10995](https://github.com/wso2/identity-apps/pull/10995) [`9b525470d8c97f5c05fd2bd0baecb60234a48ffb`](https://github.com/wso2/identity-apps/commit/9b525470d8c97f5c05fd2bd0baecb60234a48ffb) Thanks [@Mahima-Sanketh-Git](https://github.com/Mahima-Sanketh-Git)! - Show a waiting message during organization onboarding provisioning, and switch to a longer-wait message when it takes more than five seconds.
+
 ## 5.12.5
 
 ### Patch Changes
