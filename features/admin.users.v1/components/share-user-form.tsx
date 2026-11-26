@@ -27,6 +27,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
+import { getAllOrganizations } from "@wso2is/admin.organizations.v1/api/organization";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
@@ -1237,14 +1238,40 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             );
 
             // Determine org IDs to pre-select: prefer organizations from userShareData,
-            // but fall back to the top-level organizations since SHARE_ALL policy
-            // may return an empty organizations list from the API.
-            const sharedOrgIds: string[] =
-                userShareData?.organizations?.length > 0
-                    ? userShareData.organizations.map((org: SharedOrganizationInterface) => org.orgId)
-                    : (originalOrganizations?.organizations?.map(
-                        (org: OrganizationInterface) => org.id
-                    ) ?? []);
+            // but fall back to all top-level organizations since SHARE_ALL policy may return
+            // an empty organizations list, and userShareData is paginated (only the first page
+            // is loaded). Top-level orgs are pre-selected with future child sharing enabled,
+            // which covers every descendant organization.
+            const isUserShareDataPaginated: boolean = !!userShareData?.links?.some(
+                (link: { href: string; rel: string }) => link.rel === "next"
+            );
+            let sharedOrgIds: string[];
+
+            if (userShareData?.organizations?.length > 0 && !isUserShareDataPaginated) {
+                sharedOrgIds = userShareData.organizations.map(
+                    (org: SharedOrganizationInterface) => org.orgId
+                );
+            } else {
+                try {
+                    const allTopLevelOrganizations: OrganizationInterface[] =
+                        await getAllOrganizations(null, false);
+
+                    sharedOrgIds = allTopLevelOrganizations.map((org: OrganizationInterface) => org.id);
+                } catch (_error: unknown) {
+                    dispatch(
+                        addAlert({
+                            description: t("user:editUser.sections.sharedAccess.notifications" +
+                                ".fetchOrganizations.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("user:editUser.sections.sharedAccess.notifications" +
+                                ".fetchOrganizations.genericError.message")
+                        })
+                    );
+                    setShowShareTypeSwitchModal(false);
+
+                    return;
+                }
+            }
 
             const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
             // addedRolesMap is initialised to globalRoles for each org so that:
