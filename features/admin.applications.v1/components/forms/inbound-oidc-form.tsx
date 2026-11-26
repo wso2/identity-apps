@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
-import TextField from "@oxygen-ui/react/TextField";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
@@ -64,6 +62,7 @@ import {
     Popup,
     StickyBar,
     Text,
+    TextFieldAutocomplete,
     URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -3667,7 +3666,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
                                         <Grid.Row>
                                             <Grid.Column width={ 8 }>
-                                                <Autocomplete
+                                                <TextFieldAutocomplete
                                                     className="access-token-attributes-dropdown"
                                                     size="small"
                                                     disablePortal
@@ -3683,20 +3682,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     getOptionLabel={
                                                         (claim: ExternalClaim) => claim.claimURI
                                                     }
-                                                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                        <TextField
-                                                            label={
-                                                                t(
-                                                                    "applications:forms.inboundOIDC.sections" +
-                                                                ".accessToken.fields.accessTokenAttributes.label"
-                                                                )
-                                                            }
-                                                            className="access-token-attributes-dropdown-input"
-                                                            { ...params }
-                                                            placeholder={ t("applications:forms.inboundOIDC.sections" +
-                                                        ".accessToken.fields.accessTokenAttributes.placeholder") }
-                                                        />
-                                                    ) }
+                                                    textFieldProps={ {
+                                                        className: "access-token-attributes-dropdown-input",
+                                                        label: t(
+                                                            "applications:forms.inboundOIDC.sections" +
+                                                            ".accessToken.fields.accessTokenAttributes.label"
+                                                        ),
+                                                        placeholder: t("applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.accessTokenAttributes.placeholder")
+                                                    } }
                                                     onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
                                                         setIsFormStale(true);
                                                         setSelectedAccessTokenAttributes(claims);

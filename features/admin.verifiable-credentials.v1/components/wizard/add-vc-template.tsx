@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
-import TextField from "@oxygen-ui/react/TextField";
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -30,7 +28,7 @@ import { AlertInterface, AlertLevels, Claim, ExternalClaim, IdentifiableComponen
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
-import { Button, Hint } from "@wso2is/react-components";
+import { Button, Hint, TextFieldAutocomplete } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -326,7 +324,7 @@ export default function AddVCTemplateWizard({
                                     <label className="form-label">
                                         { t("verifiableCredentials:wizard.form.attributes.label") }
                                     </label>
-                                    <Autocomplete
+                                    <TextFieldAutocomplete
                                         className="vc-wizard-claims-dropdown"
                                         size="small"
                                         disablePortal
@@ -339,17 +337,10 @@ export default function AddVCTemplateWizard({
                                         getOptionLabel={ (claim: ExternalClaim) =>
                                             claim.localClaimDisplayName || claim.claimURI
                                         }
-                                        renderInput={ (
-                                            params: AutocompleteRenderInputParams
-                                        ) => (
-                                            <TextField
-                                                { ...params }
-                                                className="vc-wizard-claims-dropdown-input"
-                                                placeholder={
-                                                    t("verifiableCredentials:wizard.form.attributes.placeholder")
-                                                }
-                                            />
-                                        ) }
+                                        textFieldProps={ {
+                                            className: "vc-wizard-claims-dropdown-input",
+                                            placeholder: t("verifiableCredentials:wizard.form.attributes.placeholder")
+                                        } }
                                         onChange={ (
                                             _event: SyntheticEvent,
                                             newValue: ExternalClaim[]

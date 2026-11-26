@@ -81,6 +81,7 @@ import {
     PickerResult,
     Popup,
     PrimaryButton,
+    TextFieldAutocomplete,
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -1720,7 +1721,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         ".manualCreation.hint" ) }
                                     </Hint>
                                     {
-                                        ( <Autocomplete
+                                        ( <TextFieldAutocomplete
                                             size="small"
                                             multiple
                                             fullWidth
@@ -1745,41 +1746,35 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     </Typography>
                                                 </Box>
                                             ) }
-                                            renderInput={ (params: AutocompleteRenderInputParams) =>
-                                                (<>
-                                                    <InputLabel
-                                                        htmlFor="tags-filled"
-                                                        disableAnimation
-                                                        shrink={ false }
-                                                        margin="dense"
-                                                        className="mt-2"
-                                                        data-componentid={ `${componentId}-roles-label` }
-                                                    >
-                                                        {
-                                                            t("user:modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.groupsLabel")
-                                                        }
-                                                    </InputLabel>
-                                                    <TextField
-                                                        id="tags-filled"
-                                                        margin="normal"
-                                                        InputLabelProps= { {
-                                                            required: true
-                                                        } }
-                                                        { ...params }
-                                                        required
-                                                        variant="outlined"
-                                                        placeholder={
-                                                            t("user:modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.groupsPlaceholder")
-                                                        }
-                                                        data-componentid={ `${componentId}-roles-input` }
-
-                                                    />
-                                                </>)
-                                            }
+                                            autocompleteComponent={ Autocomplete }
+                                            inputLabel={ (
+                                                <InputLabel
+                                                    htmlFor="tags-filled"
+                                                    disableAnimation
+                                                    shrink={ false }
+                                                    margin="dense"
+                                                    className="mt-2"
+                                                    data-componentid={ `${componentId}-roles-label` }
+                                                >
+                                                    {
+                                                        t("user:modals." +
+                                                        "bulkImportUserWizard.wizardSummary." +
+                                                        "manualCreation.groupsLabel")
+                                                    }
+                                                </InputLabel>
+                                            ) }
+                                            textFieldProps={ {
+                                                InputLabelProps: {
+                                                    required: true
+                                                },
+                                                "data-componentid": `${componentId}-roles-input`,
+                                                margin: "normal",
+                                                placeholder: t("user:modals." +
+                                                    "bulkImportUserWizard.wizardSummary." +
+                                                    "manualCreation.groupsPlaceholder"),
+                                                required: true,
+                                                variant: "outlined"
+                                            } }
                                             onChange={ (
                                                 event: React.SyntheticEvent<Element, Event>,
                                                 value: RolesInterface[]

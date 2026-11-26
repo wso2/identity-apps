@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { TextFieldAutocomplete } from "@wso2is/react-components";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
@@ -83,7 +82,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
 
         return (
             <>
-                <Autocomplete
+                <TextFieldAutocomplete
                     multiple
                     disableCloseOnSelect
                     disablePortal
@@ -94,23 +93,20 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             option.name === value.name
                     }
                     getOptionLabel={ (scope: ScopeInterface) => scope.displayName }
-                    renderInput={ (params: AutocompleteRenderInputParams) => (
-                        <TextField
-                            { ...params }
-                            data-componentid={ `${componentId}-textfield` }
-                            placeholder= { t("roles:addRoleWizard.forms.rolePermission." +
-                                "permissions.placeholder") }
-                            error={ isTouched && hasError }
-                            helperText={ isTouched && hasError && errorMessage }
-                            label={ t("roles:addRoleWizard.forms.rolePermission.permissions" +
-                                ".permissionsLabel") }
-                            InputLabelProps={ {
-                                className: "permissions-label",
-                                required: true
-                            } }
-                            size="small"
-                        />
-                    ) }
+                    textFieldProps={ {
+                        InputLabelProps: {
+                            className: "permissions-label",
+                            required: true
+                        },
+                        "data-componentid": `${componentId}-textfield`,
+                        error: isTouched && hasError,
+                        helperText: isTouched && hasError && errorMessage,
+                        label: t("roles:addRoleWizard.forms.rolePermission.permissions" +
+                            ".permissionsLabel"),
+                        placeholder: t("roles:addRoleWizard.forms.rolePermission." +
+                            "permissions.placeholder"),
+                        size: "small"
+                    } }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
                     onClose={ () => setIsTouched(true) }
                     renderTags={ (

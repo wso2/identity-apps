@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import Autocomplete, {  
+import {
     AutocompleteRenderGetTagProps, 
     AutocompleteRenderInputParams 
 } from "@oxygen-ui/react/Autocomplete";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { TextFieldAutocomplete } from "@wso2is/react-components";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { APIResourceInterface, ScopeInterface } from "../../../../models/apiResources";
@@ -66,20 +66,17 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
         };
 
         return (
-            <Autocomplete
+            <TextFieldAutocomplete
                 multiple
                 disableCloseOnSelect
                 options={ apiResource?.scopes ? apiResource?.scopes : [] }
                 value={ selectedPermissions ? selectedPermissions : [] }
                 getOptionLabel={ (scope: ScopeInterface) => scope.displayName }
-                renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField
-                        { ...params }
-                        data-componentid={ `${componentId}-textfield` }
-                        placeholder= { t("roles:addRoleWizard.forms.rolePermission." +
-                            "permissions.placeholder") }
-                    />
-                ) }
+                textFieldProps={ {
+                    "data-componentid": `${componentId}-textfield`,
+                    placeholder: t("roles:addRoleWizard.forms.rolePermission." +
+                        "permissions.placeholder")
+                } }
                 onChange={ handleScopeSelection }
                 renderTags={ (
                     value: ScopeInterface[], 

@@ -16,18 +16,16 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
-import TextField from "@oxygen-ui/react/TextField";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { IdentityProviderGroupInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment, TextFieldAutocomplete } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLAttributes, SyntheticEvent, useCallback, useEffect, useState } from "react";
@@ -190,7 +188,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                 {
                     isReadOnly
                         ? (
-                            <Autocomplete
+                            <TextFieldAutocomplete
                                 multiple
                                 disableCloseOnSelect
                                 options={ selectedGroupsOptions ? selectedGroupsOptions : [] }
@@ -198,13 +196,10 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 data-componentid={ `${ componentId }-local-groups-accordion` }
                                 getOptionLabel={ (group: IdentityProviderGroupInterface) =>
                                     group.name }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        placeholder= { t("roles:edit.groups" +
-                                            ".actions.search.placeholder") }
-                                    />
-                                ) }
+                                textFieldProps={ {
+                                    placeholder: t("roles:edit.groups" +
+                                        ".actions.search.placeholder")
+                                } }
                                 renderTags={ (
                                     value: IdentityProviderGroupInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
@@ -232,7 +227,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 ) }
                             />
                         ) : (
-                            <Autocomplete
+                            <TextFieldAutocomplete
                                 multiple
                                 disableCloseOnSelect
                                 loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
@@ -240,13 +235,10 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                                 data-componentid={ `${ componentId }-local-groups-accordion` }
                                 getOptionLabel={ (group: IdentityProviderGroupInterface) => group.name }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        placeholder= { t("roles:edit.groups" +
-                                            ".actions.assign.placeholder") }
-                                    />
-                                ) }
+                                textFieldProps={ {
+                                    placeholder: t("roles:edit.groups" +
+                                        ".actions.assign.placeholder")
+                                } }
                                 onChange={ (event: SyntheticEvent, groups: IdentityProviderGroupInterface[]) => {
                                     setSelectedGroupsOptions(groups);
                                 } }
@@ -301,7 +293,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                 {
                     removedGroupsOptions?.length > 0
                         ? (
-                            <Autocomplete
+                            <TextFieldAutocomplete
                                 multiple
                                 disableCloseOnSelect
                                 loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
@@ -316,16 +308,13 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                     event: SyntheticEvent,
                                     remainingGroups: IdentityProviderGroupInterface[]
                                 ) => handleRestoreGroups(remainingGroups) }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        placeholder={ t("roles:edit.groups" +
-                                            ".actions.remove.placeholder") }
-                                        label={ t("roles:edit.groups" +
-                                            ".actions.remove.label") }
-                                        margin="dense"
-                                    />
-                                ) }
+                                textFieldProps={ {
+                                    label: t("roles:edit.groups" +
+                                        ".actions.remove.label"),
+                                    margin: "dense",
+                                    placeholder: t("roles:edit.groups" +
+                                        ".actions.remove.placeholder")
+                                } }
                                 renderTags={ (
                                     value: IdentityProviderGroupInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps

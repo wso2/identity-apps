@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
-import TextField from "@oxygen-ui/react/TextField";
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { AppConstants as CommonAppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -38,7 +36,8 @@ import {
     Hint,
     PageLayout,
     PrimaryButton,
-    ResourceTab
+    ResourceTab,
+    TextFieldAutocomplete
 } from "@wso2is/react-components";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -515,7 +514,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                                     { t("verifiableCredentials:editPage.form.claims." +
                                                                         "label") }
                                                                 </label>
-                                                                <Autocomplete
+                                                                <TextFieldAutocomplete
                                                                     className="vc-claims-dropdown"
                                                                     size="small"
                                                                     disablePortal
@@ -530,18 +529,13 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                                     getOptionLabel={ (claim: ExternalClaim) =>
                                                                         claim.localClaimDisplayName || claim.claimURI
                                                                     }
-                                                                    renderInput={ (
-                                                                        params: AutocompleteRenderInputParams
-                                                                    ) => (
-                                                                        <TextField
-                                                                            { ...params }
-                                                                            className="vc-claims-dropdown-input"
-                                                                            placeholder={
-                                                                                t("verifiableCredentials:editPage."+
-                                                                                    "form.claims.placeholder")
-                                                                            }
-                                                                        />
-                                                                    ) }
+                                                                    textFieldProps={ {
+                                                                        className: "vc-claims-dropdown-input",
+                                                                        placeholder: t(
+                                                                            "verifiableCredentials:editPage." +
+                                                                            "form.claims.placeholder"
+                                                                        )
+                                                                    } }
                                                                     onChange={ (
                                                                         _event: SyntheticEvent,
                                                                         newValue: ExternalClaim[]

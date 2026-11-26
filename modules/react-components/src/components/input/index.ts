@@ -23,3 +23,4 @@ export * from "./url-input";
 export * from "./password";
 export * from "./inline-edit-field";
 export * from "./search-with-filter-labels";
+export * from "./text-field-autocomplete";

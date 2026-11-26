@@ -17,12 +17,10 @@
  */
 
 import { AutocompleteChangeDetails, AutocompleteChangeReason, Typography } from "@mui/material";
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
-import TextField from "@oxygen-ui/react/TextField";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -34,7 +32,7 @@ import {
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Hint } from "@wso2is/react-components";
+import { Hint, TextFieldAutocomplete } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -182,7 +180,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                     { t("agents:edit.sections.sharedAccess.commonRoleSharingHint") }
                 </Hint>
             </Typography>
-            <Autocomplete
+            <TextFieldAutocomplete
                 fullWidth
                 multiple
                 disableClearable
@@ -227,20 +225,17 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                     && option?.audience?.type === value?.audience?.type
                     && option?.audience?.display === value?.audience?.display
                 }
-                renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField
-                        { ...params }
-                        size="small"
-                        placeholder={ t("agents:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
-                        data-componentid={ `${componentId}-role-search-input` }
-                        onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                            const value: string = event.target.value.trim();
+                textFieldProps={ {
+                    "data-componentid": `${componentId}-role-search-input`,
+                    onChange: (event: ChangeEvent<HTMLInputElement>) => {
+                        const value: string = event.target.value.trim();
 
-                            setIsSearching(true);
-                            debouncedSearch(value);
-                        } }
-                    />
-                ) }
+                        setIsSearching(true);
+                        debouncedSearch(value);
+                    },
+                    placeholder: t("agents:edit.sections.sharedAccess.searchAvailableRolesPlaceholder"),
+                    size: "small"
+                } }
                 renderTags={ (
                     value: RolesV2Interface[],
                     getTagProps: AutocompleteRenderGetTagProps

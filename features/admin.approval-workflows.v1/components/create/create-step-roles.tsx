@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
+import {
+    AutocompleteRenderGetTagProps
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
-import TextField from "@oxygen-ui/react/TextField";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -29,6 +27,7 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
+import { TextFieldAutocomplete } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     HTMLAttributes,
@@ -216,7 +215,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                         md={ activeRoleType ? 12 : 10 }
                         data-componentid={ `${componentId}-field-role-autocomplete-container` }
                     >
-                        <Autocomplete
+                        <TextFieldAutocomplete
                             data-componentid={ `${componentId}-field-role-autocomplete` }
                             multiple
                             disableCloseOnSelect
@@ -230,14 +229,11 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                     placement: "bottom-start"
                                 }
                             } }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    placeholder={ "Type role/s to search and assign" }
-                                    error={ validationError }
-                                    data-componentid={ `${componentId}-field-role-search` }
-                                />
-                            ) }
+                            textFieldProps={ {
+                                "data-componentid": `${componentId}-field-role-search`,
+                                error: validationError,
+                                placeholder: "Type role/s to search and assign"
+                            } }
                             onChange={ (event: SyntheticEvent, roles: RolesInterface[]) => {
                                 setSelectedRoles(roles);
                             } }
