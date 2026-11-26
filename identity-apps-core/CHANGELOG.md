@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.12.7
+
+### Patch Changes
+
+- [#11006](https://github.com/wso2/identity-apps/pull/11006) [`64be880cd151bb64c971a5824e1fa5c69e91239f`](https://github.com/wso2/identity-apps/commit/64be880cd151bb64c971a5824e1fa5c69e91239f) Thanks [@hwupathum](https://github.com/hwupathum)! - Bump commons-codec to 1.23.0.wso2v1
+
 ## 5.12.6
 
 ### Patch Changes
