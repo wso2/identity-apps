@@ -79,7 +79,7 @@ const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardPropsInt
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
     }, [ partiallyCompletedStep ]);
 
     const navigateToNext = () => {

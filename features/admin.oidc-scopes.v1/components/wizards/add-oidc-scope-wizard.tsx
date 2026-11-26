@@ -119,7 +119,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             return;
         }
 
-        setCurrentWizardStep(currentWizardStep - 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep - 1);
 
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
@@ -199,7 +199,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
      * @param formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
-        setCurrentWizardStep(currentWizardStep + 1);
+        setCurrentWizardStep((prevCurrentWizardStep: number) => prevCurrentWizardStep + 1);
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 

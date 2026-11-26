@@ -302,7 +302,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
             if (!selectedAPIResources.find(
                 (apiResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id)) {
-                setSelectedAPIResources([ selectedAPIResource, ...selectedAPIResources ]);
+                setSelectedAPIResources((prevSelectedAPIResources: APIResourceInterface[]) =>
+                    [ selectedAPIResource, ...prevSelectedAPIResources ]);
             }
 
             selectedAPIResourceId && setSelectedAPIResourceId(undefined);
@@ -357,14 +358,15 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             }, []));
 
             if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
-                setAllAPIResourcesDropdownOptions([
-                    ...allAPIResourcesDropdownOptions,
+                setAllAPIResourcesDropdownOptions((prevAllAPIResourcesDropdownOptions: DropdownItemProps[]) => [
+                    ...prevAllAPIResourcesDropdownOptions,
                     ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
                 ]);
             }
 
             // Add the current API resources to the all API resources list.
-            setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
+            setAllAPIResourcesListData((prevAllAPIResourcesListData: APIResourceInterface[]) =>
+                [ ...prevAllAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
 
             // Check if there are more API resources to be fetched.
             let isAfterValueExists: boolean = false;
