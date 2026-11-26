@@ -25,7 +25,7 @@ import { CustomerDataServiceNS } from "../../../models";
 
 export const customerDataService: CustomerDataServiceNS = {
     allowedOrigins: {
-        description: "Browser origins of this organization's apps that call Customer Data Service, such as a web app using the SDK.",
+        description: "Browser origins of this organization's apps that call Customer Data Directory, such as a web app using the SDK.",
         emptyInherited: "The root organization has not added any origins.",
         errors: {
             duplicate: "This origin is already in the list.",
@@ -55,11 +55,11 @@ export const customerDataService: CustomerDataServiceNS = {
             header: "Danger Zone"
         },
         featurePreview: {
-            action: "Try Customer Data Service",
-            description: "Customer Data Service (CDS) enables you to build and manage unified customer profiles by defining profile attributes, configuring unification rules, and tracking anonymous profiles — giving you a single, consistent view of every customer.",
-            message: "Once Customer Data Service (CDS) is enabled, you can configure profile attributes and unification rules, and start building unified customer profiles.",
-            name: "Customer Data Service",
-            updateError: "Failed to update Customer Data Service settings. Please try again."
+            action: "Try Customer Data Directory",
+            description: "Customer Data Directory (CDD) enables you to build and manage unified customer profiles by defining profile attributes, configuring unification rules, and tracking anonymous profiles — giving you a single, consistent view of every customer.",
+            message: "Once Customer Data Directory (CDD) is enabled, you can configure profile attributes and unification rules, and start building unified customer profiles.",
+            name: "Customer Data Directory",
+            updateError: "Failed to update Customer Data Directory settings. Please try again."
         },
         notifications: {
             error: "Error",
@@ -76,7 +76,7 @@ export const customerDataService: CustomerDataServiceNS = {
         backButton: "Go back to Customer Data",
         configuration: {
             organizationSettings: {
-                description: "Select the organizations that can use Customer Data Service",
+                description: "Select the organizations that can use Customer Data Directory",
                 title: "Organization Access Settings"
             },
             profileAttributes: {
@@ -93,16 +93,16 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         enable: {
-            label: "Enable Customer Data Service"
+            label: "Enable Customer Data Directory"
         },
         notifications: {
             update: {
                 error: {
-                    description: "Failed to update Customer Data Service settings. Please try again.",
+                    description: "Failed to update Customer Data Directory settings. Please try again.",
                     message: "Update error"
                 },
                 success: {
-                    description: "Customer Data Service configuration updated successfully.",
+                    description: "Customer Data Directory configuration updated successfully.",
                     message: "Update successful"
                 }
             }
@@ -120,27 +120,27 @@ export const customerDataService: CustomerDataServiceNS = {
         confirmations: {
             allOrganizations: {
                 assertionHint: "Please confirm your action.",
-                content: "All organizations below this organization, also the ones that you create later, can use Customer Data Service.",
+                content: "All organizations below this organization, also the ones that you create later, can use Customer Data Directory.",
                 header: "Allow all organizations?",
-                message: "You are about to allow all organizations to use Customer Data Service."
+                message: "You are about to allow all organizations to use Customer Data Directory."
             },
             modeChange: {
-                content: "Customer Data Service replaces the current organization access with the new one.",
+                content: "Customer Data Directory replaces the current organization access with the new one.",
                 header: "Change the organization access?",
                 message: "You are about to change between all organizations and selected organizations."
             }
         },
-        description: "Select the organizations that can use Customer Data Service. This organization always uses it.",
+        description: "Select the organizations that can use Customer Data Directory. This organization always uses it.",
         heading: "Organization Access",
         includeChildOrganizations: "Allow its existing and future child organizations",
-        notSynced: "Sync the organizations first. Customer Data Service needs to sync organizations before you select the organizations that can use it.",
+        notSynced: "Sync the organizations first. Customer Data Directory needs to sync organizations before you select the organizations that can use it.",
         notifications: {
             error: {
                 description: "Failed to save the organization access.",
                 message: "Organization access error"
             },
             noOrganizationsSelected: {
-                description: "Select at least one organization that can use Customer Data Service.",
+                description: "Select at least one organization that can use Customer Data Directory.",
                 message: "No organizations selected"
             },
             success: {
@@ -149,9 +149,9 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         options: {
-            all: "Allow all organizations to use Customer Data Service",
-            none: "Do not allow other organizations to use Customer Data Service",
-            selected: "Allow selected organizations to use Customer Data Service",
+            all: "Allow all organizations to use Customer Data Directory",
+            none: "Do not allow other organizations to use Customer Data Directory",
+            selected: "Allow selected organizations to use Customer Data Directory",
             selectedHint: "Select the child organizations of this organization."
         }
     },
@@ -171,10 +171,10 @@ export const customerDataService: CustomerDataServiceNS = {
         settingsFor: "Settings for"
     },
     organizationSettings: {
-        childOrganization: "This organization gets the access to Customer Data Service from the root organization. Only the root organization can enable or disable it.",
-        disabled: "Enable Customer Data Service on the Customer Data page. Then select the organizations that can use it.",
+        childOrganization: "This organization gets the access to Customer Data Directory from the root organization. Only the root organization can enable or disable it.",
+        disabled: "Enable Customer Data Directory on the Customer Data page. Then select the organizations that can use it.",
         page: {
-            description: "Select the organizations that can use Customer Data Service",
+            description: "Select the organizations that can use Customer Data Directory",
             title: "Organization Access Settings"
         }
     },
@@ -401,7 +401,7 @@ export const customerDataService: CustomerDataServiceNS = {
             fields: {
                 applicationIdentifier: {
                     childOrganizationHint: "The ID of the application in the organization that owns it. For a shared application, this is the ID of the main application.",
-                    hint: "The application identifier this attribute belongs to, as stored in the customer data service.",
+                    hint: "The application identifier this attribute belongs to, as stored in Customer Data Directory.",
                     label: "Application Identifier"
                 },
                 applicationName: {
@@ -1006,7 +1006,7 @@ export const customerDataService: CustomerDataServiceNS = {
         },
         page: {
             backButton: "Go back to Customer Data",
-            description: "Configure how the Customer Data Service behaves for this organization.",
+            description: "Configure how the Customer Data Directory behaves for this organization.",
             title: "Settings"
         }
     },
