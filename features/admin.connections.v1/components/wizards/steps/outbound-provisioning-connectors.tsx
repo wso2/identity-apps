@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms/legacy";
 import { GenericIcon, Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "semantic-ui-react";
 import {
@@ -66,14 +66,16 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
         setSelectedConnector
     ] = useState<OutboundProvisioningConnectorListItemInterface>(initialSelectedConnector);
 
-    /**
-     * Sync selectedConnector when initialSelectedConnector resolves asynchronously.
-     */
-    useEffect(() => {
+    const [ previousConnector, setPreviousConnector ] =
+        useState<OutboundProvisioningConnectorListItemInterface>(initialSelectedConnector);
+
+    if (previousConnector !== initialSelectedConnector) {
+        setPreviousConnector(initialSelectedConnector);
+
         if (initialSelectedConnector) {
             setSelectedConnector(initialSelectedConnector);
         }
-    }, [ initialSelectedConnector ]);
+    }
 
     /**
      * Handles inbound protocol selection.

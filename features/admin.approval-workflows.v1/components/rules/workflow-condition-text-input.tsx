@@ -22,7 +22,6 @@ import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import React, {
     FunctionComponent,
     ReactElement,
-    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -59,9 +58,12 @@ const WorkflowConditionTextInput: FunctionComponent<WorkflowConditionTextInputPr
     const { updateConditionExpression } = useRulesContext();
     const { t } = useTranslation();
 
-    useEffect(() => {
+    const [ previousExpressionValue, setPreviousExpressionValue ] = useState<string>(_expressionValue);
+
+    if (previousExpressionValue !== _expressionValue) {
+        setPreviousExpressionValue(_expressionValue);
         setLocalValue(_expressionValue ?? "");
-    }, [ _expressionValue ]);
+    }
 
     return (
         <TextField

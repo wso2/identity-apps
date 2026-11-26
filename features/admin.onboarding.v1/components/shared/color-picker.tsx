@@ -21,7 +21,7 @@ import Box from "@oxygen-ui/react/Box";
 import TextField from "@oxygen-ui/react/TextField";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, memo, useCallback, useRef, useState } from "react";
 import Hint from "./hint";
 import { SectionLabel } from "./onboarding-styles";
 import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
@@ -141,12 +141,15 @@ const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
     const colorInputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const [ customColor, setCustomColor ] = useState<string>(color);
 
-    // Sync internal state when color prop changes (e.g., when user selects preset color)
-    useEffect(() => {
+    const [ previousColor, setPreviousColor ] = useState<string>(color);
+
+    if (previousColor !== color) {
+        setPreviousColor(color);
+
         if (color) {
             setCustomColor(color);
         }
-    }, [ color ]);
+    }
 
     const handleSwatchClick: (presetColor: string) => void = useCallback((presetColor: string): void => {
         onChange(presetColor);

@@ -30,7 +30,6 @@ import React, {
     HTMLAttributes,
     ReactElement,
     SyntheticEvent,
-    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,9 +80,13 @@ const WorkflowClaimSelector: FunctionComponent<WorkflowClaimSelectorPropsInterfa
     ) ?? null;
     const [ inputValue, setInputValue ] = useState<string>(selectedClaimOption?.label ?? "");
 
-    useEffect(() => {
+    const [ previousClaim, setPreviousClaim ] = useState<WorkflowClaimOptionInterface | null>(selectedClaimOption);
+
+    if (previousClaim?.fieldName !== selectedClaimOption?.fieldName ||
+        previousClaim?.label !== selectedClaimOption?.label) {
+        setPreviousClaim(selectedClaimOption);
         setInputValue(selectedClaimOption?.label ?? "");
-    }, [ selectedClaimOption?.fieldName, selectedClaimOption?.label ]);
+    }
 
     return (
         <Autocomplete
