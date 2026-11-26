@@ -84,7 +84,16 @@ export const LayoutSwatch: FunctionComponent<PropsWithChildren<LayoutSwatchInter
             <div
                 className={ classes }
                 data-componentid={ componentId }
+                role="button"
+                tabIndex={ 0 }
+                aria-pressed={ active }
                 onClick={ onClick }
+                onKeyDown={ (event: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        event.currentTarget.click();
+                    }
+                } }
             >
                 {
                     !isImageLoaded
