@@ -276,7 +276,7 @@ export const FeatureCarousel = () => {
             id: CUSTOMER_DATA_SERVICE_FEATURE_ID,
             illustration: <Box className="customer-data-service-box">
                 <img
-                    alt="Customer data service"
+                    alt="Customer data directory"
                     data-componentid="customer-data-service-illustration"
                     src={ CustomerDataServiceIllustration }
                 />
@@ -299,7 +299,7 @@ export const FeatureCarousel = () => {
                 setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
                 setShowPreviewFeaturesModal(true);
             },
-            title: `Customer Data Services for ${ productName }`
+            title: `Customer Data Directory for ${ productName }`
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
