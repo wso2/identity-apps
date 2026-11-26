@@ -143,6 +143,11 @@
         @keyframes wallet-reg-spin { to { transform: rotate(360deg); } }
         .wallet-reg-steps { text-align: left; padding-left: 20px; }
         .wallet-reg-steps li { margin-bottom: 8px; color: #444; font-size: 13px; }
+        .spinner-stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .spinner-message {
+            margin-top: 16px; color: var(--asg-colors-text-secondary, #666);
+            font-size: 14px; font-weight: normal;
+        }
     </style>
 
 </head>
@@ -304,9 +309,13 @@
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
                 const [ walletQR, setWalletQR ] = useState(null);
                 const walletPollRef = useRef(null);
+                const [ orgProvisioningDelayed, setOrgProvisioningDelayed ] = useState(false);
 
                 // Key of the parameters the executor of a redirection step expects back when the flow resumes.
                 const REDIRECTION_PARAMS_KEY = "redirectionParams";
+
+                // Time to wait before switching to the longer-wait message while the organization is provisioned.
+                const ORG_PROVISIONING_DELAY_THRESHOLD_MS = 5000;
 
                 /**
                  * Read the parameters the executor of the last redirection step declared as required, and return them
@@ -449,6 +458,22 @@
                     })
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
+
+                // The organization is provisioned with the user and the roles, in one request.
+                const isOrganizationProvisioning = !!(loading && postBody && postBody.inputs
+                    && postBody.inputs.organizationName);
+
+                useEffect(() => {
+                    if (!isOrganizationProvisioning) {
+                        setOrgProvisioningDelayed(false);
+
+                        return;
+                    }
+
+                    const timer = setTimeout(() => setOrgProvisioningDelayed(true), ORG_PROVISIONING_DELAY_THRESHOLD_MS);
+
+                    return () => clearTimeout(timer);
+                }, [ isOrganizationProvisioning ]);
 
                 useEffect(() => {
                     if (!walletQR) return;
@@ -876,6 +901,8 @@
                 }
 
                 const { useTranslations } = ReactUICore;
+                const { translations: flowTranslations } = useTranslations();
+                const getFlowText = (key, fallback) => (flowTranslations && flowTranslations[key]) || fallback;
 
                 const WalletQRView = function() {
                     var deepLinkTimerRef = useRef(null);
@@ -1055,10 +1082,28 @@
                     return createElement(
                         "div",
                         { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
-                        createElement(
-                            "div",
-                            { className: "spinner" }
-                        )
+                        isOrganizationProvisioning
+                            ? createElement(
+                                "div",
+                                { className: "spinner-stack" },
+                                createElement(
+                                    "div",
+                                    { className: "spinner" }
+                                ),
+                                createElement(
+                                    "div",
+                                    { className: "spinner-message", role: "status" },
+                                    orgProvisioningDelayed
+                                        ? getFlowText("organization.onboarding.waiting.delayed",
+                                            "Still setting up your organization. This may take a few seconds.")
+                                        : getFlowText("organization.onboarding.waiting.title",
+                                            "Setting up your organization...")
+                                )
+                            )
+                            : createElement(
+                                "div",
+                                { className: "spinner" }
+                            )
                     );
                 }
 
