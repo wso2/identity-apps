@@ -105,7 +105,7 @@
                     </h3>
 
                     <form class="segment-form" name="sessionsForm" action="<%=commonauthURL%>" method="POST"
-                            onsubmit="return validateForm(this.submitted)">
+                            onsubmit="return submitSessionsForm(this.submitted)">
 
                         <h5>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.1")%> <fmt:formatNumber><e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/></fmt:formatNumber>
@@ -320,10 +320,26 @@
             return false;
         }
 
+        /*
+         * Validates the selected action and prevents the form from being submitted again while the first
+         * request is in flight. The flag is set only after validation passes so the user can retry.
+         */
+        function submitSessionsForm(submittedAction) {
+            if ($(document.sessionsForm).data("submitted") === true) {
+                console.warn("Prevented a possible double submit event");
+                return false;
+            }
+            if (!validateForm(submittedAction)) {
+                return false;
+            }
+            $(document.sessionsForm).data("submitted", true);
+            return true;
+        }
+
         function setRefreshActionAndSubmitForm() {
 
             document.sessionsForm.submitted = "refreshActiveSessionsAction";
-            if (validateForm("refreshActiveSessionsAction")) {
+            if (submitSessionsForm("refreshActiveSessionsAction")) {
                 document.sessionsForm.submit();
             }
         }

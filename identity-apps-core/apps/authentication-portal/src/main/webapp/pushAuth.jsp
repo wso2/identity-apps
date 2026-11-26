@@ -295,6 +295,15 @@
             }
 
             $(document).ready(function () {
+                // Covers both the resend action and the auto-submit after the push response is received.
+                $("#submitForm").on("submit", function (e) {
+                    if ($(this).data("submitted") === true) {
+                        console.warn("Prevented a possible double submit event");
+                        e.preventDefault();
+                        return false;
+                    }
+                    $(this).data("submitted", true);
+                });
                 $("#resend").click(function () {
                     // The current challenge is about to be replaced by a fresh one with a new pushAuthId; drop
                     // the stored start timestamp so the orphan entry does not linger for the rest of the tab.

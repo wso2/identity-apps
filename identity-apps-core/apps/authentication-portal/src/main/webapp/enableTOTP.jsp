@@ -262,6 +262,14 @@
 
             $(document).ready(function() {
                 checkbox.prop('checked',false);
+                pinForm.on("submit", function (e) {
+                    if ($(this).data("submitted") === true) {
+                        console.warn("Prevented a possible double submit event");
+                        e.preventDefault();
+                        return false;
+                    }
+                    $(this).data("submitted", true);
+                });
                 continueBtn.click(function() {
                     document.getElementById("ENABLE_TOTP").value = 'true';
                     pinForm.submit();
