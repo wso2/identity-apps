@@ -110,7 +110,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     const { t } = useTranslation();
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
-    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { flowCompletionConfigs, setRefetchFlow } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewAskPasswordPortalEnabled,
         mutate: mutateNewAskPasswordPortalEnabledRequest
@@ -312,6 +312,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
                     message: "Flow Updated Successfully"
                 })
             );
+
+            setRefetchFlow(true);
 
             return true;
         } catch (error) {
