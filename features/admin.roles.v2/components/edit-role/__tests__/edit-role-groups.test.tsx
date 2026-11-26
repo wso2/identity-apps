@@ -170,7 +170,7 @@ describe("Groups tab of the role edit view", () => {
                     } }
                     onRoleUpdate={ jest.fn() }
                     isReadOnly={ false }
-                    tabIndex={ 2 }
+                    tabIndex={ 0 }
                 />
             </UIConfigProvider>
         );
