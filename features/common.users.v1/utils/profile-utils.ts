@@ -183,6 +183,7 @@ const prepareInitialValues = (
  * @param isMultipleEmailAndMobileNumberEnabled - Whether multiple email and mobile number support is enabled.
  * @param isEmailVerificationEnabled - Whether email verification is enabled.
  * @param isMobileVerificationEnabled - Whether mobile verification is enabled.
+ * @param enableSCIMLegacyEnterpriseUser - Whether SCIM legacy enterprise user behavior is enabled.
  * @returns The flattened initial values.
  *
  * @example
