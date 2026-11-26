@@ -187,15 +187,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);
     }, [ JSON.stringify(step.options) ]);
 
-    const isSubjectIdentifierChecked: boolean = useMemo(
-        () => (subjectStepId === (stepIndex + 1)),
-        [ subjectStepId, stepIndex ]
-    );
+    const isSubjectIdentifierChecked: boolean = (subjectStepId === (stepIndex + 1));
 
-    const isAttributeIdentifierChecked: boolean = useMemo(
-        () => (attributeStepId === (stepIndex + 1)),
-        [ attributeStepId, stepIndex ]
-    );
+    const isAttributeIdentifierChecked: boolean = (attributeStepId === (stepIndex + 1));
 
     /**
      * Check whether the backup codes is enabled for the step
