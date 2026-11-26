@@ -1547,7 +1547,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                                         >
                                             <Grid xs={ 12 }>
                                                 <SelectiveOrgShareWithSelectiveRoles
-                                                    userId={ agent?.id }
+                                                    restrictToImmediateChildOrgs={ true }
                                                     applicationRolesList={ agentRolesList }
                                                     selectedItems={ selectedOrgIds }
                                                     setSelectedItems={ setSelectedOrgIds }
