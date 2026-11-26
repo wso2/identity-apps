@@ -575,7 +575,7 @@ export const applicationConfig: ApplicationConfig = {
         showRequestObjectConfigurations: true,
         showRequestObjectSignatureValidation: true,
         showReturnAuthenticatedIdPList: false,
-        showScopeValidators: false
+        showScopeValidators: true
     },
     inboundSAMLForm: {
         artifactBindingAllowed: true,
