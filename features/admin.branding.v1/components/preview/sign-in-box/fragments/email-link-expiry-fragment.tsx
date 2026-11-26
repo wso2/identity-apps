@@ -57,7 +57,7 @@ const EmailLinkExpiryFragment: FunctionComponent<EmailLinkExpiryFragmentInterfac
             >
                 <Placeholder.Image />
             </Placeholder>
-            <button className="ui primary button mb-2">Go Back</button>
+            <button type="button" className="ui primary button mb-2">Go Back</button>
         </div>
     );
 };
