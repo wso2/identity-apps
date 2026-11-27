@@ -33,7 +33,7 @@ export interface CustomTextPreferenceAPIResponseInterface {
 /**
  * Source that a custom text preference is resolved from.
  */
-export interface CustomTextPreferenceResolvedFromInterface {
+interface CustomTextPreferenceResolvedFromInterface {
     /**
      * Type of the source (ORG or APP).
      */
