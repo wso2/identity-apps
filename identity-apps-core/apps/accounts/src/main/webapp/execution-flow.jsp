@@ -845,7 +845,8 @@
 
                             let redirectionUrl = defaultMyAccountUrl;
 
-                            if (flow.data.redirectURL !== null) {
+                            // The API can omit redirectURL instead of sending null. Keep the default in that case.
+                            if (flow.data.redirectURL) {
                                 redirectionUrl = flow.data.redirectURL;
                             }
 
