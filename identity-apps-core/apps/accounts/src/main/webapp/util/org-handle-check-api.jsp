@@ -18,14 +18,9 @@
 
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ page import="java.io.BufferedReader" %>
-<%@ page import="java.io.InputStream" %>
-<%@ page import="java.io.InputStreamReader" %>
-<%@ page import="java.io.OutputStream" %>
-<%@ page import="java.net.HttpURLConnection" %>
-<%@ page import="java.net.URL" %>
-<%@ page import="java.util.Base64" %>
-<%@ page import="java.nio.charset.StandardCharsets" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.OrganizationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.organization.v1.OrganizationCheckResponse" %>
 <%@include file="../includes/init-url.jsp" %>
 
 <%
@@ -37,47 +32,18 @@
             requestBody.append(line);
         }
 
-        String checkHandleUrl = identityServerEndpointContextParam
-            + "/api/server/v1/organizations/check-handle";
+        OrganizationDataRetrievalClient organizationDataRetrievalClient = new OrganizationDataRetrievalClient();
+        OrganizationCheckResponse organizationCheckResponse = organizationDataRetrievalClient.checkHandle(
+                requestBody.toString());
 
-        URL url = new URL(checkHandleUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("Accept", "application/json");
+        response.setStatus(organizationCheckResponse.getStatusCode());
+        out.print(organizationCheckResponse.getResponse().toString());
 
-        // Authenticate the portal application; no signed-in user is required.
-        IdentityManagementServiceUtil serviceUtil = IdentityManagementServiceUtil.getInstance();
-        String clientCredentials = serviceUtil.getAppName() + ":" + String.valueOf(serviceUtil.getAppPassword());
-        String clientAuthHeader = Base64.getEncoder().encodeToString(
-            clientCredentials.getBytes(StandardCharsets.UTF_8));
-        conn.setRequestProperty("Authorization", "Client " + clientAuthHeader);
-
-        conn.setDoOutput(true);
-
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = requestBody.toString().getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-
-        int responseCode = conn.getResponseCode();
-        InputStream responseStream = (responseCode >= 200 && responseCode < 300)
-            ? conn.getInputStream()
-            : conn.getErrorStream();
-
-        StringBuilder responseBody = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "utf-8"))) {
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                responseBody.append(responseLine.trim());
-            }
-        }
-
-        response.setStatus(responseCode);
-        out.print(responseBody.toString());
-
+    } catch (ApiException e) {
+        response.setStatus(e.getCode() > 0 ? e.getCode() : 500);
+        out.print("{\"error\": \"Organization handle check failed.\"}");
     } catch (Exception e) {
         response.setStatus(500);
-        out.print("{\"error\": \"Exception: " + e.getMessage() + "\"}");
+        out.print("{\"error\": \"Organization handle check failed.\"}");
     }
 %>
