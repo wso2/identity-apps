@@ -34,7 +34,7 @@
 
         OrganizationDataRetrievalClient organizationDataRetrievalClient = new OrganizationDataRetrievalClient();
         OrganizationCheckResponse organizationCheckResponse = organizationDataRetrievalClient.checkHandle(
-                requestBody.toString(), tenantDomain);
+                requestBody.toString());
 
         response.setStatus(organizationCheckResponse.getStatusCode());
         out.print(organizationCheckResponse.getResponse().toString());
