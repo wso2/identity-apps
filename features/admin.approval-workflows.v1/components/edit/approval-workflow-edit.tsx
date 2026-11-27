@@ -499,9 +499,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                 return updated;
             });
-
-            // Refresh the form's workflow associations for validation purposes.
-            workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
         },
         []
     );
@@ -643,8 +640,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         addWorkflowAssociation(workflowAssociationPayload)
             .then(() => {
                 mutateWorkflowAssociationDetails();
-                // Refresh the workflow associations in the form to update validation
-                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {
                 handleAlerts({
@@ -683,8 +678,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     return updated;
                 });
                 mutateWorkflowAssociationDetails();
-                // Refresh the workflow associations in the form to update validation.
-                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {
                 handleAlerts({
@@ -705,8 +698,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         deleteWorkflowAssociationById(associationId)
             .then(() => {
                 mutateWorkflowAssociationDetails();
-                // Refresh the workflow associations in the form to update validation
-                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {
                 handleAlerts({
