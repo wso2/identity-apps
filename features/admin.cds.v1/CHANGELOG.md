@@ -1,5 +1,11 @@
 # @wso2is/admin.cds.v1
 
+## 1.14.3
+
+### Patch Changes
+
+- [#11011](https://github.com/wso2/identity-apps/pull/11011) [`b5952d93f17113150efa8c839aa772153217bfa0`](https://github.com/wso2/identity-apps/commit/b5952d93f17113150efa8c839aa772153217bfa0) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Keep the customer profiles and profile schema of one organization out of another organization's Customer Data pages after switching organizations
+
 ## 1.14.2
 
 ### Patch Changes
