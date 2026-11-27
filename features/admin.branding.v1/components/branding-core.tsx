@@ -113,6 +113,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
     const {
         brandingMode,
+        clearCustomTextFormSubscription,
         selectedApplication
     } = useBrandingPreference();
 
@@ -646,6 +647,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         // application branding only deletes the custom text of the application.
         try {
             await deleteAllCustomTextPreferences(resolvedType, resolvedName);
+
+            // Clear the unsaved form values of the reverted organization or application to show the re-resolved
+            // custom text.
+            clearCustomTextFormSubscription(resolvedType, resolvedName);
 
             dispatch(addAlert<AlertInterface>({
                 description: t(

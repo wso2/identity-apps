@@ -541,6 +541,21 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     };
 
     /**
+     * Clears the unsaved custom text form values, only if the given organization or application is still selected,
+     * so that a completed request doesn't clear the form of another organization or application.
+     *
+     * @param type - Type of the custom text preference (ORG or APP).
+     * @param name - Name of the organization or the application.
+     */
+    const clearCustomTextFormSubscription = (type: BrandingPreferenceTypes, name: string): void => {
+        if (!customTextScopeRef.current?.startsWith(`${ type }:${ name }:`)) {
+            return;
+        }
+
+        setCustomTextFormSubscription(null);
+    };
+
+    /**
      * Resets a specific custom text field to system default.
      * @param key - Key of the custom text field.
      */
@@ -581,6 +596,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 activeCustomTextConfigurationMode,
                 activeTab,
                 brandingMode,
+                clearCustomTextFormSubscription,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {

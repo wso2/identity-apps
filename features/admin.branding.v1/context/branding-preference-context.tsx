@@ -19,6 +19,7 @@
 import {
     BrandingCustomLayoutContentInterface,
     BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
@@ -142,6 +143,12 @@ export interface BrandingPreferenceContextProps {
      * @param key - Key to be reset.
      */
     resetCustomTextField: (key: string, screen: string, locale: string) => void;
+    /**
+     * Clears the unsaved custom text form values, only if the given organization or application is still selected.
+     * @param type - Type of the custom text preference (ORG or APP).
+     * @param name - Name of the organization or the application.
+     */
+    clearCustomTextFormSubscription: (type: BrandingPreferenceTypes, name: string) => void;
     /**
      * Active tab id.
      */
