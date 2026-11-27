@@ -1043,7 +1043,7 @@
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         var numbers = /[0-9]/g;
-        var specialChr = /[!#$%&'()*+,\-\.\/:;<=>?@[\]^_{|}~]/g;
+        var specialChr = /[^A-Za-z0-9]/g;
         var consecutiveChr = /([^])\1+/g;
         var errorMessage = getErrorMessage();
 
