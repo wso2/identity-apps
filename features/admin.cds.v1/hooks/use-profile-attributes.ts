@@ -50,8 +50,11 @@ const useProfileSchemaByScope = (
     filter?: string,
     config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
 ): SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> => {
-    const key: ["profile-schema-scope", ProfileSchemaScope, string | undefined] | null =
-        scope ? [ "profile-schema-scope", scope, filter ] : null;
+    // The endpoint names the organization, so the schema of one organization is never served from
+    // the cache to another after the Console switches organizations.
+    const endpoint: string = store.getState().config.endpoints.cdsProfileSchema;
+    const key: ["profile-schema-scope", string, ProfileSchemaScope, string | undefined] | null =
+        scope ? [ "profile-schema-scope", endpoint, scope, filter ] : null;
 
     return useSWR<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>(
         key,

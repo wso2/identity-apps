@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "@wso2is/admin.core.v1/store";
 import { AxiosError } from "axios";
 import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
@@ -36,8 +37,11 @@ export const useCDSProfiles = (
     config?: SWRConfiguration<ProfilesListResponse, AxiosError<HttpErrorResponseDataInterface>>,
     shouldFetch: boolean = true
 ): SWRResponse<ProfilesListResponse, AxiosError<HttpErrorResponseDataInterface>> => {
-    const key: ["cds-profiles", FetchProfilesParams] | null =
-        shouldFetch && params ? [ "cds-profiles", params ] : null;
+    // The endpoint names the organization, so the profiles of one organization are never served
+    // from the cache to another after the Console switches organizations.
+    const endpoint: string = store.getState().config.endpoints.cdsProfiles;
+    const key: ["cds-profiles", string, FetchProfilesParams] | null =
+        shouldFetch && params ? [ "cds-profiles", endpoint, params ] : null;
 
     return useSWR<ProfilesListResponse, AxiosError<HttpErrorResponseDataInterface>>(
         key,
@@ -57,7 +61,8 @@ export const useCDSProfileDetails = (
     profileId: string | null,
     config?: SWRConfiguration<ProfileModel, AxiosError<HttpErrorResponseDataInterface>>
 ): SWRResponse<ProfileModel, AxiosError<HttpErrorResponseDataInterface>> => {
-    const key: ["cds-profile", string] | null = profileId ? [ "cds-profile", profileId ] : null;
+    const endpoint: string = store.getState().config.endpoints.cdsProfiles;
+    const key: ["cds-profile", string, string] | null = profileId ? [ "cds-profile", endpoint, profileId ] : null;
 
     return useSWR<ProfileModel, AxiosError<HttpErrorResponseDataInterface>>(
         key,
