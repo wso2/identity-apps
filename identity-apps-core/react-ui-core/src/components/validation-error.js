@@ -41,7 +41,7 @@ const ValidationError = ({ name, errors }) => {
                     <div className="validation-criteria mt-1">
                         <div className="field form-group error">
                             <i className="pr-2 red exclamation circle fitted icon"></i>
-                            <span className="validation-error-message">
+                            <span id={ `${name}-error` } className="validation-error-message">
                                 { resolveElementText(translations, fieldError) }
                             </span>
                         </div>
