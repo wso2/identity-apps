@@ -1,5 +1,11 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.41.0
+
+### Minor Changes
+
+- [#11004](https://github.com/wso2/identity-apps/pull/11004) [`a18a0aa64ffe780f7b02a32953c030504616f8e6`](https://github.com/wso2/identity-apps/commit/a18a0aa64ffe780f7b02a32953c030504616f8e6) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add an OTP length field to the Admin Initiated Password Reset settings
+
 ## 2.40.1
 
 ### Patch Changes
