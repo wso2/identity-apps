@@ -31,7 +31,9 @@ export class AdminForcedPasswordResetFormConstants {
         ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK,
         ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP,
         ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP,
-        ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME
+        ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME,
+        ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_OTP_LENGTH
     ];
+
 }
 

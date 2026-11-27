@@ -386,6 +386,7 @@ export class ServerConfigurationsConstants {
     public static readonly ADMIN_FORCE_PASSWORD_RESET_SMS_OTP: string = "Recovery.AdminPasswordReset.SMSOTP";
     public static readonly ADMIN_FORCE_PASSWORD_RESET_OFFLINE: string = "Recovery.AdminPasswordReset.Offline";
     public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
+    public static readonly ADMIN_FORCED_PASSWORD_RESET_OTP_LENGTH: string = "Recovery.AdminPasswordReset.OTP.OTPLength";
 
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
 

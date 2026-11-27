@@ -3088,7 +3088,16 @@ export interface Extensions {
                                 label: string;
                                 hint: string;
                                 placeholder: string;
-                            }
+                            };
+                            otpLength: {
+                                label: string;
+                                hint: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                         },
                         heading: {
                             label: string;

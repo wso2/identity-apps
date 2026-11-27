@@ -3578,6 +3578,16 @@ export const extensions: Extensions = {
                                 label: "Reset link/OTP expiry time",
                                 hint: "Password Reset Link/OTP expiry time in minutes.",
                                 placeholder: "Enter expiry time"
+                            },
+                            otpLength: {
+                                label: "OTP Length",
+                                hint: "Set the number of characters in the generated OTP codes. " +
+                                    "Leave empty to use the default OTP code length.",
+                                placeholder: "Enter OTP length",
+                                validations: {
+                                    invalid: "OTP length should be an integer.",
+                                    range: "OTP length should be between 4 and 32."
+                                }
                             }
                         },
                         heading: {
