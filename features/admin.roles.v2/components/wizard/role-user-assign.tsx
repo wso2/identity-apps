@@ -90,7 +90,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ , setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
+    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ listOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
@@ -311,7 +311,20 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 }
             });
         } else {
-            setUsersList(initialUserList);
+            // Rebuild the unassigned list from every loaded user minus the ones currently assigned,
+            // so users moved between the lists before a search reset are not lost or duplicated.
+            const allUsers: UserBasicInterface[] = [
+                ...initialUserList,
+                ...initialSelectedUsers.filter((user: UserBasicInterface) => !initialUserList.includes(user))
+            ];
+
+            setUsersList(
+                allUsers
+                    .filter((user: UserBasicInterface) => !tempUserList.includes(user))
+                    .sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
+                        userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                    )
+            );
         }
     };
 
