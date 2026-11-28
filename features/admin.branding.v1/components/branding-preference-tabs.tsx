@@ -69,6 +69,7 @@ import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import { BrandingPreferenceContextProps } from "../context/branding-preference-context";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
 import { CustomTextConfigurationModes } from "../models/custom-text-preference";
@@ -167,8 +168,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         updateActiveTab,
         isCustomTextConfigured,
         updateCustomTextPreference,
-        customTextFormSubscription
-    } = useBrandingPreference();
+        customTextFormSubscription,
+        selectedApplication
+    }: BrandingPreferenceContextProps = useBrandingPreference();
 
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
@@ -417,9 +419,16 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         </ResourceTab.Pane>
     );
 
+    // In the application mode, the text can't be edited until an application is selected. Otherwise, the changes
+    // would apply to the organization custom text.
+    const isCustomTextReadOnly: boolean = readOnly
+        || (brandingMode === BrandingModes.APPLICATION && !selectedApplication);
+
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText readOnly={ readOnly || brandingMode === BrandingModes.APPLICATION } />
+            <CustomText
+                readOnly={ isCustomTextReadOnly }
+            />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
@@ -438,12 +447,12 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             onSubmit({}, false);
                         }
                     },
-                    readOnly: readOnly
+                    readOnly: isCustomTextReadOnly
                 } }
                 data-componentid="sticky-tab-action-panel"
             >
                 <Button
-                    disabled={ !isCustomTextConfigured }
+                    disabled={ isCustomTextReadOnly || !isCustomTextConfigured }
                     onClick={ () =>  {
                         setShowCustomTextRevertAllConfirmationModal(true);
                     } }
@@ -491,7 +500,11 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             render: AdvancePreferenceTabPane
         });
 
-        if (brandingMode === BrandingModes.ORGANIZATION) {
+        const isApplicationTextTabDisabled: boolean = brandingFeatureConfig?.disabledFeatures?.includes(
+            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+        );
+
+        if (brandingMode === BrandingModes.ORGANIZATION || !isApplicationTextTabDisabled) {
             panes.push({
                 "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
                 menuItem: (
@@ -502,32 +515,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         <FeatureFlagLabel
                             featureFlags={ brandingFeatureFlags }
                             featureKey={
-                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATION_BRANDING_TEXT
-                            }
-                            type="chip"
-                        />
-                    </Menu.Item>
-                ),
-                render: TextPreferenceTabPane
-            });
-        }
-
-        if (brandingMode === BrandingModes.APPLICATION &&
-            !brandingFeatureConfig?.disabledFeatures?.includes(FeatureFlagConstants
-                .FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT)) {
-
-            panes.push({
-                "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
-                menuItem: (
-                    <Menu.Item
-                        key="text"
-                        disabled={ true }
-                    >
-                        { t("branding:tabs.text.label") }
-                        <FeatureFlagLabel
-                            featureFlags={ brandingFeatureFlags }
-                            featureKey={
-                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                                brandingMode === BrandingModes.APPLICATION
+                                    ? FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                                    : FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATION_BRANDING_TEXT
                             }
                             type="chip"
                         />

@@ -47,7 +47,10 @@ const useGetCustomTextPreferenceResolve = <
         ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
         : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
 
-    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
+    // App-level custom text is identified by the application ID. Hence the organization ID is only used for the
+    // organization-level custom text of sub organizations.
+    const tenantDomain: string = type === BrandingPreferenceTypes.ORG
+        && organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id
         : name;
 
