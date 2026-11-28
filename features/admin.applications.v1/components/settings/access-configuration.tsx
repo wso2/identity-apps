@@ -1425,7 +1425,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const selectSAMLCreationProtocol = (samlOption: SAMLConfigModes): void =>{
         setSAMLCreationOption(samlOption);
         setSelectedProtocol(SupportedAuthProtocolTypes.SAML);
-        inboundProtocolList.push(SupportedAuthProtocolTypes.SAML);
+        setInboundProtocolList((previousList: string[]) => [ ...previousList, SupportedAuthProtocolTypes.SAML ]);
     };
 
     return (

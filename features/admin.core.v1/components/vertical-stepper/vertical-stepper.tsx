@@ -48,11 +48,12 @@ export const VerticalStepper: FunctionComponent<VerticalStepperProps> = (
     };
 
     const handleCurrentActiveStep = (): void => {
-        setCurrentActiveStep(completedSteps.pop());
+        setCurrentActiveStep(completedSteps[completedSteps.length - 1]);
     };
 
     const handlePreviousStep = () => {
-        setCurrentActiveStep(completedSteps.pop());
+        setCurrentActiveStep(completedSteps[completedSteps.length - 1]);
+        setCompletedSteps(completedSteps.slice(0, -1));
     };
 
     return (

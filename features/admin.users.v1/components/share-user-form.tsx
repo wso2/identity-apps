@@ -281,12 +281,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 const orgIds: string[] =
                     userShareData.organizations.map((org: SharedOrganizationInterface) => org.orgId);
                 const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
-                const shouldShareWithFutureChildOrgsMap: Record<string, boolean> = {};
+                const fetchedShareWithFutureChildOrgsMap: Record<string, boolean> = {};
                 const assignedRolesMap: Record<string, RoleInterface[]> = {};
 
                 userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
                     // Track the sharing policy for each organization
-                    shouldShareWithFutureChildOrgsMap[org.orgId] =
+                    fetchedShareWithFutureChildOrgsMap[org.orgId] =
                         org.sharingMode?.policy ===
                             UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN;
                     // Map roles from the sharingMode role assignment
@@ -321,8 +321,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     ...prevRoleSelections,
                     ...rolesMap
                 }));
-                setShouldShareWithFutureChildOrgsMap(shouldShareWithFutureChildOrgsMap);
-                setInitialShouldShareWithFutureChildOrgsMap(shouldShareWithFutureChildOrgsMap);
+                setShouldShareWithFutureChildOrgsMap(fetchedShareWithFutureChildOrgsMap);
+                setInitialShouldShareWithFutureChildOrgsMap(fetchedShareWithFutureChildOrgsMap);
                 setUserAssignedRolesMap(assignedRolesMap);
             }
 

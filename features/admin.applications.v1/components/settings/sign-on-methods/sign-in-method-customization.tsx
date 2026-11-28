@@ -315,10 +315,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         }
 
         if (template.defaultAuthenticators) {
-            const steps: AuthenticationStepInterface[] = [];
+            const defaultSteps: AuthenticationStepInterface[] = [];
 
             for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
-                steps.push({
+                defaultSteps.push({
                     id: parseInt(key, 10),
                     options: value.local.map((authenticator: string) => {
                         return {
@@ -332,7 +332,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             newSequence = {
                 ...newSequence,
                 attributeStepId: 1,
-                steps,
+                steps: defaultSteps,
                 subjectStepId: 1
             };
         }
