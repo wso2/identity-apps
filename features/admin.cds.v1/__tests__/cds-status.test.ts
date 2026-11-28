@@ -22,6 +22,7 @@ import { updateCDSServerConfig, updateCDSStatus } from "../api/config";
 import useCDSEnabled, { UseCDSEnabledReturnInterface } from "../hooks/use-cds-enabled";
 import useCDSToggle from "../hooks/use-cds-toggle";
 import useCDSConfig from "../hooks/use-config";
+import useIsSubOrganization from "../hooks/use-is-sub-organization";
 import useCDSServerConfig from "../hooks/use-server-config";
 import { CDSConfig } from "../models/config";
 import { isCDSServerConfigEnabled } from "../utils/ui-mode-utils";
@@ -67,6 +68,7 @@ vi.mock("../utils/application-identifier-utils", () => ({
 
 vi.mock("../hooks/use-config", () => ({ default: vi.fn() }));
 vi.mock("../hooks/use-server-config", () => ({ default: vi.fn() }));
+vi.mock("../hooks/use-is-sub-organization", () => ({ default: vi.fn(() => false) }));
 
 const setExtensions = (extensions: Record<string, unknown>): void => {
     window["AppUtils"] = {
@@ -150,6 +152,7 @@ describe("useCDSEnabled", () => {
     beforeEach(() => {
         cdsConfigMutate.mockReset();
         serverConfigMutate.mockReset();
+        (useIsSubOrganization as Mock).mockReturnValue(false);
         (useCDSConfig as Mock).mockReturnValue({
             data: { cds_enabled: true, system_applications: [] },
             isLoading: false,
@@ -213,6 +216,68 @@ describe("useCDSEnabled", () => {
 
     it("does not fetch when the CDS feature is off", () => {
         setExtensions({ cdsTenantConfigEnabled: true });
+
+        renderHook(() => useCDSEnabled(false));
+
+        expect(useCDSConfig).toHaveBeenLastCalledWith(false);
+        expect(useCDSServerConfig).toHaveBeenLastCalledWith(false);
+    });
+
+    it("reads cds_enabled of the CDS configuration in a child organization when the flag is on", () => {
+        setExtensions({ cdsTenantConfigEnabled: true });
+        (useIsSubOrganization as Mock).mockReturnValue(true);
+        (useCDSServerConfig as Mock).mockReturnValue({
+            data: { enabled: true },
+            isLoading: false,
+            mutate: serverConfigMutate
+        });
+        (useCDSConfig as Mock).mockReturnValue({
+            data: { cds_enabled: false, system_applications: [] },
+            isLoading: false,
+            mutate: cdsConfigMutate
+        });
+
+        const { result }: RenderHookResult<UseCDSEnabledReturnInterface, unknown> =
+            renderHook(() => useCDSEnabled(true));
+
+        expect(result.current.isEnabled).toBe(false);
+        expect(useCDSConfig).toHaveBeenLastCalledWith(true);
+        expect(useCDSServerConfig).toHaveBeenLastCalledWith(false);
+
+        result.current.mutate();
+        expect(cdsConfigMutate).toHaveBeenCalledTimes(1);
+        expect(serverConfigMutate).not.toHaveBeenCalled();
+    });
+
+    it("gives true in a child organization that the organization access includes", () => {
+        setExtensions({ cdsTenantConfigEnabled: true });
+        (useIsSubOrganization as Mock).mockReturnValue(true);
+
+        const { result }: RenderHookResult<UseCDSEnabledReturnInterface, unknown> =
+            renderHook(() => useCDSEnabled(true));
+
+        expect(result.current.isEnabled).toBe(true);
+    });
+
+    it("gives false in a child organization when CDS returns an error", () => {
+        setExtensions({ cdsTenantConfigEnabled: true });
+        (useIsSubOrganization as Mock).mockReturnValue(true);
+        (useCDSConfig as Mock).mockReturnValue({
+            data: undefined,
+            error: { response: { status: 404 } },
+            isLoading: false,
+            mutate: cdsConfigMutate
+        });
+
+        const { result }: RenderHookResult<UseCDSEnabledReturnInterface, unknown> =
+            renderHook(() => useCDSEnabled(true));
+
+        expect(result.current.isEnabled).toBe(false);
+    });
+
+    it("does not fetch in a child organization when the CDS feature is off", () => {
+        setExtensions({ cdsTenantConfigEnabled: true });
+        (useIsSubOrganization as Mock).mockReturnValue(true);
 
         renderHook(() => useCDSEnabled(false));
 

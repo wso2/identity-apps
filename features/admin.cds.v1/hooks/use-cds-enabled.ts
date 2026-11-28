@@ -18,6 +18,7 @@
 
 import { isCDSServerConfigEnabled } from "../utils/ui-mode-utils";
 import useCDSConfig from "./use-config";
+import useIsSubOrganization from "./use-is-sub-organization";
 import useCDSServerConfig from "./use-server-config";
 
 /**
@@ -43,31 +44,36 @@ export interface UseCDSEnabledReturnInterface {
 /**
  * Hook to get the CDS status of the organization.
  *
- * When the server configuration API is enabled, the status comes from the Identity Server. An error response
- * with no earlier data (for example, the CDS feature is not enabled in the Identity Server) gives `false`. If a
- * later request fails, SWR keeps the last status that the Identity Server returned. Else, the status is the
- * `cds_enabled` field of the CDS configuration.
+ * In a root organization with the server configuration API enabled, the status comes from the Identity Server.
+ * An error response with no earlier data (for example, the CDS feature is not enabled in the Identity Server)
+ * gives `false`. If a later request fails, SWR keeps the last status that the Identity Server returned.
+ *
+ * Else, the status is the `cds_enabled` field of the CDS configuration. A child organization always reads it
+ * from CDS: the Identity Server returns the status of the root organization, while only CDS knows whether the
+ * organization access of the root organization includes the child organization. An error response, for
+ * example for an organization that CDS has not synced yet, gives `false`.
  *
  * @param shouldFetch - Should fetch the data.
  * @returns The CDS status, its loading state, and a function to get it again.
  */
 const useCDSEnabled = (shouldFetch: boolean = true): UseCDSEnabledReturnInterface => {
 
-    const isServerConfigEnabled: boolean = isCDSServerConfigEnabled();
+    const isSubOrganization: boolean = useIsSubOrganization();
+    const readsServerConfig: boolean = isCDSServerConfigEnabled() && !isSubOrganization;
 
     const {
         data: serverConfig,
         isLoading: isServerConfigLoading,
         mutate: mutateServerConfig
-    } = useCDSServerConfig(shouldFetch && isServerConfigEnabled);
+    } = useCDSServerConfig(shouldFetch && readsServerConfig);
 
     const {
         data: cdsConfig,
         isLoading: isCDSConfigLoading,
         mutate: mutateCDSConfig
-    } = useCDSConfig(shouldFetch && !isServerConfigEnabled);
+    } = useCDSConfig(shouldFetch && !readsServerConfig);
 
-    if (isServerConfigEnabled) {
+    if (readsServerConfig) {
         return {
             isEnabled: serverConfig?.enabled ?? false,
             isLoading: isServerConfigLoading,
