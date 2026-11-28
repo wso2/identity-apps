@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.40.2
+
+### Patch Changes
+
+- [#11013](https://github.com/wso2/identity-apps/pull/11013) [`6e6779238cf82d6235be7f81c3f516a4cb891ad5`](https://github.com/wso2/identity-apps/commit/6e6779238cf82d6235be7f81c3f516a4cb891ad5) Thanks [@PasanMadhuranga](https://github.com/PasanMadhuranga)! - Show Customer Data Service as enabled in a child organization only when the organization access of the root organization includes it
+
+- Updated dependencies [[`6e6779238cf82d6235be7f81c3f516a4cb891ad5`](https://github.com/wso2/identity-apps/commit/6e6779238cf82d6235be7f81c3f516a4cb891ad5)]:
+  - @wso2is/admin.cds.v1@1.14.4
+  - @wso2is/admin.users.v1@2.39.22
+
 ## 4.40.1
 
 ### Patch Changes
