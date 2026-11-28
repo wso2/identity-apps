@@ -347,13 +347,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const removeUser = () => {
         const removedUsers: UserBasicInterface[] = [ ...tempUserList ];
+        const updatedUsersList: UserBasicInterface[] = [ ...usersList ];
 
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((user: UserBasicInterface) => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
-                usersList.push(user);
+                updatedUsersList.push(user);
             });
-            setUsersList(usersList);
+            setUsersList(updatedUsersList);
             setTempUserList(removedUsers);
             setCheckedUnassignedListItems([]);
         }
